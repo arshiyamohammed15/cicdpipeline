@@ -1,0 +1,509 @@
+{
+  "constitution_version": "2.0",
+  "total_rules": 71,
+  "categories": {
+    "basic_work": {
+      "rules": [4, 5, 10, 13, 20],
+      "priority": "critical",
+      "description": "Core principles for all development work"
+    },
+    "requirements": {
+      "rules": [1, 2],
+      "priority": "critical",
+      "description": "Requirements and specifications"
+    },
+    "privacy_security": {
+      "rules": [3, 11, 12, 27, 36],
+      "priority": "critical",
+      "description": "Privacy and security principles"
+    },
+    "performance": {
+      "rules": [8, 67],
+      "priority": "important",
+      "description": "Performance optimization"
+    },
+    "architecture": {
+      "rules": [19, 21, 23, 24, 28],
+      "priority": "critical",
+      "description": "Architecture and system design"
+    },
+    "system_design": {
+      "rules": [22, 25, 26, 29, 30, 31, 32],
+      "priority": "critical",
+      "description": "Architecture and system design principles"
+    },
+    "problem_solving": {
+      "rules": [33, 34, 35, 37, 38, 39, 41],
+      "priority": "important",
+      "description": "Feature development and problem-solving approach"
+    },
+    "platform": {
+      "rules": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+      "priority": "important",
+      "description": "Platform features and technical implementation"
+    },
+    "testing_safety": {
+      "rules": [7, 14, 59, 69],
+      "priority": "critical",
+      "description": "Testing and safety principles"
+    },
+    "code_quality": {
+      "rules": [15, 18, 68],
+      "priority": "important",
+      "description": "Code quality and documentation"
+    },
+    "teamwork": {
+      "rules": [52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 70, 71, 72, 74, 75, 76, 77],
+      "priority": "recommended",
+      "description": "Collaboration, UX, and team dynamics"
+    }
+  },
+  "validation_patterns": {
+    "basic_work": {
+      "rules": [4, 5, 10, 13, 20],
+      "patterns": {
+        "settings_files": {
+          "keywords": ["config", "settings", "configuration", "env", "environment"],
+          "severity": "warning",
+          "message": "Use settings files instead of hardcoded values"
+        },
+        "logging_records": {
+          "keywords": ["log", "logging", "logger", "audit", "record", "track"],
+          "severity": "warning",
+          "message": "Keep good records and logs for monitoring"
+        },
+        "ai_transparency": {
+          "keywords": ["confidence", "explanation", "reasoning", "uncertainty", "version"],
+          "severity": "warning",
+          "message": "Be honest about AI decisions with confidence levels"
+        },
+        "learning_from_mistakes": {
+          "keywords": ["learn", "learning", "improve", "feedback", "correction", "mistake"],
+          "severity": "info",
+          "message": "Learn from mistakes and get smarter over time"
+        },
+        "fairness_accessibility": {
+          "keywords": ["accessibility", "a11y", "aria", "alt_text", "fair", "inclusive"],
+          "severity": "info",
+          "message": "Be fair to everyone with accessibility and inclusive design"
+        }
+      }
+    },
+    "requirements": {
+      "rules": [1, 2],
+      "patterns": {
+        "incomplete_implementation": {
+          "regex": "(?i)(TODO|FIXME|HACK|XXX|TEMP|placeholder|NotImplementedError)",
+          "severity": "warning",
+          "message": "Incomplete implementation detected - may not meet exact requirements"
+        },
+        "assumptions": {
+          "regex": "(?i)(assume|assumption|guess|probably|maybe|hardcoded|magic)",
+          "severity": "warning",
+          "message": "Assumption or guesswork detected - should only use given information"
+        },
+        "magic_numbers": {
+          "regex": "\\b\\d{2,}\\b",
+          "severity": "warning",
+          "message": "Magic number detected - should be defined as a constant"
+        }
+      }
+    },
+    "privacy_security": {
+      "rules": [3, 11, 12, 27, 36],
+      "patterns": {
+        "hardcoded_credentials": {
+          "regex": "(?i)(password|api_key|secret|token)\\s*=\\s*[\"'][^\"']+[\"']",
+          "severity": "error",
+          "message": "Hardcoded credentials detected - use environment variables or secure config"
+        },
+        "personal_data": {
+          "regex": "(?i)(ssn|social_security|credit_card|phone|email)\\s*=\\s*[\"'][^\"']+[\"']",
+          "severity": "error",
+          "message": "Personal data detected - ensure proper data classification and encryption"
+        },
+        "unencrypted_data": {
+          "keywords": ["plaintext", "unencrypted", "raw_data"],
+          "severity": "warning",
+          "message": "Consider encryption for sensitive data handling"
+        },
+        "data_quality": {
+          "keywords": ["input", "validation", "sanitization", "strip", "lower", "upper"],
+          "severity": "warning",
+          "message": "Data quality validation required - check input validation and sanitization"
+        }
+      }
+    },
+    "performance": {
+      "rules": [8, 67],
+      "patterns": {
+        "nested_loops": {
+          "ast_pattern": "nested_for_loops",
+          "severity": "warning",
+          "message": "Nested loops detected - consider optimization for O(n²) complexity"
+        },
+        "large_imports": {
+          "regex": "import\\s+\\*",
+          "severity": "warning",
+          "message": "Wildcard imports can impact startup time - use specific imports"
+        },
+        "blocking_operations": {
+          "keywords": ["time.sleep", "input()", "raw_input"],
+          "severity": "warning",
+          "message": "Blocking operations detected - consider async alternatives"
+        }
+      }
+    },
+            "system_design": {
+              "rules": [22, 25, 26, 29, 30, 31, 32],
+              "patterns": {
+                "consistent_modules": {
+                  "keywords": ["class", "function", "method"],
+                  "severity": "warning",
+                  "message": "Inconsistent module patterns detected - ensure all modules look the same"
+                },
+                "progressive_disclosure": {
+                  "keywords": ["parameter", "complex", "abstraction"],
+                  "severity": "warning",
+                  "message": "Information overload detected - use progressive disclosure"
+                },
+                "feature_organization": {
+                  "keywords": ["import", "class", "function", "constant"],
+                  "severity": "info",
+                  "message": "Poor feature organization detected - organize features clearly"
+                },
+                "consistent_registration": {
+                  "keywords": ["init", "setup", "configure", "register"],
+                  "severity": "warning",
+                  "message": "Inconsistent registration patterns detected"
+                },
+                "unified_product": {
+                  "keywords": ["command", "error", "message"],
+                  "severity": "info",
+                  "message": "Inconsistent product experience detected"
+                },
+                "quick_adoption": {
+                  "keywords": ["main", "run", "start", "example", "demo", "tutorial"],
+                  "severity": "info",
+                  "message": "Missing quick adoption patterns - add quick-start and onboarding"
+                },
+                "user_experience_testing": {
+                  "keywords": ["test", "testing", "user_test", "usability", "ux_test", "user_experience"],
+                  "severity": "info",
+                  "message": "Missing user experience testing patterns"
+                }
+              }
+            },
+            "problem_solving": {
+              "rules": [33, 34, 35, 37, 38, 39, 41],
+              "patterns": {
+                "real_problems": {
+                  "keywords": ["abstract", "factory", "builder", "complex"],
+                  "severity": "warning",
+                  "message": "Potential over-engineering detected - ensure solving real problems"
+                },
+                "help_people_work_better": {
+                  "keywords": ["status", "current", "suggest", "recommend", "amplify", "boost"],
+                  "severity": "info",
+                  "message": "Missing Mirror/Mentor/Multiplier patterns - help people work better"
+                },
+                "proactive_prevention": {
+                  "keywords": ["validate", "check", "verify", "prevent"],
+                  "severity": "warning",
+                  "message": "Missing proactive prevention patterns"
+                },
+                "cognitive_load": {
+                  "keywords": ["one_click", "instant", "automatic", "complex", "difficult"],
+                  "severity": "warning",
+                  "message": "High cognitive load detected - don't make people think too hard"
+                },
+                "accuracy_confidence": {
+                  "keywords": ["confidence", "accuracy", "uncertainty", "learn"],
+                  "severity": "info",
+                  "message": "Missing accuracy and confidence reporting"
+                },
+                "behavior_change_engine": {
+                  "keywords": ["behavior", "change", "modify", "adapt", "adjust", "transform"],
+                  "severity": "info",
+                  "message": "Missing MMM Engine patterns - Mirror/Mentor/Multiplier for behavior change"
+                },
+                "success_dashboards": {
+                  "keywords": ["dashboard", "metrics", "kpi", "analytics", "report", "chart"],
+                  "severity": "info",
+                  "message": "Missing success dashboards - show business value and metrics"
+                }
+              }
+            },
+            "platform": {
+              "rules": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+              "patterns": {
+                "platform_features": {
+                  "keywords": ["logging", "monitor", "config", "error", "health"],
+                  "severity": "warning",
+                  "message": "Missing platform feature usage"
+                },
+                "data_processing": {
+                  "keywords": ["stream", "batch", "async", "cache", "performance"],
+                  "severity": "warning",
+                  "message": "Inefficient data processing patterns detected"
+                },
+                "context_aware_help": {
+                  "keywords": ["context", "situation", "progressive", "gradual"],
+                  "severity": "info",
+                  "message": "Missing context-aware assistance - help without interrupting"
+                },
+                "emergency_handling": {
+                  "keywords": ["emergency", "urgent", "critical", "recover", "rollback"],
+                  "severity": "warning",
+                  "message": "Missing emergency handling patterns"
+                },
+                "scalability": {
+                  "keywords": ["scale", "scalable", "elastic", "distributed", "performance"],
+                  "severity": "info",
+                  "message": "Missing scalability patterns - scale from small to huge"
+                },
+                "developer_happiness": {
+                  "keywords": ["developer", "dev", "programmer", "engineer", "happiness", "satisfaction"],
+                  "severity": "info",
+                  "message": "Missing developer happiness patterns - make developers happier"
+                },
+                "problem_prevention_tracking": {
+                  "keywords": ["prevent", "prevention", "avoid", "stop", "block", "intercept"],
+                  "severity": "info",
+                  "message": "Missing problem prevention tracking patterns"
+                },
+                "compliance_workflow": {
+                  "keywords": ["compliance", "regulation", "policy", "standard", "requirement", "audit"],
+                  "severity": "info",
+                  "message": "Missing compliance workflow patterns"
+                },
+                "security_usability": {
+                  "keywords": ["security", "secure", "auth", "authentication", "authorization", "encrypt"],
+                  "severity": "warning",
+                  "message": "Security should help, not block - make security user-friendly"
+                },
+                "gradual_adoption": {
+                  "keywords": ["gradual", "progressive", "step_by_step", "incremental", "modular", "independent"],
+                  "severity": "info",
+                  "message": "Support gradual adoption - let teams start with 3-5 most useful modules"
+                }
+              }
+            },
+            "teamwork": {
+              "rules": [52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 70, 71, 72, 74, 75, 76, 77],
+              "patterns": {
+                "real_team_work": {
+                  "keywords": ["collaborate", "team", "share", "knowledge", "communicate"],
+                  "severity": "info",
+                  "message": "Missing real team work patterns - build for collaboration"
+                },
+                "reduce_frustration": {
+                  "keywords": ["automate", "workflow", "streamline", "quick", "fast"],
+                  "severity": "info",
+                  "message": "Missing frustration reduction patterns - reduce daily friction"
+                },
+                "early_detection": {
+                  "keywords": ["validate", "check", "warn", "precondition", "boundary"],
+                  "severity": "warning",
+                  "message": "Missing early issue detection patterns"
+                },
+                "automate_wisely": {
+                  "keywords": ["automate", "automatic", "human", "manual", "boundary"],
+                  "severity": "info",
+                  "message": "Missing wise automation patterns - automate with human oversight"
+                },
+                "knowledge_silos_prevention": {
+                  "keywords": ["knowledge", "share", "document", "wiki", "guide", "tutorial", "documentation"],
+                  "severity": "info",
+                  "message": "Missing knowledge silos prevention patterns"
+                },
+                "confidence_building": {
+                  "keywords": ["confidence", "trust", "reliable", "secure", "safe", "stable"],
+                  "severity": "info",
+                  "message": "Missing confidence building patterns - build confidence, not fear"
+                },
+                "learning_adaptation": {
+                  "keywords": ["learn", "learning", "adapt", "adaptation", "evolve", "improve"],
+                  "severity": "info",
+                  "message": "Missing learning and adaptation patterns"
+                },
+                "measurement": {
+                  "keywords": ["measure", "metric", "kpi", "indicator", "gauge", "counter"],
+                  "severity": "info",
+                  "message": "Missing measurement patterns - measure what matters"
+                },
+                "learn_from_experts": {
+                  "keywords": ["expert", "best_practice", "pattern", "template", "standard", "guideline"],
+                  "severity": "info",
+                  "message": "Learn from experts - watch how the best developers work"
+                },
+                "right_information_timing": {
+                  "keywords": ["context", "relevant", "timely", "progressive", "on_demand", "just_in_time"],
+                  "severity": "info",
+                  "message": "Show the right information at the right time"
+                },
+                "dependencies_visible": {
+                  "keywords": ["dependency", "depends_on", "requires", "import", "reference", "connection"],
+                  "severity": "info",
+                  "message": "Make dependencies visible - show how pieces connect"
+                },
+                "predictability_consistency": {
+                  "keywords": ["consistent", "predictable", "reliable", "stable", "uniform", "standard"],
+                  "severity": "info",
+                  "message": "Be predictable and consistent - work the same way every time"
+                },
+                "work_preservation": {
+                  "keywords": ["auto_save", "backup", "recovery", "persist", "save", "restore"],
+                  "severity": "info",
+                  "message": "Never lose people's work - save automatically and frequently"
+                },
+                "beauty_pleasantness": {
+                  "keywords": ["beautiful", "pleasant", "attractive", "clean", "smooth", "satisfying"],
+                  "severity": "info",
+                  "message": "Make it beautiful and pleasant - use clean, attractive designs"
+                },
+                "encourage_better_practices": {
+                  "keywords": ["improve", "better", "enhance", "optimize", "suggest", "recommend"],
+                  "severity": "info",
+                  "message": "Encourage better ways of working - suggest improvements"
+                },
+                "skill_level_adaptation": {
+                  "keywords": ["beginner", "expert", "skill_level", "adaptive", "progressive", "scalable"],
+                  "severity": "info",
+                  "message": "Adapt to different skill levels - help beginners and support experts"
+                },
+                "helpfulness_balance": {
+                  "keywords": ["helpful", "assist", "guide", "support", "contextual", "relevant"],
+                  "severity": "info",
+                  "message": "Be helpful, not annoying - offer help when actually needed"
+                },
+                "clear_value_demonstration": {
+                  "keywords": ["value", "benefit", "roi", "savings", "efficiency", "productivity"],
+                  "severity": "info",
+                  "message": "Demonstrate clear value - show how the product saves time and money"
+                },
+                "customer_growth": {
+                  "keywords": ["grow", "scale", "expand", "adapt", "flexible", "versatile"],
+                  "severity": "info",
+                  "message": "Grow with the customer - work for small teams and huge organizations"
+                },
+                "magic_moments": {
+                  "keywords": ["magic", "delight", "surprise", "effortless", "seamless", "wow"],
+                  "severity": "info",
+                  "message": "Create magic moments - occasionally surprise and delight users"
+                },
+                "friction_removal": {
+                  "keywords": ["friction", "smooth", "seamless", "effortless", "streamline", "eliminate"],
+                  "severity": "info",
+                  "message": "Remove friction everywhere - make interactions as smooth as possible"
+                }
+              }
+            },
+    "architecture": {
+      "rules": [19, 21, 23, 24, 28],
+      "patterns": {
+        "mixed_concerns": {
+          "file_patterns": {
+            "ui_with_logic": ["*.ui", "*.view", "*.template"],
+            "logic_in_ui": ["database", "api_call", "business_logic"]
+          },
+          "severity": "error",
+          "message": "Business logic detected in UI layer - separate concerns"
+        },
+        "local_processing": {
+          "keywords": ["cloud", "remote", "external_api"],
+          "severity": "info",
+          "message": "Consider local-first processing for privacy (Rule 23)"
+        },
+        "zero_configuration": {
+          "keywords": ["config.json", "config.yaml", "config.ini", ".env", "settings.py"],
+          "severity": "warning",
+          "message": "Configuration required before use - provide default values"
+        },
+        "offline_capability": {
+          "keywords": ["requests", "urllib", "http", "socket", "network"],
+          "severity": "warning",
+          "message": "Network dependencies without offline fallback detected"
+        }
+      }
+    },
+    "testing_safety": {
+      "rules": [7, 14, 59, 69],
+      "patterns": {
+        "missing_tests": {
+          "file_pattern": "*.py",
+          "test_pattern": "*test*.py",
+          "severity": "warning",
+          "message": "No corresponding test file found"
+        },
+        "error_handling": {
+          "keywords": ["try:", "except:", "finally:"],
+          "severity": "info",
+          "message": "Good error handling detected"
+        },
+        "missing_error_handling": {
+          "ast_pattern": "risky_operations_without_try_catch",
+          "severity": "warning",
+          "message": "Risky operations without error handling detected"
+        },
+        "rollback_mechanism": {
+          "keywords": ["rollback", "undo", "revert"],
+          "severity": "info",
+          "message": "Rollback mechanism detected - good for safe updates"
+        }
+      }
+    },
+    "code_quality": {
+      "rules": [15, 18, 68],
+      "patterns": {
+        "function_length": {
+          "ast_pattern": "long_functions",
+          "threshold": 50,
+          "severity": "warning",
+          "message": "Function exceeds recommended length - consider breaking into smaller functions"
+        },
+        "naming_conventions": {
+          "regex": "[a-z_][a-z0-9_]*",
+          "severity": "info",
+          "message": "Good naming convention detected"
+        },
+        "documentation": {
+          "keywords": ["\"\"\"", "'''", "# TODO", "# FIXME"],
+          "severity": "info",
+          "message": "Documentation detected"
+        },
+        "missing_docstring": {
+          "ast_pattern": "functions_without_docstrings",
+          "severity": "warning",
+          "message": "Function missing docstring - add documentation"
+        }
+      }
+    }
+  },
+  "severity_levels": {
+    "error": {
+      "color": "red",
+      "exit_code": 1,
+      "description": "Critical violation that must be fixed"
+    },
+    "warning": {
+      "color": "yellow", 
+      "exit_code": 0,
+      "description": "Issue that should be addressed"
+    },
+    "info": {
+      "color": "blue",
+      "exit_code": 0,
+      "description": "Informational message or positive finding"
+    }
+  },
+  "performance_targets": {
+    "startup_time": 2.0,
+    "button_response": 0.1,
+    "data_processing": 1.0,
+    "first_interaction": 30.0
+  },
+  "enterprise_critical_rules": [3, 7, 8, 10, 11, 12, 14, 18, 19, 21, 23, 27, 28, 35, 36, 39, 40, 42, 48, 51, 59, 63, 65, 68, 74],
+  "enterprise_important_rules": [1, 2, 4, 5, 13, 15, 16, 17, 20, 22, 24, 29, 30, 32, 33],
+  "enterprise_recommended_rules": [25, 26, 31, 34, 37, 41, 43, 44, 45, 46, 47, 50]
+}

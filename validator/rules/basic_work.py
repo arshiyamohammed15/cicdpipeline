@@ -1,0 +1,362 @@
+#!/usr/bin/env python3
+"""
+Basic Work Rules Validator
+
+Validates code against basic work principles:
+- Rule 4: Use Settings Files, Not Hardcoded Numbers
+- Rule 5: Keep Good Records + Keep Good Logs  
+- Rule 10: Be Honest About AI Decisions
+"""
+
+import ast
+from typing import List
+from ..models import Violation, Severity
+
+
+class BasicWorkValidator:
+    """Validator for basic work rules."""
+    
+    def __init__(self):
+        self.settings_patterns = ['config', 'settings', 'configuration', 'env', 'environment']
+        self.logging_patterns = ['log', 'logging', 'logger', 'audit', 'record', 'track']
+        self.ai_transparency_patterns = ['confidence', 'explanation', 'reasoning', 'uncertainty', 'version']
+    
+    def validate_settings_files(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for proper use of settings files instead of hardcoded values (Rule 4).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of settings file violations
+        """
+        violations = []
+        
+        # Check for hardcoded values that should be in settings
+        hardcoded_patterns = [
+            r'=\s*["\'][^"\']+["\']',  # String literals
+            r'=\s*\d+',  # Numeric literals
+            r'=\s*True|False',  # Boolean literals
+        ]
+        
+        import re
+        lines = content.split('\n')
+        for i, line in enumerate(lines, 1):
+            # Skip comments and docstrings
+            if line.strip().startswith('#') or '"""' in line or "'''" in line:
+                continue
+                
+            # Check for hardcoded values
+            for pattern in hardcoded_patterns:
+                if re.search(pattern, line):
+                    # Check if it's a configuration-related assignment
+                    if any(keyword in line.lower() for keyword in ['host', 'port', 'url', 'path', 'timeout', 'limit', 'max', 'min']):
+                        violations.append(Violation(
+                            rule_number=4,
+                            rule_name="Use Settings Files, Not Hardcoded Numbers",
+                            severity=Severity.WARNING,
+                            message=f"Hardcoded value detected on line {i} - should use settings file",
+                            file_path=file_path,
+                            line_number=i,
+                            column_number=0,
+                            code_snippet=line.strip(),
+                            fix_suggestion="Move hardcoded values to configuration files"
+                        ))
+        
+        # Check for settings file usage
+        has_settings_usage = any(pattern in content.lower() for pattern in self.settings_patterns)
+        
+        if not has_settings_usage:
+            violations.append(Violation(
+                rule_number=4,
+                rule_name="Use Settings Files, Not Hardcoded Numbers",
+                severity=Severity.INFO,
+                message="No settings file usage detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Settings usage",
+                fix_suggestion="Use configuration files instead of hardcoded values"
+            ))
+        
+        # Check for environment variable usage
+        env_var_patterns = ['os.environ', 'getenv', 'environ.get']
+        has_env_vars = any(pattern in content for pattern in env_var_patterns)
+        
+        if not has_env_vars:
+            violations.append(Violation(
+                rule_number=4,
+                rule_name="Use Settings Files, Not Hardcoded Numbers",
+                severity=Severity.INFO,
+                message="No environment variable usage detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Environment variables",
+                fix_suggestion="Use environment variables for configuration"
+            ))
+        
+        return violations
+    
+    def validate_logging_records(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for proper logging and record keeping (Rule 5).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of logging violations
+        """
+        violations = []
+        
+        # Check for logging usage
+        has_logging = any(pattern in content.lower() for pattern in self.logging_patterns)
+        
+        if not has_logging:
+            violations.append(Violation(
+                rule_number=5,
+                rule_name="Keep Good Records + Keep Good Logs",
+                severity=Severity.WARNING,
+                message="No logging patterns detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Logging",
+                fix_suggestion="Add proper logging for monitoring and debugging"
+            ))
+        
+        # Check for structured logging
+        structured_logging_patterns = ['json', 'structured', 'format', 'level']
+        has_structured_logging = any(pattern in content.lower() for pattern in structured_logging_patterns)
+        
+        if not has_structured_logging:
+            violations.append(Violation(
+                rule_number=5,
+                rule_name="Keep Good Records + Keep Good Logs",
+                severity=Severity.INFO,
+                message="No structured logging detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Structured logging",
+                fix_suggestion="Use structured logging for better record keeping"
+            ))
+        
+        # Check for audit trail patterns
+        audit_patterns = ['audit', 'track', 'trace', 'history', 'log']
+        has_audit_trail = any(pattern in content.lower() for pattern in audit_patterns)
+        
+        if not has_audit_trail:
+            violations.append(Violation(
+                rule_number=5,
+                rule_name="Keep Good Records + Keep Good Logs",
+                severity=Severity.INFO,
+                message="No audit trail patterns detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Audit trail",
+                fix_suggestion="Add audit trails for important operations"
+            ))
+        
+        # Check for proper log levels
+        log_levels = ['debug', 'info', 'warning', 'error', 'critical']
+        has_log_levels = any(level in content.lower() for level in log_levels)
+        
+        if not has_log_levels:
+            violations.append(Violation(
+                rule_number=5,
+                rule_name="Keep Good Records + Keep Good Logs",
+                severity=Severity.INFO,
+                message="No log level usage detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Log levels",
+                fix_suggestion="Use appropriate log levels for different types of messages"
+            ))
+        
+        return violations
+    
+    def validate_ai_transparency(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for AI decision transparency (Rule 10).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of AI transparency violations
+        """
+        violations = []
+        
+        # Check for AI-related code
+        ai_patterns = ['ai', 'artificial', 'intelligence', 'model', 'prediction', 'inference', 'neural', 'machine_learning']
+        has_ai_code = any(pattern in content.lower() for pattern in ai_patterns)
+        
+        if has_ai_code:
+            # Check for confidence reporting
+            has_confidence = any(pattern in content.lower() for pattern in ['confidence', 'probability', 'certainty'])
+            
+            if not has_confidence:
+                violations.append(Violation(
+                    rule_number=10,
+                    rule_name="Be Honest About AI Decisions",
+                    severity=Severity.WARNING,
+                    message="AI code detected without confidence reporting",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="AI confidence",
+                    fix_suggestion="Add confidence levels to AI decisions"
+                ))
+            
+            # Check for explanation patterns
+            has_explanations = any(pattern in content.lower() for pattern in ['explain', 'reasoning', 'why', 'because'])
+            
+            if not has_explanations:
+                violations.append(Violation(
+                    rule_number=10,
+                    rule_name="Be Honest About AI Decisions",
+                    severity=Severity.WARNING,
+                    message="AI code detected without explanation patterns",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="AI explanations",
+                    fix_suggestion="Add explanations for AI decisions"
+                ))
+            
+            # Check for version tracking
+            has_version_tracking = any(pattern in content.lower() for pattern in ['version', 'model_version', 'ai_version'])
+            
+            if not has_version_tracking:
+                violations.append(Violation(
+                    rule_number=10,
+                    rule_name="Be Honest About AI Decisions",
+                    severity=Severity.INFO,
+                    message="AI code detected without version tracking",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="AI version tracking",
+                    fix_suggestion="Track AI model versions for transparency"
+                ))
+            
+            # Check for uncertainty handling
+            has_uncertainty = any(pattern in content.lower() for pattern in ['uncertainty', 'unknown', 'ambiguous', 'unclear'])
+            
+            if not has_uncertainty:
+                violations.append(Violation(
+                    rule_number=10,
+                    rule_name="Be Honest About AI Decisions",
+                    severity=Severity.INFO,
+                    message="AI code detected without uncertainty handling",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="AI uncertainty",
+                    fix_suggestion="Handle and report AI uncertainty appropriately"
+                ))
+        
+        return violations
+
+    def validate_learning_from_mistakes(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for learning from mistakes patterns (Rule 13).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of violations for Rule 13
+        """
+        violations = []
+        
+        # Check for learning patterns
+        learning_patterns = ['learn', 'learning', 'improve', 'feedback', 'correction', 'mistake', 'error_handling']
+        has_learning = any(pattern in content.lower() for pattern in learning_patterns)
+        
+        if not has_learning:
+            violations.append(Violation(
+                rule_number=13,
+                rule_name="Learn from Mistakes",
+                severity=Severity.INFO,
+                message="No learning from mistakes patterns detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Learning patterns",
+                fix_suggestion="Add mechanisms to learn from mistakes and improve over time"
+            ))
+        
+        return violations
+
+    def validate_fairness_accessibility(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for fairness and accessibility patterns (Rule 20).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of violations for Rule 20
+        """
+        violations = []
+        
+        # Check for accessibility patterns
+        accessibility_patterns = ['accessibility', 'a11y', 'aria', 'alt_text', 'screen_reader', 'keyboard_nav']
+        has_accessibility = any(pattern in content.lower() for pattern in accessibility_patterns)
+        
+        # Check for fairness patterns
+        fairness_patterns = ['fair', 'unbiased', 'inclusive', 'diverse', 'equal', 'non_discriminatory']
+        has_fairness = any(pattern in content.lower() for pattern in fairness_patterns)
+        
+        if not has_accessibility and not has_fairness:
+            violations.append(Violation(
+                rule_number=20,
+                rule_name="Be Fair to Everyone",
+                severity=Severity.INFO,
+                message="No fairness or accessibility patterns detected",
+                file_path=file_path,
+                line_number=1,
+                column_number=0,
+                code_snippet="Fairness and accessibility",
+                fix_suggestion="Add accessibility features and ensure fair treatment for all users"
+            ))
+        
+        return violations
+    
+    def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Run all basic work validations.
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of all basic work violations
+        """
+        violations = []
+        
+        violations.extend(self.validate_settings_files(tree, content, file_path))
+        violations.extend(self.validate_logging_records(tree, content, file_path))
+        violations.extend(self.validate_ai_transparency(tree, content, file_path))
+        violations.extend(self.validate_learning_from_mistakes(tree, content, file_path))
+        violations.extend(self.validate_fairness_accessibility(tree, content, file_path))
+        
+        return violations
