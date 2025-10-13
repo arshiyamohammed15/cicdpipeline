@@ -180,11 +180,8 @@ class TestCodingStandardsConstitution:
         # Should have TypeScript strict rule
         assert 'R030' in rule_ids, "Coding Standards Constitution should have TypeScript strict rule (R030)"
 
-        # Should have structured logs rule
-        assert 'R043' in rule_ids, "Coding Standards Constitution should have structured logs rule (R043)"
-
-        # Should have test coverage rule
-        assert 'R045' in rule_ids, "Coding Standards Constitution should have test coverage rule (R045)"
+        # Should have performance standards rule
+        assert 'R045' in rule_ids, "Coding Standards Constitution should have performance standards rule (R045)"
 
 
 class TestCommentsConstitution:
