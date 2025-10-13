@@ -108,6 +108,14 @@ class ConstitutionValidator:
         violations.extend(self._check_platform_rules(tree, file_path, content))
         violations.extend(self._check_teamwork_rules(tree, file_path, content))
         
+        # Check new constitution categories
+        violations.extend(self._check_code_review_rules(tree, file_path, content))
+        violations.extend(self._check_api_contracts_rules(tree, file_path, content))
+        violations.extend(self._check_coding_standards_rules(tree, file_path, content))
+        violations.extend(self._check_comments_rules(tree, file_path, content))
+        violations.extend(self._check_folder_standards_rules(tree, file_path, content))
+        violations.extend(self._check_logging_rules(tree, file_path, content))
+        
         # Calculate metrics
         violations_by_severity = self._count_violations_by_severity(violations)
         total_violations = len(violations)
@@ -332,6 +340,84 @@ class ConstitutionValidator:
         
         # Run all teamwork validations
         violations.extend(teamwork_validator.validate_all(tree, content, file_path))
+        
+        return violations
+    
+    def _check_code_review_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check code review rules."""
+        violations = []
+        
+        # Import the code review validator
+        from .rules.code_review import CodeReviewValidator
+        code_review_validator = CodeReviewValidator()
+        
+        # Run all code review validations
+        violations.extend(code_review_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_api_contracts_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check API contracts rules."""
+        violations = []
+        
+        # Import the API contracts validator
+        from .rules.api_contracts import APIContractsValidator
+        api_contracts_validator = APIContractsValidator()
+        
+        # Run all API contracts validations
+        violations.extend(api_contracts_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_coding_standards_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check coding standards rules."""
+        violations = []
+        
+        # Import the coding standards validator
+        from .rules.coding_standards import CodingStandardsValidator
+        coding_standards_validator = CodingStandardsValidator()
+        
+        # Run all coding standards validations
+        violations.extend(coding_standards_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_comments_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check comments rules."""
+        violations = []
+        
+        # Import the comments validator
+        from .rules.comments import CommentsValidator
+        comments_validator = CommentsValidator()
+        
+        # Run all comments validations
+        violations.extend(comments_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_folder_standards_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check folder standards rules."""
+        violations = []
+        
+        # Import the folder standards validator
+        from .rules.folder_standards import FolderStandardsValidator
+        folder_standards_validator = FolderStandardsValidator()
+        
+        # Run all folder standards validations
+        violations.extend(folder_standards_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_logging_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check logging rules."""
+        violations = []
+        
+        # Import the logging validator
+        from .rules.logging import LoggingValidator
+        logging_validator = LoggingValidator()
+        
+        # Run all logging validations
+        violations.extend(logging_validator.validate(file_path, content))
         
         return violations
     

@@ -1,6 +1,6 @@
 {
   "constitution_version": "2.0",
-  "total_rules": 71,
+  "total_rules": 89,
   "categories": {
     "basic_work": {
       "rules": [4, 5, 10, 13, 20],
@@ -56,6 +56,36 @@
       "rules": [52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 70, 71, 72, 74, 75, 76, 77],
       "priority": "recommended",
       "description": "Collaboration, UX, and team dynamics"
+    },
+    "code_review": {
+      "rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 76, 77, 81],
+      "priority": "critical",
+      "description": "Code review standards and PR requirements"
+    },
+    "api_contracts": {
+      "rules": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 80, 83, 84, 85, 86],
+      "priority": "critical",
+      "description": "API design, contracts, and governance"
+    },
+    "coding_standards": {
+      "rules": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 87, 88],
+      "priority": "critical",
+      "description": "Technical coding standards and best practices"
+    },
+    "comments": {
+      "rules": [8, 46, 47, 48, 49, 50, 51, 52, 53, 89],
+      "priority": "important",
+      "description": "Documentation and comment standards"
+    },
+    "folder_standards": {
+      "rules": [54, 55, 56, 57, 58, 59, 60, 61, 62, 82],
+      "priority": "critical",
+      "description": "Project structure and folder organization"
+    },
+    "logging": {
+      "rules": [43, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75],
+      "priority": "critical",
+      "description": "Logging standards and troubleshooting"
     }
   },
   "validation_patterns": {
@@ -478,6 +508,158 @@
           "message": "Function missing docstring - add documentation"
         }
       }
+    },
+    "code_review": {
+      "rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 76, 77, 81],
+      "patterns": {
+        "pr_size": {
+          "threshold": 300,
+          "severity": "warning",
+          "message": "PR size exceeds 300 LOC - include rollout plan"
+        },
+        "codeowners_approval": {
+          "keywords": ["auth", "policy", "contracts", "receipts", "migrations"],
+          "severity": "error",
+          "message": "Sensitive areas require CODEOWNERS approval"
+        },
+        "review_context": {
+          "keywords": ["what", "why", "problem", "constraint", "trade-off"],
+          "severity": "error",
+          "message": "PR must state What changed and Why"
+        },
+        "rollback_plan": {
+          "keywords": ["rollback", "disable", "revert", "undo"],
+          "severity": "warning",
+          "message": "Include rollback/disable plan for non-trivial changes"
+        }
+      }
+    },
+    "api_contracts": {
+      "rules": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 80, 83, 84, 85, 86],
+      "patterns": {
+        "openapi_compliance": {
+          "file_patterns": ["openapi.yaml", "swagger.yaml", "api.yaml"],
+          "severity": "error",
+          "message": "OpenAPI 3.1 compliance required"
+        },
+        "api_versioning": {
+          "regex": "/v\\d+/",
+          "severity": "error",
+          "message": "URI versioning required: /v1, /v2..."
+        },
+        "idempotency": {
+          "keywords": ["Idempotency-Key", "idempotency", "idempotent"],
+          "severity": "error",
+          "message": "All mutating routes must accept Idempotency-Key"
+        },
+        "error_envelope": {
+          "keywords": ["error", "envelope", "canonical", "code"],
+          "severity": "error",
+          "message": "Stable error envelope with canonical codes required"
+        }
+      }
+    },
+    "coding_standards": {
+      "rules": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 87, 88],
+      "patterns": {
+        "python_standards": {
+          "keywords": ["ruff", "black", "mypy", "python"],
+          "severity": "error",
+          "message": "ruff + black + mypy --strict required"
+        },
+        "typescript_standards": {
+          "keywords": ["eslint", "prettier", "typescript", "strict"],
+          "severity": "error",
+          "message": "eslint + prettier + strict TypeScript required"
+        },
+        "dependency_policy": {
+          "keywords": ["dependency", "license", "CVE", "security"],
+          "severity": "error",
+          "message": "New dependencies must pass license allowlist and CVE threshold"
+        },
+        "async_handlers": {
+          "keywords": ["async", "await", "httpx", "blocking"],
+          "severity": "warning",
+          "message": "Async only for handlers; avoid blocking calls"
+        }
+      }
+    },
+    "comments": {
+      "rules": [8, 46, 47, 48, 49, 50, 51, 52, 53, 89],
+      "patterns": {
+        "simple_english": {
+          "grade_level": 8.0,
+          "max_sentence_length": 15,
+          "banned_words": ["utilize", "leverage", "aforementioned", "herein", "thusly", "performant", "instantiate"],
+          "severity": "warning",
+          "message": "Use simple English comments (grade 8 level)"
+        },
+        "function_docs": {
+          "keywords": ["def ", "function", "docstring", "\"\"\"", "'''"],
+          "severity": "warning",
+          "message": "Public functions must have docstrings"
+        },
+        "todo_format": {
+          "regex": "TODO\\([^)]+\\):.*",
+          "severity": "warning",
+          "message": "TODO(owner): description [ticket] [date] format required"
+        }
+      }
+    },
+    "folder_standards": {
+      "rules": [54, 55, 56, 57, 58, 59, 60, 61, 62, 82],
+      "patterns": {
+        "path_resolution": {
+          "keywords": ["ZEROUI_ROOT", "config", "paths.json"],
+          "severity": "error",
+          "message": "Resolve all paths via ZEROUI_ROOT + config/paths.json"
+        },
+        "allowlisted_folders": {
+          "allowed_paths": ["servers/", "storage/"],
+          "severity": "error",
+          "message": "Only write under allowlisted subfolders"
+        },
+        "package_names": {
+          "allowed_names": ["ZeroUIClientServer", "ZeroUIProductServer", "ZeroUILocalServer", "ZeroUISharedServer", "ZeroUIClientStorage", "ZeroUIProductStorage", "ZeroUILocalStorage", "ZeroUISharedStorage"],
+          "severity": "error",
+          "message": "Never create new top-level names besides the eight allowed"
+        },
+        "storage_rule": {
+          "threshold": 256000,
+          "severity": "error",
+          "message": "Database vs files choice follows Storage Constitution (≤256KB in DB)"
+        }
+      }
+    },
+    "logging": {
+      "rules": [43, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75],
+      "patterns": {
+        "structured_logs": {
+          "keywords": ["json", "structured", "log", "schema"],
+          "severity": "error",
+          "message": "Logs must be structured JSON with required fields"
+        },
+        "log_levels": {
+          "keywords": ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"],
+          "severity": "warning",
+          "message": "Use appropriate log levels"
+        },
+        "jsonl_format": {
+          "regex": "^\\{.*\\}$",
+          "severity": "error",
+          "message": "ONE JSON object per line (JSONL) required"
+        },
+        "trace_context": {
+          "keywords": ["traceId", "spanId", "parentSpanId", "W3C"],
+          "severity": "error",
+          "message": "Include traceId, spanId, parentSpanId (W3C trace context)"
+        },
+        "pii_protection": {
+          "regex": "(?i)(password|secret|key|token|pii)\\s*[:=]\\s*[\"'][^\"']+[\"']",
+          "severity": "error",
+          "message": "Never log secrets/PII; redact tokens, passwords, keys"
+        }
+      }
     }
   },
   "severity_levels": {
@@ -503,7 +685,7 @@
     "data_processing": 1.0,
     "first_interaction": 30.0
   },
-  "enterprise_critical_rules": [3, 7, 8, 10, 11, 12, 14, 18, 19, 21, 23, 27, 28, 35, 36, 39, 40, 42, 48, 51, 59, 63, 65, 68, 74],
-  "enterprise_important_rules": [1, 2, 4, 5, 13, 15, 16, 17, 20, 22, 24, 29, 30, 32, 33],
-  "enterprise_recommended_rules": [25, 26, 31, 34, 37, 41, 43, 44, 45, 46, 47, 50]
+  "enterprise_critical_rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 81, 82, 83, 84, 85, 86, 87, 88],
+  "enterprise_important_rules": [46, 47, 48, 49, 50, 51, 52, 53, 78, 79, 89],
+  "enterprise_recommended_rules": []
 }

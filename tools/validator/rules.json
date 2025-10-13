@@ -1,0 +1,1148 @@
+{
+  "version": "2.0",
+  "total_rules": 89,
+  "constitutions": [
+    "Code Review",
+    "API Contracts", 
+    "Coding Standards",
+    "Comments",
+    "Folder Standards",
+    "Logging"
+  ],
+  "rules": [
+    {
+      "id": "R001",
+      "name": "LOC Limit",
+      "description": "AI code-gen task limit ≤ 50 LOC unless LOC_OVERRIDE specified",
+      "category": "scope",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:LOC_LIMIT",
+      "patterns": {
+        "regex": ".*",
+        "threshold": 50
+      }
+    },
+    {
+      "id": "R002", 
+      "name": "PR Size Guidance",
+      "description": "PR size ≤ 300 LOC changed (tests excluded), include Rollout Plan if larger",
+      "category": "scope",
+      "severity": "warning",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:PR_SIZE_EXCEEDED",
+      "patterns": {
+        "threshold": 300
+      }
+    },
+    {
+      "id": "R003",
+      "name": "CODEOWNERS Approval",
+      "description": "Sensitive areas require CODEOWNERS approval and may need two reviewers",
+      "category": "governance",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:CODEOWNERS_MISSING",
+      "patterns": {
+        "keywords": ["auth", "policy", "contracts", "receipts", "migrations"]
+      }
+    },
+    {
+      "id": "R004",
+      "name": "Review SLA",
+      "description": "Reviews should start within 2 business days",
+      "category": "process",
+      "severity": "warning",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:REVIEW_SLA_VIOLATION",
+      "patterns": {
+        "threshold": 2
+      }
+    },
+    {
+      "id": "R005",
+      "name": "Why First",
+      "description": "PR must state What changed and Why we did it (problem, constraints, trade-offs)",
+      "category": "process",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:REVIEW_CONTEXT_MISSING",
+      "patterns": {
+        "keywords": ["what", "why", "problem", "constraint", "trade-off"]
+      }
+    },
+    {
+      "id": "R006",
+      "name": "Small Coherent Diffs",
+      "description": "One intent per PR; feature-flags for risky changes",
+      "category": "process",
+      "severity": "warning",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:DIFF_TOO_LARGE",
+      "patterns": {
+        "keywords": ["feature-flag", "rollback", "reversible"]
+      }
+    },
+    {
+      "id": "R007",
+      "name": "Tests Prove Behavior",
+      "description": "No code change without tests that fail before and pass after the change",
+      "category": "quality",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:TESTS_MISSING",
+      "patterns": {
+        "keywords": ["test", "spec", "check", "pytest", "unittest"]
+      }
+    },
+    {
+      "id": "R008",
+      "name": "Simple English Comments",
+      "description": "Follow Comments Constitution at file/imports/function/variable/logic levels",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_POLICY_VIOLATION",
+      "patterns": {
+        "grade_level": 8.0,
+        "max_sentence_length": 15,
+        "banned_words": ["utilize", "leverage", "aforementioned", "herein", "thusly", "performant", "instantiate"]
+      }
+    },
+    {
+      "id": "R009",
+      "name": "Security & Privacy First",
+      "description": "No secrets/PII in code, comments, logs, tests, or fixtures",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "security_validator",
+      "error_code": "ERROR:SECURITY_GAP",
+      "patterns": {
+        "regex": "(?i)(password|api_key|secret|token|private_key)\\s*=\\s*[\"'][^\"']+[\"']"
+      }
+    },
+    {
+      "id": "R010",
+      "name": "Reversible Changes",
+      "description": "Include a rollback/disable plan for non-trivial changes",
+      "category": "process",
+      "severity": "warning",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:ROLLBACK_PLAN_MISSING",
+      "patterns": {
+        "keywords": ["rollback", "disable", "revert", "undo"]
+      }
+    },
+    {
+      "id": "R011",
+      "name": "Change Management",
+      "description": "Include change management and impact assessment",
+      "category": "process",
+      "severity": "warning",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:CHANGE_MANAGEMENT_MISSING",
+      "patterns": {
+        "keywords": ["impact", "migration", "deployment", "rollout"]
+      }
+    },
+    {
+      "id": "R012",
+      "name": "Compliance Requirements",
+      "description": "Ensure compliance with all applicable constitutions",
+      "category": "governance",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:COMPLIANCE_VIOLATION",
+      "patterns": {
+        "keywords": ["compliance", "constitution", "policy", "standard"]
+      }
+    },
+    {
+      "id": "R013",
+      "name": "OpenAPI 3.1 Compliance",
+      "description": "OpenAPI 3.1 as source of truth with URI versioning",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:OPENAPI_LINT_FAIL",
+      "patterns": {
+        "file_patterns": ["openapi.yaml", "swagger.yaml", "api.yaml"]
+      }
+    },
+    {
+      "id": "R014",
+      "name": "API Versioning",
+      "description": "URI versioning /v1, /v2... Breaking changes require new major version",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:OPENAPI_DIFF_BREAK",
+      "patterns": {
+        "regex": "/v\\d+/"
+      }
+    },
+    {
+      "id": "R015",
+      "name": "Idempotency",
+      "description": "All mutating routes accept Idempotency-Key; 24h retention window",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:IDEMPOTENCY_MISSING",
+      "patterns": {
+        "keywords": ["Idempotency-Key", "idempotency", "idempotent"]
+      }
+    },
+    {
+      "id": "R016",
+      "name": "Error Handling",
+      "description": "Stable error envelope with canonical codes; no 200-with-error patterns",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:ERROR_ENVELOPE_MISSING",
+      "patterns": {
+        "keywords": ["error", "envelope", "canonical", "code"]
+      }
+    },
+    {
+      "id": "R017",
+      "name": "Request Validation",
+      "description": "Validate all request inputs with proper error responses",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:REQUEST_VALIDATION_MISSING",
+      "patterns": {
+        "keywords": ["validation", "validate", "input", "request"]
+      }
+    },
+    {
+      "id": "R018",
+      "name": "Response Validation",
+      "description": "Validate all response outputs with proper schemas",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:RESPONSE_VALIDATION_MISSING",
+      "patterns": {
+        "keywords": ["response", "output", "schema", "validation"]
+      }
+    },
+    {
+      "id": "R019",
+      "name": "Authentication",
+      "description": "JWT with documented scopes per route; JWKS endpoint documented",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:AUTH_SCHEME_MISSING",
+      "patterns": {
+        "keywords": ["JWT", "auth", "authentication", "JWKS", "scopes"]
+      }
+    },
+    {
+      "id": "R020",
+      "name": "Authorization",
+      "description": "Document authorization requirements and access controls",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:AUTHZ_MISSING",
+      "patterns": {
+        "keywords": ["authorization", "authz", "access", "control", "permission"]
+      }
+    },
+    {
+      "id": "R021",
+      "name": "Rate Limiting",
+      "description": "Declare rate limit headers; exceeding returns 429 deterministically",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:RATE_LIMIT_MISSING",
+      "patterns": {
+        "keywords": ["rate", "limit", "429", "throttle"]
+      }
+    },
+    {
+      "id": "R022",
+      "name": "Caching",
+      "description": "ETag/If-Match for racy PUT/PATCH; Cache-Control documented",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:CACHING_MISSING",
+      "patterns": {
+        "keywords": ["ETag", "If-Match", "Cache-Control", "cache"]
+      }
+    },
+    {
+      "id": "R023",
+      "name": "Documentation",
+      "description": "Examples for all responses; migration notes for breaking changes",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:EXAMPLES_INVALID",
+      "patterns": {
+        "keywords": ["example", "documentation", "migration", "breaking"]
+      }
+    },
+    {
+      "id": "R024",
+      "name": "Testing",
+      "description": "Provider and consumer contract tests; mock server from spec",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:CONTRACT_TEST_FAIL",
+      "patterns": {
+        "keywords": ["test", "contract", "provider", "consumer", "mock"]
+      }
+    },
+    {
+      "id": "R025",
+      "name": "Monitoring",
+      "description": "Metrics/traces/alerts updated; SLOs published per GA route",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:MONITORING_MISSING",
+      "patterns": {
+        "keywords": ["metrics", "traces", "alerts", "SLO", "monitoring"]
+      }
+    },
+    {
+      "id": "R026",
+      "name": "Deprecation",
+      "description": "Mark deprecated: true, emit Sunset header with date, ≥90 days notice",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:DEPRECATION_MISSING",
+      "patterns": {
+        "keywords": ["deprecated", "sunset", "header", "notice"]
+      }
+    },
+    {
+      "id": "R027",
+      "name": "Python Standards",
+      "description": "ruff + black (line-length 100) + mypy --strict; Python 3.11+",
+      "category": "code_quality",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:STYLE_VIOLATION",
+      "patterns": {
+        "keywords": ["ruff", "black", "mypy", "python"]
+      }
+    },
+    {
+      "id": "R028",
+      "name": "TypeScript Standards",
+      "description": "eslint + prettier; tsconfig strict: true, exactOptionalPropertyTypes",
+      "category": "code_quality",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:TYPECHECK_FAIL",
+      "patterns": {
+        "keywords": ["eslint", "prettier", "typescript", "strict"]
+      }
+    },
+    {
+      "id": "R029",
+      "name": "Code Formatting",
+      "description": "Consistent formatting with automated tools; no manual formatting",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:FORMAT_VIOLATION",
+      "patterns": {
+        "keywords": ["format", "formatting", "style", "consistent"]
+      }
+    },
+    {
+      "id": "R030",
+      "name": "Naming Conventions",
+      "description": "Follow language-specific naming conventions; no 'any' in TypeScript",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:NAMING_VIOLATION",
+      "patterns": {
+        "keywords": ["naming", "convention", "any", "type"]
+      }
+    },
+    {
+      "id": "R031",
+      "name": "Function Length",
+      "description": "Functions should be focused and reasonably sized",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:FUNCTION_TOO_LONG",
+      "patterns": {
+        "threshold": 50
+      }
+    },
+    {
+      "id": "R032",
+      "name": "Complexity",
+      "description": "Avoid high cyclomatic complexity; use early returns",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:COMPLEXITY_HIGH",
+      "patterns": {
+        "threshold": 10
+      }
+    },
+    {
+      "id": "R033",
+      "name": "Dependencies",
+      "description": "Review new dependencies for license, size, security; block known CVEs",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:DEPENDENCY_POLICY_FAIL",
+      "patterns": {
+        "keywords": ["dependency", "license", "CVE", "security"]
+      }
+    },
+    {
+      "id": "R034",
+      "name": "Imports",
+      "description": "Organize imports: stdlib, third-party, local; avoid wildcard imports",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:IMPORT_VIOLATION",
+      "patterns": {
+        "regex": "import\\s+\\*"
+      }
+    },
+    {
+      "id": "R035",
+      "name": "Type Hints",
+      "description": "Use type hints in Python; avoid 'any' in TypeScript",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:TYPE_HINT_MISSING",
+      "patterns": {
+        "keywords": ["type", "hint", "annotation", "any"]
+      }
+    },
+    {
+      "id": "R036",
+      "name": "Error Handling",
+      "description": "Proper error handling with try-catch blocks and meaningful messages",
+      "category": "code_quality",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:ERROR_HANDLING_MISSING",
+      "patterns": {
+        "keywords": ["try", "catch", "except", "error", "exception"]
+      }
+    },
+    {
+      "id": "R037",
+      "name": "Resource Management",
+      "description": "Proper resource cleanup with context managers and finally blocks",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:RESOURCE_LEAK",
+      "patterns": {
+        "keywords": ["with", "finally", "close", "cleanup", "resource"]
+      }
+    },
+    {
+      "id": "R038",
+      "name": "Security Practices",
+      "description": "No secrets in code; use environment variables and secure storage",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:SECRETS_LEAK",
+      "patterns": {
+        "regex": "(?i)(password|secret|key|token)\\s*=\\s*[\"'][^\"']+[\"']"
+      }
+    },
+    {
+      "id": "R039",
+      "name": "Authentication Security",
+      "description": "Secure authentication implementation with proper validation",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:AUTH_SECURITY_VIOLATION",
+      "patterns": {
+        "keywords": ["auth", "authentication", "login", "password", "token"]
+      }
+    },
+    {
+      "id": "R040",
+      "name": "Data Protection",
+      "description": "Protect sensitive data with encryption and access controls",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:DATA_PROTECTION_MISSING",
+      "patterns": {
+        "keywords": ["encrypt", "decrypt", "hash", "salt", "protection"]
+      }
+    },
+    {
+      "id": "R041",
+      "name": "Input Validation",
+      "description": "Validate and sanitize all user inputs",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:INPUT_VALIDATION_MISSING",
+      "patterns": {
+        "keywords": ["validate", "sanitize", "input", "user", "data"]
+      }
+    },
+    {
+      "id": "R042",
+      "name": "Output Sanitization",
+      "description": "Sanitize outputs to prevent injection attacks",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "security_validator",
+      "error_code": "ERROR:OUTPUT_SANITIZATION_MISSING",
+      "patterns": {
+        "keywords": ["sanitize", "escape", "output", "injection", "xss"]
+      }
+    },
+    {
+      "id": "R043",
+      "name": "Structured Logging",
+      "description": "Logs are structured JSON with required fields and schema version",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:UNSTRUCTURED_LOG",
+      "patterns": {
+        "keywords": ["json", "structured", "log", "schema"]
+      }
+    },
+    {
+      "id": "R044",
+      "name": "Log Levels",
+      "description": "Use appropriate log levels: TRACE|DEBUG|INFO|WARN|ERROR|FATAL",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_LEVEL_VIOLATION",
+      "patterns": {
+        "keywords": ["TRACE", "DEBUG", "INFO", "WARN", "ERROR", "FATAL"]
+      }
+    },
+    {
+      "id": "R045",
+      "name": "Performance Standards",
+      "description": "Publish per-route SLOs; add timeouts, retries, backpressure",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:PERF_REGRESSION",
+      "patterns": {
+        "keywords": ["SLO", "timeout", "retry", "backpressure", "performance"]
+      }
+    },
+    {
+      "id": "R046",
+      "name": "Function Documentation",
+      "description": "Public functions must have docstrings with WHAT + WHY + Steps",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["def ", "function", "docstring", "\"\"\"", "'''"]
+      }
+    },
+    {
+      "id": "R047",
+      "name": "Class Documentation",
+      "description": "Public classes must have docstrings explaining purpose and usage",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["class ", "docstring", "\"\"\"", "'''"]
+      }
+    },
+    {
+      "id": "R048",
+      "name": "Module Documentation",
+      "description": "Modules must have docstrings explaining purpose and exports",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["module", "package", "docstring", "\"\"\"", "'''"]
+      }
+    },
+    {
+      "id": "R049",
+      "name": "API Documentation",
+      "description": "API endpoints must have comprehensive documentation",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["@app.route", "@router", "endpoint", "api"]
+      }
+    },
+    {
+      "id": "R050",
+      "name": "Error Documentation",
+      "description": "Error handling must be documented with possible exceptions",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["raise", "except", "error", "exception"]
+      }
+    },
+    {
+      "id": "R051",
+      "name": "Configuration Documentation",
+      "description": "Configuration options must be documented with defaults and ranges",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["config", "setting", "parameter", "option"]
+      }
+    },
+    {
+      "id": "R052",
+      "name": "Security Documentation",
+      "description": "Security-related code must be documented with threat model",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "keywords": ["security", "auth", "encrypt", "hash", "token"]
+      }
+    },
+    {
+      "id": "R053",
+      "name": "README Requirements",
+      "description": "Projects must have comprehensive README with setup and usage",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:COMMENT_MISSING",
+      "patterns": {
+        "file_patterns": ["README.md", "README.rst", "README.txt"]
+      }
+    },
+    {
+      "id": "R054",
+      "name": "File Naming",
+      "description": "Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:PATH_ROOT_MISSING",
+      "patterns": {
+        "keywords": ["ZEROUI_ROOT", "config", "paths.json"]
+      }
+    },
+    {
+      "id": "R055",
+      "name": "Directory Structure",
+      "description": "Only write under allowlisted subfolders: servers/*/ and storage/*/",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:OUTSIDE_ALLOWLIST",
+      "patterns": {
+        "allowed_paths": ["servers/", "storage/"]
+      }
+    },
+    {
+      "id": "R056",
+      "name": "Package Structure",
+      "description": "Never create new top-level names besides the eight allowed server/storage names",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:NAME_VIOLATION",
+      "patterns": {
+        "allowed_names": ["ZeroUIClientServer", "ZeroUIProductServer", "ZeroUILocalServer", "ZeroUISharedServer", "ZeroUIClientStorage", "ZeroUIProductStorage", "ZeroUILocalStorage", "ZeroUISharedStorage"]
+      }
+    },
+    {
+      "id": "R057",
+      "name": "Import Organization",
+      "description": "Persistence MUST go via <server>/data/ junction to paired storage",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:JUNCTION_MISSING",
+      "patterns": {
+        "keywords": ["junction", "data/", "storage"]
+      }
+    },
+    {
+      "id": "R058",
+      "name": "Module Boundaries",
+      "description": "Respect module boundaries and avoid circular dependencies",
+      "category": "structure",
+      "severity": "warning",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:MODULE_BOUNDARY_VIOLATION",
+      "patterns": {
+        "keywords": ["import", "from", "circular", "dependency"]
+      }
+    },
+    {
+      "id": "R059",
+      "name": "Dependency Management",
+      "description": "Use pip-tools lock with hashes; no unpinned dependencies",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:DEPENDENCY_POLICY_FAIL",
+      "patterns": {
+        "file_patterns": ["requirements.txt", "requirements.in", "Pipfile.lock"]
+      }
+    },
+    {
+      "id": "R060",
+      "name": "Configuration Management",
+      "description": "Configuration files must be in designated config directories",
+      "category": "structure",
+      "severity": "warning",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:CONFIG_PATH_VIOLATION",
+      "patterns": {
+        "keywords": ["config", "configuration", "setting"]
+      }
+    },
+    {
+      "id": "R061",
+      "name": "Test Organization",
+      "description": "Tests must be organized in designated test directories",
+      "category": "structure",
+      "severity": "warning",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:TEST_ORGANIZATION_VIOLATION",
+      "patterns": {
+        "keywords": ["test", "spec", "check", "pytest"]
+      }
+    },
+    {
+      "id": "R062",
+      "name": "Documentation Organization",
+      "description": "Documentation must be organized in designated docs directories",
+      "category": "structure",
+      "severity": "warning",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:DOCS_ORGANIZATION_VIOLATION",
+      "patterns": {
+        "keywords": ["docs", "documentation", "README", "guide"]
+      }
+    },
+    {
+      "id": "R063",
+      "name": "Log Format",
+      "description": "ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:UNSTRUCTURED_LOG",
+      "patterns": {
+        "regex": "^\\{.*\\}$"
+      }
+    },
+    {
+      "id": "R064",
+      "name": "Log Context",
+      "description": "Include monotonic_hw_time_ms for ordering; UTF-8 encoding only",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_CONTEXT_MISSING",
+      "patterns": {
+        "keywords": ["monotonic_hw_time_ms", "timestamp", "ISO-8601"]
+      }
+    },
+    {
+      "id": "R065",
+      "name": "Log Correlation",
+      "description": "Include traceId, spanId, parentSpanId (W3C trace context)",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:MISSING_TRACE_ID",
+      "patterns": {
+        "keywords": ["traceId", "spanId", "parentSpanId", "W3C"]
+      }
+    },
+    {
+      "id": "R066",
+      "name": "Log Retention",
+      "description": "App logs ≥ 14 days locally; receipts ≥ 90 days",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_RETENTION_VIOLATION",
+      "patterns": {
+        "keywords": ["retention", "days", "local", "receipt"]
+      }
+    },
+    {
+      "id": "R067",
+      "name": "Log Rotation",
+      "description": "Rotate at 100MB; keep last 10 files locally",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_ROTATION_VIOLATION",
+      "patterns": {
+        "keywords": ["rotation", "100MB", "files", "local"]
+      }
+    },
+    {
+      "id": "R068",
+      "name": "Log Monitoring",
+      "description": "Include service, version, env, host in all logs",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_MONITORING_MISSING",
+      "patterns": {
+        "keywords": ["service", "version", "env", "host"]
+      }
+    },
+    {
+      "id": "R069",
+      "name": "Log Alerting",
+      "description": "Use stable event names: request.start/end, db.query, external.call",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_ALERTING_MISSING",
+      "patterns": {
+        "keywords": ["request.start", "request.end", "db.query", "external.call"]
+      }
+    },
+    {
+      "id": "R070",
+      "name": "Log Analysis",
+      "description": "Include event_id, caused_by, links[] for workflow correlation",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_ANALYSIS_MISSING",
+      "patterns": {
+        "keywords": ["event_id", "caused_by", "links", "workflow"]
+      }
+    },
+    {
+      "id": "R071",
+      "name": "Log Security",
+      "description": "Never log secrets/PII; redact tokens, passwords, keys",
+      "category": "logging",
+      "severity": "error",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:PII_LEAK",
+      "patterns": {
+        "regex": "(?i)(password|secret|key|token|pii)\\s*[:=]\\s*[\"'][^\"']+[\"']"
+      }
+    },
+    {
+      "id": "R072",
+      "name": "Log Performance",
+      "description": "Logging overhead < 5% CPU; sampling for chatty events",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:SAMPLING_MISSING",
+      "patterns": {
+        "keywords": ["sampling", "overhead", "performance", "chatty"]
+      }
+    },
+    {
+      "id": "R073",
+      "name": "Log Testing",
+      "description": "Test log generation and validation in unit tests",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_TESTING_MISSING",
+      "patterns": {
+        "keywords": ["test", "log", "validation", "unit"]
+      }
+    },
+    {
+      "id": "R074",
+      "name": "Log Documentation",
+      "description": "Document logging schema and field meanings",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_DOCUMENTATION_MISSING",
+      "patterns": {
+        "keywords": ["schema", "documentation", "field", "meaning"]
+      }
+    },
+    {
+      "id": "R075",
+      "name": "Log Compliance",
+      "description": "Ensure logs meet compliance requirements and audit standards",
+      "category": "logging",
+      "severity": "warning",
+      "constitution": "Logging",
+      "validator": "logging_validator",
+      "error_code": "ERROR:LOG_COMPLIANCE_VIOLATION",
+      "patterns": {
+        "keywords": ["compliance", "audit", "standard", "requirement"]
+      }
+    },
+    {
+      "id": "R076",
+      "name": "Change Control",
+      "description": "All changes must go through proper change control process",
+      "category": "governance",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:CHANGE_CONTROL_VIOLATION",
+      "patterns": {
+        "keywords": ["change", "control", "process", "approval"]
+      }
+    },
+    {
+      "id": "R077",
+      "name": "Testing Requirements",
+      "description": "All code changes must include appropriate tests",
+      "category": "quality",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "structure_validator",
+      "error_code": "ERROR:TESTS_MISSING",
+      "patterns": {
+        "keywords": ["test", "spec", "check", "coverage"]
+      }
+    },
+    {
+      "id": "R080",
+      "name": "API Receipts",
+      "description": "Emit JSONL receipts for contract.publish, contract.diff, contract.violation",
+      "category": "api",
+      "severity": "error",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:API_RECEIPTS_MISSING",
+      "patterns": {
+        "keywords": ["receipt", "contract", "publish", "diff", "violation"]
+      }
+    },
+    {
+      "id": "R081",
+      "name": "Dependency Policy",
+      "description": "New dependencies must pass license allowlist and CVE threshold",
+      "category": "security",
+      "severity": "error",
+      "constitution": "Code Review",
+      "validator": "security_validator",
+      "error_code": "ERROR:DEPENDENCY_POLICY_FAIL",
+      "patterns": {
+        "keywords": ["dependency", "license", "CVE", "allowlist"]
+      }
+    },
+    {
+      "id": "R082",
+      "name": "Storage Rule",
+      "description": "Database vs files choice follows Storage Constitution (≤256KB in DB)",
+      "category": "structure",
+      "severity": "error",
+      "constitution": "Folder Standards",
+      "validator": "structure_validator",
+      "error_code": "ERROR:STORAGE_RULE_VIOLATION",
+      "patterns": {
+        "threshold": 256000
+      }
+    },
+    {
+      "id": "R083",
+      "name": "Status Lifecycle",
+      "description": "Add x-status to endpoints: experimental | beta | ga | deprecated | sunset",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:STATUS_LIFECYCLE_MISSING",
+      "patterns": {
+        "keywords": ["x-status", "experimental", "beta", "ga", "deprecated", "sunset"]
+      }
+    },
+    {
+      "id": "R084",
+      "name": "Idempotency Retention",
+      "description": "Idempotency retention window default 24h with hash of request body",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:IDEMPOTENCY_RETENTION_MISSING",
+      "patterns": {
+        "keywords": ["idempotency", "retention", "24h", "hash", "request"]
+      }
+    },
+    {
+      "id": "R085",
+      "name": "SDK Naming Policy",
+      "description": "TypeScript: @zeroui/api-v<major>; Python: zeroui_api_v<major>",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:SDK_NAMING_VIOLATION",
+      "patterns": {
+        "keywords": ["@zeroui/api-v", "zeroui_api_v", "SDK", "naming"]
+      }
+    },
+    {
+      "id": "R086",
+      "name": "Receipt Signature",
+      "description": "Optional receipt_signature (Ed25519) for high-trust actions",
+      "category": "api",
+      "severity": "warning",
+      "constitution": "API Contracts",
+      "validator": "api_validator",
+      "error_code": "ERROR:RECEIPT_SIGNATURE_MISSING",
+      "patterns": {
+        "keywords": ["receipt_signature", "Ed25519", "signature", "trust"]
+      }
+    },
+    {
+      "id": "R087",
+      "name": "Async-Only Handlers",
+      "description": "Async only for handlers; avoid blocking calls; httpx for async tests",
+      "category": "code_quality",
+      "severity": "warning",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:ASYNC_VIOLATION",
+      "patterns": {
+        "keywords": ["async", "await", "httpx", "blocking"]
+      }
+    },
+    {
+      "id": "R088",
+      "name": "Packaging Policy",
+      "description": "pip-tools lock with hashes; no unpinned deps",
+      "category": "code_quality",
+      "severity": "error",
+      "constitution": "Coding Standards",
+      "validator": "code_quality_validator",
+      "error_code": "ERROR:PACKAGING_VIOLATION",
+      "patterns": {
+        "keywords": ["pip-tools", "lock", "hash", "unpinned"]
+      }
+    },
+    {
+      "id": "R089",
+      "name": "TODO Policy",
+      "description": "TODO(owner): description [ticket] [date] format required",
+      "category": "documentation",
+      "severity": "warning",
+      "constitution": "Comments",
+      "validator": "comment_validator",
+      "error_code": "ERROR:TODO_UNBOUNDED",
+      "patterns": {
+        "regex": "TODO\\([^)]+\\):.*"
+      }
+    }
+  ]
+}

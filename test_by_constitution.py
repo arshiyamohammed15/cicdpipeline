@@ -13,8 +13,8 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tests.dynamic_test_factory import DynamicTestFactory, TestCase
-from tools.validator.rule_engine import RuleEngine
+from dynamic_test_factory import DynamicTestFactory, TestCase
+from validator.core import ConstitutionValidator
 
 
 class TestCodeReviewConstitution:

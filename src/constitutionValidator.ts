@@ -123,6 +123,14 @@ export class ConstitutionValidator {
         // Rule 10: Be Honest About AI Decisions - Check for AI transparency
         this.checkAITransparency(lines, violations);
 
+        // New Constitution Categories
+        this.checkCodeReviewRules(lines, violations);
+        this.checkAPIContractsRules(lines, violations);
+        this.checkCodingStandardsRules(lines, violations);
+        this.checkCommentsRules(lines, violations);
+        this.checkFolderStandardsRules(lines, violations);
+        this.checkLoggingRules(lines, violations);
+
         return violations;
     }
 
@@ -366,6 +374,259 @@ export class ConstitutionValidator {
                 return vscode.DiagnosticSeverity.Information;
             default:
                 return vscode.DiagnosticSeverity.Warning;
+        }
+    }
+
+    // New Constitution Categories Validation Methods
+
+    private checkCodeReviewRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for PR size indicators
+        if (lines.length > 300) {
+            violations.push({
+                ruleNumber: 2,
+                ruleName: "PR Size Guidance",
+                severity: 'warning',
+                message: 'PR size ≤ 300 LOC changed (tests excluded), include Rollout Plan if larger',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Large PR',
+                fixSuggestion: 'Break into smaller, focused changes',
+                confidence: 0.85,
+                explanation: 'Large PRs are harder to review and increase risk of introducing bugs'
+            });
+        }
+
+        // Check for CODEOWNERS approval requirements
+        const sensitiveKeywords = ['auth', 'policy', 'contracts', 'receipts', 'migrations'];
+        const hasSensitiveContent = sensitiveKeywords.some(keyword => text.toLowerCase().includes(keyword));
+        
+        if (hasSensitiveContent) {
+            violations.push({
+                ruleNumber: 3,
+                ruleName: "CODEOWNERS Approval",
+                severity: 'error',
+                message: 'Sensitive areas require CODEOWNERS approval and may need two reviewers',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Sensitive content',
+                fixSuggestion: 'Ensure CODEOWNERS approval for sensitive changes',
+                confidence: 0.90,
+                explanation: 'Sensitive areas require additional review to maintain security and compliance'
+            });
+        }
+    }
+
+    private checkAPIContractsRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for API versioning
+        if (text.includes('/api/') && !text.includes('/v')) {
+            violations.push({
+                ruleNumber: 14,
+                ruleName: "API Versioning",
+                severity: 'error',
+                message: 'URI versioning required: /v1, /v2...',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'API endpoint',
+                fixSuggestion: 'Use versioned API endpoints',
+                confidence: 0.85,
+                explanation: 'API versioning ensures backward compatibility and smooth transitions'
+            });
+        }
+
+        // Check for idempotency
+        if (text.includes('post') || text.includes('put') || text.includes('patch')) {
+            if (!text.toLowerCase().includes('idempotency')) {
+                violations.push({
+                    ruleNumber: 15,
+                    ruleName: "Idempotency",
+                    severity: 'error',
+                    message: 'All mutating routes must accept Idempotency-Key',
+                    lineNumber: 1,
+                    columnNumber: 0,
+                    codeSnippet: 'Mutating operation',
+                    fixSuggestion: 'Add idempotency support for mutating operations',
+                    confidence: 0.80,
+                    explanation: 'Idempotency prevents duplicate operations and improves reliability'
+                });
+            }
+        }
+    }
+
+    private checkCodingStandardsRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for Python standards
+        if (text.includes('import') && !text.includes('ruff') && !text.includes('black')) {
+            violations.push({
+                ruleNumber: 27,
+                ruleName: "Python Standards",
+                severity: 'error',
+                message: 'ruff + black (line-length 100) + mypy --strict; Python 3.11+',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Python code',
+                fixSuggestion: 'Use ruff, black, and mypy for code quality',
+                confidence: 0.85,
+                explanation: 'Consistent code formatting and type checking improve maintainability'
+            });
+        }
+
+        // Check for TypeScript standards
+        if (text.includes('function') && !text.includes('eslint') && !text.includes('prettier')) {
+            violations.push({
+                ruleNumber: 28,
+                ruleName: "TypeScript Standards",
+                severity: 'error',
+                message: 'eslint + prettier; tsconfig strict: true, exactOptionalPropertyTypes',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'TypeScript code',
+                fixSuggestion: 'Use eslint and prettier for TypeScript code quality',
+                confidence: 0.85,
+                explanation: 'Consistent formatting and linting improve code quality and team collaboration'
+            });
+        }
+    }
+
+    private checkCommentsRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for simple English in comments
+        const bannedWords = ['utilize', 'leverage', 'aforementioned', 'herein', 'thusly', 'performant', 'instantiate'];
+        const hasBannedWords = bannedWords.some(word => text.toLowerCase().includes(word));
+        
+        if (hasBannedWords) {
+            violations.push({
+                ruleNumber: 8,
+                ruleName: "Simple English Comments",
+                severity: 'warning',
+                message: 'Use simple English comments (grade 8 level)',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Complex comment',
+                fixSuggestion: 'Use simpler, clearer language in comments',
+                confidence: 0.80,
+                explanation: 'Simple English makes code more accessible to all team members'
+            });
+        }
+
+        // Check for TODO format
+        const todoPattern = /TODO\s*[:(]?\s*([^\n]*)/i;
+        const todoMatch = text.match(todoPattern);
+        if (todoMatch && !todoMatch[1].includes('(')) {
+            violations.push({
+                ruleNumber: 89,
+                ruleName: "TODO Policy",
+                severity: 'warning',
+                message: 'TODO(owner): description [ticket] [date] format required',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'TODO comment',
+                fixSuggestion: 'Use proper TODO format with owner and context',
+                confidence: 0.90,
+                explanation: 'Proper TODO format helps track and prioritize technical debt'
+            });
+        }
+    }
+
+    private checkFolderStandardsRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for hardcoded paths
+        const hardcodedPathPattern = /["']\/[^"']*["']/;
+        if (hardcodedPathPattern.test(text) && !text.includes('ZEROUI_ROOT')) {
+            violations.push({
+                ruleNumber: 54,
+                ruleName: "File Naming",
+                severity: 'error',
+                message: 'Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Hardcoded path',
+                fixSuggestion: 'Use ZEROUI_ROOT for path resolution',
+                confidence: 0.85,
+                explanation: 'Hardcoded paths make the system less portable and harder to maintain'
+            });
+        }
+
+        // Check for storage rule
+        if (text.includes('database') && text.includes('256')) {
+            violations.push({
+                ruleNumber: 82,
+                ruleName: "Storage Rule",
+                severity: 'error',
+                message: 'Database vs files choice follows Storage Constitution (≤256KB in DB)',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Storage decision',
+                fixSuggestion: 'Follow storage constitution guidelines',
+                confidence: 0.80,
+                explanation: 'Proper storage decisions improve performance and maintainability'
+            });
+        }
+    }
+
+    private checkLoggingRules(lines: string[], violations: Violation[]): void {
+        const text = lines.join('\n');
+        
+        // Check for structured logging
+        if (text.includes('log') && !text.includes('json') && !text.includes('structured')) {
+            violations.push({
+                ruleNumber: 43,
+                ruleName: "Structured Logging",
+                severity: 'error',
+                message: 'Logs are structured JSON with required fields and schema version',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'Logging code',
+                fixSuggestion: 'Use structured JSON logging',
+                confidence: 0.85,
+                explanation: 'Structured logging improves observability and debugging capabilities'
+            });
+        }
+
+        // Check for log levels
+        const validLogLevels = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
+        const logLevelPattern = /\.(trace|debug|info|warn|error|fatal)\s*\(/i;
+        const logMatch = text.match(logLevelPattern);
+        
+        if (logMatch) {
+            const logLevel = logMatch[1].toUpperCase();
+            if (!validLogLevels.includes(logLevel)) {
+                violations.push({
+                    ruleNumber: 44,
+                    ruleName: "Log Levels",
+                    severity: 'warning',
+                    message: 'Use appropriate log levels: TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
+                    lineNumber: 1,
+                    columnNumber: 0,
+                    codeSnippet: 'Invalid log level',
+                    fixSuggestion: 'Use standard log levels',
+                    confidence: 0.90,
+                    explanation: 'Standard log levels improve log filtering and analysis'
+                });
+            }
+        }
+
+        // Check for PII protection
+        const piiPattern = /(password|secret|key|token|pii)\s*[:=]\s*["'][^"']+["']/i;
+        if (piiPattern.test(text)) {
+            violations.push({
+                ruleNumber: 71,
+                ruleName: "Log Security",
+                severity: 'error',
+                message: 'Never log secrets/PII; redact tokens, passwords, keys',
+                lineNumber: 1,
+                columnNumber: 0,
+                codeSnippet: 'PII in logs',
+                fixSuggestion: 'Remove or redact sensitive information from logs',
+                confidence: 0.95,
+                explanation: 'Logging sensitive information poses a security risk'
+            });
         }
     }
 }
