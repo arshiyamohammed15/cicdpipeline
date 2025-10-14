@@ -1,11 +1,13 @@
 # ZEROUI 2.0 Constitution Code Validator
 
-A Python-based automated code review tool that validates code against the 71 unique ZEROUI 2.0 Constitution rules for enterprise-grade product development.
+A Python-based automated code review tool that validates code against 164 ZEROUI 2.0 Constitution rules (77 original + 87 new rules) for enterprise-grade product development with comprehensive rule configuration management.
 
 ## Features
 
-- **71 Unique Rules**: Validates against consolidated constitution rules (removed 6 duplicates)
-- **71 Rules Implemented**: 100% coverage of all constitution rules
+- **164 Total Rules**: 77 original constitution rules + 87 new detailed rules
+- **164 Rules Implemented**: 100% coverage of all constitution rules
+- **Individual Test Files**: 164 dedicated test files for each rule
+- **Rule Configuration**: Enable/disable any rule via CLI or programmatic API
 - **Multiple Output Formats**: Console, JSON, HTML, and Markdown reports
 - **Enterprise Focus**: 25/25 critical rules implemented (100% coverage)
 - **Category-Based Validation**: Requirements, Privacy, Performance, Architecture, Testing, and Code Quality
@@ -32,6 +34,28 @@ python cli.py file.py
 ### Validate a Directory
 ```bash
 python cli.py src/
+```
+
+### Configure Rules
+```bash
+# Enable/disable specific rules
+python tools/rule_config_cli.py enable R001 --reason "Critical for code quality"
+python tools/rule_config_cli.py disable rule_076 --reason "Too restrictive for current project"
+
+# Set file-specific overrides
+python tools/rule_config_cli.py override R001 file "legacy/old_code.py" --disable --reason "Legacy file exempt"
+
+# Generate rule status report
+python tools/rule_config_cli.py report
+```
+
+### Generate Individual Test Files
+```bash
+# Generate per-rule tests from rules source (rules.json if present, else rules_config.json)
+python tools/generate_individual_tests.py --clean
+
+# Run individual tests
+pytest validator/rules/tests/individual_rules -q
 ```
 
 ### Generate HTML Report
@@ -95,7 +119,7 @@ The validator includes dynamic test cases that automatically discover all rules 
 python test_dynamic_coverage.py
 ```
 This test:
-- Automatically loads all 71 rules from `rules_config.json`
+- Automatically loads all rules from `tools/validator/rules.json` (or `rules_config.json` fallback)
 - Validates configuration integrity
 - Tests validator on comprehensive sample code
 - Reports coverage statistics by category

@@ -1,0 +1,716 @@
+{
+    "test_scenarios": {
+        "R001": {
+            "rule": "LOC Limit",
+            "category": "Code Review",
+            "test_prompt": "Create a user authentication service with login, logout, and password reset functionality",
+            "expected_behavior": "Should generate ≤50 LOC per function",
+            "validation_method": "line_count_check",
+            "severity": "error"
+        },
+        "R002": {
+            "rule": "PR Size Guidance",
+            "category": "Code Review",
+            "test_prompt": "Implement a complete e-commerce shopping cart with payment processing, inventory management, and order tracking",
+            "expected_behavior": "Should suggest breaking into smaller PRs or include rollout plan",
+            "validation_method": "pr_size_check",
+            "severity": "warning"
+        },
+        "R003": {
+            "rule": "CODEOWNERS Approval",
+            "category": "Code Review",
+            "test_prompt": "Add new authentication middleware to the auth/ directory",
+            "expected_behavior": "Should mention CODEOWNERS approval requirement",
+            "validation_method": "codeowners_check",
+            "severity": "error"
+        },
+        "R004": {
+            "rule": "Review SLA",
+            "category": "Code Review",
+            "test_prompt": "Create a simple utility function for string formatting",
+            "expected_behavior": "Should not mention specific SLA requirements in code",
+            "validation_method": "sla_check",
+            "severity": "warning"
+        },
+        "R005": {
+            "rule": "Why First",
+            "category": "Code Review",
+            "test_prompt": "Refactor the database connection logic",
+            "expected_behavior": "Should explain WHY the refactoring is needed",
+            "validation_method": "context_check",
+            "severity": "error"
+        },
+        "R006": {
+            "rule": "Small Coherent Diffs",
+            "category": "Code Review",
+            "test_prompt": "Update the user management system to add role-based permissions and audit logging",
+            "expected_behavior": "Should suggest feature flags or splitting into multiple PRs",
+            "validation_method": "diff_coherence_check",
+            "severity": "error"
+        },
+        "R007": {
+            "rule": "Tests Prove Behavior",
+            "category": "Code Review",
+            "test_prompt": "Add a new API endpoint for user profile updates",
+            "expected_behavior": "Should include tests that fail before and pass after",
+            "validation_method": "test_coverage_check",
+            "severity": "error"
+        },
+        "R008": {
+            "rule": "Simple English Comments",
+            "category": "Code Review",
+            "test_prompt": "Create a complex algorithm for data processing",
+            "expected_behavior": "Should use simple English comments at 8th-grade level",
+            "validation_method": "comment_quality_check",
+            "severity": "error"
+        },
+        "R009": {
+            "rule": "Security & Privacy First",
+            "category": "Code Review",
+            "test_prompt": "Create a user registration form that collects personal information",
+            "expected_behavior": "Should not include secrets/PII in code, comments, or tests",
+            "validation_method": "security_check",
+            "severity": "error"
+        },
+        "R010": {
+            "rule": "Reversible Changes",
+            "category": "Code Review",
+            "test_prompt": "Modify the database schema to add new columns",
+            "expected_behavior": "Should include rollback/disable plan",
+            "validation_method": "rollback_check",
+            "severity": "error"
+        },
+        "R011": {
+            "rule": "Return Contract Formats",
+            "category": "Code Review",
+            "test_prompt": "Generate a configuration file for the application",
+            "expected_behavior": "Should use Unified Diff, New File, or JSON format",
+            "validation_method": "return_contract_check",
+            "severity": "error"
+        },
+        "R012": {
+            "rule": "AI Provenance",
+            "category": "Code Review",
+            "test_prompt": "Create a machine learning model for recommendation system",
+            "expected_behavior": "Should include AI provenance in PR template",
+            "validation_method": "ai_provenance_check",
+            "severity": "error"
+        },
+        "R013": {
+            "rule": "HTTP Verbs Only",
+            "category": "API Contracts",
+            "test_prompt": "Create an API endpoint for user management",
+            "expected_behavior": "Should use GET, POST, PUT, PATCH, DELETE only",
+            "validation_method": "http_verbs_check",
+            "severity": "error"
+        },
+        "R014": {
+            "rule": "URI Structure",
+            "category": "API Contracts",
+            "test_prompt": "Design REST API endpoints for a blog system",
+            "expected_behavior": "Should use nouns + ids with kebab-case tokens",
+            "validation_method": "uri_structure_check",
+            "severity": "error"
+        },
+        "R015": {
+            "rule": "UUIDv7 IDs",
+            "category": "API Contracts",
+            "test_prompt": "Create a user model with unique identifiers",
+            "expected_behavior": "Should use UUIDv7 strings, not DB autoincrement",
+            "validation_method": "id_format_check",
+            "severity": "error"
+        },
+        "R016": {
+            "rule": "ISO-8601 Timestamps",
+            "category": "API Contracts",
+            "test_prompt": "Add timestamp fields to a data model",
+            "expected_behavior": "Should use ISO-8601 UTC with Z format",
+            "validation_method": "timestamp_format_check",
+            "severity": "error"
+        },
+        "R017": {
+            "rule": "Cursor Pagination",
+            "category": "API Contracts",
+            "test_prompt": "Create an API endpoint that returns a list of users",
+            "expected_behavior": "Should use cursor-based pagination with nextCursor",
+            "validation_method": "pagination_check",
+            "severity": "error"
+        },
+        "R018": {
+            "rule": "Idempotency Required",
+            "category": "API Contracts",
+            "test_prompt": "Create a POST endpoint for creating new resources",
+            "expected_behavior": "Should accept Idempotency-Key header",
+            "validation_method": "idempotency_check",
+            "severity": "error"
+        },
+        "R019": {
+            "rule": "Standard Headers",
+            "category": "API Contracts",
+            "test_prompt": "Design HTTP API headers for a microservice",
+            "expected_behavior": "Should include X-API-Version, X-Request-Id, X-RateLimit-*, X-Tenant-Id",
+            "validation_method": "standard_headers_check",
+            "severity": "error"
+        },
+        "R020": {
+            "rule": "Error Envelope",
+            "category": "API Contracts",
+            "test_prompt": "Create error handling for API endpoints",
+            "expected_behavior": "Should use Problem JSON-style with stable code, human message, traceId",
+            "validation_method": "error_envelope_check",
+            "severity": "error"
+        },
+        "R021": {
+            "rule": "URI Versioning",
+            "category": "API Contracts",
+            "test_prompt": "Create versioned API endpoints",
+            "expected_behavior": "Should use /v1, /v2 URI versioning",
+            "validation_method": "uri_versioning_check",
+            "severity": "error"
+        },
+        "R022": {
+            "rule": "Breaking Change Policy",
+            "category": "API Contracts",
+            "test_prompt": "Modify an existing API endpoint to change response format",
+            "expected_behavior": "Should require new major version and deprecation",
+            "validation_method": "breaking_change_check",
+            "severity": "error"
+        },
+        "R023": {
+            "rule": "Auth Schemes",
+            "category": "API Contracts",
+            "test_prompt": "Add authentication to API endpoints",
+            "expected_behavior": "Should use JWT with aud, iss, exp, iat, kid and documented scopes",
+            "validation_method": "auth_schemes_check",
+            "severity": "error"
+        },
+        "R024": {
+            "rule": "Rate Limits",
+            "category": "API Contracts",
+            "test_prompt": "Implement rate limiting for API endpoints",
+            "expected_behavior": "Should declare headers and return 429 deterministically",
+            "validation_method": "rate_limits_check",
+            "severity": "error"
+        },
+        "R025": {
+            "rule": "Tenancy",
+            "category": "API Contracts",
+            "test_prompt": "Create multi-tenant API endpoints",
+            "expected_behavior": "Should document X-Tenant-Id semantics and isolation guarantees",
+            "validation_method": "tenancy_check",
+            "severity": "error"
+        },
+        "R026": {
+            "rule": "Error Codes",
+            "category": "API Contracts",
+            "test_prompt": "Define error handling for API responses",
+            "expected_behavior": "Should define canonical codes with description, consumer action, retriable",
+            "validation_method": "error_codes_check",
+            "severity": "error"
+        },
+        "R027": {
+            "rule": "HTTP Mapping",
+            "category": "API Contracts",
+            "test_prompt": "Map API errors to HTTP status codes",
+            "expected_behavior": "Should use standard mapping (400 VALIDATION_ERROR, 401 AUTH_UNAUTHENTICATED, etc.)",
+            "validation_method": "http_mapping_check",
+            "severity": "error"
+        },
+        "R028": {
+            "rule": "ETag Support",
+            "category": "API Contracts",
+            "test_prompt": "Add concurrency control to API endpoints",
+            "expected_behavior": "Should require ETag/If-Match for racy PUT/PATCH",
+            "validation_method": "etag_check",
+            "severity": "error"
+        },
+        "R029": {
+            "rule": "Cache Control",
+            "category": "API Contracts",
+            "test_prompt": "Add caching to API responses",
+            "expected_behavior": "Should document Cache-Control and freshness lifetimes",
+            "validation_method": "cache_control_check",
+            "severity": "error"
+        },
+        "R030": {
+            "rule": "Spectral Lint",
+            "category": "API Contracts",
+            "test_prompt": "Create OpenAPI specification for API",
+            "expected_behavior": "Should include Spectral lint configuration",
+            "validation_method": "spectral_lint_check",
+            "severity": "error"
+        },
+        "R031": {
+            "rule": "OpenAPI Diff Gate",
+            "category": "API Contracts",
+            "test_prompt": "Modify existing OpenAPI specification",
+            "expected_behavior": "Should fail on breaking changes unless version bump + approval",
+            "validation_method": "openapi_diff_check",
+            "severity": "error"
+        },
+        "R032": {
+            "rule": "Example Validation",
+            "category": "API Contracts",
+            "test_prompt": "Add examples to OpenAPI specification",
+            "expected_behavior": "Should validate JSON examples against schemas",
+            "validation_method": "example_validation_check",
+            "severity": "error"
+        },
+        "R033": {
+            "rule": "Contract Tests",
+            "category": "API Contracts",
+            "test_prompt": "Set up testing for API contracts",
+            "expected_behavior": "Should include provider and consumer-driven tests",
+            "validation_method": "contract_tests_check",
+            "severity": "error"
+        },
+        "R034": {
+            "rule": "SDK Generation",
+            "category": "API Contracts",
+            "test_prompt": "Generate client SDKs from OpenAPI spec",
+            "expected_behavior": "Should generate TS & Python SDKs, no hand-rolled DTOs",
+            "validation_method": "sdk_generation_check",
+            "severity": "error"
+        },
+        "R035": {
+            "rule": "Response Model",
+            "category": "API Contracts",
+            "test_prompt": "Create FastAPI route handlers",
+            "expected_behavior": "Should set response_model on every route",
+            "validation_method": "response_model_check",
+            "severity": "error"
+        },
+        "R036": {
+            "rule": "Sampling Validator",
+            "category": "API Contracts",
+            "test_prompt": "Add runtime validation to API endpoints",
+            "expected_behavior": "Should validate N% of live req/resp bodies against schemas",
+            "validation_method": "sampling_validator_check",
+            "severity": "error"
+        },
+        "R037": {
+            "rule": "Receipt Generation",
+            "category": "API Contracts",
+            "test_prompt": "Add audit logging for API operations",
+            "expected_behavior": "Should emit JSONL receipts for contract.publish, contract.diff, contract.violation",
+            "validation_method": "receipt_generation_check",
+            "severity": "error"
+        },
+        "R038": {
+            "rule": "Python Quality Gates",
+            "category": "Coding Standards",
+            "test_prompt": "Set up Python development environment",
+            "expected_behavior": "Should use ruff + black (line length 100) + mypy --strict",
+            "validation_method": "python_quality_check",
+            "severity": "error"
+        },
+        "R039": {
+            "rule": "FastAPI Runtime",
+            "category": "Coding Standards",
+            "test_prompt": "Create FastAPI application with database integration",
+            "expected_behavior": "Should use Python 3.11+, Pydantic v2, never return raw ORM",
+            "validation_method": "fastapi_runtime_check",
+            "severity": "error"
+        },
+        "R040": {
+            "rule": "Async Handlers",
+            "category": "Coding Standards",
+            "test_prompt": "Create API route handlers for database operations",
+            "expected_behavior": "Should use async only for handlers, avoid blocking calls",
+            "validation_method": "async_handlers_check",
+            "severity": "error"
+        },
+        "R041": {
+            "rule": "Packaging Policy",
+            "category": "Coding Standards",
+            "test_prompt": "Set up Python package dependencies",
+            "expected_behavior": "Should use pip-tools lock with hashes, no unpinned deps",
+            "validation_method": "packaging_policy_check",
+            "severity": "error"
+        },
+        "R042": {
+            "rule": "TypeScript Quality Gates",
+            "category": "Coding Standards",
+            "test_prompt": "Configure TypeScript project",
+            "expected_behavior": "Should use strict: true, noImplicitAny: true, exactOptionalPropertyTypes: true",
+            "validation_method": "typescript_quality_check",
+            "severity": "error"
+        },
+        "R043": {
+            "rule": "Generated API Types",
+            "category": "Coding Standards",
+            "test_prompt": "Create TypeScript types for API responses",
+            "expected_behavior": "Should generate from OpenAPI, not hand-roll DTOs",
+            "validation_method": "generated_api_types_check",
+            "severity": "error"
+        },
+        "R044": {
+            "rule": "Database Schema",
+            "category": "Coding Standards",
+            "test_prompt": "Create database models and migrations",
+            "expected_behavior": "Should use SQLAlchemy 2.x, explicit columns, named constraints",
+            "validation_method": "database_schema_check",
+            "severity": "error"
+        },
+        "R045": {
+            "rule": "Alembic Migrations",
+            "category": "Coding Standards",
+            "test_prompt": "Add new database columns to existing table",
+            "expected_behavior": "Should use Alembic, additive-first, include safe DOWN migration",
+            "validation_method": "alembic_migrations_check",
+            "severity": "error"
+        },
+        "R046": {
+            "rule": "SQLite Dev Config",
+            "category": "Coding Standards",
+            "test_prompt": "Configure SQLite for development and testing",
+            "expected_behavior": "Should use WAL + busy_timeout=5000, mirror Postgres schema",
+            "validation_method": "sqlite_dev_config_check",
+            "severity": "error"
+        },
+        "R047": {
+            "rule": "Security Headers",
+            "category": "Coding Standards",
+            "test_prompt": "Add security measures to web application",
+            "expected_behavior": "Should validate inputs, set security headers, CORS allowlist only",
+            "validation_method": "security_headers_check",
+            "severity": "error"
+        },
+        "R048": {
+            "rule": "Dependency Scans",
+            "category": "Coding Standards",
+            "test_prompt": "Set up security scanning for dependencies",
+            "expected_behavior": "Should run dependency & secret scans, block known CVEs",
+            "validation_method": "dependency_scans_check",
+            "severity": "error"
+        },
+        "R049": {
+            "rule": "Structured Logging",
+            "category": "Coding Standards",
+            "test_prompt": "Add logging to application components",
+            "expected_behavior": "Should use structured JSON with timestamp, level, service, route, httpStatus, latencyMs, traceId",
+            "validation_method": "structured_logging_check",
+            "severity": "error"
+        },
+        "R050": {
+            "rule": "Receipt Audit Trail",
+            "category": "Coding Standards",
+            "test_prompt": "Add audit trail for privileged actions",
+            "expected_behavior": "Should emit JSONL receipts with ts_utc, monotonic_hw_time_ms, traceId, policy_snapshot_hash",
+            "validation_method": "receipt_audit_trail_check",
+            "severity": "error"
+        },
+        "R051": {
+            "rule": "Test Coverage",
+            "category": "Coding Standards",
+            "test_prompt": "Write tests for new functionality",
+            "expected_behavior": "Should use pytest (≥90% where applicable) + httpx for API",
+            "validation_method": "test_coverage_check",
+            "severity": "error"
+        },
+        "R052": {
+            "rule": "Property Tests",
+            "category": "Coding Standards",
+            "test_prompt": "Add comprehensive testing for data validation",
+            "expected_behavior": "Should use property tests with hypothesis where valuable",
+            "validation_method": "property_tests_check",
+            "severity": "error"
+        },
+        "R053": {
+            "rule": "DB Test Rollback",
+            "category": "Coding Standards",
+            "test_prompt": "Set up database tests",
+            "expected_behavior": "Should use transactional tests with rollback",
+            "validation_method": "db_test_rollback_check",
+            "severity": "error"
+        },
+        "R054": {
+            "rule": "LLM Usage",
+            "category": "Coding Standards",
+            "test_prompt": "Integrate LLM functionality into application",
+            "expected_behavior": "Should use pinned llama3 variant with deterministic params",
+            "validation_method": "llm_usage_check",
+            "severity": "error"
+        },
+        "R055": {
+            "rule": "Token Budgets",
+            "category": "Coding Standards",
+            "test_prompt": "Add LLM token usage monitoring",
+            "expected_behavior": "Should enforce token/time budgets",
+            "validation_method": "token_budgets_check",
+            "severity": "error"
+        },
+        "R056": {
+            "rule": "PII Redaction",
+            "category": "Coding Standards",
+            "test_prompt": "Process user data with LLM",
+            "expected_behavior": "Should redact PII/secrets before inference, never log raw prompts",
+            "validation_method": "pii_redaction_check",
+            "severity": "error"
+        },
+        "R057": {
+            "rule": "Supply Chain Security",
+            "category": "Coding Standards",
+            "test_prompt": "Set up secure software supply chain",
+            "expected_behavior": "Should use signed commits/tags, SBOMs, pinned lockfiles",
+            "validation_method": "supply_chain_security_check",
+            "severity": "error"
+        },
+        "R058": {
+            "rule": "Container Security",
+            "category": "Coding Standards",
+            "test_prompt": "Create Docker container for application",
+            "expected_behavior": "Should use pinned bases by digest, non-root, read-only FS",
+            "validation_method": "container_security_check",
+            "severity": "error"
+        },
+        "R059": {
+            "rule": "Performance SLOs",
+            "category": "Coding Standards",
+            "test_prompt": "Add performance monitoring to API endpoints",
+            "expected_behavior": "Should publish per-route SLOs (p95), add timeouts, retries",
+            "validation_method": "performance_slos_check",
+            "severity": "error"
+        },
+        "R060": {
+            "rule": "Documentation Standards",
+            "category": "Coding Standards",
+            "test_prompt": "Create API documentation",
+            "expected_behavior": "Should have accurate OpenAPI, examples for all responses, ADRs",
+            "validation_method": "documentation_standards_check",
+            "severity": "error"
+        },
+        "R061": {
+            "rule": "File Header Comments",
+            "category": "Comments",
+            "test_prompt": "Create a new Python module for user management",
+            "expected_behavior": "Should include file-level header with What, Why, Reads/Writes, Contracts, Risks",
+            "validation_method": "file_header_comments_check",
+            "severity": "error"
+        },
+        "R062": {
+            "rule": "Import Comments",
+            "category": "Comments",
+            "test_prompt": "Add imports to a Python file",
+            "expected_behavior": "Should group stdlib/third-party/local and explain why each group exists",
+            "validation_method": "import_comments_check",
+            "severity": "error"
+        },
+        "R063": {
+            "rule": "Function Documentation",
+            "category": "Comments",
+            "test_prompt": "Create a public API function",
+            "expected_behavior": "Should include WHAT + WHY + Steps + Inputs/Outputs + Fails/Throws + Security note",
+            "validation_method": "function_documentation_check",
+            "severity": "error"
+        },
+        "R064": {
+            "rule": "Variable Comments",
+            "category": "Comments",
+            "test_prompt": "Define configuration constants",
+            "expected_behavior": "Should include meaning, units, allowed range, and reason",
+            "validation_method": "variable_comments_check",
+            "severity": "error"
+        },
+        "R065": {
+            "rule": "Logic Comments",
+            "category": "Comments",
+            "test_prompt": "Implement complex business logic",
+            "expected_behavior": "Should include PLAN/RATIONALE in bullets before tricky if/loops",
+            "validation_method": "logic_comments_check",
+            "severity": "error"
+        },
+        "R066": {
+            "rule": "Readability Standards",
+            "category": "Comments",
+            "test_prompt": "Write comments for complex algorithm",
+            "expected_behavior": "Should use short sentences (≤20 words), common words, avoid jargon",
+            "validation_method": "readability_standards_check",
+            "severity": "error"
+        },
+        "R067": {
+            "rule": "Security Comments",
+            "category": "Comments",
+            "test_prompt": "Add comments to security-sensitive code",
+            "expected_behavior": "Should not include secrets or PII in comments",
+            "validation_method": "security_comments_check",
+            "severity": "error"
+        },
+        "R068": {
+            "rule": "Config Comments",
+            "category": "Comments",
+            "test_prompt": "Create configuration file with settings",
+            "expected_behavior": "Should explain each setting, safe defaults, allowed range",
+            "validation_method": "config_comments_check",
+            "severity": "error"
+        },
+        "R069": {
+            "rule": "TODO Policy",
+            "category": "Comments",
+            "test_prompt": "Add TODO comments to incomplete code",
+            "expected_behavior": "Should include owner/date/ticket for each TODO",
+            "validation_method": "todo_policy_check",
+            "severity": "warning"
+        },
+        "R070": {
+            "rule": "ZEROUI_ROOT Paths",
+            "category": "Folder Standards",
+            "test_prompt": "Create file paths in the application",
+            "expected_behavior": "Should resolve via ZEROUI_ROOT + config/paths.json, no hardcoding",
+            "validation_method": "zeroui_root_paths_check",
+            "severity": "error"
+        },
+        "R071": {
+            "rule": "Allowed Write Locations",
+            "category": "Folder Standards",
+            "test_prompt": "Save application data to files",
+            "expected_behavior": "Should only write under allowlisted subfolders",
+            "validation_method": "allowed_write_locations_check",
+            "severity": "error"
+        },
+        "R072": {
+            "rule": "Top-Level Names",
+            "category": "Folder Standards",
+            "test_prompt": "Create new top-level directories",
+            "expected_behavior": "Should only use allowed server/storage names",
+            "validation_method": "top_level_names_check",
+            "severity": "error"
+        },
+        "R073": {
+            "rule": "Junction Requirements",
+            "category": "Folder Standards",
+            "test_prompt": "Set up data storage for application",
+            "expected_behavior": "Should use <server>/data/ junction to paired storage",
+            "validation_method": "junction_requirements_check",
+            "severity": "error"
+        },
+        "R074": {
+            "rule": "Receipt Generation",
+            "category": "Folder Standards",
+            "test_prompt": "Perform privileged file operations",
+            "expected_behavior": "Should append INTENT and RESULT receipts for privileged actions",
+            "validation_method": "receipt_generation_check",
+            "severity": "error"
+        },
+        "R075": {
+            "rule": "Policy Configuration",
+            "category": "Folder Standards",
+            "test_prompt": "Add configuration settings to application",
+            "expected_behavior": "Should read from policy snapshots/config, no hardcoded thresholds",
+            "validation_method": "policy_configuration_check",
+            "severity": "error"
+        },
+        "R076": {
+            "rule": "Two-Person Rule",
+            "category": "Code Review",
+            "test_prompt": "Modify authentication system in sensitive areas",
+            "expected_behavior": "Should require two reviewers for sensitive areas",
+            "validation_method": "two_person_rule_check",
+            "severity": "error"
+        },
+        "R077": {
+            "rule": "Migration Risk Check",
+            "category": "Code Review",
+            "test_prompt": "Create database migration for schema changes",
+            "expected_behavior": "Should include backout plan and rollback strategy",
+            "validation_method": "migration_risk_check",
+            "severity": "error"
+        },
+        "R078": {
+            "rule": "Performance Regression",
+            "category": "Code Review",
+            "test_prompt": "Add performance-critical database operations",
+            "expected_behavior": "Should include performance measurement and budget checks",
+            "validation_method": "performance_regression_check",
+            "severity": "error"
+        },
+        "R079": {
+            "rule": "Observability Gap",
+            "category": "Code Review",
+            "test_prompt": "Implement critical business logic",
+            "expected_behavior": "Should include metrics, traces, and alerts",
+            "validation_method": "observability_gap_check",
+            "severity": "error"
+        },
+        "R080": {
+            "rule": "API Receipts",
+            "category": "Code Review",
+            "test_prompt": "Modify API contracts or schemas",
+            "expected_behavior": "Should include receipt generation for contract changes",
+            "validation_method": "api_receipts_check",
+            "severity": "error"
+        },
+        "R081": {
+            "rule": "Dependency Policy",
+            "category": "Code Review",
+            "test_prompt": "Add new dependencies to project",
+            "expected_behavior": "Should check license/CVE compliance and pin versions",
+            "validation_method": "dependency_policy_check",
+            "severity": "error"
+        },
+        "R082": {
+            "rule": "Storage Rule",
+            "category": "Code Review",
+            "test_prompt": "Implement file upload functionality",
+            "expected_behavior": "Should enforce ≤256KB in DB, blobs in files + DB metadata",
+            "validation_method": "storage_rule_check",
+            "severity": "error"
+        },
+        "R083": {
+            "rule": "Status Lifecycle",
+            "category": "API Contracts",
+            "test_prompt": "Add x-status field to API endpoints",
+            "expected_behavior": "Should use experimental|beta|ga|deprecated|sunset values",
+            "validation_method": "status_lifecycle_check",
+            "severity": "error"
+        },
+        "R084": {
+            "rule": "Idempotency Retention",
+            "category": "API Contracts",
+            "test_prompt": "Document idempotency for API endpoints",
+            "expected_behavior": "Should document 24h retention window",
+            "validation_method": "idempotency_retention_check",
+            "severity": "error"
+        },
+        "R085": {
+            "rule": "SDK Naming Policy",
+            "category": "API Contracts",
+            "test_prompt": "Create SDK packages for API",
+            "expected_behavior": "Should use @zeroui/api-v<major> for TS, zeroui_api_v<major> for Python",
+            "validation_method": "sdk_naming_policy_check",
+            "severity": "error"
+        },
+        "R086": {
+            "rule": "Receipt Signature",
+            "category": "API Contracts",
+            "test_prompt": "Add high-trust action handling",
+            "expected_behavior": "Should include optional Ed25519 signature for high-trust actions",
+            "validation_method": "receipt_signature_check",
+            "severity": "warning"
+        },
+        "R087": {
+            "rule": "Async-Only Handlers",
+            "category": "Coding Standards",
+            "test_prompt": "Create FastAPI route handlers",
+            "expected_behavior": "Should use async handlers and avoid blocking calls",
+            "validation_method": "async_only_handlers_check",
+            "severity": "error"
+        },
+        "R088": {
+            "rule": "Packaging Policy",
+            "category": "Coding Standards",
+            "test_prompt": "Set up Python package management",
+            "expected_behavior": "Should use pip-tools lock with hashes",
+            "validation_method": "packaging_policy_check",
+            "severity": "error"
+        },
+        "R089": {
+            "rule": "TODO Policy",
+            "category": "Comments",
+            "test_prompt": "Add TODO comments to code",
+            "expected_behavior": "Should include owner/date/ticket for each TODO",
+            "validation_method": "todo_policy_check",
+            "severity": "warning"
+        }
+    }
+}

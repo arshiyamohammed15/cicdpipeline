@@ -17,6 +17,12 @@ from .models import Violation, ValidationResult, Severity
 from .analyzer import CodeAnalyzer
 from .reporter import ReportGenerator
 
+# Import rule configuration manager
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+from config.rule_config_manager import RuleConfigManager
+from config.config_manager import ConfigManager
+
 
 class ConstitutionValidator:
     """
@@ -38,6 +44,31 @@ class ConstitutionValidator:
         self.analyzer = CodeAnalyzer()
         self.reporter = ReportGenerator()
         self.start_time = time.time()
+        
+        # Initialize rule configuration manager
+        self.config_manager = ConfigManager()
+        self.rule_manager = RuleConfigManager(self.config_manager)
+    
+    def _normalize_rule_ids(self, violations):
+        """Ensure every violation has a rule_id; derive from rule_number if missing."""
+        normalized = []
+        for v in violations:
+            if not getattr(v, "rule_id", None):
+                try:
+                    rn = int(getattr(v, "rule_number", 0))
+                    setattr(v, "rule_id", f"rule_{rn:03d}" if rn > 0 else "rule_unknown")
+                except Exception:
+                    setattr(v, "rule_id", "rule_unknown")
+            normalized.append(v)
+        return normalized
+    
+    def get_rule_configuration_status(self) -> Dict[str, Any]:
+        """Get current rule configuration status"""
+        return self.rule_manager.get_rule_status_report()
+    
+    def is_rule_enabled(self, rule_id: str, file_path: str = None) -> bool:
+        """Check if a specific rule is enabled for a file"""
+        return self.rule_manager.is_rule_enabled(rule_id, file_path)
         
     def _load_config(self) -> Dict[str, Any]:
         """Load validation configuration from JSON file."""
@@ -95,15 +126,15 @@ class ConstitutionValidator:
         # Analyze the code
         violations = []
         
-        # Check each rule category
-        violations.extend(self._check_basic_work_rules(tree, file_path, content))
-        violations.extend(self._check_requirements_rules(tree, file_path, content))
-        violations.extend(self._check_privacy_security_rules(tree, file_path, content))
-        violations.extend(self._check_performance_rules(tree, file_path, content))
-        violations.extend(self._check_architecture_rules(tree, file_path, content))
-        violations.extend(self._check_testing_safety_rules(tree, file_path, content))
-        violations.extend(self._check_code_quality_rules(tree, file_path, content))
-        violations.extend(self._check_system_design_rules(tree, file_path, content))
+        # Check each rule category (only if rules are enabled) and normalize rule_id
+        violations.extend(self._normalize_rule_ids(self._check_basic_work_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_requirements_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_privacy_security_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_performance_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_architecture_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_testing_safety_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_code_quality_rules(tree, file_path, content)))
+        violations.extend(self._normalize_rule_ids(self._check_system_design_rules(tree, file_path, content)))
         violations.extend(self._check_problem_solving_rules(tree, file_path, content))
         violations.extend(self._check_platform_rules(tree, file_path, content))
         violations.extend(self._check_teamwork_rules(tree, file_path, content))
@@ -134,21 +165,45 @@ class ConstitutionValidator:
     def _check_basic_work_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check basic work rules (4, 5, 10)."""
         violations = []
+        
+        # Check if basic work rules are enabled
+        enabled_rules = self.rule_manager.get_enabled_rules(category='basic_work')
+        if not enabled_rules:
+            return violations
+        
         from .rules.basic_work import BasicWorkValidator
         basic_work_validator = BasicWorkValidator()
-        violations.extend(basic_work_validator.validate_all(tree, content, file_path))
+        
+        # Filter violations based on enabled rules
+        all_violations = basic_work_validator.validate_all(tree, content, file_path)
+        for violation in all_violations:
+            # Check if this specific rule is enabled for this file
+            rule_id = f"rule_{violation.rule_number:03d}"
+            if self.rule_manager.is_rule_enabled(rule_id, file_path):
+                violations.append(violation)
+        
         return violations
     
     def _check_requirements_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check requirements and specification rules (1, 2)."""
         violations = []
         
+        # Check if requirements rules are enabled
+        enabled_rules = self.rule_manager.get_enabled_rules(category='requirements')
+        if not enabled_rules:
+            return violations
+        
         # Import the requirements validator
         from .rules.requirements import RequirementsValidator
         requirements_validator = RequirementsValidator()
         
-        # Run all requirements validations
-        violations.extend(requirements_validator.validate_all(tree, content, file_path))
+        # Run all requirements validations and filter by enabled rules
+        all_violations = requirements_validator.validate_all(tree, content, file_path)
+        for violation in all_violations:
+            # Check if this specific rule is enabled for this file
+            rule_id = f"rule_{violation.rule_number:03d}"
+            if self.rule_manager.is_rule_enabled(rule_id, file_path):
+                violations.append(violation)
         
         return violations
     

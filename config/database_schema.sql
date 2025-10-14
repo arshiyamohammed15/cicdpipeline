@@ -103,6 +103,81 @@ CREATE TRIGGER IF NOT EXISTS update_typescript_config_timestamp
         UPDATE typescript_config SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
     END;
 
+-- Rule Configuration Table
+CREATE TABLE IF NOT EXISTS rule_config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    rule_id TEXT UNIQUE NOT NULL,  -- R001, R002, rule_001, etc.
+    rule_name TEXT NOT NULL,
+    enabled BOOLEAN DEFAULT 1,     -- 1 = enabled, 0 = disabled
+    severity TEXT DEFAULT 'warning', -- error, warning, info
+    category TEXT NOT NULL,        -- security, api, code_quality, etc.
+    constitution TEXT NOT NULL,    -- Code Review, API Contracts, etc.
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    version INTEGER DEFAULT 1
+);
+
+-- Rule Override Table (for specific files/projects)
+CREATE TABLE IF NOT EXISTS rule_override (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    rule_id TEXT NOT NULL,
+    scope TEXT NOT NULL,           -- 'file', 'project', 'workspace', 'global'
+    scope_value TEXT NOT NULL,     -- file path, project name, etc.
+    enabled BOOLEAN NOT NULL,
+    reason TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (rule_id) REFERENCES rule_config(rule_id)
+);
+
+-- Rule Group Configuration
+CREATE TABLE IF NOT EXISTS rule_group_config (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_name TEXT UNIQUE NOT NULL,
+    group_description TEXT,
+    enabled BOOLEAN DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Rule Group Membership
+CREATE TABLE IF NOT EXISTS rule_group_membership (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_name TEXT NOT NULL,
+    rule_id TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (group_name) REFERENCES rule_group_config(group_name),
+    FOREIGN KEY (rule_id) REFERENCES rule_config(rule_id),
+    UNIQUE(group_name, rule_id)
+);
+
+-- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_rule_config_rule_id ON rule_config(rule_id);
+CREATE INDEX IF NOT EXISTS idx_rule_config_enabled ON rule_config(enabled);
+CREATE INDEX IF NOT EXISTS idx_rule_config_category ON rule_config(category);
+CREATE INDEX IF NOT EXISTS idx_rule_override_rule_id ON rule_override(rule_id);
+CREATE INDEX IF NOT EXISTS idx_rule_override_scope ON rule_override(scope, scope_value);
+
+-- Triggers for automatic timestamp updates
+CREATE TRIGGER IF NOT EXISTS update_rule_config_timestamp 
+    AFTER UPDATE ON rule_config
+    BEGIN
+        UPDATE rule_config SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+    END;
+
+CREATE TRIGGER IF NOT EXISTS update_rule_override_timestamp 
+    AFTER UPDATE ON rule_override
+    BEGIN
+        UPDATE rule_override SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+    END;
+
+CREATE TRIGGER IF NOT EXISTS update_rule_group_config_timestamp 
+    AFTER UPDATE ON rule_group_config
+    BEGIN
+        UPDATE rule_group_config SET updated_at = CURRENT_TIMESTAMP WHERE id = NEW.id;
+    END;
+
 CREATE TRIGGER IF NOT EXISTS update_build_config_timestamp 
     AFTER UPDATE ON build_config
     BEGIN
