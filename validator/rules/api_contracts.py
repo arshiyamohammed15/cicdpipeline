@@ -70,13 +70,17 @@ class APIContractsValidator:
             # Check OpenAPI version
             if not spec.get('openapi', '').startswith('3.1'):
                 violations.append(Violation(
-                    rule_id='R013',
-                    file_path=file_path,
-                    line_number=1,
-                    message='OpenAPI 3.1 compliance required',
-                    severity=Severity.ERROR,
-                    category='api'
-                ))
+                        rule_id='R013',
+                        rule_name='OpenAPI 3.1 compliance required',
+                        severity=Severity.ERROR,
+                        message='OpenAPI 3.1 compliance required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                
+                    ))
             
             # Check for versioning in paths
             paths = spec.get('paths', {})
@@ -108,13 +112,17 @@ class APIContractsValidator:
             
         except (json.JSONDecodeError, yaml.YAMLError) as e:
             violations.append(Violation(
-                rule_id='R013',
-                file_path=file_path,
-                line_number=1,
-                message=f'Invalid OpenAPI specification: {str(e)}',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R013',
+                        rule_name=f'Invalid OpenAPI specification: {str(e)}',
+                        severity=Severity.ERROR,
+                        message=f'Invalid OpenAPI specification: {str(e)}',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         
         return violations
     
@@ -134,13 +142,17 @@ class APIContractsValidator:
                     
                     if not has_idempotency:
                         violations.append(Violation(
-                            rule_id='R015',
-                            file_path=file_path,
-                            line_number=1,
-                            message=f'Mutating route {method.upper()} {path} must accept Idempotency-Key',
-                            severity=Severity.ERROR,
-                            category='api'
-                        ))
+                        rule_id='R015',
+                        rule_name=f'Mutating route {method.upper()} {path} must accept Idempotency-Key',
+                        severity=Severity.ERROR,
+                        message=f'Mutating route {method.upper()} {path} must accept Idempotency-Key',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                        
+                    ))
         
         return violations
     
@@ -155,13 +167,17 @@ class APIContractsValidator:
         
         if not error_schemas:
             violations.append(Violation(
-                rule_id='R016',
-                file_path=file_path,
-                line_number=1,
-                message='Stable error envelope with canonical codes required',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R016',
+                        rule_name='Stable error envelope with canonical codes required',
+                        severity=Severity.ERROR,
+                        message='Stable error envelope with canonical codes required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         
         return violations
     
@@ -178,13 +194,17 @@ class APIContractsValidator:
         
         if not has_jwt:
             violations.append(Violation(
-                rule_id='R019',
-                file_path=file_path,
-                line_number=1,
-                message='JWT with documented scopes per route required',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R019',
+                        rule_name='JWT with documented scopes per route required',
+                        severity=Severity.ERROR,
+                        message='JWT with documented scopes per route required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         
         return violations
     
@@ -205,13 +225,17 @@ class APIContractsValidator:
         
         if not has_rate_limiting:
             violations.append(Violation(
-                rule_id='R021',
-                file_path=file_path,
-                line_number=1,
-                message='Rate limit headers and 429 responses required',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R021',
+                        rule_name='Rate limit headers and 429 responses required',
+                        severity=Severity.WARNING,
+                        message='Rate limit headers and 429 responses required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         
         return violations
     
@@ -230,13 +254,17 @@ class APIContractsValidator:
                             for media_type, media_spec in content.items():
                                 if isinstance(media_spec, dict) and 'example' not in media_spec:
                                     violations.append(Violation(
-                                        rule_id='R023',
-                                        file_path=file_path,
-                                        line_number=1,
-                                        message=f'Examples required for {method.upper()} {path} {status_code}',
-                                        severity=Severity.WARNING,
-                                        category='api'
-                                    ))
+                        rule_id='R023',
+                        rule_name=f'Examples required for {method.upper()} {path} {status_code}',
+                        severity=Severity.WARNING,
+                        message=f'Examples required for {method.upper()} {path} {status_code}',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                                    
+                    ))
         
         return violations
     
@@ -263,24 +291,32 @@ class APIContractsValidator:
             # Check for missing error handling in API calls
             if re.search(r'(requests\.|urllib\.|http\.)', line) and 'try:' not in content:
                 violations.append(Violation(
-                    rule_id='R016',
-                    file_path=file_path,
-                    line_number=line_num,
-                    message='API calls should have proper error handling',
-                    severity=Severity.WARNING,
-                    category='api'
-                ))
+                        rule_id='R016',
+                        rule_name='API calls should have proper error handling',
+                        severity=Severity.WARNING,
+                        message='API calls should have proper error handling',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                
+                    ))
             
             # Check for missing idempotency headers
             if re.search(r'(post|put|patch|delete)', line.lower()) and 'idempotency' not in line.lower():
                 violations.append(Violation(
-                    rule_id='R015',
-                    file_path=file_path,
-                    line_number=line_num,
-                    message='Mutating operations should include idempotency handling',
-                    severity=Severity.WARNING,
-                    category='api'
-                ))
+                        rule_id='R015',
+                        rule_name='Mutating operations should include idempotency handling',
+                        severity=Severity.WARNING,
+                        message='Mutating operations should include idempotency handling',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                
+                    ))
         
         return violations
     
@@ -307,13 +343,17 @@ class APIContractsValidator:
         violations = []
         if re.search(r'(post|put|patch|delete)', content.lower()) and 'idempotency' not in content.lower():
             violations.append(Violation(
-                rule_id='R015',
-                file_path=file_path,
-                line_number=1,
-                message='All mutating routes must accept Idempotency-Key',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R015',
+                        rule_name='All mutating routes must accept Idempotency-Key',
+                        severity=Severity.ERROR,
+                        message='All mutating routes must accept Idempotency-Key',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_error_handling(self, content: str, file_path: str) -> List[Violation]:
@@ -321,13 +361,17 @@ class APIContractsValidator:
         violations = []
         if 'error' in content.lower() and 'envelope' not in content.lower():
             violations.append(Violation(
-                rule_id='R016',
-                file_path=file_path,
-                line_number=1,
-                message='Stable error envelope with canonical codes required',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R016',
+                        rule_name='Stable error envelope with canonical codes required',
+                        severity=Severity.ERROR,
+                        message='Stable error envelope with canonical codes required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_request_validation(self, content: str, file_path: str) -> List[Violation]:
@@ -335,13 +379,17 @@ class APIContractsValidator:
         violations = []
         if 'request' in content.lower() and 'validation' not in content.lower():
             violations.append(Violation(
-                rule_id='R017',
-                file_path=file_path,
-                line_number=1,
-                message='Validate all request inputs with proper error responses',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R017',
+                        rule_name='Validate all request inputs with proper error responses',
+                        severity=Severity.ERROR,
+                        message='Validate all request inputs with proper error responses',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_response_validation(self, content: str, file_path: str) -> List[Violation]:
@@ -349,13 +397,17 @@ class APIContractsValidator:
         violations = []
         if 'response' in content.lower() and 'validation' not in content.lower():
             violations.append(Violation(
-                rule_id='R018',
-                file_path=file_path,
-                line_number=1,
-                message='Validate all response outputs with proper schemas',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R018',
+                        rule_name='Validate all response outputs with proper schemas',
+                        severity=Severity.ERROR,
+                        message='Validate all response outputs with proper schemas',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_authentication(self, content: str, file_path: str) -> List[Violation]:
@@ -363,13 +415,17 @@ class APIContractsValidator:
         violations = []
         if 'auth' in content.lower() and 'jwt' not in content.lower():
             violations.append(Violation(
-                rule_id='R019',
-                file_path=file_path,
-                line_number=1,
-                message='JWT with documented scopes per route required',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R019',
+                        rule_name='JWT with documented scopes per route required',
+                        severity=Severity.ERROR,
+                        message='JWT with documented scopes per route required',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_authorization(self, content: str, file_path: str) -> List[Violation]:
@@ -377,13 +433,17 @@ class APIContractsValidator:
         violations = []
         if 'auth' in content.lower() and 'authorization' not in content.lower():
             violations.append(Violation(
-                rule_id='R020',
-                file_path=file_path,
-                line_number=1,
-                message='Document authorization requirements and access controls',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R020',
+                        rule_name='Document authorization requirements and access controls',
+                        severity=Severity.ERROR,
+                        message='Document authorization requirements and access controls',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_rate_limiting(self, content: str, file_path: str) -> List[Violation]:
@@ -391,13 +451,17 @@ class APIContractsValidator:
         violations = []
         if 'api' in content.lower() and 'rate' not in content.lower():
             violations.append(Violation(
-                rule_id='R021',
-                file_path=file_path,
-                line_number=1,
-                message='Declare rate limit headers; exceeding returns 429 deterministically',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R021',
+                        rule_name='Declare rate limit headers; exceeding returns 429 deterministically',
+                        severity=Severity.WARNING,
+                        message='Declare rate limit headers; exceeding returns 429 deterministically',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_caching(self, content: str, file_path: str) -> List[Violation]:
@@ -406,13 +470,17 @@ class APIContractsValidator:
         if 'put' in content.lower() or 'patch' in content.lower():
             if 'etag' not in content.lower() and 'cache' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R022',
-                    file_path=file_path,
-                    line_number=1,
-                    message='ETag/If-Match for racy PUT/PATCH; Cache-Control documented',
-                    severity=Severity.WARNING,
-                    category='api'
-                ))
+                        rule_id='R022',
+                        rule_name='ETag/If-Match for racy PUT/PATCH; Cache-Control documented',
+                        severity=Severity.WARNING,
+                        message='ETag/If-Match for racy PUT/PATCH; Cache-Control documented',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+                
+                    ))
         return violations
     
     def _validate_documentation(self, content: str, file_path: str) -> List[Violation]:
@@ -420,13 +488,17 @@ class APIContractsValidator:
         violations = []
         if 'response' in content.lower() and 'example' not in content.lower():
             violations.append(Violation(
-                rule_id='R023',
-                file_path=file_path,
-                line_number=1,
-                message='Examples for all responses; migration notes for breaking changes',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R023',
+                        rule_name='Examples for all responses; migration notes for breaking changes',
+                        severity=Severity.WARNING,
+                        message='Examples for all responses; migration notes for breaking changes',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_testing(self, content: str, file_path: str) -> List[Violation]:
@@ -434,13 +506,17 @@ class APIContractsValidator:
         violations = []
         if 'api' in content.lower() and 'test' not in content.lower():
             violations.append(Violation(
-                rule_id='R024',
-                file_path=file_path,
-                line_number=1,
-                message='Provider and consumer contract tests; mock server from spec',
-                severity=Severity.ERROR,
-                category='api'
-            ))
+                        rule_id='R024',
+                        rule_name='Provider and consumer contract tests; mock server from spec',
+                        severity=Severity.ERROR,
+                        message='Provider and consumer contract tests; mock server from spec',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_monitoring(self, content: str, file_path: str) -> List[Violation]:
@@ -448,13 +524,17 @@ class APIContractsValidator:
         violations = []
         if 'api' in content.lower() and 'metric' not in content.lower():
             violations.append(Violation(
-                rule_id='R025',
-                file_path=file_path,
-                line_number=1,
-                message='Metrics/traces/alerts updated; SLOs published per GA route',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R025',
+                        rule_name='Metrics/traces/alerts updated; SLOs published per GA route',
+                        severity=Severity.WARNING,
+                        message='Metrics/traces/alerts updated; SLOs published per GA route',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_deprecation(self, content: str, file_path: str) -> List[Violation]:
@@ -490,13 +570,17 @@ class APIContractsValidator:
         violations = []
         if 'endpoint' in content.lower() and 'x-status' not in content.lower():
             violations.append(Violation(
-                rule_id='R083',
-                file_path=file_path,
-                line_number=1,
-                message='Add x-status to endpoints: experimental | beta | ga | deprecated | sunset',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R083',
+                        rule_name='Add x-status to endpoints: experimental | beta | ga | deprecated | sunset',
+                        severity=Severity.WARNING,
+                        message='Add x-status to endpoints: experimental | beta | ga | deprecated | sunset',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_idempotency_retention(self, content: str, file_path: str) -> List[Violation]:
@@ -504,13 +588,17 @@ class APIContractsValidator:
         violations = []
         if 'idempotency' in content.lower() and '24h' not in content.lower():
             violations.append(Violation(
-                rule_id='R084',
-                file_path=file_path,
-                line_number=1,
-                message='Idempotency retention window default 24h with hash of request body',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R084',
+                        rule_name='Idempotency retention window default 24h with hash of request body',
+                        severity=Severity.WARNING,
+                        message='Idempotency retention window default 24h with hash of request body',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_sdk_naming(self, content: str, file_path: str) -> List[Violation]:
@@ -518,13 +606,17 @@ class APIContractsValidator:
         violations = []
         if 'sdk' in content.lower() and '@zeroui/api-v' not in content.lower():
             violations.append(Violation(
-                rule_id='R085',
-                file_path=file_path,
-                line_number=1,
-                message='TypeScript: @zeroui/api-v<major>; Python: zeroui_api_v<major>',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R085',
+                        rule_name='TypeScript: @zeroui/api-v<major>; Python: zeroui_api_v<major>',
+                        severity=Severity.WARNING,
+                        message='TypeScript: @zeroui/api-v<major>; Python: zeroui_api_v<major>',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations
     
     def _validate_receipt_signature(self, content: str, file_path: str) -> List[Violation]:
@@ -532,11 +624,15 @@ class APIContractsValidator:
         violations = []
         if 'receipt' in content.lower() and 'signature' not in content.lower():
             violations.append(Violation(
-                rule_id='R086',
-                file_path=file_path,
-                line_number=1,
-                message='Optional receipt_signature (Ed25519) for high-trust actions',
-                severity=Severity.WARNING,
-                category='api'
-            ))
+                        rule_id='R086',
+                        rule_name='Optional receipt_signature (Ed25519) for high-trust actions',
+                        severity=Severity.WARNING,
+                        message='Optional receipt_signature (Ed25519) for high-trust actions',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='api'
+            
+                    ))
         return violations

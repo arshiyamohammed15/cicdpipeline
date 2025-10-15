@@ -16,7 +16,13 @@ from datetime import datetime
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tests.dynamic_test_factory import DynamicTestFactory, TestCase
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from dynamic_test_factory import DynamicTestFactory, DataTestCase
 
 
 @dataclass
@@ -45,7 +51,7 @@ class CoverageReport:
     generated_at: str
 
 
-class TestCoverageReporter:
+class CoverageReporter:
     """
     Reporter for analyzing and reporting test coverage of the dynamic test system.
     """
@@ -56,7 +62,7 @@ class TestCoverageReporter:
         self.test_factory = DynamicTestFactory(rules_file)
         self.all_rules = self.test_factory.get_all_rules()
 
-    def analyze_coverage(self, test_cases: List[TestCase] = None) -> CoverageReport:
+    def analyze_coverage(self, test_cases: List[DataTestCase] = None) -> CoverageReport:
         """
         Analyze test coverage and generate a comprehensive report.
 
@@ -482,10 +488,10 @@ class TestCoverageReporter:
 
 
 # Global reporter instance
-coverage_reporter = TestCoverageReporter()
+coverage_reporter = CoverageReporter()
 
 
-def get_coverage_reporter() -> TestCoverageReporter:
+def get_coverage_reporter() -> CoverageReporter:
     """Get the global coverage reporter instance."""
     return coverage_reporter
 

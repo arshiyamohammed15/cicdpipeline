@@ -11,12 +11,22 @@ Validates code against basic work principles:
 import ast
 from typing import List
 from ..models import Violation, Severity
+from ..base_validator import BaseRuleValidator
 
 
-class BasicWorkValidator:
+class BasicWorkValidator(BaseRuleValidator):
     """Validator for basic work rules."""
     
-    def __init__(self):
+    def __init__(self, rule_config: dict = None):
+        if rule_config is None:
+            rule_config = {
+                "category": "basic_work",
+                "priority": "critical",
+                "description": "Core principles for all development work",
+                "rules": [4, 5, 10, 13, 20]
+            }
+        super().__init__(rule_config)
+        
         self.settings_patterns = ['config', 'settings', 'configuration', 'env', 'environment']
         self.logging_patterns = ['log', 'logging', 'logger', 'audit', 'record', 'track']
         self.ai_transparency_patterns = ['confidence', 'explanation', 'reasoning', 'uncertainty', 'version']
@@ -54,7 +64,7 @@ class BasicWorkValidator:
                 if re.search(pattern, line):
                     # Check if it's a configuration-related assignment
                     if any(keyword in line.lower() for keyword in ['host', 'port', 'url', 'path', 'timeout', 'limit', 'max', 'min']):
-                        violations.append(Violation(
+                        violations.append(self.create_violation(
                             rule_number=4,
                             rule_name="Use Settings Files, Not Hardcoded Numbers",
                             severity=Severity.WARNING,
@@ -70,7 +80,7 @@ class BasicWorkValidator:
         has_settings_usage = any(pattern in content.lower() for pattern in self.settings_patterns)
         
         if not has_settings_usage:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=4,
                 rule_name="Use Settings Files, Not Hardcoded Numbers",
                 severity=Severity.INFO,
@@ -87,7 +97,7 @@ class BasicWorkValidator:
         has_env_vars = any(pattern in content for pattern in env_var_patterns)
         
         if not has_env_vars:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=4,
                 rule_name="Use Settings Files, Not Hardcoded Numbers",
                 severity=Severity.INFO,
@@ -119,7 +129,7 @@ class BasicWorkValidator:
         has_logging = any(pattern in content.lower() for pattern in self.logging_patterns)
         
         if not has_logging:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.WARNING,
@@ -136,7 +146,7 @@ class BasicWorkValidator:
         has_structured_logging = any(pattern in content.lower() for pattern in structured_logging_patterns)
         
         if not has_structured_logging:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
@@ -153,7 +163,7 @@ class BasicWorkValidator:
         has_audit_trail = any(pattern in content.lower() for pattern in audit_patterns)
         
         if not has_audit_trail:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
@@ -170,7 +180,7 @@ class BasicWorkValidator:
         has_log_levels = any(level in content.lower() for level in log_levels)
         
         if not has_log_levels:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
@@ -207,7 +217,7 @@ class BasicWorkValidator:
             has_confidence = any(pattern in content.lower() for pattern in ['confidence', 'probability', 'certainty'])
             
             if not has_confidence:
-                violations.append(Violation(
+                violations.append(self.create_violation(
                     rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.WARNING,
@@ -223,7 +233,7 @@ class BasicWorkValidator:
             has_explanations = any(pattern in content.lower() for pattern in ['explain', 'reasoning', 'why', 'because'])
             
             if not has_explanations:
-                violations.append(Violation(
+                violations.append(self.create_violation(
                     rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.WARNING,
@@ -239,7 +249,7 @@ class BasicWorkValidator:
             has_version_tracking = any(pattern in content.lower() for pattern in ['version', 'model_version', 'ai_version'])
             
             if not has_version_tracking:
-                violations.append(Violation(
+                violations.append(self.create_violation(
                     rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.INFO,
@@ -255,7 +265,7 @@ class BasicWorkValidator:
             has_uncertainty = any(pattern in content.lower() for pattern in ['uncertainty', 'unknown', 'ambiguous', 'unclear'])
             
             if not has_uncertainty:
-                violations.append(Violation(
+                violations.append(self.create_violation(
                     rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.INFO,
@@ -288,7 +298,7 @@ class BasicWorkValidator:
         has_learning = any(pattern in content.lower() for pattern in learning_patterns)
         
         if not has_learning:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=13,
                 rule_name="Learn from Mistakes",
                 severity=Severity.INFO,
@@ -325,7 +335,7 @@ class BasicWorkValidator:
         has_fairness = any(pattern in content.lower() for pattern in fairness_patterns)
         
         if not has_accessibility and not has_fairness:
-            violations.append(Violation(
+            violations.append(self.create_violation(
                 rule_number=20,
                 rule_name="Be Fair to Everyone",
                 severity=Severity.INFO,

@@ -1,0 +1,30 @@
+{
+  "category": "basic_work",
+  "patterns": {
+    "settings_files": {
+      "keywords": ["config", "settings", "configuration", "env", "environment"],
+      "severity": "warning",
+      "message": "Use settings files instead of hardcoded values"
+    },
+    "logging_records": {
+      "keywords": ["log", "logging", "logger", "audit", "record", "track"],
+      "severity": "warning",
+      "message": "Keep good records and logs for monitoring"
+    },
+    "ai_transparency": {
+      "keywords": ["confidence", "explanation", "reasoning", "uncertainty", "version"],
+      "severity": "warning",
+      "message": "Be honest about AI decisions with confidence levels"
+    },
+    "learning_from_mistakes": {
+      "keywords": ["learn", "learning", "improve", "feedback", "correction", "mistake"],
+      "severity": "info",
+      "message": "Learn from mistakes and get smarter over time"
+    },
+    "fairness_accessibility": {
+      "keywords": ["accessibility", "a11y", "aria", "alt_text", "fair", "inclusive"],
+      "severity": "info",
+      "message": "Be fair to everyone with accessibility and inclusive design"
+    }
+  }
+}

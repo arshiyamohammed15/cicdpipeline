@@ -14,7 +14,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tests.dynamic_test_factory import DynamicTestFactory, TestCase
+from .dynamic_test_factory import DynamicTestFactory, DataTestCase
 
 
 class TestReadabilityRules:
@@ -36,13 +36,9 @@ class TestReadabilityRules:
         assert len(readability_rules) > 0, "Should have readability-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
-                                                          keyword in rule.get('description', '').lower()
-                                                          for keyword in ['readability', 'simple', 'english', 'short', 'sentence', 'comment'])
-                           ),
+                           DynamicTestFactory().create_test_cases(),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_readability_rules(self, test_case: TestCase):
+    def test_readability_rules(self, test_case: DataTestCase):
         """Test all readability-related rules."""
         # Verify it's a readability-related rule
         readability_keywords = ['readability', 'simple', 'english', 'short', 'sentence', 'comment']
@@ -85,13 +81,9 @@ class TestSecurityRules:
         assert len(security_rules) > 0, "Should have security-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
-                                                          keyword in rule.get('description', '').lower()
-                                                          for keyword in ['security', 'secret', 'pii', 'privacy', 'auth', 'jwt', 'token', 'password', 'key'])
-                           ),
+                           DynamicTestFactory().create_test_cases(),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_security_rules(self, test_case: TestCase):
+    def test_security_rules(self, test_case: DataTestCase):
         """Test all security-related rules."""
         # Verify it's a security-related rule
         security_keywords = ['security', 'secret', 'pii', 'privacy', 'auth', 'jwt', 'token', 'password', 'key']
@@ -132,13 +124,12 @@ class TestAsyncRules:
         assert len(async_rules) >= 0, "Should handle async-related rules (may be 0)"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['async', 'await', 'blocking', 'handler'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_async_rules(self, test_case: TestCase):
+    def test_async_rules(self, test_case: DataTestCase):
         """Test all async-related rules."""
         # Verify it's an async-related rule
         async_keywords = ['async', 'await', 'blocking', 'handler']
@@ -175,13 +166,12 @@ class TestPerformanceRules:
         assert len(performance_rules) > 0, "Should have performance-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['performance', 'perf', 'regression', 'budget', 'measurement', 'monotonic', 'time'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_performance_rules(self, test_case: TestCase):
+    def test_performance_rules(self, test_case: DataTestCase):
         """Test all performance-related rules."""
         # Verify it's a performance-related rule
         performance_keywords = ['performance', 'perf', 'regression', 'budget', 'measurement', 'monotonic', 'time']
@@ -222,13 +212,12 @@ class TestTODORules:
         assert len(todo_rules) > 0, "Should have TODO-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['todo', 'fixme', 'hack', 'note'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_todo_rules(self, test_case: TestCase):
+    def test_todo_rules(self, test_case: DataTestCase):
         """Test all TODO-related rules."""
         # Verify it's a TODO-related rule
         todo_keywords = ['todo', 'fixme', 'hack', 'note']
@@ -280,13 +269,12 @@ class TestAPIRules:
         assert len(api_rules) > 0, "Should have API-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['api', 'http', 'rest', 'endpoint', 'route', 'verb', 'uri', 'idempotency', 'pagination'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_api_rules(self, test_case: TestCase):
+    def test_api_rules(self, test_case: DataTestCase):
         """Test all API-related rules."""
         # Verify it's an API-related rule
         api_keywords = ['api', 'http', 'rest', 'endpoint', 'route', 'verb', 'uri', 'idempotency', 'pagination']
@@ -327,13 +315,12 @@ class TestLoggingRules:
         assert len(logging_rules) > 0, "Should have logging-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['log', 'jsonl', 'trace', 'timestamp', 'monotonic', 'utf8', 'w3c', 'event', 'error', 'hash'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_logging_rules(self, test_case: TestCase):
+    def test_logging_rules(self, test_case: DataTestCase):
         """Test all logging-related rules."""
         # Verify it's a logging-related rule
         logging_keywords = ['log', 'jsonl', 'trace', 'timestamp', 'monotonic', 'utf8', 'w3c', 'event', 'error', 'hash']
@@ -374,13 +361,12 @@ class TestStructureRules:
         assert len(structure_rules) > 0, "Should have structure-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: any(keyword in rule.get('name', '').lower() or
+                           DynamicTestFactory().create_test_cases().lower() or
                                                           keyword in rule.get('description', '').lower()
                                                           for keyword in ['structure', 'folder', 'directory', 'path', 'server', 'junction', 'eol', 'case', 'test'])
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_structure_rules(self, test_case: TestCase):
+    def test_structure_rules(self, test_case: DataTestCase):
         """Test all structure-related rules."""
         # Verify it's a structure-related rule
         structure_keywords = ['structure', 'folder', 'directory', 'path', 'server', 'junction', 'eol', 'case', 'test']

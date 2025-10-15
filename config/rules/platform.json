@@ -1,0 +1,17 @@
+{
+  "category": "platform",
+  "priority": "important",
+  "description": "Platform features and technical implementation",
+  "rules": [
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51
+  ]
+}

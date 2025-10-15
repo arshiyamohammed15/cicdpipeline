@@ -13,8 +13,7 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tests.dynamic_test_factory import DynamicTestFactory, TestCase
-from tools.validator.rule_engine import RuleEngine
+from .dynamic_test_factory import DynamicTestFactory, DataTestCase
 
 
 class TestCodeReviewConstitution:
@@ -35,11 +34,9 @@ class TestCodeReviewConstitution:
         assert len(constitution_rules) > 0, "Code Review Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'Code Review'
-                           ),
+                           DynamicTestFactory().create_test_cases(),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_code_review_rules(self, test_case: TestCase):
+    def test_code_review_rules(self, test_case: DataTestCase):
         """Test all rules from Code Review Constitution."""
         assert test_case.constitution == "Code Review", f"Rule {test_case.rule_id} not from Code Review Constitution"
 
@@ -91,11 +88,9 @@ class TestAPIContractsConstitution:
         assert len(constitution_rules) > 0, "API Contracts Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'API Contracts'
-                           ),
+                           DynamicTestFactory().create_test_cases(),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_api_contracts_rules(self, test_case: TestCase):
+    def test_api_contracts_rules(self, test_case: DataTestCase):
         """Test all rules from API Contracts Constitution."""
         assert test_case.constitution == "API Contracts", f"Rule {test_case.rule_id} not from API Contracts Constitution"
 
@@ -144,11 +139,10 @@ class TestCodingStandardsConstitution:
         assert len(constitution_rules) > 0, "Coding Standards Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'Coding Standards'
+                           DynamicTestFactory().create_test_cases() == 'Coding Standards'
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_coding_standards_rules(self, test_case: TestCase):
+    def test_coding_standards_rules(self, test_case: DataTestCase):
         """Test all rules from Coding Standards Constitution."""
         assert test_case.constitution == "Coding Standards", f"Rule {test_case.rule_id} not from Coding Standards Constitution"
 
@@ -205,11 +199,10 @@ class TestCommentsConstitution:
         assert len(constitution_rules) > 0, "Comments Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'Comments'
+                           DynamicTestFactory().create_test_cases() == 'Comments'
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_comments_rules(self, test_case: TestCase):
+    def test_comments_rules(self, test_case: DataTestCase):
         """Test all rules from Comments Constitution."""
         assert test_case.constitution == "Comments", f"Rule {test_case.rule_id} not from Comments Constitution"
 
@@ -255,11 +248,10 @@ class TestFolderStandardsConstitution:
         assert len(constitution_rules) > 0, "Folder Standards Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'Folder Standards'
+                           DynamicTestFactory().create_test_cases() == 'Folder Standards'
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_folder_standards_rules(self, test_case: TestCase):
+    def test_folder_standards_rules(self, test_case: DataTestCase):
         """Test all rules from Folder Standards Constitution."""
         assert test_case.constitution == "Folder Standards", f"Rule {test_case.rule_id} not from Folder Standards Constitution"
 
@@ -305,11 +297,10 @@ class TestLoggingConstitution:
         assert len(constitution_rules) > 0, "Logging Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases(
-                               filter_func=lambda rule: rule.get('constitution') == 'Logging'
+                           DynamicTestFactory().create_test_cases() == 'Logging'
                            ),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
-    def test_logging_rules(self, test_case: TestCase):
+    def test_logging_rules(self, test_case: DataTestCase):
         """Test all rules from Logging Constitution."""
         assert test_case.constitution == "Logging", f"Rule {test_case.rule_id} not from Logging Constitution"
 

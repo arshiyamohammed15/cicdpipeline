@@ -1,0 +1,6 @@
+{
+  "category": "basic_work",
+  "priority": "critical",
+  "description": "Core principles for all development work",
+  "rules": [4, 5, 10, 13, 20]
+}

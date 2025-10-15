@@ -1,239 +1,38 @@
+#!/usr/bin/env python3
 """
-Privacy and security rule validator.
+Privacy & Security Rules Validator
 
-This module implements validation for privacy and security rules:
-- Rule 3: Protect People's Privacy
-- Rule 12: Keep AI Safe + Risk Modules - Safety First
-- Rule 27: Be Smart About Data
-- Rule 36: Be Extra Careful with Private Data
+Validates code against privacy and security principles:
+- Rule 3: Protect people's privacy
+- Rule 11: Check your data
+- Rule 12: Keep AI safe
+- Rule 27: Be smart about data
+- Rule 36: Be extra careful with private data
 """
 
-import re
 import ast
-from typing import List, Dict, Any, Tuple
+import re
+from typing import List
 from ..models import Violation, Severity
+from ..base_validator import BaseRuleValidator
 
 
-class PrivacyValidator:
-    """
-    Validates privacy and security rules.
+class PrivacyValidator(BaseRuleValidator):
+    """Validator for privacy and security rules."""
     
-    This class focuses on detecting hardcoded credentials, personal data,
-    and other privacy violations in code.
-    """
+    def __init__(self, rule_config: dict = None):
+        if rule_config is None:
+            rule_config = {
+                "category": "privacy_security",
+                "priority": "critical",
+                "description": "Privacy and security principles",
+                "rules": [3, 11, 12, 27, 36]
+            }
+        super().__init__(rule_config)
     
-    def __init__(self):
-        """Initialize the privacy validator."""
-        self.credential_patterns = [
-            r'(?i)(password|passwd|pwd)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(api_key|apikey|api-key)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(secret|token|auth)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(private_key|privatekey)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(access_token|access_token)\s*=\s*["\'][^"\']+["\']'
-        ]
-        
-        self.personal_data_patterns = [
-            r'(?i)(ssn|social_security)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(credit_card|cc_number)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(phone|telephone)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(email|e-mail)\s*=\s*["\'][^"\']+["\']',
-            r'(?i)(address|street)\s*=\s*["\'][^"\']+["\']'
-        ]
-        
-        self.encryption_keywords = [
-            'encrypt', 'decrypt', 'hash', 'salt', 'cipher',
-            'aes', 'rsa', 'ssl', 'tls', 'https'
-        ]
-        
-        self.unsafe_keywords = [
-            'plaintext', 'unencrypted', 'raw_data', 'clear_text'
-        ]
-    
-    def validate_credentials(self, content: str, file_path: str) -> List[Violation]:
+    def validate_protect_privacy(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for hardcoded credentials.
-        
-        Args:
-            content: File content to analyze
-            file_path: Path to the file
-            
-        Returns:
-            List of credential-related violations
-        """
-        violations = []
-        
-        for pattern in self.credential_patterns:
-            for match in re.finditer(pattern, content):
-                line_number = content[:match.start()].count('\n') + 1
-                column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
-                
-                violations.append(Violation(
-                    rule_number=3,
-                    rule_name="Protect People's Privacy",
-                    severity=Severity.ERROR,
-                    message="Hardcoded credentials detected - use environment variables or secure config",
-                    file_path=file_path,
-                    line_number=line_number,
-                    column_number=column_number,
-                    code_snippet=match.group(),
-                    fix_suggestion="Use environment variables, secure configuration management, or encrypted storage"
-                ))
-        
-        return violations
-    
-    def validate_personal_data(self, content: str, file_path: str) -> List[Violation]:
-        """
-        Check for personal data handling.
-        
-        Args:
-            content: File content to analyze
-            file_path: Path to the file
-            
-        Returns:
-            List of personal data violations
-        """
-        violations = []
-        
-        for pattern in self.personal_data_patterns:
-            for match in re.finditer(pattern, content):
-                line_number = content[:match.start()].count('\n') + 1
-                column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
-                
-                violations.append(Violation(
-                    rule_number=36,
-                    rule_name="Be Extra Careful with Private Data",
-                    severity=Severity.ERROR,
-                    message="Personal data detected - ensure proper data classification and encryption",
-                    file_path=file_path,
-                    line_number=line_number,
-                    column_number=column_number,
-                    code_snippet=match.group(),
-                    fix_suggestion="Implement proper data classification, encryption, and access controls"
-                ))
-        
-        return violations
-    
-    def validate_data_encryption(self, content: str, file_path: str) -> List[Violation]:
-        """
-        Check for proper data encryption practices.
-        
-        Args:
-            content: File content to analyze
-            file_path: Path to the file
-            
-        Returns:
-            List of encryption-related violations
-        """
-        violations = []
-        
-        # Check for unsafe data handling
-        for keyword in self.unsafe_keywords:
-            if keyword in content.lower():
-                line_number = content.lower().find(keyword) + 1
-                violations.append(Violation(
-                    rule_number=27,
-                    rule_name="Be Smart About Data",
-                    severity=Severity.WARNING,
-                    message=f"Unsafe data handling detected: {keyword}",
-                    file_path=file_path,
-                    line_number=line_number,
-                    column_number=0,
-                    code_snippet=keyword,
-                    fix_suggestion="Consider encryption for sensitive data handling"
-                ))
-        
-        return violations
-    
-    def validate_ai_safety(self, tree: ast.AST, file_path: str) -> List[Violation]:
-        """
-        Check for AI safety violations.
-        
-        Args:
-            tree: AST tree of the code
-            file_path: Path to the file
-            
-        Returns:
-            List of AI safety violations
-        """
-        violations = []
-        
-        # Check for dangerous AI operations
-        dangerous_operations = [
-            'exec', 'eval', 'compile', 'input', 'raw_input',
-            'os.system', 'subprocess', 'shell'
-        ]
-        
-        for node in ast.walk(tree):
-            if isinstance(node, ast.Call):
-                func_name = self._get_function_name(node.func).lower()
-                
-                for dangerous_op in dangerous_operations:
-                    if dangerous_op in func_name:
-                        violations.append(Violation(
-                            rule_number=12,
-                            rule_name="Keep AI Safe + Risk Modules - Safety First",
-                            severity=Severity.ERROR,
-                            message=f"Dangerous operation detected: {func_name}",
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            column_number=node.col_offset,
-                            code_snippet=func_name,
-                            fix_suggestion="Use sandboxed environment or safer alternatives"
-                        ))
-        
-        return violations
-    
-    def validate_data_sharing(self, content: str, file_path: str) -> List[Violation]:
-        """
-        Check for inappropriate data sharing patterns.
-        
-        Args:
-            content: File content to analyze
-            file_path: Path to the file
-            
-        Returns:
-            List of data sharing violations
-        """
-        violations = []
-        
-        # Check for external API calls that might leak data
-        external_patterns = [
-            r'requests\.post\s*\(',
-            r'urllib\.request\.urlopen\s*\(',
-            r'http\.client\.HTTPSConnection\s*\('
-        ]
-        
-        for pattern in external_patterns:
-            for match in re.finditer(pattern, content):
-                line_number = content[:match.start()].count('\n') + 1
-                column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
-                
-                violations.append(Violation(
-                    rule_number=27,
-                    rule_name="Be Smart About Data",
-                    severity=Severity.WARNING,
-                    message="External API call detected - ensure no sensitive data is shared",
-                    file_path=file_path,
-                    line_number=line_number,
-                    column_number=column_number,
-                    code_snippet=match.group(),
-                    fix_suggestion="Verify data classification and ensure only anonymous patterns are shared"
-                ))
-        
-        return violations
-    
-    def _get_function_name(self, func_node: ast.AST) -> str:
-        """Extract function name from AST node."""
-        if isinstance(func_node, ast.Name):
-            return func_node.id
-        elif isinstance(func_node, ast.Attribute):
-            return f"{self._get_function_name(func_node.value)}.{func_node.attr}"
-        else:
-            return str(func_node)
-    
-    def validate_data_quality(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
-        """
-        Check for data quality validation (Rule 11).
+        Check for privacy violations (Rule 3).
         
         Args:
             tree: AST tree of the code
@@ -241,80 +40,101 @@ class PrivacyValidator:
             file_path: Path to the file
             
         Returns:
-            List of data quality violations
+            List of violations
+        """
+        violations = []
+        
+        # Check for hardcoded credentials
+        credential_patterns = [
+            r'password\s*=\s*["\'][^"\']+["\']',
+            r'api_key\s*=\s*["\'][^"\']+["\']',
+            r'secret\s*=\s*["\'][^"\']+["\']',
+            r'token\s*=\s*["\'][^"\']+["\']',
+            r'key\s*=\s*["\'][^"\']+["\']'
+        ]
+        
+        for pattern in credential_patterns:
+            for match in re.finditer(pattern, content, re.IGNORECASE):
+                line_number = content[:match.start()].count('\n') + 1
+                violations.append(self.create_violation(
+                    rule_number=3,
+                    rule_name="Protect people's privacy",
+                    severity=Severity.ERROR,
+                    message="Hardcoded credentials detected - security risk",
+                    file_path=file_path,
+                    line_number=line_number,
+                    column_number=0,
+                    code_snippet=match.group(),
+                    fix_suggestion="Use environment variables or secure configuration"
+                ))
+        
+        # Check for personal data patterns
+        personal_data_patterns = [
+            r'ssn\s*=\s*["\'][^"\']+["\']',
+            r'social_security\s*=\s*["\'][^"\']+["\']',
+            r'credit_card\s*=\s*["\'][^"\']+["\']',
+            r'phone\s*=\s*["\'][^"\']+["\']',
+            r'email\s*=\s*["\'][^"\']+["\']'
+        ]
+        
+        for pattern in personal_data_patterns:
+            for match in re.finditer(pattern, content, re.IGNORECASE):
+                line_number = content[:match.start()].count('\n') + 1
+                violations.append(self.create_violation(
+                    rule_number=3,
+                    rule_name="Protect people's privacy",
+                    severity=Severity.ERROR,
+                    message="Personal data detected - ensure proper data classification",
+                    file_path=file_path,
+                    line_number=line_number,
+                    column_number=0,
+                    code_snippet=match.group(),
+                    fix_suggestion="Implement proper data classification and encryption"
+                ))
+        
+        return violations
+    
+    def validate_check_data(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for data validation (Rule 11).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of violations
         """
         violations = []
         
         # Check for input validation
-        for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef):
-                # Check if function has input validation
-                has_validation = False
-                has_input_params = len(node.args.args) > 0
-                
-                if has_input_params:
-                    # Look for validation patterns in function body
-                    for child in ast.walk(node):
-                        if isinstance(child, ast.If):
-                            # Check for validation conditions
-                            if self._has_validation_condition(child):
-                                has_validation = True
-                                break
-                    
-                    if not has_validation:
-                        violations.append(Violation(
-                            rule_number=11,
-                            rule_name="Check Your Data",
-                            severity=Severity.WARNING,
-                            message=f"Function '{node.name}' with parameters lacks input validation",
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            column_number=node.col_offset,
-                            code_snippet=node.name,
-                            fix_suggestion="Add input validation and sanitization"
-                        ))
+        input_patterns = ['input(', 'raw_input(', 'sys.stdin']
+        has_input = any(pattern in content for pattern in input_patterns)
         
-        # Check for data sanitization
-        sanitization_keywords = ['strip', 'lower', 'upper', 'replace', 'encode', 'decode']
-        has_sanitization = any(keyword in content.lower() for keyword in sanitization_keywords)
-        
-        if not has_sanitization and self._has_user_input(content):
-            violations.append(Violation(
-                rule_number=11,
-                rule_name="Check Your Data",
-                severity=Severity.INFO,
-                message="User input detected without data sanitization",
-                file_path=file_path,
-                line_number=1,
-                column_number=0,
-                code_snippet="Missing sanitization",
-                fix_suggestion="Add data sanitization for user inputs"
-            ))
+        if has_input:
+            # Check for validation
+            validation_patterns = ['validate', 'check', 'verify', 'sanitize', 'strip']
+            has_validation = any(pattern in content.lower() for pattern in validation_patterns)
+            
+            if not has_validation:
+                violations.append(self.create_violation(
+                    rule_number=11,
+                    rule_name="Check your data",
+                    severity=Severity.WARNING,
+                    message="Input detected without validation",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="Input validation",
+                    fix_suggestion="Add input validation and sanitization"
+                ))
         
         return violations
     
-    def _has_validation_condition(self, if_node: ast.If) -> bool:
-        """Check if an if statement contains validation logic."""
-        validation_patterns = [
-            'isinstance', 'len', 'isdigit', 'isalpha', 'strip', 'lower', 'upper',
-            'isnull', 'isempty', 'valid', 'check', 'verify'
-        ]
-        
-        for node in ast.walk(if_node):
-            if isinstance(node, ast.Call):
-                func_name = self._get_function_name(node.func).lower()
-                if any(pattern in func_name for pattern in validation_patterns):
-                    return True
-        return False
-    
-    def _has_user_input(self, content: str) -> bool:
-        """Check if code contains user input operations."""
-        input_keywords = ['input', 'raw_input', 'getpass', 'stdin', 'argv']
-        return any(keyword in content.lower() for keyword in input_keywords)
-    
-    def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+    def validate_keep_ai_safe(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Run all privacy and security validations.
+        Check for AI safety (Rule 12).
         
         Args:
             tree: AST tree of the code
@@ -322,15 +142,128 @@ class PrivacyValidator:
             file_path: Path to the file
             
         Returns:
-            List of all privacy/security violations
+            List of violations
         """
         violations = []
         
-        violations.extend(self.validate_credentials(content, file_path))
-        violations.extend(self.validate_personal_data(content, file_path))
-        violations.extend(self.validate_data_encryption(content, file_path))
-        violations.extend(self.validate_ai_safety(tree, file_path))
-        violations.extend(self.validate_data_sharing(content, file_path))
-        violations.extend(self.validate_data_quality(tree, content, file_path))
+        # Check for AI-related code
+        ai_patterns = ['ai.', 'artificial_intelligence', 'machine_learning', 'ml.', 'neural_network']
+        has_ai = any(pattern in content.lower() for pattern in ai_patterns)
+        
+        if has_ai:
+            # Check for safety measures
+            safety_patterns = ['safety', 'guard', 'constraint', 'limit', 'bound']
+            has_safety = any(pattern in content.lower() for pattern in safety_patterns)
+            
+            if not has_safety:
+                violations.append(self.create_violation(
+                    rule_number=12,
+                    rule_name="Keep AI safe",
+                    severity=Severity.WARNING,
+                    message="AI code detected without safety measures",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="AI safety",
+                    fix_suggestion="Implement AI safety measures and constraints"
+                ))
+        
+        return violations
+    
+    def validate_smart_data_handling(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for smart data handling (Rule 27).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of violations
+        """
+        violations = []
+        
+        # Check for data processing patterns
+        data_patterns = ['data', 'database', 'db.', 'sql', 'query']
+        has_data = any(pattern in content.lower() for pattern in data_patterns)
+        
+        if has_data:
+            # Check for optimization
+            optimization_patterns = ['index', 'cache', 'optimize', 'efficient', 'batch']
+            has_optimization = any(pattern in content.lower() for pattern in optimization_patterns)
+            
+            if not has_optimization:
+                violations.append(self.create_violation(
+                    rule_number=27,
+                    rule_name="Be smart about data",
+                    severity=Severity.INFO,
+                    message="Data operations detected without optimization",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="Data optimization",
+                    fix_suggestion="Consider data optimization techniques"
+                ))
+        
+        return violations
+    
+    def validate_extra_careful_private_data(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Check for extra care with private data (Rule 36).
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of violations
+        """
+        violations = []
+        
+        # Check for private data handling
+        private_patterns = ['private', 'confidential', 'sensitive', 'personal']
+        has_private = any(pattern in content.lower() for pattern in private_patterns)
+        
+        if has_private:
+            # Check for encryption
+            encryption_patterns = ['encrypt', 'hash', 'secure', 'cipher', 'crypto']
+            has_encryption = any(pattern in content.lower() for pattern in encryption_patterns)
+            
+            if not has_encryption:
+                violations.append(self.create_violation(
+                    rule_number=36,
+                    rule_name="Be extra careful with private data",
+                    severity=Severity.WARNING,
+                    message="Private data detected without encryption",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="Private data encryption",
+                    fix_suggestion="Implement encryption for private data"
+                ))
+        
+        return violations
+    
+    def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
+        """
+        Validate all privacy and security rules.
+        
+        Args:
+            tree: AST tree of the code
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of all violations found
+        """
+        violations = []
+        
+        violations.extend(self.validate_protect_privacy(tree, content, file_path))
+        violations.extend(self.validate_check_data(tree, content, file_path))
+        violations.extend(self.validate_keep_ai_safe(tree, content, file_path))
+        violations.extend(self.validate_smart_data_handling(tree, content, file_path))
+        violations.extend(self.validate_extra_careful_private_data(tree, content, file_path))
         
         return violations

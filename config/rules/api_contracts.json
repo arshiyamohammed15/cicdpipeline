@@ -1,0 +1,26 @@
+{
+  "category": "api_contracts",
+  "priority": "critical",
+  "description": "API design, contracts, and governance",
+  "rules": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    80,
+    83,
+    84,
+    85,
+    86
+  ]
+}

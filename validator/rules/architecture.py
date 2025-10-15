@@ -64,7 +64,8 @@ class ArchitectureValidator:
                     for keyword in self.business_logic_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                                rule_number=19,
+                rule_id="rule_19",
+                rule_number=19,
                                 rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Business logic detected in UI file: {func_name}",
@@ -84,7 +85,8 @@ class ArchitectureValidator:
                     for keyword in self.data_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                                rule_number=19,
+                rule_id="rule_19",
+                rule_number=19,
                                 rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Data access detected in UI file: {func_name}",
@@ -122,7 +124,8 @@ class ArchitectureValidator:
                     # IDE Extension shouldn't process data
                     if any(keyword in func_name for keyword in ['process', 'analyze', 'compute']):
                         violations.append(Violation(
-                            rule_number=21,
+                rule_id="rule_21",
+                rule_number=21,
                             rule_name="Use the Hybrid System Design",
                             severity=Severity.ERROR,
                             message="IDE Extension should only display information, not process data",
@@ -142,7 +145,8 @@ class ArchitectureValidator:
                     # Edge Agent shouldn't send data to cloud
                     if any(keyword in func_name for keyword in ['upload', 'send', 'post', 'put']):
                         violations.append(Violation(
-                            rule_number=21,
+                rule_id="rule_21",
+                rule_number=21,
                             rule_name="Use the Hybrid System Design",
                             severity=Severity.WARNING,
                             message="Edge Agent should process data locally, not send to cloud",
@@ -176,7 +180,8 @@ class ArchitectureValidator:
                 # Check for external data transmission
                 if any(keyword in func_name for keyword in self.cloud_keywords):
                     violations.append(Violation(
-                        rule_number=23,
+                rule_id="rule_23",
+                rule_number=23,
                         rule_name="Process Data Locally First",
                         severity=Severity.ERROR,
                         message="Source code or sensitive data should not leave the company",
@@ -211,6 +216,7 @@ class ArchitectureValidator:
         
         if not has_try_catch and self._has_risky_operations(tree):
             violations.append(Violation(
+                rule_id="rule_30",
                 rule_number=30,
                 rule_name="Make All Modules Feel Like One Product",
                 severity=Severity.WARNING,
@@ -252,7 +258,8 @@ class ArchitectureValidator:
                                     func_name = self._get_function_name(child.func).lower()
                                     if any(keyword in func_name for keyword in ['send', 'post', 'upload']):
                                         violations.append(Violation(
-                                            rule_number=23,
+                rule_id="rule_23",
+                rule_number=23,
                                             rule_name="Process Data Locally First",
                                             severity=Severity.ERROR,
                                             message="Sensitive data being sent externally",
@@ -322,7 +329,8 @@ class ArchitectureValidator:
                 
                 if has_config_requirement and not has_default_values:
                     violations.append(Violation(
-                        rule_number=24,
+                rule_id="rule_24",
+                rule_number=24,
                         rule_name="Don't Make People Configure Before Using",
                         severity=Severity.WARNING,
                         message=f"Class '{node.name}' requires configuration before use",
@@ -347,7 +355,8 @@ class ArchitectureValidator:
                 # Check if it's required vs optional
                 if 'required' in content.lower() or 'must' in content.lower():
                     violations.append(Violation(
-                        rule_number=24,
+                rule_id="rule_24",
+                rule_number=24,
                         rule_name="Don't Make People Configure Before Using",
                         severity=Severity.INFO,
                         message="Configuration file appears to be required before use",
@@ -406,6 +415,7 @@ class ArchitectureValidator:
         
         if has_network_imports and not has_offline_fallback:
             violations.append(Violation(
+                rule_id="rule_28",
                 rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.WARNING,
@@ -431,6 +441,7 @@ class ArchitectureValidator:
         
         if has_network_imports and not has_caching:
             violations.append(Violation(
+                rule_id="rule_28",
                 rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.INFO,

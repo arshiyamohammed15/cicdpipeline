@@ -90,13 +90,17 @@ class LoggingValidator:
             # Check for JSON structure
             if 'json' not in content.lower() and 'structured' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R043',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Logs are structured JSON with required fields and schema version',
-                    severity=Severity.ERROR,
-                    category='logging'
-                ))
+                        rule_id='R043',
+                        rule_name='Logs are structured JSON with required fields and schema version',
+                        severity=Severity.ERROR,
+                        message='Logs are structured JSON with required fields and schema version',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+                
+                    ))
             
             # Check for required fields
             missing_fields = []
@@ -107,10 +111,13 @@ class LoggingValidator:
             if missing_fields:
                 violations.append(Violation(
                     rule_id='R043',
+                    rule_name=f'Missing required log fields: {", ".join(missing_fields)}',
+                    severity=Severity.ERROR,
+                    message=f'Missing required log fields: {", ".join(missing_fields)}',
                     file_path=file_path,
                     line_number=1,
-                    message=f'Missing required log fields: {", ".join(missing_fields)}',
-                    severity=Severity.ERROR,
+                    column_number=0,
+                    code_snippet="",
                     category='logging'
                 ))
         
@@ -126,13 +133,17 @@ class LoggingValidator:
             log_level = match.group(1).upper()
             if log_level not in self.valid_log_levels:
                 violations.append(Violation(
-                    rule_id='R044',
-                    file_path=file_path,
-                    line_number=content[:match.start()].count('\n') + 1,
-                    message=f'Invalid log level "{log_level}" - use TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
-                    severity=Severity.WARNING,
-                    category='logging'
-                ))
+                        rule_id='R044',
+                        rule_name=f'Invalid log level "{log_level}" - use TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
+                        severity=Severity.WARNING,
+                        message=f'Invalid log level "{log_level}" - use TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+                
+                    ))
         
         return violations
     
@@ -158,13 +169,17 @@ class LoggingValidator:
                         log_content = content[log_start:log_end]
                         if not self._is_jsonl_format(log_content):
                             violations.append(Violation(
-                                rule_id='R063',
-                                file_path=file_path,
-                                line_number=content[:log_start].count('\n') + 1,
-                                message='ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps',
-                                severity=Severity.ERROR,
-                                category='logging'
-                            ))
+                        rule_id='R063',
+                        rule_name='ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps',
+                        severity=Severity.ERROR,
+                        message='ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps',
+                        file_path=file_path,
+                        line_number=content[:log_start].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+                            
+                    ))
         
         return violations
     
@@ -175,24 +190,32 @@ class LoggingValidator:
         # Check for monotonic time
         if 'log' in content.lower() and 'monotonic_hw_time_ms' not in content.lower():
             violations.append(Violation(
-                rule_id='R064',
-                file_path=file_path,
-                line_number=1,
-                message='Include monotonic_hw_time_ms for ordering; UTF-8 encoding only',
-                severity=Severity.ERROR,
-                category='logging'
-            ))
+                        rule_id='R064',
+                        rule_name='Include monotonic_hw_time_ms for ordering; UTF-8 encoding only',
+                        severity=Severity.ERROR,
+                        message='Include monotonic_hw_time_ms for ordering; UTF-8 encoding only',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         # Check for ISO-8601 timestamps
         if 'timestamp' in content.lower() and 'iso' not in content.lower():
             violations.append(Violation(
-                rule_id='R064',
-                file_path=file_path,
-                line_number=1,
-                message='Use ISO-8601 UTC timestamps',
-                severity=Severity.WARNING,
-                category='logging'
-            ))
+                        rule_id='R064',
+                        rule_name='Use ISO-8601 UTC timestamps',
+                        severity=Severity.WARNING,
+                        message='Use ISO-8601 UTC timestamps',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         return violations
     
@@ -226,13 +249,17 @@ class LoggingValidator:
         # Check for retention configuration
         if 'log' in content.lower() and 'retention' not in content.lower():
             violations.append(Violation(
-                rule_id='R066',
-                file_path=file_path,
-                line_number=1,
-                message='App logs ≥ 14 days locally; receipts ≥ 90 days',
-                severity=Severity.WARNING,
-                category='logging'
-            ))
+                        rule_id='R066',
+                        rule_name='App logs ≥ 14 days locally; receipts ≥ 90 days',
+                        severity=Severity.WARNING,
+                        message='App logs ≥ 14 days locally; receipts ≥ 90 days',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         return violations
     
@@ -243,13 +270,17 @@ class LoggingValidator:
         # Check for rotation configuration
         if 'log' in content.lower() and 'rotation' not in content.lower():
             violations.append(Violation(
-                rule_id='R067',
-                file_path=file_path,
-                line_number=1,
-                message='Rotate at 100MB; keep last 10 files locally',
-                severity=Severity.WARNING,
-                category='logging'
-            ))
+                        rule_id='R067',
+                        rule_name='Rotate at 100MB; keep last 10 files locally',
+                        severity=Severity.WARNING,
+                        message='Rotate at 100MB; keep last 10 files locally',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         return violations
     
@@ -357,13 +388,17 @@ class LoggingValidator:
         if 'log' in content.lower():
             if 'sampling' not in content.lower() and 'performance' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R072',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Logging overhead < 5% CPU; sampling for chatty events',
-                    severity=Severity.WARNING,
-                    category='logging'
-                ))
+                        rule_id='R072',
+                        rule_name='Logging overhead < 5% CPU; sampling for chatty events',
+                        severity=Severity.WARNING,
+                        message='Logging overhead < 5% CPU; sampling for chatty events',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+                
+                    ))
         
         return violations
     
@@ -374,13 +409,17 @@ class LoggingValidator:
         # Check for log testing
         if 'log' in content.lower() and 'test' not in content.lower():
             violations.append(Violation(
-                rule_id='R073',
-                file_path=file_path,
-                line_number=1,
-                message='Test log generation and validation in unit tests',
-                severity=Severity.WARNING,
-                category='logging'
-            ))
+                        rule_id='R073',
+                        rule_name='Test log generation and validation in unit tests',
+                        severity=Severity.WARNING,
+                        message='Test log generation and validation in unit tests',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         return violations
     
@@ -391,13 +430,17 @@ class LoggingValidator:
         # Check for log documentation
         if 'log' in content.lower() and 'schema' not in content.lower():
             violations.append(Violation(
-                rule_id='R074',
-                file_path=file_path,
-                line_number=1,
-                message='Document logging schema and field meanings',
-                severity=Severity.WARNING,
-                category='logging'
-            ))
+                        rule_id='R074',
+                        rule_name='Document logging schema and field meanings',
+                        severity=Severity.WARNING,
+                        message='Document logging schema and field meanings',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+            
+                    ))
         
         return violations
     
@@ -412,13 +455,17 @@ class LoggingValidator:
             
             if not has_compliance:
                 violations.append(Violation(
-                    rule_id='R075',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Ensure logs meet compliance requirements and audit standards',
-                    severity=Severity.WARNING,
-                    category='logging'
-                ))
+                        rule_id='R075',
+                        rule_name='Ensure logs meet compliance requirements and audit standards',
+                        severity=Severity.WARNING,
+                        message='Ensure logs meet compliance requirements and audit standards',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='logging'
+                
+                    ))
         
         return violations
     

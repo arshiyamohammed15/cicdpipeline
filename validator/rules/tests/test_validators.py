@@ -10,18 +10,18 @@ import tempfile
 from pathlib import Path
 from unittest.mock import Mock, patch
 
-# Import validators
+# Import validators from the rules directory
 import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / 'tools' / 'validator'))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from validators.security_validator import SecurityValidator
-from validators.api_validator import APIValidator
-from validators.code_quality_validator import CodeQualityValidator
-from validators.logging_validator import LoggingValidator
-from validators.comment_validator import CommentValidator
-from validators.structure_validator import StructureValidator
-from rule_engine import RuleEngine
-from reporter import Reporter
+from ..privacy import PrivacyValidator
+from ..api_contracts import APIContractsValidator
+from ..quality import QualityValidator
+from ..logging import LoggingValidator
+from ..comments import CommentsValidator
+from ..folder_standards import FolderStandardsValidator
+from ...core import ConstitutionValidator
+from ...reporter import ReportGenerator
 
 
 class TestSecurityValidator:

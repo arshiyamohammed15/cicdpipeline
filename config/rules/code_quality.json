@@ -1,0 +1,10 @@
+{
+  "category": "code_quality",
+  "priority": "important",
+  "description": "Code quality and documentation",
+  "rules": [
+    15,
+    18,
+    68
+  ]
+}

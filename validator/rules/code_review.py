@@ -110,13 +110,17 @@ class CodeReviewValidator:
             codeowners_path = Path(file_path).parent / 'CODEOWNERS'
             if not codeowners_path.exists():
                 violations.append(Violation(
-                    rule_id='R003',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Sensitive areas require CODEOWNERS approval and may need two reviewers',
-                    severity=Severity.ERROR,
-                    category='governance'
-                ))
+                        rule_id='R003',
+                        rule_name='Sensitive areas require CODEOWNERS approval and may need two reviewers',
+                        severity=Severity.ERROR,
+                        message='Sensitive areas require CODEOWNERS approval and may need two reviewers',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='governance'
+                
+                    ))
         
         return violations
     
@@ -128,13 +132,17 @@ class CodeReviewValidator:
         # But we can check for review-related comments
         if 'review' in content.lower() and 'urgent' in content.lower():
             violations.append(Violation(
-                rule_id='R004',
-                file_path=file_path,
-                line_number=1,
-                message='Reviews should start within 2 business days',
-                severity=Severity.WARNING,
-                category='process'
-            ))
+                        rule_id='R004',
+                        rule_name='Reviews should start within 2 business days',
+                        severity=Severity.WARNING,
+                        message='Reviews should start within 2 business days',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='process'
+            
+                    ))
         
         return violations
     
@@ -165,13 +173,17 @@ class CodeReviewValidator:
         
         if has_risky_changes and 'feature-flag' not in content.lower():
             violations.append(Violation(
-                rule_id='R006',
-                file_path=file_path,
-                line_number=1,
-                message='One intent per PR; feature-flags for risky changes',
-                severity=Severity.WARNING,
-                category='process'
-            ))
+                        rule_id='R006',
+                        rule_name='One intent per PR; feature-flags for risky changes',
+                        severity=Severity.WARNING,
+                        message='One intent per PR; feature-flags for risky changes',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='process'
+            
+                    ))
         
         return violations
     
@@ -182,13 +194,17 @@ class CodeReviewValidator:
         # Check if this is a source file without corresponding tests
         if self._is_source_file(file_path) and not self._has_corresponding_tests(file_path):
             violations.append(Violation(
-                rule_id='R007',
-                file_path=file_path,
-                line_number=1,
-                message='No code change without tests that fail before and pass after the change',
-                severity=Severity.ERROR,
-                category='quality'
-            ))
+                        rule_id='R007',
+                        rule_name='No code change without tests that fail before and pass after the change',
+                        severity=Severity.ERROR,
+                        message='No code change without tests that fail before and pass after the change',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='quality'
+            
+                    ))
         
         return violations
     
@@ -209,10 +225,13 @@ class CodeReviewValidator:
                 if re.search(pattern, line):
                     violations.append(Violation(
                         rule_id='R009',
+                        rule_name='No secrets/PII in code, comments, logs, tests, or fixtures',
+                        severity=Severity.ERROR,
+                        message='No secrets/PII in code, comments, logs, tests, or fixtures',
                         file_path=file_path,
                         line_number=line_num,
-                        message='No secrets/PII in code, comments, logs, tests, or fixtures',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet=line.strip(),
                         category='security'
                     ))
         
@@ -227,10 +246,13 @@ class CodeReviewValidator:
                 if re.search(pattern, line):
                     violations.append(Violation(
                         rule_id='R009',
+                        rule_name='No secrets/PII in code, comments, logs, tests, or fixtures',
+                        severity=Severity.ERROR,
+                        message='No secrets/PII in code, comments, logs, tests, or fixtures',
                         file_path=file_path,
                         line_number=line_num,
-                        message='No secrets/PII in code, comments, logs, tests, or fixtures',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet=line.strip(),
                         category='security'
                     ))
         
@@ -250,13 +272,17 @@ class CodeReviewValidator:
             
             if not has_rollback_plan:
                 violations.append(Violation(
-                    rule_id='R010',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Include a rollback/disable plan for non-trivial changes',
-                    severity=Severity.WARNING,
-                    category='process'
-                ))
+                        rule_id='R010',
+                        rule_name='Include a rollback/disable plan for non-trivial changes',
+                        severity=Severity.WARNING,
+                        message='Include a rollback/disable plan for non-trivial changes',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='process'
+                
+                    ))
         
         return violations
     
@@ -270,13 +296,17 @@ class CodeReviewValidator:
         
         if not has_change_management and self._is_significant_change(content):
             violations.append(Violation(
-                rule_id='R011',
-                file_path=file_path,
-                line_number=1,
-                message='Include change management and impact assessment',
-                severity=Severity.WARNING,
-                category='process'
-            ))
+                        rule_id='R011',
+                        rule_name='Include change management and impact assessment',
+                        severity=Severity.WARNING,
+                        message='Include change management and impact assessment',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='process'
+            
+                    ))
         
         return violations
     
@@ -290,13 +320,17 @@ class CodeReviewValidator:
         
         if not has_compliance and self._is_significant_change(content):
             violations.append(Violation(
-                rule_id='R012',
-                file_path=file_path,
-                line_number=1,
-                message='Ensure compliance with all applicable constitutions',
-                severity=Severity.ERROR,
-                category='governance'
-            ))
+                        rule_id='R012',
+                        rule_name='Ensure compliance with all applicable constitutions',
+                        severity=Severity.ERROR,
+                        message='Ensure compliance with all applicable constitutions',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='governance'
+            
+                    ))
         
         return violations
     
@@ -310,13 +344,17 @@ class CodeReviewValidator:
         
         if not has_change_control and self._is_significant_change(content):
             violations.append(Violation(
-                rule_id='R076',
-                file_path=file_path,
-                line_number=1,
-                message='All changes must go through proper change control process',
-                severity=Severity.ERROR,
-                category='governance'
-            ))
+                        rule_id='R076',
+                        rule_name='All changes must go through proper change control process',
+                        severity=Severity.ERROR,
+                        message='All changes must go through proper change control process',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='governance'
+            
+                    ))
         
         return violations
     
@@ -327,13 +365,17 @@ class CodeReviewValidator:
         # Check if this is a source file without corresponding tests
         if self._is_source_file(file_path) and not self._has_corresponding_tests(file_path):
             violations.append(Violation(
-                rule_id='R077',
-                file_path=file_path,
-                line_number=1,
-                message='All code changes must include appropriate tests',
-                severity=Severity.ERROR,
-                category='quality'
-            ))
+                        rule_id='R077',
+                        rule_name='All code changes must include appropriate tests',
+                        severity=Severity.ERROR,
+                        message='All code changes must include appropriate tests',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='quality'
+            
+                    ))
         
         return violations
     
@@ -346,13 +388,17 @@ class CodeReviewValidator:
             # Check for license information
             if 'license' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R081',
-                    file_path=file_path,
-                    line_number=1,
-                    message='New dependencies must pass license allowlist and CVE threshold',
-                    severity=Severity.ERROR,
-                    category='security'
-                ))
+                        rule_id='R081',
+                        rule_name='New dependencies must pass license allowlist and CVE threshold',
+                        severity=Severity.ERROR,
+                        message='New dependencies must pass license allowlist and CVE threshold',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='security'
+                
+                    ))
         
         return violations
     

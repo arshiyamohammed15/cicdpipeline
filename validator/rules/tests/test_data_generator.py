@@ -14,7 +14,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class TestDataTemplate:
+class DataTemplate:
     """Template for generating test data for a specific rule type."""
     rule_id: str
     category: str
@@ -24,7 +24,7 @@ class TestDataTemplate:
     metadata: Dict[str, Any]
 
 
-class TestDataGenerator:
+class DataGenerator:
     """
     Intelligent test data generator that creates appropriate test data
     based on rule characteristics and category.
@@ -35,10 +35,10 @@ class TestDataGenerator:
         self.templates = self._load_templates()
         self.patterns = self._load_patterns()
 
-    def _load_templates(self) -> Dict[str, TestDataTemplate]:
+    def _load_templates(self) -> Dict[str, DataTemplate]:
         """Load test data templates for different rule types."""
         return {
-            'security': TestDataTemplate(
+            'security': DataTemplate(
                 rule_id='',
                 category='security',
                 violation_examples=[
@@ -58,7 +58,7 @@ class TestDataGenerator:
                 test_files=['security_violation.py', 'security_valid.py'],
                 metadata={'severity': 'error', 'validator': 'security_validator'}
             ),
-            'api': TestDataTemplate(
+            'api': DataTemplate(
                 rule_id='',
                 category='api',
                 violation_examples=[
@@ -78,7 +78,7 @@ class TestDataGenerator:
                 test_files=['api_violation.yaml', 'api_valid.yaml'],
                 metadata={'severity': 'error', 'validator': 'api_validator'}
             ),
-            'documentation': TestDataTemplate(
+            'documentation': DataTemplate(
                 rule_id='',
                 category='documentation',
                 violation_examples=[
@@ -98,7 +98,7 @@ class TestDataGenerator:
                 test_files=['comment_violation.py', 'comment_valid.py'],
                 metadata={'severity': 'error', 'validator': 'comment_validator'}
             ),
-            'logging': TestDataTemplate(
+            'logging': DataTemplate(
                 rule_id='',
                 category='logging',
                 violation_examples=[
@@ -117,7 +117,7 @@ class TestDataGenerator:
                 test_files=['log_violation.jsonl', 'log_valid.jsonl'],
                 metadata={'severity': 'error', 'validator': 'logging_validator'}
             ),
-            'structure': TestDataTemplate(
+            'structure': DataTemplate(
                 rule_id='',
                 category='structure',
                 violation_examples=[
@@ -135,7 +135,7 @@ class TestDataGenerator:
                 test_files=['structure_violation.py', 'structure_valid.py'],
                 metadata={'severity': 'error', 'validator': 'structure_validator'}
             ),
-            'code_quality': TestDataTemplate(
+            'code_quality': DataTemplate(
                 rule_id='',
                 category='code_quality',
                 violation_examples=[
@@ -219,14 +219,14 @@ class TestDataGenerator:
             'valid_examples': valid_examples,
             'test_files': test_files,
             'metadata': {
-                'generated_by': 'TestDataGenerator',
+                'generated_by': 'DataGenerator',
                 'rule_name': rule.get('name', ''),
                 'description': rule.get('description', ''),
                 'template_used': category
             }
         }
 
-    def _generate_violation_examples(self, rule: Dict[str, Any], template: TestDataTemplate) -> List[str]:
+    def _generate_violation_examples(self, rule: Dict[str, Any], template: DataTemplate) -> List[str]:
         """Generate violation examples for a rule."""
         rule_id = rule.get('id', '')
         rule_name = rule.get('name', '').lower()
@@ -265,7 +265,7 @@ class TestDataGenerator:
 
         return examples
 
-    def _generate_valid_examples(self, rule: Dict[str, Any], template: TestDataTemplate) -> List[str]:
+    def _generate_valid_examples(self, rule: Dict[str, Any], template: DataTemplate) -> List[str]:
         """Generate valid examples for a rule."""
         rule_id = rule.get('id', '')
         rule_name = rule.get('name', '').lower()
@@ -307,7 +307,7 @@ class TestDataGenerator:
 
         return examples
 
-    def _generate_test_files(self, rule: Dict[str, Any], template: TestDataTemplate) -> List[str]:
+    def _generate_test_files(self, rule: Dict[str, Any], template: DataTemplate) -> List[str]:
         """Generate test file names for a rule."""
         rule_id = rule.get('id', '')
         category = rule.get('category', 'unknown')
@@ -429,17 +429,17 @@ class TestDataGenerator:
 
 
 # Global generator instance
-test_data_generator = TestDataGenerator()
+test_data_generator = DataGenerator()
 
 
-def get_test_data_generator() -> TestDataGenerator:
+def get_test_data_generator() -> DataGenerator:
     """Get the global test data generator instance."""
     return test_data_generator
 
 
 if __name__ == "__main__":
     # Example usage
-    generator = TestDataGenerator()
+    generator = DataGenerator()
 
     # Load rules from JSON
     with open('tools/validator/rules.json', 'r') as f:

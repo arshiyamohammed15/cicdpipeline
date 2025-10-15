@@ -1,0 +1,17 @@
+{
+  "category": "comments",
+  "priority": "important",
+  "description": "Documentation and comment standards",
+  "rules": [
+    8,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    89
+  ]
+}

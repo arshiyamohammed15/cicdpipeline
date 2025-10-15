@@ -70,6 +70,7 @@ class SystemDesignValidator:
         used_patterns = sum(1 for count in naming_patterns.values() if count > 0)
         if used_patterns > 1:
             violations.append(Violation(
+                rule_id="rule_22",
                 rule_number=22,
                 rule_name="Make All 18 Modules Look the Same",
                 severity=Severity.WARNING,
@@ -94,6 +95,7 @@ class SystemDesignValidator:
         
         if non_standard_errors:
             violations.append(Violation(
+                rule_id="rule_22",
                 rule_number=22,
                 rule_name="Make All 18 Modules Look the Same",
                 severity=Severity.INFO,
@@ -129,7 +131,8 @@ class SystemDesignValidator:
                 # Flag functions with more than 5 parameters
                 if param_count > 5:
                     violations.append(Violation(
-                        rule_number=25,
+                rule_id="rule_25",
+                rule_number=25,
                         rule_name="Show Information Gradually",
                         severity=Severity.WARNING,
                         message=f"Function '{node.name}' has {param_count} parameters - consider progressive disclosure",
@@ -144,7 +147,8 @@ class SystemDesignValidator:
                 required_params = param_count - len(node.args.defaults)
                 if required_params > 3:
                     violations.append(Violation(
-                        rule_number=25,
+                rule_id="rule_25",
+                rule_number=25,
                         rule_name="Show Information Gradually",
                         severity=Severity.INFO,
                         message=f"Function '{node.name}' requires {required_params} parameters - consider defaults",
@@ -170,6 +174,7 @@ class SystemDesignValidator:
         
         if complex_functions:
             violations.append(Violation(
+                rule_id="rule_25",
                 rule_number=25,
                 rule_name="Show Information Gradually",
                 severity=Severity.WARNING,
@@ -205,7 +210,8 @@ class SystemDesignValidator:
                 # Check for missing standard initialization
                 if '__init__' not in class_methods and len(class_methods) > 0:
                     violations.append(Violation(
-                        rule_number=29,
+                rule_id="rule_29",
+                rule_number=29,
                         rule_name="Register Modules the Same Way",
                         severity=Severity.WARNING,
                         message=f"Class '{node.name}' missing standard __init__ method",
@@ -222,7 +228,8 @@ class SystemDesignValidator:
                 
                 if len(setup_methods) > 1:
                     violations.append(Violation(
-                        rule_number=29,
+                rule_id="rule_29",
+                rule_number=29,
                         rule_name="Register Modules the Same Way",
                         severity=Severity.INFO,
                         message=f"Class '{node.name}' has multiple setup methods: {setup_methods}",
@@ -243,6 +250,7 @@ class SystemDesignValidator:
         
         if len(module_init_patterns) > 3:
             violations.append(Violation(
+                rule_id="rule_29",
                 rule_number=29,
                 rule_name="Register Modules the Same Way",
                 severity=Severity.INFO,
@@ -296,6 +304,7 @@ class SystemDesignValidator:
         used_patterns = sum(1 for count in command_patterns.values() if count > 0)
         if used_patterns > 0 and used_patterns < 3:
             violations.append(Violation(
+                rule_id="rule_30",
                 rule_number=30,
                 rule_name="Make All Modules Feel Like One Product",
                 severity=Severity.INFO,
@@ -338,7 +347,8 @@ class SystemDesignValidator:
             used_formats = sum(1 for count in formats.values() if count > 0)
             if used_formats > 1:
                 violations.append(Violation(
-                    rule_number=30,
+                rule_id="rule_30",
+                rule_number=30,
                     rule_name="Make All Modules Feel Like One Product",
                     severity=Severity.INFO,
                     message="Inconsistent error message formats detected",
@@ -389,6 +399,7 @@ class SystemDesignValidator:
         # Check for missing organization patterns
         if module_structure['imports'] == 0:
             violations.append(Violation(
+                rule_id="rule_26",
                 rule_number=26,
                 rule_name="Organize Features Clearly",
                 severity=Severity.INFO,
@@ -430,7 +441,8 @@ class SystemDesignValidator:
             used_patterns = sum(1 for count in patterns.values() if count > 0)
             if used_patterns == 0:
                 violations.append(Violation(
-                    rule_number=26,
+                rule_id="rule_26",
+                rule_number=26,
                     rule_name="Organize Features Clearly",
                     severity=Severity.INFO,
                     message="No clear feature hierarchy detected in class names",
@@ -463,6 +475,7 @@ class SystemDesignValidator:
         
         if not has_quick_start:
             violations.append(Violation(
+                rule_id="rule_31",
                 rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
@@ -480,6 +493,7 @@ class SystemDesignValidator:
         
         if not has_onboarding:
             violations.append(Violation(
+                rule_id="rule_31",
                 rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
@@ -497,6 +511,7 @@ class SystemDesignValidator:
         
         if has_barriers:
             violations.append(Violation(
+                rule_id="rule_31",
                 rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.WARNING,
@@ -514,6 +529,7 @@ class SystemDesignValidator:
         
         if not has_immediate_value:
             violations.append(Violation(
+                rule_id="rule_31",
                 rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
@@ -547,6 +563,7 @@ class SystemDesignValidator:
         
         if not has_ux_testing:
             violations.append(Violation(
+                rule_id="rule_32",
                 rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
@@ -564,6 +581,7 @@ class SystemDesignValidator:
         
         if not has_usability:
             violations.append(Violation(
+                rule_id="rule_32",
                 rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
@@ -581,6 +599,7 @@ class SystemDesignValidator:
         
         if not has_feedback:
             violations.append(Violation(
+                rule_id="rule_32",
                 rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
@@ -598,6 +617,7 @@ class SystemDesignValidator:
         
         if not has_ab_testing:
             violations.append(Violation(
+                rule_id="rule_32",
                 rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
@@ -615,6 +635,7 @@ class SystemDesignValidator:
         
         if not has_journey:
             violations.append(Violation(
+                rule_id="rule_32",
                 rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,

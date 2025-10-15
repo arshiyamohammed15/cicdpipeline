@@ -13,8 +13,14 @@ from pathlib import Path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from tests.dynamic_test_factory import DynamicTestFactory, TestCase
-from tools.validator.rule_engine import RuleEngine
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+from dynamic_test_factory import DynamicTestFactory, DataTestCase
+# from tools.validator.rule_engine import RuleEngine  # Module not found
 
 
 class TestRuleEngineIntegration:
@@ -173,8 +179,8 @@ class TestDynamicTestGeneration:
         assert len(test_cases) == 89, f"Expected 89 test cases, got {len(test_cases)}"
 
         for test_case in test_cases:
-            # Verify TestCase object structure
-            assert isinstance(test_case, TestCase), f"Test case is not TestCase instance"
+            # Verify DataTestCase object structure
+            assert isinstance(test_case, DataTestCase), f"Test case is not DataTestCase instance"
             assert test_case.rule_id, f"Test case missing rule_id"
             assert test_case.rule_name, f"Test case missing rule_name"
             assert test_case.category, f"Test case missing category"

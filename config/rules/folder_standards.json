@@ -1,0 +1,17 @@
+{
+  "category": "folder_standards",
+  "priority": "critical",
+  "description": "Project structure and folder organization",
+  "rules": [
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    82
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "category": "system_design",
+  "priority": "critical",
+  "description": "Architecture and system design principles",
+  "rules": [
+    22,
+    25,
+    26,
+    29,
+    30,
+    31,
+    32
+  ]
+}

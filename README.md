@@ -1,24 +1,22 @@
 # ZEROUI 2.0 Constitution Code Validator
 
-A Python-based automated code review tool that validates code against 164 ZEROUI 2.0 Constitution rules (77 original + 87 new rules) for enterprise-grade product development with comprehensive rule configuration management.
+A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution (149 rules) for enterprise-grade product development with comprehensive, modular rule configuration management.
 
 ## Features
 
-- **164 Total Rules**: 77 original constitution rules + 87 new detailed rules
-- **164 Rules Implemented**: 100% coverage of all constitution rules
-- **Individual Test Files**: 164 dedicated test files for each rule
-- **Rule Configuration**: Enable/disable any rule via CLI or programmatic API
+- **149 Total Rules**: Unified in `ZeroUI2.0_Master_Constitution.md`
+- **Modular Rule Config**: Per-category JSON under `config/rules/*.json`
+- **Rule Configuration**: Enable/disable via config and programmatic API
 - **Multiple Output Formats**: Console, JSON, HTML, and Markdown reports
-- **Enterprise Focus**: 25/25 critical rules implemented (100% coverage)
-- **Category-Based Validation**: Requirements, Privacy, Performance, Architecture, Testing, and Code Quality
-- **AST-Based Analysis**: Deep code analysis using Python's Abstract Syntax Tree
-- **Configurable**: JSON-based rule configuration
-- **Fast Processing**: Optimized for large codebases
+- **Enterprise Focus**: Critical/important rules for CI and pre-commit
+- **Category-Based Validation**: Requirements, Privacy & Security, Performance, Architecture, System Design, Problem-Solving, Platform, Teamwork, Testing & Safety, Code Quality, Code Review, API Contracts, Coding Standards, Comments, Folder Standards, Logging
+- **AST-Based Analysis**: Deep analysis using Python's AST
+- **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
 
 ## Installation
 
 1. Clone or download the validator files
-2. Ensure Python 3.7+ is installed
+2. Ensure Python 3.9+ is installed
 3. Install dependencies (optional):
    ```bash
    pip install -r requirements.txt
@@ -49,13 +47,10 @@ python tools/rule_config_cli.py override R001 file "legacy/old_code.py" --disabl
 python tools/rule_config_cli.py report
 ```
 
-### Generate Individual Test Files
+### Run Tests
 ```bash
-# Generate per-rule tests from rules source (rules.json if present, else rules_config.json)
-python tools/generate_individual_tests.py --clean
-
-# Run individual tests
-pytest validator/rules/tests/individual_rules -q
+# Run the consolidated test suites (category, constitution, patterns, validators)
+pytest validator/rules/tests -q
 ```
 
 ### Generate HTML Report
@@ -63,7 +58,7 @@ pytest validator/rules/tests/individual_rules -q
 python cli.py src/ --format html --output report.html
 ```
 
-### Enterprise Mode (52 Critical Rules)
+### Enterprise Mode
 ```bash
 python cli.py src/ --enterprise
 ```
@@ -112,47 +107,18 @@ python cli.py src/ --verbose
 
 ## Dynamic Testing
 
-The validator includes dynamic test cases that automatically discover all rules from the configuration, making them immune to rule renumbering and easy to maintain.
+The validator includes dynamic test cases that automatically discover all rules from the modular configuration under `config/rules/*.json`, making them resilient to rule renumbering and easy to maintain.
 
-### Run Dynamic Coverage Test
-```bash
-python test_dynamic_coverage.py
-```
-This test:
-- Automatically loads all rules from `tools/validator/rules.json` (or `rules_config.json` fallback)
-- Validates configuration integrity
-- Tests validator on comprehensive sample code
-- Reports coverage statistics by category
-- Identifies which rules were triggered
-- Shows missing rule coverage
-
-### Run Category-Based Test
-```bash
-python test_by_category.py
-```
-This test:
-- Groups rules by category (Basic Work, System Design, etc.)
-- Tests each category separately
-- Reports per-category coverage
-- Shows priority levels (Critical, Important, Recommended)
-- Identifies gaps in each category
-
-### Run Configuration Integrity Test
-```bash
-python test_config_integrity.py
-```
-This test:
-- Validates `rules_config.json` structure
-- Checks for duplicate rules
-- Verifies total rule count
-- Ensures all categories have patterns
-- Validates rule number ranges
-- Checks for missing configurations
+Key suites (invoked via `pytest validator/rules/tests -q`):
+- Category suites (e.g., `categories/test_*.py`)
+- Constitution-aligned suites (e.g., `test_by_constitution.py`)
+- Pattern-based suites (e.g., `test_by_patterns.py`)
+- Validator and integration checks (e.g., `test_validators.py`)
 
 ### Understanding Test Output
 
 **Coverage Reports:**
-- **Total Coverage**: Percentage of all 71 rules that were triggered
+- **Total Coverage**: Percentage of all 149 rules that were triggered
 - **Category Coverage**: Coverage within each category
 - **Priority Coverage**: Coverage by priority level (Critical/Important/Recommended)
 - **Missing Rules**: Rules that weren't triggered by the test code
@@ -183,7 +149,7 @@ This test:
 
 ## Rule Categories
 
-### Implemented Rules (71 rules - 100% coverage)
+### Constitution Scope (149 rules)
 
 #### Basic Work (5 rules - 100% coverage)
 - **Rule 4**: Use Settings Files, Not Hardcoded Numbers - Configuration management validation
@@ -409,30 +375,18 @@ def process_data(data):
 
 ## Configuration
 
-The validator uses `rules_config.json` for configuration:
+Rules are configured modularly per-category in `config/rules/*.json`. Example:
 
 ```json
 {
-  "constitution_version": "2.0",
-  "total_rules": 71,
-  "categories": {
-    "basic_work": {
-      "rules": [1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 18, 19, 20],
-      "priority": "critical"
-    }
-  },
-  "validation_patterns": {
-    "privacy_security": {
-      "patterns": {
-        "hardcoded_credentials": {
-          "regex": "(?i)(password|api_key|secret|token)\\s*=\\s*[\"'][^\"']+[\"']",
-          "severity": "error"
-        }
-      }
-    }
-  }
+  "category": "basic_work",
+  "priority": "critical",
+  "description": "Core principles for all development work",
+  "rules": [4, 5, 10, 13, 20]
 }
 ```
+
+Programmatic and advanced loading is handled by components like `config/enhanced_config_manager.py` and `config/rule_loader.py`. Patterns can be added under `config/patterns/*.json`.
 
 ## Integration
 

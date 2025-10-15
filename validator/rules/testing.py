@@ -70,7 +70,8 @@ class TestingValidator:
             
             if not has_test_functions:
                 violations.append(Violation(
-                    rule_number=14,
+                rule_id="rule_14",
+                rule_number=14,
                     rule_name="Test Everything",
                     severity=Severity.WARNING,
                     message="No test functions found in file",
@@ -106,6 +107,7 @@ class TestingValidator:
         # Check for risky operations without error handling
         if not has_try_catch and self._has_risky_operations(tree):
             violations.append(Violation(
+                rule_id="rule_14",
                 rule_number=14,
                 rule_name="Handle Edge Cases Gracefully",
                 severity=Severity.WARNING,
@@ -152,6 +154,7 @@ class TestingValidator:
         
         if has_db_operations and not has_rollback:
             violations.append(Violation(
+                rule_id="rule_7",
                 rule_number=7,
                 rule_name="Never Break Things During Updates",
                 severity=Severity.WARNING,
@@ -197,7 +200,8 @@ class TestingValidator:
                     
                     if not has_safety_check:
                         violations.append(Violation(
-                            rule_number=59,
+                rule_id="rule_59",
+                rule_number=59,
                             rule_name="Build Safety Into Everything",
                             severity=Severity.WARNING,
                             message=f"Dangerous operation without safety check: {func_name}",
@@ -239,6 +243,7 @@ class TestingValidator:
         
         if has_file_operations and not has_backup:
             violations.append(Violation(
+                rule_id="rule_59",
                 rule_number=59,
                 rule_name="Build Safety Into Everything",
                 severity=Severity.INFO,
@@ -283,7 +288,8 @@ class TestingValidator:
                     
                     if not has_validation:
                         violations.append(Violation(
-                            rule_number=14,
+                rule_id="rule_14",
+                rule_number=14,
                             rule_name="Handle Edge Cases Gracefully",
                             severity=Severity.WARNING,
                             message="Input operation without validation",

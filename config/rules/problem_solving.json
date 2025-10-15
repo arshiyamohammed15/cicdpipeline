@@ -1,0 +1,14 @@
+{
+  "category": "problem_solving",
+  "priority": "important",
+  "description": "Feature development and problem-solving approach",
+  "rules": [
+    33,
+    34,
+    35,
+    37,
+    38,
+    39,
+    41
+  ]
+}

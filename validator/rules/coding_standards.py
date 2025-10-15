@@ -67,13 +67,17 @@ class CodingStandardsValidator:
         # Check for ruff, black, mypy usage
         if 'import' in content and 'ruff' not in content.lower():
             violations.append(Violation(
-                rule_id='R027',
-                file_path=file_path,
-                line_number=1,
-                message='ruff + black (line-length 100) + mypy --strict; Python 3.11+',
-                severity=Severity.ERROR,
-                category='code_quality'
-            ))
+                        rule_id='R027',
+                        rule_name='ruff + black (line-length 100) + mypy --strict; Python 3.11+',
+                        severity=Severity.ERROR,
+                        message='ruff + black (line-length 100) + mypy --strict; Python 3.11+',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+            
+                    ))
         
         # Check for type hints
         violations.extend(self._validate_type_hints(content, file_path))
@@ -104,13 +108,17 @@ class CodingStandardsValidator:
         # Check for 'any' usage
         if 'any' in content:
             violations.append(Violation(
-                rule_id='R028',
-                file_path=file_path,
-                line_number=1,
-                message='No \'any\' in TypeScript - use proper types',
-                severity=Severity.WARNING,
-                category='code_quality'
-            ))
+                        rule_id='R028',
+                        rule_name='No \'any\' in TypeScript - use proper types',
+                        severity=Severity.WARNING,
+                        message='No \'any\' in TypeScript - use proper types',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+            
+                    ))
         
         return violations
     
@@ -124,24 +132,32 @@ class CodingStandardsValidator:
             # Check for trailing whitespace
             if line.rstrip() != line:
                 violations.append(Violation(
-                    rule_id='R029',
-                    file_path=file_path,
-                    line_number=line_num,
-                    message='Trailing whitespace detected - use automated formatting',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R029',
+                        rule_name='Trailing whitespace detected - use automated formatting',
+                        severity=Severity.WARNING,
+                        message='Trailing whitespace detected - use automated formatting',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
             
             # Check for inconsistent indentation
             if line.startswith(' ') and line.startswith('\t'):
                 violations.append(Violation(
-                    rule_id='R029',
-                    file_path=file_path,
-                    line_number=line_num,
-                    message='Mixed tabs and spaces - use consistent formatting',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R029',
+                        rule_name='Mixed tabs and spaces - use consistent formatting',
+                        severity=Severity.WARNING,
+                        message='Mixed tabs and spaces - use consistent formatting',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         return violations
     
@@ -167,37 +183,49 @@ class CodingStandardsValidator:
                     # Function names should be snake_case
                     if not re.match(r'^[a-z_][a-z0-9_]*$', node.name):
                         violations.append(Violation(
-                            rule_id='R030',
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            message=f'Function name \'{node.name}\' should be snake_case',
-                            severity=Severity.WARNING,
-                            category='code_quality'
-                        ))
+                        rule_id='R030',
+                        rule_name=f'Function name \'{node.name}\' should be snake_case',
+                        severity=Severity.WARNING,
+                        message=f'Function name \'{node.name}\' should be snake_case',
+                        file_path=file_path,
+                        line_number=node.lineno,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                        
+                    ))
                 
                 elif isinstance(node, ast.ClassDef):
                     # Class names should be PascalCase
                     if not re.match(r'^[A-Z][a-zA-Z0-9]*$', node.name):
                         violations.append(Violation(
-                            rule_id='R030',
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            message=f'Class name \'{node.name}\' should be PascalCase',
-                            severity=Severity.WARNING,
-                            category='code_quality'
-                        ))
+                        rule_id='R030',
+                        rule_name=f'Class name \'{node.name}\' should be PascalCase',
+                        severity=Severity.WARNING,
+                        message=f'Class name \'{node.name}\' should be PascalCase',
+                        file_path=file_path,
+                        line_number=node.lineno,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                        
+                    ))
                 
                 elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
                     # Variable names should be snake_case
                     if not re.match(r'^[a-z_][a-z0-9_]*$', node.id):
                         violations.append(Violation(
-                            rule_id='R030',
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            message=f'Variable name \'{node.id}\' should be snake_case',
-                            severity=Severity.WARNING,
-                            category='code_quality'
-                        ))
+                        rule_id='R030',
+                        rule_name=f'Variable name \'{node.id}\' should be snake_case',
+                        severity=Severity.WARNING,
+                        message=f'Variable name \'{node.id}\' should be snake_case',
+                        file_path=file_path,
+                        line_number=node.lineno,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                        
+                    ))
         
         except SyntaxError:
             # Skip files with syntax errors
@@ -215,13 +243,17 @@ class CodingStandardsValidator:
             func_name = match.group(1)
             if not re.match(r'^[a-z][a-zA-Z0-9]*$', func_name):
                 violations.append(Violation(
-                    rule_id='R030',
-                    file_path=file_path,
-                    line_number=content[:match.start()].count('\n') + 1,
-                    message=f'Function name \'{func_name}\' should be camelCase',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R030',
+                        rule_name=f'Function name \'{func_name}\' should be camelCase',
+                        severity=Severity.WARNING,
+                        message=f'Function name \'{func_name}\' should be camelCase',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         # Check for PascalCase class names
         class_pattern = r'class\s+([a-zA-Z_][a-zA-Z0-9_]*)'
@@ -229,13 +261,17 @@ class CodingStandardsValidator:
             class_name = match.group(1)
             if not re.match(r'^[A-Z][a-zA-Z0-9]*$', class_name):
                 violations.append(Violation(
-                    rule_id='R030',
-                    file_path=file_path,
-                    line_number=content[:match.start()].count('\n') + 1,
-                    message=f'Class name \'{class_name}\' should be PascalCase',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R030',
+                        rule_name=f'Class name \'{class_name}\' should be PascalCase',
+                        severity=Severity.WARNING,
+                        message=f'Class name \'{class_name}\' should be PascalCase',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         return violations
     
@@ -262,13 +298,17 @@ class CodingStandardsValidator:
                     func_lines = node.end_lineno - node.lineno + 1
                     if func_lines > 50:
                         violations.append(Violation(
-                            rule_id='R031',
-                            file_path=file_path,
-                            line_number=node.lineno,
-                            message=f'Function \'{node.name}\' is {func_lines} lines long (recommended: ≤50)',
-                            severity=Severity.WARNING,
-                            category='code_quality'
-                        ))
+                        rule_id='R031',
+                        rule_name=f'Function \'{node.name}\' is {func_lines} lines long (recommended: ≤50)',
+                        severity=Severity.WARNING,
+                        message=f'Function \'{node.name}\' is {func_lines} lines long (recommended: ≤50)',
+                        file_path=file_path,
+                        line_number=node.lineno,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                        
+                    ))
         
         except SyntaxError:
             # Skip files with syntax errors
@@ -298,13 +338,17 @@ class CodingStandardsValidator:
                     func_length = line_num - function_start + 1
                     if func_length > 50:
                         violations.append(Violation(
-                            rule_id='R031',
-                            file_path=file_path,
-                            line_number=function_start,
-                            message=f'Function is {func_length} lines long (recommended: ≤50)',
-                            severity=Severity.WARNING,
-                            category='code_quality'
-                        ))
+                        rule_id='R031',
+                        rule_name=f'Function is {func_length} lines long (recommended: ≤50)',
+                        severity=Severity.WARNING,
+                        message=f'Function is {func_length} lines long (recommended: ≤50)',
+                        file_path=file_path,
+                        line_number=function_start,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                        
+                    ))
                     in_function = False
         
         return violations
@@ -321,13 +365,17 @@ class CodingStandardsValidator:
             complexity_count = sum(1 for indicator in complexity_indicators if indicator in line)
             if complexity_count > 3:
                 violations.append(Violation(
-                    rule_id='R032',
-                    file_path=file_path,
-                    line_number=line_num,
-                    message=f'High complexity detected - consider using early returns',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R032',
+                        rule_name=f'High complexity detected - consider using early returns',
+                        severity=Severity.WARNING,
+                        message=f'High complexity detected - consider using early returns',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         return violations
     
@@ -356,13 +404,17 @@ class CodingStandardsValidator:
         # Check for wildcard imports
         if re.search(r'import\s+\*', content):
             violations.append(Violation(
-                rule_id='R034',
-                file_path=file_path,
-                line_number=1,
-                message='Avoid wildcard imports - use specific imports',
-                severity=Severity.WARNING,
-                category='code_quality'
-            ))
+                        rule_id='R034',
+                        rule_name='Avoid wildcard imports - use specific imports',
+                        severity=Severity.WARNING,
+                        message='Avoid wildcard imports - use specific imports',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+            
+                    ))
         
         # Check import organization (simplified)
         lines = content.split('\n')
@@ -408,13 +460,17 @@ class CodingStandardsValidator:
                         # Check if function has type hints
                         if not node.returns and not any(arg.annotation for arg in node.args.args):
                             violations.append(Violation(
-                                rule_id='R035',
-                                file_path=file_path,
-                                line_number=node.lineno,
-                                message=f'Function \'{node.name}\' should have type hints',
-                                severity=Severity.WARNING,
-                                category='code_quality'
-                            ))
+                        rule_id='R035',
+                        rule_name=f'Function \'{node.name}\' should have type hints',
+                        severity=Severity.WARNING,
+                        message=f'Function \'{node.name}\' should have type hints',
+                        file_path=file_path,
+                        line_number=node.lineno,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                            
+                    ))
             except SyntaxError:
                 pass
         
@@ -433,11 +489,15 @@ class CodingStandardsValidator:
                 if operation in line and 'try:' not in content:
                     violations.append(Violation(
                         rule_id='R036',
+                        rule_name='Proper error handling with try-catch blocks and meaningful messages',
+                        severity=Severity.ERROR,
+                        message='Proper error handling with try-catch blocks and meaningful messages',
                         file_path=file_path,
                         line_number=line_num,
-                        message='Proper error handling with try-catch blocks and meaningful messages',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet="",
                         category='code_quality'
+                    
                     ))
                     break
         
@@ -451,13 +511,17 @@ class CodingStandardsValidator:
             # Check for file operations without context managers
             if 'open(' in content and 'with ' not in content:
                 violations.append(Violation(
-                    rule_id='R037',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Use context managers (with statement) for file operations',
-                    severity=Severity.WARNING,
-                    category='code_quality'
-                ))
+                        rule_id='R037',
+                        rule_name='Use context managers (with statement) for file operations',
+                        severity=Severity.WARNING,
+                        message='Use context managers (with statement) for file operations',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         return violations
     
@@ -477,11 +541,15 @@ class CodingStandardsValidator:
                 if re.search(pattern, line):
                     violations.append(Violation(
                         rule_id='R038',
+                        rule_name='No secrets in code; use environment variables and secure storage',
+                        severity=Severity.ERROR,
+                        message='No secrets in code; use environment variables and secure storage',
                         file_path=file_path,
                         line_number=line_num,
-                        message='No secrets in code; use environment variables and secure storage',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet="",
                         category='security'
+                    
                     ))
         
         return violations
@@ -493,13 +561,17 @@ class CodingStandardsValidator:
         if 'auth' in content.lower() and 'password' in content.lower():
             if 'hash' not in content.lower() and 'bcrypt' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R039',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Secure authentication implementation with proper validation',
-                    severity=Severity.ERROR,
-                    category='security'
-                ))
+                        rule_id='R039',
+                        rule_name='Secure authentication implementation with proper validation',
+                        severity=Severity.ERROR,
+                        message='Secure authentication implementation with proper validation',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='security'
+                
+                    ))
         
         return violations
     
@@ -509,13 +581,17 @@ class CodingStandardsValidator:
         
         if 'data' in content.lower() and 'encrypt' not in content.lower():
             violations.append(Violation(
-                rule_id='R040',
-                file_path=file_path,
-                line_number=1,
-                message='Protect sensitive data with encryption and access controls',
-                severity=Severity.ERROR,
-                category='security'
-            ))
+                        rule_id='R040',
+                        rule_name='Protect sensitive data with encryption and access controls',
+                        severity=Severity.ERROR,
+                        message='Protect sensitive data with encryption and access controls',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='security'
+            
+                    ))
         
         return violations
     
@@ -525,13 +601,17 @@ class CodingStandardsValidator:
         
         if 'input' in content.lower() and 'validate' not in content.lower():
             violations.append(Violation(
-                rule_id='R041',
-                file_path=file_path,
-                line_number=1,
-                message='Validate and sanitize all user inputs',
-                severity=Severity.ERROR,
-                category='security'
-            ))
+                        rule_id='R041',
+                        rule_name='Validate and sanitize all user inputs',
+                        severity=Severity.ERROR,
+                        message='Validate and sanitize all user inputs',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='security'
+            
+                    ))
         
         return violations
     
@@ -541,13 +621,17 @@ class CodingStandardsValidator:
         
         if 'output' in content.lower() and 'sanitize' not in content.lower():
             violations.append(Violation(
-                rule_id='R042',
-                file_path=file_path,
-                line_number=1,
-                message='Sanitize outputs to prevent injection attacks',
-                severity=Severity.ERROR,
-                category='security'
-            ))
+                        rule_id='R042',
+                        rule_name='Sanitize outputs to prevent injection attacks',
+                        severity=Severity.ERROR,
+                        message='Sanitize outputs to prevent injection attacks',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='security'
+            
+                    ))
         
         return violations
     
@@ -577,13 +661,17 @@ class CodingStandardsValidator:
         
         if 'handler' in content.lower() and 'async' not in content.lower():
             violations.append(Violation(
-                rule_id='R087',
-                file_path=file_path,
-                line_number=1,
-                message='Async only for handlers; avoid blocking calls; httpx for async tests',
-                severity=Severity.WARNING,
-                category='code_quality'
-            ))
+                        rule_id='R087',
+                        rule_name='Async only for handlers; avoid blocking calls; httpx for async tests',
+                        severity=Severity.WARNING,
+                        message='Async only for handlers; avoid blocking calls; httpx for async tests',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+            
+                    ))
         
         return violations
     
@@ -594,13 +682,17 @@ class CodingStandardsValidator:
         if self._is_dependency_file(file_path):
             if 'pip-tools' not in content.lower() and 'lock' not in content.lower():
                 violations.append(Violation(
-                    rule_id='R088',
-                    file_path=file_path,
-                    line_number=1,
-                    message='pip-tools lock with hashes; no unpinned deps',
-                    severity=Severity.ERROR,
-                    category='code_quality'
-                ))
+                        rule_id='R088',
+                        rule_name='pip-tools lock with hashes; no unpinned deps',
+                        severity=Severity.ERROR,
+                        message='pip-tools lock with hashes; no unpinned deps',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='code_quality'
+                
+                    ))
         
         return violations
     

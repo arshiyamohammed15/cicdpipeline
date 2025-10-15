@@ -1,0 +1,151 @@
+{
+  "constitution_version": "2.0",
+  "test_framework": "pytest",
+  "coverage_target": 90,
+  "logging": {
+    "format": "jsonl",
+    "level": "INFO",
+    "required_fields": [
+      "log_schema_version",
+      "ts_utc",
+      "monotonic_hw_time_ms",
+      "level",
+      "service",
+      "version",
+      "env",
+      "host",
+      "traceId",
+      "spanId",
+      "event",
+      "message",
+      "latencyMs"
+    ],
+    "max_event_bytes": 65536,
+    "sampling": {
+      "debug": 0.1,
+      "info": 1.0,
+      "trace": 0.0
+    }
+  },
+  "receipts": {
+    "required_fields": [
+      "ts_utc",
+      "monotonic_hw_time_ms",
+      "actor",
+      "service",
+      "action",
+      "status",
+      "traceId",
+      "policy_snapshot_hash"
+    ],
+    "optional_fields": [
+      "inputs_hash",
+      "outputs_hash",
+      "notes"
+    ]
+  },
+  "error_codes": {
+    "TEST_FAILURE": "Test execution failed",
+    "CONSTITUTION_VIOLATION": "Rule violation detected",
+    "COVERAGE_INSUFFICIENT": "Test coverage below 90%",
+    "MISSING_RECEIPT": "Required receipt not found",
+    "INVALID_LOG_FORMAT": "Log format does not match schema",
+    "RULE_NOT_FOUND": "Constitution rule not found",
+    "CONFIG_MISSING": "Required configuration file missing"
+  },
+  "rule_categories": {
+    "basic_work": {
+      "rules": [4, 5, 10, 13, 20],
+      "priority": "critical",
+      "description": "Core principles for all development work"
+    },
+    "requirements": {
+      "rules": [1, 2],
+      "priority": "critical",
+      "description": "Requirements and specifications"
+    },
+    "privacy_security": {
+      "rules": [3, 11, 12, 27, 36],
+      "priority": "critical",
+      "description": "Privacy and security principles"
+    },
+    "performance": {
+      "rules": [8, 67],
+      "priority": "important",
+      "description": "Performance optimization"
+    },
+    "architecture": {
+      "rules": [19, 21, 23, 24, 28],
+      "priority": "critical",
+      "description": "Architecture and system design"
+    },
+    "system_design": {
+      "rules": [22, 25, 26, 29, 30, 31, 32],
+      "priority": "critical",
+      "description": "System design principles"
+    },
+    "problem_solving": {
+      "rules": [33, 34, 35, 37, 38, 39, 41],
+      "priority": "important",
+      "description": "Feature development and problem-solving approach"
+    },
+    "platform": {
+      "rules": [42, 43, 44, 45, 46, 47, 48, 49, 50, 51],
+      "priority": "important",
+      "description": "Platform features and technical implementation"
+    },
+    "testing_safety": {
+      "rules": [7, 14, 59, 69],
+      "priority": "critical",
+      "description": "Testing and safety principles"
+    },
+    "code_quality": {
+      "rules": [15, 18, 68],
+      "priority": "important",
+      "description": "Code quality and documentation"
+    },
+    "teamwork": {
+      "rules": [52, 53, 54, 55, 56, 57, 58, 60, 61, 62, 63, 64, 65, 66, 70, 71, 72, 74, 75, 76, 77],
+      "priority": "recommended",
+      "description": "Collaboration, UX, and team dynamics"
+    },
+    "code_review": {
+      "rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 76, 77, 81],
+      "priority": "critical",
+      "description": "Code review standards and PR requirements"
+    },
+    "api_contracts": {
+      "rules": [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 80, 83, 84, 85, 86],
+      "priority": "critical",
+      "description": "API design, contracts, and governance"
+    },
+    "coding_standards": {
+      "rules": [27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 87, 88],
+      "priority": "critical",
+      "description": "Technical coding standards and best practices"
+    },
+    "comments": {
+      "rules": [8, 46, 47, 48, 49, 50, 51, 52, 53, 89],
+      "priority": "important",
+      "description": "Documentation and comment standards"
+    },
+    "folder_standards": {
+      "rules": [54, 55, 56, 57, 58, 59, 60, 61, 62, 82],
+      "priority": "critical",
+      "description": "Project structure and folder organization"
+    },
+    "logging": {
+      "rules": [43, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75],
+      "priority": "critical",
+      "description": "Logging standards and troubleshooting"
+    }
+  },
+  "test_requirements": {
+    "fail_before_pass_after": true,
+    "coverage_minimum": 90,
+    "simple_english_comments": true,
+    "structured_logging": true,
+    "receipt_tracking": true,
+    "error_handling": true
+  }
+}

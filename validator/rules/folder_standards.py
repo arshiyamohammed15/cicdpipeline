@@ -92,13 +92,17 @@ class FolderStandardsValidator:
                     # Check if it's using ZEROUI_ROOT
                     if 'ZEROUI_ROOT' not in line and 'config/paths.json' not in line:
                         violations.append(Violation(
-                            rule_id='R054',
-                            file_path=file_path,
-                            line_number=line_num,
-                            message='Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
-                            severity=Severity.ERROR,
-                            category='structure'
-                        ))
+                        rule_id='R054',
+                        rule_name='Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
+                        severity=Severity.ERROR,
+                        message='Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
+                        file_path=file_path,
+                        line_number=line_num,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                        
+                    ))
         
         return violations
     
@@ -124,13 +128,17 @@ class FolderStandardsValidator:
         # Check if file is outside allowlisted folders
         if not in_allowed_folder and len(path_parts) > 1:
             violations.append(Violation(
-                rule_id='R055',
-                file_path=file_path,
-                line_number=1,
-                message='Only write under allowlisted subfolders: servers/*/ and storage/*/',
-                severity=Severity.ERROR,
-                category='structure'
-            ))
+                        rule_id='R055',
+                        rule_name='Only write under allowlisted subfolders: servers/*/ and storage/*/',
+                        severity=Severity.ERROR,
+                        message='Only write under allowlisted subfolders: servers/*/ and storage/*/',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+            
+                    ))
         
         return violations
     
@@ -147,11 +155,15 @@ class FolderStandardsValidator:
                 if class_name not in self.allowed_names and not class_name.startswith('_'):
                     violations.append(Violation(
                         rule_id='R056',
+                        rule_name=f'Never create new top-level names besides the eight allowed server/storage names',
+                        severity=Severity.ERROR,
+                        message=f'Never create new top-level names besides the eight allowed server/storage names',
                         file_path=file_path,
                         line_number=content[:match.start()].count('\n') + 1,
-                        message=f'Never create new top-level names besides the eight allowed server/storage names',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet="",
                         category='structure'
+                    
                     ))
         
         return violations
@@ -173,13 +185,17 @@ class FolderStandardsValidator:
                     import_name = match.group(1)
                     if 'storage' in import_name.lower() and 'data/' not in import_name:
                         violations.append(Violation(
-                            rule_id='R057',
-                            file_path=file_path,
-                            line_number=content[:match.start()].count('\n') + 1,
-                            message='Persistence MUST go via <server>/data/ junction to paired storage',
-                            severity=Severity.ERROR,
-                            category='structure'
-                        ))
+                        rule_id='R057',
+                        rule_name='Persistence MUST go via <server>/data/ junction to paired storage',
+                        severity=Severity.ERROR,
+                        message='Persistence MUST go via <server>/data/ junction to paired storage',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                        
+                    ))
         
         return violations
     
@@ -201,13 +217,17 @@ class FolderStandardsValidator:
                     # Check for potential circular imports
                     if 'circular' in import_name.lower() or 'loop' in import_name.lower():
                         violations.append(Violation(
-                            rule_id='R058',
-                            file_path=file_path,
-                            line_number=content[:match.start()].count('\n') + 1,
-                            message='Respect module boundaries and avoid circular dependencies',
-                            severity=Severity.WARNING,
-                            category='structure'
-                        ))
+                        rule_id='R058',
+                        rule_name='Respect module boundaries and avoid circular dependencies',
+                        severity=Severity.WARNING,
+                        message='Respect module boundaries and avoid circular dependencies',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                        
+                    ))
         
         return violations
     
@@ -222,23 +242,31 @@ class FolderStandardsValidator:
                 if 'pip-tools' not in content.lower() and 'lock' not in content.lower():
                     violations.append(Violation(
                         rule_id='R059',
+                        rule_name='Use pip-tools lock with hashes; no unpinned dependencies',
+                        severity=Severity.ERROR,
+                        message='Use pip-tools lock with hashes; no unpinned dependencies',
                         file_path=file_path,
                         line_number=1,
-                        message='Use pip-tools lock with hashes; no unpinned dependencies',
-                        severity=Severity.ERROR,
+                        column_number=0,
+                        code_snippet="",
                         category='structure'
+                    
                     ))
             
             # Check for unpinned dependencies
             if '==' not in content and '~=' not in content and '>=' not in content:
                 violations.append(Violation(
-                    rule_id='R059',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Use pip-tools lock with hashes; no unpinned dependencies',
-                    severity=Severity.ERROR,
-                    category='structure'
-                ))
+                        rule_id='R059',
+                        rule_name='Use pip-tools lock with hashes; no unpinned dependencies',
+                        severity=Severity.ERROR,
+                        message='Use pip-tools lock with hashes; no unpinned dependencies',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                
+                    ))
         
         return violations
     
@@ -251,13 +279,17 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'config/' not in file_path and 'configuration/' not in file_path:
                 violations.append(Violation(
-                    rule_id='R060',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Configuration files must be in designated config directories',
-                    severity=Severity.WARNING,
-                    category='structure'
-                ))
+                        rule_id='R060',
+                        rule_name='Configuration files must be in designated config directories',
+                        severity=Severity.WARNING,
+                        message='Configuration files must be in designated config directories',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                
+                    ))
         
         return violations
     
@@ -270,13 +302,17 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'test/' not in file_path and 'tests/' not in file_path and 'spec/' not in file_path:
                 violations.append(Violation(
-                    rule_id='R061',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Tests must be organized in designated test directories',
-                    severity=Severity.WARNING,
-                    category='structure'
-                ))
+                        rule_id='R061',
+                        rule_name='Tests must be organized in designated test directories',
+                        severity=Severity.WARNING,
+                        message='Tests must be organized in designated test directories',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                
+                    ))
         
         return violations
     
@@ -289,13 +325,17 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'docs/' not in file_path and 'documentation/' not in file_path:
                 violations.append(Violation(
-                    rule_id='R062',
-                    file_path=file_path,
-                    line_number=1,
-                    message='Documentation must be organized in designated docs directories',
-                    severity=Severity.WARNING,
-                    category='structure'
-                ))
+                        rule_id='R062',
+                        rule_name='Documentation must be organized in designated docs directories',
+                        severity=Severity.WARNING,
+                        message='Documentation must be organized in designated docs directories',
+                        file_path=file_path,
+                        line_number=1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                
+                    ))
         
         return violations
     
@@ -332,13 +372,17 @@ class FolderStandardsValidator:
                     # Check if size exceeds 256KB
                     if size_bytes > 256000:  # 256KB in bytes
                         violations.append(Violation(
-                            rule_id='R082',
-                            file_path=file_path,
-                            line_number=content[:match.start()].count('\n') + 1,
-                            message='Database vs files choice follows Storage Constitution (≤256KB in DB)',
-                            severity=Severity.ERROR,
-                            category='structure'
-                        ))
+                        rule_id='R082',
+                        rule_name='Database vs files choice follows Storage Constitution (≤256KB in DB)',
+                        severity=Severity.ERROR,
+                        message='Database vs files choice follows Storage Constitution (≤256KB in DB)',
+                        file_path=file_path,
+                        line_number=content[:match.start()].count('\n') + 1,
+                        column_number=0,
+                        code_snippet="",
+                        category='structure'
+                        
+                    ))
         
         return violations
     
