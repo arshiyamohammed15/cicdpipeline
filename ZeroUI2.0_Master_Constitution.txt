@@ -392,7 +392,7 @@ These rules help us build a product that people don't just use - they love using
 
 ---
 
-## 1) Roles & Scope
+## 78) Roles & Scope
 
 - **Author:** writes the change, fills PR template, runs self‑checks.
 - **Reviewer:** verifies intent, risks, tests, and policy compliance. Gives clear, kind feedback.
@@ -406,7 +406,7 @@ These rules help us build a product that people don't just use - they love using
 
 SLA: Reviews should start within **2 business days**.
 
-## 2) Golden Rules (non‑negotiable)
+## 79) Golden Rules (non‑negotiable)
 
 1) **Why first.** The PR must state **What changed** and **Why we did it** (problem, constraints, trade‑offs).
 2) **Small, coherent diffs.** One intent per PR; feature‑flags for risky changes.
@@ -417,7 +417,7 @@ SLA: Reviews should start within **2 business days**.
 
 ---
 
-## 3) Review Outcomes & Severity
+## 80) Review Outcomes & Severity
 
 - **Approve** — meets all checks; minor nits optional.
 - **Request changes** — must fix blockers/majors.
@@ -431,7 +431,7 @@ Severity levels the reviewer must tag:
 
 ---
 
-## 4) Stop Conditions → Error Codes (CI/Reviewer)
+## 81) Stop Conditions → Error Codes (CI/Reviewer)
 
 - Missing PR context (what/why) .......................... `ERROR:REVIEW_CONTEXT_MISSING`
 - Violates Coding/Comments Constitution .................. `ERROR:COMMENT_POLICY_VIOLATION`
@@ -454,7 +454,7 @@ Severity levels the reviewer must tag:
 ---
 
 
-## 5) Review Procedure (simple checklist)
+## 82) Review Procedure (simple checklist)
 
 ### A) Intent & Context (read first)
 - Problem statement clear? Why now?
@@ -509,7 +509,7 @@ Severity levels the reviewer must tag:
 ---
 
 
-## 6) Evidence Required in PR
+## 83) Evidence Required in PR
 
 - **Screenshots or log snippets** (redacted) showing success/failure.
 - **Receipts** for significant actions (append‑only JSONL).
@@ -535,7 +535,7 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 ---
 
-## 8) PR Template Block — Code Review (paste into `.github/pull_request_template.md`)
+## 84) PR Template Block — Code Review (paste into `.github/pull_request_template.md`)
 
 ```markdown
 ### PR Intent
@@ -574,7 +574,7 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 ---
 
 
-## 9) Automation (CI/Pre‑commit)
+## 85) Automation (CI/Pre‑commit)
 
 - **Lint & format:** ruff/black (Python), eslint/biome (TS).
 - **Contracts:** diff and validate OpenAPI/Schema JSON; fail on breaking changes; require contract publish receipt where applicable.
@@ -589,7 +589,7 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 ---
 
 
-## 10) Review Comment Style (simple English)
+## 86) Review Comment Style (simple English)
 
 - Be kind. Focus on the code, not the person.
 - Explain **why** you suggest a change. Use short sentences.
@@ -605,7 +605,7 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 ---
 
-## 11) Return Contracts (review output)
+## 87) Return Contracts (review output)
 
 - **Approve:** brief summary + any minor nits.
 - **Request changes:** list blockers/majors with bullet points and suggested fix.
@@ -631,7 +631,7 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 ---
 
-## 1) Cursor **System** Constitution — Coding Standards
+## Cursor **System** Constitution — Coding Standards
 
 ```text
 CURSOR_CONSTITUTION_CODING_STANDARDS — ZeroUI 2.0
@@ -642,58 +642,58 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - Work on ONE Sub-Feature at a time. Total change ≤ 50 LOC unless the user includes “LOC_OVERRIDE:<number>”.
 - Minimal diffs only; do not rewrite files unless required. Keep published contracts stable unless explicitly instructed.
 
-1) PYTHON (FastAPI) QUALITY GATES
+88) PYTHON (FastAPI) QUALITY GATES
 - Tools: ruff + black (line length 100) + mypy --strict.
 - Runtime: Python 3.11+. Use Pydantic v2 models; never return raw ORM.
 - FastAPI: every route has response_model; validate inputs; error envelope only (no plain strings).
 - Async only for handlers; avoid blocking calls; httpx for async tests.
 - Packaging: pip-tools lock with hashes; no unpinned deps.
 
-2) TYPESCRIPT QUALITY GATES
+89) TYPESCRIPT QUALITY GATES
 - tsconfig: "strict": true, "noImplicitAny": true, "exactOptionalPropertyTypes": true, ES2022+, ESNext modules.
 - eslint + prettier required; no `any` in committed code.
 - API types are generated from OpenAPI; do not hand-roll DTOs for server contracts.
 
-3) API CONTRACTS (HTTP)
+90) API CONTRACTS (HTTP)
 - OpenAPI 3.1 is the source of truth; URI versioning /v1, /v2...
 - Mutations MUST accept Idempotency-Key; lists are cursor-paginated; standard headers include X-API-Version and X-Request-Id.
 - Stable error envelope with canonical codes; no 200-with-error patterns.
 - Changes that are breaking require a new major version and deprecation process.
 
-4) DATABASE (PostgreSQL primary; SQLite for dev/test)
+91) DATABASE (PostgreSQL primary; SQLite for dev/test)
 - SQLAlchemy 2.x; explicit columns (no SELECT *); name constraints/indexes.
 - Schema changes ONLY via Alembic; additive-first; include safe DOWN migration.
 - SQLite (dev/test) uses WAL + busy_timeout=5000; mirror Postgres schema.
 
-5) SECURITY & SECRETS
+92) SECURITY & SECRETS
 - No secrets in code, tests, examples, logs, or repo. Use env + OS keyring/DPAPI. Provide .env.template only.
 - Validate inputs; set security headers; CORS allowlist only (no * in prod).
 - Run dependency & secret scans; block known CVEs.
 
-6) OBSERVABILITY & RECEIPTS
+93) OBSERVABILITY & RECEIPTS
 - Logs are structured JSON: timestamp, level, service, route, httpStatus, latencyMs, traceId/spanId, apiVersion.
 - Emit JSONL receipts for privileged actions (planned/success/aborted/error) with ts_utc, monotonic_hw_time_ms, traceId, policy_snapshot_hash.
 
-7) TESTING PROGRAM
+94) TESTING PROGRAM
 - Tests first; pytest (≥90% where applicable) + httpx for API; property tests with hypothesis where valuable.
 - DB tests transactional with rollback; CI must run unit + integration tests; coverage must not drop.
 
-8) LLM / OLLAMA
+95) LLM / OLLAMA
 - Use pinned llama3 variant with deterministic params (low temperature, fixed seed); enforce token/time budgets.
 - Redact PII/secrets before inference; never log raw prompts with secrets.
 - For codegen, output ONLY the specified Return Contract format (see §12).
 
-9) SUPPLY CHAIN & RELEASE INTEGRITY
+96) SUPPLY CHAIN & RELEASE INTEGRITY
 - Signed commits/tags; SBOMs attached; pinned lockfiles (pip-tools with hashes, npm ci).
 - Container bases pinned by digest; non-root; read-only FS where possible.
 
-10) PERFORMANCE & RELIABILITY
+97) PERFORMANCE & RELIABILITY
 - Publish per-route SLOs (p95) in policy; add timeouts, retries (idempotent), backpressure; avoid event-loop blocking.
 
-11) DOCS & RUNBOOKS
+98) DOCS & RUNBOOKS
 - Accurate OpenAPI; examples for all responses; ADRs for architectural changes; runbooks for migrations/rollbacks.
 
-12) RETURN CONTRACTS (OUTPUT FORMAT — MUST PICK ONE)
+99) RETURN CONTRACTS (OUTPUT FORMAT — MUST PICK ONE)
 A) Unified Diff (default for code)
 ```diff
 # repo-root-relative paths
@@ -710,7 +710,7 @@ C) JSON Artifact (policy/config/schema)
 ```
 No extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-13) STOP CONDITIONS → ERROR CODES
+100) STOP CONDITIONS → ERROR CODES
 - Python/TS lint or format changes needed .................. ERROR:STYLE_VIOLATION
 - Type errors (mypy/TS strict) ............................. ERROR:TYPECHECK_FAIL
 - Tests missing or not updated ............................. ERROR:TEST_MISSING
@@ -757,7 +757,7 @@ Output exactly ONE: Unified Diff | New File | JSON (see System §12). No extra p
 
 ---
 
-## 3) Optional PR Template (drop in `.github/pull_request_template.md`)
+## 101) Optional PR Template (drop in `.github/pull_request_template.md`)
 
 ```markdown
 ## What changed?
@@ -804,7 +804,7 @@ You are the code generator. You must write and enforce **simple English comments
 - Work on ONE Sub‑Feature at a time. Total change ≤ 50 LOC unless the prompt has “LOC_OVERRIDE:<number>”.
 - Keep diffs minimal. Comments must be updated in the same diff as code changes.
 
-1) READABILITY STANDARD (R008)
+102) READABILITY STANDARD (R008)
 - Short sentences (≤ 20 words). Common words. Avoid jargon and passive voice.
 - If a hard word is needed, add "meaning: <plain words>".
 - Use bullets for steps. Explain decisions and trade‑offs, not line‑by‑line code.
@@ -814,7 +814,7 @@ You are the code generator. You must write and enforce **simple English comments
   ✓ "Check if user is logged in" (Grade 3.2)
   ✗ "Verify authentication status of the current user session" (Grade 8.7)
 
-2) WHERE COMMENTS MUST APPEAR
+103) WHERE COMMENTS MUST APPEAR
 A) File‑level header (top of every file) — in simple English:
    What, Why, Reads/Writes (paths/tables/receipts), Contracts/Policy IDs, Risks.
 B) Imports‑level (top import block) — group stdlib / third‑party / local and say **why** each group exists.
@@ -822,7 +822,7 @@ C) Function/Class‑level (public APIs) — WHAT + WHY + Steps + Inputs/Outputs 
 D) Variable‑level (non‑obvious values/constants) — meaning, units, allowed range, and reason.
 E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 
-3) FILE‑TYPE FOCUS (add these in headers or near the write)
+104) FILE‑TYPE FOCUS (add these in headers or near the write)
 - config: explain each setting; safe defaults; allowed range.
 - service: plain business rule; which API/DB it touches.
 - log: what we log and why; redaction rules; include traceId.
@@ -832,10 +832,10 @@ E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 - backup: schedule; retention; restore test plan.
 - audit: append‑only rule; who writes; integrity check (hash/signature).
 
-4) SECURITY & PRIVACY
+105) SECURITY & PRIVACY
 - No secrets or PII in comments or examples. Use synthetic data only.
 
-5) TODO POLICY (R089)
+106) TODO POLICY (R089)
 - **Required Format**: `TODO(owner): description [ticket] [date]`
 - **Flexible Formats** (all acceptable):
   - `TODO(john.doe): Fix login bug [BUG-123] [2024-12-31]`
@@ -846,7 +846,7 @@ E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 - **Accountability**: Must include owner (name, @team, or "me")
 - **Optional**: Ticket number and due date for better tracking
 
-6) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
+107) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
 A) Unified Diff (default for code)
 ```diff
 # repo‑root‑relative paths
@@ -863,7 +863,7 @@ C) JSON Artifact (policy/config/schema)
 ```
 If output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-6) SELF‑AUDIT BEFORE OUTPUT
+108) SELF‑AUDIT BEFORE OUTPUT
 - [ ] File header has What/Why/Reads‑Writes/Contracts/Risks
 - [ ] Imports grouped and explained (why we need them)
 - [ ] Public APIs have simple docs with WHY + Steps + Fails/Throws + Security
@@ -871,7 +871,7 @@ If output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.
 - [ ] Tricky logic has a PLAN/RATIONALE block
 - [ ] No jargon; short sentences; no secrets/PII
 
-7) STOP CONDITIONS → ERROR CODES
+109) STOP CONDITIONS → ERROR CODES
 - Missing file header or public API docstring .......... ERROR:COMMENT_MISSING
 - Complex logic lacks a plan/rationale ................. ERROR:COMMENT_RATIONALE_MISSING
 - Readability issues (jargon/long sentences) ........... ERROR:READABILITY_COMPLEX
@@ -906,7 +906,7 @@ Output exactly ONE: Unified Diff | New File | JSON (System §5). Show comment ed
 
 ---
 
-## 3) PR Checklist Block — Comments (Simple English)
+## 110) PR Checklist Block — Comments (Simple English)
 
 ```markdown
 ### Comments (Simple English) — Required Checks
@@ -937,7 +937,7 @@ Output exactly ONE: Unified Diff | New File | JSON (System §5). Show comment ed
 
 ---
 
-## 8) AUTOMATION (CI / Pre-commit)
+## 111) AUTOMATION (CI / Pre-commit)
 
 - **Header check:** ensure a file header exists near the top (regex: `^(What:|/\*\*\n \* What:)` within first 40 lines).
 - **PLAN check:** require a `PLAN` or `RATIONALE` block before code that includes retries/backoff, transactions/locks, feature flags, or complex pagination.
@@ -987,7 +987,7 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - Work on ONE Sub‑Feature at a time (unit of work). Total change ≤ 50 LOC unless the prompt includes “LOC_OVERRIDE:<number>”.
 - Touch ONLY contract SoT and enforcement files unless explicitly asked to edit service code.
 
-1) SOURCE OF TRUTH (PATHS YOU MAY TOUCH)
+112) SOURCE OF TRUTH (PATHS YOU MAY TOUCH)
 - Contract SoT lives under:
   configs/contracts/http/v*/ (OpenAPI 3.1: openapi.yaml, components.yaml, examples/)
   configs/contracts/async/   (AsyncAPI for events, if any)
@@ -997,7 +997,7 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
   docs/api/                  (rendered docs configs)
 - Do NOT write contracts elsewhere. Path outside this tree → ERROR:SPEC_PATH_VIOLATION.
 
-2) STYLE GUIDE (HTTP)
+113) STYLE GUIDE (HTTP)
 - Verbs: GET, POST, PUT, PATCH, DELETE (no RPC verbs).
 - URIs: nouns + ids: /v1/projects/{projectId}/releases/{releaseId} (kebab‑case tokens).
 - IDs: UUIDv7 strings; never expose DB autoincrement ids.
@@ -1008,28 +1008,28 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - Headers (standard): X‑API‑Version, X‑Request‑Id, X‑RateLimit‑*, X‑Tenant‑Id (UUIDv7).
 - Error envelope (Problem JSON‑style): stable code, human message, traceId, optional details.
 
-3) VERSIONING & COMPATIBILITY
+114) VERSIONING & COMPATIBILITY
 - URI versioning (/v1, /v2). Any breaking change REQUIRES a new major and deprecation of the old.
 - Breaking (block without bump): remove/rename field/endpoint; type change; optional→required; enum narrowing; behavior or default change.
 - Non‑breaking: add endpoint; add optional field; enum widening (consumers must tolerate unknowns).
 - Deprecation: mark deprecated: true, emit Sunset header with date, publish migration notes (≥90 days).
 
-4) SECURITY CONTRACTED IN SPEC
+115) SECURITY CONTRACTED IN SPEC
 - Auth schemes: JWT (aud, iss, exp, iat, kid) with documented scopes per route; (optional) mTLS.
 - JWKS endpoint documented; require kid on tokens.
 - Rate limits: declare headers; exceeding returns 429 deterministically.
 - Tenancy: X‑Tenant‑Id semantics documented; isolation guarantees stated.
 
-5) ERROR MODEL & MAPPING
+116) ERROR MODEL & MAPPING
 - Canonical codes defined in components/error‑codes.yaml (code, description, consumer action, retriable?, observability tag).
 - HTTP mapping: 400 VALIDATION_ERROR; 401 AUTH_UNAUTHENTICATED; 403 AUTH_FORBIDDEN; 404 RESOURCE_NOT_FOUND; 409 CONFLICT; 412 PRECONDITION_FAILED; 422 SEMANTIC_INVALID; 429 RATE_LIMITED; 500 INTERNAL_ERROR; 503 SERVICE_UNAVAILABLE.
 
-6) CACHING & CONCURRENCY
+117) CACHING & CONCURRENCY
 - ETag/If‑Match required for racy PUT/PATCH; 412 on mismatch.
 - If‑None‑Match + Last‑Modified/If‑Modified‑Since for cacheable GETs.
 - Document Cache‑Control and freshness lifetimes per route.
 
-7) TOOLING & CI GATES (AUTOMATE DISCIPLINE)
+118) TOOLING & CI GATES (AUTOMATE DISCIPLINE)
 - Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).
 - OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.
 - Example validation: JSON examples must validate against schemas for success & error cases.
@@ -1039,21 +1039,21 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.
 - Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.
 
-8) RUNTIME ENFORCEMENT
+119) RUNTIME ENFORCEMENT
 - FastAPI services: Pydantic v2 models; response_model on every route; central error handler returns the envelope.
 - Sampling validator middleware validates N% (1–5%) of live req/resp bodies against JSON Schemas; violations emit receipts with payload HASHES only.
 
-9) RECEIPTS & GOVERNANCE
+120) RECEIPTS & GOVERNANCE
 - Emit JSONL receipts for: contract.publish, contract.diff, contract.violation.
 - Receipt fields: ts_utc, monotonic_hw_time_ms, actor, service, action, version, traceId, policy_snapshot_hash, result.
 - Governance: CODEOWNERS requires Contract Owner + Guild approvals; PR review SLA ≤ 2 business days.
 - Optional `receipt_signature` (Ed25519) for high-trust actions (`contract.publish`, `contract.diff`).
 
-10) METRICS & SLOs
+121) METRICS & SLOs
 - Track: CI‑blocked breaking attempts, time‑to‑deprecate, coverage (% endpoints with examples/tests/SDKs), runtime conformance error rate, consumer contract failures.
 - Publish SLOs per GA route (p95 latency, error budgets) in docs/policy.
 
-11) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
+122) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
 A) Unified Diff (default for contract edits)
 ```diff
 # repo‑root‑relative paths
@@ -1070,7 +1070,7 @@ C) JSON Artifact (policy/config/schema)
 ```
 No extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-12) STOP CONDITIONS → ERROR CODES
+123) STOP CONDITIONS → ERROR CODES
 - Spectral lint failure ................................. ERROR:OPENAPI_LINT_FAIL
 - Breaking diff without version bump .................... ERROR:OPENAPI_DIFF_BREAK
 - Invalid or missing examples ........................... ERROR:EXAMPLES_INVALID
@@ -1131,7 +1131,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - Total change ≤ 50 LOC unless the prompt includes “LOC_OVERRIDE:<number>”.
 - Prefer minimal diffs; modify, don’t replace; keep external contracts stable unless explicitly asked.
 
-2) PATHS & WRITES (ROOTED FILE SYSTEM)
+124) PATHS & WRITES (ROOTED FILE SYSTEM)
 - Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.
 - You may only write under these allowlisted subfolders:
   servers/*/(config|services|logs|receipts|data)/**
@@ -1141,44 +1141,44 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
   ZeroUIClientStorage, ZeroUIProductStorage, ZeroUILocalStorage, ZeroUISharedStorage.
 - Persistence MUST go via <server>/data/ (junction to paired storage). If junction missing → ERROR:JUNCTION_MISSING.
 
-3) RECEIPTS, LOGGING & EVIDENCE
+125) RECEIPTS, LOGGING & EVIDENCE
 - For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.
 - Receipt fields: ts_utc (ISO-8601 Z), monotonic_hw_time_ms, actor (human|ai), service, action, status (planned|success|aborted|error), traceId, policy_snapshot_hash, inputs_hash/outputs_hash (if applicable), notes.
 - Logs MUST be structured JSON; do not log secrets or full request bodies.
 
-4) POLICY, SECRETS & PRIVACY
+126) POLICY, SECRETS & PRIVACY
 - No hardcoded thresholds/messages. Read from policy snapshots/config. Enforce redaction for PII and secrets in examples, logs, receipts.
 - Secrets never in repo or code. Use environment + OS keyring/DPAPI; .env.template only.
 
-5) API CONTRACTS (HTTP)
+127) API CONTRACTS (HTTP)
 - OpenAPI 3.1 as source of truth. URI versioning: /v1, /v2 … Breaking changes require a new major and deprecation of old.
 - Stable error envelope with canonical codes; always return structured errors.
 - Idempotency-Key required for mutating endpoints; cursor-based pagination for lists; standard headers: X-API-Version, X-Request-Id (trace).
 - FastAPI: Pydantic v2 models; response_model set on every route; strict validation; never return raw ORM.
 
-6) DATABASE (PostgreSQL primary; SQLite dev/test)
+128) DATABASE (PostgreSQL primary; SQLite dev/test)
 - SQLAlchemy 2.x; explicit columns (no SELECT *); named constraints/indexes.
 - Schema changes ONLY via Alembic; additive-first; include safe down migration.
 - SQLite dev/test pragmas: WAL + busy_timeout=5000ms; mirror Postgres schema.
 
-7) PYTHON & TYPESCRIPT QUALITY GATES
+129) PYTHON & TYPESCRIPT QUALITY GATES
 - Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).
 - TypeScript: eslint + prettier; tsconfig “strict”: true and exactOptionalPropertyTypes; no any in committed code.
 - CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.
 
-8) LLM / OLLAMA USAGE
+130) LLM / OLLAMA USAGE
 - Use pinned llama3 variant with deterministic params (low temperature, fixed seed). Enforce token/latency budgets.
 - Never exfiltrate data; respect redaction policies. For generated outputs, emit ONLY the specified return contract (see §11).
 
-9) WINDOWS-FIRST & FILE HYGIENE
+131) WINDOWS-FIRST & FILE HYGIENE
 - Respect EOL policy (.gitattributes): LF for code/config; CRLF for Windows scripts (.ps1, .iss, .wxs).
 - Never write to storage/** directly; always via servers/*/data/**. Case-sensitive name checks on canonical folders.
 
-10) TEST-FIRST & OBSERVABILITY
+132) TEST-FIRST & OBSERVABILITY
 - Add/adjust tests to cover the change. Include metrics/logs where relevant (latencyMs, route, httpStatus, apiVersion).
 - If you change a contract or DB schema, also update tests, examples, and migrations within the same change.
 
-11) RETURN CONTRACTS (OUTPUT FORMAT)
+133) RETURN CONTRACTS (OUTPUT FORMAT)
 - You MUST output exactly ONE of the following formats:
   A) Unified Diff (default for code):
      ```diff
@@ -1196,7 +1196,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
      ```
 - No extra prose, banners, or screenshots. If you cannot satisfy the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-12) STOP CONDITIONS → ERROR CODES (MUST REFUSE)
+134) STOP CONDITIONS → ERROR CODES (MUST REFUSE)
 - Outside allowlist path………………………… ERROR:OUTSIDE_ALLOWLIST
 - Unknown top-level folder name…………… ERROR:NAME_VIOLATION
 - ZEROUI_ROOT or root_mode invalid……… ERROR:PATH_ROOT_MISSING
@@ -1215,7 +1215,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - [ ] Output matches one allowed RETURN CONTRACT format
 - Verify each `<server>/data` is a **junction** to its paired storage; if not, return `ERROR:JUNCTION_MISSING` before any writes.
 
-14) DEFINITION OF DONE (PER SUB-FEATURE PR)
+135) DEFINITION OF DONE (PER SUB-FEATURE PR)
 - Minimal diff; tests added/updated; receipts present
 - Contracts stable or version-bumped with migration notes
 - Migrations included (with down path) if schema changed
@@ -1294,7 +1294,7 @@ CURSOR_CONSTITUTION_LOGGING — ZeroUI 2.0
 
 You are the code generator. You MUST produce robust, structured logs that make troubleshooting easy. Use simple English. If any rule would be broken, STOP and return an ERROR code (§13).
 
-0) LOG FORMAT & TRANSPORT
+135) LOG FORMAT & TRANSPORT
 - Format: ONE JSON object per line (JSONL).
 - Timestamps: ISO-8601 with Z (UTC). Include monotonic_hw_time_ms for ordering.
 - Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns.
@@ -1302,7 +1302,7 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars.
 - Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform.
 
-1) REQUIRED FIELDS (ALL LOGS)
+136) REQUIRED FIELDS (ALL LOGS)
 - log_schema_version: "1.0"
 - ts_utc, monotonic_hw_time_ms
 - level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL
@@ -1317,18 +1317,18 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - idempotencyKey_hash (if present), cursor_hint (for pagination)
 - policy_snapshot_hash (if decision), feature_flag (if used)
 
-1.1) FIELD CONSTRAINTS (TYPES & LIMITS)
+137) FIELD CONSTRAINTS (TYPES & LIMITS)
 - event ≤ 40 chars; pattern: ^[a-z]+(\.[a-z_]+)*$
 - error.code ≤ 40; error.message_redacted ≤ 512; stack_fingerprint ≤ 128
 - Truncate free-text fields > 512 chars. Arrays: max 50 items. Always include payload_size.
 - LOG_MAX_EVENT_BYTES default 65536; truncate & set truncation flags if exceeded.
 
-1.2) HASHING POLICY (DETERMINISTIC)
+138) HASHING POLICY (DETERMINISTIC)
 - SHA-256 over UTF-8 bytes.
 - userId_hash = sha256(tenant_salt || user_id). Do not cross-tenant correlate.
 - idempotencyKey_hash = sha256(key). payload_hash = sha256(redacted_payload_bytes).
 
-2) STABLE EVENT NAMES (MUST USE)
+139) STABLE EVENT NAMES (MUST USE)
 - request.start / request.end (exactly one start and one end per handled request)
 - db.query / db.error
 - cache.hit / cache.miss
@@ -1342,7 +1342,7 @@ You are the code generator. You MUST produce robust, structured logs that make t
 
 2.1) LLM EVENT FIELDS
 
-2.2) EVENT IDENTITY & WORKFLOW CORRELATION (LLM‑FRIENDLY)
+140) EVENT IDENTITY & WORKFLOW CORRELATION (LLM‑FRIENDLY)
 - **event_id** (UUID; prefer time‑sortable IDs like UUIDv7/ULID) — unique per log line.
 - **caused_by** (event_id or null) — causal parent when not captured by parentSpanId.
 - **links[]** — related event/message/job IDs for async handoffs.
@@ -1356,16 +1356,20 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - model, input_tokens, output_tokens, latencyMs, prompt_hash, output_hash, policy_snapshot_hash.
 - Never log raw prompts/outputs. Always emit llm.invoke.end; if failure, include error.* and success=false.
 
-3) LEVEL POLICY
+141) LEVEL POLICY
 - Dev: default INFO; allow DEBUG for local.
 - Prod: INFO by default. DEBUG only with a temporary WAIVER (id + expiry).
 - Errors: use ERROR for failures that returned 4xx/5xx; WARN for recoverable issues.
 - Never log FATAL without an immediate exit path.
 - Map error.code to central error registry (same codes as API Contracts).
 
+142) PRIVACY & PAYLOAD RULES
+- NEVER log secrets or raw PII. Redact tokens, passwords, keys, Authorization headers, cookies.
+- Do not log full request/response bodies. Log hashes, sizes, and a small redacted sample if needed.
+- Large values: truncate strings > 1024 bytes; arrays > 50 items; always include payload_size and payload_hash (SHA-256, hex).
+- Client IP: store anonymized/hashed form only.
 
-
-4) CORRELATION & CONTEXT
+143) CORRELATION & CONTEXT
 - Read/propagate W3C headers: **traceparent** and **tracestate**. If missing, generate them.
 - Always attach **traceId/spanId** and pass **X-Request-Id** (generate if missing).
 - Exactly one **request.start** and one **request.end** per handled request (same traceId/requestId).
@@ -1374,29 +1378,29 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - For async hops (queues/schedulers): include **links[]**, **job_id**, **queue_name**, **message_id**, **schedule_id**.
 - For cross‑request business flows: include **workflow_id** or **saga_id**.
 
-5) RECEIPTS (AUDIT TRAIL)
+144) RECEIPTS (AUDIT TRAIL)
 - For privileged or business-significant actions: emit a receipt (append-only JSONL) and log event "receipt.emit" with the receipt_id.
 - Receipt fields: ts_utc, monotonic_hw_time_ms, actor (human|ai), service, action, result, traceId, policy_snapshot_hash, inputs_hash, outputs_hash.
 
-6) PERFORMANCE BUDGETS & SAMPLING
+145) PERFORMANCE BUDGETS & SAMPLING
 - Logging overhead should be < 5% CPU and < 2% latency on hot paths.
 - Default sampling: DEBUG (1–10%), INFO (100%), TRACE (off).
 - Dynamic knobs (env): LOG_SAMPLE_DEBUG=0.1, LOG_SAMPLE_DB_QUERY=0.05, LOG_MAX_EVENT_BYTES=65536.
 - CI blocks events > LOG_MAX_EVENT_BYTES unless truncation fields are present.
 
-7) PYTHON (FastAPI) & TYPESCRIPT RULES
+146) PYTHON (FastAPI) & TYPESCRIPT RULES
 - Use a shared logger util that enforces schema and redaction. No print() or console.log() for runtime logs.
 - FastAPI middleware: log request.start and request.end (route, method, status, latencyMs, traceId, requestId).
 - DB: log query summaries (table, op, row_count) not raw SQL; attach elapsedMs.
 - TS: add interceptors to log external.call.* with url_host, method, status, latencyMs.
 
-8) STORAGE & RETENTION (LAPTOP-FIRST)
+147) STORAGE & RETENTION (LAPTOP-FIRST)
 - Path: <server>/logs/YYYY-MM-DD/*.jsonl (daily). Rotate at 100MB; keep last 10 files locally.
 - Retention: app logs ≥ 14 days locally; receipts ≥ 90 days (or per policy).
 - Compression after rotation is allowed; do not compress live file.
 - Writing: UTF-8 (no BOM), CRLF-safe, one JSON per line with flush after each write. Guard against partial lines on power loss.
 
-9) STOP CONDITIONS → ERROR CODES
+148) STOP CONDITIONS → ERROR CODES
 - Unstructured (not JSON) or multi-line log ……… ERROR:UNSTRUCTURED_LOG
 - Missing traceId/requestId on request/end ……… ERROR:MISSING_TRACE_ID
 - Secrets/PII present in any log ………………… ERROR:PII_LEAK
@@ -1408,7 +1412,7 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - Invalid JSON (serialization) …………………… ERROR:JSON_INVALID
 - No link to receipt on privileged action ………… ERROR:MISSING_RECEIPT_LINK
 
-10) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
+149) RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)
 A) Unified Diff (default for code)
 # repo-root-relative paths
 # unified diff (git-style) with only minimal changes
@@ -1419,11 +1423,11 @@ C) JSON Artifact (policy/config/schema)
 { ...valid JSON only... }
 If output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-11) SCHEMA VALIDATION (CI / PRE-COMMIT)
+140) SCHEMA VALIDATION (CI / PRE-COMMIT)
 - Validate events against docs/log_schema_v1.json (JSON Schema) in CI and pre-commit.
 - Block merge if schema fails or if required fields/limits are missing.
 
-12) SELF-AUDIT (CHECK BEFORE OUTPUT)
+13) SELF-AUDIT (CHECK BEFORE OUTPUT)
 - [ ] JSONL, ISO-8601 Z, monotonic time (ns→ms), Windows-safe write
 - [ ] Required fields present (traceId, requestId, event, level, latencyMs, schema version)
 - [ ] No secrets/PII; payloads hashed/truncated; sizes included
@@ -1458,7 +1462,7 @@ Output exactly ONE: Unified Diff | New File | JSON (System §11). Show log schem
 
 ---
 
-## 3) PR Checklist — Logging (paste into `.github/pull_request_template.md`)
+## 141) PR Checklist — Logging (paste into `.github/pull_request_template.md`)
 
 ```markdown
 ### Logging & Troubleshooting — Required Checks
@@ -1496,7 +1500,7 @@ Output exactly ONE: Unified Diff | New File | JSON (System §11). Show log schem
 
 ---
 
-## 7) LLM Export Tips (when asking an LLM to analyze failures)
+## 142) LLM Export Tips (when asking an LLM to analyze failures)
 - Export only the last N minutes and rows that match the traceId or requestId.
 - Sort by traceId, then monotonic_hw_time_ms; group by service.
 - Include fields: event_id, caused_by, links[], job_id/queue_name/message_id/schedule_id, workflow_id/saga_id, component, phase, error.*, severity_code, user_impact.
