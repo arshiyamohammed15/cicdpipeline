@@ -269,3 +269,82 @@ class EnhancedConfigManager:
             results["valid"] = False
         
         return results
+    
+    def get_constitution_manager(self, backend: str = None):
+        """
+        Get a constitution rule manager instance with specified backend.
+        
+        Args:
+            backend: Backend type ("sqlite", "json", "auto", or None for config default)
+            
+        Returns:
+            Constitution rule manager instance
+        """
+        try:
+            from .constitution.backend_factory import get_constitution_manager
+            return get_constitution_manager(backend or "auto", config_dir=str(self.config_dir))
+        except ImportError:
+            raise ImportError("Constitution module not available. Please ensure config/constitution/ is properly installed.")
+    
+    def is_constitution_rule_enabled(self, rule_number: int, backend: str = None) -> bool:
+        """
+        Check if a constitution rule is enabled.
+        
+        Args:
+            rule_number: Rule number to check
+            backend: Backend to use for checking (optional)
+            
+        Returns:
+            True if rule is enabled, False otherwise
+        """
+        try:
+            constitution_manager = self.get_constitution_manager(backend)
+            return constitution_manager.is_rule_enabled(rule_number)
+        except ImportError:
+            # Fallback: assume all rules are enabled if constitution module not available
+            return True
+    
+    def switch_constitution_backend(self, new_backend: str) -> bool:
+        """
+        Switch the default constitution backend.
+        
+        Args:
+            new_backend: New backend to set as default ("sqlite" or "json")
+            
+        Returns:
+            True if switch successful, False otherwise
+        """
+        try:
+            from .constitution.backend_factory import switch_backend
+            return switch_backend(new_backend)
+        except ImportError:
+            return False
+    
+    def sync_constitution_backends(self, force: bool = False) -> dict:
+        """
+        Synchronize constitution backends.
+        
+        Args:
+            force: If True, force sync even if data appears unchanged
+            
+        Returns:
+            Dictionary containing sync results
+        """
+        try:
+            from .constitution.sync_manager import sync_backends
+            return sync_backends(force)
+        except ImportError:
+            return {"success": False, "error": "Constitution module not available"}
+    
+    def get_constitution_backend_status(self) -> dict:
+        """
+        Get status of all constitution backends.
+        
+        Returns:
+            Dictionary containing backend status information
+        """
+        try:
+            from .constitution.backend_factory import get_backend_status
+            return get_backend_status()
+        except ImportError:
+            return {"error": "Constitution module not available"}
