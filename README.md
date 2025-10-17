@@ -434,6 +434,422 @@ repos:
 
 This project follows the ZEROUI 2.0 Constitution principles for open, transparent, and ethical development.
 
+## Hybrid Constitution Rules Database System
+
+The ZeroUI 2.0 Constitution Validator includes a comprehensive hybrid database system that maintains all 149 constitution rules in both SQLite (primary) and JSON (fallback) storage formats. This system provides high availability, data redundancy, and flexible backend switching capabilities.
+
+### 🏗️ System Architecture
+
+The hybrid system consists of:
+
+- **SQLite Database** (`config/constitution_rules.db`) - Primary storage with full ACID compliance
+- **JSON Database** (`config/constitution_rules.json`) - Fallback storage with human-readable format
+- **Backend Factory** - Automatic backend selection and fallback management
+- **Sync Manager** - Bidirectional synchronization between backends
+- **Migration Tools** - Data migration and integrity verification
+- **Configuration v2.0** - Simplified configuration with `primary_backend` as single source of truth
+
+### 📁 Folder Structure
+
+```
+ZeroUI2.0/
+├── config/
+│   ├── constitution/                    # Constitution system core
+│   │   ├── __init__.py                 # Module exports and factory functions
+│   │   ├── base_manager.py             # Abstract base class for all backends
+│   │   ├── database.py                 # SQLite database implementation
+│   │   ├── constitution_rules_json.py  # JSON database implementation
+│   │   ├── config_manager.py           # SQLite configuration manager
+│   │   ├── config_manager_json.py      # JSON configuration manager
+│   │   ├── backend_factory.py          # Backend factory and selection logic
+│   │   ├── sync_manager.py             # Synchronization between backends
+│   │   ├── migration.py                # Migration utilities
+│   │   ├── config_migration.py         # Configuration migration (v1.0 → v2.0)
+│   │   ├── rule_extractor.py           # Rule extraction from markdown
+│   │   ├── queries.py                  # Common database queries
+│   │   ├── logging_config.py           # Centralized logging configuration
+│   │   └── tests/                      # Comprehensive test suite
+│   │       ├── test_runner.py          # Custom test runner with coverage
+│   │       ├── conftest.py             # Test configuration and fixtures
+│   │       ├── test_database.py        # SQLite backend tests
+│   │       ├── test_json_backend.py    # JSON backend tests
+│   │       ├── test_backend_factory.py # Factory and selection tests
+│   │       ├── test_sync_manager.py    # Synchronization tests
+│   │       ├── test_migration.py       # Migration tests
+│   │       └── test_integration.py     # End-to-end integration tests
+│   ├── constitution_config.json        # Main configuration (v2.0 format)
+│   ├── constitution_rules.db           # SQLite database (auto-generated)
+│   ├── constitution_rules.json         # JSON database (auto-generated)
+│   ├── sync_history.json               # Synchronization history
+│   ├── migration_history.json          # Migration history
+│   └── backups/                        # Configuration backups
+├── enhanced_cli.py                     # Enhanced CLI with backend management
+├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 149 rules
+└── requirements.txt                    # Python dependencies
+```
+
+### 🚀 Quick Start
+
+#### 1. Initialize the System
+```bash
+# Initialize with default SQLite backend
+python enhanced_cli.py --init-system
+
+# Check system status
+python enhanced_cli.py --backend-status
+```
+
+#### 2. Basic Rule Management
+```bash
+# List all rules
+python enhanced_cli.py --list-rules
+
+# Get rule statistics
+python enhanced_cli.py --rule-stats
+
+# Enable/disable specific rules
+python enhanced_cli.py --enable-rule 1
+python enhanced_cli.py --disable-rule 2 --disable-reason "Testing purposes"
+
+# Search rules by category
+python enhanced_cli.py --search-rules "basic_work"
+```
+
+#### 3. Backend Management
+```bash
+# Switch primary backend
+python enhanced_cli.py --switch-backend json
+python enhanced_cli.py --switch-backend sqlite
+
+# Use specific backend for operation
+python enhanced_cli.py --rule-stats --backend json
+python enhanced_cli.py --list-rules --backend sqlite
+
+# Check backend health
+python enhanced_cli.py --backend-status
+```
+
+#### 4. Synchronization
+```bash
+# Manual synchronization
+python enhanced_cli.py --sync-backends
+
+# Verify synchronization
+python enhanced_cli.py --verify-sync
+
+# Check sync history
+python enhanced_cli.py --sync-history
+```
+
+#### 5. Migration
+```bash
+# Migrate configuration to v2.0
+python enhanced_cli.py --migrate-config
+
+# Validate configuration
+python enhanced_cli.py --validate-config
+
+# Get configuration info
+python enhanced_cli.py --config-info
+```
+
+### 🔧 Configuration
+
+#### Configuration v2.0 Format
+The system uses a simplified v2.0 configuration format:
+
+```json
+{
+  "version": "2.0",
+  "last_updated": "2025-10-16T19:40:44.350097",
+  "primary_backend": "sqlite",
+  "backend_config": {
+    "sqlite": {
+      "path": "config/constitution_rules.db",
+      "timeout": 30,
+      "wal_mode": true,
+      "connection_pool_size": 5
+    },
+    "json": {
+      "path": "config/constitution_rules.json",
+      "auto_backup": true,
+      "atomic_writes": true,
+      "backup_retention": 5
+    }
+  },
+  "fallback": {
+    "enabled": false,
+    "fallback_backend": "json"
+  },
+  "sync": {
+    "enabled": true,
+    "interval_seconds": 60,
+    "auto_sync_on_write": true,
+    "conflict_resolution": "primary_wins"
+  },
+  "rules": {
+    "1": {
+      "enabled": 0,
+      "disabled_reason": "Testing JSON storage",
+      "disabled_at": "2025-10-16T19:39:59.000000",
+      "updated_at": "2025-10-16T19:39:59.000000"
+    }
+  }
+}
+```
+
+### 📋 Complete CLI Commands
+
+#### Rule Management
+```bash
+# List and search
+python enhanced_cli.py --list-rules                    # List all rules
+python enhanced_cli.py --list-rules --enabled-only     # List only enabled rules
+python enhanced_cli.py --list-rules --disabled-only    # List only disabled rules
+python enhanced_cli.py --search-rules "keyword"        # Search rules by keyword
+python enhanced_cli.py --search-rules "basic_work"     # Search by category
+
+# Rule operations
+python enhanced_cli.py --enable-rule 1                 # Enable rule 1
+python enhanced_cli.py --disable-rule 2 --disable-reason "Testing"  # Disable rule 2
+python enhanced_cli.py --rule-stats                    # Get rule statistics
+python enhanced_cli.py --rule-info 1                   # Get detailed rule info
+
+# Export rules
+python enhanced_cli.py --export-rules                  # Export all rules
+python enhanced_cli.py --export-rules --format json    # Export as JSON
+python enhanced_cli.py --export-rules --format html    # Export as HTML
+python enhanced_cli.py --export-rules --format md      # Export as Markdown
+python enhanced_cli.py --export-rules --format txt     # Export as text
+```
+
+#### Backend Management
+```bash
+# Backend selection
+python enhanced_cli.py --switch-backend sqlite         # Switch to SQLite
+python enhanced_cli.py --switch-backend json           # Switch to JSON
+python enhanced_cli.py --backend-status                # Check backend status
+python enhanced_cli.py --backend-status --detailed     # Detailed status
+
+# Use specific backend
+python enhanced_cli.py --rule-stats --backend sqlite   # Use SQLite for stats
+python enhanced_cli.py --list-rules --backend json     # Use JSON for listing
+```
+
+#### Synchronization
+```bash
+# Sync operations
+python enhanced_cli.py --sync-backends                 # Manual sync
+python enhanced_cli.py --verify-sync                   # Verify sync status
+python enhanced_cli.py --sync-history                  # View sync history
+python enhanced_cli.py --sync-history --limit 10       # Limit history entries
+```
+
+#### Migration and Configuration
+```bash
+# Configuration management
+python enhanced_cli.py --migrate-config                # Migrate to v2.0
+python enhanced_cli.py --validate-config               # Validate configuration
+python enhanced_cli.py --config-info                   # Show config info
+python enhanced_cli.py --config-info --detailed        # Detailed config info
+
+# Migration operations
+python enhanced_cli.py --migrate sqlite-to-json        # Migrate SQLite → JSON
+python enhanced_cli.py --migrate json-to-sqlite        # Migrate JSON → SQLite
+python enhanced_cli.py --migration-history             # View migration history
+```
+
+#### System Operations
+```bash
+# System management
+python enhanced_cli.py --init-system                   # Initialize system
+python enhanced_cli.py --health-check                  # System health check
+python enhanced_cli.py --backup-database               # Backup database
+python enhanced_cli.py --restore-database path         # Restore from backup
+```
+
+### 🐍 Python API Usage
+
+#### Basic Usage
+```python
+from config.constitution import get_constitution_manager
+
+# Auto-select backend (uses configuration)
+manager = get_constitution_manager()
+
+# Use specific backend
+sqlite_manager = get_constitution_manager("sqlite")
+json_manager = get_constitution_manager("json")
+
+# Basic operations
+rules = manager.get_all_rules()
+enabled_rules = manager.get_enabled_rules()
+stats = manager.get_rule_statistics()
+
+# Rule management
+manager.enable_rule(1)
+manager.disable_rule(2, "Testing purposes")
+is_enabled = manager.is_rule_enabled(1)
+```
+
+#### Backend Factory
+```python
+from config.constitution import get_backend_factory, switch_backend
+
+# Get factory instance
+factory = get_backend_factory()
+
+# Switch backend
+switch_backend("json")
+
+# Get backend status
+status = factory.get_backend_status()
+print(f"Active backend: {status['active_backend']}")
+print(f"SQLite health: {status['sqlite']['healthy']}")
+print(f"JSON health: {status['json']['healthy']}")
+```
+
+#### Synchronization
+```python
+from config.constitution import sync_manager
+
+# Manual sync
+sync_manager.sync_all_backends()
+
+# Verify sync
+is_synced = sync_manager.verify_sync()
+print(f"Backends in sync: {is_synced}")
+
+# Get sync history
+history = sync_manager.get_sync_history()
+```
+
+#### Migration
+```python
+from config.constitution import migration
+
+# Migrate between backends
+migration.migrate_sqlite_to_json()
+migration.migrate_json_to_sqlite()
+
+# Verify data integrity
+integrity_check = migration.verify_data_integrity()
+print(f"Data integrity: {integrity_check}")
+```
+
+### 🧪 Testing
+
+#### Run All Tests
+```bash
+# Run comprehensive test suite
+python config/constitution/tests/test_runner.py
+
+# Run specific test categories
+python config/constitution/tests/test_runner.py --category database
+python config/constitution/tests/test_runner.py --category json
+python config/constitution/tests/test_runner.py --category integration
+```
+
+#### Test Coverage
+The system includes comprehensive test coverage:
+- **Database Tests**: SQLite backend functionality
+- **JSON Tests**: JSON backend functionality  
+- **Factory Tests**: Backend selection and factory logic
+- **Sync Tests**: Synchronization between backends
+- **Migration Tests**: Data migration and integrity
+- **Integration Tests**: End-to-end workflows
+- **CLI Tests**: Command-line interface functionality
+
+#### Coverage Reports
+```bash
+# Generate coverage report
+python config/constitution/tests/test_runner.py --coverage
+
+# View coverage summary
+python config/constitution/tests/test_runner.py --coverage-summary
+```
+
+### 🔄 Auto-Fallback System
+
+The system includes intelligent auto-fallback capabilities:
+
+1. **Primary Backend**: SQLite (default)
+2. **Fallback Backend**: JSON
+3. **Auto-Fallback**: Automatically switches to JSON if SQLite fails
+4. **Auto-Recovery**: Switches back to SQLite when it becomes available
+5. **Health Monitoring**: Continuous health checks for both backends
+
+### 📊 Performance Features
+
+- **Connection Pooling**: SQLite connection pooling for better performance
+- **WAL Mode**: Write-Ahead Logging for SQLite reliability
+- **Atomic Writes**: JSON writes are atomic to prevent corruption
+- **Retry Logic**: Automatic retry with exponential backoff
+- **Caching**: Configuration and rule caching for faster access
+
+### 🛡️ Data Integrity
+
+- **Validation**: Pre and post-save validation for both backends
+- **Backup System**: Automatic backups before major operations
+- **Corruption Recovery**: Automatic detection and repair of corrupted files
+- **Sync Verification**: Regular verification of data consistency
+- **Migration Safety**: Safe migration with rollback capabilities
+
+### 🔍 Troubleshooting
+
+#### Common Issues
+
+1. **Database Connection Errors**
+   ```bash
+   # Check database health
+   python enhanced_cli.py --health-check
+   
+   # Repair database
+   python enhanced_cli.py --repair-database
+   ```
+
+2. **Sync Issues**
+   ```bash
+   # Verify sync status
+   python enhanced_cli.py --verify-sync
+   
+   # Force sync
+   python enhanced_cli.py --sync-backends --force
+   ```
+
+3. **Configuration Issues**
+   ```bash
+   # Validate configuration
+   python enhanced_cli.py --validate-config
+   
+   # Reset to defaults
+   python enhanced_cli.py --reset-config
+   ```
+
+4. **Migration Issues**
+   ```bash
+   # Check migration history
+   python enhanced_cli.py --migration-history
+   
+   # Rollback migration
+   python enhanced_cli.py --rollback-migration
+   ```
+
+#### Log Files
+- **System Logs**: `config/logs/constitution_system.log`
+- **Sync Logs**: `config/logs/sync_history.log`
+- **Migration Logs**: `config/logs/migration_history.log`
+- **Error Logs**: `config/logs/error.log`
+
+### 🎯 Best Practices
+
+1. **Regular Backups**: Schedule regular database backups
+2. **Monitor Health**: Use health checks to monitor system status
+3. **Sync Verification**: Regularly verify backend synchronization
+4. **Configuration Management**: Use v2.0 configuration format
+5. **Testing**: Run tests before major operations
+6. **Logging**: Monitor logs for system health and issues
+
 ## Support
 
 For issues and questions:
@@ -441,6 +857,8 @@ For issues and questions:
 2. Review validation examples
 3. Use `--verbose` flag for detailed output
 4. Check configuration file format
+5. Use `--health-check` for system diagnostics
+6. Check log files in `config/logs/`
 
 ---
 
