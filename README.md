@@ -850,6 +850,206 @@ The system includes intelligent auto-fallback capabilities:
 5. **Testing**: Run tests before major operations
 6. **Logging**: Monitor logs for system health and issues
 
+## 📋 Implementation Plan & Architecture
+
+### 🏗️ Hybrid Constitution Rules Database Implementation
+
+The ZeroUI 2.0 Constitution Validator implements a comprehensive hybrid database system that maintains both SQLite (primary) and JSON (fallback) storage for all 149 constitution rules. The system is fully configurable, allowing users to switch between backends while keeping both in sync.
+
+### 📐 System Architecture Overview
+
+The hybrid system consists of multiple interconnected components:
+
+- **SQLite Database** (`config/constitution_rules.db`) - Primary storage with full ACID compliance
+- **JSON Database** (`config/constitution_rules.json`) - Fallback storage with human-readable format
+- **Backend Factory** - Automatic backend selection and fallback management
+- **Sync Manager** - Bidirectional synchronization between backends
+- **Migration Tools** - Data migration and integrity verification
+- **Configuration v2.0** - Simplified configuration with `primary_backend` as single source of truth
+
+### 🔧 Implementation Components
+
+#### 1. Base Architecture
+- **`config/constitution/base_manager.py`** - Abstract interface for all backends
+- Standard methods: `is_rule_enabled()`, `enable_rule()`, `disable_rule()`, etc.
+- Ensures both SQLite and JSON implementations follow same contract
+
+#### 2. JSON Backend Implementation
+- **`config/constitution/constitution_rules_json.py`** - JSON database implementation
+- Stores rules in `config/constitution_rules.json`
+- Supports all operations: CRUD, search, statistics, enable/disable
+- Maintains same structure as SQLite for consistency
+
+#### 3. JSON Configuration Manager
+- **`config/constitution/config_manager_json.py`** - JSON-specific manager
+- Implements all abstract methods from base class
+- Provides same API as SQLite manager
+
+#### 4. Backend Factory
+- **`config/constitution/backend_factory.py`** - Factory for creating managers
+- `get_constitution_manager(backend="auto")` - Auto-select based on config
+- Supports backends: "sqlite", "json", "auto"
+- Auto-fallback: Try SQLite first, fall back to JSON on failure
+
+#### 5. Sync Manager
+- **`config/constitution/sync_manager.py`** - Keep backends in sync
+- `sync_sqlite_to_json()` - Push SQLite changes to JSON
+- `sync_json_to_sqlite()` - Push JSON changes to SQLite
+- `auto_sync()` - Automatic bidirectional sync
+- Tracks last sync time and detects conflicts
+
+#### 6. Migration Utilities
+- **`config/constitution/migration.py`** - Migration between backends
+- `migrate_sqlite_to_json()` - Full migration SQLite → JSON
+- `migrate_json_to_sqlite()` - Full migration JSON → SQLite
+- `verify_sync()` - Verify both backends have same data
+- `repair_sync()` - Fix inconsistencies between backends
+
+### ⚙️ Configuration System
+
+#### Backend Configuration Structure
+```json
+{
+  "version": "2.0",
+  "backend": "sqlite",
+  "fallback_backend": "json",
+  "auto_fallback": true,
+  "auto_sync": true,
+  "sync_interval": 60,
+  "backends": {
+    "sqlite": {
+      "enabled": true,
+      "path": "config/constitution_rules.db",
+      "primary": true
+    },
+    "json": {
+      "enabled": true,
+      "path": "config/constitution_rules.json",
+      "primary": false
+    }
+  }
+}
+```
+
+#### Backend Selection Priority
+1. CLI argument (`--backend sqlite`)
+2. Environment variable (`CONSTITUTION_BACKEND=json`)
+3. Configuration file (`backend: "sqlite"`)
+4. Auto-fallback logic (SQLite → JSON)
+
+#### Auto-Sync Behavior
+- Sync on every write operation (configurable)
+- Periodic sync every N seconds (configurable)
+- Manual sync via CLI or API
+- Conflict resolution: Primary wins, fallback updates
+
+#### Fallback Behavior
+- Auto-fallback enabled by default
+- Fallback events logged to usage history
+- User notification on fallback (configurable)
+- Auto-recovery when primary available
+
+### 📁 Complete File Structure
+
+#### New Files Created:
+1. **`config/constitution/base_manager.py`** - Abstract base class
+2. **`config/constitution/constitution_rules_json.py`** - JSON database
+3. **`config/constitution/config_manager_json.py`** - JSON config manager
+4. **`config/constitution/backend_factory.py`** - Factory for backend selection
+5. **`config/constitution/sync_manager.py`** - Synchronization between backends
+6. **`config/constitution/migration.py`** - Migration utilities
+7. **`config/constitution/config_migration.py`** - Configuration migration (v1.0 → v2.0)
+8. **`config/constitution/logging_config.py`** - Centralized logging configuration
+9. **`config/constitution_rules.json`** - JSON database file (auto-generated)
+
+#### Files Modified:
+1. **`config/constitution/__init__.py`** - Added new exports and factory functions
+2. **`config/enhanced_config_manager.py`** - Added backend switching and sync
+3. **`config/constitution_config.json`** - Added backend configuration
+4. **`enhanced_cli.py`** - Added backend management commands
+5. **`config/constitution/config_manager.py`** - Inherited from base class
+6. **`config/constitution/database.py`** - Inherited from base class
+
+### 🧪 Testing Framework
+
+#### Backend Testing
+- ✅ Test SQLite backend independently
+- ✅ Test JSON backend independently
+- ✅ Test backend factory and selection
+- ✅ Test auto-fallback mechanism
+
+#### Sync Testing
+- ✅ Test SQLite → JSON sync
+- ✅ Test JSON → SQLite sync
+- ✅ Test bidirectional sync
+- ✅ Test conflict resolution
+- ✅ Test sync after rule changes
+
+#### Migration Testing
+- ✅ Test full migration SQLite → JSON
+- ✅ Test full migration JSON → SQLite
+- ✅ Test data integrity after migration
+- ✅ Test migration with large datasets
+
+#### Integration Testing
+- ✅ Test CLI with different backends
+- ✅ Test backend switching
+- ✅ Test configuration updates
+- ✅ Test health checks
+- ✅ Test backup and restore
+
+### 🚀 Advanced Features
+
+#### Auto-Fallback Logic
+- Try primary backend (SQLite) first
+- On failure, automatically try fallback (JSON)
+- Log fallback events for monitoring
+- Optionally alert user when running on fallback
+- Auto-recover to primary when available
+
+#### Health Check System
+- `check_sqlite_health()` - Verify SQLite database integrity
+- `check_json_health()` - Verify JSON file validity
+- `get_backend_status()` - Get status of all backends
+- Auto-switch to healthy backend if primary fails
+
+#### Backup and Recovery
+- `backup_database(backend, path)` - Backup specific backend
+- `backup_all_backends(path)` - Backup both backends
+- `restore_database(backend, path)` - Restore from backup
+- Auto-backup before migrations or major operations
+
+### 📊 Default Behavior
+
+- **SQLite** is primary backend by default
+- **JSON** is fallback backend by default
+- **Auto-fallback** enabled by default
+- **Auto-sync** enabled by default
+- Both backends maintained in sync automatically
+- All 149 rules enabled by default in both backends
+
+### ✅ Implementation Status
+
+#### Completed Tasks:
+- [x] Create config/constitution/ directory structure with __init__.py, database.py, rule_extractor.py, config_manager.py, and queries.py files
+- [x] Implement SQLite database schema with constitution_rules, rule_configuration, rule_categories, rule_usage, and validation_history tables in database.py
+- [x] Create rule extractor to parse ZeroUI2.0_Master_Constitution.md and extract all 149 rules with proper categorization in rule_extractor.py
+- [x] Create ConstitutionRuleManager class extending EnhancedConfigManager with enable/disable methods in config_manager.py
+- [x] Implement common database queries for retrieving and filtering rules in queries.py
+- [x] Create constitution_config.json with default configuration structure
+- [x] Update enhanced_config_manager.py to integrate ConstitutionRuleManager
+- [x] Add CLI commands for rule management (list, enable, disable, stats, export) to enhanced_cli.py
+- [x] Test database creation, rule extraction, enable/disable functionality, and verify all 149 rules are enabled by default
+- [x] Implement JSON backend with full CRUD operations
+- [x] Create backend factory for automatic backend selection
+- [x] Implement synchronization system between backends
+- [x] Add migration utilities for data transfer
+- [x] Create comprehensive test suite with coverage reporting
+- [x] Implement configuration v2.0 with simplified structure
+- [x] Add health monitoring and auto-fallback capabilities
+- [x] Create backup and recovery system
+- [x] Implement centralized logging configuration
+
 ## Support
 
 For issues and questions:
