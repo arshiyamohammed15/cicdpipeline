@@ -1748,3 +1748,226 @@ try {
 - **MEDIUM**: Logged for review + user guidance + optional retry
 - **LOW**: User guidance only + continued operation
 
+
+# TypeScript Rules — Team Standard (Enhanced)
+
+🎯 **Purpose:** Write TypeScript that is **safe, clear, and consistent** so beginners and experts can work fast with fewer bugs.
+
+## Scope
+
+* Applies to **apps, services, scripts, and IDE extensions** written in TypeScript.
+* Keep changes **small and predictable**.
+
+---
+
+## BASIC WORK RULES
+**Rule 181 — Strict Mode Always**
+Turn on strict checks everywhere. (Meaning: the compiler catches more mistakes early.)
+
+**Rule 182 — No `any` in committed code**
+If you don't know the type, use **`unknown`** and **check it** before use.
+
+**Rule 183 — Handle `null`/`undefined`**
+Use optional fields only when needed, and **check** before using values.
+
+**Rule 184 — Small, Clear Functions**
+Short functions, clear names. One job per function.
+
+**Rule 185 — Consistent Naming**
+
+* files: kebab-case.ts
+* variables/functions: camelCase
+* types/interfaces/enums: PascalCase
+* constants: UPPER_SNAKE_CASE
+
+**Rule 186 — Clear Shape Strategy**
+Use **`interface`** for object shapes you'll extend, **`type`** for unions and utilities. Stay consistent across the repo.
+
+**Rule 187 — Let the Compiler Infer**
+Don't add types the compiler already knows. (Meaning: avoid noisy annotations.)
+
+**Rule 188 — Keep Imports Clean**
+No unused imports. Group by built-in, third-party, then local.
+
+---
+
+## TYPE SYSTEM RULES
+
+**Rule 189 — Describe the Shape**
+Make simple named types for real data (User, Order). Reuse them.
+
+**Rule 190 — Union & Narrowing**
+If something can be **A or B**, say so. **Check which one** before using it.
+
+**Rule 191 — Readonly by Default**
+Prefer readonly arrays/props for values that should not change.
+
+**Rule 192 — Discriminated Unions**
+When you have variants, add a simple **kind** field and switch on it. (Meaning: safer branching.)
+
+**Rule 193 — Utility Types, Not Duplicates**
+Use `Partial`, `Pick`, `Omit`, `Record` to avoid copy-pasting shapes.
+
+**Rule 194 — Generics, But Simple**
+Use generics when it truly makes code reusable. Keep names short and clear.
+
+---
+
+## ASYNC, ERRORS, AND SAFETY
+
+**Rule 195 — No Unhandled Promises**
+Always `await` or handle `.catch`. Never let a promise fail silently.
+
+**Rule 196 — Timeouts & Cancel**
+Use timeouts for network/work that may hang. Support **AbortController** for cancellable operations.
+
+**Rule 197 — Friendly Errors at Edges**
+Catch errors at boundaries (commands, routes) and show **short, calm messages**. Put details in logs (no secrets).
+
+**Rule 198 — Map Errors to Codes**
+Convert messy errors into a **small set** of stable codes (e.g., VALIDATION, NOT_FOUND, TIMEOUT, DEPENDENCY_FAILED, UNEXPECTED). Be consistent.
+
+**Rule 199 — Retries Are Limited**
+Retry only **safe** (idempotent) actions, at most 2–3 times, with backoff. Never retry validation or permission errors.
+
+---
+
+## PROJECT STRUCTURE & BUILD
+
+**Rule 200 — One Source of Truth**
+Keep types for APIs in one place (e.g., generated from contracts). Don't hand-roll duplicates.
+
+**Rule 201 — Folder Layout**
+Group by **feature**, then by file type (types, logic, tests). Avoid deep "barrel" re-exports chains.
+
+**Rule 202 — Paths & Aliases**
+Use path aliases in config (short imports), but **don't** create cycles.
+
+**Rule 203 — Modern Output Targets**
+Target modern JS (ES2022+) for optimal tree-shaking. Keep configs in repo. Builds must be reproducible.
+
+---
+
+## QUALITY GATES (MUST PASS)
+
+**Rule 204 — Lint & Format**
+Use eslint + prettier. No warnings in CI.
+
+**Rule 205 — Type Check in CI**
+Run the compiler (`tsc`) with strict settings on every PR.
+
+**Rule 206 — Tests for New Behavior**
+Add tests for new logic and for error paths (timeouts, bad input). Keep tests fast.
+
+**Rule 207 — Comments in Simple English**
+Explain **what** and **why** in short sentences. Avoid jargon.
+
+---
+
+## SECURITY, PRIVACY, PERFORMANCE
+
+**Rule 208 — No Secrets in Code or Logs**
+Never commit tokens/passwords. Redact sensitive values from logs.
+
+**Rule 209 — Validate Untrusted Inputs at Runtime**
+Types help at build time only. Validate external data before use.
+
+**Rule 210 — Keep the UI Responsive**
+Do heavy work off the main thread. Show progress for long tasks.
+
+---
+
+## AI & CODE GENERATION RULES
+
+**Rule 211 — Review AI Code Thoroughly**
+All AI-generated TypeScript must be reviewed by humans. Verify types, error handling, and security match our standards.
+
+**Rule 212 — Monitor Bundle Impact**
+Use path imports for large libraries. Avoid barrel imports in hot paths. Set bundle size budgets and monitor them.
+
+**Rule 213 — Quality Dependencies**
+Prefer packages with built-in TypeScript definitions. Use `@types/` packages from DefinitelyTyped. Audit dependencies for type safety.
+
+**Rule 214 — Test Type Boundaries**
+Write tests that verify type narrowing works. Test error cases to ensure proper typing. Use `@ts-expect-error` for expected type failures.
+
+**Rule 215 — Gradual Migration Strategy**
+When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.
+
+---
+
+## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)
+
+* **ERROR:TS_STRICT_OFF** — strict checks are disabled.
+* **ERROR:ANY_USED** — `any` found in committed code.
+* **ERROR:PROMISE_UNHANDLED** — promise without `await`/`.catch`.
+* **ERROR:NULL_UNHANDLED** — missing checks for optional/nullable.
+* **ERROR:NARROWING_MISSING** — union used without type checks.
+* **ERROR:CYCLE_IMPORTS** — circular imports/barrel chain.
+* **ERROR:DUPLICATE_DTOS** — hand-rolled API types instead of shared/generated ones.
+* **ERROR:LINT_FAIL** — linter errors or warnings in CI.
+* **ERROR:TESTS_MISSING** — new logic without tests.
+* **ERROR:SECRETS_LEAK** — secrets/PII in code, samples, or logs.
+* **ERROR:EXCEPTION_POLICY_DRIFT** — errors not mapped to the approved code list.
+* **ERROR:AI_CODE_UNREVIEWED** — AI-generated TypeScript without human review.
+* **ERROR:BUNDLE_BLOAT** — Import patterns that significantly increase bundle size.
+* **ERROR:DEPENDENCY_TYPE_UNSAFE** — Using untyped or poorly-typed dependencies.
+* **ERROR:TYPE_TEST_MISSING** — Complex types without boundary tests.
+* **ERROR:MIGRATION_VIOLATION** — Breaking type safety during JS to TS migration.
+
+---
+
+## DAILY CHECKLIST (30 seconds)
+
+* [ ] Strict mode on; no `any`
+* [ ] Optional/nullable values checked
+* [ ] Unions narrowed before use
+* [ ] Promises awaited/handled
+* [ ] Friendly error at edges; details in logs (no secrets)
+* [ ] Timeouts/cancel for I/O; small safe retries
+* [ ] Lint + type-check pass
+* [ ] Tests cover happy + failure paths
+* [ ] No circular imports; no duplicate types
+* [ ] AI-generated code reviewed
+* [ ] Bundle size within limits
+* [ ] Dependencies properly typed
+
+---
+
+## QUICK START (apply today)
+
+1. Turn **strict** on.
+2. Replace top 3 `any` with real types or `unknown` + checks.
+3. Add a **central error handler** at the boundary (command/route).
+4. Set a **default timeout** for network/file work.
+5. Create a tiny **type library** for your main data shapes and reuse it.
+6. **Review all AI code** for type safety and standards compliance.
+7. **Set bundle size budgets** and monitor imports.
+8. **Audit dependencies** for type definitions.
+
+---
+
+## NEW DEVELOPER ONBOARDING
+
+**First TypeScript Task:**
+1. Fix 3 `any` types in existing code
+2. Add proper error handling to one async function
+3. Write tests for the fixed function
+4. Review one AI-generated TypeScript file
+5. Verify no new lint warnings
+6. Check bundle size impact
+
+**Common Patterns:**
+```typescript
+// Good: AI-generated code with proper typing
+interface User {
+  id: string;
+  name: string;
+}
+
+// Instead of `any`, use specific types
+function processUser(user: User) {
+  // TypeScript knows user has id and name
+}
+```
+

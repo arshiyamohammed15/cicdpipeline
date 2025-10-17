@@ -157,6 +157,15 @@ class EnhancedCLI:
         Returns:
             Validation results
         """
+        # Add correlation logging for request tracking
+        request_id = str(uuid.uuid4())
+        self._log_correlation_event("request.start", {
+            "request_id": request_id,
+            "operation": "validate_file",
+            "file_path": file_path,
+            "correlation_id": self._correlation_id
+        })
+        
         try:
             # Read file content for context analysis
             with open(file_path, 'r', encoding='utf-8') as f:
@@ -209,6 +218,14 @@ class EnhancedCLI:
         
         except Exception as e:
             return self.handle_error(e, context={"file_path": file_path, "operation": "validate_file"})
+        finally:
+            # Add correlation logging for request completion
+            self._log_correlation_event("request.end", {
+                "request_id": request_id,
+                "operation": "validate_file",
+                "file_path": file_path,
+                "correlation_id": self._correlation_id
+            })
     
     def validate_directory(self, directory_path: str, args) -> Dict[str, Any]:
         """
@@ -980,6 +997,18 @@ class EnhancedCLI:
         else:
             # Fallback to simple format
             print(f"ERROR [{log_entry['traceId']}]: {log_entry['error.message']}", file=sys.stderr)
+    
+    def _log_correlation_event(self, event_type: str, data: Dict[str, Any]) -> None:
+        """Log correlation events for request tracking."""
+        if self._is_structured_logging_enabled():
+            log_entry = {
+                "timestamp": datetime.now().isoformat(),
+                "level": "INFO",
+                "event_type": event_type,
+                "traceId": self._correlation_id,
+                **data
+            }
+            print(json.dumps(log_entry), file=sys.stderr)
 
     def _is_structured_logging_enabled(self) -> bool:
         """Check if structured logging is enabled in configuration."""

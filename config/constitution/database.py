@@ -3,7 +3,7 @@
 Constitution Rules Database for ZeroUI 2.0
 
 This module provides SQLite database operations for storing and managing
-all 180 constitution rules with configuration management.
+all 215 constitution rules with configuration management.
 """
 
 import sqlite3
@@ -20,7 +20,7 @@ from contextlib import contextmanager
 
 class ConstitutionRulesDB:
     """
-    SQLite database manager for storing and managing all 180 constitution rules.
+    SQLite database manager for storing and managing all 215 constitution rules.
     
     Features:
     - Store all rules in JSON format with metadata
@@ -228,7 +228,7 @@ class ConstitutionRulesDB:
             return count == 0
     
     def _insert_all_rules(self):
-        """Insert all 180 constitution rules into the database."""
+        """Insert all 215 constitution rules into the database."""
         from .rule_extractor import ConstitutionRuleExtractor
         
         extractor = ConstitutionRuleExtractor()
@@ -289,6 +289,7 @@ class ConstitutionRulesDB:
             {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 11},
             {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 17},
             {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 31},
+            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 34},
             {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}
         ]
     

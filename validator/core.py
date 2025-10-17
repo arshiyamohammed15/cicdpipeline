@@ -148,6 +148,7 @@ class ConstitutionValidator:
         violations.extend(self._check_folder_standards_rules(tree, file_path, content))
         violations.extend(self._check_logging_rules(tree, file_path, content))
         violations.extend(self._check_exception_handling_rules(tree, file_path, content))
+        violations.extend(self._check_typescript_rules(tree, file_path, content))
         
         # Calculate metrics
         violations_by_severity = self._count_violations_by_severity(violations)
@@ -478,6 +479,30 @@ class ConstitutionValidator:
         
         # Run all exception handling validations
         violations.extend(exception_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_typescript_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check TypeScript rules (182-215)."""
+        violations = []
+        
+        # Import the TypeScript validator
+        from .rules.typescript import TypeScriptValidator
+        typescript_validator = TypeScriptValidator()
+        
+        # Run all TypeScript validations
+        typescript_violations = typescript_validator.validate_file(file_path, content)
+        
+        # Convert to Violation objects
+        for violation in typescript_violations:
+            violations.append(Violation(
+                rule_id=violation['rule_id'],
+                severity=Severity.ERROR if violation['severity'] == 'error' else 
+                        Severity.WARNING if violation['severity'] == 'warning' else Severity.INFO,
+                message=violation['message'],
+                line=violation['line'],
+                file_path=violation['file']
+            ))
         
         return violations
     

@@ -11,6 +11,7 @@ from .architecture import ArchitectureValidator
 from .testing import TestingValidator
 from .quality import QualityValidator
 from .exception_handling import ExceptionHandlingValidator
+from .typescript import TypeScriptValidator
 
 __all__ = [
     "PrivacyValidator",
@@ -18,5 +19,6 @@ __all__ = [
     "ArchitectureValidator",
     "TestingValidator",
     "QualityValidator",
-    "ExceptionHandlingValidator"
+    "ExceptionHandlingValidator",
+    "TypeScriptValidator"
 ]

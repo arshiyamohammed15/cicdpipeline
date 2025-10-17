@@ -2,7 +2,7 @@
 """
 JSON-based Constitution Rules Database for ZeroUI 2.0
 
-This module provides a JSON file-based system to store and manage all 180
+This module provides a JSON file-based system to store and manage all 215
 constitution rules with configuration management.
 """
 
@@ -257,7 +257,7 @@ class ConstitutionRulesJSON:
                     logger.error(f"Failed to remove corrupted file: {e2}")
     
     def _create_database(self):
-        """Create new JSON database with all 180 rules."""
+        """Create new JSON database with all 215 rules."""
         try:
             from .rule_extractor import ConstitutionRuleExtractor
             
@@ -267,7 +267,7 @@ class ConstitutionRulesJSON:
             # Initialize database structure
             self.data = {
                 "constitution_version": "2.0",
-                "total_rules": 180,
+                "total_rules": 215,
                 "last_updated": datetime.now().isoformat(),
                 "database_info": {
                     "format": "json",
@@ -278,7 +278,7 @@ class ConstitutionRulesJSON:
                 "categories": {},
                 "rules": {},
                 "statistics": {
-                    "total_rules": 180,
+                    "total_rules": 215,
                     "enabled_rules": 180,
                     "disabled_rules": 0,
                     "enabled_percentage": 100.0,
@@ -334,7 +334,7 @@ class ConstitutionRulesJSON:
             # Save database
             self._save_database()
             
-            logger.info("Created new JSON database with all 180 rules")
+            logger.info("Created new JSON database with all 215 rules")
             
         except Exception as e:
             logger.error(f"Failed to create JSON database: {e}")
@@ -354,6 +354,7 @@ class ConstitutionRulesJSON:
             {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 11},
             {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 17},
             {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 31},
+            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 34},
             {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}
         ]
     

@@ -1,6 +1,6 @@
 {
   "constitution_version": "2.0",
-  "total_rules": 180,
+  "total_rules": 215,
   "last_updated": "2025-10-17T11:25:51.770740",
   "database_info": {
     "format": "json",
@@ -271,6 +271,47 @@
         179,
         180,
         181
+      ]
+    },
+    "typescript": {
+      "description": "TypeScript coding standards, type safety, and best practices",
+      "priority": "critical",
+      "rule_count": 34,
+      "rules": [
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215
       ]
     }
   },
@@ -3257,7 +3298,7 @@
     }
   },
   "statistics": {
-    "total_rules": 180,
+    "total_rules": 215,
     "enabled_rules": 147,
     "disabled_rules": 2,
     "enabled_percentage": 98.65771812080537,
