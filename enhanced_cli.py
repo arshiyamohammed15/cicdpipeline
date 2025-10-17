@@ -14,8 +14,13 @@ import sys
 import time
 import os
 import codecs
+import json
+import uuid
+import random
+import logging
 from pathlib import Path
 from typing import Dict, List, Any, Optional
+from enum import Enum
 
 # Set UTF-8 encoding for Windows compatibility
 if sys.platform == "win32":
@@ -30,6 +35,27 @@ from validator.optimized_core import OptimizedConstitutionValidator
 from validator.intelligent_selector import IntelligentRuleSelector
 from validator.performance_monitor import PerformanceMonitor
 from config.enhanced_config_manager import EnhancedConfigManager
+
+
+class ErrorCode(Enum):
+    """Canonical error codes for consistent error handling."""
+    INTERNAL_ERROR = "INTERNAL_ERROR"
+    VALIDATION_ERROR = "VALIDATION_ERROR"
+    AUTH_FORBIDDEN = "AUTH_FORBIDDEN"
+    RESOURCE_NOT_FOUND = "RESOURCE_NOT_FOUND"
+    DEPENDENCY_FAILED = "DEPENDENCY_FAILED"
+    TIMEOUT = "TIMEOUT"
+    RATE_LIMITED = "RATE_LIMITED"
+    CONFLICT = "CONFLICT"
+    INVARIANT_VIOLATION = "INVARIANT_VIOLATION"
+    CANCELLED = "CANCELLED"
+
+
+class ErrorSeverity(Enum):
+    """Error severity levels."""
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
 
 
 def safe_print(text: str, file=None) -> None:
@@ -106,6 +132,19 @@ class EnhancedCLI:
         
         # Start performance monitoring
         self.performance_monitor.start_monitoring()
+        
+        # Initialize error handling
+        self._error_codes = self._load_error_codes()
+        self._message_catalog = self._load_message_catalog()
+        self._correlation_id = str(uuid.uuid4())
+
+        # AI feature placeholders
+        self._ai_confidence_field = None
+        self._ai_reasoning_field = None
+        self._ai_version_field = None
+        self._high_confidence_threshold = 0.9
+        self._medium_confidence_threshold = 0.7
+        self._low_confidence_threshold = 0.0
     
     def validate_file(self, file_path: str, args) -> Dict[str, Any]:
         """
@@ -169,8 +208,7 @@ class EnhancedCLI:
             }
         
         except Exception as e:
-            safe_print(f"Error validating {file_path}: {e}")
-            return {"error": str(e)}
+            return self.handle_error(e, context={"file_path": file_path, "operation": "validate_file"})
     
     def validate_directory(self, directory_path: str, args) -> Dict[str, Any]:
         """
@@ -214,7 +252,8 @@ class EnhancedCLI:
                     safe_print(f"[{compliance:5.1f}%] {file_path.name}: {file_result['result'].total_violations} violations")
             
             except Exception as e:
-                safe_print(f"[ERROR] {file_path}: {e}")
+                error_result = self.handle_error(e, context={"file_path": str(file_path), "operation": "validate_file"})
+                safe_print(f"[ERROR] {file_path}: {error_result.get('user_message', str(e))}")
         
         # Generate summary
         summary = {
@@ -364,7 +403,8 @@ class EnhancedCLI:
         except Exception as e:
             if any([args.list_rules, args.enable_rule, args.disable_rule, 
                    args.rule_stats, args.export_rules, args.rules_by_category, args.search_rules]):
-                safe_print(f"Error: Constitution rule manager not available: {e}")
+                error_result = self.handle_error(e, context={"operation": "constitution_command"})
+                safe_print(f"Error handling constitution command: {error_result.get('user_message', str(e))}")
                 return True
             return False
         
@@ -399,7 +439,8 @@ class EnhancedCLI:
                 return True
             
         except Exception as e:
-            safe_print(f"Error handling constitution command: {e}")
+            error_result = self.handle_error(e, context={"operation": "constitution_command"})
+            safe_print(f"Error handling constitution command: {error_result.get('user_message', str(e))}")
             return True
         
         return False
@@ -444,7 +485,8 @@ class EnhancedCLI:
                 return True
             
         except Exception as e:
-            safe_print(f"Error handling backend command: {e}")
+            error_result = self.handle_error(e, context={"operation": "backend_command"})
+            safe_print(f"Error handling backend command: {error_result.get('user_message', str(e))}")
             return True
         
         return False
@@ -782,6 +824,296 @@ class EnhancedCLI:
         
         safe_print(f"\nTotal: {len(results)} rules found")
     
+    def handle_error(self, exception: Exception, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """
+        Central error handler with code mapping, structured logging, and user-friendly messages.
+
+        Args:
+            exception: The exception to handle
+            context: Additional context information
+
+        Returns:
+            Error handling result with user message, error code, and structured data
+        """
+        try:
+            # Map exception to canonical error code
+            error_code = self._map_exception_to_code(exception)
+
+            # Get user-friendly message from catalog
+            user_message = self._get_user_message_from_catalog(error_code, context)
+
+            # Create structured log entry
+            log_entry = self._create_log_entry(exception, error_code, context)
+
+            # Log the error
+            self._log_error(log_entry)
+
+            # Determine if operation should be retried
+            should_retry = self._should_retry(error_code, exception)
+
+            # Get recovery guidance
+            recovery_guidance = self._get_recovery_guidance(error_code, context)
+
+            return {
+                "error_code": error_code.value,
+                "user_message": user_message,
+                "should_retry": should_retry,
+                "recovery_guidance": recovery_guidance,
+                "correlation_id": self._correlation_id,
+                "timestamp": time.time(),
+                "context": context or {}
+            }
+
+        except Exception as e:
+            # Fallback error handling
+            return {
+                "error_code": ErrorCode.INTERNAL_ERROR.value,
+                "user_message": "An unexpected error occurred while handling an error",
+                "should_retry": False,
+                "recovery_guidance": "Please contact support if this persists",
+                "correlation_id": self._correlation_id,
+                "timestamp": time.time(),
+                "context": context or {},
+                "fallback_error": str(e)
+            }
+
+    def _load_error_codes(self) -> Dict[str, Dict[str, Any]]:
+        """Load canonical error codes with severity levels."""
+        return {
+            ErrorCode.INTERNAL_ERROR.value: {"severity": ErrorSeverity.HIGH.value, "retriable": False},
+            ErrorCode.VALIDATION_ERROR.value: {"severity": ErrorSeverity.MEDIUM.value, "retriable": False},
+            ErrorCode.AUTH_FORBIDDEN.value: {"severity": ErrorSeverity.HIGH.value, "retriable": False},
+            ErrorCode.RESOURCE_NOT_FOUND.value: {"severity": ErrorSeverity.MEDIUM.value, "retriable": False},
+            ErrorCode.DEPENDENCY_FAILED.value: {"severity": ErrorSeverity.HIGH.value, "retriable": True},
+            ErrorCode.TIMEOUT.value: {"severity": ErrorSeverity.MEDIUM.value, "retriable": True},
+            ErrorCode.RATE_LIMITED.value: {"severity": ErrorSeverity.MEDIUM.value, "retriable": True},
+            ErrorCode.CONFLICT.value: {"severity": ErrorSeverity.MEDIUM.value, "retriable": False},
+            ErrorCode.INVARIANT_VIOLATION.value: {"severity": ErrorSeverity.HIGH.value, "retriable": False},
+            ErrorCode.CANCELLED.value: {"severity": ErrorSeverity.LOW.value, "retriable": False}
+        }
+
+    def _load_message_catalog(self) -> Dict[str, str]:
+        """Load user-friendly error messages."""
+        return {
+            ErrorCode.INTERNAL_ERROR.value: "An internal error occurred. Please try again or contact support.",
+            ErrorCode.VALIDATION_ERROR.value: "Validation failed. Please check your input and try again.",
+            ErrorCode.AUTH_FORBIDDEN.value: "Access denied. You don't have permission to perform this action.",
+            ErrorCode.RESOURCE_NOT_FOUND.value: "The requested resource was not found.",
+            ErrorCode.DEPENDENCY_FAILED.value: "A required service is temporarily unavailable. Please try again later.",
+            ErrorCode.TIMEOUT.value: "The operation timed out. Please try again.",
+            ErrorCode.RATE_LIMITED.value: "Too many requests. Please wait a moment and try again.",
+            ErrorCode.CONFLICT.value: "A conflict occurred. Please resolve the conflict and try again.",
+            ErrorCode.INVARIANT_VIOLATION.value: "An unexpected state was detected. Please contact support.",
+            ErrorCode.CANCELLED.value: "The operation was cancelled."
+        }
+
+    def _map_exception_to_code(self, exception: Exception) -> ErrorCode:
+        """Map Python exceptions to canonical error codes."""
+        exception_type = type(exception).__name__
+        
+        if isinstance(exception, (ValueError, TypeError, AttributeError)):
+            return ErrorCode.VALIDATION_ERROR
+        elif isinstance(exception, (FileNotFoundError, OSError)):
+            return ErrorCode.RESOURCE_NOT_FOUND
+        elif isinstance(exception, (ConnectionError, TimeoutError)):
+            return ErrorCode.DEPENDENCY_FAILED
+        elif isinstance(exception, KeyboardInterrupt):
+            return ErrorCode.CANCELLED
+        elif isinstance(exception, PermissionError):
+            return ErrorCode.AUTH_FORBIDDEN
+        else:
+            return ErrorCode.INTERNAL_ERROR
+
+    def _get_user_message_from_catalog(self, error_code: ErrorCode, context: Optional[Dict[str, Any]] = None) -> str:
+        """Get user-friendly message from catalog with context."""
+        base_message = self._message_catalog.get(error_code.value, "An unexpected error occurred.")
+        
+        # Add context-specific information if available
+        if context and "file_path" in context:
+            base_message += f" (File: {context['file_path']})"
+        
+        return base_message
+
+    def _create_log_entry(self, exception: Exception, error_code: ErrorCode, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Create structured log entry with correlation ID."""
+        log_entry = {
+            "timestamp": time.time(),
+            "level": "ERROR",
+            "traceId": self._correlation_id,
+            "error.code": error_code.value,
+            "error.message": str(exception),
+            "error.type": type(exception).__name__,
+            "error.severity": self._error_codes.get(error_code.value, {}).get("severity", "UNKNOWN"),
+            "context": self._redact_secrets(context or {})
+        }
+        
+        # Add AI-specific fields if available
+        if self._ai_confidence_field:
+            log_entry["ai.confidence"] = self._ai_confidence_field
+        if self._ai_reasoning_field:
+            log_entry["ai.reasoning"] = self._ai_reasoning_field
+        if self._ai_version_field:
+            log_entry["ai.version"] = self._ai_version_field
+            
+        return log_entry
+
+    def _redact_secrets(self, data: Any) -> Any:
+        """Recursively redact secrets and PII from data."""
+        if isinstance(data, dict):
+            redacted = {}
+            for key, value in data.items():
+                if any(secret in key.lower() for secret in ['password', 'token', 'key', 'secret', 'auth']):
+                    redacted[key] = "[REDACTED]"
+                else:
+                    redacted[key] = self._redact_secrets(value)
+            return redacted
+        elif isinstance(data, list):
+            return [self._redact_secrets(item) for item in data]
+        else:
+            return data
+
+    def _log_error(self, log_entry: Dict[str, Any]) -> None:
+        """Log error with structured format."""
+        if self._is_structured_logging_enabled():
+            # Log as JSONL format
+            print(json.dumps(log_entry), file=sys.stderr)
+        else:
+            # Fallback to simple format
+            print(f"ERROR [{log_entry['traceId']}]: {log_entry['error.message']}", file=sys.stderr)
+
+    def _is_structured_logging_enabled(self) -> bool:
+        """Check if structured logging is enabled in configuration."""
+        try:
+            return self.config_manager.get_config().get("error_handling", {}).get("enable_structured_logging", True)
+        except Exception:
+            return True
+
+    def _should_retry(self, error_code: ErrorCode, exception: Exception) -> bool:
+        """Determine if operation should be retried based on error type."""
+        return self._error_codes.get(error_code.value, {}).get("retriable", False)
+
+    def _get_recovery_guidance(self, error_code: ErrorCode, context: Optional[Dict[str, Any]] = None) -> str:
+        """Get recovery guidance for the error."""
+        guidance_map = {
+            ErrorCode.INTERNAL_ERROR.value: "Please try again. If the problem persists, contact support.",
+            ErrorCode.VALIDATION_ERROR.value: "Please check your input and try again.",
+            ErrorCode.AUTH_FORBIDDEN.value: "Check your permissions and try again.",
+            ErrorCode.RESOURCE_NOT_FOUND.value: "Verify the resource exists and try again.",
+            ErrorCode.DEPENDENCY_FAILED.value: "The service will retry automatically. Please wait.",
+            ErrorCode.TIMEOUT.value: "The operation will be retried automatically.",
+            ErrorCode.RATE_LIMITED.value: "Please wait a moment before trying again.",
+            ErrorCode.CONFLICT.value: "Resolve the conflict and try again.",
+            ErrorCode.INVARIANT_VIOLATION.value: "This indicates a system issue. Please contact support.",
+            ErrorCode.CANCELLED.value: "Operation was cancelled by user."
+        }
+        
+        return guidance_map.get(error_code.value, "Please try again.")
+
+    def _wrap_error(self, exception: Exception, context: Optional[Dict[str, Any]] = None) -> Exception:
+        """Wrap exception with additional context."""
+        if context:
+            context_str = ", ".join([f"{k}={v}" for k, v in context.items()])
+            return Exception(f"{str(exception)} (Context: {context_str})")
+        return exception
+
+    # AI feature placeholder methods
+    def _record_error_feedback(self, error_code: str, user_feedback: str) -> None:
+        """Record user feedback for AI learning."""
+        # Placeholder for AI learning from user feedback
+        pass
+
+    def _get_error_patterns(self) -> Dict[str, Any]:
+        """Get error patterns for AI analysis."""
+        # Placeholder for AI pattern analysis
+        return {}
+
+    def _update_ai_model(self, feedback_data: Dict[str, Any]) -> None:
+        """Update AI model based on feedback."""
+        # Placeholder for AI model updates
+        pass
+
+    def _get_action_for_confidence(self, confidence: float) -> str:
+        """Get recommended action based on AI confidence level."""
+        if confidence >= self._high_confidence_threshold:
+            return "auto_apply"
+        elif confidence >= self._medium_confidence_threshold:
+            return "suggest_with_review"
+        else:
+            return "manual_review_required"
+
+    # Recovery and state management placeholder methods
+    def _get_recovery_checkpoint(self) -> Optional[Dict[str, Any]]:
+        """Get recovery checkpoint for long-running operations."""
+        # Placeholder for recovery checkpoints
+        return None
+
+    def _create_checkpoint(self, state: Dict[str, Any]) -> None:
+        """Create checkpoint for recovery."""
+        # Placeholder for checkpoint creation
+        pass
+
+    def _get_current_state(self) -> Dict[str, Any]:
+        """Get current system state."""
+        # Placeholder for state tracking
+        return {}
+
+    def _is_long_running_operation(self, operation: str) -> bool:
+        """Check if operation is long-running."""
+        long_running_ops = ["validate_directory", "batch_validation", "sync_operation"]
+        return operation in long_running_ops
+
+    # Graceful degradation placeholder methods
+    def _handle_backend_failure(self, backend: str) -> None:
+        """Handle backend failure gracefully."""
+        # Placeholder for backend failure handling
+        pass
+
+    def _check_dependencies(self) -> Dict[str, bool]:
+        """Check system dependencies."""
+        # Placeholder for dependency checking
+        return {}
+
+    def _get_available_features(self) -> List[str]:
+        """Get list of available features."""
+        # Placeholder for feature availability
+        return []
+
+    def _check_backend_health(self) -> Dict[str, Any]:
+        """Check backend health status."""
+        # Placeholder for health checking
+        return {"status": "healthy"}
+
+    def _get_system_status(self) -> Dict[str, Any]:
+        """Get overall system status."""
+        # Placeholder for system status
+        return {"status": "operational"}
+
+    # Feature flag placeholder methods
+    def _is_feature_enabled(self, feature: str) -> bool:
+        """Check if feature is enabled."""
+        # Placeholder for feature flag checking
+        return True
+
+    def _detect_feature_error(self, feature: str, error: Exception) -> bool:
+        """Detect if error is related to feature flag."""
+        # Placeholder for feature error detection
+        return False
+
+    def _handle_feature_error(self, feature: str, error: Exception) -> None:
+        """Handle feature-specific errors."""
+        # Placeholder for feature error handling
+        pass
+
+    def _get_error_rate_by_flag(self, feature: str) -> float:
+        """Get error rate for specific feature flag."""
+        # Placeholder for error rate tracking
+        return 0.0
+
+    def _monitor_flag_performance(self, feature: str) -> Dict[str, Any]:
+        """Monitor performance of feature flag."""
+        # Placeholder for performance monitoring
+        return {}
+    
     def run(self, args):
         """Run the CLI with given arguments."""
         try:
@@ -829,10 +1161,13 @@ class EnhancedCLI:
             return 0
         
         except KeyboardInterrupt:
-            safe_print("\nValidation interrupted by user")
+            error_result = self.handle_error(KeyboardInterrupt("User interrupted operation"), 
+                                           context={"operation": "main_validation"})
+            safe_print(f"\n{error_result.get('user_message', 'Validation interrupted by user')}")
             return 1
         except Exception as e:
-            safe_print(f"Error: {e}")
+            error_result = self.handle_error(e, context={"operation": "main_validation"})
+            safe_print(f"Error: {error_result.get('user_message', str(e))}")
             return 1
         finally:
             # Stop performance monitoring

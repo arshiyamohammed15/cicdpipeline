@@ -70,7 +70,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             # Create default configuration
             self.constitution_config = {
                 "constitution_version": "2.0",
-                "total_rules": 149,
+                "total_rules": 180,
                 "default_enabled": True,
                 "database_path": str(self.db_path),
                 "last_updated": datetime.now().isoformat(),

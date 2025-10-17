@@ -147,6 +147,7 @@ class ConstitutionValidator:
         violations.extend(self._check_comments_rules(tree, file_path, content))
         violations.extend(self._check_folder_standards_rules(tree, file_path, content))
         violations.extend(self._check_logging_rules(tree, file_path, content))
+        violations.extend(self._check_exception_handling_rules(tree, file_path, content))
         
         # Calculate metrics
         violations_by_severity = self._count_violations_by_severity(violations)
@@ -464,6 +465,19 @@ class ConstitutionValidator:
         
         # Run all logging validations
         violations.extend(logging_validator.validate(file_path, content))
+        
+        return violations
+    
+    def _check_exception_handling_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check exception handling rules (150-181)."""
+        violations = []
+        
+        # Import the exception handling validator
+        from .rules.exception_handling import ExceptionHandlingValidator
+        exception_validator = ExceptionHandlingValidator()
+        
+        # Run all exception handling validations
+        violations.extend(exception_validator.validate(file_path, content))
         
         return violations
     

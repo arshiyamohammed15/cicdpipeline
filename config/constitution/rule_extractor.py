@@ -2,7 +2,7 @@
 """
 Constitution Rule Extractor for ZeroUI 2.0
 
-This module extracts all 149 constitution rules from the master constitution file
+This module extracts all 181 constitution rules from the master constitution file
 and categorizes them properly for database storage.
 """
 
@@ -12,7 +12,7 @@ from typing import Dict, List, Any, Optional
 
 class ConstitutionRuleExtractor:
     """
-    Extracts and categorizes all 149 constitution rules from the master file.
+    Extracts and categorizes all 181 constitution rules from the master file.
     """
     
     def __init__(self, constitution_file: str = "ZeroUI2.0_Master_Constitution.md"):
@@ -78,15 +78,20 @@ class ConstitutionRuleExtractor:
                 "description": "Miscellaneous rules"
             },
             "logging": {
-                "rules": list(range(132, 149)),
+                "rules": list(range(132, 150)),
                 "priority": "critical",
                 "description": "Logging and troubleshooting standards"
+            },
+            "exception_handling": {
+                "rules": list(range(150, 159)) + list(range(160, 182)),  # Rules 150-158, 160-181 (skip 159)
+                "priority": "critical",
+                "description": "Exception handling, timeouts, retries, and error recovery"
             }
         }
     
     def extract_all_rules(self) -> List[Dict[str, Any]]:
         """
-        Extract all 149 rules from the constitution file.
+        Extract all 180 rules from the constitution file.
         
         Returns:
             List of rule dictionaries with metadata
@@ -133,9 +138,9 @@ class ConstitutionRuleExtractor:
         # Sort by rule number
         rules.sort(key=lambda x: x['rule_number'])
         
-        # Validate we have all 149 rules
-        if len(rules) != 149:
-            print(f"Warning: Expected 149 rules, found {len(rules)}")
+        # Validate we have all 180 rules (150-181, but missing 159)
+        if len(rules) != 180:
+            print(f"Warning: Expected 180 rules, found {len(rules)}")
         
         return rules
     
@@ -164,6 +169,12 @@ class ConstitutionRuleExtractor:
         # Pattern 3: "##Rule 81: Evidence Required in PR" (no space after ##)
         pattern3 = r'^#+\s*Rule\s+(\d+):\s*(.+)$'
         match = re.match(pattern3, line)
+        if match:
+            return int(match.group(1)), match.group(2).strip()
+        
+        # Pattern 4: "**Rule 150: Prevent First**" (bold markdown format)
+        pattern4 = r'^\*\*Rule\s+(\d+):\s*(.+?)\*\*$'
+        match = re.match(pattern4, line)
         if match:
             return int(match.group(1)), match.group(2).strip()
         
@@ -261,7 +272,7 @@ class ConstitutionRuleExtractor:
         
         validation = {
             "total_rules": len(rules),
-            "expected_rules": 149,
+            "expected_rules": 180,
             "missing_rules": [],
             "duplicate_rules": [],
             "category_counts": {},
@@ -270,7 +281,9 @@ class ConstitutionRuleExtractor:
         
         # Check for missing rules
         rule_numbers = [rule['rule_number'] for rule in rules]
-        for i in range(1, 150):  # Rules 1-149
+        for i in range(1, 182):  # Rules 1-181, but skip 159
+            if i == 159:  # Rule 159 doesn't exist
+                continue
             if i not in rule_numbers:
                 validation["missing_rules"].append(i)
                 validation["valid"] = False
@@ -349,7 +362,7 @@ def main():
     
     extractor = ConstitutionRuleExtractor()
     
-    print("Extracting all 149 constitution rules...")
+    print("Extracting all 180 constitution rules...")
     rules = extractor.extract_all_rules()
     
     print(f"Extracted {len(rules)} rules")

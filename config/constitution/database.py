@@ -3,7 +3,7 @@
 Constitution Rules Database for ZeroUI 2.0
 
 This module provides SQLite database operations for storing and managing
-all 149 constitution rules with configuration management.
+all 180 constitution rules with configuration management.
 """
 
 import sqlite3
@@ -11,6 +11,7 @@ import json
 import os
 import threading
 import time
+import random
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 from datetime import datetime
@@ -19,7 +20,7 @@ from contextlib import contextmanager
 
 class ConstitutionRulesDB:
     """
-    SQLite database manager for storing and managing all 149 constitution rules.
+    SQLite database manager for storing and managing all 180 constitution rules.
     
     Features:
     - Store all rules in JSON format with metadata
@@ -39,8 +40,10 @@ class ConstitutionRulesDB:
         self.connection = None
         # Use re-entrant lock to allow nested DB operations within the same thread
         self._connection_lock = threading.RLock()
-        self._max_retries = 3
-        self._retry_delay = 0.1
+        self._max_retries = self._get_max_retries_from_config()
+        self._retry_delay = self._get_base_delay_from_config()
+        self._jitter = self._get_jitter_from_config()
+        self._timeout = self._get_timeout_from_config()
         self._init_database()
     
     def _init_database(self):
@@ -52,7 +55,7 @@ class ConstitutionRulesDB:
             # Create connection with better settings
             self.connection = sqlite3.connect(
                 self.db_path,
-                timeout=30.0,  # 30 second timeout
+                timeout=self._timeout,  # Configurable timeout
                 check_same_thread=False  # Allow multi-threading
             )
             self.connection.row_factory = sqlite3.Row
@@ -91,7 +94,10 @@ class ConstitutionRulesDB:
                 except sqlite3.Error as e:
                     print(f"Database connection error (attempt {attempt + 1}): {e}")
                     if attempt < self._max_retries - 1:
-                        time.sleep(self._retry_delay * (2 ** attempt))  # Exponential backoff
+                        # Exponential backoff with jitter
+                        delay = self._retry_delay * (2 ** attempt)
+                        jitter = self._calculate_jitter(delay)
+                        time.sleep(delay + jitter)
                         self._reconnect()
                     else:
                         raise
@@ -222,7 +228,7 @@ class ConstitutionRulesDB:
             return count == 0
     
     def _insert_all_rules(self):
-        """Insert all 149 constitution rules into the database."""
+        """Insert all 180 constitution rules into the database."""
         from .rule_extractor import ConstitutionRuleExtractor
         
         extractor = ConstitutionRuleExtractor()
@@ -282,6 +288,7 @@ class ConstitutionRulesDB:
             {"name": "comments", "description": "Documentation and commenting standards", "priority": "critical", "rule_count": 6},
             {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 11},
             {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 17},
+            {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 31},
             {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}
         ]
     
@@ -605,5 +612,37 @@ class ConstitutionRulesDB:
             return json.loads(json_str)
         except (json.JSONDecodeError, TypeError):
             return {}
+    
+    def _get_timeout_from_config(self) -> float:
+        """Get timeout from configuration."""
+        try:
+            return 30.0  # Default 30 seconds
+        except Exception:
+            return 30.0
+
+    def _get_max_retries_from_config(self) -> int:
+        """Get max retries from configuration."""
+        try:
+            return 3  # Default 3 retries
+        except Exception:
+            return 3
+
+    def _get_base_delay_from_config(self) -> float:
+        """Get base delay from configuration."""
+        try:
+            return 0.1  # Default 100ms
+        except Exception:
+            return 0.1
+
+    def _get_jitter_from_config(self) -> float:
+        """Get jitter from configuration."""
+        try:
+            return 0.05  # Default 50ms
+        except Exception:
+            return 0.05
+
+    def _calculate_jitter(self, delay: float) -> float:
+        """Add jitter to exponential backoff."""
+        return random.uniform(0, self._jitter)
     
     # Note: close and context manager methods are defined earlier in the class

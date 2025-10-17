@@ -1,6 +1,6 @@
 {
   "constitution_version": "2.0",
-  "total_rules": 89,
+  "total_rules": 180,
   "performance_targets": {
     "startup_time": 2.0,
     "button_response": 0.1,
@@ -24,7 +24,23 @@
       "description": "Informational message or positive finding"
     }
   },
-  "enterprise_critical_rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 81, 82, 83, 84, 85, 86, 87, 88],
+  "enterprise_critical_rules": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 80, 81, 82, 83, 84, 85, 86, 87, 88, 150, 151, 152, 153, 154, 155, 156, 157, 158, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181],
   "enterprise_important_rules": [46, 47, 48, 49, 50, 51, 52, 53, 78, 79, 89],
-  "enterprise_recommended_rules": []
+  "enterprise_recommended_rules": [],
+  "timeouts": {
+    "db_connect_timeout_sec": 30,
+    "file_operation_timeout_sec": 10,
+    "network_timeout_sec": 15
+  },
+  "retries": {
+    "db_connect_max_retries": 3,
+    "db_connect_base_delay_ms": 100,
+    "db_connect_jitter_ms": 50
+  },
+  "error_handling": {
+    "enable_central_handler": true,
+    "enable_structured_logging": true,
+    "enable_recovery_guidance": true,
+    "max_user_message_length": 100
+  }
 }
