@@ -92,8 +92,7 @@ class TestWarningRules:
         return DynamicTestFactory()
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'warning'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.severity == 'warning'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_warning_rules(self, test_case: DataTestCase):
         """Test all warning-level rules."""
@@ -120,8 +119,7 @@ class TestByCategory:
             assert rule.get('category') == category, f"Rule {rule['id']} has wrong category"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'security'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'security'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_security_rules(self, test_case: DataTestCase):
         """Test all security rules."""
@@ -130,8 +128,7 @@ class TestByCategory:
             f"Security rule {test_case.rule_id} should have security-related validator or name"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'api'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'api'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_api_rules(self, test_case: DataTestCase):
         """Test all API rules."""
@@ -139,8 +136,7 @@ class TestByCategory:
         assert 'api' in test_case.validator.lower(), f"API rule {test_case.rule_id} should have API validator"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'documentation'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'documentation'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_documentation_rules(self, test_case: DataTestCase):
         """Test all documentation rules."""
@@ -148,8 +144,7 @@ class TestByCategory:
         assert 'comment' in test_case.validator.lower(), f"Documentation rule {test_case.rule_id} should have comment validator"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'logging'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'logging'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_logging_rules(self, test_case: DataTestCase):
         """Test all logging rules."""
@@ -157,8 +152,7 @@ class TestByCategory:
         assert 'logging' in test_case.validator.lower(), f"Logging rule {test_case.rule_id} should have logging validator"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'structure'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'structure'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_structure_rules(self, test_case: DataTestCase):
         """Test all structure rules."""
@@ -166,8 +160,7 @@ class TestByCategory:
         assert 'structure' in test_case.validator.lower(), f"Structure rule {test_case.rule_id} should have structure validator"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'code_quality'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.category == 'code_quality'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_code_quality_rules(self, test_case: DataTestCase):
         """Test all code quality rules."""
@@ -194,8 +187,7 @@ class TestByValidator:
             assert validator in rule.get('validator', ''), f"Rule {rule['id']} doesn't use validator {validator}"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases()
-                           ),
+                           DynamicTestFactory().create_test_cases(),
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_security_validator_rules(self, test_case: DataTestCase):
         """Test all rules handled by security_validator."""

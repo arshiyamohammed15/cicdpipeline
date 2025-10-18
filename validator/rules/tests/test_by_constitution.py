@@ -139,8 +139,7 @@ class TestCodingStandardsConstitution:
         assert len(constitution_rules) > 0, "Coding Standards Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'Coding Standards'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.constitution == 'Coding Standards'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_coding_standards_rules(self, test_case: DataTestCase):
         """Test all rules from Coding Standards Constitution."""
@@ -199,8 +198,7 @@ class TestCommentsConstitution:
         assert len(constitution_rules) > 0, "Comments Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'Comments'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.constitution == 'Comments'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_comments_rules(self, test_case: DataTestCase):
         """Test all rules from Comments Constitution."""
@@ -248,8 +246,7 @@ class TestFolderStandardsConstitution:
         assert len(constitution_rules) > 0, "Folder Standards Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'Folder Standards'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.constitution == 'Folder Standards'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_folder_standards_rules(self, test_case: DataTestCase):
         """Test all rules from Folder Standards Constitution."""
@@ -297,8 +294,7 @@ class TestLoggingConstitution:
         assert len(constitution_rules) > 0, "Logging Constitution should have rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases() == 'Logging'
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() if tc.constitution == 'Logging'],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_logging_rules(self, test_case: DataTestCase):
         """Test all rules from Logging Constitution."""

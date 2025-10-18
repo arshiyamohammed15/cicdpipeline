@@ -124,10 +124,9 @@ class TestAsyncRules:
         assert len(async_rules) >= 0, "Should handle async-related rules (may be 0)"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases().lower() or
-                                                          keyword in rule.get('description', '').lower()
-                                                          for keyword in ['async', 'await', 'blocking', 'handler'])
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() 
+                            if any(keyword in tc.rule_name.lower() or keyword in tc.description.lower()
+                                   for keyword in ['async', 'await', 'blocking', 'handler'])],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_async_rules(self, test_case: DataTestCase):
         """Test all async-related rules."""
@@ -166,10 +165,9 @@ class TestPerformanceRules:
         assert len(performance_rules) > 0, "Should have performance-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases().lower() or
-                                                          keyword in rule.get('description', '').lower()
-                                                          for keyword in ['performance', 'perf', 'regression', 'budget', 'measurement', 'monotonic', 'time'])
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() 
+                            if any(keyword in tc.rule_name.lower() or keyword in tc.description.lower()
+                                   for keyword in ['performance', 'perf', 'regression', 'budget', 'measurement', 'monotonic', 'time'])],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_performance_rules(self, test_case: DataTestCase):
         """Test all performance-related rules."""
@@ -212,10 +210,9 @@ class TestTODORules:
         assert len(todo_rules) > 0, "Should have TODO-related rules"
 
     @pytest.mark.parametrize("test_case",
-                           DynamicTestFactory().create_test_cases().lower() or
-                                                          keyword in rule.get('description', '').lower()
-                                                          for keyword in ['todo', 'fixme', 'hack', 'note'])
-                           ),
+                           [tc for tc in DynamicTestFactory().create_test_cases() 
+                            if any(keyword in tc.rule_name.lower() or keyword in tc.description.lower()
+                                   for keyword in ['todo', 'fixme', 'hack', 'note'])],
                            ids=lambda tc: f"{tc.rule_id}_{tc.rule_name.replace(' ', '_')}")
     def test_todo_rules(self, test_case: DataTestCase):
         """Test all TODO-related rules."""

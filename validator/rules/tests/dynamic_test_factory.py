@@ -29,6 +29,11 @@ class DataTestCase:
     category: str
     description: str
     test_type: str = "validation"
+    constitution: str = ""
+    validator: str = ""
+    severity: str = "warning"
+    error_code: str = "ERROR:TEST"
+    expected_behavior: str = ""
 
 
 class DynamicTestFactory:
@@ -62,20 +67,27 @@ class DynamicTestFactory:
         
         # Generate basic test cases for common rules
         basic_rules = [
-            ("R001", "Do Exactly What's Asked", "requirements"),
-            ("R002", "Only Use Information You're Given", "requirements"),
-            ("R003", "Protect People's Privacy", "privacy_security"),
-            ("R004", "Use Settings Files, Not Hardcoded Numbers", "basic_work"),
-            ("R005", "Keep Good Records + Keep Good Logs", "basic_work"),
+            ("R001", "Do Exactly What's Asked", "requirements", "Requirements", "requirements_validator"),
+            ("R002", "Only Use Information You're Given", "requirements", "Requirements", "requirements_validator"),
+            ("R003", "Protect People's Privacy", "privacy_security", "Privacy Security", "privacy_validator"),
+            ("R004", "Use Settings Files, Not Hardcoded Numbers", "basic_work", "Basic Work", "basic_work_validator"),
+            ("R005", "Keep Good Records + Keep Good Logs", "basic_work", "Basic Work", "basic_work_validator"),
+            ("R150", "Prevent First", "exception_handling", "Exception Handling", "exception_handling_validator"),
+            ("R182", "No Any in Committed Code", "typescript", "TypeScript", "typescript_validator"),
         ]
         
-        for rule_id, rule_name, category in basic_rules:
+        for rule_id, rule_name, category, constitution, validator in basic_rules:
             test_case = DataTestCase(
                 rule_id=rule_id,
                 rule_name=rule_name,
                 category=category,
                 description=f"Test for {rule_name}",
-                test_type="validation"
+                test_type="validation",
+                constitution=constitution,
+                validator=validator,
+                severity="warning",
+                error_code=f"ERROR:{rule_id}",
+                expected_behavior=f"Should validate {rule_name.lower()}"
             )
             test_cases.append(test_case)
 
