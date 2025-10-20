@@ -1,6 +1,6 @@
  ZEROUI 2.0 CONSTITUTION 
 
-Note: This master file is the source of truth for 218 rules. Sections below include core Constitutions and appendices (Cursor constitutions and checklists). Keep rule numbering 1–218 consistent; appendices may extend guidance but do not change numbering.
+Note: This master file is the source of truth for 231 rules. Sections below include core Constitutions and appendices (Cursor constitutions and checklists). Keep rule numbering 1–231 consistent; appendices may extend guidance but do not change numbering.
 
  🎯 BASIC WORK RULES
 
@@ -1895,6 +1895,58 @@ Write tests that verify type narrowing works. Test error cases to ensure proper 
 
 **Rule 215: Gradual Migration Strategy**
 When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.
+
+---
+
+## STORAGE GOVERNANCE RULES (4-PLANE ARCHITECTURE)
+
+🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared).
+
+**Rule 219: Name Casing & Charset (Kebab-Case Only)**
+All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.
+
+**Rule 220: No Source Code/PII in Stores**
+Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.
+
+**Rule 221: No Secrets/Private Keys on Disk**
+Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.
+
+**Rule 222: JSONL Receipts (Newline-Delimited, Signed, Append-Only)**
+Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).
+
+**Rule 223: Time Partitions Use UTC (dt=YYYY-MM-DD)**
+All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.
+
+**Rule 224: Policy Snapshots Must Be Signed**
+All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.
+
+**Rule 225: Dual Storage Compliance (JSONL Authority, DB Mirrors)**
+JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.
+
+**Rule 226: Path Resolution via ZU_ROOT Environment Variable**
+All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.
+
+**Rule 227: Receipts Validation (Signed, Append-Only, No Code/PII)**
+When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode "a", never "w"; never truncate or seek.
+
+**Rule 228: Evidence Watermarks Per-Consumer Structure**
+Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.
+
+**Rule 229: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**
+When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:
+- IDE: `agent/tmp/UNCLASSIFIED__<slug>`
+- Tenant/Product: `ingest/staging/unclassified/<slug>`
+Resolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.
+
+**Rule 230: Observability/Adapters Use dt= Partitions**
+Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):
+- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`
+- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`
+- `reporting/marts/dt=YYYY-MM-DD/`
+- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`
+
+**Rule 231: Laptop Receipts Use YYYY/MM Partitioning**
+Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.
 
 ---
 

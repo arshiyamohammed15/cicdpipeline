@@ -1,0 +1,7 @@
+{
+  "category": "storage_governance",
+  "priority": "critical",
+  "description": "Storage architecture and data governance rules from 4-plane constitution (ZeroUI storage-scripts v1.1)",
+  "rules": [219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231]
+}
+

@@ -149,6 +149,7 @@ class ConstitutionValidator:
         violations.extend(self._check_logging_rules(tree, file_path, content))
         violations.extend(self._check_exception_handling_rules(tree, file_path, content))
         violations.extend(self._check_typescript_rules(tree, file_path, content))
+        violations.extend(self._check_storage_governance_rules(tree, file_path, content))
         
         # Calculate metrics
         violations_by_severity = self._count_violations_by_severity(violations)
@@ -503,6 +504,19 @@ class ConstitutionValidator:
                 line=violation['line'],
                 file_path=violation['file']
             ))
+        
+        return violations
+    
+    def _check_storage_governance_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check storage governance rules (216-228)."""
+        violations = []
+        
+        # Import the storage governance validator
+        from .rules.storage_governance import StorageGovernanceValidator
+        storage_validator = StorageGovernanceValidator()
+        
+        # Run all storage governance validations
+        violations.extend(storage_validator.validate(file_path, content))
         
         return violations
     

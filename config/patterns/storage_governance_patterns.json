@@ -1,0 +1,111 @@
+{
+  "category": "storage_governance",
+  "description": "Patterns for validating 4-plane storage architecture compliance",
+  "patterns": {
+    "kebab_case": {
+      "regex": "^[a-z0-9-]+$",
+      "description": "Folder names must use kebab-case: lowercase letters, numbers, and hyphens only",
+      "severity": "error"
+    },
+    "date_partition": {
+      "regex": "dt=\\d{4}-\\d{2}-\\d{2}",
+      "description": "Time partitions must use UTC format: dt=YYYY-MM-DD",
+      "severity": "error"
+    },
+    "yyyy_mm_partition": {
+      "regex": "\\d{4}/\\d{2}",
+      "description": "Laptop receipts use month partitioning: YYYY/MM",
+      "severity": "warning"
+    },
+    "rfc_fallback": {
+      "regex": "UNCLASSIFIED__[a-z0-9-]+",
+      "description": "RFC fallback pattern for unclassified data",
+      "severity": "warning"
+    },
+    "zu_root": {
+      "regex": "ZU_ROOT|os\\.environ.*ZU_ROOT",
+      "description": "Path resolution must use ZU_ROOT environment variable",
+      "severity": "error"
+    },
+    "secrets": {
+      "patterns": [
+        "password\\s*=\\s*[\"'][^\"']+[\"']",
+        "api[_-]?key\\s*=\\s*[\"'][^\"']+[\"']",
+        "secret\\s*=\\s*[\"'][^\"']+[\"']",
+        "token\\s*=\\s*[\"'][^\"']+[\"']",
+        "private[_-]?key\\s*=\\s*[\"'][^\"']+[\"']",
+        "credentials\\s*=\\s*[\"'][^\"']+[\"']"
+      ],
+      "description": "No hardcoded secrets or private keys allowed",
+      "severity": "error"
+    },
+    "pii": {
+      "patterns": [
+        "ssn\\s*=\\s*[\"'][^\"']+[\"']",
+        "social[_-]?security",
+        "credit[_-]?card",
+        "email\\s*=\\s*[\"'][a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}[\"']"
+      ],
+      "description": "No PII in storage",
+      "severity": "error"
+    },
+    "jsonl_format": {
+      "patterns": [
+        "\\.jsonl",
+        "json\\.dumps.*\\\\n",
+        "append"
+      ],
+      "description": "Receipts must use JSONL format (newline-delimited JSON)",
+      "severity": "error"
+    },
+    "append_only": {
+      "violations": [
+        "open\\([\"']w[\"']",
+        "truncate\\(",
+        "\\.seek\\(0\\)"
+      ],
+      "description": "Receipts are append-only, never overwrite",
+      "severity": "error"
+    },
+    "storage_planes": {
+      "allowed": [
+        "ide",
+        "tenant",
+        "product",
+        "shared"
+      ],
+      "description": "Valid storage plane names",
+      "severity": "error"
+    },
+    "evidence_structure": {
+      "paths": [
+        "evidence/receipts",
+        "evidence/manifests",
+        "evidence/checksums",
+        "evidence/dlq",
+        "evidence/watermarks/{consumer-id}"
+      ],
+      "description": "Evidence folder structure requirements",
+      "severity": "warning"
+    },
+    "observability_paths": {
+      "requires_partition": [
+        "observability/metrics",
+        "observability/traces",
+        "observability/logs",
+        "adapters/webhooks",
+        "adapters/gateway-logs",
+        "reporting/marts",
+        "service-metrics"
+      ],
+      "description": "Paths that require dt= time partitions",
+      "severity": "warning"
+    },
+    "laptop_receipts": {
+      "structure": "ide/agent/receipts/{repo-id}/{YYYY}/{MM}/",
+      "description": "Laptop receipts month partition structure",
+      "severity": "warning"
+    }
+  }
+}
+

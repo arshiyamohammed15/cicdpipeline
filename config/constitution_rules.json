@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "database": "constitution_rules",
-  "last_updated": "2025-10-20T16:48:51.604500",
+  "last_updated": "2025-10-20T18:29:27.829070",
   "statistics": {
-    "total_rules": 218,
-    "enabled_rules": 218,
+    "total_rules": 231,
+    "enabled_rules": 231,
     "disabled_rules": 0,
     "categories": {}
   },
@@ -103,8 +103,8 @@
         "disabled_at": "2025-10-17T11:25:44.243267"
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -124,8 +124,8 @@
         "disabled_at": "2025-10-17T11:25:51.782962"
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -145,8 +145,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -166,8 +166,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -187,8 +187,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -208,8 +208,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -229,8 +229,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -250,8 +250,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -271,8 +271,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -292,8 +292,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -313,8 +313,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -334,8 +334,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -355,8 +355,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -376,8 +376,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -397,8 +397,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -418,8 +418,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.594681",
-        "updated_at": "2025-10-20T16:48:51.594681",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -439,8 +439,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -460,8 +460,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -481,8 +481,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -502,8 +502,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -523,8 +523,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -544,8 +544,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -565,8 +565,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -586,8 +586,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -607,8 +607,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -628,8 +628,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -649,8 +649,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -670,8 +670,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -691,8 +691,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -712,8 +712,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -733,8 +733,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -754,8 +754,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -775,8 +775,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -796,8 +796,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -817,8 +817,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -838,8 +838,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -859,8 +859,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -880,8 +880,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -901,8 +901,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -922,8 +922,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -943,8 +943,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -964,8 +964,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -985,8 +985,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1006,8 +1006,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1027,8 +1027,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1048,8 +1048,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1069,8 +1069,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1090,8 +1090,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1111,8 +1111,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1132,8 +1132,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1153,8 +1153,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1174,8 +1174,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1195,8 +1195,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1216,8 +1216,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1237,8 +1237,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1258,8 +1258,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1279,8 +1279,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1300,8 +1300,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1321,8 +1321,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1342,8 +1342,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1363,8 +1363,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1384,8 +1384,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1405,8 +1405,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1426,8 +1426,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1447,8 +1447,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1468,8 +1468,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1489,8 +1489,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1510,8 +1510,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1531,8 +1531,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1552,8 +1552,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1573,8 +1573,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1594,8 +1594,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1615,8 +1615,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1636,8 +1636,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1657,8 +1657,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.602727",
-        "updated_at": "2025-10-20T16:48:51.602727",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1678,8 +1678,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1699,8 +1699,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1720,8 +1720,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1741,8 +1741,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1762,8 +1762,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1783,8 +1783,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1804,8 +1804,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1825,8 +1825,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1846,8 +1846,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1867,8 +1867,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1888,8 +1888,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1909,8 +1909,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1930,8 +1930,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1951,8 +1951,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1972,8 +1972,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1993,8 +1993,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2014,8 +2014,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2035,8 +2035,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2056,8 +2056,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.825626",
+        "updated_at": "2025-10-20T18:29:27.825626",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2077,8 +2077,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2098,8 +2098,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2119,8 +2119,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2140,8 +2140,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2161,8 +2161,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2182,8 +2182,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2203,8 +2203,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2224,8 +2224,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2245,8 +2245,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2266,8 +2266,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2287,8 +2287,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2308,8 +2308,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2329,8 +2329,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2350,8 +2350,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2371,8 +2371,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2392,8 +2392,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2413,8 +2413,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2434,8 +2434,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2455,8 +2455,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2476,8 +2476,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2497,8 +2497,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2518,8 +2518,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2539,8 +2539,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2560,8 +2560,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2581,8 +2581,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2602,8 +2602,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2623,8 +2623,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2644,8 +2644,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2665,8 +2665,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2686,8 +2686,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2707,8 +2707,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2728,8 +2728,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2749,8 +2749,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2770,8 +2770,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2791,8 +2791,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2812,8 +2812,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2833,8 +2833,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2854,8 +2854,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2875,8 +2875,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2896,8 +2896,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2917,8 +2917,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2938,8 +2938,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2959,8 +2959,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2980,8 +2980,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3001,8 +3001,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3022,8 +3022,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3043,8 +3043,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3064,8 +3064,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3085,8 +3085,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3106,8 +3106,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3127,8 +3127,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3148,8 +3148,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3169,8 +3169,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3190,8 +3190,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3211,8 +3211,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3232,8 +3232,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3253,8 +3253,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3274,8 +3274,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3295,8 +3295,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3316,8 +3316,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3337,8 +3337,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3358,8 +3358,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3379,8 +3379,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3400,8 +3400,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3421,8 +3421,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3442,8 +3442,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3463,8 +3463,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3484,8 +3484,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3505,8 +3505,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3526,8 +3526,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3547,8 +3547,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3568,8 +3568,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3589,8 +3589,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3610,8 +3610,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3631,8 +3631,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3652,8 +3652,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3673,8 +3673,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3694,8 +3694,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3715,8 +3715,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3736,8 +3736,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3757,8 +3757,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3778,8 +3778,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3799,8 +3799,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3820,8 +3820,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3841,8 +3841,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3862,8 +3862,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3883,8 +3883,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3904,8 +3904,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3925,8 +3925,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3946,8 +3946,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3967,8 +3967,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3988,8 +3988,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4009,8 +4009,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4030,8 +4030,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4051,8 +4051,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4072,8 +4072,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4093,8 +4093,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4114,8 +4114,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4135,8 +4135,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4156,8 +4156,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4177,8 +4177,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4198,8 +4198,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4219,8 +4219,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4240,8 +4240,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4261,8 +4261,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4282,8 +4282,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4303,8 +4303,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4324,8 +4324,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4345,8 +4345,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4366,8 +4366,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.603310",
-        "updated_at": "2025-10-20T16:48:51.603310",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4387,8 +4387,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4408,8 +4408,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4429,8 +4429,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4450,8 +4450,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4471,8 +4471,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4492,8 +4492,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4513,8 +4513,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4534,8 +4534,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4555,8 +4555,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4576,8 +4576,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4597,8 +4597,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4618,8 +4618,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4639,8 +4639,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4660,8 +4660,281 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T16:48:51.604500",
-        "updated_at": "2025-10-20T16:48:51.604500",
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "219": {
+      "rule_number": 219,
+      "title": "Name Casing & Charset (Kebab-Case Only)",
+      "category": "other",
+      "priority": "important",
+      "content": "All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "220": {
+      "rule_number": 220,
+      "title": "No Source Code/PII in Stores",
+      "category": "other",
+      "priority": "important",
+      "content": "Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "221": {
+      "rule_number": 221,
+      "title": "No Secrets/Private Keys on Disk",
+      "category": "other",
+      "priority": "important",
+      "content": "Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "222": {
+      "rule_number": 222,
+      "title": "JSONL Receipts (Newline-Delimited, Signed, Append-Only)",
+      "category": "other",
+      "priority": "important",
+      "content": "Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "223": {
+      "rule_number": 223,
+      "title": "Time Partitions Use UTC (dt=YYYY-MM-DD)",
+      "category": "other",
+      "priority": "important",
+      "content": "All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "224": {
+      "rule_number": 224,
+      "title": "Policy Snapshots Must Be Signed",
+      "category": "other",
+      "priority": "important",
+      "content": "All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "225": {
+      "rule_number": 225,
+      "title": "Dual Storage Compliance (JSONL Authority, DB Mirrors)",
+      "category": "other",
+      "priority": "important",
+      "content": "JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "226": {
+      "rule_number": 226,
+      "title": "Path Resolution via ZU_ROOT Environment Variable",
+      "category": "other",
+      "priority": "important",
+      "content": "All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "227": {
+      "rule_number": 227,
+      "title": "Receipts Validation (Signed, Append-Only, No Code/PII)",
+      "category": "other",
+      "priority": "important",
+      "content": "When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode \"a\", never \"w\"; never truncate or seek.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "228": {
+      "rule_number": 228,
+      "title": "Evidence Watermarks Per-Consumer Structure",
+      "category": "other",
+      "priority": "important",
+      "content": "Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "229": {
+      "rule_number": 229,
+      "title": "RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)",
+      "category": "other",
+      "priority": "important",
+      "content": "When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:\n- IDE: `agent/tmp/UNCLASSIFIED__<slug>`\n- Tenant/Product: `ingest/staging/unclassified/<slug>`\nResolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.",
+      "enabled": true,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "230": {
+      "rule_number": 230,
+      "title": "Observability/Adapters Use dt= Partitions",
+      "category": "other",
+      "priority": "important",
+      "content": "Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):\n- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`\n- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`\n- `reporting/marts/dt=YYYY-MM-DD/`\n- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`",
+      "enabled": true,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "231": {
+      "rule_number": 231,
+      "title": "Laptop Receipts Use YYYY/MM Partitioning",
+      "category": "other",
+      "priority": "important",
+      "content": "Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.",
+      "enabled": true,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-20T18:29:27.829070",
+        "updated_at": "2025-10-20T18:29:27.829070",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
