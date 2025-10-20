@@ -1,1 +1,0 @@
-# TypeScript Rules Test Package

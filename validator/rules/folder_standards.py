@@ -36,6 +36,9 @@ class FolderStandardsValidator:
         ]
         
         # Allowed subfolders
+        # Note: These are logical allowlisted path prefixes that the validator
+        # checks for in the code being validated. They do NOT require that
+        # this repository itself contains corresponding top-level directories.
         self.allowed_subfolders = ['servers/', 'storage/']
     
     def validate(self, file_path: str, content: str) -> List[Violation]:

@@ -28,62 +28,57 @@ class ConstitutionRuleExtractor:
         # Define rule categories and their mappings
         self.categories = {
             "basic_work": {
-                "rules": list(range(1, 19)),
+                "rules": list(range(1, 19)),  # Rules 1-18
                 "priority": "critical",
                 "description": "Core principles for all development work"
             },
             "system_design": {
-                "rules": list(range(19, 31)),
+                "rules": list(range(19, 31)),  # Rules 19-30
                 "priority": "critical", 
                 "description": "System architecture and design principles"
             },
             "problem_solving": {
-                "rules": list(range(31, 40)),
+                "rules": list(range(31, 40)),  # Rules 31-39
                 "priority": "critical",
                 "description": "Problem-solving methodologies and approaches"
             },
             "platform": {
-                "rules": list(range(40, 50)),
+                "rules": list(range(40, 50)),  # Rules 40-49
                 "priority": "critical",
                 "description": "Platform-specific rules and guidelines"
             },
             "teamwork": {
-                "rules": list(range(50, 76)),
+                "rules": list(range(50, 76)),  # Rules 50-75
                 "priority": "critical",
                 "description": "Collaboration and team dynamics"
             },
             "code_review": {
-                "rules": list(range(76, 85)),
+                "rules": list(range(76, 85)),  # Rules 76-84
                 "priority": "critical",
                 "description": "Code review processes and standards"
             },
             "coding_standards": {
-                "rules": list(range(86, 99)),
+                "rules": list(range(85, 100)),  # Rules 85-99
                 "priority": "critical",
                 "description": "Technical coding standards and best practices"
             },
             "comments": {
-                "rules": list(range(100, 106)),
+                "rules": list(range(100, 110)),  # Rules 100-109
                 "priority": "critical",
                 "description": "Documentation and commenting standards"
             },
             "api_contracts": {
-                "rules": list(range(107, 118)),
+                "rules": list(range(110, 132)),  # Rules 110-131
                 "priority": "critical",
                 "description": "API design, contracts, and governance"
             },
-            "other": {
-                "rules": list(range(119, 132)),
-                "priority": "important",
-                "description": "Miscellaneous rules"
-            },
             "logging": {
-                "rules": list(range(132, 150)),
+                "rules": list(range(132, 150)),  # Rules 132-149
                 "priority": "critical",
                 "description": "Logging and troubleshooting standards"
             },
             "exception_handling": {
-                "rules": list(range(150, 159)) + list(range(160, 182)),  # Rules 150-158, 160-181 (skip 159)
+                "rules": list(range(150, 182)),  # Rules 150-181 (including 159)
                 "priority": "critical",
                 "description": "Exception handling, timeouts, retries, and error recovery"
             },
@@ -91,12 +86,17 @@ class ConstitutionRuleExtractor:
                 "rules": list(range(182, 216)),  # Rules 182-215
                 "priority": "critical",
                 "description": "TypeScript coding standards, type safety, and best practices"
+            },
+            "documentation": {
+                "rules": list(range(216, 219)),  # Rules 216-218
+                "priority": "critical",
+                "description": "Documentation and readability standards"
             }
         }
     
     def extract_all_rules(self) -> List[Dict[str, Any]]:
         """
-        Extract all 215 rules from the constitution file.
+        Extract all 218 rules from the constitution file.
         
         Returns:
             List of rule dictionaries with metadata
@@ -143,9 +143,9 @@ class ConstitutionRuleExtractor:
         # Sort by rule number
         rules.sort(key=lambda x: x['rule_number'])
         
-        # Validate we have all 215 rules (1-181 + 182-215, but missing 159)
-        if len(rules) != 215:
-            print(f"Warning: Expected 215 rules, found {len(rules)}")
+        # Validate we have all rules (1-218)
+        if len(rules) != 218:
+            print(f"Warning: Expected 218 rules, found {len(rules)}")
         
         return rules
     

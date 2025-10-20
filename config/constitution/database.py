@@ -69,7 +69,7 @@ class ConstitutionRulesDB:
             # Create tables
             self._create_tables()
             
-            # Insert all 149 rules if database is empty
+            # Insert all 215 rules if database is empty
         except sqlite3.Error as e:
             print(f"Database initialization error: {e}")
             raise
