@@ -1,5 +1,7 @@
  ZEROUI 2.0 CONSTITUTION 
 
+Note: This master file is the source of truth for 218 rules. Sections below include core Constitutions and appendices (Cursor constitutions and checklists). Keep rule numbering 1–218 consistent; appendices may extend guidance but do not change numbering.
+
  🎯 BASIC WORK RULES
 
 **Rule 1: Do Exactly What's Asked**

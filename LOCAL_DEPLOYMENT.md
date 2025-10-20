@@ -22,10 +22,8 @@ python -m pip install -r requirements.txt
 ### 2. Verify System
 
 ```bash
-# Check system status and rule synchronization
-python sync_validation.py
-
-# View rule statistics
+# Check backend status and rule statistics
+python enhanced_cli.py --backend-status
 python enhanced_cli.py --rule-stats
 ```
 
@@ -122,7 +120,7 @@ python enhanced_cli.py --backend-status
 python enhanced_cli.py --switch-backend json
 python enhanced_cli.py --switch-backend sqlite
 
-# Sync backends
+# Sync and verify backends
 python enhanced_cli.py --sync-backends
 python enhanced_cli.py --verify-sync
 ```

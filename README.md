@@ -1,10 +1,10 @@
 # ZEROUI 2.0 Constitution Code Validator
 
-A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution (215 rules) for enterprise-grade product development with comprehensive, modular rule configuration management.
+A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution (218 rules) for enterprise-grade product development with comprehensive, modular rule configuration management.
 
 ## Features
 
-- **215 Total Rules**: Unified in `ZeroUI2.0_Master_Constitution.md` (including 31 Exception Handling rules and 34 TypeScript rules)
+- **218 Total Rules**: Unified in `ZeroUI2.0_Master_Constitution.md` (including 32 Exception Handling rules and 34 TypeScript rules)
 - **Modular Rule Config**: Per-category JSON under `config/rules/*.json`
 - **Rule Configuration**: Enable/disable via config and programmatic API
 - **Multiple Output Formats**: Console, JSON, HTML, and Markdown reports
@@ -26,25 +26,24 @@ A Python-based automated code review tool that validates code against the ZeroUI
 
 ### Validate a Single File
 ```bash
-python cli.py file.py
+python enhanced_cli.py --file file.py
 ```
 
 ### Validate a Directory
 ```bash
-python cli.py src/
+python enhanced_cli.py --directory src/
 ```
 
 ### Configure Rules
 ```bash
 # Enable/disable specific rules
-python tools/rule_config_cli.py enable R001 --reason "Critical for code quality"
-python tools/rule_config_cli.py disable rule_076 --reason "Too restrictive for current project"
+python enhanced_cli.py --enable-rule 1
+python enhanced_cli.py --disable-rule 76 --disable-reason "Too restrictive for current project"
 
-# Set file-specific overrides
-python tools/rule_config_cli.py override R001 file "legacy/old_code.py" --disable --reason "Legacy file exempt"
-
-# Generate rule status report
-python tools/rule_config_cli.py report
+# List/search and stats
+python enhanced_cli.py --list-rules
+python enhanced_cli.py --search-rules "basic_work"
+python enhanced_cli.py --rule-stats
 ```
 
 ### Run Tests
@@ -58,12 +57,13 @@ python config/constitution/tests/test_exception_handling/test_rules_150_181_simp
 
 ### Generate HTML Report
 ```bash
-python cli.py src/ --format html --output report.html
+python enhanced_cli.py --directory src/ --format html --output report.html
 ```
 
 ### Enterprise Mode
 ```bash
-python cli.py src/ --enterprise
+# Use your preferred filters and categories via the enhanced CLI
+python enhanced_cli.py --directory src/
 ```
 
 ## Usage
@@ -71,41 +71,40 @@ python cli.py src/ --enterprise
 ### Command Line Interface
 
 ```bash
-python cli.py [OPTIONS] PATH
+python enhanced_cli.py [OPTIONS]
 ```
 
 #### Options
 
-- `--format, -f`: Output format (`console`, `json`, `html`, `markdown`)
+- `--file, -f`: Validate a single file
+- `--directory, -d`: Validate all Python files in a directory
+- `--format, -fmt`: Output format (`console`, `json`, `html`, `markdown`)
 - `--output, -o`: Output file path
-- `--recursive, -r`: Search directories recursively (default)
-- `--enterprise`: Use enterprise-grade rules only
-- `--severity`: Minimum severity level (`error`, `warning`, `info`)
-- `--config`: Path to rules configuration file
-- `--max-files`: Maximum number of files to process
+- `--recursive, -r`: Search directories recursively
 - `--verbose, -v`: Verbose output
-- `--quiet, -q`: Quiet mode
+- Constitution management: `--list-rules`, `--enable-rule`, `--disable-rule`, `--rule-stats`, `--rules-by-category`, `--search-rules`, `--export-rules`, `--export-enabled-only`
+- Backend management: `--backend-status`, `--switch-backend`, `--sync-backends`, `--verify-sync`, `--migrate`, `--repair-sync`, `--migrate-config`, `--validate-config`, `--config-info`
 
 #### Examples
 
 ```bash
 # Basic validation
-python cli.py file.py
+python enhanced_cli.py --file file.py
 
 # JSON output
-python cli.py src/ --format json
+python enhanced_cli.py --directory src/ --format json
 
 # HTML report
-python cli.py src/ --format html --output report.html
+python enhanced_cli.py --directory src/ --format html --output report.html
 
-# Enterprise rules only
-python cli.py src/ --enterprise
+# Directory with defaults
+python enhanced_cli.py --directory src/
 
-# Only show errors
-python cli.py src/ --severity error
+# Search recursively
+python enhanced_cli.py --directory src/ --recursive
 
 # Verbose output
-python cli.py src/ --verbose
+python enhanced_cli.py --directory src/ --verbose
 ```
 
 ## Dynamic Testing

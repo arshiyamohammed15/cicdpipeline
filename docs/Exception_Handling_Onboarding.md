@@ -64,12 +64,12 @@ async function fetchUserData(userId: string): Promise<UserData> {
         return await response.json();
     } catch (error) {
         // Map to canonical error code (Rule 198)
-        if (error.name === 'AbortError') {
-            throw new Error('TIMEOUT_ERROR: Request timed out after 5 seconds');
+        if ((error as Error).name === 'AbortError') {
+            throw new Error('TIMEOUT: Request timed out after 5 seconds');
         }
         
         // Provide user-friendly message (Rule 197)
-        throw new Error('NETWORK_ERROR: Unable to fetch user data. Please try again.');
+        throw new Error('DEPENDENCY_FAILED: Unable to fetch user data. Please try again.');
     }
 }
 ```
@@ -108,14 +108,14 @@ describe('fetchUserData', () => {
             })
         );
         
-        await expect(fetchUserData('1')).rejects.toThrow('TIMEOUT_ERROR');
+        await expect(fetchUserData('1')).rejects.toThrow('TIMEOUT');
     });
     
     it('should handle network errors', async () => {
         // Mock network error
         global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
         
-        await expect(fetchUserData('1')).rejects.toThrow('NETWORK_ERROR');
+        await expect(fetchUserData('1')).rejects.toThrow('DEPENDENCY_FAILED');
     });
 });
 ```
@@ -229,7 +229,7 @@ try {
     return data;
 } catch (error) {
     // Add context to the error
-    throw new Error(`JSON_PARSE_ERROR: Failed to parse JSON string: ${error.message}`, {
+    throw new Error(`VALIDATION_ERROR: Failed to parse JSON string: ${(error as Error).message}`, {
         cause: error,
         context: { jsonString: jsonString.substring(0, 100) }
     });
