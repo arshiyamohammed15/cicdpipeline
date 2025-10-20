@@ -20,13 +20,13 @@ class Severity(Enum):
 class Violation:
     """Represents a rule violation found in code."""
     rule_id: str
-    rule_name: str
     severity: Severity
     message: str
     file_path: str
     line_number: int
-    column_number: int
-    code_snippet: str
+    code_snippet: str = ""
+    rule_name: str = ""
+    column_number: int = 0
     fix_suggestion: Optional[str] = None
     category: Optional[str] = None
     # Legacy support

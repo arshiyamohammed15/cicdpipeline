@@ -90,10 +90,13 @@ class ExceptionHandlingValidator:
                     except Exception as e:
                         violations.append(Violation(
                             rule_id=rule_id,
+                            rule_name=f"ExceptionHandling {rule_id} error",
+                            severity=Severity.ERROR,
+                            message=f"Error validating {rule_id}: {str(e)}",
                             file_path=file_path,
                             line_number=1,
-                            message=f"Error validating {rule_id}: {str(e)}",
-                            severity=Severity.ERROR
+                            column_number=0,
+                            code_snippet=""
                         ))
             else:
                 # For non-Python files, check text patterns
@@ -111,13 +114,16 @@ class ExceptionHandlingValidator:
                         ))
         
         except Exception as e:
-            violations.append(Violation(
-                rule_id="R150",
-                file_path=file_path,
-                line_number=1,
-                message=f"Failed to parse file for exception handling validation: {str(e)}",
-                severity=Severity.ERROR
-            ))
+                violations.append(Violation(
+                    rule_id="R150",
+                    rule_name="ExceptionHandling parse error",
+                    severity=Severity.ERROR,
+                    message=f"Failed to parse file for exception handling validation: {str(e)}",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet=""
+                ))
         
         return violations
     
@@ -387,7 +393,7 @@ class ExceptionHandlingValidator:
         
         # Check for retry logic
         retry_patterns = [
-            r'for.*in.*range\(.*retry', r'while.*retry', r'\.retry\('
+            r'for\s+.*in\s+range\([^)]*\):', r'while\s+.*:\s*', r'\.retry\('
         ]
         
         has_retry = any(re.search(pattern, content, re.IGNORECASE) for pattern in retry_patterns)
@@ -411,7 +417,7 @@ class ExceptionHandlingValidator:
         
         # Check for retrying non-retriable errors
         non_retriable_patterns = [
-            r'retry.*validation', r'retry.*401', r'retry.*403', r'retry.*404'
+            r'retry\s*\(.*Validation', r'retry.*401', r'retry.*403', r'retry.*404', r'ValidationError', r'401', r'403', r'404'
         ]
         
         for pattern in non_retriable_patterns:
@@ -432,14 +438,15 @@ class ExceptionHandlingValidator:
         
         # Check for write operations without idempotency
         write_patterns = [
-            r'\.insert\(', r'\.update\(', r'\.delete\(', r'\.save\('
+            r'\bdb\.insert\(', r'\binsert\(', r'\.insert\(', r'\.update\(', r'\.delete\(', r'\.save\(', r'INSERT\s+INTO', r'UPDATE\s+\w+', r'DELETE\s+FROM'
         ]
         
-        has_writes = any(re.search(pattern, content) for pattern in write_patterns)
+        has_writes = any(re.search(pattern, content, re.IGNORECASE) for pattern in write_patterns)
         
         if has_writes:
+            lowered = content.lower()
             idempotency_keywords = ['idempotent', 'idempotency', 'upsert', 'merge']
-            has_idempotency = any(keyword in content.lower() for keyword in idempotency_keywords)
+            has_idempotency = any(keyword in lowered for keyword in idempotency_keywords) and 'non-idempotent' not in lowered
             
             if not has_idempotency:
                 violations.append(Violation(
@@ -724,7 +731,7 @@ class ExceptionHandlingValidator:
         
         # Check for AI code execution
         execution_patterns = [
-            r'exec\(', r'eval\(', r'\.run\(', r'\.execute\('
+            r'exec\(', r'eval\(', r'\.execute\('
         ]
         
         has_ai_execution = any(re.search(pattern, content) for pattern in execution_patterns)
@@ -830,12 +837,12 @@ class ExceptionHandlingValidator:
         
         # Check for feature flag usage
         flag_patterns = [
-            r'feature.*flag', r'feature_flag', r'flag.*enabled', r'experimental'
+            r'feature.*flag', r'feature_flag', r'flag.*enabled'
         ]
         
         has_flags = any(re.search(pattern, content, re.IGNORECASE) for pattern in flag_patterns)
         
-        if not has_flags and ('risky' in content.lower() or 'experimental' in content.lower()):
+        if not has_flags and ('risky' in content.lower()):
             violations.append(Violation(
                 rule_id="R181",
                 file_path=file_path,

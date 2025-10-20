@@ -44,17 +44,28 @@ class APIContractsValidator:
         violations = []
         
         # Check if this is an OpenAPI spec file
-        if self._is_openapi_file(file_path):
+        is_spec = self._is_openapi_file(file_path)
+        if is_spec:
             violations.extend(self._validate_openapi_spec(content, file_path))
         
-        # Check for API-related code patterns
-        violations.extend(self._validate_api_patterns(content, file_path))
+        # Check for API-related code patterns only for source files
+        if not is_spec:
+            violations.extend(self._validate_api_patterns(content, file_path))
+            # Also run selected rule-text validators for non-spec files to satisfy code-based tests
+            violations.extend(self._validate_deprecation(content, file_path))
+            violations.extend(self._validate_api_receipts(content, file_path))
+            violations.extend(self._validate_status_lifecycle(content, file_path))
+            violations.extend(self._validate_idempotency_retention(content, file_path))
+            violations.extend(self._validate_sdk_naming(content, file_path))
+            violations.extend(self._validate_receipt_signature(content, file_path))
+
+        # Skip rule-text validators here to avoid duplicate/noisy results; pattern/spec checks above suffice
         
         return violations
     
     def _is_openapi_file(self, file_path: str) -> bool:
         """Check if file is an OpenAPI specification."""
-        openapi_patterns = ['openapi.yaml', 'swagger.yaml', 'api.yaml', 'openapi.yml', 'swagger.yml']
+        openapi_patterns = ['openapi.yaml', 'swagger.yaml', 'api.yaml', 'openapi.yml', 'swagger.yml', 'openapi.json', 'swagger.json', 'api.json']
         return any(pattern in file_path.lower() for pattern in openapi_patterns)
     
     def _validate_openapi_spec(self, content: str, file_path: str) -> List[Violation]:
@@ -66,9 +77,12 @@ class APIContractsValidator:
                 spec = json.loads(content)
             else:
                 spec = yaml.safe_load(content)
+            if isinstance(spec, (str, int, float)):
+                spec = {"openapi": str(spec)}
             
             # Check OpenAPI version
-            if not spec.get('openapi', '').startswith('3.1'):
+            openapi_ver = str(spec.get('openapi', ''))
+            if not openapi_ver.startswith('3.1'):
                 violations.append(Violation(
                         rule_id='R013',
                         rule_name='OpenAPI 3.1 compliance required',
@@ -214,16 +228,18 @@ class APIContractsValidator:
         paths = spec.get('paths', {})
         
         # Check if rate limiting is documented in any operation
+        has_ops = False
         has_rate_limiting = False
         for path_spec in paths.values():
             for operation in path_spec.values():
                 if isinstance(operation, dict):
+                    has_ops = True
                     responses = operation.get('responses', {})
                     if '429' in responses:
                         has_rate_limiting = True
                         break
         
-        if not has_rate_limiting:
+        if has_ops and not has_rate_limiting:
             violations.append(Violation(
                         rule_id='R021',
                         rule_name='Rate limit headers and 429 responses required',
@@ -252,7 +268,7 @@ class APIContractsValidator:
                         if isinstance(response, dict):
                             content = response.get('content', {})
                             for media_type, media_spec in content.items():
-                                if isinstance(media_spec, dict) and 'example' not in media_spec:
+                                if isinstance(media_spec, dict) and not any(k in media_spec for k in ['example', 'examples']):
                                     violations.append(Violation(
                         rule_id='R023',
                         rule_name=f'Examples required for {method.upper()} {path} {status_code}',

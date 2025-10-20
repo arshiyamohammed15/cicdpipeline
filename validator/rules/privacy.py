@@ -47,10 +47,10 @@ class PrivacyValidator(BaseRuleValidator):
         # Check for hardcoded credentials
         credential_patterns = [
             r'password\s*=\s*["\'][^"\']+["\']',
-            r'api_key\s*=\s*["\'][^"\']+["\']',
+            r'api[_-]?key\s*=\s*["\'][^"\']+["\']',
             r'secret\s*=\s*["\'][^"\']+["\']',
             r'token\s*=\s*["\'][^"\']+["\']',
-            r'key\s*=\s*["\'][^"\']+["\']'
+            r'\b[A-Za-z0-9_-]*key\s*=\s*["\'][^"\']+["\']'
         ]
         
         for pattern in credential_patterns:
@@ -60,7 +60,7 @@ class PrivacyValidator(BaseRuleValidator):
                     rule_number=3,
                     rule_name="Protect people's privacy",
                     severity=Severity.ERROR,
-                    message="Hardcoded credentials detected - security risk",
+                    message="Hardcoded credentials/API key detected - security risk",
                     file_path=file_path,
                     line_number=line_number,
                     column_number=0,
