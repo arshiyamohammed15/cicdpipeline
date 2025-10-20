@@ -83,7 +83,7 @@ python enhanced_cli.py [OPTIONS]
 - `--recursive, -r`: Search directories recursively
 - `--verbose, -v`: Verbose output
 - Constitution management: `--list-rules`, `--enable-rule`, `--disable-rule`, `--rule-stats`, `--rules-by-category`, `--search-rules`, `--export-rules`, `--export-enabled-only`
-- Backend management: `--backend-status`, `--switch-backend`, `--sync-backends`, `--verify-sync`, `--migrate`, `--repair-sync`, `--migrate-config`, `--validate-config`, `--config-info`
+- Backend management: `--backend-status`, `--switch-backend`, `--sync-backends`, `--verify-sync`, `--verify-consistency`, `--migrate`, `--repair-sync`, `--migrate-config`, `--validate-config`, `--config-info`
 
 #### Examples
 
@@ -105,6 +105,43 @@ python enhanced_cli.py --directory src/ --recursive
 
 # Verbose output
 python enhanced_cli.py --directory src/ --verbose
+
+# Verify cross-source consistency (Markdown, DB, JSON, Config)
+python enhanced_cli.py --verify-consistency
+```
+
+## Cross-Source Consistency Validation
+
+The validator includes a comprehensive cross-source consistency checker that validates all 218 rules across 4 sources:
+
+1. **Markdown** - `ZeroUI2.0_Master_Constitution.md` (source of truth)
+2. **Database** - `config/constitution_rules.db` (SQLite)
+3. **JSON Export** - `config/constitution_rules.json`
+4. **Config** - `config/constitution_config.json`
+
+### Features
+- Validates rule numbers, titles, categories, priorities, and content
+- Checks enabled/disabled status across all sources
+- Text normalization to avoid false positives (whitespace, Unicode)
+- Quorum-based validation (requires ≥2 sources for mismatch detection)
+- Detailed per-rule difference reporting
+
+### Usage
+```bash
+# Verify consistency across all sources
+python enhanced_cli.py --verify-consistency
+```
+
+### Output
+```
+[OK] All sources are consistent
+
+Summary:
+  Total rules observed: 218
+  Missing -> markdown: 0, db: 0, json: 0, config: 0
+  Field mismatch rules: 0
+  Enabled mismatch rules: 0
+  Total differences: 0
 ```
 
 ## Dynamic Testing
@@ -120,7 +157,7 @@ Key suites (invoked via `pytest validator/rules/tests -q`):
 ### Understanding Test Output
 
 **Coverage Reports:**
-- **Total Coverage**: Percentage of all 215 rules that were triggered
+- **Total Coverage**: Percentage of all 218 rules that were triggered
 - **Category Coverage**: Coverage within each category
 - **Priority Coverage**: Coverage by priority level (Critical/Important/Recommended)
 - **Missing Rules**: Rules that weren't triggered by the test code
@@ -534,7 +571,7 @@ Rules are configured modularly per-category in `config/rules/*.json`. Example:
 }
 ```
 
-Programmatic and advanced loading is handled by components like `config/enhanced_config_manager.py` and `config/rule_loader.py`. Patterns can be added under `config/patterns/*.json`.
+Programmatic and advanced loading is handled by `config/enhanced_config_manager.py`. Patterns can be added under `config/patterns/*.json`.
 
 ## Integration
 
@@ -610,29 +647,23 @@ ZeroUI2.0/
 │   │   ├── config_manager.py           # SQLite configuration manager
 │   │   ├── config_manager_json.py      # JSON configuration manager
 │   │   ├── backend_factory.py          # Backend factory and selection logic
-│   │   ├── sync_manager.py             # Synchronization between backends
+│   │   ├── sync_manager.py             # Cross-source consistency validation & sync
 │   │   ├── migration.py                # Migration utilities
 │   │   ├── config_migration.py         # Configuration migration (v1.0 → v2.0)
 │   │   ├── rule_extractor.py           # Rule extraction from markdown
 │   │   ├── queries.py                  # Common database queries
-│   │   ├── logging_config.py           # Centralized logging configuration
-│   │   └── tests/                      # Comprehensive test suite
-│   │       ├── test_runner.py          # Custom test runner with coverage
-│   │       ├── conftest.py             # Test configuration and fixtures
-│   │       ├── test_database.py        # SQLite backend tests
-│   │       ├── test_json_backend.py    # JSON backend tests
-│   │       ├── test_backend_factory.py # Factory and selection tests
-│   │       ├── test_sync_manager.py    # Synchronization tests
-│   │       ├── test_migration.py       # Migration tests
-│   │       └── test_integration.py     # End-to-end integration tests
+│   │   └── logging_config.py           # Centralized logging configuration
 │   ├── constitution_config.json        # Main configuration (v2.0 format)
-│   ├── constitution_rules.db           # SQLite database (auto-generated)
-│   ├── constitution_rules.json         # JSON database (auto-generated)
+│   ├── constitution_rules.db           # SQLite database (218 rules)
+│   ├── constitution_rules.json         # JSON export (218 rules)
+│   ├── enhanced_config_manager.py      # Enhanced configuration manager
+│   ├── base_config.json                # Base configuration
 │   ├── sync_history.json               # Synchronization history
 │   ├── migration_history.json          # Migration history
-│   └── backups/                        # Configuration backups
+│   ├── rules/                          # Rule category configurations (17 files)
+│   └── patterns/                       # Validation patterns (2 files)
 ├── enhanced_cli.py                     # Enhanced CLI with backend management
-├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 215 rules
+├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 218 rules
 ├── validator/rules/exception_handling.py # Exception handling validator (Rules 150-181)
 ├── validator/rules/typescript.py       # TypeScript validator (Rules 182-215)
 ├── config/constitution/tests/test_exception_handling/ # Exception handling tests
@@ -1343,8 +1374,7 @@ ZeroUI2.0/
 ├── config/constitution/
 │   ├── rule_extractor.py                  # Updated to extract 180 rules
 │   ├── database.py                        # Updated to support 180 rules
-│   ├── constitution_rules_json.py         # Updated to support 180 rules
-│   └── config_manager.py                  # Updated to support 180 rules
+│   └── constitution_rules_json.py         # Updated to support 180 rules
 ├── config/
 │   ├── base_config.json                   # Updated total_rules: 180
 │   ├── constitution_config.json           # Updated with rules 150-181
@@ -1488,14 +1518,13 @@ ZeroUI2.0/
 │   ├── test_rules_182_215_simple.py       # Simple test suite (20+ tests)
 │   └── test_rules_182_215_comprehensive.py # Comprehensive test suite (34 classes)
 ├── config/constitution/
-│   ├── rule_extractor.py                  # Updated to extract 215 rules
-│   ├── database.py                        # Updated to support 215 rules
-│   ├── constitution_rules_json.py         # Updated to support 215 rules
-│   └── config_manager.py                  # Updated to support 215 rules
+│   ├── rule_extractor.py                  # Updated to extract 218 rules
+│   ├── database.py                        # Updated to support 218 rules
+│   └── constitution_rules_json.py         # Updated to support 218 rules
 ├── config/
-│   ├── base_config.json                   # Updated total_rules: 215
-│   ├── constitution_config.json           # Updated with rules 182-215
-│   └── constitution_rules.json            # Updated with typescript category
+│   ├── base_config.json                   # Updated total_rules: 218
+│   ├── constitution_config.json           # Updated with all 218 rules
+│   └── constitution_rules.json            # Updated with all rule categories
 └── enhanced_cli.py                        # Updated with TypeScript validator integration
 ```
 

@@ -16,6 +16,7 @@ import logging
 from .config_manager import ConstitutionRuleManager
 from .config_manager_json import ConstitutionRuleManagerJSON
 from .backend_factory import get_backend_factory
+from .rule_extractor import ConstitutionRuleExtractor
 
 logger = logging.getLogger(__name__)
 
@@ -691,6 +692,206 @@ class ConstitutionSyncManager:
         self._sync_history = []
         self._save_sync_history()
         logger.info("Sync history cleared")
+
+    def verify_consistency_across_sources(self) -> Dict[str, Any]:
+        """
+        Validate rules consistency across Markdown, SQLite DB, JSON export, and config.
+
+        Returns:
+            Summary including per-rule differences and aggregate counts.
+        """
+        results: Dict[str, Any] = {
+            "consistent": True,
+            "summary": {},
+            "differences": []
+        }
+
+        try:
+            # Load sources
+            # 1) Markdown via extractor
+            md_extractor = ConstitutionRuleExtractor()
+            md_rules_list = md_extractor.extract_all_rules()
+            md_rules = {r["rule_number"]: r for r in md_rules_list}
+
+            # 2) Database via manager
+            sqlite_manager = ConstitutionRuleManager(config_dir=self.config_dir)
+            db_rules_list = sqlite_manager.get_all_rules()
+            db_rules = {r["rule_number"]: r for r in db_rules_list}
+
+            # 3) JSON export file (supports array export or JSON-DB object)
+            json_export_path = Path(self.config_dir) / "constitution_rules.json"
+            json_export_rules: Dict[int, Dict[str, Any]] = {}
+            if json_export_path.exists():
+                with open(json_export_path, 'r', encoding='utf-8') as f:
+                    try:
+                        parsed = json.load(f)
+                        if isinstance(parsed, list):
+                            for item in parsed:
+                                rn = int(item.get("rule_number")) if item.get("rule_number") is not None else None
+                                if rn:
+                                    json_export_rules[rn] = item
+                        elif isinstance(parsed, dict) and "rules" in parsed:
+                            # JSON DB shape: rules is a dict keyed by string rule_number
+                            for key, item in parsed.get("rules", {}).items():
+                                try:
+                                    rn = int(item.get("rule_number") or key)
+                                    json_export_rules[rn] = item
+                                except Exception:
+                                    continue
+                        else:
+                            # Unknown shape; leave empty but note in summary
+                            results.setdefault("warnings", []).append("Unrecognized constitution_rules.json structure")
+                    except json.JSONDecodeError:
+                        results.setdefault("warnings", []).append("constitution_rules.json is not valid JSON")
+            else:
+                results.setdefault("warnings", []).append("constitution_rules.json not found")
+
+            # 4) Config enabled states
+            config_path = Path(self.config_dir) / "constitution_config.json"
+            config_enabled: Dict[int, Optional[bool]] = {}
+            if config_path.exists():
+                try:
+                    with open(config_path, 'r', encoding='utf-8') as f:
+                        cfg = json.load(f)
+                        rules_cfg = cfg.get("rules", {}) or {}
+                        for k, v in rules_cfg.items():
+                            try:
+                                rn = int(k)
+                                config_enabled[rn] = v.get("enabled")
+                            except Exception:
+                                continue
+                except Exception:
+                    results.setdefault("warnings", []).append("Failed to read constitution_config.json")
+            else:
+                results.setdefault("warnings", []).append("constitution_config.json not found")
+
+            # Field comparison helpers
+            def norm_text(s: Any) -> str:
+                # Normalize by stripping, collapsing whitespace, and lowering case
+                if s is None:
+                    return ""
+                text = str(s)
+                # Replace multiple whitespace with single space and trim
+                import re as _re
+                text = _re.sub(r"\s+", " ", text).strip()
+                return text
+
+            def collect_fields(src: Dict[str, Any]) -> Dict[str, Any]:
+                return {
+                    "title": src.get("title"),
+                    "category": src.get("category"),
+                    "priority": src.get("priority"),
+                    "content": src.get("content"),
+                    "enabled": src.get("enabled") if "enabled" in src else None
+                }
+
+            # Build universe of rules
+            all_rule_numbers = sorted(set(md_rules.keys()) | set(db_rules.keys()) | set(json_export_rules.keys()) | set(config_enabled.keys()))
+
+            missing_counts = {"markdown": 0, "database": 0, "json_export": 0, "config": 0}
+            field_mismatch_count = 0
+            enabled_mismatch_count = 0
+
+            for rn in all_rule_numbers:
+                md = md_rules.get(rn)
+                db = db_rules.get(rn)
+                jexp = json_export_rules.get(rn)
+                cfg_enabled = config_enabled.get(rn, None)
+
+                present = {
+                    "markdown": md is not None,
+                    "database": db is not None,
+                    "json_export": jexp is not None,
+                    "config": cfg_enabled is not None
+                }
+
+                for key, is_present in present.items():
+                    if not is_present:
+                        missing_counts[key] += 1
+
+                # Compare fields when present in multiple sources (require quorum to avoid false positives)
+                mismatch_fields: List[str] = []
+                ref = None
+                # Prefer DB as reference if present, else Markdown
+                if db:
+                    ref = collect_fields(db)
+                elif md:
+                    ref = collect_fields(md)
+
+                if ref:
+                    candidates = []
+                    if md:
+                        candidates.append(("markdown", collect_fields(md)))
+                    if db:
+                        candidates.append(("database", collect_fields(db)))
+                    if jexp:
+                        candidates.append(("json_export", collect_fields(jexp)))
+
+                    # Only evaluate mismatches if at least two sources provide the field
+                    for f in ["title", "category", "priority", "content"]:
+                        values = []
+                        for _, fields in candidates:
+                            val = fields.get(f)
+                            if val is not None and str(val).strip() != "":
+                                values.append(norm_text(val))
+                        # If fewer than 2 values, skip to avoid false positives
+                        if len(values) >= 2 and len(set(values)) > 1:
+                            if f not in mismatch_fields:
+                                mismatch_fields.append(f)
+
+                # Enabled mismatches between DB/JSON export/config
+                db_enabled = db.get("enabled") if db else None
+                j_enabled = jexp.get("enabled") if jexp else None
+                # Some JSON export formats store enabled under config_data or config
+                if j_enabled is None and jexp is not None:
+                    je_cfg = jexp.get("config_data") or jexp.get("config") or {}
+                    if isinstance(je_cfg, dict):
+                        j_enabled = je_cfg.get("default_enabled") if "default_enabled" in je_cfg else je_cfg.get("enabled")
+
+                enabled_sources = [("database", db_enabled), ("json_export", j_enabled), ("config", cfg_enabled)]
+                enabled_values = [v for (_, v) in enabled_sources if v is not None]
+                # Require quorum of at least 2 sources to consider enabled mismatch
+                enabled_diff = len(enabled_values) >= 2 and len(set(enabled_values)) > 1
+
+                if mismatch_fields or enabled_diff or not all(present.values()):
+                    results["consistent"] = False
+                    if mismatch_fields:
+                        field_mismatch_count += 1
+                    if enabled_diff:
+                        enabled_mismatch_count += 1
+                    
+                    # Capture actual field values for detailed reporting
+                    field_details = {}
+                    for field in mismatch_fields:
+                        field_details[field] = {}
+                        if md:
+                            field_details[field]["markdown"] = str(md.get(field, ""))[:200]
+                        if db:
+                            field_details[field]["database"] = str(db.get(field, ""))[:200]
+                        if jexp:
+                            field_details[field]["json_export"] = str(jexp.get(field, ""))[:200]
+                    
+                    results["differences"].append({
+                        "rule_number": rn,
+                        "missing": {k: (not v) for k, v in present.items()},
+                        "field_mismatches": mismatch_fields,
+                        "field_details": field_details,
+                        "enabled": {k: v for (k, v) in enabled_sources}
+                    })
+
+            # Build summary
+            results["summary"] = {
+                "total_rules_observed": len(all_rule_numbers),
+                "missing": missing_counts,
+                "field_mismatch_rules": field_mismatch_count,
+                "enabled_mismatch_rules": enabled_mismatch_count,
+                "differences_count": len(results["differences"]) 
+            }
+
+            return results
+        except Exception as e:
+            logger.error(f"Failed to verify consistency across sources: {e}")
+            return {"consistent": False, "error": str(e), "differences": []}
 
 # Global sync manager instance
 _sync_manager_instance = None

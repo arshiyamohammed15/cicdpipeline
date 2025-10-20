@@ -482,6 +482,10 @@ class EnhancedCLI:
                 self._verify_sync()
                 return True
             
+            elif getattr(args, 'verify_consistency', False):
+                self._verify_consistency()
+                return True
+            
             elif args.backend_status:
                 self._show_backend_status()
                 return True
@@ -587,6 +591,82 @@ class EnhancedCLI:
                     safe_print(f"    ... and {len(differences) - 5} more differences")
         except Exception as e:
             safe_print(f"[FAIL] Error verifying sync: {e}")
+    
+    def _verify_consistency(self):
+        """Verify consistency across Markdown, DB, JSON export, and config."""
+        try:
+            from config.constitution.sync_manager import get_sync_manager
+            mgr = get_sync_manager()
+            result = mgr.verify_consistency_across_sources()
+            
+            consistent = result.get("consistent", False)
+            if consistent:
+                safe_print("[OK] All sources are consistent")
+            else:
+                safe_print("[FAIL] Inconsistencies detected across sources")
+            
+            summary = result.get("summary", {})
+            if summary:
+                safe_print(f"\nSummary:")
+                safe_print(f"  Total rules observed: {summary.get('total_rules_observed', 0)}")
+                missing = summary.get('missing', {})
+                safe_print(f"  Missing -> markdown: {missing.get('markdown', 0)}, db: {missing.get('database', 0)}, json: {missing.get('json_export', 0)}, config: {missing.get('config', 0)}")
+                safe_print(f"  Field mismatch rules: {summary.get('field_mismatch_rules', 0)}")
+                safe_print(f"  Enabled mismatch rules: {summary.get('enabled_mismatch_rules', 0)}")
+                safe_print(f"  Total differences: {summary.get('differences_count', 0)}")
+            
+            warnings = result.get("warnings", [])
+            if warnings:
+                safe_print(f"\nWarnings:")
+                for w in warnings:
+                    safe_print(f"  - {w}")
+            
+            # Print all differences with detailed per-rule information
+            diffs = result.get("differences", [])
+            if diffs:
+                safe_print(f"\nDetailed Differences ({len(diffs)} rules):")
+                safe_print("=" * 80)
+                for d in diffs:
+                    rn = d.get('rule_number')
+                    missing = d.get('missing', {})
+                    fields = d.get('field_mismatches', [])
+                    enabled = d.get('enabled', {})
+                    details = d.get('field_details', {})
+                    
+                    safe_print(f"\nRule {rn}:")
+                    
+                    # Show missing sources
+                    missing_sources = [k for k, v in missing.items() if v]
+                    if missing_sources:
+                        safe_print(f"  Missing from: {', '.join(missing_sources)}")
+                    
+                    # Show field mismatches with actual values
+                    if fields:
+                        safe_print(f"  Field mismatches:")
+                        for field in fields:
+                            field_vals = details.get(field, {})
+                            if field_vals:
+                                safe_print(f"    {field}:")
+                                for src, val in field_vals.items():
+                                    val_display = (val[:60] + "...") if val and len(val) > 60 else val
+                                    safe_print(f"      {src}: {val_display}")
+                    
+                    # Show enabled mismatches
+                    enabled_vals = {k: v for k, v in enabled.items() if v is not None}
+                    if enabled_vals and len(set(enabled_vals.values())) > 1:
+                        safe_print(f"  Enabled status mismatch:")
+                        for src, val in enabled_vals.items():
+                            safe_print(f"    {src}: {val}")
+            
+            # Error details
+            error = result.get("error")
+            if error:
+                safe_print(f"\nError during validation: {error}")
+                
+        except Exception as e:
+            safe_print(f"[FAIL] Error verifying consistency: {e}")
+            import traceback
+            safe_print(traceback.format_exc())
     
     def _show_backend_status(self):
         """Show status of all backends."""
@@ -1338,6 +1418,11 @@ Examples:
         "--verify-sync",
         action="store_true",
         help="Verify that backends are synchronized"
+    )
+    backend_group.add_argument(
+        "--verify-consistency",
+        action="store_true",
+        help="Verify rules consistency across Markdown, DB, JSON export, and config"
     )
     backend_group.add_argument(
         "--backend-status",
