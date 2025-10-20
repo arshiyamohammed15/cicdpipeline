@@ -110,14 +110,74 @@ python enhanced_cli.py --directory src/ --verbose
 python enhanced_cli.py --verify-consistency
 ```
 
-## Cross-Source Consistency Validation
+## Single Source of Truth: Markdown
 
-The validator includes a comprehensive cross-source consistency checker that validates all 218 rules across 4 sources:
+### Architecture
 
-1. **Markdown** - `ZeroUI2.0_Master_Constitution.md` (source of truth)
+The ZeroUI 2.0 Constitution uses a **Single Source of Truth** approach:
+
+1. **Markdown** - `ZeroUI2.0_Master_Constitution.md` (ONLY source of truth)
+   - All rule definitions, titles, content, categories
+   - Version controlled, human-readable, easy to review in PRs
+   - The ONLY file you edit to add/remove/update rules
+
 2. **Database** - `config/constitution_rules.db` (SQLite)
+   - Auto-generated from Markdown
+   - Fast runtime queries
+   - **Read-only cache** - regenerated from Markdown
+
 3. **JSON Export** - `config/constitution_rules.json`
+   - Auto-generated from Markdown
+   - Backup/portability format
+   - **Read-only cache** - regenerated from Markdown
+
 4. **Config** - `config/constitution_config.json`
+   - **Only stores runtime state**: enabled/disabled status
+   - Does NOT contain rule content (that's in Markdown)
+   - Preserved across rebuilds
+
+### Workflow: How to Add/Update/Remove Rules
+
+```bash
+# 1. Edit the ONLY source of truth
+vim ZeroUI2.0_Master_Constitution.md
+
+# 2. Rebuild derived artifacts (DB, JSON)
+python enhanced_cli.py --rebuild-from-markdown
+
+# 3. Verify everything is consistent
+python enhanced_cli.py --verify-consistency
+
+# 4. Commit (only Markdown changes tracked)
+git add ZeroUI2.0_Master_Constitution.md
+git commit -m "Add Rule 219: New Security Rule"
+```
+
+### What Happens During Rebuild
+
+1. **Extracts** all rules from Markdown
+2. **Preserves** current enabled/disabled states from config
+3. **Clears** and rebuilds SQLite database
+4. **Clears** and rebuilds JSON database
+5. **Restores** preserved enabled/disabled states
+6. **Validates** consistency across all sources
+
+### Benefits
+
+✅ **Single Edit Point**: Change rules only in Markdown  
+✅ **No Sync Conflicts**: DB/JSON are regenerated, not synced  
+✅ **Version Control**: All changes tracked in Git (Markdown)  
+✅ **Easy Reviews**: PRs show Markdown diffs  
+✅ **Fast Runtime**: DB/JSON still available for performance  
+✅ **Separation of Concerns**: Content (Markdown) vs State (Config)  
+✅ **Can't Get Out of Sync**: Rebuild command ensures consistency  
+
+### Cross-Source Consistency Validation
+
+```bash
+# Verify consistency across all sources
+python enhanced_cli.py --verify-consistency
+```
 
 ### Features
 - Validates rule numbers, titles, categories, priorities, and content
@@ -125,12 +185,6 @@ The validator includes a comprehensive cross-source consistency checker that val
 - Text normalization to avoid false positives (whitespace, Unicode)
 - Quorum-based validation (requires ≥2 sources for mismatch detection)
 - Detailed per-rule difference reporting
-
-### Usage
-```bash
-# Verify consistency across all sources
-python enhanced_cli.py --verify-consistency
-```
 
 ### Output
 ```

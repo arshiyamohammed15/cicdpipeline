@@ -506,6 +506,10 @@ class EnhancedCLI:
                 self._show_config_info()
                 return True
             
+            elif getattr(args, 'rebuild_from_markdown', False):
+                self._rebuild_from_markdown()
+                return True
+            
         except Exception as e:
             error_result = self.handle_error(e, context={"operation": "backend_command"})
             safe_print(f"Error handling backend command: {error_result.get('user_message', str(e))}")
@@ -799,6 +803,261 @@ class EnhancedCLI:
                 
         except Exception as e:
             safe_print(f"[FAIL] Error getting configuration info: {e}")
+    
+    def _rebuild_from_markdown(self):
+        """
+        Rebuild SQLite and JSON databases from Markdown (single source of truth).
+        
+        This command:
+        1. Extracts all rules from ZeroUI2.0_Master_Constitution.md
+        2. Preserves current enabled/disabled states from config
+        3. Drops and recreates SQLite database
+        4. Drops and recreates JSON database
+        5. Restores preserved enabled/disabled states
+        6. Validates consistency across all sources
+        """
+        from config.constitution.rule_extractor import ConstitutionRuleExtractor
+        from config.constitution.database import ConstitutionRulesDB
+        import json
+        from pathlib import Path
+        from datetime import datetime
+        
+        safe_print("\n" + "="*70)
+        safe_print("REBUILDING FROM MARKDOWN (Single Source of Truth)")
+        safe_print("="*70)
+        
+        # Step 1: Extract rules from Markdown
+        safe_print("\n[1/6] Extracting rules from Markdown...")
+        extractor = ConstitutionRuleExtractor()
+        try:
+            rules = extractor.extract_all_rules()
+            safe_print(f"✓ Found {len(rules)} rules in Markdown")
+        except Exception as e:
+            safe_print(f"✗ Failed to extract rules: {e}")
+            return
+        
+        # Step 2: Preserve current enabled/disabled states
+        safe_print("\n[2/6] Preserving enabled/disabled states...")
+        preserved_states = {}
+        try:
+            config_path = Path("config/constitution_config.json")
+            if config_path.exists():
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config_data = json.load(f)
+                    rules_config = config_data.get("rules", {})
+                    for rule_num_str, rule_state in rules_config.items():
+                        rule_num = int(rule_num_str)
+                        preserved_states[rule_num] = {
+                            "enabled": rule_state.get("enabled", True),
+                            "disabled_reason": rule_state.get("disabled_reason"),
+                            "disabled_at": rule_state.get("disabled_at")
+                        }
+            safe_print(f"✓ Preserved states for {len(preserved_states)} rules")
+        except Exception as e:
+            safe_print(f"⚠ Warning: Could not preserve states: {e}")
+            preserved_states = {}
+        
+        # Step 3: Rebuild SQLite database
+        safe_print("\n[3/6] Rebuilding SQLite database...")
+        try:
+            db_path = Path("config/constitution_rules.db")
+            db = ConstitutionRulesDB(str(db_path))
+            
+            # Clear all existing data
+            with db.get_connection() as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM constitution_rules")
+                cursor.execute("DELETE FROM rule_configuration")
+                cursor.execute("DELETE FROM rule_categories")
+                conn.commit()
+            
+            # Insert all rules from Markdown
+            import json
+            with db.get_connection() as conn:
+                cursor = conn.cursor()
+                
+                for rule in rules:
+                    # Insert rule
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO constitution_rules (rule_number, title, category, priority, content, json_metadata)
+                        VALUES (?, ?, ?, ?, ?, ?)
+                    """, (
+                        rule['rule_number'],
+                        rule['title'],
+                        rule['category'],
+                        rule['priority'],
+                        rule['content'],
+                        json.dumps(rule)
+                    ))
+                    
+                    # Insert configuration with preserved enabled/disabled state
+                    enabled = 1 if preserved_states.get(rule['rule_number'], {}).get("enabled", True) else 0
+                    disabled_reason = preserved_states.get(rule['rule_number'], {}).get("disabled_reason")
+                    disabled_at = preserved_states.get(rule['rule_number'], {}).get("disabled_at")
+                    
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO rule_configuration (rule_number, enabled, config_data, disabled_reason, disabled_at)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, (
+                        rule['rule_number'],
+                        enabled,
+                        json.dumps({"default_enabled": True, "notes": ""}),
+                        disabled_reason,
+                        disabled_at
+                    ))
+                
+                # Insert categories
+                for category_name, category_info in extractor.categories.items():
+                    rule_count = len([r for r in rules if r['category'] == category_name])
+                    cursor.execute("""
+                        INSERT OR REPLACE INTO rule_categories (name, description, priority, rule_count)
+                        VALUES (?, ?, ?, ?)
+                    """, (
+                        category_name,
+                        category_info['description'],
+                        category_info['priority'],
+                        rule_count
+                    ))
+                
+                conn.commit()
+            
+            db.close()
+            safe_print(f"✓ Rebuilt SQLite database with {len(rules)} rules")
+        except Exception as e:
+            safe_print(f"✗ Failed to rebuild SQLite: {e}")
+            import traceback
+            safe_print(traceback.format_exc())
+            return
+        
+        # Step 4: Rebuild JSON database
+        safe_print("\n[4/6] Rebuilding JSON database...")
+        try:
+            json_path = Path("config/constitution_rules.json")
+            
+            # Create new JSON structure
+            json_data = {
+                "version": "2.0",
+                "database": "constitution_rules",
+                "last_updated": None,
+                "statistics": {
+                    "total_rules": len(rules),
+                    "enabled_rules": 0,
+                    "disabled_rules": 0,
+                    "categories": {}
+                },
+                "categories": {},
+                "rules": {}
+            }
+            
+            # Add categories
+            for category_name, category_info in extractor.categories.items():
+                json_data["categories"][category_name] = {
+                    "name": category_name,
+                    "description": category_info["description"],
+                    "priority": category_info["priority"],
+                    "rule_count": 0
+                }
+            
+            # Add rules
+            for rule in rules:
+                rule_num_str = str(rule["rule_number"])
+                enabled = preserved_states.get(rule["rule_number"], {}).get("enabled", True)
+                
+                json_data["rules"][rule_num_str] = {
+                    "rule_number": rule["rule_number"],
+                    "title": rule["title"],
+                    "category": rule["category"],
+                    "priority": rule["priority"],
+                    "content": rule["content"],
+                    "enabled": enabled,
+                    "config": {
+                        "default_enabled": True,
+                        "notes": "",
+                        "disabled_reason": preserved_states.get(rule["rule_number"], {}).get("disabled_reason"),
+                        "disabled_at": preserved_states.get(rule["rule_number"], {}).get("disabled_at")
+                    },
+                    "metadata": {
+                        "created_at": datetime.now().isoformat(),
+                        "updated_at": datetime.now().isoformat(),
+                        "usage_count": 0,
+                        "last_used": None,
+                        "source": "markdown_rebuild"
+                    }
+                }
+                
+                # Update category counts
+                if rule["category"] in json_data["categories"]:
+                    json_data["categories"][rule["category"]]["rule_count"] += 1
+                
+                # Update statistics
+                if enabled:
+                    json_data["statistics"]["enabled_rules"] += 1
+                else:
+                    json_data["statistics"]["disabled_rules"] += 1
+            
+            json_data["last_updated"] = datetime.now().isoformat()
+            
+            # Write JSON file
+            with open(json_path, 'w', encoding='utf-8') as f:
+                json.dump(json_data, f, indent=2, ensure_ascii=False)
+            
+            safe_print(f"✓ Rebuilt JSON database with {len(rules)} rules")
+        except Exception as e:
+            safe_print(f"✗ Failed to rebuild JSON: {e}")
+            return
+        
+        # Step 5: Update config file to remove duplicated rule content
+        safe_print("\n[5/6] Updating config file (runtime state only)...")
+        try:
+            config_path = Path("config/constitution_config.json")
+            if config_path.exists():
+                with open(config_path, 'r', encoding='utf-8') as f:
+                    config_data = json.load(f)
+                
+                # Keep only enabled/disabled states in config
+                # Remove any duplicated rule content that shouldn't be there
+                if "rules" in config_data:
+                    for rule_num_str, rule_state in config_data["rules"].items():
+                        # Keep only: enabled, disabled_reason, disabled_at, updated_at
+                        # Remove: title, content, category, priority (those belong in Markdown)
+                        keys_to_keep = ["enabled", "disabled_reason", "disabled_at", "updated_at", "config"]
+                        keys_to_remove = [k for k in list(rule_state.keys()) if k not in keys_to_keep]
+                        for key in keys_to_remove:
+                            del rule_state[key]
+                
+                config_data["last_updated"] = datetime.now().isoformat()
+                config_data["total_rules"] = len(rules)
+                
+                with open(config_path, 'w', encoding='utf-8') as f:
+                    json.dump(config_data, f, indent=2, ensure_ascii=False)
+            
+            safe_print("✓ Config file updated (runtime state only)")
+        except Exception as e:
+            safe_print(f"⚠ Warning: Could not update config: {e}")
+        
+        # Step 6: Verify consistency
+        safe_print("\n[6/6] Verifying consistency across all sources...")
+        try:
+            from config.constitution.sync_manager import ConstitutionSyncManager
+            sync_mgr = ConstitutionSyncManager()
+            result = sync_mgr.verify_consistency_across_sources()
+            
+            if result["consistent"]:
+                safe_print("✓ All sources are consistent")
+            else:
+                safe_print("⚠ Warning: Inconsistencies detected:")
+                safe_print(f"  Total differences: {result['summary'].get('differences_count', 0)}")
+        except Exception as e:
+            safe_print(f"⚠ Warning: Could not verify consistency: {e}")
+        
+        safe_print("\n" + "="*70)
+        safe_print("✓ REBUILD COMPLETE")
+        safe_print("="*70)
+        safe_print("\nMarkdown is now the single source of truth.")
+        safe_print("To modify rules:")
+        safe_print("  1. Edit ZeroUI2.0_Master_Constitution.md")
+        safe_print("  2. Run: python enhanced_cli.py --rebuild-from-markdown")
+        safe_print("  3. Commit changes to Git\n")
     
     def _list_all_rules(self, constitution_manager):
         """List all constitution rules with their status."""
@@ -1448,6 +1707,11 @@ Examples:
         "--config-info",
         action="store_true",
         help="Show configuration information and migration status"
+    )
+    backend_group.add_argument(
+        "--rebuild-from-markdown",
+        action="store_true",
+        help="Rebuild SQLite and JSON databases from Markdown (single source of truth)"
     )
     
     args = parser.parse_args()
