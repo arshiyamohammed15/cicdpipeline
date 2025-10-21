@@ -7,6 +7,7 @@ and optimized rule execution.
 """
 
 import ast
+import logging
 import json
 import re
 import os
@@ -72,6 +73,12 @@ class OptimizedConstitutionValidator:
         # Cache configuration
         self._max_cache_size = 1000
         self._cache_ttl = 3600  # 1 hour
+        
+        # Logger
+        self._logger = logging.getLogger(__name__)
+        
+        # Collect syntax error violations per file to surface in results
+        self._syntax_error_violations: Dict[str, List[Violation]] = {}
     
     def _initialize_rule_processors(self) -> Dict[str, Any]:
         """Initialize rule processors for each category."""
@@ -174,6 +181,8 @@ class OptimizedConstitutionValidator:
                 code_snippet=content.split('\n')[e.lineno - 1] if e.lineno else "",
                 fix_suggestion="Fix syntax errors before validation"
             )
+            # Stash violation to include in ValidationResult
+            self._syntax_error_violations.setdefault(file_path, []).append(violation)
             
             # Create a minimal AST for error handling
             tree = ast.parse("pass", filename=file_path)
@@ -210,7 +219,7 @@ class OptimizedConstitutionValidator:
         
         except Exception as e:
             # Log error but don't fail validation
-            print(f"Error processing category {category}: {e}")
+            self._logger.warning(f"Error processing category %s: %s", category, e)
         
         return violations
     
@@ -260,7 +269,7 @@ class OptimizedConstitutionValidator:
                             violations.append(violation)
             
             except Exception as e:
-                print(f"Error in pattern validation {pattern_name}: {e}")
+                self._logger.warning("Error in pattern validation %s: %s", pattern_name, e)
         
         return violations
     
@@ -307,7 +316,11 @@ class OptimizedConstitutionValidator:
                     category_violations = future.result()
                     violations.extend(category_violations)
                 except Exception as e:
-                    print(f"Error processing category {category}: {e}")
+                    self._logger.error("Error processing category %s: %s", category, e)
+        
+        # Include any syntax error violations detected during AST parsing
+        if file_path in self._syntax_error_violations:
+            violations.extend(self._syntax_error_violations.pop(file_path, []))
         
         rule_processing_time = time.time() - rule_start_time
         self._metrics["rule_processing_time"] += rule_processing_time
@@ -353,10 +366,10 @@ class OptimizedConstitutionValidator:
         python_files = list(directory.glob(pattern))
         
         if not python_files:
-            print(f"No Python files found in {directory_path}")
+            self._logger.info("No Python files found in %s", directory_path)
             return results
         
-        print(f"Validating {len(python_files)} Python files...")
+        self._logger.info("Validating %d Python files...", len(python_files))
         
         # Process files in parallel
         with ThreadPoolExecutor(max_workers=min(len(python_files), 16)) as executor:
@@ -372,9 +385,9 @@ class OptimizedConstitutionValidator:
                 try:
                     result = future.result()
                     results[str(file_path)] = result
-                    print(f"[OK] {file_path.name}: {result.compliance_score}% compliance")
+                    self._logger.info("[OK] %s: %s%% compliance", file_path.name, result.compliance_score)
                 except Exception as e:
-                    print(f"[ERROR] Error validating {file_path}: {e}")
+                    self._logger.error("[ERROR] Error validating %s: %s", file_path, e)
         
         return results
     

@@ -181,9 +181,8 @@ class ConstitutionBackendFactory:
             # Rule configurations
             "rules": {},
             
-            # Legacy fields for compatibility
+            # Legacy fields for compatibility (avoid hardcoded totals)
             "constitution_version": "2.0",
-            "total_rules": 149,
             "default_enabled": True
         }
     

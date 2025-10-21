@@ -7,6 +7,7 @@ all 215 constitution rules with configuration management.
 """
 
 import sqlite3
+import logging
 import json
 import os
 import threading
@@ -45,6 +46,9 @@ class ConstitutionRulesDB:
         self._jitter = self._get_jitter_from_config()
         self._timeout = self._get_timeout_from_config()
         self._init_database()
+        
+        # Logger
+        self._logger = logging.getLogger(__name__)
     
     def _init_database(self):
         """Initialize database schema and tables."""
@@ -71,10 +75,10 @@ class ConstitutionRulesDB:
             
             # Insert all 215 rules if database is empty
         except sqlite3.Error as e:
-            print(f"Database initialization error: {e}")
+            logging.getLogger(__name__).error("Database initialization error: %s", e)
             raise
         except Exception as e:
-            print(f"Unexpected error during database initialization: {e}")
+            logging.getLogger(__name__).error("Unexpected error during database initialization: %s", e)
             raise
     
     @contextmanager
@@ -92,7 +96,7 @@ class ConstitutionRulesDB:
                     return
                     
                 except sqlite3.Error as e:
-                    print(f"Database connection error (attempt {attempt + 1}): {e}")
+                    logging.getLogger(__name__).warning("Database connection error (attempt %d): %s", attempt + 1, e)
                     if attempt < self._max_retries - 1:
                         # Exponential backoff with jitter
                         delay = self._retry_delay * (2 ** attempt)
@@ -132,7 +136,7 @@ class ConstitutionRulesDB:
                 self.connection.close()
                 self.connection = None
         except Exception as e:
-            print(f"Error closing database connection: {e}")
+            logging.getLogger(__name__).warning("Error closing database connection: %s", e)
     
     def __enter__(self):
         """Context manager entry."""

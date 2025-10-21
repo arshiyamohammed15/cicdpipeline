@@ -119,6 +119,13 @@ class EnhancedCLI:
     
     def __init__(self):
         """Initialize the enhanced CLI."""
+        # Initialize structured logging early
+        try:
+            from config.constitution.logging_config import setup_logging
+            setup_logging("config", "INFO")
+        except Exception:
+            # Fallback: continue without constitution logging setup
+            pass
         self.config_manager = EnhancedConfigManager()
         self.validator = OptimizedConstitutionValidator()
         self.rule_selector = IntelligentRuleSelector(self.config_manager)
@@ -230,59 +237,44 @@ class EnhancedCLI:
     
     def validate_directory(self, directory_path: str, args) -> Dict[str, Any]:
         """
-        Validate a directory with intelligent rule selection.
-        
-        Args:
-            directory_path: Path to the directory to validate
-            args: Command line arguments
-            
-        Returns:
-            Validation results
+        Validate a directory by delegating to the optimized validator, then
+        enrich results with context and performance summaries.
         """
-        directory = Path(directory_path)
-        if not directory.exists():
-            raise FileNotFoundError(f"Directory not found: {directory_path}")
+        # Use engine's parallel directory validation for performance
+        engine_results = self.validator.validate_directory(directory_path, recursive=args.recursive)
         
-        # Find Python files
-        pattern = "**/*.py" if args.recursive else "*.py"
-        python_files = list(directory.glob(pattern))
-        
-        if not python_files:
-            safe_print(f"No Python files found in {directory_path}")
-            return {"files": [], "summary": {}}
-        
-        safe_print(f"Validating {len(python_files)} Python files...")
-        
-        results = {}
+        # Wrap engine results to include context/strategy per file
+        wrapped_results: Dict[str, Any] = {}
         total_violations = 0
-        total_files = 0
         
-        for file_path in python_files:
+        for file_path, result in engine_results.items():
             try:
-                file_result = self.validate_file(str(file_path), args)
-                if "result" in file_result:
-                    results[str(file_path)] = file_result
-                    total_violations += file_result["result"].total_violations
-                    total_files += 1
-                    
-                    # Print progress
-                    compliance = file_result["result"].compliance_score
-                    safe_print(f"[{compliance:5.1f}%] {file_path.name}: {file_result['result'].total_violations} violations")
+                # Reuse lightweight context analysis (no re-parse; use file content read by selector)
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                context = self.rule_selector.analyze_file_context(file_path, content)
+                strategy = self.rule_selector.get_validation_strategy(context)
+            except Exception:
+                # If context analysis fails, proceed without it
+                context = None
+                strategy = None
             
-            except Exception as e:
-                error_result = self.handle_error(e, context={"file_path": str(file_path), "operation": "validate_file"})
-                safe_print(f"[ERROR] {file_path}: {error_result.get('user_message', str(e))}")
+            wrapped_results[file_path] = {
+                "result": result,
+                "context": context,
+                "strategy": strategy
+            }
+            total_violations += result.total_violations
         
-        # Generate summary
         summary = {
-            "total_files": total_files,
+            "total_files": len(engine_results),
             "total_violations": total_violations,
-            "average_compliance": sum(r["result"].compliance_score for r in results.values()) / len(results) if results else 0,
+            "average_compliance": sum(r.compliance_score for r in engine_results.values()) / len(engine_results) if engine_results else 0,
             "performance_summary": self.performance_monitor.get_performance_summary()
         }
         
         return {
-            "files": results,
+            "files": wrapped_results,
             "summary": summary
         }
     
@@ -1579,6 +1571,11 @@ Examples:
         "--output", "-o",
         help="Output file for the report"
     )
+    parser.add_argument(
+        "--no-color",
+        action="store_true",
+        help="Disable ANSI colors in console output"
+    )
     
     # Processing options
     parser.add_argument(
@@ -1715,6 +1712,13 @@ Examples:
     )
     
     args = parser.parse_args()
+    
+    # Apply color setting to reporter and console outputs
+    try:
+        from validator.reporter import set_use_color
+        set_use_color(not args.no_color)
+    except Exception:
+        pass
     
     # Create and run CLI
     cli = EnhancedCLI()

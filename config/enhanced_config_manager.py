@@ -240,6 +240,9 @@ class EnhancedConfigManager:
             categories = self.get_all_categories()
             total_rules = 0
             
+            # Categories handled by procedural validators can skip pattern checks
+            procedural_categories = {"basic_work", "requirements", "privacy_security"}
+            
             for category in categories:
                 try:
                     rule_config = self.get_rule_config(category)
@@ -249,10 +252,11 @@ class EnhancedConfigManager:
                     if not rules:
                         results["issues"].append(f"Category '{category}' has no rules")
                     
-                    # Check for pattern configuration
-                    pattern_config = self.get_pattern_config(category)
-                    if not pattern_config.get("patterns"):
-                        results["issues"].append(f"Category '{category}' has no patterns")
+                    # Check for pattern configuration unless handled procedurally
+                    if category not in procedural_categories:
+                        pattern_config = self.get_pattern_config(category)
+                        if not pattern_config.get("patterns"):
+                            results["issues"].append(f"Category '{category}' has no patterns")
                 
                 except Exception as e:
                     results["issues"].append(f"Error loading category '{category}': {e}")

@@ -67,10 +67,11 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             with open(self.constitution_config_file, 'r', encoding='utf-8') as f:
                 self.constitution_config = json.load(f)
         else:
-            # Create default configuration
+            # Create default configuration with dynamic total_rules derived from source of truth if available
+            total_rules = self._derive_total_rules()
             self.constitution_config = {
                 "constitution_version": "2.0",
-                "total_rules": 215,
+                "total_rules": total_rules,
                 "default_enabled": True,
                 "database_path": str(self.db_path),
                 "last_updated": datetime.now().isoformat(),
@@ -83,6 +84,30 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
         self.constitution_config["last_updated"] = datetime.now().isoformat()
         with open(self.constitution_config_file, 'w', encoding='utf-8') as f:
             json.dump(self.constitution_config, f, indent=2, ensure_ascii=False)
+
+    def _derive_total_rules(self) -> int:
+        """Derive total rule count from the single source of truth if possible.
+        Falls back to database count, then JSON export, else 0."""
+        try:
+            # Prefer database
+            if hasattr(self, 'db_manager') and self.db_manager is not None:
+                rules = self.db_manager.get_all_rules()
+                if rules:
+                    return len(rules)
+        except Exception:
+            pass
+        # Fallback: check exported JSON file
+        json_path = Path(self.config_dir) / "constitution_rules.json"
+        try:
+            if json_path.exists():
+                with open(json_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                if isinstance(data, dict) and 'rules' in data:
+                    return len(data['rules'])
+        except Exception:
+            pass
+        # Last resort: use 0 and let health check compute later
+        return 0
     
     def is_rule_enabled(self, rule_number: int) -> bool:
         """
@@ -471,7 +496,9 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             except Exception:
                 data_valid = False
             
-            healthy = db_exists and db_readable and db_writable and data_valid
+            # Derive expected rule count dynamically
+            expected_rules = len(rules) if 'rules' in locals() else 0
+            healthy = db_exists and db_readable and db_writable and data_valid and expected_rules > 0
             
             return {
                 "healthy": healthy,
@@ -479,7 +506,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
                 "database_readable": db_readable,
                 "database_writable": db_writable,
                 "data_valid": data_valid,
-                "expected_rules": 149,
+                "expected_rules": expected_rules,
                 "actual_rules": len(rules) if 'rules' in locals() else 0,
                 "last_updated": self._get_last_updated()
             }

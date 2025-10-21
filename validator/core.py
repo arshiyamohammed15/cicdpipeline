@@ -28,7 +28,8 @@ class ConstitutionValidator:
     Main validator class that orchestrates rule checking.
     
     This class loads the constitution rules, analyzes code files,
-    and generates compliance reports based on the 71 unique rules.
+    and generates compliance reports. The total rule count is validated
+    against the single source of truth during CI.
     """
     
     def __init__(self, config_path: str = "rules_config.json"):

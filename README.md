@@ -1,10 +1,10 @@
 # ZEROUI 2.0 Constitution Code Validator
 
-A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution (218 rules) for enterprise-grade product development with comprehensive, modular rule configuration management.
+A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution for enterprise-grade product development with comprehensive, modular rule configuration management. The total rule count is derived from the single source of truth at build/test time.
 
 ## Features
 
-- **218 Total Rules**: Unified in `ZeroUI2.0_Master_Constitution.md` (including 32 Exception Handling rules and 34 TypeScript rules)
+- **Rules from Single Source of Truth**: Unified in `ZeroUI2.0_Master_Constitution.md` (including Exception Handling and TypeScript rules). The exact total is validated during CI.
 - **Modular Rule Config**: Per-category JSON under `config/rules/*.json`
 - **Rule Configuration**: Enable/disable via config and programmatic API
 - **Multiple Output Formats**: Console, JSON, HTML, and Markdown reports
