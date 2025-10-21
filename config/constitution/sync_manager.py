@@ -709,7 +709,8 @@ class ConstitutionSyncManager:
         try:
             # Load sources
             # 1) Markdown via extractor
-            md_extractor = ConstitutionRuleExtractor()
+            constitution_file_path = "docs/architecture/ZeroUI2.0_Master_Constitution.md"
+            md_extractor = ConstitutionRuleExtractor(constitution_file_path)
             md_rules_list = md_extractor.extract_all_rules()
             md_rules = {r["rule_number"]: r for r in md_rules_list}
 
