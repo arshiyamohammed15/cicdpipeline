@@ -1,6 +1,6 @@
- ZEROUI 2.0 CONSTITUTION 
+ ZEROUI 2.0 CONSTITUTION
 
-Note: This master file is the source of truth for 231 rules. Sections below include core Constitutions and appendices (Cursor constitutions and checklists). Keep rule numbering 1–231 consistent; appendices may extend guidance but do not change numbering.
+Note: This master file is the source of truth for 231 core rules plus appendix rules 232–252. Keep core numbering 1–231 consistent; appendices do not change core numbering.
 
  🎯 BASIC WORK RULES
 
@@ -29,13 +29,13 @@ Where we keep these records:
 
 "During Updates" means: The time from when you click "update" until the new version is completely ready and working properly.
 
-**Rule 7: Make Things Fast**
- 
+**Rule 8: Make Things Fast**
+
 - Programs should start faster than microwaving popcorn (under 2 seconds)
 - Buttons should respond instantly when clicked (under 0.1 seconds)
 - Don't use too much computer memory - like not hogging all the closet space
 
-**Rule 8: Be Honest About AI Decisions**
+**Rule 7: Be Honest About AI Decisions**
  When AI suggests something, it should say:
 - "I'm 85% sure this is right" (confidence level)
 - "I'm suggesting this because..." (explanation)
@@ -89,7 +89,7 @@ Where this information is stored:
  All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.
 
 **Rule 21: Process Data Locally First**
- 
+
 - Source code → Never leaves the company (like secret recipes)
 - Development data → Stays in company cloud (like work notes)
 - Anonymous patterns → Can go to our cloud (like "people prefer chocolate over vanilla" - no specific info)
@@ -98,13 +98,13 @@ Where this information is stored:
  Things should work right out of the box. Like a new video game - you can start playing immediately, and only set up complex controls later if you want.
 
 **Rule 23: Show Information Gradually**
- 
+
 - Level 1 → Basic status (like a traffic light - red/yellow/green)
 - Level 2 → Suggestions when relevant (like a friend saying "try this")
 - Level 3 → Full tools when asked (like opening a complete toolbox)
 
 **Rule 24: Organize Features Clearly**
- 
+
 18 Main Areas → Specific Features → Detailed Tools
 Like a school: School → Grade Levels → Classrooms → Subjects
 
@@ -541,22 +541,22 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 ```markdown
 ### PR Intent
-- **What changed:** 
-- **Why now (problem/constraint):** 
-- **Scope:** 
-- **Risk (Low/Med/High) + Mitigation:** 
-- **Rollout/rollback plan:** 
+- **What changed:**
+- **Why now (problem/constraint):**
+- **Scope:**
+- **Risk (Low/Med/High) + Mitigation:**
+- **Rollout/rollback plan:**
 
 ### AI Provenance
 - **generated_by:** Cursor
-- **model:** 
-- **prompt_hash:** 
-- **assumptions/limits:** 
+- **model:**
+- **prompt_hash:**
+- **assumptions/limits:**
 
 ### Security/Privacy Impact
-- **New data flows or scopes:** 
-- **AuthZ/AuthN changes:** 
-- **PII risk & mitigations:** 
+- **New data flows or scopes:**
+- **AuthZ/AuthN changes:**
+- **PII risk & mitigations:**
 
 ### Evidence
 - [ ] Logs/receipts attached (redacted)
@@ -600,10 +600,10 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 - Ask clarifying questions; avoid sarcasm or jargon.
 
 **Examples**  
-- *Blocker:* “Idempotency not enforced on retry; please add idempotencyKey and conflict handling.”  
-- *Major:* “API response adds a field without version bump; please update OpenAPI and mark as non‑breaking.”  
-- *Minor:* “Comment uses jargon (‘instantiate’). Please rewrite in simple English.”  
-- *Nit:* “Consider renaming var to match style: `maxBatch` → `MAX_BATCH`.”
+- *Blocker:* "Idempotency not enforced on retry; please add idempotencyKey and conflict handling."  
+- *Major:* "API response adds a field without version bump; please update OpenAPI and mark as non‑breaking."  
+- *Minor:* "Comment uses jargon ('instantiate'). Please rewrite in simple English."  
+- *Nit:* "Consider renaming var to match style: `maxBatch` → `MAX_BATCH`."
 
 ---
 
@@ -641,7 +641,7 @@ CURSOR_CONSTITUTION_CODING_STANDARDS — ZeroUI 2.0
 You are the code generator for a 100% AI-Native, enterprise-grade system built by interns on Windows (laptop-first). Your output MUST obey every constraint below. If any rule would be violated, STOP and return the matching ERROR code.
 
 0) SCOPE & SIZE
-- Work on ONE Sub-Feature at a time. Total change ≤ 50 LOC unless the user includes “LOC_OVERRIDE:<number>”.
+- Work on ONE Sub-Feature at a time. Total change ≤ 50 LOC unless the user includes "LOC_OVERRIDE:<number>".
 - Minimal diffs only; do not rewrite files unless required. Keep published contracts stable unless explicitly instructed.
 
 **Rule 86: PYTHON (FastAPI) QUALITY GATES**
@@ -803,10 +803,10 @@ CURSOR_CONSTITUTION_COMMENTS — ZeroUI 2.0
 You are the code generator. You must write and enforce **simple English comments** so any intern (8th‑grade reading level) can understand **WHAT** the code does and **WHY** it is written this way. If any rule would be broken, STOP and return a matching ERROR code (§7).
 
 0) SCOPE & SIZE
-- Work on ONE Sub‑Feature at a time. Total change ≤ 50 LOC unless the prompt has “LOC_OVERRIDE:<number>”.
+- Work on ONE Sub‑Feature at a time. Total change ≤ 50 LOC unless the prompt has "LOC_OVERRIDE:<number>".
 - Keep diffs minimal. Comments must be updated in the same diff as code changes.
 
-**Rule 216: READABILITY STANDARD (R008)**
+Readability Standard (R008)
 - Short sentences (≤ 20 words). Common words. Avoid jargon and passive voice.
 - If a hard word is needed, add "meaning: <plain words>".
 - Use bullets for steps. Explain decisions and trade‑offs, not line‑by‑line code.
@@ -986,7 +986,7 @@ CURSOR_CONSTITUTION_API_CONTRACTS — ZeroUI 2.0
 You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system (laptop‑first). Your job is to create/modify ONLY contract assets and their enforcement scaffolding. If any rule would be violated, STOP and return the matching ERROR code (see §12).
 
 0) SCOPE & SIZE
-- Work on ONE Sub‑Feature at a time (unit of work). Total change ≤ 50 LOC unless the prompt includes “LOC_OVERRIDE:<number>”.
+- Work on ONE Sub‑Feature at a time (unit of work). Total change ≤ 50 LOC unless the prompt includes "LOC_OVERRIDE:<number>".
 - Touch ONLY contract SoT and enforcement files unless explicitly asked to edit service code.
 
 **Rule 107: SOURCE OF TRUTH (PATHS YOU MAY TOUCH)**
@@ -1037,7 +1037,7 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - Example validation: JSON examples must validate against schemas for success & error cases.
 - Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.
 - Mock server: boot from spec for previews. SDKs generated on release (TS & Python) — no hand‑rolled DTOs.
-**SDK naming/versioning policy:** 
+**SDK naming/versioning policy:**
 - TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.
 - Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.
 
@@ -1121,7 +1121,7 @@ Output exactly ONE: Unified Diff | New File | JSON (see System §11). No extra p
 
 ---
 
-## 1) CURSOR_CONSTITUTION — paste into Cursor “System”
+## 1) CURSOR_CONSTITUTION — paste into Cursor "System"
 
 ```text
 CURSOR_CONSTITUTION — ZeroUI 2.0
@@ -1130,8 +1130,8 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 
 1) SCOPE & SIZE
 - Work on ONE Sub-Feature at a time (our unit of work).
-- Total change ≤ 50 LOC unless the prompt includes “LOC_OVERRIDE:<number>”.
-- Prefer minimal diffs; modify, don’t replace; keep external contracts stable unless explicitly asked.
+- Total change ≤ 50 LOC unless the prompt includes "LOC_OVERRIDE:<number>".
+- Prefer minimal diffs; modify, don't replace; keep external contracts stable unless explicitly asked.
 
 **Rule 119: PATHS & WRITES (ROOTED FILE SYSTEM)**
 - Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.
@@ -1165,7 +1165,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 
 **Rule 124: PYTHON & TYPESCRIPT QUALITY GATES**
 - Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).
-- TypeScript: eslint + prettier; tsconfig “strict”: true and exactOptionalPropertyTypes; no any in committed code.
+- TypeScript: eslint + prettier; tsconfig "strict": true and exactOptionalPropertyTypes; no any in committed code.
 - CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.
 
 **Rule 125: LLM / OLLAMA USAGE**
@@ -1289,7 +1289,7 @@ Operational ERROR:* codes in this Constitution are distinct from HTTP error code
 
 ---
 
-## 1) System Constitution — Logging (paste into Cursor “System”)
+## 1) System Constitution — Logging (paste into Cursor "System")
 
 ```text
 CURSOR_CONSTITUTION_LOGGING — ZeroUI 2.0
@@ -1506,7 +1506,7 @@ Output exactly ONE: Unified Diff | New File | JSON (System §11). Show log schem
 - Export only the last N minutes and rows that match the traceId or requestId.
 - Sort by traceId, then monotonic_hw_time_ms; group by service.
 - Include fields: event_id, caused_by, links[], job_id/queue_name/message_id/schedule_id, workflow_id/saga_id, component, phase, error.*, severity_code, user_impact.
-- Ask the LLM: “Build a timeline of the failure. Show the causal chain using event_id/caused_by/links. Rank root cause candidates.”
+- Ask the LLM: "Build a timeline of the failure. Show the causal chain using event_id/caused_by/links. Rank root cause candidates."
 
 
 
@@ -1586,10 +1586,13 @@ Design writes so they are safe to retry (keys/tokens/conflict handling). Documen
 
 ## Mapping, Messaging, and UX
 
-**Rule 164: HTTP/Exit Mapping**  
+**Rule 164: (Reserved)**  
+See **Rule 165: HTTP/Exit Mapping**.
+
+**Rule 165: HTTP/Exit Mapping**  
 Map canonical codes to standard outcomes (e.g., 400/401/403/404/409/422/429/5xx). No "200 with error body".
 
-**Rule 165: Message Catalog**  
+**Rule 166: Message Catalog**  
 Keep a single catalog that maps each code → one friendly, human sentence. Translate here, not in code.
 
 **Rule 166: UI/IDE Behavior**  
@@ -1902,51 +1905,60 @@ When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. 
 
 🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared).
 
-**Rule 219: Name Casing & Charset (Kebab-Case Only)**
+**Rule 216: Name Casing & Charset (Kebab-Case Only)**
 All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.
 
-**Rule 220: No Source Code/PII in Stores**
+**Rule 217: No Source Code/PII in Stores**
 Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.
 
-**Rule 221: No Secrets/Private Keys on Disk**
+**Rule 218: No Secrets/Private Keys on Disk**
 Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.
 
-**Rule 222: JSONL Receipts (Newline-Delimited, Signed, Append-Only)**
+**Rule 219: JSONL Receipts (Newline-Delimited, Signed, Append-Only)**
 Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).
 
-**Rule 223: Time Partitions Use UTC (dt=YYYY-MM-DD)**
+**Rule 220: Time Partitions Use UTC (dt=YYYY-MM-DD)**
 All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.
 
-**Rule 224: Policy Snapshots Must Be Signed**
+**Rule 221: Policy Snapshots Must Be Signed**
 All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.
 
-**Rule 225: Dual Storage Compliance (JSONL Authority, DB Mirrors)**
+**Rule 222: Dual Storage Compliance (JSONL Authority, DB Mirrors)**
 JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.
 
-**Rule 226: Path Resolution via ZU_ROOT Environment Variable**
+**Rule 223: Path Resolution via ZU_ROOT Environment Variable**
 All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.
 
-**Rule 227: Receipts Validation (Signed, Append-Only, No Code/PII)**
+**Rule 224: Receipts Validation (Signed, Append-Only, No Code/PII)**
 When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode "a", never "w"; never truncate or seek.
 
-**Rule 228: Evidence Watermarks Per-Consumer Structure**
+**Rule 225: Evidence Watermarks Per-Consumer Structure**
 Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.
 
-**Rule 229: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**
+**Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**
 When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:
 - IDE: `agent/tmp/UNCLASSIFIED__<slug>`
 - Tenant/Product: `ingest/staging/unclassified/<slug>`
 Resolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.
 
-**Rule 230: Observability/Adapters Use dt= Partitions**
+**Rule 227: Observability/Adapters Use dt= Partitions**
 Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):
 - `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`
 - `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`
 - `reporting/marts/dt=YYYY-MM-DD/`
 - `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`
 
-**Rule 231: Laptop Receipts Use YYYY/MM Partitioning**
+**Rule 228: Laptop Receipts Use YYYY/MM Partitioning**
 Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.
+
+**Rule 229: (Deprecated)**  
+See **Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**.
+
+**Rule 230: (Deprecated)**  
+See **Rule 227: Observability/Adapters Use dt= Partitions**.
+
+**Rule 231: (Deprecated)**  
+See **Rule 228: Laptop Receipts Use YYYY/MM Partitioning**.
 
 ---
 
@@ -2025,3 +2037,133 @@ function processUser(user: User) {
 }
 ```
 
+# GSMD — Cursor Enforcement Rules (Appendix)
+
+**Rule 232: GSMD Source of Truth (SOT) Paths**  
+Policy snapshots live only under:
+```
+gsmd/modules/M{NN}/{slug}/v{major}/snapshot.json
+```
+Treat these files as the **single source of truth** for governance decisions. Do not place snapshots anywhere else.
+
+**Rule 233: Read-Only Policy Assets**  
+You MUST NOT edit or overwrite existing files under `gsmd/**`. To change policy, create a **new version folder** (e.g., `v2/`) and add a new `snapshot.json`. Keep older versions intact.
+
+**Rule 234: Versioning Is Append-Only**  
+Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.
+
+**Rule 235: Snapshot Identity & Integrity**  
+Every snapshot MUST satisfy:
+- `snapshot_id` pattern: `SNAP.M\d{2}.[a-z0-9_.]+.(v|V)\d+`
+- `module_id` pattern: `M\d{2}`
+- `snapshot_hash` equal to **sha256** of file contents (hex) prefixed with `sha256:`
+- `signature` and `kid` present
+- `effective_from` ISO-8601  
+Use `tools/gsmd-check.ps1` to verify. Fail CI if any check fails.
+
+**Rule 236: Valid Evaluation Points Only**  
+Allowed values are exactly:
+```
+pre-commit | pre-merge | pre-deploy | post-deploy
+```
+Code and receipts must use only these values.
+
+**Rule 237: Decision Receipts — Required Fields**  
+Every GSMD decision MUST emit a signed receipt containing at minimum:
+```
+decision, rationale, policy_snapshot_hash, policy_version_ids[],
+evaluation_point, actor_id, repo_id, timestamps.hw, signature
+```
+Values for `policy_snapshot_hash` and `policy_version_ids[]` MUST come from the snapshot actually used.
+
+**Rule 238: Receipt Discipline (Append-Only, Signed)**  
+Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.
+
+**Rule 239: Tenant Overrides (Strict Contract)**  
+Overrides MUST include:
+```
+tenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],
+waiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],
+ttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},
+kid, signature
+```
+Overrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.
+
+**Rule 240: Override Storage & Lifecycle**  
+Store overrides **outside** `gsmd/` (runtime/config store). Log issuance and expiry via receipts. When `ttl` elapses, the override is invalid without re-approval.
+
+**Rule 241: Decisions & Modes (Status Pill)**  
+Implement decisions using the canonical set only:
+```
+pass | warn | soft_block | hard_block
+```
+Honor snapshot `messages.status_pill.*` and `rollout.default_mode`. Do not invent new statuses.
+
+**Rule 242: Rollout & Cohorts**  
+If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.
+
+**Rule 243: Privacy & Redaction**  
+Apply any rules present under `privacy.redactions` **before** logging or emitting receipts. Never log raw PII or secrets. Log **hashes/sizes** instead of raw payloads.
+
+**Rule 244: Evidence & Required Receipts**  
+If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist **before** returning a terminal decision.
+
+**Rule 245: Tests Fixtures Must Match Policy**  
+Where `tests.fixtures[]` are present, unit/integration tests MUST prove the declared outcomes (`pass | warn | soft_block | hard_block`). Do not merge if observed outcomes differ from fixtures.
+
+**Rule 246: Mandatory CI Gates**  
+Every PR touching policy or enforcement MUST run:
+```
+./tools/gsmd-check.ps1 -Root ./gsmd -VerboseOutput
+```
+Block merge on any failure.
+
+**Rule 247: Release Manifests (Merkle Root)**  
+Before publishing a policy release, generate a manifest and (optionally) sign it:
+```
+./tools/manifest-build.ps1   -Root ./gsmd -OutDir ./gsmd/releases -Kid "<KID>"
+./tools/manifest-verify.ps1  -Root . -Manifest <path\\to\\manifest.json>
+```
+Block release if file hashes or Merkle root mismatch.
+
+**Rule 248: Runtime Snapshot Binding**  
+At decision time, the engine MUST bind to the exact snapshot referenced by the receipt (`policy_version_ids[]` and `policy_snapshot_hash`). Never apply a different snapshot than the one recorded.
+
+**Rule 249: Cursor Behavior for GSMD**  
+Cursor MUST NOT propose edits under `gsmd/**`. It MUST:
+- Read the relevant snapshot fields first
+- Surface `snapshot_id`, `policy_version_ids[]`, `policy_snapshot_hash`
+- Propose **new version** files for policy changes (no in-place edits)
+- Suggest running the CI gates above
+
+**Rule 250: Return Contracts for GSMD Artifacts**  
+For policy work, output only one of:
+- **New File** → for adding `.../v{new}/snapshot.json` (full file content)
+- **JSON Artifact** → for overrides/receipts (valid JSON only)
+- **Unified Diff** → never used to mutate existing snapshots; use only for non-policy code/config  
+Violations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.
+
+**Rule 251: Stop Conditions → GSMD Error Codes**  
+- Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`  
+- Attempt to modify existing snapshot ............... `ERROR:GSMD_MUTATION_DENIED`  
+- Hash mismatch vs `snapshot_hash` .................. `ERROR:GSMD_HASH_MISMATCH`  
+- Missing/invalid signature or `kid` ................ `ERROR:GSMD_SIGNATURE_MISSING`  
+- Invalid evaluation_point .......................... `ERROR:GSMD_EVALPOINT_INVALID`  
+- Receipt missing required fields ................... `ERROR:GSMD_RECEIPT_FIELDS_MISSING`  
+- Override missing ttl/approvals/signature .......... `ERROR:GSMD_OVERRIDE_INVALID`  
+- Approvals < 2 on override ......................... `ERROR:GSMD_APPROVALS_INSUFFICIENT`  
+- Manifest verify (hash/Merkle) fail ................ `ERROR:GSMD_MANIFEST_INVALID`  
+- Decision not in allowed set ....................... `ERROR:GSMD_DECISION_INVALID`  
+- Privacy redaction not applied ..................... `ERROR:GSMD_PRIVACY_DRIFT`  
+- Tests/fixtures absent for declared policy ......... `ERROR:GSMD_TESTS_MISSING`  
+- Return contract not honored ....................... `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`
+
+**Rule 252: Self-Audit Before Output (GSMD)**  
+- [ ] Not editing existing `gsmd/**`; new version only when needed  
+- [ ] Snapshot patterns/fields valid; `snapshot_hash` recomputes  
+- [ ] Evaluation point valid; decision ∈ {pass,warn,soft_block,hard_block}  
+- [ ] Receipt fields complete and signed; values sourced from snapshot  
+- [ ] Overrides time-boxed (ttl) with ≥2 approvals; signed  
+- [ ] CI gates added (`gsmd-check`, manifest build/verify)  
+- [ ] Privacy redactions applied; no PII/secrets in logs or receipts  
+- [ ] Output matches allowed return contract

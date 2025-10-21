@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GSMD Decision Receipt (v1 minimal)",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "warn",
+        "soft_block",
+        "hard_block"
+      ]
+    },
+    "rationale": {
+      "type": "string"
+    },
+    "policy_snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "policy_version_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evaluation_point": {
+      "type": "string",
+      "enum": [
+        "pre-commit",
+        "pre-merge",
+        "pre-deploy",
+        "post-deploy"
+      ]
+    },
+    "actor_id": {
+      "type": "string"
+    },
+    "repo_id": {
+      "type": "string"
+    },
+    "timestamps": {
+      "type": "object",
+      "properties": {
+        "hw": {
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "hw"
+      ],
+      "additionalProperties": true
+    },
+    "signature": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "decision",
+    "rationale",
+    "policy_snapshot_hash",
+    "policy_version_ids",
+    "evaluation_point",
+    "actor_id",
+    "repo_id",
+    "timestamps",
+    "signature"
+  ]
+}

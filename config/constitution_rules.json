@@ -1,10 +1,10 @@
 {
   "version": "2.0",
   "database": "constitution_rules",
-  "last_updated": "2025-10-20T18:29:27.829070",
+  "last_updated": "2025-10-21T08:05:35.383472",
   "statistics": {
-    "total_rules": 231,
-    "enabled_rules": 231,
+    "total_rules": 252,
+    "enabled_rules": 252,
     "disabled_rules": 0,
     "categories": {}
   },
@@ -103,8 +103,8 @@
         "disabled_at": "2025-10-17T11:25:44.243267"
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -124,8 +124,8 @@
         "disabled_at": "2025-10-17T11:25:51.782962"
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -145,8 +145,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -166,8 +166,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -187,8 +187,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -208,8 +208,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -217,27 +217,6 @@
     },
     "7": {
       "rule_number": 7,
-      "title": "Make Things Fast",
-      "category": "basic_work",
-      "priority": "critical",
-      "content": "- Programs should start faster than microwaving popcorn (under 2 seconds)\n- Buttons should respond instantly when clicked (under 0.1 seconds)\n- Don't use too much computer memory - like not hogging all the closet space",
-      "enabled": 1,
-      "config": {
-        "default_enabled": true,
-        "notes": "",
-        "disabled_reason": null,
-        "disabled_at": null
-      },
-      "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
-        "usage_count": 0,
-        "last_used": null,
-        "source": "markdown_rebuild"
-      }
-    },
-    "8": {
-      "rule_number": 8,
       "title": "Be Honest About AI Decisions",
       "category": "basic_work",
       "priority": "critical",
@@ -250,8 +229,29 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "8": {
+      "rule_number": 8,
+      "title": "Make Things Fast",
+      "category": "basic_work",
+      "priority": "critical",
+      "content": "- Programs should start faster than microwaving popcorn (under 2 seconds)\n- Buttons should respond instantly when clicked (under 0.1 seconds)\n- Don't use too much computer memory - like not hogging all the closet space",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -271,8 +271,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -292,8 +292,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -313,8 +313,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -334,8 +334,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -355,8 +355,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -376,8 +376,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -397,8 +397,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -418,8 +418,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -439,8 +439,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -460,8 +460,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -481,8 +481,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -502,8 +502,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -523,8 +523,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -544,8 +544,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -565,8 +565,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -586,8 +586,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -607,8 +607,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -628,8 +628,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -649,8 +649,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -670,8 +670,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -691,8 +691,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -712,8 +712,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -733,8 +733,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -754,8 +754,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -775,8 +775,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -796,8 +796,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -817,8 +817,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -838,8 +838,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -859,8 +859,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -880,8 +880,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -901,8 +901,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -922,8 +922,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -943,8 +943,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -964,8 +964,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -985,8 +985,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1006,8 +1006,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1027,8 +1027,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1048,8 +1048,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1069,8 +1069,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1090,8 +1090,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1111,8 +1111,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1132,8 +1132,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1153,8 +1153,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1174,8 +1174,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1195,8 +1195,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1216,8 +1216,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1237,8 +1237,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1258,8 +1258,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1279,8 +1279,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1300,8 +1300,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1321,8 +1321,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1342,8 +1342,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1363,8 +1363,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1384,8 +1384,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1405,8 +1405,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1426,8 +1426,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1447,8 +1447,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1468,8 +1468,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1489,8 +1489,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1510,8 +1510,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1531,8 +1531,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1552,8 +1552,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1573,8 +1573,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1594,8 +1594,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1615,8 +1615,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1636,8 +1636,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1657,8 +1657,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1678,8 +1678,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1699,8 +1699,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1720,8 +1720,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1741,8 +1741,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1762,8 +1762,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1783,8 +1783,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1804,8 +1804,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1825,8 +1825,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1837,7 +1837,7 @@
       "title": "Review Comment Style (simple English)",
       "category": "code_review",
       "priority": "critical",
-      "content": "- Be kind. Focus on the code, not the person.\n- Explain **why** you suggest a change. Use short sentences.\n- Offer a **concrete diff** when possible.\n- Mark severity: **Blocker/Major/Minor/Nit**.\n- Ask clarifying questions; avoid sarcasm or jargon.\n**Examples**  \n- *Blocker:* “Idempotency not enforced on retry; please add idempotencyKey and conflict handling.”  \n- *Major:* “API response adds a field without version bump; please update OpenAPI and mark as non‑breaking.”  \n- *Minor:* “Comment uses jargon (‘instantiate’). Please rewrite in simple English.”  \n- *Nit:* “Consider renaming var to match style: `maxBatch` → `MAX_BATCH`.”",
+      "content": "- Be kind. Focus on the code, not the person.\n- Explain **why** you suggest a change. Use short sentences.\n- Offer a **concrete diff** when possible.\n- Mark severity: **Blocker/Major/Minor/Nit**.\n- Ask clarifying questions; avoid sarcasm or jargon.\n**Examples**  \n- *Blocker:* \"Idempotency not enforced on retry; please add idempotencyKey and conflict handling.\"  \n- *Major:* \"API response adds a field without version bump; please update OpenAPI and mark as non‑breaking.\"  \n- *Minor:* \"Comment uses jargon ('instantiate'). Please rewrite in simple English.\"  \n- *Nit:* \"Consider renaming var to match style: `maxBatch` → `MAX_BATCH`.\"",
       "enabled": 1,
       "config": {
         "default_enabled": true,
@@ -1846,8 +1846,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1867,8 +1867,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1888,8 +1888,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1909,8 +1909,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1930,8 +1930,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.381394",
+        "updated_at": "2025-10-21T08:05:35.381394",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1951,8 +1951,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1972,8 +1972,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -1993,8 +1993,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2014,8 +2014,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2035,8 +2035,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2056,8 +2056,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.825626",
-        "updated_at": "2025-10-20T18:29:27.825626",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2077,8 +2077,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2098,8 +2098,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2119,8 +2119,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2140,8 +2140,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2161,8 +2161,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2182,8 +2182,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2203,8 +2203,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2224,8 +2224,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2245,8 +2245,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2266,8 +2266,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2287,8 +2287,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2308,8 +2308,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2329,8 +2329,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2350,8 +2350,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2371,8 +2371,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2392,8 +2392,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2413,8 +2413,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2434,8 +2434,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2446,7 +2446,7 @@
       "title": "TOOLING & CI GATES (AUTOMATE DISCIPLINE)",
       "category": "api_contracts",
       "priority": "critical",
-      "content": "- Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).\n- OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.\n- Example validation: JSON examples must validate against schemas for success & error cases.\n- Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.\n- Mock server: boot from spec for previews. SDKs generated on release (TS & Python) — no hand‑rolled DTOs.\n**SDK naming/versioning policy:** \n- TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.\n- Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.",
+      "content": "- Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).\n- OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.\n- Example validation: JSON examples must validate against schemas for success & error cases.\n- Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.\n- Mock server: boot from spec for previews. SDKs generated on release (TS & Python) — no hand‑rolled DTOs.\n**SDK naming/versioning policy:**\n- TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.\n- Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.",
       "enabled": 1,
       "config": {
         "default_enabled": true,
@@ -2455,8 +2455,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2476,8 +2476,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2497,8 +2497,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2518,8 +2518,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2539,8 +2539,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2560,8 +2560,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2581,8 +2581,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2602,8 +2602,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2623,8 +2623,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2644,8 +2644,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2665,8 +2665,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2677,7 +2677,7 @@
       "title": "PYTHON & TYPESCRIPT QUALITY GATES",
       "category": "api_contracts",
       "priority": "critical",
-      "content": "- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).\n- TypeScript: eslint + prettier; tsconfig “strict”: true and exactOptionalPropertyTypes; no any in committed code.\n- CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.",
+      "content": "- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).\n- TypeScript: eslint + prettier; tsconfig \"strict\": true and exactOptionalPropertyTypes; no any in committed code.\n- CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.",
       "enabled": 1,
       "config": {
         "default_enabled": true,
@@ -2686,8 +2686,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2707,8 +2707,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2728,8 +2728,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2749,8 +2749,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2770,8 +2770,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2791,8 +2791,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2812,8 +2812,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2833,8 +2833,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2854,8 +2854,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2875,8 +2875,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2896,8 +2896,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2917,8 +2917,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2938,8 +2938,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2959,8 +2959,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -2980,8 +2980,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3001,8 +3001,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3022,8 +3022,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3043,8 +3043,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3064,8 +3064,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3085,8 +3085,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3106,8 +3106,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3127,8 +3127,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3148,8 +3148,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3169,8 +3169,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3190,8 +3190,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3202,7 +3202,7 @@
       "title": "LLM Export Tips (when asking an LLM to analyze failures)",
       "category": "logging",
       "priority": "critical",
-      "content": "- Export only the last N minutes and rows that match the traceId or requestId.\n- Sort by traceId, then monotonic_hw_time_ms; group by service.\n- Include fields: event_id, caused_by, links[], job_id/queue_name/message_id/schedule_id, workflow_id/saga_id, component, phase, error.*, severity_code, user_impact.\n- Ask the LLM: “Build a timeline of the failure. Show the causal chain using event_id/caused_by/links. Rank root cause candidates.”\n# ZeroUI 2.0 Exception Handling Rules (Enhanced)\n🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes.",
+      "content": "- Export only the last N minutes and rows that match the traceId or requestId.\n- Sort by traceId, then monotonic_hw_time_ms; group by service.\n- Include fields: event_id, caused_by, links[], job_id/queue_name/message_id/schedule_id, workflow_id/saga_id, component, phase, error.*, severity_code, user_impact.\n- Ask the LLM: \"Build a timeline of the failure. Show the causal chain using event_id/caused_by/links. Rank root cause candidates.\"\n# ZeroUI 2.0 Exception Handling Rules (Enhanced)\n🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes.",
       "enabled": 1,
       "config": {
         "default_enabled": true,
@@ -3211,8 +3211,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3232,8 +3232,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3253,8 +3253,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3274,8 +3274,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3295,8 +3295,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3316,8 +3316,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3337,8 +3337,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3358,8 +3358,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3379,8 +3379,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3400,8 +3400,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3421,8 +3421,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3442,8 +3442,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3463,8 +3463,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3484,8 +3484,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3505,8 +3505,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3514,6 +3514,27 @@
     },
     "164": {
       "rule_number": 164,
+      "title": "(Reserved)",
+      "category": "exception_handling",
+      "priority": "critical",
+      "content": "See **Rule 165: HTTP/Exit Mapping**.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "165": {
+      "rule_number": 165,
       "title": "HTTP/Exit Mapping",
       "category": "exception_handling",
       "priority": "critical",
@@ -3526,15 +3547,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "165": {
-      "rule_number": 165,
+    "166": {
+      "rule_number": 166,
       "title": "Message Catalog",
       "category": "exception_handling",
       "priority": "critical",
@@ -3547,29 +3568,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
-        "usage_count": 0,
-        "last_used": null,
-        "source": "markdown_rebuild"
-      }
-    },
-    "166": {
-      "rule_number": 166,
-      "title": "UI/IDE Behavior",
-      "category": "exception_handling",
-      "priority": "critical",
-      "content": "Keep UI responsive. Show short, actionable options: Retry / Cancel / Open Logs. No stack traces to users.",
-      "enabled": 1,
-      "config": {
-        "default_enabled": true,
-        "notes": "",
-        "disabled_reason": null,
-        "disabled_at": null
-      },
-      "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3589,8 +3589,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3610,8 +3610,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3631,8 +3631,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3652,8 +3652,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3673,8 +3673,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3694,8 +3694,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3715,8 +3715,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3736,8 +3736,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3757,8 +3757,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3778,8 +3778,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3799,8 +3799,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3820,8 +3820,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3841,8 +3841,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3862,8 +3862,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3883,8 +3883,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3904,8 +3904,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3925,8 +3925,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3946,8 +3946,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3967,8 +3967,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -3988,8 +3988,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4009,8 +4009,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4030,8 +4030,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4051,8 +4051,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4072,8 +4072,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4093,8 +4093,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4114,8 +4114,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4135,8 +4135,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4156,8 +4156,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4177,8 +4177,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4198,8 +4198,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4219,8 +4219,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4240,8 +4240,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4261,8 +4261,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4282,8 +4282,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4303,8 +4303,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4324,8 +4324,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4345,8 +4345,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4366,8 +4366,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4387,8 +4387,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4408,8 +4408,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4429,8 +4429,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4450,8 +4450,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4471,8 +4471,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4492,8 +4492,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4513,8 +4513,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4534,8 +4534,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4555,8 +4555,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4576,8 +4576,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4597,8 +4597,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4606,10 +4606,10 @@
     },
     "216": {
       "rule_number": 216,
-      "title": "READABILITY STANDARD (R008)",
+      "title": "Name Casing & Charset (Kebab-Case Only)",
       "category": "documentation",
       "priority": "critical",
-      "content": "- Short sentences (≤ 20 words). Common words. Avoid jargon and passive voice.\n- If a hard word is needed, add \"meaning: <plain words>\".\n- Use bullets for steps. Explain decisions and trade‑offs, not line‑by‑line code.\n- **Measurable Criteria**: Flesch-Kincaid Grade Level ≤ 8.0, Average Sentence Length ≤ 15 words\n- **Auto-Detection**: Comments with complex words (≥3 syllables) or passive voice trigger warnings\n- **Examples**:\n  ✓ \"Check if user is logged in\" (Grade 3.2)\n  ✗ \"Verify authentication status of the current user session\" (Grade 8.7)",
+      "content": "All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.",
       "enabled": 1,
       "config": {
         "default_enabled": true,
@@ -4618,8 +4618,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4639,8 +4639,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4660,8 +4660,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4669,69 +4669,6 @@
     },
     "219": {
       "rule_number": 219,
-      "title": "Name Casing & Charset (Kebab-Case Only)",
-      "category": "other",
-      "priority": "important",
-      "content": "All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.",
-      "enabled": 1,
-      "config": {
-        "default_enabled": true,
-        "notes": "",
-        "disabled_reason": null,
-        "disabled_at": null
-      },
-      "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
-        "usage_count": 0,
-        "last_used": null,
-        "source": "markdown_rebuild"
-      }
-    },
-    "220": {
-      "rule_number": 220,
-      "title": "No Source Code/PII in Stores",
-      "category": "other",
-      "priority": "important",
-      "content": "Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.",
-      "enabled": 1,
-      "config": {
-        "default_enabled": true,
-        "notes": "",
-        "disabled_reason": null,
-        "disabled_at": null
-      },
-      "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
-        "usage_count": 0,
-        "last_used": null,
-        "source": "markdown_rebuild"
-      }
-    },
-    "221": {
-      "rule_number": 221,
-      "title": "No Secrets/Private Keys on Disk",
-      "category": "other",
-      "priority": "important",
-      "content": "Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.",
-      "enabled": 1,
-      "config": {
-        "default_enabled": true,
-        "notes": "",
-        "disabled_reason": null,
-        "disabled_at": null
-      },
-      "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
-        "usage_count": 0,
-        "last_used": null,
-        "source": "markdown_rebuild"
-      }
-    },
-    "222": {
-      "rule_number": 222,
       "title": "JSONL Receipts (Newline-Delimited, Signed, Append-Only)",
       "category": "other",
       "priority": "important",
@@ -4744,15 +4681,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "223": {
-      "rule_number": 223,
+    "220": {
+      "rule_number": 220,
       "title": "Time Partitions Use UTC (dt=YYYY-MM-DD)",
       "category": "other",
       "priority": "important",
@@ -4765,15 +4702,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "224": {
-      "rule_number": 224,
+    "221": {
+      "rule_number": 221,
       "title": "Policy Snapshots Must Be Signed",
       "category": "other",
       "priority": "important",
@@ -4786,15 +4723,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "225": {
-      "rule_number": 225,
+    "222": {
+      "rule_number": 222,
       "title": "Dual Storage Compliance (JSONL Authority, DB Mirrors)",
       "category": "other",
       "priority": "important",
@@ -4807,15 +4744,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "226": {
-      "rule_number": 226,
+    "223": {
+      "rule_number": 223,
       "title": "Path Resolution via ZU_ROOT Environment Variable",
       "category": "other",
       "priority": "important",
@@ -4828,15 +4765,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "227": {
-      "rule_number": 227,
+    "224": {
+      "rule_number": 224,
       "title": "Receipts Validation (Signed, Append-Only, No Code/PII)",
       "category": "other",
       "priority": "important",
@@ -4849,15 +4786,15 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.382434",
+        "updated_at": "2025-10-21T08:05:35.382434",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
       }
     },
-    "228": {
-      "rule_number": 228,
+    "225": {
+      "rule_number": 225,
       "title": "Evidence Watermarks Per-Consumer Structure",
       "category": "other",
       "priority": "important",
@@ -4870,8 +4807,71 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "226": {
+      "rule_number": 226,
+      "title": "RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)",
+      "category": "other",
+      "priority": "important",
+      "content": "When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:\n- IDE: `agent/tmp/UNCLASSIFIED__<slug>`\n- Tenant/Product: `ingest/staging/unclassified/<slug>`\nResolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "227": {
+      "rule_number": 227,
+      "title": "Observability/Adapters Use dt= Partitions",
+      "category": "other",
+      "priority": "important",
+      "content": "Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):\n- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`\n- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`\n- `reporting/marts/dt=YYYY-MM-DD/`\n- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "228": {
+      "rule_number": 228,
+      "title": "Laptop Receipts Use YYYY/MM Partitioning",
+      "category": "other",
+      "priority": "important",
+      "content": "Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4879,11 +4879,11 @@
     },
     "229": {
       "rule_number": 229,
-      "title": "RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)",
+      "title": "(Deprecated)",
       "category": "other",
       "priority": "important",
-      "content": "When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:\n- IDE: `agent/tmp/UNCLASSIFIED__<slug>`\n- Tenant/Product: `ingest/staging/unclassified/<slug>`\nResolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.",
-      "enabled": true,
+      "content": "See **Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**.",
+      "enabled": 1,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4891,8 +4891,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4900,11 +4900,11 @@
     },
     "230": {
       "rule_number": 230,
-      "title": "Observability/Adapters Use dt= Partitions",
+      "title": "(Deprecated)",
       "category": "other",
       "priority": "important",
-      "content": "Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):\n- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`\n- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`\n- `reporting/marts/dt=YYYY-MM-DD/`\n- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`",
-      "enabled": true,
+      "content": "See **Rule 227: Observability/Adapters Use dt= Partitions**.",
+      "enabled": 1,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4912,8 +4912,8 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"
@@ -4921,11 +4921,11 @@
     },
     "231": {
       "rule_number": 231,
-      "title": "Laptop Receipts Use YYYY/MM Partitioning",
+      "title": "(Deprecated)",
       "category": "other",
       "priority": "important",
-      "content": "Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.",
-      "enabled": true,
+      "content": "See **Rule 228: Laptop Receipts Use YYYY/MM Partitioning**.",
+      "enabled": 1,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4933,8 +4933,449 @@
         "disabled_at": null
       },
       "metadata": {
-        "created_at": "2025-10-20T18:29:27.829070",
-        "updated_at": "2025-10-20T18:29:27.829070",
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "232": {
+      "rule_number": 232,
+      "title": "GSMD Source of Truth (SOT) Paths",
+      "category": "other",
+      "priority": "important",
+      "content": "Policy snapshots live only under:\n```\ngsmd/modules/M{NN}/{slug}/v{major}/snapshot.json\n```\nTreat these files as the **single source of truth** for governance decisions. Do not place snapshots anywhere else.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "233": {
+      "rule_number": 233,
+      "title": "Read-Only Policy Assets",
+      "category": "other",
+      "priority": "important",
+      "content": "You MUST NOT edit or overwrite existing files under `gsmd/**`. To change policy, create a **new version folder** (e.g., `v2/`) and add a new `snapshot.json`. Keep older versions intact.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "234": {
+      "rule_number": 234,
+      "title": "Versioning Is Append-Only",
+      "category": "other",
+      "priority": "important",
+      "content": "Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "235": {
+      "rule_number": 235,
+      "title": "Snapshot Identity & Integrity",
+      "category": "other",
+      "priority": "important",
+      "content": "Every snapshot MUST satisfy:\n- `snapshot_id` pattern: `SNAP.M\\d{2}.[a-z0-9_.]+.(v|V)\\d+`\n- `module_id` pattern: `M\\d{2}`\n- `snapshot_hash` equal to **sha256** of file contents (hex) prefixed with `sha256:`\n- `signature` and `kid` present\n- `effective_from` ISO-8601  \nUse `tools/gsmd-check.ps1` to verify. Fail CI if any check fails.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "236": {
+      "rule_number": 236,
+      "title": "Valid Evaluation Points Only",
+      "category": "other",
+      "priority": "important",
+      "content": "Allowed values are exactly:\n```\npre-commit | pre-merge | pre-deploy | post-deploy\n```\nCode and receipts must use only these values.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "237": {
+      "rule_number": 237,
+      "title": "Decision Receipts — Required Fields",
+      "category": "other",
+      "priority": "important",
+      "content": "Every GSMD decision MUST emit a signed receipt containing at minimum:\n```\ndecision, rationale, policy_snapshot_hash, policy_version_ids[],\nevaluation_point, actor_id, repo_id, timestamps.hw, signature\n```\nValues for `policy_snapshot_hash` and `policy_version_ids[]` MUST come from the snapshot actually used.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "238": {
+      "rule_number": 238,
+      "title": "Receipt Discipline (Append-Only, Signed)",
+      "category": "other",
+      "priority": "important",
+      "content": "Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "239": {
+      "rule_number": 239,
+      "title": "Tenant Overrides (Strict Contract)",
+      "category": "other",
+      "priority": "important",
+      "content": "Overrides MUST include:\n```\ntenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],\nwaiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],\nttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},\nkid, signature\n```\nOverrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "240": {
+      "rule_number": 240,
+      "title": "Override Storage & Lifecycle",
+      "category": "other",
+      "priority": "important",
+      "content": "Store overrides **outside** `gsmd/` (runtime/config store). Log issuance and expiry via receipts. When `ttl` elapses, the override is invalid without re-approval.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "241": {
+      "rule_number": 241,
+      "title": "Decisions & Modes (Status Pill)",
+      "category": "other",
+      "priority": "important",
+      "content": "Implement decisions using the canonical set only:\n```\npass | warn | soft_block | hard_block\n```\nHonor snapshot `messages.status_pill.*` and `rollout.default_mode`. Do not invent new statuses.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "242": {
+      "rule_number": 242,
+      "title": "Rollout & Cohorts",
+      "category": "other",
+      "priority": "important",
+      "content": "If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "243": {
+      "rule_number": 243,
+      "title": "Privacy & Redaction",
+      "category": "other",
+      "priority": "important",
+      "content": "Apply any rules present under `privacy.redactions` **before** logging or emitting receipts. Never log raw PII or secrets. Log **hashes/sizes** instead of raw payloads.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "244": {
+      "rule_number": 244,
+      "title": "Evidence & Required Receipts",
+      "category": "other",
+      "priority": "important",
+      "content": "If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist **before** returning a terminal decision.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "245": {
+      "rule_number": 245,
+      "title": "Tests Fixtures Must Match Policy",
+      "category": "other",
+      "priority": "important",
+      "content": "Where `tests.fixtures[]` are present, unit/integration tests MUST prove the declared outcomes (`pass | warn | soft_block | hard_block`). Do not merge if observed outcomes differ from fixtures.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "246": {
+      "rule_number": 246,
+      "title": "Mandatory CI Gates",
+      "category": "other",
+      "priority": "important",
+      "content": "Every PR touching policy or enforcement MUST run:\n```\n./tools/gsmd-check.ps1 -Root ./gsmd -VerboseOutput\n```\nBlock merge on any failure.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "247": {
+      "rule_number": 247,
+      "title": "Release Manifests (Merkle Root)",
+      "category": "other",
+      "priority": "important",
+      "content": "Before publishing a policy release, generate a manifest and (optionally) sign it:\n```\n./tools/manifest-build.ps1   -Root ./gsmd -OutDir ./gsmd/releases -Kid \"<KID>\"\n./tools/manifest-verify.ps1  -Root . -Manifest <path\\\\to\\\\manifest.json>\n```\nBlock release if file hashes or Merkle root mismatch.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "248": {
+      "rule_number": 248,
+      "title": "Runtime Snapshot Binding",
+      "category": "other",
+      "priority": "important",
+      "content": "At decision time, the engine MUST bind to the exact snapshot referenced by the receipt (`policy_version_ids[]` and `policy_snapshot_hash`). Never apply a different snapshot than the one recorded.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "249": {
+      "rule_number": 249,
+      "title": "Cursor Behavior for GSMD",
+      "category": "other",
+      "priority": "important",
+      "content": "Cursor MUST NOT propose edits under `gsmd/**`. It MUST:\n- Read the relevant snapshot fields first\n- Surface `snapshot_id`, `policy_version_ids[]`, `policy_snapshot_hash`\n- Propose **new version** files for policy changes (no in-place edits)\n- Suggest running the CI gates above",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "250": {
+      "rule_number": 250,
+      "title": "Return Contracts for GSMD Artifacts",
+      "category": "other",
+      "priority": "important",
+      "content": "For policy work, output only one of:\n- **New File** → for adding `.../v{new}/snapshot.json` (full file content)\n- **JSON Artifact** → for overrides/receipts (valid JSON only)\n- **Unified Diff** → never used to mutate existing snapshots; use only for non-policy code/config  \nViolations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "251": {
+      "rule_number": 251,
+      "title": "Stop Conditions → GSMD Error Codes",
+      "category": "other",
+      "priority": "important",
+      "content": "- Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`  \n- Attempt to modify existing snapshot ............... `ERROR:GSMD_MUTATION_DENIED`  \n- Hash mismatch vs `snapshot_hash` .................. `ERROR:GSMD_HASH_MISMATCH`  \n- Missing/invalid signature or `kid` ................ `ERROR:GSMD_SIGNATURE_MISSING`  \n- Invalid evaluation_point .......................... `ERROR:GSMD_EVALPOINT_INVALID`  \n- Receipt missing required fields ................... `ERROR:GSMD_RECEIPT_FIELDS_MISSING`  \n- Override missing ttl/approvals/signature .......... `ERROR:GSMD_OVERRIDE_INVALID`  \n- Approvals < 2 on override ......................... `ERROR:GSMD_APPROVALS_INSUFFICIENT`  \n- Manifest verify (hash/Merkle) fail ................ `ERROR:GSMD_MANIFEST_INVALID`  \n- Decision not in allowed set ....................... `ERROR:GSMD_DECISION_INVALID`  \n- Privacy redaction not applied ..................... `ERROR:GSMD_PRIVACY_DRIFT`  \n- Tests/fixtures absent for declared policy ......... `ERROR:GSMD_TESTS_MISSING`  \n- Return contract not honored ....................... `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "markdown_rebuild"
+      }
+    },
+    "252": {
+      "rule_number": 252,
+      "title": "Self-Audit Before Output (GSMD)",
+      "category": "other",
+      "priority": "important",
+      "content": "- [ ] Not editing existing `gsmd/**`; new version only when needed  \n- [ ] Snapshot patterns/fields valid; `snapshot_hash` recomputes  \n- [ ] Evaluation point valid; decision ∈ {pass,warn,soft_block,hard_block}  \n- [ ] Receipt fields complete and signed; values sourced from snapshot  \n- [ ] Overrides time-boxed (ttl) with ≥2 approvals; signed  \n- [ ] CI gates added (`gsmd-check`, manifest build/verify)  \n- [ ] Privacy redactions applied; no PII/secrets in logs or receipts  \n- [ ] Output matches allowed return contract",
+      "enabled": 1,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null
+      },
+      "metadata": {
+        "created_at": "2025-10-21T08:05:35.383472",
+        "updated_at": "2025-10-21T08:05:35.383472",
         "usage_count": 0,
         "last_used": null,
         "source": "markdown_rebuild"

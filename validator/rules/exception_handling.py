@@ -463,9 +463,11 @@ class ExceptionHandlingValidator:
         """R165: Map canonical codes to standard outcomes (400/401/403/404/409/422/429/5xx)."""
         violations = []
         
-        # Check for proper HTTP status code mapping
+        # Check for proper HTTP status code mapping (restrict to 3-digit codes and avoid greedy capture)
         status_patterns = [
-            r'status_code\s*=\s*(\d+)', r'return.*(\d+)', r'\.status\s*=\s*(\d+)'
+            r'\bstatus_code\s*=\s*(\d{3})\b',
+            r'\breturn\s+(\d{3})\b',
+            r'\.status\s*=\s*(\d{3})\b'
         ]
         
         for pattern in status_patterns:
@@ -487,13 +489,15 @@ class ExceptionHandlingValidator:
         """R166: Keep a single catalog that maps each code → one friendly, human sentence."""
         violations = []
         
-        # Check for hardcoded error messages
-        hardcoded_patterns = [
-            r'["\'].*error.*["\']', r'["\'].*failed.*["\']', r'["\'].*invalid.*["\']'
-        ]
-        
-        for pattern in hardcoded_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
+        # Check for hardcoded error messages (exclude uppercase catalog codes like VALIDATION_ERROR)
+        string_literal_pattern = r'["\']([^"\']+)["\']'
+        for m in re.finditer(string_literal_pattern, content):
+            literal = m.group(1)
+            # Skip catalog-like constants (e.g., VALIDATION_ERROR)
+            if re.fullmatch(r'[A-Z0-9_]+', literal):
+                continue
+            l = literal.lower()
+            if 'error' in l or 'failed' in l or 'invalid' in l:
                 violations.append(Violation(
                     rule_id="R166",
                     file_path=file_path,

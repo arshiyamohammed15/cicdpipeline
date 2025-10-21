@@ -104,6 +104,84 @@ except Exception as e:
         self.assertEqual(violations[0].rule_id, 'R152')
         self.assertEqual(violations[0].severity, Severity.WARNING)
     
+    # Rule 154: Friendly & detailed
+    def test_rule_154_technical_error_message_violation(self):
+        """Test Rule 154: Technical error text should be flagged."""
+        content = '''
+raise Exception("Traceback: Error at line 10")
+'''
+        violations = self.validator._validate_friendly_detailed(None, self.test_file_path, content)
+        self.assertGreater(len(violations), 0)
+        self.assertEqual(violations[0].rule_id, 'R154')
+        self.assertEqual(violations[0].severity, Severity.INFO)
+    
+    def test_rule_154_user_friendly_message_valid(self):
+        """Test Rule 154: User-friendly message should not be flagged."""
+        content = '''
+user_message = "We couldn't complete that. Please retry or contact support."
+'''
+        violations = self.validator._validate_friendly_detailed(None, self.test_file_path, content)
+        self.assertEqual(len(violations), 0)
+    
+    # Rule 156: Add context on wrapping
+    def test_rule_156_wrapping_without_context_violation(self):
+        """Test Rule 156: Wrapping without context keywords."""
+        content = '''
+raise ProcessingError("Failed to process")
+'''
+        violations = self.validator._validate_add_context(None, self.test_file_path, content)
+        self.assertGreater(len(violations), 0)
+        self.assertEqual(violations[0].rule_id, 'R156')
+        self.assertEqual(violations[0].severity, Severity.WARNING)
+    
+    def test_rule_156_wrapping_with_context_valid(self):
+        """Test Rule 156: Wrapping with context keywords is valid."""
+        content = '''
+raise ProcessingError("operation=upload id=123 step=write context=user")
+'''
+        violations = self.validator._validate_add_context(None, self.test_file_path, content)
+        self.assertEqual(len(violations), 0)
+    
+    # Rule 165: HTTP/Exit code mapping
+    def test_rule_165_nonstandard_status_violation(self):
+        """Test Rule 165: Non-standard HTTP status should be flagged."""
+        content = '''
+response.status = 299
+'''
+        violations = self.validator._validate_http_exit_mapping(None, self.test_file_path, content)
+        self.assertGreater(len(violations), 0)
+        self.assertEqual(violations[0].rule_id, 'R165')
+        self.assertEqual(violations[0].severity, Severity.WARNING)
+    
+    def test_rule_165_standard_status_valid(self):
+        """Test Rule 165: Standard HTTP statuses are accepted."""
+        content = '''
+status_code = 404
+return 200
+'''
+        violations = self.validator._validate_http_exit_mapping(None, self.test_file_path, content)
+        self.assertEqual(len(violations), 0)
+    
+    # Rule 166: Message catalog
+    def test_rule_166_hardcoded_error_message_violation(self):
+        """Test Rule 166: Hardcoded error strings flagged."""
+        content = '''
+logger.error("Invalid user input")
+'''
+        violations = self.validator._validate_message_catalog(None, self.test_file_path, content)
+        self.assertGreater(len(violations), 0)
+        self.assertEqual(violations[0].rule_id, 'R166')
+        self.assertEqual(violations[0].severity, Severity.INFO)
+    
+    def test_rule_166_catalog_message_valid(self):
+        """Test Rule 166: Simulated message catalog usage is valid."""
+        content = '''
+messages = {"VALIDATION_ERROR": "Please check your input"}
+logger.error(messages["VALIDATION_ERROR"])
+'''
+        violations = self.validator._validate_message_catalog(None, self.test_file_path, content)
+        self.assertEqual(len(violations), 0)
+    
     # Rule 153: Central error handler
     def test_rule_153_central_handler_valid(self):
         """Test Rule 153: Valid central error handler."""
