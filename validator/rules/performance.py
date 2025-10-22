@@ -55,7 +55,8 @@ class PerformanceValidator:
             if isinstance(node, ast.ImportFrom):
                 if node.module == '*':
                     violations.append(Violation(
-                        rule_number=8,
+                rule_id="rule_8",
+                rule_number=8,
                         rule_name="Make Things Fast",
                         severity=Severity.WARNING,
                         message="Wildcard import detected - can impact startup time",
@@ -88,7 +89,8 @@ class PerformanceValidator:
                 for blocking_op in self.blocking_operations:
                     if blocking_op in func_name:
                         violations.append(Violation(
-                            rule_number=67,
+                rule_id="rule_67",
+                rule_number=67,
                             rule_name="Respect People's Time",
                             severity=Severity.WARNING,
                             message=f"Blocking operation detected: {func_name}",
@@ -121,7 +123,8 @@ class PerformanceValidator:
                 for child in ast.walk(node):
                     if child != node and isinstance(child, (ast.For, ast.While)):
                         violations.append(Violation(
-                            rule_number=8,
+                rule_id="rule_8",
+                rule_number=8,
                             rule_name="Make Things Fast",
                             severity=Severity.WARNING,
                             message="Nested loops detected - consider optimization for O(n²) complexity",
@@ -153,7 +156,8 @@ class PerformanceValidator:
                 # Check for list comprehensions that might create large lists
                 if isinstance(node, ast.ListComp):
                     violations.append(Violation(
-                        rule_number=8,
+                rule_id="rule_8",
+                rule_number=8,
                         rule_name="Make Things Fast",
                         severity=Severity.INFO,
                         message="List comprehension detected - ensure it doesn't create excessive memory usage",
@@ -191,7 +195,8 @@ class PerformanceValidator:
                 column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
                 
                 violations.append(Violation(
-                    rule_number=67,
+                rule_id="rule_67",
+                rule_number=67,
                     rule_name="Respect People's Time",
                     severity=Severity.WARNING,
                     message="Inefficient string operation detected",
@@ -226,7 +231,8 @@ class PerformanceValidator:
                         func_name = self._get_function_name(child.func)
                         if func_name in ['list.index', 'list.remove', 'list.insert']:
                             violations.append(Violation(
-                                rule_number=8,
+                rule_id="rule_8",
+                rule_number=8,
                                 rule_name="Make Things Fast",
                                 severity=Severity.WARNING,
                                 message=f"O(n²) operation detected: {func_name} in loop",

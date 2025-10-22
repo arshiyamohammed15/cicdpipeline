@@ -1,0 +1,25 @@
+{
+  "category": "privacy_security",
+  "patterns": {
+    "hardcoded_credentials": {
+      "regex": "(?i)(password|api_key|secret|token)\\s*=\\s*[\"'][^\"']+[\"']",
+      "severity": "error",
+      "message": "Hardcoded credentials detected - use environment variables or secure config"
+    },
+    "personal_data": {
+      "regex": "(?i)(ssn|social_security|credit_card|phone|email)\\s*=\\s*[\"'][^\"']+[\"']",
+      "severity": "error",
+      "message": "Personal data detected - ensure proper data classification and encryption"
+    },
+    "unencrypted_data": {
+      "keywords": ["plaintext", "unencrypted", "raw_data"],
+      "severity": "warning",
+      "message": "Consider encryption for sensitive data handling"
+    },
+    "data_quality": {
+      "keywords": ["input", "validation", "sanitization", "strip", "lower", "upper"],
+      "severity": "warning",
+      "message": "Data quality validation required - check input validation and sanitization"
+    }
+  }
+}

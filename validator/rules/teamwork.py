@@ -47,6 +47,7 @@ class TeamworkValidator:
         has_early_validation = any(pattern in content.lower() for pattern in self.early_warning_patterns)
         if not has_early_validation:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.WARNING,
@@ -84,6 +85,7 @@ class TeamworkValidator:
         
         if functions_without_validation:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.WARNING,
@@ -99,6 +101,7 @@ class TeamworkValidator:
         has_fail_fast = any(pattern in content.lower() for pattern in self.fail_fast_patterns)
         if not has_fail_fast:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
@@ -114,6 +117,7 @@ class TeamworkValidator:
         has_preconditions = any(pattern in content.lower() for pattern in ['precondition', 'prerequisite', 'require'])
         if not has_preconditions:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
@@ -129,6 +133,7 @@ class TeamworkValidator:
         has_warnings = any(pattern in content.lower() for pattern in ['warn', 'warning', 'alert', 'notice'])
         if not has_warnings:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
@@ -144,6 +149,7 @@ class TeamworkValidator:
         has_boundary_checks = any(pattern in content.lower() for pattern in ['boundary', 'limit', 'range', 'min', 'max'])
         if not has_boundary_checks:
             violations.append(Violation(
+                rule_id="rule_58",
                 rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
@@ -177,6 +183,7 @@ class TeamworkValidator:
         
         if not has_collaboration:
             violations.append(Violation(
+                rule_id="rule_52",
                 rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
@@ -194,6 +201,7 @@ class TeamworkValidator:
         
         if not has_knowledge_sharing:
             violations.append(Violation(
+                rule_id="rule_52",
                 rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
@@ -211,6 +219,7 @@ class TeamworkValidator:
         
         if has_friction:
             violations.append(Violation(
+                rule_id="rule_52",
                 rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.WARNING,
@@ -228,6 +237,7 @@ class TeamworkValidator:
         
         if not has_communication:
             violations.append(Violation(
+                rule_id="rule_52",
                 rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
@@ -261,6 +271,7 @@ class TeamworkValidator:
         
         if not has_automation:
             violations.append(Violation(
+                rule_id="rule_54",
                 rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
@@ -278,6 +289,7 @@ class TeamworkValidator:
         
         if not has_workflow:
             violations.append(Violation(
+                rule_id="rule_54",
                 rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
@@ -295,6 +307,7 @@ class TeamworkValidator:
         
         if has_friction:
             violations.append(Violation(
+                rule_id="rule_54",
                 rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.WARNING,
@@ -312,6 +325,7 @@ class TeamworkValidator:
         
         if not has_quick_wins:
             violations.append(Violation(
+                rule_id="rule_54",
                 rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
@@ -345,6 +359,7 @@ class TeamworkValidator:
         
         if not has_automation:
             violations.append(Violation(
+                rule_id="rule_60",
                 rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
@@ -362,6 +377,7 @@ class TeamworkValidator:
         
         if not has_oversight:
             violations.append(Violation(
+                rule_id="rule_60",
                 rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
@@ -379,6 +395,7 @@ class TeamworkValidator:
         
         if has_over_automation:
             violations.append(Violation(
+                rule_id="rule_60",
                 rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.WARNING,
@@ -396,6 +413,7 @@ class TeamworkValidator:
         
         if not has_boundaries:
             violations.append(Violation(
+                rule_id="rule_60",
                 rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
@@ -429,6 +447,7 @@ class TeamworkValidator:
         
         if not has_knowledge_sharing:
             violations.append(Violation(
+                rule_id="rule_53",
                 rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
@@ -446,6 +465,7 @@ class TeamworkValidator:
         
         if not has_collaboration:
             violations.append(Violation(
+                rule_id="rule_53",
                 rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
@@ -463,6 +483,7 @@ class TeamworkValidator:
         
         if not has_communication:
             violations.append(Violation(
+                rule_id="rule_53",
                 rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
@@ -480,6 +501,7 @@ class TeamworkValidator:
         
         if not has_transparency:
             violations.append(Violation(
+                rule_id="rule_53",
                 rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
@@ -513,6 +535,7 @@ class TeamworkValidator:
         
         if not has_confidence:
             violations.append(Violation(
+                rule_id="rule_55",
                 rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
@@ -530,6 +553,7 @@ class TeamworkValidator:
         
         if has_fear:
             violations.append(Violation(
+                rule_id="rule_55",
                 rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.WARNING,
@@ -547,6 +571,7 @@ class TeamworkValidator:
         
         if not has_positive:
             violations.append(Violation(
+                rule_id="rule_55",
                 rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
@@ -564,6 +589,7 @@ class TeamworkValidator:
         
         if not has_support:
             violations.append(Violation(
+                rule_id="rule_55",
                 rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
@@ -597,6 +623,7 @@ class TeamworkValidator:
         
         if not has_learning:
             violations.append(Violation(
+                rule_id="rule_56",
                 rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
@@ -614,6 +641,7 @@ class TeamworkValidator:
         
         if not has_feedback:
             violations.append(Violation(
+                rule_id="rule_56",
                 rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
@@ -631,6 +659,7 @@ class TeamworkValidator:
         
         if not has_iteration:
             violations.append(Violation(
+                rule_id="rule_56",
                 rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
@@ -648,6 +677,7 @@ class TeamworkValidator:
         
         if not has_change:
             violations.append(Violation(
+                rule_id="rule_56",
                 rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
@@ -681,6 +711,7 @@ class TeamworkValidator:
         
         if not has_measurement:
             violations.append(Violation(
+                rule_id="rule_57",
                 rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
@@ -698,6 +729,7 @@ class TeamworkValidator:
         
         if not has_analytics:
             violations.append(Violation(
+                rule_id="rule_57",
                 rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
@@ -715,6 +747,7 @@ class TeamworkValidator:
         
         if not has_reporting:
             violations.append(Violation(
+                rule_id="rule_57",
                 rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
@@ -732,6 +765,7 @@ class TeamworkValidator:
         
         if not has_goals:
             violations.append(Violation(
+                rule_id="rule_57",
                 rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
@@ -794,6 +828,7 @@ class TeamworkValidator:
         
         if not has_expert_patterns:
             violations.append(Violation(
+                rule_id="rule_61",
                 rule_number=61,
                 rule_name="Learn from Experts",
                 severity=Severity.INFO,
@@ -827,6 +862,7 @@ class TeamworkValidator:
         
         if not has_timing:
             violations.append(Violation(
+                rule_id="rule_62",
                 rule_number=62,
                 rule_name="Show the Right Information at the Right Time",
                 severity=Severity.INFO,
@@ -860,6 +896,7 @@ class TeamworkValidator:
         
         if not has_dependencies:
             violations.append(Violation(
+                rule_id="rule_63",
                 rule_number=63,
                 rule_name="Make Dependencies Visible",
                 severity=Severity.INFO,
@@ -893,6 +930,7 @@ class TeamworkValidator:
         
         if not has_consistency:
             violations.append(Violation(
+                rule_id="rule_64",
                 rule_number=64,
                 rule_name="Be Predictable and Consistent",
                 severity=Severity.INFO,
@@ -926,6 +964,7 @@ class TeamworkValidator:
         
         if not has_preservation:
             violations.append(Violation(
+                rule_id="rule_65",
                 rule_number=65,
                 rule_name="Never Lose People's Work",
                 severity=Severity.INFO,
@@ -959,6 +998,7 @@ class TeamworkValidator:
         
         if not has_design:
             violations.append(Violation(
+                rule_id="rule_66",
                 rule_number=66,
                 rule_name="Make it Beautiful and Pleasant",
                 severity=Severity.INFO,
@@ -992,6 +1032,7 @@ class TeamworkValidator:
         
         if not has_improvement:
             violations.append(Violation(
+                rule_id="rule_70",
                 rule_number=70,
                 rule_name="Encourage Better Ways of Working",
                 severity=Severity.INFO,
@@ -1025,6 +1066,7 @@ class TeamworkValidator:
         
         if not has_skill_adaptation:
             violations.append(Violation(
+                rule_id="rule_71",
                 rule_number=71,
                 rule_name="Adapt to Different Skill Levels",
                 severity=Severity.INFO,
@@ -1058,6 +1100,7 @@ class TeamworkValidator:
         
         if not has_helpful:
             violations.append(Violation(
+                rule_id="rule_72",
                 rule_number=72,
                 rule_name="Be Helpful, Not Annoying",
                 severity=Severity.INFO,
@@ -1091,6 +1134,7 @@ class TeamworkValidator:
         
         if not has_value:
             violations.append(Violation(
+                rule_id="rule_74",
                 rule_number=74,
                 rule_name="Demonstrate Clear Value",
                 severity=Severity.INFO,
@@ -1124,6 +1168,7 @@ class TeamworkValidator:
         
         if not has_growth:
             violations.append(Violation(
+                rule_id="rule_75",
                 rule_number=75,
                 rule_name="Grow with the Customer",
                 severity=Severity.INFO,
@@ -1157,6 +1202,7 @@ class TeamworkValidator:
         
         if not has_magic:
             violations.append(Violation(
+                rule_id="rule_76",
                 rule_number=76,
                 rule_name="Create Magic Moments",
                 severity=Severity.INFO,
@@ -1190,6 +1236,7 @@ class TeamworkValidator:
         
         if not has_friction_removal:
             violations.append(Violation(
+                rule_id="rule_77",
                 rule_number=77,
                 rule_name="Remove Friction Everywhere",
                 severity=Severity.INFO,

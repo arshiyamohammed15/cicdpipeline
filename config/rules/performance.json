@@ -1,0 +1,9 @@
+{
+  "category": "performance",
+  "priority": "important",
+  "description": "Performance optimization",
+  "rules": [
+    8,
+    67
+  ]
+}

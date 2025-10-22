@@ -56,7 +56,8 @@ class QualityValidator:
                 
                 if line_count > self.function_length_threshold:
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function exceeds recommended length ({line_count} > {self.function_length_threshold} lines)",
@@ -88,7 +89,8 @@ class QualityValidator:
                 
                 if line_count > self.class_length_threshold:
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Class exceeds recommended length ({line_count} > {self.class_length_threshold} lines)",
@@ -120,7 +122,8 @@ class QualityValidator:
                 
                 if parameter_count > self.parameter_threshold:
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function has too many parameters ({parameter_count} > {self.parameter_threshold})",
@@ -152,7 +155,8 @@ class QualityValidator:
                 
                 if complexity > self.complexity_threshold:
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function has high cyclomatic complexity ({complexity} > {self.complexity_threshold})",
@@ -182,7 +186,8 @@ class QualityValidator:
             if isinstance(node, ast.FunctionDef):
                 if not re.match(self.naming_patterns['function'], node.name):
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function name doesn't follow convention: {node.name}",
@@ -196,7 +201,8 @@ class QualityValidator:
             elif isinstance(node, ast.ClassDef):
                 if not re.match(self.naming_patterns['class'], node.name):
                     violations.append(Violation(
-                        rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Class name doesn't follow convention: {node.name}",
@@ -212,7 +218,8 @@ class QualityValidator:
                     if isinstance(target, ast.Name):
                         if not re.match(self.naming_patterns['variable'], target.id):
                             violations.append(Violation(
-                                rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                                 rule_name="Write Clean, Readable Code",
                                 severity=Severity.WARNING,
                                 message=f"Variable name doesn't follow convention: {target.id}",
@@ -241,6 +248,7 @@ class QualityValidator:
         # Check for module docstring
         if not ast.get_docstring(tree):
             violations.append(Violation(
+                rule_id="rule_15",
                 rule_number=15,
                 rule_name="Write Good Instructions",
                 severity=Severity.INFO,
@@ -257,7 +265,8 @@ class QualityValidator:
             if isinstance(node, ast.FunctionDef):
                 if not ast.get_docstring(node):
                     violations.append(Violation(
-                        rule_number=15,
+                rule_id="rule_15",
+                rule_number=15,
                         rule_name="Write Good Instructions",
                         severity=Severity.WARNING,
                         message=f"Function missing docstring: {node.name}",
@@ -273,7 +282,8 @@ class QualityValidator:
             if isinstance(node, ast.ClassDef):
                 if not ast.get_docstring(node):
                     violations.append(Violation(
-                        rule_number=15,
+                rule_id="rule_15",
+                rule_number=15,
                         rule_name="Write Good Instructions",
                         severity=Severity.WARNING,
                         message=f"Class missing docstring: {node.name}",
@@ -312,7 +322,8 @@ class QualityValidator:
                             if isinstance(node.value, (ast.Str, ast.Constant)):
                                 value = node.value.s if hasattr(node.value, 's') else str(node.value.value)
                                 violations.append(Violation(
-                                    rule_number=18,
+                rule_id="rule_18",
+                rule_number=18,
                                     rule_name="Make Things Repeatable",
                                     severity=Severity.WARNING,
                                     message=f"Hardcoded configuration value: {var_name} = {value}",
@@ -355,7 +366,8 @@ class QualityValidator:
             
             if first_other_line < last_import_line:
                 violations.append(Violation(
-                    rule_number=68,
+                rule_id="rule_68",
+                rule_number=68,
                     rule_name="Write Clean, Readable Code",
                     severity=Severity.INFO,
                     message="Imports should be at the top of the file",

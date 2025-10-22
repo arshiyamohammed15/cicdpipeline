@@ -1,0 +1,6 @@
+{
+  "category": "privacy_security",
+  "priority": "critical",
+  "description": "Privacy and security principles",
+  "rules": [3, 11, 12, 27, 36]
+}

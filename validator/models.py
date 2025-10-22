@@ -19,15 +19,18 @@ class Severity(Enum):
 @dataclass
 class Violation:
     """Represents a rule violation found in code."""
-    rule_number: int
-    rule_name: str
+    rule_id: str
     severity: Severity
     message: str
     file_path: str
     line_number: int
-    column_number: int
-    code_snippet: str
+    code_snippet: str = ""
+    rule_name: str = ""
+    column_number: int = 0
     fix_suggestion: Optional[str] = None
+    category: Optional[str] = None
+    # Legacy support
+    rule_number: Optional[int] = None
 
 
 @dataclass

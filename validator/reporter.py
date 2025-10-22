@@ -13,6 +13,14 @@ from pathlib import Path
 
 from .models import ValidationResult, Violation, Severity
 
+# Global color toggle
+_USE_COLOR = True
+
+def set_use_color(use_color: bool):
+    """Enable or disable ANSI colors in console reports."""
+    global _USE_COLOR
+    _USE_COLOR = bool(use_color)
+
 
 class ReportGenerator:
     """
@@ -24,6 +32,7 @@ class ReportGenerator:
     
     def __init__(self):
         """Initialize the report generator."""
+        self.use_color = _USE_COLOR
         self.severity_colors = {
             Severity.ERROR: "\033[91m",    # Red
             Severity.WARNING: "\033[93m",  # Yellow
@@ -99,8 +108,8 @@ class ReportGenerator:
             if result.violations:
                 report_lines.append("  VIOLATIONS:")
                 for violation in result.violations:
-                    color = self.severity_colors.get(violation.severity, "")
-                    reset = self.reset_color
+                    color = self.severity_colors.get(violation.severity, "") if self.use_color else ""
+                    reset = self.reset_color if self.use_color else ""
                     
                     report_lines.append(f"    {color}[{violation.severity.value.upper()}]{reset} "
                                       f"Rule {violation.rule_number}: {violation.rule_name}")

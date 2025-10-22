@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GSMD Tenant Override (v1 minimal)",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "tenant_id": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "properties": {
+        "module_id": {
+          "type": "string",
+          "pattern": "^M\\d{2}$"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "evaluation_point": {
+          "type": "string",
+          "enum": [
+            "pre-commit",
+            "pre-merge",
+            "pre-deploy",
+            "post-deploy"
+          ]
+        }
+      },
+      "required": [
+        "module_id"
+      ],
+      "additionalProperties": true
+    },
+    "waiver": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "ticket_id": {
+          "type": "string"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "additionalProperties": true
+    },
+    "ttl": {
+      "type": "string"
+    },
+    "approvals": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "approved_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "user",
+          "role",
+          "approved_at"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "kid": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "scope",
+    "waiver",
+    "ttl",
+    "approvals",
+    "kid",
+    "signature"
+  ]
+}

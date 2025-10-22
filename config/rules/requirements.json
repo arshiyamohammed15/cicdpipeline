@@ -1,0 +1,6 @@
+{
+  "category": "requirements",
+  "priority": "critical",
+  "description": "Requirements and specifications",
+  "rules": [1, 2]
+}

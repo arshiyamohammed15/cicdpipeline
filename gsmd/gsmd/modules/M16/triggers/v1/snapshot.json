@@ -1,0 +1,122 @@
+{
+  "snapshot_id": "SNAP.M16.triggers.v1",
+  "module_id": "M16",
+  "slug": "triggers",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:cf745714e6e91f2b0a944e7708b73af4c758c44e1a17c70d5ae1b8ee7b01e1ef",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-10",
+  "effective_from": "2025-10-18T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "token.problem.id"
+    ],
+    "status_pill": {
+      "pass": "token.ok",
+      "warn": "token.warn",
+      "soft_block": "token.soft",
+      "hard_block": "token.hard"
+    },
+    "cards": [
+      "token.card.id"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT2H",
+    "authoriser_roles": [
+      "role.id"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:a",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.policy.decision"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "email",
+      "ticket_url"
+    ]
+  },
+  "evidence": {
+    "map": [
+      {
+        "kind": "artifact",
+        "selector": "path:/**/artifacts/**"
+      },
+      {
+        "kind": "log",
+        "selector": "otel:service/**"
+      }
+    ]
+  },
+  "receipts": {
+    "required": [
+      "decision",
+      "rationale",
+      "policy_snapshot_hash",
+      "policy_version_ids",
+      "evaluation_point",
+      "actor_id",
+      "repo_id",
+      "timestamps.hw",
+      "signature"
+    ],
+    "optional": [
+      "advisories[]",
+      "evidence_ids[]",
+      "cohort"
+    ]
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "gold-path",
+        "input": {},
+        "expect": {
+          "decision": "pass"
+        }
+      },
+      {
+        "name": "deny-path",
+        "input": {},
+        "expect": {
+          "decision": "hard_block"
+        }
+      }
+    ]
+  }
+}

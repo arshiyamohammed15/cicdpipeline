@@ -1,0 +1,12 @@
+{
+  "category": "architecture",
+  "priority": "critical",
+  "description": "Architecture and system design",
+  "rules": [
+    19,
+    21,
+    23,
+    24,
+    28
+  ]
+}

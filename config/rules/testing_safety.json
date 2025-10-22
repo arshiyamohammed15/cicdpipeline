@@ -1,0 +1,11 @@
+{
+  "category": "testing_safety",
+  "priority": "critical",
+  "description": "Testing and safety principles",
+  "rules": [
+    7,
+    14,
+    59,
+    69
+  ]
+}

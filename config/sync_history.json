@@ -1,0 +1,58 @@
+[
+  {
+    "timestamp": "2025-10-16T15:27:38.803805",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": false,
+    "details": "Can't instantiate abstract class ConstitutionRuleManager without an implementation for abstract methods 'backup_database', 'get_backend_info', 'get_backend_type', 'health_check', 'initialize', 'restore_database', 'search_rules'"
+  },
+  {
+    "timestamp": "2025-10-16T15:27:38.846437",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": false,
+    "details": "Can't instantiate abstract class ConstitutionRuleManager without an implementation for abstract methods 'backup_database', 'get_backend_info', 'get_backend_type', 'health_check', 'initialize', 'restore_database', 'search_rules'"
+  },
+  {
+    "timestamp": "2025-10-16T15:29:47.944393",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": false,
+    "details": "Can't instantiate abstract class ConstitutionRuleManager without an implementation for abstract method 'initialize'"
+  },
+  {
+    "timestamp": "2025-10-16T15:29:47.985738",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": false,
+    "details": "Can't instantiate abstract class ConstitutionRuleManager without an implementation for abstract method 'initialize'"
+  },
+  {
+    "timestamp": "2025-10-16T15:30:08.249866",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": true,
+    "details": "Updated 0 rules"
+  },
+  {
+    "timestamp": "2025-10-16T15:30:23.968214",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": true,
+    "details": "Updated 0 rules"
+  },
+  {
+    "timestamp": "2025-10-16T15:31:50.157666",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": true,
+    "details": "Updated 0 rules"
+  }
+]

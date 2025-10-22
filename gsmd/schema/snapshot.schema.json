@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GSMD Policy Snapshot (v1 minimal)",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "snapshot_id": {
+      "type": "string",
+      "pattern": "^SNAP\\.M\\d{2}\\.[a-z0-9_\\.]+\\.(v|V)\\d+$"
+    },
+    "module_id": {
+      "type": "string",
+      "pattern": "^M\\d{2}$"
+    },
+    "slug": {
+      "type": "string"
+    },
+    "version": {
+      "type": "object",
+      "properties": {
+        "major": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "major"
+      ]
+    },
+    "schema_version": {
+      "type": "string"
+    },
+    "policy_version_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "snapshot_hash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "signature": {
+      "type": "string"
+    },
+    "kid": {
+      "type": "string"
+    },
+    "effective_from": {
+      "type": "string"
+    },
+    "evaluation_points": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "messages": {
+      "type": "object"
+    },
+    "rollout": {
+      "type": "object"
+    },
+    "observability": {
+      "type": "object"
+    },
+    "privacy": {
+      "type": "object"
+    },
+    "evidence": {
+      "type": "object"
+    },
+    "receipts": {
+      "type": "object"
+    },
+    "tests": {
+      "type": "object"
+    }
+  },
+  "required": [
+    "snapshot_id",
+    "module_id",
+    "slug",
+    "version",
+    "schema_version",
+    "policy_version_ids",
+    "snapshot_hash",
+    "signature",
+    "kid",
+    "effective_from",
+    "evaluation_points",
+    "messages",
+    "rollout",
+    "observability",
+    "privacy",
+    "evidence",
+    "receipts",
+    "tests"
+  ]
+}

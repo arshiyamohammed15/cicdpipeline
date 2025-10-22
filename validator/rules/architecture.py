@@ -64,7 +64,8 @@ class ArchitectureValidator:
                     for keyword in self.business_logic_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                                rule_number=19,
+                rule_id="rule_19",
+                rule_number=19,
                                 rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Business logic detected in UI file: {func_name}",
@@ -84,7 +85,8 @@ class ArchitectureValidator:
                     for keyword in self.data_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                                rule_number=19,
+                rule_id="rule_19",
+                rule_number=19,
                                 rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Data access detected in UI file: {func_name}",
@@ -122,7 +124,8 @@ class ArchitectureValidator:
                     # IDE Extension shouldn't process data
                     if any(keyword in func_name for keyword in ['process', 'analyze', 'compute']):
                         violations.append(Violation(
-                            rule_number=21,
+                rule_id="rule_21",
+                rule_number=21,
                             rule_name="Use the Hybrid System Design",
                             severity=Severity.ERROR,
                             message="IDE Extension should only display information, not process data",
@@ -142,7 +145,8 @@ class ArchitectureValidator:
                     # Edge Agent shouldn't send data to cloud
                     if any(keyword in func_name for keyword in ['upload', 'send', 'post', 'put']):
                         violations.append(Violation(
-                            rule_number=21,
+                rule_id="rule_21",
+                rule_number=21,
                             rule_name="Use the Hybrid System Design",
                             severity=Severity.WARNING,
                             message="Edge Agent should process data locally, not send to cloud",
@@ -169,14 +173,35 @@ class ArchitectureValidator:
         violations = []
         
         # Check for source code leaving the company
+        if tree is None:
+            # If no AST, fallback: detect obvious network usage without offline hints
+            if any(k in content.lower() for k in ['requests', 'http', 'socket']) and not any(h in content.lower() for h in ['offline', 'cache', 'fallback', 'local']):
+                violations.append(Violation(
+                    rule_id="rule_28",
+                    rule_number=28,
+                    rule_name="Work Without Internet",
+                    severity=Severity.WARNING,
+                    message="Network dependencies detected without offline fallback",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="Network usage",
+                    fix_suggestion="Add offline capability and local caching"
+                ))
+            return violations
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
                 func_name = self._get_function_name(node.func).lower()
                 
                 # Check for external data transmission
-                if any(keyword in func_name for keyword in self.cloud_keywords):
+                network_context_keywords = ['http', 'https', 'api.', 'cloud', 'aws', 'gcp', 'azure', 'requests.']
+                verb_indicators = ['send', 'post', 'upload']
+                verb_with_context = any(v in func_name for v in verb_indicators) and any(ctx in func_name for ctx in network_context_keywords)
+                # Avoid false positives for local pattern sharing helpers
+                if any(keyword in func_name for keyword in self.cloud_keywords) or (verb_with_context and 'anonymous' not in func_name and 'pattern' not in func_name):
                     violations.append(Violation(
-                        rule_number=23,
+                rule_id="rule_23",
+                rule_number=23,
                         rule_name="Process Data Locally First",
                         severity=Severity.ERROR,
                         message="Source code or sensitive data should not leave the company",
@@ -204,6 +229,8 @@ class ArchitectureValidator:
         
         # Check for consistent error handling
         has_try_catch = False
+        if tree is None:
+            return violations
         for node in ast.walk(tree):
             if isinstance(node, ast.Try):
                 has_try_catch = True
@@ -211,6 +238,7 @@ class ArchitectureValidator:
         
         if not has_try_catch and self._has_risky_operations(tree):
             violations.append(Violation(
+                rule_id="rule_30",
                 rule_number=30,
                 rule_name="Make All Modules Feel Like One Product",
                 severity=Severity.WARNING,
@@ -247,12 +275,14 @@ class ArchitectureValidator:
                         # Check for sensitive data variables
                         if any(keyword in var_name for keyword in ['password', 'secret', 'private', 'personal']):
                             # Check if it's being sent externally
-                            for child in ast.walk(node):
+                            for child in ast.walk(tree):
                                 if isinstance(child, ast.Call):
                                     func_name = self._get_function_name(child.func).lower()
-                                    if any(keyword in func_name for keyword in ['send', 'post', 'upload']):
+                                    # For sensitive data, any external-sounding verb is enough
+                                    if any(verb in func_name for verb in ['send', 'post', 'upload', 'push', 'publish']):
                                         violations.append(Violation(
-                                            rule_number=23,
+                rule_id="rule_23",
+                rule_number=23,
                                             rule_name="Process Data Locally First",
                                             severity=Severity.ERROR,
                                             message="Sensitive data being sent externally",
@@ -304,34 +334,33 @@ class ArchitectureValidator:
         violations = []
         
         # Check for mandatory configuration before use
-        for node in ast.walk(tree):
-            if isinstance(node, ast.ClassDef):
-                # Check if class requires configuration in __init__
-                has_config_requirement = False
-                has_default_values = False
-                
-                for child in node.body:
-                    if isinstance(child, ast.FunctionDef) and child.name == '__init__':
-                        for arg in child.args.args:
-                            if arg.arg != 'self':
-                                # Check for default values
-                                if arg in child.args.defaults:
-                                    has_default_values = True
-                                else:
-                                    has_config_requirement = True
-                
-                if has_config_requirement and not has_default_values:
-                    violations.append(Violation(
-                        rule_number=24,
-                        rule_name="Don't Make People Configure Before Using",
-                        severity=Severity.WARNING,
-                        message=f"Class '{node.name}' requires configuration before use",
-                        file_path=file_path,
-                        line_number=node.lineno,
-                        column_number=node.col_offset,
-                        code_snippet=node.name,
-                        fix_suggestion="Provide default values or make configuration optional"
-                    ))
+        if tree is not None:
+            for node in ast.walk(tree):
+                if isinstance(node, ast.ClassDef):
+                    # Check if class requires configuration in __init__
+                    has_config_requirement = False
+                    has_default_values = False
+                    for child in node.body:
+                        if isinstance(child, ast.FunctionDef) and child.name == '__init__':
+                            # Compute which args have defaults
+                            positional = [a.arg for a in child.args.args if a.arg != 'self']
+                            defaults_count = len(child.args.defaults)
+                            defaulted = set(positional[-defaults_count:]) if defaults_count else set()
+                            has_default_values = len(defaulted) > 0
+                            has_config_requirement = any(name not in defaulted for name in positional)
+                    if has_config_requirement and not has_default_values:
+                        violations.append(Violation(
+                rule_id="rule_24",
+                rule_number=24,
+                            rule_name="Don't Make People Configure Before Using",
+                            severity=Severity.WARNING,
+                            message=f"Class '{node.name}' requires configuration before use",
+                            file_path=file_path,
+                            line_number=node.lineno,
+                            column_number=node.col_offset,
+                            code_snippet=node.name,
+                            fix_suggestion="Provide default values or make configuration optional"
+                        ))
         
         # Check for configuration files that are required
         config_patterns = [
@@ -347,7 +376,8 @@ class ArchitectureValidator:
                 # Check if it's required vs optional
                 if 'required' in content.lower() or 'must' in content.lower():
                     violations.append(Violation(
-                        rule_number=24,
+                rule_id="rule_24",
+                rule_number=24,
                         rule_name="Don't Make People Configure Before Using",
                         severity=Severity.INFO,
                         message="Configuration file appears to be required before use",
@@ -394,18 +424,47 @@ class ArchitectureValidator:
                     has_network_imports = True
                     break
         
-        # Check for offline fallback patterns
+        # Check for offline fallback patterns (ignore comments and inline trailing comments)
+        cleaned_lines = []
+        for line in content.splitlines():
+            # remove inline comments after '#'
+            no_inline = line.split('#', 1)[0]
+            if not no_inline.strip().startswith('#'):
+                cleaned_lines.append(no_inline)
+        code_only = '\n'.join(cleaned_lines)
         offline_patterns = [
             'offline', 'cache', 'local', 'fallback', 'backup', 'sync'
         ]
-        
         for pattern in offline_patterns:
-            if re.search(pattern, content, re.IGNORECASE):
+            if re.search(pattern, code_only, re.IGNORECASE):
                 has_offline_fallback = True
                 break
         
-        if has_network_imports and not has_offline_fallback:
+        # Determine whether network calls occur inside functions without try/except
+        uses_network_calls = False
+        function_has_network_calls = False
+        # Scan entire tree for any network call
+        for n in ast.walk(tree):
+            if isinstance(n, ast.Call):
+                call_name = self._get_function_name(n.func).lower()
+                if any(lib in call_name for lib in ['requests.', 'urllib', 'http.', 'socket.']):
+                    uses_network_calls = True
+                    break
+        # Specifically check calls inside functions
+        for func in [n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]:
+            for inner in ast.walk(func):
+                if isinstance(inner, ast.Call):
+                    inner_name = self._get_function_name(inner.func).lower()
+                    if any(lib in inner_name for lib in ['requests.', 'urllib', 'http.', 'socket.']):
+                        function_has_network_calls = True
+                        break
+            if function_has_network_calls:
+                break
+
+        # WARNING when network calls occur inside a function and there is no offline fallback
+        if has_network_imports and not has_offline_fallback and function_has_network_calls:
             violations.append(Violation(
+                rule_id="rule_28",
                 rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.WARNING,
@@ -429,8 +488,9 @@ class ArchitectureValidator:
         
         has_caching = any(re.search(pattern, content, re.IGNORECASE) for pattern in cache_patterns)
         
-        if has_network_imports and not has_caching:
+        if has_network_imports and uses_network_calls and not has_caching:
             violations.append(Violation(
+                rule_id="rule_28",
                 rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.INFO,

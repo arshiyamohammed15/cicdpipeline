@@ -54,6 +54,7 @@ class PlatformValidator:
         has_logging = any(pattern in content.lower() for pattern in ['logging', 'logger', 'log'])
         if not has_logging:
             violations.append(Violation(
+                rule_id="rule_42",
                 rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.WARNING,
@@ -69,6 +70,7 @@ class PlatformValidator:
         has_monitoring = any(pattern in content.lower() for pattern in ['monitor', 'telemetry', 'metrics', 'stats'])
         if not has_monitoring:
             violations.append(Violation(
+                rule_id="rule_42",
                 rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
@@ -84,6 +86,7 @@ class PlatformValidator:
         has_config = any(pattern in content.lower() for pattern in ['config', 'configuration', 'settings'])
         if not has_config:
             violations.append(Violation(
+                rule_id="rule_42",
                 rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
@@ -99,6 +102,7 @@ class PlatformValidator:
         has_error_tracking = any(pattern in content.lower() for pattern in ['error', 'exception', 'traceback', 'stack'])
         if not has_error_tracking:
             violations.append(Violation(
+                rule_id="rule_42",
                 rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.WARNING,
@@ -114,6 +118,7 @@ class PlatformValidator:
         has_health = any(pattern in content.lower() for pattern in ['health', 'status', 'ping', 'heartbeat'])
         if not has_health:
             violations.append(Violation(
+                rule_id="rule_42",
                 rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
@@ -152,6 +157,7 @@ class PlatformValidator:
         
         if blocking_operations_found:
             violations.append(Violation(
+                rule_id="rule_43",
                 rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.WARNING,
@@ -183,6 +189,7 @@ class PlatformValidator:
         
         if inefficient_patterns:
             violations.append(Violation(
+                rule_id="rule_43",
                 rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.WARNING,
@@ -198,6 +205,7 @@ class PlatformValidator:
         has_optimizations = any(pattern in content.lower() for pattern in self.performance_patterns)
         if not has_optimizations:
             violations.append(Violation(
+                rule_id="rule_43",
                 rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.INFO,
@@ -213,6 +221,7 @@ class PlatformValidator:
         has_quality_checks = any(pattern in content.lower() for pattern in ['validate', 'check', 'verify', 'sanitize'])
         if not has_quality_checks:
             violations.append(Violation(
+                rule_id="rule_43",
                 rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.INFO,
@@ -246,6 +255,7 @@ class PlatformValidator:
         
         if not has_context:
             violations.append(Violation(
+                rule_id="rule_44",
                 rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.INFO,
@@ -263,6 +273,7 @@ class PlatformValidator:
         
         if not has_progressive:
             violations.append(Violation(
+                rule_id="rule_44",
                 rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.INFO,
@@ -280,6 +291,7 @@ class PlatformValidator:
         
         if has_intrusive:
             violations.append(Violation(
+                rule_id="rule_44",
                 rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.WARNING,
@@ -313,6 +325,7 @@ class PlatformValidator:
         
         if not has_emergency:
             violations.append(Violation(
+                rule_id="rule_45",
                 rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.WARNING,
@@ -330,6 +343,7 @@ class PlatformValidator:
         
         if not has_one_click_emergency:
             violations.append(Violation(
+                rule_id="rule_45",
                 rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.INFO,
@@ -347,6 +361,7 @@ class PlatformValidator:
         
         if not has_recovery:
             violations.append(Violation(
+                rule_id="rule_45",
                 rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.WARNING,
@@ -364,6 +379,7 @@ class PlatformValidator:
         
         if not has_progress:
             violations.append(Violation(
+                rule_id="rule_45",
                 rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.INFO,
@@ -397,6 +413,7 @@ class PlatformValidator:
         
         if not has_scalability:
             violations.append(Violation(
+                rule_id="rule_51",
                 rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
@@ -414,6 +431,7 @@ class PlatformValidator:
         
         if has_hardcoded_limits:
             violations.append(Violation(
+                rule_id="rule_51",
                 rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.WARNING,
@@ -431,6 +449,7 @@ class PlatformValidator:
         
         if not has_performance:
             violations.append(Violation(
+                rule_id="rule_51",
                 rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
@@ -448,6 +467,7 @@ class PlatformValidator:
         
         if not has_config:
             violations.append(Violation(
+                rule_id="rule_51",
                 rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
@@ -481,6 +501,7 @@ class PlatformValidator:
         
         if not has_dev_experience:
             violations.append(Violation(
+                rule_id="rule_46",
                 rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
@@ -498,6 +519,7 @@ class PlatformValidator:
         
         if not has_productivity:
             violations.append(Violation(
+                rule_id="rule_46",
                 rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
@@ -515,6 +537,7 @@ class PlatformValidator:
         
         if not has_tooling:
             violations.append(Violation(
+                rule_id="rule_46",
                 rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
@@ -532,6 +555,7 @@ class PlatformValidator:
         
         if not has_feedback:
             violations.append(Violation(
+                rule_id="rule_46",
                 rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
@@ -565,6 +589,7 @@ class PlatformValidator:
         
         if not has_prevention:
             violations.append(Violation(
+                rule_id="rule_47",
                 rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
@@ -582,6 +607,7 @@ class PlatformValidator:
         
         if not has_tracking:
             violations.append(Violation(
+                rule_id="rule_47",
                 rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
@@ -599,6 +625,7 @@ class PlatformValidator:
         
         if not has_metrics:
             violations.append(Violation(
+                rule_id="rule_47",
                 rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
@@ -616,6 +643,7 @@ class PlatformValidator:
         
         if not has_reporting:
             violations.append(Violation(
+                rule_id="rule_47",
                 rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
@@ -649,6 +677,7 @@ class PlatformValidator:
         
         if not has_compliance:
             violations.append(Violation(
+                rule_id="rule_48",
                 rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
@@ -666,6 +695,7 @@ class PlatformValidator:
         
         if not has_workflow:
             violations.append(Violation(
+                rule_id="rule_48",
                 rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
@@ -683,6 +713,7 @@ class PlatformValidator:
         
         if not has_automation:
             violations.append(Violation(
+                rule_id="rule_48",
                 rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
@@ -700,6 +731,7 @@ class PlatformValidator:
         
         if not has_validation:
             violations.append(Violation(
+                rule_id="rule_48",
                 rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
@@ -738,7 +770,8 @@ class PlatformValidator:
             
             if not has_usability:
                 violations.append(Violation(
-                    rule_number=49,
+                rule_id="rule_49",
+                rule_number=49,
                     rule_name="Security Should Help, Not Block",
                     severity=Severity.WARNING,
                     message="Security features detected without usability considerations",
@@ -755,7 +788,8 @@ class PlatformValidator:
             
             if has_blocking:
                 violations.append(Violation(
-                    rule_number=49,
+                rule_id="rule_49",
+                rule_number=49,
                     rule_name="Security Should Help, Not Block",
                     severity=Severity.WARNING,
                     message="Blocking security patterns detected - should be helpful instead",
@@ -772,7 +806,8 @@ class PlatformValidator:
             
             if not has_helpful:
                 violations.append(Violation(
-                    rule_number=49,
+                rule_id="rule_49",
+                rule_number=49,
                     rule_name="Security Should Help, Not Block",
                     severity=Severity.INFO,
                     message="No helpful security patterns detected",
@@ -789,7 +824,8 @@ class PlatformValidator:
             
             if not has_transparency:
                 violations.append(Violation(
-                    rule_number=49,
+                rule_id="rule_49",
+                rule_number=49,
                     rule_name="Security Should Help, Not Block",
                     severity=Severity.INFO,
                     message="No security transparency patterns detected",
@@ -839,6 +875,7 @@ class PlatformValidator:
         
         if not has_adoption:
             violations.append(Violation(
+                rule_id="rule_50",
                 rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
@@ -852,6 +889,7 @@ class PlatformValidator:
         
         if not has_independence:
             violations.append(Violation(
+                rule_id="rule_50",
                 rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
@@ -865,6 +903,7 @@ class PlatformValidator:
         
         if not has_value:
             violations.append(Violation(
+                rule_id="rule_50",
                 rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
