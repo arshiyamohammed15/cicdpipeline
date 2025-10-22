@@ -2167,3 +2167,279 @@ Violations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.
 - [ ] CI gates added (`gsmd-check`, manifest build/verify)  
 - [ ] Privacy redactions applied; no PII/secrets in logs or receipts  
 - [ ] Output matches allowed return contract
+
+---
+
+# Simple Code Readability Rules (Human-Understandable)
+
+🎯 **Purpose:** Make code so simple that anyone can understand it, even an 8th grader. Follow Martin Fowler's principle: "Good programmers write code that humans can understand."
+
+## Scope
+Applies to all code, comments, and documentation. Keep changes small and consistent across the codebase.
+
+---
+
+## Basic Readability Rules
+
+**Rule 253: Plain English Variable Names**
+Use descriptive, everyday words instead of technical jargon or abbreviations.
+- ❌ `usr_ctx_mgr` → ✅ `user_account_manager`
+- ❌ `db_conn_pool` → ✅ `database_connections`
+- ❌ `cfg_mgr` → ✅ `settings_manager`
+- ❌ `calc_total` → ✅ `calculate_total_price`
+
+**Rule 254: Self-Documenting Code**
+Code should read like a story, not a puzzle.
+- ❌ `if (x > 0 && y < 100)` → ✅ `if (user_age_is_valid && score_is_within_range)`
+- ❌ `return calc(x, y, z)` → ✅ `return calculate_total_price(quantity, unit_price, tax_rate)`
+- ❌ `processUserData()` → ✅ `validate_user_email_and_save_to_database()`
+
+**Rule 255: One Concept Per Function**
+Each function should do exactly one thing.
+- Maximum 20 lines per function
+- Function name should clearly describe what it does
+- Break complex functions into smaller, focused ones
+
+**Rule 256: Explain the "Why", Not Just the "What"**
+Comments should explain business logic, not code mechanics.
+- ❌ `// Increment counter` → ✅ `// Count failed login attempts to detect brute force attacks`
+- ❌ `// Loop through array` → ✅ `// Check each customer's payment status to identify overdue accounts`
+
+**Rule 257: Avoid Mental Gymnastics**
+No nested ternary operators, complex one-liners, or clever tricks.
+- ❌ `result = a ? b : c ? d : e` → ✅ Use clear if-else statements
+- ❌ `return x && y && z ? process() : null` → ✅ Break into simple steps
+
+**Rule 258: Use Real-World Analogies**
+Compare technical concepts to everyday experiences.
+- ❌ `"Database connection pooling"` → ✅ `"Like a taxi stand - cars wait for passengers instead of creating new ones each time"`
+- ❌ `"API rate limiting"` → ✅ `"Like a bouncer at a club - only letting in a certain number of people per minute"`
+
+**Rule 259: Progressive Complexity**
+Start simple, add complexity only when needed.
+- Use helper functions to break down complex operations
+- ❌ One 100-line function → ✅ Five 20-line functions with clear names
+
+**Rule 260: Visual Code Layout**
+Use whitespace to group related ideas.
+- Align similar operations
+- Use consistent indentation (4 spaces)
+- Leave blank lines between logical sections
+
+**Rule 261: Error Messages That Help**
+Error messages should guide users to solutions.
+- ❌ `"Error 500"` → ✅ `"The email address 'john@' is missing the domain part. Please enter a complete email like 'john@example.com'"`
+- ❌ `"Null pointer exception"` → ✅ `"The user's profile picture is missing. Please upload a photo or use the default avatar."`
+
+**Rule 262: Consistent Naming Patterns**
+Use the same word for the same concept throughout.
+- ❌ Mixing `user`, `usr`, `customer`, `client` → ✅ Always use `user`
+- ❌ Mixing `get`, `fetch`, `retrieve` → ✅ Always use `get`
+
+**Rule 263: Avoid Abbreviations**
+Write out full words unless universally understood.
+- ❌ `calc`, `mgr`, `ctx` → ✅ `calculate`, `manager`, `context`
+- ✅ Allow common ones: `id`, `url`, `api`, `db`
+
+**Rule 264: Business Language Over Technical Language**
+Use domain terms that business people understand.
+- ❌ `"Execute database transaction"` → ✅ `"Save the customer's order"`
+- ❌ `"Initialize object instance"` → ✅ `"Create a new user account"`
+
+**Rule 265: Show Your Work**
+Break complex calculations into steps with intermediate variables.
+- ❌ `return (a * b) + (c * d) - (e / f)` → ✅ 
+```python
+base_price = quantity * unit_price
+tax_amount = base_price * tax_rate
+discount = base_price * discount_percentage
+final_price = base_price + tax_amount - discount
+return final_price
+```
+
+**Rule 266: Fail Gracefully with Helpful Messages**
+When something goes wrong, explain what the user should do.
+- Provide next steps, not just error codes
+- ❌ `"Validation failed"` → ✅ `"The password must be at least 8 characters long. Please add 3 more characters."`
+
+**Rule 267: Code as Documentation**
+The code itself should be the primary documentation.
+- Comments should only explain "why", not "what"
+- If you need comments to explain "what", the code needs to be clearer
+
+**Rule 268: Test Names That Tell a Story**
+Test names should describe the scenario and expected outcome.
+- ❌ `test_user()` → ✅ `test_user_can_login_with_valid_credentials()`
+- ❌ `test_error()` → ✅ `test_system_shows_helpful_message_when_email_is_invalid()`
+
+**Rule 269: Constants That Explain Themselves**
+Use named constants instead of magic numbers.
+- ❌ `if (age > 18)` → ✅ `if (age >= MINIMUM_ADULT_AGE)`
+- ❌ `timeout = 5000` → ✅ `timeout = FIVE_SECONDS_IN_MILLISECONDS`
+
+---
+
+## Advanced Concepts (BANNED)
+
+**Rule 270: NO Advanced Programming Concepts**
+- ❌ **BANNED**: Closures, decorators, lambda functions, generators, async/await, promises, callbacks
+- ❌ **BANNED**: Functional programming (map, filter, reduce, fold)
+- ❌ **BANNED**: Object-oriented inheritance, polymorphism, abstract classes
+- ❌ **BANNED**: Design patterns (singleton, factory, observer, etc.)
+- ✅ **ALLOWED**: Simple if-else, for loops, basic functions, simple classes
+
+**Rule 271: NO Complex Data Structures**
+- ❌ **BANNED**: Nested dictionaries, complex objects, arrays of objects
+- ❌ **BANNED**: Hash maps, sets, tuples, linked lists, trees
+- ❌ **BANNED**: JSON parsing, XML parsing, complex serialization
+- ✅ **ALLOWED**: Simple arrays, simple objects with 2-3 properties max
+
+**Rule 272: NO Advanced String Manipulation**
+- ❌ **BANNED**: Regular expressions, complex string methods
+- ❌ **BANNED**: Template literals, string interpolation
+- ❌ **BANNED**: Encoding/decoding, base64, hashing
+- ✅ **ALLOWED**: Basic string concatenation, simple replace, length check
+
+**Rule 273: NO Complex Error Handling**
+- ❌ **BANNED**: Try-catch blocks, exception handling, error chains
+- ❌ **BANNED**: Custom error types, error propagation
+- ❌ **BANNED**: Retry logic, circuit breakers, fallback mechanisms
+- ✅ **ALLOWED**: Simple if-else checks, basic validation
+
+**Rule 274: NO Advanced Control Flow**
+- ❌ **BANNED**: Switch statements, ternary operators, nested conditions
+- ❌ **BANNED**: Recursion, complex loops, break/continue
+- ❌ **BANNED**: Goto statements, early returns in complex functions
+- ✅ **ALLOWED**: Simple if-else chains, basic for/while loops
+
+**Rule 275: NO Advanced Functions**
+- ❌ **BANNED**: Function overloading, default parameters, rest parameters
+- ❌ **BANNED**: Higher-order functions, function composition
+- ❌ **BANNED**: Currying, partial application, function factories
+- ✅ **ALLOWED**: Simple functions with 1-3 parameters, basic return statements
+
+**Rule 276: NO Advanced Array Operations**
+- ❌ **BANNED**: Array methods (map, filter, reduce, forEach, some, every)
+- ❌ **BANNED**: Array destructuring, spread operators
+- ❌ **BANNED**: Multi-dimensional arrays, array manipulation
+- ✅ **ALLOWED**: Basic array access with [index], simple for loops
+
+**Rule 277: NO Advanced Logic**
+- ❌ **BANNED**: Boolean algebra, bitwise operations
+- ❌ **BANNED**: Complex conditional logic, nested conditions
+- ❌ **BANNED**: Logical operators beyond basic AND/OR
+- ✅ **ALLOWED**: Simple true/false checks, basic comparisons
+
+**Rule 278: NO Advanced Language Features**
+- ❌ **BANNED**: TypeScript generics, Python decorators, Java annotations
+- ❌ **BANNED**: Advanced JavaScript features, complex type systems
+- ❌ **BANNED**: Metaprogramming, reflection, dynamic code generation
+- ✅ **ALLOWED**: Basic language syntax only
+
+**Rule 279: NO Advanced Libraries**
+- ❌ **BANNED**: Third-party libraries, frameworks, complex dependencies
+- ❌ **BANNED**: Package managers, dependency management
+- ❌ **BANNED**: External APIs, web services, complex integrations
+- ✅ **ALLOWED**: Basic language built-ins only
+
+**Rule 280: ENFORCE Simple Level**
+- **MANDATORY**: Every line of code must be understandable by an 8th grader
+- **MANDATORY**: No technical jargon without explanation
+- **MANDATORY**: Use simple, everyday words
+- **MANDATORY**: Break complex operations into simple steps
+- **MANDATORY**: Write code that reads like plain English
+- **MANDATORY**: If an 8th grader can't understand it, rewrite it
+
+---
+
+## Stop Conditions → Error Codes (must refuse & escalate)
+
+**ERROR:ADVANCED_CONCEPT_USED** — Advanced programming concept detected (closures, decorators, etc.)
+
+**ERROR:COMPLEX_DATA_STRUCTURE** — Complex data structure used (nested objects, hash maps, etc.)
+
+**ERROR:JARGON_DETECTED** — Technical jargon without explanation found
+
+**ERROR:MENTAL_GYMNASTICS** — Complex one-liner or nested ternary detected
+
+**ERROR:ABBREVIATION_USED** — Abbreviation used instead of full word
+
+**ERROR:FUNCTION_TOO_LONG** — Function exceeds 20 lines
+
+**ERROR:NESTED_COMPLEXITY** — Nested conditions or complex control flow
+
+**ERROR:READABILITY_FAIL** — Code not understandable at 8th-grade level
+
+**ERROR:TECHNICAL_LANGUAGE** — Technical language used instead of business language
+
+**ERROR:MISSING_EXPLANATION** — Complex concept lacks explanation
+
+**ERROR:COMPLEX_STRING_OPS** — Advanced string manipulation detected
+
+**ERROR:COMPLEX_ERROR_HANDLING** — Try-catch or complex error handling
+
+**ERROR:COMPLEX_CONTROL_FLOW** — Switch, ternary, or recursion detected
+
+**ERROR:COMPLEX_FUNCTIONS** — Function overloading or higher-order functions
+
+**ERROR:COMPLEX_ARRAYS** — Array methods or complex array operations
+
+**ERROR:COMPLEX_LOGIC** — Boolean algebra or bitwise operations
+
+**ERROR:ADVANCED_LANGUAGE_FEATURES** — Generics, decorators, or annotations
+
+**ERROR:ADVANCED_LIBRARIES** — Third-party libraries or frameworks
+
+**ERROR:SIMPLE_LEVEL_VIOLATION** — Code fails 8th-grade readability test
+
+---
+
+## Daily Checklist (Simple Code)
+
+✅ Variable names use plain English words  
+✅ Functions do one thing and are under 20 lines  
+✅ Comments explain "why", not "what"  
+✅ No abbreviations or technical jargon  
+✅ Code reads like a story, not a puzzle  
+✅ Error messages guide users to solutions  
+✅ Complex calculations broken into steps  
+✅ No advanced programming concepts used  
+✅ No complex data structures  
+✅ No advanced string/array/object operations  
+✅ No complex error handling or control flow  
+✅ No advanced language features or libraries  
+✅ Every line understandable to an 8th grader  
+✅ Business language used instead of technical terms  
+✅ Consistent naming patterns throughout
+
+---
+
+## New Developer Quick Start
+
+**First Simple Code Task:**
+1. Pick one function with complex logic
+2. Break it into 3-5 simple functions with clear names
+3. Replace technical terms with business language
+4. Add comments explaining "why" for each step
+5. Test that an 8th grader can understand what it does
+6. Verify no advanced concepts are used
+
+**Common Patterns:**
+```python
+# Good: Simple, readable code
+def calculate_total_price(quantity, unit_price, tax_rate):
+    # Calculate the base cost before tax
+    base_price = quantity * unit_price
+    
+    # Add tax to the base price
+    tax_amount = base_price * tax_rate
+    
+    # Return the final price with tax
+    return base_price + tax_amount
+
+# Bad: Complex, hard to understand
+def calc(x, y, z): return (x * y) + (x * y * z)
+```
+
+**Readability Test:**
+Ask yourself: "Could an 8th grader read this code and understand what it does?" If the answer is no, simplify it.

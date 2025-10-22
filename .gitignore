@@ -67,3 +67,32 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+# SpecStory
+.specstory/
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.temp
+
+# IDE settings (keep structure folders but ignore settings)
+.vscode/settings.json
+.vscode/*.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# OS files
+desktop.ini
+
+# Python
+*.pyc
+
+# Test artifacts
+.pytest_cache/
+*.cover
+
+# Requirements lock
+requirements.lock
