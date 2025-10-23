@@ -95,12 +95,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.233349",
+        "disabled_at": "2025-10-23T19:29:45.211231",
         "maintenance_complete": true,
         "test": true,
         "format": "json"
@@ -119,12 +119,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.282356",
+        "disabled_at": "2025-10-23T19:29:45.253521",
         "maintenance_complete": true
       },
       "metadata": {
@@ -141,12 +141,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.323330",
+        "disabled_at": "2025-10-23T19:29:45.294204",
         "maintenance_complete": true
       },
       "metadata": {
@@ -163,12 +163,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.365446",
+        "disabled_at": "2025-10-23T19:29:45.334042",
         "maintenance_complete": true
       },
       "metadata": {
@@ -185,12 +185,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "Where we keep these records:\n- Action receipts → Like a shopping list that only gets longer (JSONL files)\n- Error and performance notes → Like an organized notebook (SQLite database)\n- Everything stays private → Never leaves your computer without permission",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.401967",
+        "disabled_at": "2025-10-23T19:29:45.376000",
         "maintenance_complete": true
       },
       "metadata": {
@@ -207,12 +207,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "\"During Updates\" means: The time from when you click \"update\" until the new version is completely ready and working properly.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.445541",
+        "disabled_at": "2025-10-23T19:29:45.414799",
         "maintenance_complete": true
       },
       "metadata": {
@@ -229,12 +229,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "- Programs should start faster than microwaving popcorn (under 2 seconds)\n- Buttons should respond instantly when clicked (under 0.1 seconds)\n- Don't use too much computer memory - like not hogging all the closet space",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.483170",
+        "disabled_at": "2025-10-23T19:29:45.456984",
         "maintenance_complete": true
       },
       "metadata": {
@@ -251,12 +251,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "- \"I'm 85% sure this is right\" (confidence level)\n- \"I'm suggesting this because...\" (explanation)\n- \"This was AI version 2.3\" (which brain version made the decision)\nWhere this information is stored:\n1. Your computer - Private notes about your work\n2. Your company's private storage - Team review notes\n3. Our cloud (anonymous only) - Just patterns like \"suggestion X was 85% confident\" - no actual code or personal info",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.527259",
+        "disabled_at": "2025-10-23T19:29:45.502120",
         "maintenance_complete": true
       },
       "metadata": {
@@ -273,12 +273,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.566701",
+        "disabled_at": "2025-10-23T19:29:45.540528",
         "maintenance_complete": true
       },
       "metadata": {
@@ -295,12 +295,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.610771",
+        "disabled_at": "2025-10-23T19:29:45.584456",
         "maintenance_complete": true
       },
       "metadata": {
@@ -317,12 +317,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.649702",
+        "disabled_at": "2025-10-23T19:29:45.628105",
         "maintenance_complete": true
       },
       "metadata": {
@@ -339,12 +339,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.685484",
+        "disabled_at": "2025-10-23T19:29:45.672154",
         "maintenance_complete": true
       },
       "metadata": {
@@ -361,12 +361,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.728449",
+        "disabled_at": "2025-10-23T19:29:45.711594",
         "maintenance_complete": true
       },
       "metadata": {
@@ -383,12 +383,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.783164",
+        "disabled_at": "2025-10-23T19:29:45.749461",
         "maintenance_complete": true
       },
       "metadata": {
@@ -405,12 +405,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.822869",
+        "disabled_at": "2025-10-23T19:29:45.790708",
         "maintenance_complete": true
       },
       "metadata": {
@@ -427,12 +427,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.860076",
+        "disabled_at": "2025-10-23T19:29:45.828233",
         "maintenance_complete": true
       },
       "metadata": {
@@ -449,12 +449,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.898582",
+        "disabled_at": "2025-10-23T19:29:45.866515",
         "maintenance_complete": true
       },
       "metadata": {
@@ -471,12 +471,12 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "🏗️ SYSTEM DESIGN RULES",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.939496",
+        "disabled_at": "2025-10-23T19:29:45.907564",
         "maintenance_complete": true
       },
       "metadata": {
@@ -493,12 +493,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- IDE Extension → Only shows information (like a car dashboard)\n- Edge Agent → Processes data locally for privacy (like thinking in your head)\n- Client Cloud → Stores company's private data (like a company safe)\n- Our Cloud → Only gets anonymous, safe data (like public statistics)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:52.979159",
+        "disabled_at": "2025-10-23T19:29:45.948030",
         "maintenance_complete": true
       },
       "metadata": {
@@ -515,12 +515,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.022757",
+        "disabled_at": "2025-10-23T19:29:45.985536",
         "maintenance_complete": true
       },
       "metadata": {
@@ -537,12 +537,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Source code → Never leaves the company (like secret recipes)\n- Development data → Stays in company cloud (like work notes)\n- Anonymous patterns → Can go to our cloud (like \"people prefer chocolate over vanilla\" - no specific info)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.061922",
+        "disabled_at": "2025-10-23T19:29:46.025243",
         "maintenance_complete": true
       },
       "metadata": {
@@ -559,12 +559,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.100482",
+        "disabled_at": "2025-10-23T19:29:46.068792",
         "maintenance_complete": true
       },
       "metadata": {
@@ -581,12 +581,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Level 1 → Basic status (like a traffic light - red/yellow/green)\n- Level 2 → Suggestions when relevant (like a friend saying \"try this\")\n- Level 3 → Full tools when asked (like opening a complete toolbox)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.138975",
+        "disabled_at": "2025-10-23T19:29:46.108350",
         "maintenance_complete": true
       },
       "metadata": {
@@ -603,12 +603,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "18 Main Areas → Specific Features → Detailed Tools\nLike a school: School → Grade Levels → Classrooms → Subjects",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.177631",
+        "disabled_at": "2025-10-23T19:29:46.150967",
         "maintenance_complete": true
       },
       "metadata": {
@@ -625,12 +625,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Never send → Source code, passwords, personal info (like your diary)\n- Company cloud only → Team metrics, security scans (like company reports)\n- Our cloud allowed → Anonymous patterns, general insights (like \"most people work better in the morning\")",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.216273",
+        "disabled_at": "2025-10-23T19:29:46.196564",
         "maintenance_complete": true
       },
       "metadata": {
@@ -647,12 +647,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.253561",
+        "disabled_at": "2025-10-23T19:29:46.234316",
         "maintenance_complete": true
       },
       "metadata": {
@@ -669,12 +669,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.287017",
+        "disabled_at": "2025-10-23T19:29:46.273665",
         "maintenance_complete": true
       },
       "metadata": {
@@ -691,12 +691,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.331656",
+        "disabled_at": "2025-10-23T19:29:46.315511",
         "maintenance_complete": true
       },
       "metadata": {
@@ -713,12 +713,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- People should get value in first 30 seconds (like instant fun in a game)\n- 80% of users should use each module (like most students using the library)\n- 90% should still be using after 30 days (like people sticking with a good habit)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.365718",
+        "disabled_at": "2025-10-23T19:29:46.359902",
         "maintenance_complete": true
       },
       "metadata": {
@@ -735,12 +735,12 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- No setup needed before use (like instant-on TV)\n- First interaction in under 30 seconds (like quick-start instructions)\n- System almost never crashes (like reliable car)\n- Buttons respond instantly (like light switches)\n 🎯 PROBLEM-SOLVING RULES",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.405255",
+        "disabled_at": "2025-10-23T19:29:46.397080",
         "maintenance_complete": true
       },
       "metadata": {
@@ -757,12 +757,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.437037",
+        "disabled_at": "2025-10-23T19:29:46.436794",
         "maintenance_complete": true
       },
       "metadata": {
@@ -779,12 +779,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Mirror → Show people what they're doing now (like a mirror)\n- Mentor → Guide them to better ways (like a coach)\n- Multiplier → Help them do more of what works (like a turbo boost)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.480712",
+        "disabled_at": "2025-10-23T19:29:46.477065",
         "maintenance_complete": true
       },
       "metadata": {
@@ -801,12 +801,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.523906",
+        "disabled_at": "2025-10-23T19:29:46.519799",
         "maintenance_complete": true
       },
       "metadata": {
@@ -823,12 +823,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Never look at → Production passwords, user personal data (like bank codes)\n- Process locally → Code analysis, performance checks (like thinking privately)\n- Share only → Anonymous patterns, general insights (like \"students learn better with examples\")",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.559279",
+        "disabled_at": "2025-10-23T19:29:46.561894",
         "maintenance_complete": true
       },
       "metadata": {
@@ -845,12 +845,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.603837",
+        "disabled_at": "2025-10-23T19:29:46.601113",
         "maintenance_complete": true
       },
       "metadata": {
@@ -867,12 +867,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.643334",
+        "disabled_at": "2025-10-23T19:29:46.641210",
         "maintenance_complete": true
       },
       "metadata": {
@@ -889,12 +889,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Wrong alerts → Less than 2% for critical issues (like rarely crying wolf)\n- Missed problems → Less than 1% for security (like rarely missing real danger)\n- Show confidence levels clearly (like saying \"I'm very sure\" or \"I'm guessing\")\n- Learn from corrections (like learning from mistakes)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.682342",
+        "disabled_at": "2025-10-23T19:29:46.679504",
         "maintenance_complete": true
       },
       "metadata": {
@@ -911,12 +911,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.727705",
+        "disabled_at": "2025-10-23T19:29:46.717538",
         "maintenance_complete": true
       },
       "metadata": {
@@ -933,12 +933,12 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "🔧 PLATFORM RULES",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.765471",
+        "disabled_at": "2025-10-23T19:29:46.756293",
         "maintenance_complete": true
       },
       "metadata": {
@@ -955,12 +955,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "- Identity → Who can do what (like hall passes)\n- Data governance → Keep data safe and legal (like library rules)\n- Configuration → Settings management (like thermostat controls)\n- Alerting → Notify people when needed (like doorbells)\n- Health → Monitor system performance (like health checkups)\n- API → Connect to other systems (like phone chargers)\n- Backup → Protect against data loss (like photo backups)\n- Deployment → Update safely (like careful home repairs)\n- Behavior intelligence → Learn from usage (like learning friends' preferences)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.801476",
+        "disabled_at": "2025-10-23T19:29:46.795109",
         "maintenance_complete": true
       },
       "metadata": {
@@ -977,12 +977,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.842894",
+        "disabled_at": "2025-10-23T19:29:46.834056",
         "maintenance_complete": true
       },
       "metadata": {
@@ -999,12 +999,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.881644",
+        "disabled_at": "2025-10-23T19:29:46.872877",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1021,12 +1021,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.928255",
+        "disabled_at": "2025-10-23T19:29:46.912541",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1043,12 +1043,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:53.965379",
+        "disabled_at": "2025-10-23T19:29:46.950489",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1065,12 +1065,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.005673",
+        "disabled_at": "2025-10-23T19:29:46.988706",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1087,12 +1087,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.043477",
+        "disabled_at": "2025-10-23T19:29:47.028116",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1109,12 +1109,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.081293",
+        "disabled_at": "2025-10-23T19:29:47.067735",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1131,12 +1131,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.122674",
+        "disabled_at": "2025-10-23T19:29:47.107716",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1153,12 +1153,12 @@
       "category": "platform",
       "priority": "critical",
       "content": "🤝 TEAMWORK RULES",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.162243",
+        "disabled_at": "2025-10-23T19:29:47.146800",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1175,12 +1175,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.198594",
+        "disabled_at": "2025-10-23T19:29:47.190963",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1197,12 +1197,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.235675",
+        "disabled_at": "2025-10-23T19:29:47.233773",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1219,12 +1219,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.272786",
+        "disabled_at": "2025-10-23T19:29:47.272973",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1241,12 +1241,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.315041",
+        "disabled_at": "2025-10-23T19:29:47.325775",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1263,12 +1263,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.346409",
+        "disabled_at": "2025-10-23T19:29:47.367255",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1285,12 +1285,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.395525",
+        "disabled_at": "2025-10-23T19:29:47.405160",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1307,12 +1307,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.442024",
+        "disabled_at": "2025-10-23T19:29:47.443745",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1329,12 +1329,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.473790",
+        "disabled_at": "2025-10-23T19:29:47.482734",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1351,12 +1351,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.521597",
+        "disabled_at": "2025-10-23T19:29:47.526257",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1373,12 +1373,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.547609",
+        "disabled_at": "2025-10-23T19:29:47.564237",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1395,12 +1395,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.594977",
+        "disabled_at": "2025-10-23T19:29:47.602509",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1417,12 +1417,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.632441",
+        "disabled_at": "2025-10-23T19:29:47.642863",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1439,12 +1439,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.676008",
+        "disabled_at": "2025-10-23T19:29:47.681044",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1461,12 +1461,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.715504",
+        "disabled_at": "2025-10-23T19:29:47.720015",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1483,12 +1483,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.752783",
+        "disabled_at": "2025-10-23T19:29:47.760826",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1505,12 +1505,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.795302",
+        "disabled_at": "2025-10-23T19:29:47.801040",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1527,12 +1527,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.835076",
+        "disabled_at": "2025-10-23T19:29:47.838718",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1549,12 +1549,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.876374",
+        "disabled_at": "2025-10-23T19:29:47.877279",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1571,12 +1571,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.915233",
+        "disabled_at": "2025-10-23T19:29:47.916274",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1593,12 +1593,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.946657",
+        "disabled_at": "2025-10-23T19:29:47.955480",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1615,12 +1615,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:54.993839",
+        "disabled_at": "2025-10-23T19:29:47.994298",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1637,12 +1637,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.032517",
+        "disabled_at": "2025-10-23T19:29:48.053853",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1659,12 +1659,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.081907",
+        "disabled_at": "2025-10-23T19:29:48.091881",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1681,12 +1681,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.125087",
+        "disabled_at": "2025-10-23T19:29:48.130226",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1703,12 +1703,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.162777",
+        "disabled_at": "2025-10-23T19:29:48.168974",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1725,12 +1725,12 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.198699",
+        "disabled_at": "2025-10-23T19:29:48.207924",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1747,12 +1747,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Author:** writes the change, fills PR template, runs self‑checks.\n- **Reviewer:** verifies intent, risks, tests, and policy compliance. Gives clear, kind feedback.\n- **Gatekeeper (CI):** blocks merges on rule violations.\n- **AI Assistant (Cursor):** may propose diffs; must follow this Constitution and stop on rule errors.\n**Scope & Size Limits**\n- **AI code‑gen task limit:** ≤ **50 LOC** changed unless the prompt includes `LOC_OVERRIDE:<number>`.\n- **PR size guidance:** ≤ **300 LOC** changed (tests excluded). If larger, split or include a **Rollout Plan**.\n- Sensitive areas (auth, policy, contracts, receipts, migrations) require **CODEOWNERS** approval and may need **two reviewers** (see §9).\nSLA: Reviews should start within **2 business days**.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.237688",
+        "disabled_at": "2025-10-23T19:29:48.248144",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1769,12 +1769,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "1) **Why first.** The PR must state **What changed** and **Why we did it** (problem, constraints, trade‑offs).\n2) **Small, coherent diffs.** One intent per PR; feature‑flags for risky changes.\n3) **Tests prove behavior.** No code change without tests that **fail before** and **pass after** the change (or receipts proving behavior for non-code config).\n4) **Simple English comments.** Follow the Comments Constitution at file/imports/function/variable/logic levels.\n5) **Security & privacy first.** No secrets/PII in code, comments, logs, tests, or fixtures.\n6) **Reversible.** Include a rollback/disable plan for non‑trivial changes (flags or revert steps).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.270993",
+        "disabled_at": "2025-10-23T19:29:48.287805",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1791,12 +1791,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Approve** — meets all checks; minor nits optional.\n- **Request changes** — must fix blockers/majors.\n- **Comment** — non‑blocking feedback or ideas.\nSeverity levels the reviewer must tag:\n- **Blocker:** merge must **not** proceed (critical gaps).\n- **Major:** must fix before merge (important, not existential).\n- **Minor:** should fix soon or follow‑up issue.\n- **Nit:** style/wording; optional.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.317161",
+        "disabled_at": "2025-10-23T19:29:48.326637",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1813,12 +1813,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- Missing PR context (what/why) .......................... `ERROR:REVIEW_CONTEXT_MISSING`\n- Violates Coding/Comments Constitution .................. `ERROR:COMMENT_POLICY_VIOLATION`\n- API contract drift (spec vs code) ...................... `ERROR:API_CONTRACT_DRIFT`\n- Security/privacy gap (secrets/PII/logs) ................ `ERROR:SECURITY_GAP`\n- Logging missing/weak (no request.start/end etc.) ....... `ERROR:LOGGING_GAP`\n- Storage rule broken (blob in DB, no metadata row) ...... `ERROR:STORAGE_RULE_VIOLATION`\n- Missing/weak tests (no coverage for change) ............ `ERROR:TESTS_MISSING`\n- Migration risk (no plan/backout/flags) ................. `ERROR:MIGRATION_RISK`\n- Perf regression risk (no budget/measurement) ........... `ERROR:PERF_REGRESSION`\n- Observability gap (no metrics/traces/alerts) ........... `ERROR:OBS_GAP`\n- Folder/structure naming drift .......................... `ERROR:FOLDER_DRIFT`\n- Return contract not honored (diff/file/json) ........... `ERROR:RETURN_CONTRACT_VIOLATION`\n- CODEOWNERS approval missing (sensitive areas) .......... `ERROR:CODEOWNERS_MISSING`\n- Two‑person rule not met (sensitive areas) .............. `ERROR:TWO_PERSON_RULE_VIOLATION`\n- AI provenance missing in PR template ................... `ERROR:AI_PROVENANCE_MISSING`\n- API receipts/contract diffs not attached ............... `ERROR:API_RECEIPTS_MISSING`\n- Dependency license/CVE policy failed ................... `ERROR:DEPENDENCY_POLICY_FAIL`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.362809",
+        "disabled_at": "2025-10-23T19:29:48.367312",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1835,12 +1835,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.402219",
+        "disabled_at": "2025-10-23T19:29:48.411708",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1857,12 +1857,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Screenshots or log snippets** (redacted) showing success/failure.\n- **Receipts** for significant actions (append‑only JSONL).\n- **Test results** (pass/fail) and, if relevant, benchmark numbers.\n- **Contract diffs** (`openapi.yaml`, schema JSON) and migration IDs.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.444394",
+        "disabled_at": "2025-10-23T19:29:48.450276",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1879,12 +1879,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "```markdown",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.481950",
+        "disabled_at": "2025-10-23T19:29:48.489569",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1901,12 +1901,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Lint & format:** ruff/black (Python), eslint/biome (TS).\n- **Contracts:** diff and validate OpenAPI/Schema JSON; fail on breaking changes; require contract publish receipt where applicable.\n- **Comments:** check for file headers, function docs, PLAN blocks (regex/rules) — enforce Comments Constitution stop codes.\n- **Logging:** validate sample log lines against `docs/log_schema_v1.json`; fail on missing fields/oversize; enforce request.start/end.\n- **Security:** secret scanners; dependency audit with **license allowlist** and **CVE threshold** gate.\n- **Storage:** forbid blobs in DB; require DB metadata rows for file writes (static checks where possible).\n- **Tests:** require new/changed paths covered; run unit/integration; collect perf receipts for hot paths.\n- **Governance:** require **CODEOWNERS** approval for sensitive paths and **two reviewers** (owner + guild) where mandated.\n- **Receipts:** ensure `receipt.emit` present for privileged/business‑critical actions.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.523798",
+        "disabled_at": "2025-10-23T19:29:48.527468",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1923,12 +1923,12 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- Be kind. Focus on the code, not the person.\n- Explain **why** you suggest a change. Use short sentences.\n- Offer a **concrete diff** when possible.\n- Mark severity: **Blocker/Major/Minor/Nit**.\n- Ask clarifying questions; avoid sarcasm or jargon.\n**Examples**  \n- *Blocker:* \"Idempotency not enforced on retry; please add idempotencyKey and conflict handling.\"  \n- *Major:* \"API response adds a field without version bump; please update OpenAPI and mark as non‑breaking.\"  \n- *Minor:* \"Comment uses jargon ('instantiate'). Please rewrite in simple English.\"  \n- *Nit:* \"Consider renaming var to match style: `maxBatch` → `MAX_BATCH`.\"",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.560662",
+        "disabled_at": "2025-10-23T19:29:48.566211",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1945,12 +1945,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- **Approve:** brief summary + any minor nits.\n- **Request changes:** list blockers/majors with bullet points and suggested fix.\n- **Comment:** ideas or questions; no merge block.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.598502",
+        "disabled_at": "2025-10-23T19:29:48.615493",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1967,12 +1967,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Runtime: Python 3.11+. Use Pydantic v2 models; never return raw ORM.\n- FastAPI: every route has response_model; validate inputs; error envelope only (no plain strings).\n- Async only for handlers; avoid blocking calls; httpx for async tests.\n- Packaging: pip-tools lock with hashes; no unpinned deps.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.645126",
+        "disabled_at": "2025-10-23T19:29:48.657752",
         "maintenance_complete": true
       },
       "metadata": {
@@ -1989,12 +1989,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- eslint + prettier required; no `any` in committed code.\n- API types are generated from OpenAPI; do not hand-roll DTOs for server contracts.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.687027",
+        "disabled_at": "2025-10-23T19:29:48.697163",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2011,12 +2011,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Mutations MUST accept Idempotency-Key; lists are cursor-paginated; standard headers include X-API-Version and X-Request-Id.\n- Stable error envelope with canonical codes; no 200-with-error patterns.\n- Changes that are breaking require a new major version and deprecation process.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.726246",
+        "disabled_at": "2025-10-23T19:29:48.735693",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2033,12 +2033,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Schema changes ONLY via Alembic; additive-first; include safe DOWN migration.\n- SQLite (dev/test) uses WAL + busy_timeout=5000; mirror Postgres schema.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.771909",
+        "disabled_at": "2025-10-23T19:29:48.776733",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2055,12 +2055,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Validate inputs; set security headers; CORS allowlist only (no * in prod).\n- Run dependency & secret scans; block known CVEs.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.814212",
+        "disabled_at": "2025-10-23T19:29:48.816059",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2077,12 +2077,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Emit JSONL receipts for privileged actions (planned/success/aborted/error) with ts_utc, monotonic_hw_time_ms, traceId, policy_snapshot_hash.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.854937",
+        "disabled_at": "2025-10-23T19:29:48.857596",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2099,12 +2099,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- DB tests transactional with rollback; CI must run unit + integration tests; coverage must not drop.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.883833",
+        "disabled_at": "2025-10-23T19:29:48.895364",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2121,12 +2121,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Redact PII/secrets before inference; never log raw prompts with secrets.\n- For codegen, output ONLY the specified Return Contract format (see §12).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.937767",
+        "disabled_at": "2025-10-23T19:29:48.937800",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2143,12 +2143,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Container bases pinned by digest; non-root; read-only FS where possible.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:55.979179",
+        "disabled_at": "2025-10-23T19:29:48.975946",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2165,12 +2165,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.019708",
+        "disabled_at": "2025-10-23T19:29:49.014079",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2187,12 +2187,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.058616",
+        "disabled_at": "2025-10-23T19:29:49.052490",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2209,12 +2209,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "```diff\n# repo-root-relative paths\n# unified diff (git-style) with only minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: relative/path/to/new_file.ext\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nNo extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.097225",
+        "disabled_at": "2025-10-23T19:29:49.091127",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2231,12 +2231,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Type errors (mypy/TS strict) ............................. ERROR:TYPECHECK_FAIL\n- Tests missing or not updated ............................. ERROR:TEST_MISSING\n- OpenAPI breaking change w/o version bump ................. ERROR:OPENAPI_DIFF_BREAK\n- Alembic migration required but absent .................... ERROR:MIGRATION_REQUIRED\n- Secrets or PII exposed / hardcoded ....................... ERROR:SECRETS_LEAK\n- Writing outside allowed Return Contract format ........... ERROR:RETURN_CONTRACT_VIOLATION\n- Change exceeds LOC cap (no override) ..................... ERROR:LOC_LIMIT\n14) SELF-AUDIT BEFORE OUTPUT (MUST TICK)\n- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)\n- [ ] Lint/format/type-checks pass in principle\n- [ ] Tests added/updated; coverage unchanged or higher\n- [ ] OpenAPI accurate; no breaking change (or version bumped)\n- [ ] Alembic migration added if schema changed (with DOWN)\n- [ ] Logs structured; receipts for privileged actions\n- [ ] No secrets/PII in code/tests/examples/logs\nEND_CONSTITUTION\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.139196",
+        "disabled_at": "2025-10-23T19:29:49.132658",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2253,12 +2253,12 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "```markdown",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.175606",
+        "disabled_at": "2025-10-23T19:29:49.171079",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2275,12 +2275,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "What, Why, Reads/Writes (paths/tables/receipts), Contracts/Policy IDs, Risks.\nB) Imports‑level (top import block) — group stdlib / third‑party / local and say **why** each group exists.\nC) Function/Class‑level (public APIs) — WHAT + WHY + Steps + Inputs/Outputs (special rules only) + Fails/Throws + Security/Privacy note.\nD) Variable‑level (non‑obvious values/constants) — meaning, units, allowed range, and reason.\nE) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.213794",
+        "disabled_at": "2025-10-23T19:29:49.209521",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2297,12 +2297,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- service: plain business rule; which API/DB it touches.\n- log: what we log and why; redaction rules; include traceId.\n- receipt: what decision is recorded; include ts_utc, monotonic_hw_time_ms, action, result, traceId, policy_snapshot_hash.\n- db (migration): why now; online‑safe plan (additive first, concurrent index); rollback; cutover flag.\n- blob: format; size limits; storage path; privacy (redaction/encryption if any).\n- backup: schedule; retention; restore test plan.\n- audit: append‑only rule; who writes; integrity check (hash/signature).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.257645",
+        "disabled_at": "2025-10-23T19:29:49.247771",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2319,12 +2319,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.296876",
+        "disabled_at": "2025-10-23T19:29:49.286684",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2341,12 +2341,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- **Flexible Formats** (all acceptable):\n  - `TODO(john.doe): Fix login bug [BUG-123] [2024-12-31]`\n  - `TODO(@team): Refactor API [TASK-456] [Q1-2025]`\n  - `TODO(me): Add tests [2024-12-15]`\n  - `TODO(owner): description` (minimal acceptable)\n- **Auto-Formatting**: System can suggest standard format\n- **Accountability**: Must include owner (name, @team, or \"me\")\n- **Optional**: Ticket number and due date for better tracking",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.332586",
+        "disabled_at": "2025-10-23T19:29:49.325985",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2363,12 +2363,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "```diff\n# repo‑root‑relative paths\n# unified diff (git‑style) with only the minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: relative/path/to/new_file.ext\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nIf output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.373190",
+        "disabled_at": "2025-10-23T19:29:49.377290",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2385,12 +2385,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- [ ] Imports grouped and explained (why we need them)\n- [ ] Public APIs have simple docs with WHY + Steps + Fails/Throws + Security\n- [ ] Non‑obvious variables show meaning/units/range/reason\n- [ ] Tricky logic has a PLAN/RATIONALE block\n- [ ] No jargon; short sentences; no secrets/PII",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.407968",
+        "disabled_at": "2025-10-23T19:29:49.417421",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2407,12 +2407,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- Complex logic lacks a plan/rationale ................. ERROR:COMMENT_RATIONALE_MISSING\n- Readability issues (jargon/long sentences) ........... ERROR:READABILITY_COMPLEX\n- TODO without owner/date/ticket ....................... ERROR:TODO_UNBOUNDED (R089)\n- Secrets/PII in comments .............................. ERROR:COMMENT_SECRETS\n- Comment restates code only ........................... ERROR:COMMENT_REDUNDANT\n- Units/range missing for key variable ................. ERROR:UNIT_MISSING\n- Header lacks contract/policy link when relevant ...... ERROR:LINK_MISSING\n- Return format not honored ............................ ERROR:RETURN_CONTRACT_VIOLATION\nEND_CONSTITUTION\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.447095",
+        "disabled_at": "2025-10-23T19:29:49.457263",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2429,12 +2429,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "configs/contracts/http/v*/ (OpenAPI 3.1: openapi.yaml, components.yaml, examples/)\n  configs/contracts/async/   (AsyncAPI for events, if any)\n  configs/schemas/           (shared JSON Schemas 2020‑12)\n  tools/contract‑lint/       (spectral rules)\n  tools/contract‑tests/      (provider + consumer contract test config)\n  docs/api/                  (rendered docs configs)\n- Do NOT write contracts elsewhere. Path outside this tree → ERROR:SPEC_PATH_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.493042",
+        "disabled_at": "2025-10-23T19:29:49.496796",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2451,12 +2451,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- URIs: nouns + ids: /v1/projects/{projectId}/releases/{releaseId} (kebab‑case tokens).\n- IDs: UUIDv7 strings; never expose DB autoincrement ids.\n- Timestamps: ISO‑8601 UTC with Z; server stores timestamptz.\n- Pagination: cursor‑based with nextCursor (no offset pagination for high‑volume lists).\n- Idempotency: all mutating routes accept Idempotency‑Key; conflicting replay → 409 with prior receipt ref.\n**Idempotency retention window:** default **24h** (document per route if different). Store a hash of the request body per key; mismatched replay returns **409** with a link to the original receipt.\n- Headers (standard): X‑API‑Version, X‑Request‑Id, X‑RateLimit‑*, X‑Tenant‑Id (UUIDv7).\n- Error envelope (Problem JSON‑style): stable code, human message, traceId, optional details.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.531823",
+        "disabled_at": "2025-10-23T19:29:49.539181",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2473,12 +2473,12 @@
       "category": "comments",
       "priority": "critical",
       "content": "- Breaking (block without bump): remove/rename field/endpoint; type change; optional→required; enum narrowing; behavior or default change.\n- Non‑breaking: add endpoint; add optional field; enum widening (consumers must tolerate unknowns).\n- Deprecation: mark deprecated: true, emit Sunset header with date, publish migration notes (≥90 days).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.569689",
+        "disabled_at": "2025-10-23T19:29:49.584363",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2495,12 +2495,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- JWKS endpoint documented; require kid on tokens.\n- Rate limits: declare headers; exceeding returns 429 deterministically.\n- Tenancy: X‑Tenant‑Id semantics documented; isolation guarantees stated.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.606475",
+        "disabled_at": "2025-10-23T19:29:49.623691",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2517,12 +2517,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- HTTP mapping: 400 VALIDATION_ERROR; 401 AUTH_UNAUTHENTICATED; 403 AUTH_FORBIDDEN; 404 RESOURCE_NOT_FOUND; 409 CONFLICT; 412 PRECONDITION_FAILED; 422 SEMANTIC_INVALID; 429 RATE_LIMITED; 500 INTERNAL_ERROR; 503 SERVICE_UNAVAILABLE.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.641470",
+        "disabled_at": "2025-10-23T19:29:49.666352",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2539,12 +2539,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- If‑None‑Match + Last‑Modified/If‑Modified‑Since for cacheable GETs.\n- Document Cache‑Control and freshness lifetimes per route.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.687577",
+        "disabled_at": "2025-10-23T19:29:49.704296",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2561,12 +2561,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.\n- Example validation: JSON examples must validate against schemas for success & error cases.\n- Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.\n- Mock server: boot from spec for previews. SDKs generated on release (TS & Python) — no hand‑rolled DTOs.\n**SDK naming/versioning policy:**\n- TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.\n- Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.720718",
+        "disabled_at": "2025-10-23T19:29:49.744086",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2583,12 +2583,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Sampling validator middleware validates N% (1–5%) of live req/resp bodies against JSON Schemas; violations emit receipts with payload HASHES only.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.761178",
+        "disabled_at": "2025-10-23T19:29:49.781571",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2605,12 +2605,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc, monotonic_hw_time_ms, actor, service, action, version, traceId, policy_snapshot_hash, result.\n- Governance: CODEOWNERS requires Contract Owner + Guild approvals; PR review SLA ≤ 2 business days.\n- Optional `receipt_signature` (Ed25519) for high-trust actions (`contract.publish`, `contract.diff`).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.798642",
+        "disabled_at": "2025-10-23T19:29:49.826959",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2627,12 +2627,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Publish SLOs per GA route (p95 latency, error budgets) in docs/policy.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.838270",
+        "disabled_at": "2025-10-23T19:29:49.866437",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2649,12 +2649,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "```diff\n# repo‑root‑relative paths\n# unified diff (git‑style) with only minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: configs/contracts/http/v1/openapi.yaml\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nNo extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.876305",
+        "disabled_at": "2025-10-23T19:29:49.904524",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2671,12 +2671,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Breaking diff without version bump .................... ERROR:OPENAPI_DIFF_BREAK\n- Invalid or missing examples ........................... ERROR:EXAMPLES_INVALID\n- Provider/consumer contract tests failing .............. ERROR:CONTRACT_TEST_FAIL\n- Spec path outside SoT tree ............................ ERROR:SPEC_PATH_VIOLATION\n- PII in examples or raw bodies in receipts/logs ........ ERROR:PII_LEAK\n- Missing required headers/security/pagination contract . ERROR:CONTRACT_INCOMPLETE\n- Return format not honored ............................. ERROR:RETURN_CONTRACT_VIOLATION\n- Change exceeds LOC cap (no override) .................. ERROR:LOC_LIMIT\n13) SELF‑AUDIT BEFORE OUTPUT\n- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)\n- [ ] Spectral lint passes; examples validate\n- [ ] OpenAPI diff non‑breaking (or version bumped + notes)\n- [ ] Contract tests adjusted (provider + consumers if applicable)\n- [ ] Security headers/scopes/JWKS documented; error codes from registry\n- [ ] Pagination/idempotency/caching semantics present where relevant\n- [ ] Receipts for contract.diff/publish; no PII; logs structured\nEND_CONSTITUTION\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.903211",
+        "disabled_at": "2025-10-23T19:29:49.942007",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2693,12 +2693,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- You may only write under these allowlisted subfolders:\n  servers/*/(config|services|logs|receipts|data)/**\n  storage/*/(db|blobs|backups|audit)/**\n- Never create new top-level names besides these eight:\n  ZeroUIClientServer, ZeroUIProductServer, ZeroUILocalServer, ZeroUISharedServer;\n  ZeroUIClientStorage, ZeroUIProductStorage, ZeroUILocalStorage, ZeroUISharedStorage.\n- Persistence MUST go via <server>/data/ (junction to paired storage). If junction missing → ERROR:JUNCTION_MISSING.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.951198",
+        "disabled_at": "2025-10-23T19:29:49.981474",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2715,12 +2715,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc (ISO-8601 Z), monotonic_hw_time_ms, actor (human|ai), service, action, status (planned|success|aborted|error), traceId, policy_snapshot_hash, inputs_hash/outputs_hash (if applicable), notes.\n- Logs MUST be structured JSON; do not log secrets or full request bodies.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:56.989164",
+        "disabled_at": "2025-10-23T19:29:50.106876",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2737,12 +2737,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Secrets never in repo or code. Use environment + OS keyring/DPAPI; .env.template only.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.013660",
+        "disabled_at": "2025-10-23T19:29:50.165239",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2759,12 +2759,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Stable error envelope with canonical codes; always return structured errors.\n- Idempotency-Key required for mutating endpoints; cursor-based pagination for lists; standard headers: X-API-Version, X-Request-Id (trace).\n- FastAPI: Pydantic v2 models; response_model set on every route; strict validation; never return raw ORM.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.065545",
+        "disabled_at": "2025-10-23T19:29:50.204074",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2781,12 +2781,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Schema changes ONLY via Alembic; additive-first; include safe down migration.\n- SQLite dev/test pragmas: WAL + busy_timeout=5000ms; mirror Postgres schema.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.107471",
+        "disabled_at": "2025-10-23T19:29:50.242721",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2803,12 +2803,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- TypeScript: eslint + prettier; tsconfig \"strict\": true and exactOptionalPropertyTypes; no any in committed code.\n- CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.196672",
+        "disabled_at": "2025-10-23T19:29:50.281483",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2825,12 +2825,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Never exfiltrate data; respect redaction policies. For generated outputs, emit ONLY the specified return contract (see §11).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.248148",
+        "disabled_at": "2025-10-23T19:29:50.319117",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2847,12 +2847,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Never write to storage/** directly; always via servers/*/data/**. Case-sensitive name checks on canonical folders.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.286808",
+        "disabled_at": "2025-10-23T19:29:50.358744",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2869,12 +2869,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- If you change a contract or DB schema, also update tests, examples, and migrations within the same change.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.322254",
+        "disabled_at": "2025-10-23T19:29:50.397061",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2891,12 +2891,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "A) Unified Diff (default for code):\n     ```diff\n     # repo-root-relative paths\n     # unified diff (git-style) with only minimal changes\n     ```\n  B) New File (exactly one file):\n     ```text\n     #path: relative/path/to/new_file.ext\n     <entire file content only>\n     ```\n  C) JSON Artifact (policy/config/schema):\n     ```json\n     { …valid JSON only… }\n     ```\n- No extra prose, banners, or screenshots. If you cannot satisfy the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.360182",
+        "disabled_at": "2025-10-23T19:29:50.434598",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2913,12 +2913,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Unknown top-level folder name…………… ERROR:NAME_VIOLATION\n- ZEROUI_ROOT or root_mode invalid……… ERROR:PATH_ROOT_MISSING\n- Missing <server>/data junction…………… ERROR:JUNCTION_MISSING\n- Attempt to hardcode secrets/thresholds… ERROR:POLICY_VIOLATION\n- Change exceeds LOC cap……………………… ERROR:LOC_LIMIT\n- Missing response_model / raw ORM……… ERROR:CONTRACT_VIOLATION\n- Alembic migration absent for schema…… ERROR:MIGRATION_REQUIRED",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.403351",
+        "disabled_at": "2025-10-23T19:29:50.475442",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2935,12 +2935,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- [ ] Paths resolve via ZEROUI_ROOT + paths.json; only allowlisted dirs\n- [ ] INTENT & RESULT receipts added where applicable\n- [ ] No secrets/PII; no hardcoded thresholds/messages\n- [ ] Lint/type/tests pass in principle; OpenAPI/Alembic updated if relevant\n- [ ] Output matches one allowed RETURN CONTRACT format\n- Verify each `<server>/data` is a **junction** to its paired storage; if not, return `ERROR:JUNCTION_MISSING` before any writes.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.441445",
+        "disabled_at": "2025-10-23T19:29:50.514380",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2957,12 +2957,12 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Contracts stable or version-bumped with migration notes\n- Migrations included (with down path) if schema changed\n- Logs/metrics wired; rollback path clear (revert/migration down)\nEND_CONSTITUTION\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.480015",
+        "disabled_at": "2025-10-23T19:29:50.554503",
         "maintenance_complete": true
       },
       "metadata": {
@@ -2979,12 +2979,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Timestamps: ISO-8601 with Z (UTC). Include monotonic_hw_time_ms for ordering.\n- Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns.\n- Encoding: UTF-8 only, no BOM. No multi-line logs.\n- Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars.\n- Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.519609",
+        "disabled_at": "2025-10-23T19:29:50.593535",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3001,12 +3001,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- ts_utc, monotonic_hw_time_ms\n- level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL\n- service, version, env, host\n- traceId, spanId, parentSpanId (W3C trace context). If missing, generate and propagate.\n- requestId (X-Request-Id), userId_hash (if applicable), tenantId (UUIDv7) — userId_hash is salted per-tenant.\n- event: short stable name, e.g., \"request.start\", \"request.end\", \"db.query\", \"external.call\", \"receipt.emit\"\n- route/method/status (for HTTP), apiVersion\n- latencyMs, attempt, retryable\n- payload_hash, payload_size, sample_reason (if sampled)\n- error.code, error.message_redacted, error.stack_fingerprint (when level ≥ ERROR)\n- idempotencyKey_hash (if present), cursor_hint (for pagination)\n- policy_snapshot_hash (if decision), feature_flag (if used)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.556823",
+        "disabled_at": "2025-10-23T19:29:50.631972",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3023,12 +3023,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- error.code ≤ 40; error.message_redacted ≤ 512; stack_fingerprint ≤ 128\n- Truncate free-text fields > 512 chars. Arrays: max 50 items. Always include payload_size.\n- LOG_MAX_EVENT_BYTES default 65536; truncate & set truncation flags if exceeded.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.593708",
+        "disabled_at": "2025-10-23T19:29:50.670574",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3045,12 +3045,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- userId_hash = sha256(tenant_salt || user_id). Do not cross-tenant correlate.\n- idempotencyKey_hash = sha256(key). payload_hash = sha256(redacted_payload_bytes).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.632188",
+        "disabled_at": "2025-10-23T19:29:50.710112",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3067,12 +3067,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- db.query / db.error\n- cache.hit / cache.miss\n- external.call.start / external.call.end / external.call.error\n- llm.invoke.start / llm.invoke.end / llm.invoke.error\n- receipt.emit\n- contract.violation\n- policy.decision\n- migration.start / migration.end\n- app.start / app.stop / health.ok / health.error\n2.1) LLM EVENT FIELDS",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.669417",
+        "disabled_at": "2025-10-23T19:29:50.757377",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3089,12 +3089,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- **caused_by** (event_id or null) — causal parent when not captured by parentSpanId.\n- **links[]** — related event/message/job IDs for async handoffs.\n- **job_id**, **queue_name**, **message_id**, **schedule_id** — background and queue processing.\n- **workflow_id**, **saga_id** — multi‑request or long‑running business flows.\n- **component** — sub‑system name (e.g., policy.engine, payments.gateway).\n- **phase** — one of: input | process | output | cleanup.\n- **git_sha**, **build_id**, **config_version** — deployment fingerprints.\n- **severity_code** — S0..S4; **user_impact** — none | one | many.\n- model, input_tokens, output_tokens, latencyMs, prompt_hash, output_hash, policy_snapshot_hash.\n- Never log raw prompts/outputs. Always emit llm.invoke.end; if failure, include error.* and success=false.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.709175",
+        "disabled_at": "2025-10-23T19:29:50.795949",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3111,12 +3111,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Prod: INFO by default. DEBUG only with a temporary WAIVER (id + expiry).\n- Errors: use ERROR for failures that returned 4xx/5xx; WARN for recoverable issues.\n- Never log FATAL without an immediate exit path.\n- Map error.code to central error registry (same codes as API Contracts).",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.750906",
+        "disabled_at": "2025-10-23T19:29:50.832273",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3133,12 +3133,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Do not log full request/response bodies. Log hashes, sizes, and a small redacted sample if needed.\n- Large values: truncate strings > 1024 bytes; arrays > 50 items; always include payload_size and payload_hash (SHA-256, hex).\n- Client IP: store anonymized/hashed form only.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.789762",
+        "disabled_at": "2025-10-23T19:29:50.870306",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3155,12 +3155,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Always attach **traceId/spanId** and pass **X-Request-Id** (generate if missing).\n- Exactly one **request.start** and one **request.end** per handled request (same traceId/requestId).\n- For retries/backoff: include **attempt**, **backoffMs**, **retryable**.\n- For idempotency: include **idempotencyKey_hash** + **replay=true/false**.\n- For async hops (queues/schedulers): include **links[]**, **job_id**, **queue_name**, **message_id**, **schedule_id**.\n- For cross‑request business flows: include **workflow_id** or **saga_id**.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.828189",
+        "disabled_at": "2025-10-23T19:29:50.906338",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3177,12 +3177,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc, monotonic_hw_time_ms, actor (human|ai), service, action, result, traceId, policy_snapshot_hash, inputs_hash, outputs_hash.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.866792",
+        "disabled_at": "2025-10-23T19:29:50.943609",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3199,12 +3199,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Default sampling: DEBUG (1–10%), INFO (100%), TRACE (off).\n- Dynamic knobs (env): LOG_SAMPLE_DEBUG=0.1, LOG_SAMPLE_DB_QUERY=0.05, LOG_MAX_EVENT_BYTES=65536.\n- CI blocks events > LOG_MAX_EVENT_BYTES unless truncation fields are present.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.904545",
+        "disabled_at": "2025-10-23T19:29:50.986316",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3221,12 +3221,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- FastAPI middleware: log request.start and request.end (route, method, status, latencyMs, traceId, requestId).\n- DB: log query summaries (table, op, row_count) not raw SQL; attach elapsedMs.\n- TS: add interceptors to log external.call.* with url_host, method, status, latencyMs.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.941055",
+        "disabled_at": "2025-10-23T19:29:51.024140",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3243,12 +3243,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Retention: app logs ≥ 14 days locally; receipts ≥ 90 days (or per policy).\n- Compression after rotation is allowed; do not compress live file.\n- Writing: UTF-8 (no BOM), CRLF-safe, one JSON per line with flush after each write. Guard against partial lines on power loss.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:57.977511",
+        "disabled_at": "2025-10-23T19:29:51.062064",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3265,12 +3265,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Missing traceId/requestId on request/end ……… ERROR:MISSING_TRACE_ID\n- Secrets/PII present in any log ………………… ERROR:PII_LEAK\n- Full payload logged (no redaction) ……………… ERROR:PAYLOAD_NOT_REDACTED\n- Missing error.code on ERROR level ……………… ERROR:MISSING_ERROR_CODE\n- Oversized event (> LOG_MAX_EVENT_BYTES) ……… ERROR:OVERSIZED_EVENT\n- Chatty code without sampling …………………… ERROR:SAMPLING_MISSING\n- Log level policy violated ……………………… ERROR:LOG_LEVEL_VIOLATION\n- Invalid JSON (serialization) …………………… ERROR:JSON_INVALID\n- No link to receipt on privileged action ………… ERROR:MISSING_RECEIPT_LINK",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.015051",
+        "disabled_at": "2025-10-23T19:29:51.099536",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3287,12 +3287,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "# repo-root-relative paths\n# unified diff (git-style) with only minimal changes\nB) New File (exactly one file)\n#path: relative/path/to/new_file.ext\n<entire file content only>\nC) JSON Artifact (policy/config/schema)\n{ ...valid JSON only... }\nIf output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.038563",
+        "disabled_at": "2025-10-23T19:29:51.137985",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3309,12 +3309,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Block merge if schema fails or if required fields/limits are missing.\n13) SELF-AUDIT (CHECK BEFORE OUTPUT)\n- [ ] JSONL, ISO-8601 Z, monotonic time (ns→ms), Windows-safe write\n- [ ] Required fields present (traceId, requestId, event, level, latencyMs, schema version)\n- [ ] No secrets/PII; payloads hashed/truncated; sizes included\n- [ ] Sampling set for chatty events; budgets respected; runtime knobs documented\n- [ ] request.start/request.end present with correlation\n- [ ] Receipts for privileged actions; link receipt_id in logs; error.code maps to registry\nEND_CONSTITUTION\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.081623",
+        "disabled_at": "2025-10-23T19:29:51.176267",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3331,12 +3331,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.121341",
+        "disabled_at": "2025-10-23T19:29:51.213771",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3353,12 +3353,12 @@
       "category": "logging",
       "priority": "critical",
       "content": "- `HIGH`: DEPENDENCY_FAILED, UNEXPECTED_ERROR, TIMEOUT\n- `MEDIUM`: RATE_LIMITED, CONFLICT, INVARIANT_VIOLATION  \n- `LOW`: VALIDATION_ERROR, NOT_FOUND, PERMISSION_DENIED, CANCELLED",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.165875",
+        "disabled_at": "2025-10-23T19:29:51.252485",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3375,12 +3375,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.203235",
+        "disabled_at": "2025-10-23T19:29:51.289145",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3397,12 +3397,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- maps codes → friendly messages\n- sets the right status/exit code  \n- logs details (with cause chain)",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.233262",
+        "disabled_at": "2025-10-23T19:29:51.327440",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3419,12 +3419,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.279320",
+        "disabled_at": "2025-10-23T19:29:51.364925",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3441,12 +3441,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.316067",
+        "disabled_at": "2025-10-23T19:29:51.402555",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3463,12 +3463,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.364848",
+        "disabled_at": "2025-10-23T19:29:51.441959",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3485,12 +3485,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.403303",
+        "disabled_at": "2025-10-23T19:29:51.479322",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3507,12 +3507,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- After `CANCELLED`: Reset operation state\n- After `DEPENDENCY_FAILED`: Show fallback content or retry later\n- After `VALIDATION_ERROR`: Guide user to correct input\n- Document when to show \"Try Again\" vs. \"Contact Support\"",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.440929",
+        "disabled_at": "2025-10-23T19:29:51.517793",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3529,12 +3529,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Include examples of proper wrapping patterns  \n- Document the \"why\" behind each major rule\n- Pair new developers with error handling experts",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.476059",
+        "disabled_at": "2025-10-23T19:29:51.558850",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3551,12 +3551,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.517112",
+        "disabled_at": "2025-10-23T19:29:51.598111",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3573,12 +3573,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.548792",
+        "disabled_at": "2025-10-23T19:29:51.638854",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3595,12 +3595,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.598989",
+        "disabled_at": "2025-10-23T19:29:51.678007",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3617,12 +3617,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.636199",
+        "disabled_at": "2025-10-23T19:29:51.715914",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3639,12 +3639,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.672873",
+        "disabled_at": "2025-10-23T19:29:51.752987",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3661,12 +3661,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.709046",
+        "disabled_at": "2025-10-23T19:29:51.791508",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3683,12 +3683,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.744470",
+        "disabled_at": "2025-10-23T19:29:51.829665",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3705,12 +3705,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.782013",
+        "disabled_at": "2025-10-23T19:29:51.869893",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3727,12 +3727,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.814485",
+        "disabled_at": "2025-10-23T19:29:51.917724",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3749,12 +3749,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.858170",
+        "disabled_at": "2025-10-23T19:29:51.959702",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3771,12 +3771,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.895659",
+        "disabled_at": "2025-10-23T19:29:51.996855",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3793,12 +3793,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Happy path\n- Timeouts and 5xx errors  \n- 4xx errors (validation/permission)\n- Dependency failures\n- Cleanup execution verification\n- Error cause chain preservation\n- Recovery behavior after errors",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.932148",
+        "disabled_at": "2025-10-23T19:29:52.034202",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3815,12 +3815,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:58.970905",
+        "disabled_at": "2025-10-23T19:29:52.071060",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3837,12 +3837,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.004165",
+        "disabled_at": "2025-10-23T19:29:52.123136",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3859,12 +3859,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.042031",
+        "disabled_at": "2025-10-23T19:29:52.161495",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3881,12 +3881,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Confidence level (e.g., \"I'm 85% sure this is right\")\n- Reasoning explanation (\"I'm suggesting this because...\")\n- AI version information (\"This was AI version 2.3\")",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.081695",
+        "disabled_at": "2025-10-23T19:29:52.199003",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3903,12 +3903,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.124398",
+        "disabled_at": "2025-10-23T19:29:52.235669",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3925,12 +3925,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.161501",
+        "disabled_at": "2025-10-23T19:29:52.273163",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3947,12 +3947,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Medium confidence (70-90%): Suggest with explanation\n- Low confidence (<70%): Ask for explicit user approval",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.200950",
+        "disabled_at": "2025-10-23T19:29:52.309898",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3969,12 +3969,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.239624",
+        "disabled_at": "2025-10-23T19:29:52.346585",
         "maintenance_complete": true
       },
       "metadata": {
@@ -3991,12 +3991,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.272196",
+        "disabled_at": "2025-10-23T19:29:52.384452",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4013,12 +4013,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.313120",
+        "disabled_at": "2025-10-23T19:29:52.421251",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4035,12 +4035,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.346263",
+        "disabled_at": "2025-10-23T19:29:52.458344",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4057,12 +4057,12 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.382185",
+        "disabled_at": "2025-10-23T19:29:52.495405",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4079,12 +4079,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.425502",
+        "disabled_at": "2025-10-23T19:29:52.533905",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4101,12 +4101,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.456999",
+        "disabled_at": "2025-10-23T19:29:52.571110",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4123,12 +4123,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "* files: kebab-case.ts\n* variables/functions: camelCase\n* types/interfaces/enums: PascalCase\n* constants: UPPER_SNAKE_CASE",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.504394",
+        "disabled_at": "2025-10-23T19:29:52.612589",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4145,12 +4145,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.551923",
+        "disabled_at": "2025-10-23T19:29:52.651061",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4167,12 +4167,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.583616",
+        "disabled_at": "2025-10-23T19:29:52.688970",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4189,12 +4189,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.615405",
+        "disabled_at": "2025-10-23T19:29:52.731256",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4211,12 +4211,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.649281",
+        "disabled_at": "2025-10-23T19:29:52.772156",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4233,12 +4233,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.695005",
+        "disabled_at": "2025-10-23T19:29:52.822716",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4255,12 +4255,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.742714",
+        "disabled_at": "2025-10-23T19:29:52.862654",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4277,12 +4277,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.782030",
+        "disabled_at": "2025-10-23T19:29:52.906676",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4299,12 +4299,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.832462",
+        "disabled_at": "2025-10-23T19:29:52.943896",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4321,12 +4321,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:25:59.974754",
+        "disabled_at": "2025-10-23T19:29:52.982355",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4343,12 +4343,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.008349",
+        "disabled_at": "2025-10-23T19:29:53.019974",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4365,12 +4365,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.054077",
+        "disabled_at": "2025-10-23T19:29:53.060705",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4387,12 +4387,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.094803",
+        "disabled_at": "2025-10-23T19:29:53.100968",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4409,12 +4409,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.133442",
+        "disabled_at": "2025-10-23T19:29:53.138037",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4431,12 +4431,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.171560",
+        "disabled_at": "2025-10-23T19:29:53.173931",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4453,12 +4453,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.212029",
+        "disabled_at": "2025-10-23T19:29:53.211463",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4475,12 +4475,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.249261",
+        "disabled_at": "2025-10-23T19:29:53.250537",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4497,12 +4497,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.282109",
+        "disabled_at": "2025-10-23T19:29:53.292068",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4519,12 +4519,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.324426",
+        "disabled_at": "2025-10-23T19:29:53.328350",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4541,12 +4541,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.348642",
+        "disabled_at": "2025-10-23T19:29:53.366561",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4563,12 +4563,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.397705",
+        "disabled_at": "2025-10-23T19:29:53.403353",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4585,12 +4585,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.443388",
+        "disabled_at": "2025-10-23T19:29:53.440867",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4607,12 +4607,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.481422",
+        "disabled_at": "2025-10-23T19:29:53.562252",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4629,12 +4629,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.519054",
+        "disabled_at": "2025-10-23T19:29:53.603459",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4651,12 +4651,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.554477",
+        "disabled_at": "2025-10-23T19:29:53.640897",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4673,12 +4673,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.597972",
+        "disabled_at": "2025-10-23T19:29:53.680229",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4695,12 +4695,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.641465",
+        "disabled_at": "2025-10-23T19:29:53.717791",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4717,12 +4717,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.685796",
+        "disabled_at": "2025-10-23T19:29:53.756536",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4739,12 +4739,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.726689",
+        "disabled_at": "2025-10-23T19:29:53.794971",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4761,12 +4761,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.760714",
+        "disabled_at": "2025-10-23T19:29:53.832572",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4783,12 +4783,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.800379",
+        "disabled_at": "2025-10-23T19:29:53.871222",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4805,12 +4805,12 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.836053",
+        "disabled_at": "2025-10-23T19:29:53.909034",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4827,12 +4827,12 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.877426",
+        "disabled_at": "2025-10-23T19:29:53.945947",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4849,12 +4849,12 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.919420",
+        "disabled_at": "2025-10-23T19:29:53.982650",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4871,12 +4871,12 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.951319",
+        "disabled_at": "2025-10-23T19:29:54.022068",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4893,12 +4893,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:00.991728",
+        "disabled_at": "2025-10-23T19:29:54.060814",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4915,12 +4915,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.029701",
+        "disabled_at": "2025-10-23T19:29:54.100875",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4937,12 +4937,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.071087",
+        "disabled_at": "2025-10-23T19:29:54.141807",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4959,12 +4959,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.104642",
+        "disabled_at": "2025-10-23T19:29:54.179982",
         "maintenance_complete": true
       },
       "metadata": {
@@ -4981,12 +4981,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.152325",
+        "disabled_at": "2025-10-23T19:29:54.221013",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5003,12 +5003,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.185140",
+        "disabled_at": "2025-10-23T19:29:54.259718",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5025,12 +5025,12 @@
       "category": "other",
       "priority": "important",
       "content": "- IDE: `agent/tmp/UNCLASSIFIED__<slug>`\n- Tenant/Product: `ingest/staging/unclassified/<slug>`\nResolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.236235",
+        "disabled_at": "2025-10-23T19:29:54.297151",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5047,12 +5047,12 @@
       "category": "other",
       "priority": "important",
       "content": "- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`\n- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`\n- `reporting/marts/dt=YYYY-MM-DD/`\n- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.274875",
+        "disabled_at": "2025-10-23T19:29:54.334453",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5069,12 +5069,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.311461",
+        "disabled_at": "2025-10-23T19:29:54.370518",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5091,12 +5091,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.348982",
+        "disabled_at": "2025-10-23T19:29:54.413980",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5113,12 +5113,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.387184",
+        "disabled_at": "2025-10-23T19:29:54.456666",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5135,12 +5135,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.423815",
+        "disabled_at": "2025-10-23T19:29:54.492897",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5157,12 +5157,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\ngsmd/modules/M{NN}/{slug}/v{major}/snapshot.json\n```\nTreat these files as the **single source of truth** for governance decisions. Do not place snapshots anywhere else.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.459569",
+        "disabled_at": "2025-10-23T19:29:54.532150",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5179,12 +5179,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.498322",
+        "disabled_at": "2025-10-23T19:29:54.568026",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5201,12 +5201,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.534024",
+        "disabled_at": "2025-10-23T19:29:54.606330",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5223,12 +5223,12 @@
       "category": "other",
       "priority": "important",
       "content": "- `snapshot_id` pattern: `SNAP.M\\d{2}.[a-z0-9_.]+.(v|V)\\d+`\n- `module_id` pattern: `M\\d{2}`\n- `snapshot_hash` equal to **sha256** of file contents (hex) prefixed with `sha256:`\n- `signature` and `kid` present\n- `effective_from` ISO-8601  \nUse `tools/gsmd-check.ps1` to verify. Fail CI if any check fails.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.571016",
+        "disabled_at": "2025-10-23T19:29:54.644503",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5245,12 +5245,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\npre-commit | pre-merge | pre-deploy | post-deploy\n```\nCode and receipts must use only these values.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.605819",
+        "disabled_at": "2025-10-23T19:29:54.683381",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5267,12 +5267,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\ndecision, rationale, policy_snapshot_hash, policy_version_ids[],\nevaluation_point, actor_id, repo_id, timestamps.hw, signature\n```\nValues for `policy_snapshot_hash` and `policy_version_ids[]` MUST come from the snapshot actually used.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.638125",
+        "disabled_at": "2025-10-23T19:29:54.722170",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5289,12 +5289,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.668914",
+        "disabled_at": "2025-10-23T19:29:54.758834",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5311,12 +5311,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\ntenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],\nwaiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],\nttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},\nkid, signature\n```\nOverrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.715276",
+        "disabled_at": "2025-10-23T19:29:54.795036",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5333,12 +5333,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.755415",
+        "disabled_at": "2025-10-23T19:29:54.853441",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5355,12 +5355,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\npass | warn | soft_block | hard_block\n```\nHonor snapshot `messages.status_pill.*` and `rollout.default_mode`. Do not invent new statuses.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.790055",
+        "disabled_at": "2025-10-23T19:29:54.892028",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5377,12 +5377,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.832184",
+        "disabled_at": "2025-10-23T19:29:54.984281",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5399,12 +5399,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.873434",
+        "disabled_at": "2025-10-23T19:29:55.029599",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5421,12 +5421,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.915358",
+        "disabled_at": "2025-10-23T19:29:55.069678",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5443,12 +5443,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.950848",
+        "disabled_at": "2025-10-23T19:29:55.108234",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5465,12 +5465,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\n./tools/gsmd-check.ps1 -Root ./gsmd -VerboseOutput\n```\nBlock merge on any failure.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:01.985954",
+        "disabled_at": "2025-10-23T19:29:55.147566",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5487,12 +5487,12 @@
       "category": "other",
       "priority": "important",
       "content": "```\n./tools/manifest-build.ps1   -Root ./gsmd -OutDir ./gsmd/releases -Kid \"<KID>\"\n./tools/manifest-verify.ps1  -Root . -Manifest <path\\\\to\\\\manifest.json>\n```\nBlock release if file hashes or Merkle root mismatch.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.022543",
+        "disabled_at": "2025-10-23T19:29:55.186891",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5509,12 +5509,12 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.070409",
+        "disabled_at": "2025-10-23T19:29:55.225151",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5531,12 +5531,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Read the relevant snapshot fields first\n- Surface `snapshot_id`, `policy_version_ids[]`, `policy_snapshot_hash`\n- Propose **new version** files for policy changes (no in-place edits)\n- Suggest running the CI gates above",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.202995",
+        "disabled_at": "2025-10-23T19:29:55.267475",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5553,12 +5553,12 @@
       "category": "other",
       "priority": "important",
       "content": "- **New File** → for adding `.../v{new}/snapshot.json` (full file content)\n- **JSON Artifact** → for overrides/receipts (valid JSON only)\n- **Unified Diff** → never used to mutate existing snapshots; use only for non-policy code/config  \nViolations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.252342",
+        "disabled_at": "2025-10-23T19:29:55.307309",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5575,12 +5575,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Attempt to modify existing snapshot ............... `ERROR:GSMD_MUTATION_DENIED`  \n- Hash mismatch vs `snapshot_hash` .................. `ERROR:GSMD_HASH_MISMATCH`  \n- Missing/invalid signature or `kid` ................ `ERROR:GSMD_SIGNATURE_MISSING`  \n- Invalid evaluation_point .......................... `ERROR:GSMD_EVALPOINT_INVALID`  \n- Receipt missing required fields ................... `ERROR:GSMD_RECEIPT_FIELDS_MISSING`  \n- Override missing ttl/approvals/signature .......... `ERROR:GSMD_OVERRIDE_INVALID`  \n- Approvals < 2 on override ......................... `ERROR:GSMD_APPROVALS_INSUFFICIENT`  \n- Manifest verify (hash/Merkle) fail ................ `ERROR:GSMD_MANIFEST_INVALID`  \n- Decision not in allowed set ....................... `ERROR:GSMD_DECISION_INVALID`  \n- Privacy redaction not applied ..................... `ERROR:GSMD_PRIVACY_DRIFT`  \n- Tests/fixtures absent for declared policy ......... `ERROR:GSMD_TESTS_MISSING`  \n- Return contract not honored ....................... `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.289975",
+        "disabled_at": "2025-10-23T19:29:55.351670",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5597,12 +5597,12 @@
       "category": "other",
       "priority": "important",
       "content": "- [ ] Snapshot patterns/fields valid; `snapshot_hash` recomputes  \n- [ ] Evaluation point valid; decision ∈ {pass,warn,soft_block,hard_block}  \n- [ ] Receipt fields complete and signed; values sourced from snapshot  \n- [ ] Overrides time-boxed (ttl) with ≥2 approvals; signed  \n- [ ] CI gates added (`gsmd-check`, manifest build/verify)  \n- [ ] Privacy redactions applied; no PII/secrets in logs or receipts  \n- [ ] Output matches allowed return contract",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.326784",
+        "disabled_at": "2025-10-23T19:29:55.389618",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5619,12 +5619,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `usr_ctx_mgr` → ✅ `user_account_manager`\n- ❌ `db_conn_pool` → ✅ `database_connections`\n- ❌ `cfg_mgr` → ✅ `settings_manager`\n- ❌ `calc_total` → ✅ `calculate_total_price`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.364180",
+        "disabled_at": "2025-10-23T19:29:55.426026",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5641,12 +5641,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `if (x > 0 && y < 100)` → ✅ `if (user_age_is_valid && score_is_within_range)`\n- ❌ `return calc(x, y, z)` → ✅ `return calculate_total_price(quantity, unit_price, tax_rate)`\n- ❌ `processUserData()` → ✅ `validate_user_email_and_save_to_database()`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.400376",
+        "disabled_at": "2025-10-23T19:29:55.462978",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5663,12 +5663,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Maximum 20 lines per function\n- Function name should clearly describe what it does\n- Break complex functions into smaller, focused ones",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.437293",
+        "disabled_at": "2025-10-23T19:29:55.499926",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5685,12 +5685,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `// Increment counter` → ✅ `// Count failed login attempts to detect brute force attacks`\n- ❌ `// Loop through array` → ✅ `// Check each customer's payment status to identify overdue accounts`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.473478",
+        "disabled_at": "2025-10-23T19:29:55.536824",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5707,12 +5707,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `result = a ? b : c ? d : e` → ✅ Use clear if-else statements\n- ❌ `return x && y && z ? process() : null` → ✅ Break into simple steps",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.510801",
+        "disabled_at": "2025-10-23T19:29:55.581846",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5729,12 +5729,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Database connection pooling\"` → ✅ `\"Like a taxi stand - cars wait for passengers instead of creating new ones each time\"`\n- ❌ `\"API rate limiting\"` → ✅ `\"Like a bouncer at a club - only letting in a certain number of people per minute\"`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.550664",
+        "disabled_at": "2025-10-23T19:29:55.622000",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5751,12 +5751,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Use helper functions to break down complex operations\n- ❌ One 100-line function → ✅ Five 20-line functions with clear names",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.586972",
+        "disabled_at": "2025-10-23T19:29:55.659554",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5773,12 +5773,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Align similar operations\n- Use consistent indentation (4 spaces)\n- Leave blank lines between logical sections",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.622650",
+        "disabled_at": "2025-10-23T19:29:55.697875",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5795,12 +5795,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Error 500\"` → ✅ `\"The email address 'john@' is missing the domain part. Please enter a complete email like 'john@example.com'\"`\n- ❌ `\"Null pointer exception\"` → ✅ `\"The user's profile picture is missing. Please upload a photo or use the default avatar.\"`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.655047",
+        "disabled_at": "2025-10-23T19:29:55.734537",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5817,12 +5817,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ Mixing `user`, `usr`, `customer`, `client` → ✅ Always use `user`\n- ❌ Mixing `get`, `fetch`, `retrieve` → ✅ Always use `get`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.696961",
+        "disabled_at": "2025-10-23T19:29:55.773590",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5839,12 +5839,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `calc`, `mgr`, `ctx` → ✅ `calculate`, `manager`, `context`\n- ✅ Allow common ones: `id`, `url`, `api`, `db`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.737683",
+        "disabled_at": "2025-10-23T19:29:55.809675",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5861,12 +5861,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Execute database transaction\"` → ✅ `\"Save the customer's order\"`\n- ❌ `\"Initialize object instance\"` → ✅ `\"Create a new user account\"`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.779898",
+        "disabled_at": "2025-10-23T19:29:55.847133",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5883,12 +5883,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `return (a * b) + (c * d) - (e / f)` → ✅ \n```python\nbase_price = quantity * unit_price\ntax_amount = base_price * tax_rate\ndiscount = base_price * discount_percentage\nfinal_price = base_price + tax_amount - discount\nreturn final_price\n```",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.815212",
+        "disabled_at": "2025-10-23T19:29:55.883985",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5905,12 +5905,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Provide next steps, not just error codes\n- ❌ `\"Validation failed\"` → ✅ `\"The password must be at least 8 characters long. Please add 3 more characters.\"`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.855430",
+        "disabled_at": "2025-10-23T19:29:55.921202",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5927,12 +5927,12 @@
       "category": "other",
       "priority": "important",
       "content": "- Comments should only explain \"why\", not \"what\"\n- If you need comments to explain \"what\", the code needs to be clearer",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.891200",
+        "disabled_at": "2025-10-23T19:29:55.957648",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5949,12 +5949,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `test_user()` → ✅ `test_user_can_login_with_valid_credentials()`\n- ❌ `test_error()` → ✅ `test_system_shows_helpful_message_when_email_is_invalid()`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.928732",
+        "disabled_at": "2025-10-23T19:29:55.995009",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5971,12 +5971,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `if (age > 18)` → ✅ `if (age >= MINIMUM_ADULT_AGE)`\n- ❌ `timeout = 5000` → ✅ `timeout = FIVE_SECONDS_IN_MILLISECONDS`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:02.967277",
+        "disabled_at": "2025-10-23T19:29:56.030162",
         "maintenance_complete": true
       },
       "metadata": {
@@ -5993,12 +5993,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Functional programming (map, filter, reduce, fold)\n- ❌ **BANNED**: Object-oriented inheritance, polymorphism, abstract classes\n- ❌ **BANNED**: Design patterns (singleton, factory, observer, etc.)\n- ✅ **ALLOWED**: Simple if-else, for loops, basic functions, simple classes",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.009734",
+        "disabled_at": "2025-10-23T19:29:56.067978",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6015,12 +6015,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Hash maps, sets, tuples, linked lists, trees\n- ❌ **BANNED**: JSON parsing, XML parsing, complex serialization\n- ✅ **ALLOWED**: Simple arrays, simple objects with 2-3 properties max",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.045954",
+        "disabled_at": "2025-10-23T19:29:56.104491",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6037,12 +6037,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Template literals, string interpolation\n- ❌ **BANNED**: Encoding/decoding, base64, hashing\n- ✅ **ALLOWED**: Basic string concatenation, simple replace, length check",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.083737",
+        "disabled_at": "2025-10-23T19:29:56.141823",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6059,12 +6059,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Custom error types, error propagation\n- ❌ **BANNED**: Retry logic, circuit breakers, fallback mechanisms\n- ✅ **ALLOWED**: Simple if-else checks, basic validation",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.121293",
+        "disabled_at": "2025-10-23T19:29:56.177232",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6081,12 +6081,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Recursion, complex loops, break/continue\n- ❌ **BANNED**: Goto statements, early returns in complex functions\n- ✅ **ALLOWED**: Simple if-else chains, basic for/while loops",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.156854",
+        "disabled_at": "2025-10-23T19:29:56.219416",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6103,12 +6103,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Higher-order functions, function composition\n- ❌ **BANNED**: Currying, partial application, function factories\n- ✅ **ALLOWED**: Simple functions with 1-3 parameters, basic return statements",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.191079",
+        "disabled_at": "2025-10-23T19:29:56.258053",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6125,12 +6125,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Array destructuring, spread operators\n- ❌ **BANNED**: Multi-dimensional arrays, array manipulation\n- ✅ **ALLOWED**: Basic array access with [index], simple for loops",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.236157",
+        "disabled_at": "2025-10-23T19:29:56.296256",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6147,12 +6147,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Complex conditional logic, nested conditions\n- ❌ **BANNED**: Logical operators beyond basic AND/OR\n- ✅ **ALLOWED**: Simple true/false checks, basic comparisons",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.274246",
+        "disabled_at": "2025-10-23T19:29:56.334503",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6169,12 +6169,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Advanced JavaScript features, complex type systems\n- ❌ **BANNED**: Metaprogramming, reflection, dynamic code generation\n- ✅ **ALLOWED**: Basic language syntax only",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.305498",
+        "disabled_at": "2025-10-23T19:29:56.375117",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6191,12 +6191,12 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Package managers, dependency management\n- ❌ **BANNED**: External APIs, web services, complex integrations\n- ✅ **ALLOWED**: Basic language built-ins only",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.347371",
+        "disabled_at": "2025-10-23T19:29:56.412221",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6213,12 +6213,12 @@
       "category": "other",
       "priority": "important",
       "content": "- **MANDATORY**: No technical jargon without explanation\n- **MANDATORY**: Use simple, everyday words\n- **MANDATORY**: Break complex operations into simple steps\n- **MANDATORY**: Write code that reads like plain English\n- **MANDATORY**: If an 8th grader can't understand it, rewrite it",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.384641",
+        "disabled_at": "2025-10-23T19:29:56.452375",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6235,12 +6235,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Under `ide/agent/receipts/` every `<repo-id>` must contain:\n```\nide/agent/receipts/<repo-id>/{yyyy}/{mm}/\nide/agent/receipts/<repo-id>/{index|quarantine|checkpoints}/\n```\n- `yyyy`=`[0-9]{4}`, `mm`=`(0[1-9]|1[0-2])`\n- Only these three management folders are allowed at that level.\n**Stop codes**\n- `ERROR:IDE_RECEIPTS_MISSING_INDEX`\n- `ERROR:IDE_RECEIPTS_MISSING_QA`\n- `ERROR:IDE_RECEIPTS_LAYOUT_DRIFT`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.422209",
+        "disabled_at": "2025-10-23T19:29:56.495010",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6257,12 +6257,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** The only permitted top-level categories under `ide/agent/` are:\n```\npolicy/cache\ntrust/pubkeys\nconfig/consent\nqueue/evidence/{pending|sent|failed}\nlogs/metrics\ndb\nllm/{prompts|tools|adapters|cache/{token|embedding}|redaction|runs}\n```\n**Stop codes**\n- `ERROR:IDE_AGENT_DIR_UNKNOWN`\n- `ERROR:IDE_QUEUE_STATE_UNKNOWN`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.457452",
+        "disabled_at": "2025-10-23T19:29:56.532990",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6279,12 +6279,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `evidence/` must contain exactly:\n```\nreceipts/ , manifests/ , checksums/ , dlq/ , watermarks/<consumer-id>/\n```\n- `<consumer-id>` must be kebab-case `[a-z0-9-]+`.\n- No other top-level entries allowed under `evidence/`.\n**Stop codes**\n- `ERROR:EVIDENCE_DIR_UNKNOWN`\n- `ERROR:WATERMARKS_MISSING_CONSUMER`\n- `ERROR:CONSUMER_ID_SLUG_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.493670",
+        "disabled_at": "2025-10-23T19:29:56.572042",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6301,12 +6301,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `ingest/staging/` exists; optional `ingest/staging/unclassified/` is created via `-StampUnclassified <slug>`.\n- Fallback slug format: `UNCLASSIFIED__<slug>` (kebab-case slug).\n- Must be resolved/moved within 24h.\n**Stop codes**\n- `ERROR:UNCLASSIFIED_SLUG_INVALID`\n- `ERROR:UNCLASSIFIED_STALE`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.531758",
+        "disabled_at": "2025-10-23T19:29:56.610499",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6323,12 +6323,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only these kinds are allowed under `observability/`:\n```\nmetrics/ , traces/ , logs/\n```\nEach must be date-partitioned: `dt=YYYY-MM-DD/`.\n**Stop codes**\n- `ERROR:OBS_KIND_UNKNOWN`\n- `ERROR:OBS_DT_PARTITION_MISSING`\n- `ERROR:OBS_DT_FORMAT_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.565098",
+        "disabled_at": "2025-10-23T19:29:56.647989",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6345,12 +6345,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only these capture points are allowed under `adapters/`:\n```\nwebhooks/ , gateway-logs/\n```\nEach supports optional date partition: `dt=YYYY-MM-DD/`.\n**Stop codes**\n- `ERROR:ADAPTERS_DIR_UNKNOWN`\n- `ERROR:ADAPTERS_DT_FORMAT_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.607772",
+        "disabled_at": "2025-10-23T19:29:56.684460",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6367,12 +6367,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `reporting/marts/` must be date-partitioned `dt=YYYY-MM-DD/`.  \nIf you introduce table subfolders, they must be kebab-case.\n**Stop codes**\n- `ERROR:MARTS_DT_PARTITION_MISSING`\n- `ERROR:MARTS_TABLE_SLUG_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.646418",
+        "disabled_at": "2025-10-23T19:29:56.726857",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6389,12 +6389,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only **public keys** belong under:\n```\npolicy/trust/pubkeys/      (tenant)\ntrust/pubkeys/             (product)\npki/pubkeys/               (shared)\n```\n**Stop codes**\n- `ERROR:PRIVATE_KEY_ON_DISK`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.679943",
+        "disabled_at": "2025-10-23T19:29:56.767739",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6411,12 +6411,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Allowed top-level categories and optional partitions:\n```\nadapters/gateway-logs[/dt=YYYY-MM-DD]\nservice-metrics[/dt=YYYY-MM-DD]\nreporting/tenants/aggregates[/dt=YYYY-MM-DD]\ntrust/pubkeys\n```\n**Stop codes**\n- `ERROR:PRODUCT_DIR_UNKNOWN`\n- `ERROR:PRODUCT_DT_FORMAT_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.723625",
+        "disabled_at": "2025-10-23T19:29:56.804950",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6433,12 +6433,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Allowed top-level categories:\n```\npki/pubkeys\nobservability/otel\nsiem\nbi-lake/curated/zero-ui\ngovernance/controls/zero-ui\n```\n**Stop codes**\n- `ERROR:SHARED_DIR_UNKNOWN`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.760474",
+        "disabled_at": "2025-10-23T19:29:56.841675",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6455,12 +6455,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `meta/schema/` is **forbidden by default**; may exist only when scaffold/CI runs with `-CompatAliases:true`, and must be tracked by a waiver receipt.\n**Stop codes**\n- `ERROR:DEPRECATED_ALIAS_USED`\n- `ERROR:DEPRECATED_ALIAS_DRIFT`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.796773",
+        "disabled_at": "2025-10-23T19:29:56.878422",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6477,12 +6477,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** \n- Date partitions must come from `-CreateDt` (`YYYY-MM-DD`) → `dt=YYYY-MM-DD/`.\n- IDE receipts **must** use `{yyyy}/{mm}` layout derived from the same date.\n- No `dt=` without a valid `-CreateDt`; no `{yyyy}/{mm}` outside IDE receipts.\n**Stop codes**\n- `ERROR:CREATE_DT_MISSING`\n- `ERROR:PARTITION_MISMATCH`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.832048",
+        "disabled_at": "2025-10-23T19:29:56.915713",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6499,12 +6499,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Shards must be **declared** as `{0|16|256}`; scaffold does not create shard directories implicitly. If shards are present, they must follow `shard={00..ff}` (for 256) or `shard={0..15}` (for 16), zero-padded consistently.\n**Stop codes**\n- `ERROR:SHARD_COUNT_INVALID`\n- `ERROR:SHARD_LAYOUT_INVALID`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.870700",
+        "disabled_at": "2025-10-23T19:29:56.952479",
         "maintenance_complete": true
       },
       "metadata": {
@@ -6521,12 +6521,12 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.\n**Stop codes**\n- `ERROR:SCAFFOLD_CREATED_FILES`\n- `ERROR:SCAFFOLD_NOT_IDEMPOTENT`",
-      "enabled": true,
+      "enabled": false,
       "config": {
         "default_enabled": true,
         "notes": "",
         "disabled_reason": "System maintenance",
-        "disabled_at": "2025-10-23T19:26:03.908265",
+        "disabled_at": "2025-10-23T19:29:56.991824",
         "maintenance_complete": true
       },
       "metadata": {
