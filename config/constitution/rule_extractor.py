@@ -143,9 +143,9 @@ class ConstitutionRuleExtractor:
         # Sort by rule number
         rules.sort(key=lambda x: x['rule_number'])
         
-        # Validate we have all rules (1-218)
-        if len(rules) != 218:
-            print(f"Warning: Expected 218 rules, found {len(rules)}")
+        # Validate we have all rules (1-293)
+        if len(rules) != 293:
+            print(f"Warning: Expected 293 rules, found {len(rules)}")
         
         return rules
     
@@ -178,7 +178,7 @@ class ConstitutionRuleExtractor:
             return int(match.group(1)), match.group(2).strip()
         
         # Pattern 4: "**Rule 150: Prevent First**" (bold markdown format)
-        pattern4 = r'^\*\*Rule\s+(\d+):\s*(.+?)\*\*$'
+        pattern4 = r'^\*\*Rule\s+(\d+):\s*(.+?)\*\*'
         match = re.match(pattern4, line)
         if match:
             return int(match.group(1)), match.group(2).strip()
@@ -283,7 +283,7 @@ class ConstitutionRuleExtractor:
         
         validation = {
             "total_rules": len(rules),
-            "expected_rules": 215,
+            "expected_rules": 293,
             "missing_rules": [],
             "duplicate_rules": [],
             "category_counts": {},
@@ -292,9 +292,7 @@ class ConstitutionRuleExtractor:
         
         # Check for missing rules
         rule_numbers = [rule['rule_number'] for rule in rules]
-        for i in range(1, 216):  # Rules 1-215, but skip 159
-            if i == 159:  # Rule 159 doesn't exist
-                continue
+        for i in range(1, 294):  # Rules 1-293
             if i not in rule_numbers:
                 validation["missing_rules"].append(i)
                 validation["valid"] = False

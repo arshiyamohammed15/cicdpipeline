@@ -820,7 +820,7 @@ class EnhancedCLI:
         
         # Step 1: Extract rules from Markdown
         safe_print("\n[1/6] Extracting rules from Markdown...")
-        extractor = ConstitutionRuleExtractor()
+        extractor = ConstitutionRuleExtractor("docs/architecture/ZeroUI2.0_Master_Constitution.md")
         try:
             rules = extractor.extract_all_rules()
             safe_print(f"✓ Found {len(rules)} rules in Markdown")
