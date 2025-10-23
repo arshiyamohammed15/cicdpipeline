@@ -56,7 +56,7 @@ python tools/hook_cli.py list
 ```
 **Output:**
 ```
-📋 Hook Categories
+Hook Categories
 ==================================================
 ✅ Basic Work Rules (basic_work)
    Status: ENABLED
@@ -111,15 +111,15 @@ python tools/hook_cli.py stats
 ```
 **Output:**
 ```
-📊 Hook Statistics
+Hook Statistics
 ==============================
-Total Rules: 280
-Enabled Rules: 245 (87.5%)
-Disabled Rules: 35
+Total Rules: 293
+Enabled Rules: 0 (0.0%)
+Disabled Rules: 293
 Categories:
   Total: 9
-  Enabled: 7
-  Disabled: 2
+  Enabled: 9
+  Disabled: 0
 ```
 
 ### Export Commands
@@ -340,6 +340,18 @@ if config_manager.is_rule_enabled(42):
     print("Rule 42 is enabled")
 ```
 
+## 🔧 **Recent Updates (v1.1)**
+
+### Statistics Fix
+- **Fixed discrepancy**: Total rules now correctly shows 293 (matching the full constitution system)
+- **Consistent calculations**: All statistics now use the same source for accuracy
+- **Removed emoji**: Fixed Windows PowerShell encoding issues with emoji characters
+
+### Improved Accuracy
+- **Total Rules**: 293 (includes all constitution rules, not just hook categories)
+- **Consistent Math**: Total = Enabled + Disabled (no more impossible scenarios)
+- **Cross-platform**: Works reliably on Windows, Linux, and macOS
+
 ## 🎉 **Summary**
 
 The Hook Management system provides:
@@ -351,5 +363,6 @@ The Hook Management system provides:
 ✅ **Integration** with pre-implementation validation  
 ✅ **Statistics and reporting** for monitoring  
 ✅ **Export/import** for team collaboration  
+✅ **Accurate statistics** with consistent calculations  
 
 This system ensures that Constitution rules can be tailored to specific development contexts while maintaining the overall quality and safety of AI-generated code.
