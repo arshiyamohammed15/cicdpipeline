@@ -11,6 +11,18 @@ from typing import List, Dict, Any, Optional, Set
 from pathlib import Path
 from validator.models import Violation, Severity
 
+# Import constitution database manager
+try:
+    from config.enhanced_config_manager import EnhancedConfigManager
+    from config.constitution.config_manager import ConstitutionRuleManager
+except ImportError:
+    # Fallback for testing environment
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+    from config.enhanced_config_manager import EnhancedConfigManager
+    from config.constitution.config_manager import ConstitutionRuleManager
+
 
 class ComprehensivePreImplementationValidator:
     """
@@ -21,20 +33,53 @@ class ComprehensivePreImplementationValidator:
     
     def __init__(self):
         """Initialize the comprehensive validator."""
-        self.rule_categories = {
-            'basic_work': (1, 75),
-            'code_review': (76, 99),
-            'security_privacy': (100, 131),
-            'logging': (132, 149),
-            'error_handling': (150, 180),
-            'typescript': (181, 215),
-            'storage_governance': (216, 228),
-            'gsmd': (232, 252),
-            'simple_readability': (253, 280)
-        }
+        # Connect to constitution database
+        self.config_manager = EnhancedConfigManager()
+        self.constitution_manager = ConstitutionRuleManager()
+        
+        # Load actual categories and rule ranges from database
+        self.rule_categories = self._load_actual_categories()
         
         # Initialize rule validators
         self._init_rule_validators()
+    
+    def _load_actual_categories(self) -> Dict[str, tuple]:
+        """Load real category ranges from constitution database."""
+        categories = {}
+        try:
+            all_rules = self.constitution_manager.get_all_rules()
+            
+            for rule in all_rules:
+                category = rule['category']
+                rule_number = rule['rule_number']
+                
+                if category not in categories:
+                    categories[category] = [rule_number, rule_number]
+                else:
+                    categories[category][0] = min(categories[category][0], rule_number)
+                    categories[category][1] = max(categories[category][1], rule_number)
+            
+            return {k: tuple(v) for k, v in categories.items()}
+        except Exception as e:
+            print(f"Warning: Could not load actual categories from database: {e}")
+            # Fallback to basic categories if database unavailable
+            return {
+                'basic_work': (1, 18),
+                'system_design': (19, 30),
+                'problem_solving': (31, 39),
+                'platform': (40, 49),
+                'teamwork': (50, 75),
+                'code_review': (76, 84),
+                'coding_standards': (85, 99),
+                'comments': (100, 109),
+                'api_contracts': (110, 131),
+                'logging': (132, 149),
+                'exception_handling': (150, 181),
+                'typescript': (182, 215),
+                'documentation': (216, 218),
+                'storage_governance': (219, 231),
+                'simple_readability': (232, 280)
+            }
     
     def _init_rule_validators(self):
         """Initialize all rule category validators."""
@@ -95,7 +140,61 @@ class ComprehensivePreImplementationValidator:
         return violations
     
     def _validate_basic_work_rules(self, prompt: str) -> List[Violation]:
-        """Validate Basic Work Rules (1-75)."""
+        """Validate Basic Work Rules using actual rule content from database."""
+        violations = []
+        
+        try:
+            # Get actual basic_work rules from database
+            basic_work_rules = self.constitution_manager.get_rules_by_category('basic_work', enabled_only=True)
+            
+            for rule in basic_work_rules:
+                rule_number = rule['rule_number']
+                rule_content = rule['content']
+                rule_title = rule['title']
+                
+                # Apply semantic validation based on actual rule content
+                if rule_number == 1:  # Do Exactly What's Asked
+                    if self._detects_scope_creep(prompt, rule_content):
+                        violations.append(self._create_violation(rule, prompt))
+                elif rule_number == 2:  # Only Use Information Given
+                    if self._detects_assumptions(prompt, rule_content):
+                        violations.append(self._create_violation(rule, prompt))
+                elif rule_number == 3:  # Protect People's Privacy
+                    if self._detects_privacy_violations(prompt, rule_content):
+                        violations.append(self._create_violation(rule, prompt))
+                elif rule_number == 4:  # Use Settings Files, Not Hardcoded Numbers
+                    if self._detects_hardcoded_values(prompt, rule_content):
+                        violations.append(self._create_violation(rule, prompt))
+                elif rule_number == 6:  # Never Break Things During Updates
+                    if self._detects_breaking_changes(prompt, rule_content):
+                        violations.append(self._create_violation(rule, prompt))
+                # Continue for other basic_work rules...
+                else:
+                    # Generic validation for other rules
+                    if self._detects_rule_violation(prompt, rule_content, rule_title):
+                        violations.append(self._create_violation(rule, prompt))
+        
+        except Exception as e:
+            print(f"Warning: Could not validate basic_work rules from database: {e}")
+            # Fallback to basic validation
+            violations.extend(self._validate_basic_work_fallback(prompt))
+        
+        return violations
+    
+    def _create_violation(self, rule: Dict, prompt: str) -> Violation:
+        """Create violation from rule data."""
+        return Violation(
+            rule_id=f"R{rule['rule_number']:03d}",
+            severity=Severity.ERROR if rule.get('priority') == 'critical' else Severity.WARNING,
+            message=f"Prompt violates Rule {rule['rule_number']}: {rule['title']}",
+            file_path="prompt",
+            line_number=1,
+            code_snippet=prompt[:100],
+            fix_suggestion=f"Review rule: {rule['content'][:200]}..."
+        )
+    
+    def _validate_basic_work_fallback(self, prompt: str) -> List[Violation]:
+        """Fallback validation when database is unavailable."""
         violations = []
         
         # Rule 1: Do exactly what's asked
@@ -114,36 +213,6 @@ class ComprehensivePreImplementationValidator:
                 rule_id='R002',
                 severity=Severity.ERROR,
                 message="Prompt may involve guessing or assumptions (Rule 2 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 3: Protect people's privacy
-        if self._detects_privacy_violations(prompt):
-            violations.append(Violation(
-                rule_id='R003',
-                severity=Severity.ERROR,
-                message="Prompt may expose sensitive information (Rule 3 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 4: Use settings files, not hardcoded numbers
-        if self._detects_hardcoded_values(prompt):
-            violations.append(Violation(
-                rule_id='R004',
-                severity=Severity.ERROR,
-                message="Prompt may use hardcoded values instead of settings (Rule 4 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 6: Never break things during updates
-        if self._detects_breaking_changes(prompt):
-            violations.append(Violation(
-                rule_id='R006',
-                severity=Severity.ERROR,
-                message="Prompt may cause breaking changes (Rule 6 violation)",
                 file_path="prompt",
                 line_number=1
             ))
@@ -563,6 +632,52 @@ class ComprehensivePreImplementationValidator:
             "recursive", "algorithm", "optimization", "performance"
         ]
         return any(indicator in prompt.lower() for indicator in complexity_indicators)
+    
+    # New detection methods that work with actual rule content
+    def _detects_scope_creep(self, prompt: str, rule_content: str) -> bool:
+        """Detect scope creep based on rule content."""
+        # Enhanced detection using rule content context
+        scope_indicators = [
+            "also add", "also include", "also create", "bonus", "extra",
+            "additionally", "furthermore", "moreover", "plus", "while you're at it"
+        ]
+        return any(indicator in prompt.lower() for indicator in scope_indicators)
+    
+    def _detects_assumptions(self, prompt: str, rule_content: str) -> bool:
+        """Detect assumptions based on rule content."""
+        assumption_indicators = [
+            "assume", "guess", "probably", "likely", "maybe", "perhaps",
+            "I think", "probably should", "might be", "should be"
+        ]
+        return any(indicator in prompt.lower() for indicator in assumption_indicators)
+    
+    def _detects_privacy_violations(self, prompt: str, rule_content: str) -> bool:
+        """Detect privacy violations based on rule content."""
+        privacy_risks = [
+            "password", "secret", "private", "personal", "sensitive",
+            "ssn", "social security", "credit card", "bank account", "api key"
+        ]
+        return any(risk in prompt.lower() for risk in privacy_risks)
+    
+    def _detects_hardcoded_values(self, prompt: str, rule_content: str) -> bool:
+        """Detect hardcoded values based on rule content."""
+        # Look for numbers that might be hardcoded
+        numbers = re.findall(r'\b\d+\b', prompt)
+        return len(numbers) > 3 and "config" not in prompt.lower() and "setting" not in prompt.lower()
+    
+    def _detects_breaking_changes(self, prompt: str, rule_content: str) -> bool:
+        """Detect breaking changes based on rule content."""
+        breaking_indicators = [
+            "remove", "delete", "deprecate", "breaking", "incompatible",
+            "migrate", "upgrade", "version bump", "remove support"
+        ]
+        return any(indicator in prompt.lower() for indicator in breaking_indicators)
+    
+    def _detects_rule_violation(self, prompt: str, rule_content: str, rule_title: str) -> bool:
+        """Generic rule violation detection based on rule content."""
+        # This is a simplified generic detector - in practice, you'd want more sophisticated
+        # semantic analysis based on the specific rule content
+        return False
 
 
 class ContextAwareRuleLoader:
@@ -574,17 +689,50 @@ class ContextAwareRuleLoader:
     
     def __init__(self):
         """Initialize the context-aware rule loader."""
-        self.rule_categories = {
-            'basic_work': (1, 75),
-            'code_review': (76, 99),
-            'security_privacy': (100, 131),
-            'logging': (132, 149),
-            'error_handling': (150, 180),
-            'typescript': (181, 215),
-            'storage_governance': (216, 228),
-            'gsmd': (232, 252),
-            'simple_readability': (253, 280)
-        }
+        # Connect to constitution database
+        self.config_manager = EnhancedConfigManager()
+        self.constitution_manager = ConstitutionRuleManager()
+        
+        # Load actual categories from database
+        self.rule_categories = self._load_actual_categories()
+    
+    def _load_actual_categories(self) -> Dict[str, tuple]:
+        """Load real category ranges from constitution database."""
+        categories = {}
+        try:
+            all_rules = self.constitution_manager.get_all_rules()
+            
+            for rule in all_rules:
+                category = rule['category']
+                rule_number = rule['rule_number']
+                
+                if category not in categories:
+                    categories[category] = [rule_number, rule_number]
+                else:
+                    categories[category][0] = min(categories[category][0], rule_number)
+                    categories[category][1] = max(categories[category][1], rule_number)
+            
+            return {k: tuple(v) for k, v in categories.items()}
+        except Exception as e:
+            print(f"Warning: Could not load actual categories from database: {e}")
+            # Fallback to basic categories if database unavailable
+            return {
+                'basic_work': (1, 18),
+                'system_design': (19, 30),
+                'problem_solving': (31, 39),
+                'platform': (40, 49),
+                'teamwork': (50, 75),
+                'code_review': (76, 84),
+                'coding_standards': (85, 99),
+                'comments': (100, 109),
+                'api_contracts': (110, 131),
+                'logging': (132, 149),
+                'exception_handling': (150, 181),
+                'typescript': (182, 215),
+                'documentation': (216, 218),
+                'storage_governance': (219, 231),
+                'simple_readability': (232, 280)
+            }
     
     def get_relevant_rules(self, file_type: str = None, task_type: str = None, 
                           prompt: str = None) -> List[str]:

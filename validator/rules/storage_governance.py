@@ -645,3 +645,38 @@ class StorageGovernanceValidator:
         
         return violations
 
+    def validate_all(self, tree, content: str, file_path: str) -> List[Violation]:
+        """
+        Validate all storage governance rules.
+        
+        Args:
+            tree: AST tree of the code (not used for storage governance)
+            content: File content
+            file_path: Path to the file
+            
+        Returns:
+            List of all violations found
+        """
+        violations = []
+        
+        # Run all storage governance validations
+        for rule_id, validator_func in self.rules.items():
+            try:
+                rule_violations = validator_func(content, file_path)
+                violations.extend(rule_violations)
+            except Exception as e:
+                # Create error violation for failed rule
+                violations.append(Violation(
+                    rule_id=rule_id,
+                    severity=Severity.ERROR,
+                    message=f"Storage governance rule {rule_id} failed to execute: {str(e)}",
+                    file_path=file_path,
+                    line_number=1,
+                    column_number=0,
+                    code_snippet="",
+                    fix_suggestion="Check storage governance rule implementation",
+                    category='storage_governance'
+                ))
+        
+        return violations
+

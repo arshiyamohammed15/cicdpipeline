@@ -81,17 +81,42 @@ class ConstitutionValidator:
         except json.JSONDecodeError as e:
             raise ValueError(f"Invalid JSON in configuration file: {e}")
     
-    def validate_file(self, file_path: str) -> ValidationResult:
+    def validate_file(self, file_path: str, prompt: str = None) -> ValidationResult:
         """
         Validate a single Python file against constitution rules.
         
         Args:
             file_path: Path to the Python file to validate
+            prompt: Optional prompt for pre-implementation validation
             
         Returns:
             ValidationResult containing all violations found
         """
         start_time = time.time()
+        
+        # Pre-implementation validation if prompt provided
+        if prompt:
+            try:
+                from .pre_implementation_hooks import PreImplementationHookManager
+                hook_manager = PreImplementationHookManager()
+                
+                file_type = "typescript" if file_path.endswith(('.ts', '.tsx')) else "python"
+                pre_result = hook_manager.validate_before_generation(prompt, file_type=file_type)
+                
+                if not pre_result['valid']:
+                    # Return early with prompt violations
+                    return ValidationResult(
+                        file_path=file_path,
+                        total_violations=len(pre_result['violations']),
+                        violations_by_severity={Severity.ERROR: len(pre_result['violations'])},
+                        violations=pre_result['violations'],
+                        processing_time=time.time() - start_time,
+                        compliance_score=0.0,
+                        metadata={'pre_validation_failed': True, 'recommendations': pre_result['recommendations']}
+                    )
+            except Exception as e:
+                print(f"Warning: Pre-implementation validation failed: {e}")
+                # Continue with normal validation if pre-validation fails
         
         try:
             with open(file_path, 'r', encoding='utf-8') as f:

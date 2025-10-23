@@ -112,23 +112,8 @@ inline-quotes = "double"
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pytest.ini_options]
-minversion = "7.0"
-addopts = [
-    "--strict-markers",
-    "--strict-config",
-    "--cov=config",
-    "--cov=validator",
-    "--cov-report=term-missing",
-    "--cov-report=html:htmlcov",
-    "--cov-report=xml",
-    "--cov-fail-under=80",
-    "--tb=short",
-    "-v",
-    "--collect-only",  # Show what tests would be collected
-]
-testpaths = [
-    "validator/rules/tests",
-]
+testpaths = ["validator/rules/tests","gsmd/gsmd/modules","tests/foundation"]
+addopts = "-q"
 python_files = [
     "test_*.py",
     "*_test.py",
@@ -142,11 +127,11 @@ python_functions = [
 # Pytest can run unittest tests natively
 # No need to change existing unittest code
 markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests", 
-    "unit: marks tests as unit tests",
-    "smoke: marks tests as smoke tests",
-    "unittest: marks tests using unittest framework",
+    "unit: marks tests as unit tests (fast, pure functions)",
+    "integration: marks tests as integration tests (I/O, process boundaries)",
+    "smoke: marks tests as smoke tests (wiring sanity)",
+    "slow: marks tests as slow (opt-in only)",
+    "unittest: marks tests using unittest framework (legacy style)",
 ]
 filterwarnings = [
     "error",

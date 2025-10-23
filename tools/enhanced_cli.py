@@ -1486,6 +1486,10 @@ class EnhancedCLI:
             if self._handle_backend_commands(args):
                 return 0
             
+            # Handle prompt validation
+            if args.validate_prompt:
+                return self._handle_prompt_validation(args)
+            
             if args.file:
                 # Validate single file
                 result = self.validate_file(args.file, args)
@@ -1533,6 +1537,36 @@ class EnhancedCLI:
         finally:
             # Stop performance monitoring
             self.performance_monitor.stop_monitoring()
+    
+    def _handle_prompt_validation(self, args):
+        """Handle prompt validation."""
+        try:
+            from validator.pre_implementation_hooks import PreImplementationHookManager
+            hook_manager = PreImplementationHookManager()
+            
+            result = hook_manager.validate_before_generation(
+                args.validate_prompt, 
+                file_type=args.prompt_file_type,
+                task_type=args.prompt_task_type
+            )
+            
+            if not result['valid']:
+                safe_print(f"❌ Prompt validation failed ({len(result['violations'])} violations)")
+                for violation in result['violations']:
+                    safe_print(f"  {violation.rule_id}: {violation.message}")
+                return 1
+            
+            safe_print(f"✅ Prompt validated against {result['total_rules_checked']} rules")
+            if result['recommendations']:
+                safe_print("Recommendations:")
+                for rec in result['recommendations']:
+                    safe_print(f"  • {rec}")
+            
+            return 0
+            
+        except Exception as e:
+            safe_print(f"Error during prompt validation: {e}")
+            return 1
 
 
 def main():
@@ -1558,6 +1592,22 @@ Examples:
     input_group.add_argument(
         "--directory", "-d",
         help="Validate all Python files in a directory"
+    )
+    
+    # Pre-implementation validation options
+    prompt_group = parser.add_argument_group('Pre-Implementation Validation')
+    prompt_group.add_argument(
+        "--validate-prompt",
+        help="Validate prompt before code generation"
+    )
+    prompt_group.add_argument(
+        "--prompt-file-type",
+        choices=['python', 'typescript'],
+        help="Target file type for prompt validation"
+    )
+    prompt_group.add_argument(
+        "--prompt-task-type",
+        help="Task type for prompt validation (storage, logging, api, etc.)"
     )
     
     # Output options

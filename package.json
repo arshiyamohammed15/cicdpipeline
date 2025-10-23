@@ -4,7 +4,9 @@
   "description": "ZeroUI 2.0 Comprehensive Test Suite",
   "private": true,
   "scripts": {
-    "test:python": "pytest",
+    "test:python": "pytest -q",
+    "test:python:quick": "pytest -q -m \"not slow and (unit or smoke)\"",
+    "test:python:full": "pytest -q",
     "test:python:coverage": "pytest --cov=validator --cov-report=html --cov-report=term-missing",
     "test:validator": "pytest validator/rules/tests --cov=validator --cov-report=term-missing -v",
     "test:all": "python run_all_tests.py"

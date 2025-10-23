@@ -1,0 +1,11 @@
+{
+  "ui": "tdd",
+  "timeout": 10000,
+  "reporter": "spec",
+  "require": [
+    "ts-node/register"
+  ],
+  "extensions": [
+    "ts"
+  ]
+}

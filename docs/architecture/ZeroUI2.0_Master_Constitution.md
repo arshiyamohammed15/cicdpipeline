@@ -4,39 +4,31 @@ Note: This master file is the source of truth for 231 core rules plus appendix r
 
  🎯 BASIC WORK RULES
 
-**Rule 1: Do Exactly What's Asked**
- If your friend asks you to make a peanut butter sandwich, don't add jelly unless they ask for it. Follow instructions exactly without adding your own ideas.
+**Rule 1: Do Exactly What's Asked** If your friend asks you to make a peanut butter sandwich, don't add jelly unless they ask for it. Follow instructions exactly without adding your own ideas.
 
-**Rule 2: Only Use Information You're Given**
- If you're baking cookies and the recipe doesn't say how much sugar to use, stop and ask. Don't guess or make up an amount.
+**Rule 2: Only Use Information You're Given** If you're baking cookies and the recipe doesn't say how much sugar to use, stop and ask. Don't guess or make up an amount.
 
-**Rule 3: Protect People's Privacy**
- Treat everyone's personal information like a secret diary. Don't look at it, don't share it, and definitely don't write it down where others can see it.
+**Rule 3: Protect People's Privacy** Treat everyone's personal information like a secret diary. Don't look at it, don't share it, and definitely don't write it down where others can see it.
 
-**Rule 4: Use Settings Files, Not Hardcoded Numbers**
- Instead of writing "use 10 apples" in your recipe, write "use [number] apples" and keep the number 10 in a separate note. This way you can easily change to 12 apples later.
+**Rule 4: Use Settings Files, Not Hardcoded Numbers** Instead of writing "use 10 apples" in your recipe, write "use [number] apples" and keep the number 10 in a separate note. This way you can easily change to 12 apples later.
 
-**Rule 5: Keep Good Records**
- Like keeping a science lab notebook - write down what you did, when you did it, and what happened. Use the format your teacher asks for, and don't add extra stuff they didn't request.
+**Rule 5: Keep Good Records** Like keeping a science lab notebook - write down what you did, when you did it, and what happened. Use the format your teacher asks for, and don't add extra stuff they didn't request.
 
 Where we keep these records:
 - Action receipts → Like a shopping list that only gets longer (JSONL files)
 - Error and performance notes → Like an organized notebook (SQLite database)
 - Everything stays private → Never leaves your computer without permission
 
-**Rule 6: Never Break Things During Updates**
- When updating a video game, you should still be able to play while it updates. If the update causes problems, you can instantly switch back to the old version.
+**Rule 6: Never Break Things During Updates** When updating a video game, you should still be able to play while it updates. If the update causes problems, you can instantly switch back to the old version.
 
 "During Updates" means: The time from when you click "update" until the new version is completely ready and working properly.
 
-**Rule 8: Make Things Fast**
-
+**Rule 7: Make Things Fast**
 - Programs should start faster than microwaving popcorn (under 2 seconds)
 - Buttons should respond instantly when clicked (under 0.1 seconds)
 - Don't use too much computer memory - like not hogging all the closet space
 
-**Rule 7: Be Honest About AI Decisions**
- When AI suggests something, it should say:
+**Rule 8: Be Honest About AI Decisions** When AI suggests something, it should say:
 - "I'm 85% sure this is right" (confidence level)
 - "I'm suggesting this because..." (explanation)
 - "This was AI version 2.3" (which brain version made the decision)
@@ -46,91 +38,63 @@ Where this information is stored:
 2. Your company's private storage - Team review notes
 3. Our cloud (anonymous only) - Just patterns like "suggestion X was 85% confident" - no actual code or personal info
 
-**Rule 9: Check Your Data**
- Make sure the AI's training data is like a fair test - balanced questions, up-to-date information, and correct answers.
+**Rule 9: Check Your Data** Make sure the AI's training data is like a fair test - balanced questions, up-to-date information, and correct answers.
 
-**Rule 10: Keep AI Safe**
- AI should only work in a special "playground" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.
+**Rule 10: Keep AI Safe** AI should only work in a special "playground" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.
 
-**Rule 11: Learn from Mistakes**
- When the AI gets something wrong, it should remember that mistake and get smarter, just like you learn from getting test questions wrong.
+**Rule 11: Learn from Mistakes** When the AI gets something wrong, it should remember that mistake and get smarter, just like you learn from getting test questions wrong.
 
-**Rule 12: Test Everything**
- Always try things out before saying they work. Don't break things that already work. Test both simple cases and tricky situations.
+**Rule 12: Test Everything** Always try things out before saying they work. Don't break things that already work. Test both simple cases and tricky situations.
 
-**Rule 13: Write Good Instructions**
- Give people working examples they can try themselves, clear explanations of how to use things, and troubleshooting guides for when things go wrong.
+**Rule 13: Write Good Instructions** Give people working examples they can try themselves, clear explanations of how to use things, and troubleshooting guides for when things go wrong.
 
-**Rule 14: Keep Good Logs**
- Write clear notes that are easy to read, use special tracking numbers to follow requests through the system, and measure both technical numbers and business results.
+**Rule 14: Keep Good Logs** Write clear notes that are easy to read, use special tracking numbers to follow requests through the system, and measure both technical numbers and business results.
 
-**Rule 15: Make Changes Easy to Undo**
- Prefer adding new features rather than changing old ones. Use on/off switches for features. Write down how to go back if something doesn't work.
+**Rule 15: Make Changes Easy to Undo** Prefer adding new features rather than changing old ones. Use on/off switches for features. Write down how to go back if something doesn't work.
 
-**Rule 16: Make Things Repeatable**
- Write down exactly what ingredients (versions) you used. Don't depend on special kitchen equipment (computer setups). Include simple steps so others can recreate your work.
+**Rule 16: Make Things Repeatable** Write down exactly what ingredients (versions) you used. Don't depend on special kitchen equipment (computer setups). Include simple steps so others can recreate your work.
 
-**Rule 17: Keep Different Parts Separate**
- The display screen (user interface) only shows information. The thinking part (business logic) only does calculations. Never mix these two jobs.
+**Rule 17: Keep Different Parts Separate** The display screen (user interface) only shows information. The thinking part (business logic) only does calculations. Never mix these two jobs.
 
-**Rule 18: Be Fair to Everyone**
- Use clear, simple language everyone can understand. Don't use tricky designs that might confuse people. Make sure people with disabilities can use everything.
+**Rule 18: Be Fair to Everyone** Use clear, simple language everyone can understand. Don't use tricky designs that might confuse people. Make sure people with disabilities can use everything.
 
  🏗️ SYSTEM DESIGN RULES
 
-**Rule 19: Use the Hybrid System Design**
- Our system has four parts:
-- IDE Extension → Only shows information (like a car dashboard)
-- Edge Agent → Processes data locally for privacy (like thinking in your head)
-- Client Cloud → Stores company's private data (like a company safe)
-- Our Cloud → Only gets anonymous, safe data (like public statistics)
-
-**Rule 20: Make All 18 Modules Look the Same**
- All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.
+**Rule 20: Make All 18 Modules Look the Same** All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.
 
 **Rule 21: Process Data Locally First**
-
 - Source code → Never leaves the company (like secret recipes)
 - Development data → Stays in company cloud (like work notes)
 - Anonymous patterns → Can go to our cloud (like "people prefer chocolate over vanilla" - no specific info)
 
-**Rule 22: Don't Make People Configure Before Using**
- Things should work right out of the box. Like a new video game - you can start playing immediately, and only set up complex controls later if you want.
+**Rule 22: Don't Make People Configure Before Using** Things should work right out of the box. Like a new video game - you can start playing immediately, and only set up complex controls later if you want.
 
 **Rule 23: Show Information Gradually**
-
 - Level 1 → Basic status (like a traffic light - red/yellow/green)
 - Level 2 → Suggestions when relevant (like a friend saying "try this")
 - Level 3 → Full tools when asked (like opening a complete toolbox)
 
 **Rule 24: Organize Features Clearly**
-
 18 Main Areas → Specific Features → Detailed Tools
 Like a school: School → Grade Levels → Classrooms → Subjects
 
 **Rule 25: Be Smart About Data**
-
 - Never send → Source code, passwords, personal info (like your diary)
 - Company cloud only → Team metrics, security scans (like company reports)
 - Our cloud allowed → Anonymous patterns, general insights (like "most people work better in the morning")
 
-**Rule 26: Work Without Internet**
- Core features must work offline, like being able to write in a notebook when you don't have WiFi. Save actions and sync when you're back online.
+**Rule 26: Work Without Internet** Core features must work offline, like being able to write in a notebook when you don't have WiFi. Save actions and sync when you're back online.
 
-**Rule 27: Register Modules the Same Way**
- All 18 modules should sign up using the same process, like every student using the same enrollment form.
+**Rule 27: Register Modules the Same Way** All 18 modules should sign up using the same process, like every student using the same enrollment form.
 
-**Rule 28: Make All Modules Feel Like One Product**
- Use the same command names everywhere, make status indicators look the same, handle errors the same way - like different apps made by the same company.
+**Rule 28: Make All Modules Feel Like One Product** Use the same command names everywhere, make status indicators look the same, handle errors the same way - like different apps made by the same company.
 
 **Rule 29: Design for Quick Adoption**
-
 - People should get value in first 30 seconds (like instant fun in a game)
 - 80% of users should use each module (like most students using the library)
 - 90% should still be using after 30 days (like people sticking with a good habit)
 
 **Rule 30: Test User Experience**
-
 - No setup needed before use (like instant-on TV)
 - First interaction in under 30 seconds (like quick-start instructions)
 - System almost never crashes (like reliable car)
@@ -138,47 +102,37 @@ Like a school: School → Grade Levels → Classrooms → Subjects
 
  🎯 PROBLEM-SOLVING RULES
 
-**Rule 31: Solve Real Developer Problems**
- Every feature must fix a real frustration developers face, like making homework easier by having better tools.
+**Rule 31: Solve Real Developer Problems** Every feature must fix a real frustration developers face, like making homework easier by having better tools.
 
 **Rule 32: Help People Work Better**
-
 - Mirror → Show people what they're doing now (like a mirror)
 - Mentor → Guide them to better ways (like a coach)
 - Multiplier → Help them do more of what works (like a turbo boost)
 
-**Rule 33: Prevent Problems Before They Happen**
- Stop issues before they become big problems, like fixing a small leak before it floods the house.
+**Rule 33: Prevent Problems Before They Happen** Stop issues before they become big problems, like fixing a small leak before it floods the house.
 
 **Rule 34: Be Extra Careful with Private Data**
-
 - Never look at → Production passwords, user personal data (like bank codes)
 - Process locally → Code analysis, performance checks (like thinking privately)
 - Share only → Anonymous patterns, general insights (like "students learn better with examples")
 
-**Rule 35: Don't Make People Think Too Hard**
- Fix common issues with one click, give suggestions without interrupting, automate boring tasks, teach as you go - like having a helpful friend.
+**Rule 35: Don't Make People Think Too Hard** Fix common issues with one click, give suggestions without interrupting, automate boring tasks, teach as you go - like having a helpful friend.
 
-**Rule 36: MMM Engine - Change Behavior**
- Help people stop making the same mistakes, increase use of best practices, reduce need for manual fixes, help people solve problems themselves - like a good habit coach.
+**Rule 36: MMM Engine - Change Behavior** Help people stop making the same mistakes, increase use of best practices, reduce need for manual fixes, help people solve problems themselves - like a good habit coach.
 
 **Rule 37: Detection Engine - Be Accurate**
-
 - Wrong alerts → Less than 2% for critical issues (like rarely crying wolf)
 - Missed problems → Less than 1% for security (like rarely missing real danger)
 - Show confidence levels clearly (like saying "I'm very sure" or "I'm guessing")
 - Learn from corrections (like learning from mistakes)
 
-**Rule 38: Risk Modules - Safety First**
- Never make situations worse, always provide undo options, support gradual improvements, verify before big changes - like safety rules in science lab.
+**Rule 38: Risk Modules - Safety First** Never make situations worse, always provide undo options, support gradual improvements, verify before big changes - like safety rules in science lab.
 
-**Rule 39: Success Dashboards - Show Business Value**
- Connect engineering work to company results, show money saved and time gained, track both current and future benefits - like showing how studying leads to better grades.
+**Rule 39: Success Dashboards - Show Business Value** Connect engineering work to company results, show money saved and time gained, track both current and future benefits - like showing how studying leads to better grades.
 
  🔧 PLATFORM RULES
 
-**Rule 40: Use All Platform Features**
- Use all our built-in tools:
+**Rule 40: Use All Platform Features** Use all our built-in tools:
 - Identity → Who can do what (like hall passes)
 - Data governance → Keep data safe and legal (like library rules)
 - Configuration → Settings management (like thermostat controls)
@@ -189,205 +143,77 @@ Like a school: School → Grade Levels → Classrooms → Subjects
 - Deployment → Update safely (like careful home repairs)
 - Behavior intelligence → Learn from usage (like learning friends' preferences)
 
-**Rule 41: Process Data Quickly**
- Handle urgent data in less than 1 second (like answering important texts immediately), group less important data (like checking regular mail once a day), check data quality as it comes in.
+**Rule 41: Process Data Quickly** Handle urgent data in less than 1 second (like answering important texts immediately), group less important data (like checking regular mail once a day), check data quality as it comes in.
 
-**Rule 42: Help Without Interrupting**
- Give help when needed, not before (like waiting to be asked), match help to how complex the task is (like simple vs complex instructions), let experts turn off basic help.
+**Rule 42: Help Without Interrupting** Give help when needed, not before (like waiting to be asked), match help to how complex the task is (like simple vs complex instructions), let experts turn off basic help.
 
-**Rule 43: Handle Emergencies Well**
- Make the right action obvious (like big red stop button), provide one-click solutions, offer multiple ways to recover, show clear progress updates - like good emergency instructions.
+**Rule 43: Handle Emergencies Well** Make the right action obvious (like big red stop button), provide one-click solutions, offer multiple ways to recover, show clear progress updates - like good emergency instructions.
 
-**Rule 44: Make Developers Happier**
- Reduce time spent switching between tasks, cut down on boring repetitive work, increase time spent on meaningful coding, build confidence in deployments - like making schoolwork more enjoyable.
+**Rule 44: Make Developers Happier** Reduce time spent switching between tasks, cut down on boring repetitive work, increase time spent on meaningful coding, build confidence in deployments - like making schoolwork more enjoyable.
 
-**Rule 45: Track Problems You Prevent**
- Count security issues caught early, track deployment failures avoided, measure knowledge gaps found and fixed, watch technical debt prevented - like counting accidents that didn't happen because of safety measures.
+**Rule 45: Track Problems You Prevent** Count security issues caught early, track deployment failures avoided, measure knowledge gaps found and fixed, watch technical debt prevented - like counting accidents that didn't happen because of safety measures.
 
-**Rule 46: Build Compliance into Workflow**
- Check rules automatically during development, monitor compliance in real-time, generate audit reports easily, assess impact of rule changes - like having built-in spell check while writing.
+**Rule 46: Build Compliance into Workflow** Check rules automatically during development, monitor compliance in real-time, generate audit reports easily, assess impact of rule changes - like having built-in spell check while writing.
 
-**Rule 47: Security Should Help, Not Block**
- Security tips shouldn't break concentration, automate common security fixes, explain security rules in simple terms, prioritize security risks by importance - like friendly security guards rather than prison guards.
+**Rule 47: Security Should Help, Not Block** Security tips shouldn't break concentration, automate common security fixes, explain security rules in simple terms, prioritize security risks by importance - like friendly security guards rather than prison guards.
 
-**Rule 48: Support Gradual Adoption**
- Let teams start with 3-5 most useful modules, each module should work well on its own, show clear paths to add more modules, provide value at every step - like learning math starting with addition, then multiplication.
+**Rule 48: Support Gradual Adoption** Let teams start with 3-5 most useful modules, each module should work well on its own, show clear paths to add more modules, provide value at every step - like learning math starting with addition, then multiplication.
 
-**Rule 49: Scale from Small to Huge**
- Work for 1 developer or 10,000, handle 100 events per day or 10 million, support simple systems and complex ones, meet basic needs and strict regulations - like a playground that works for both small kids and professional athletes.
+**Rule 49: Scale from Small to Huge** Work for 1 developer or 10,000, handle 100 events per day or 10 million, support simple systems and complex ones, meet basic needs and strict regulations - like a playground that works for both small kids and professional athletes.
 
  🤝 TEAMWORK RULES
 
-**Rule 50: Build for Real Team Work**
- Make collaboration natural and easy, help teams share knowledge automatically, reduce meetings and emails through better tools, make it easy to help each other without interrupting work - like good group project tools.
+**Rule 50: Build for Real Team Work** Make collaboration natural and easy, help teams share knowledge automatically, reduce meetings and emails through better tools, make it easy to help each other without interrupting work - like good group project tools.
 
-**Rule 51: Prevent Knowledge Silos**
- Automatically identify who knows what, suggest when to share important information, help teams learn from each other's successes, make expertise easy to find when needed - like knowing which friend to ask for help with different subjects.
+**Rule 51: Prevent Knowledge Silos** Automatically identify who knows what, suggest when to share important information, help teams learn from each other's successes, make expertise easy to find when needed - like knowing which friend to ask for help with different subjects.
 
-**Rule 52: Reduce Frustration Daily**
- Fix the small annoyances that add up, automate boring repetitive tasks, make hard things easier, celebrate small wins and progress - like making daily chores less annoying.
+**Rule 52: Reduce Frustration Daily** Fix the small annoyances that add up, automate boring repetitive tasks, make hard things easier, celebrate small wins and progress - like making daily chores less annoying.
 
-**Rule 53: Build Confidence, Not Fear**
- Make deployments feel safe and controlled, provide safety nets for mistakes, show progress and improvements clearly, help people learn without embarrassment - like training wheels on a bike.
+**Rule 53: Build Confidence, Not Fear** Make deployments feel safe and controlled, provide safety nets for mistakes, show progress and improvements clearly, help people learn without embarrassment - like training wheels on a bike.
 
-**Rule 54: Learn and Adapt Constantly**
- Watch how people actually use the product, learn from what works and what doesn't, make the product smarter over time, adapt to different team styles and needs - like a teacher who adjusts to how students learn best.
+**Rule 54: Learn and Adapt Constantly** Watch how people actually use the product, learn from what works and what doesn't, make the product smarter over time, adapt to different team styles and needs - like a teacher who adjusts to how students learn best.
 
-**Rule 55: Measure What Matters**
- Track real improvements, not just activity, measure time saved and stress reduced, watch for positive behavior changes, count problems prevented, not just fixed - like measuring learning, not just time spent studying.
+**Rule 55: Measure What Matters** Track real improvements, not just activity, measure time saved and stress reduced, watch for positive behavior changes, count problems prevented, not just fixed - like measuring learning, not just time spent studying.
 
-**Rule 56: Catch Issues Early**
- Find problems when they're small and easy to fix, warn about potential issues before they happen, suggest simple fixes for common mistakes, prevent small issues from becoming big problems - like fixing a small leak before it becomes a flood.
+**Rule 56: Catch Issues Early** Find problems when they're small and easy to fix, warn about potential issues before they happen, suggest simple fixes for common mistakes, prevent small issues from becoming big problems - like fixing a small leak before it becomes a flood.
 
-**Rule 57: Build Safety Into Everything**
- Always have an "undo" button, make dangerous actions hard to do accidentally, provide multiple ways to recover from mistakes, test changes safely before applying them - like safety features in cars.
+**Rule 57: Build Safety Into Everything** Always have an "undo" button, make dangerous actions hard to do accidentally, provide multiple ways to recover from mistakes, test changes safely before applying them - like safety features in cars.
 
-**Rule 58: Automate Wisely**
- Only automate things that are boring or error-prone, always let people review and approve important changes, make automation helpful, not annoying, explain what the automation is doing and why - like a helpful robot assistant.
+**Rule 58: Automate Wisely** Only automate things that are boring or error-prone, always let people review and approve important changes, make automation helpful, not annoying, explain what the automation is doing and why - like a helpful robot assistant.
 
-**Rule 59: Learn from Experts**
- Watch how the best developers work, copy their successful patterns, help everyone work like the experts, share best practices across the whole team - like learning sports from professional athletes.
+**Rule 59: Learn from Experts** Watch how the best developers work, copy their successful patterns, help everyone work like the experts, share best practices across the whole team - like learning sports from professional athletes.
 
-**Rule 60: Show the Right Information at the Right Time**
- Don't overwhelm people with too much information, show what's important right now, hide complexity until it's needed, make status and progress clear at a glance - like a good car dashboard.
+**Rule 60: Show the Right Information at the Right Time** Don't overwhelm people with too much information, show what's important right now, hide complexity until it's needed, make status and progress clear at a glance - like a good car dashboard.
 
-**Rule 61: Make Dependencies Visible**
- Show how different pieces connect and depend on each other, warn when changes might affect other people, help teams coordinate without meetings, make the system's architecture easy to understand - like a map showing how roads connect.
+**Rule 61: Make Dependencies Visible** Show how different pieces connect and depend on each other, warn when changes might affect other people, help teams coordinate without meetings, make the system's architecture easy to understand - like a map showing how roads connect.
 
-**Rule 62: Be Predictable and Consistent**
- Work the same way every time, don't surprise people with unexpected behavior, explain clearly what will happen before it happens, build trust through reliability - like a reliable friend.
+**Rule 62: Be Predictable and Consistent** Work the same way every time, don't surprise people with unexpected behavior, explain clearly what will happen before it happens, build trust through reliability - like a reliable friend.
 
-**Rule 63: Never Lose People's Work**
- Save work automatically and frequently, provide clear recovery options, back up important information, warn before doing anything that can't be undone - like automatic save in video games.
+**Rule 63: Never Lose People's Work** Save work automatically and frequently, provide clear recovery options, back up important information, warn before doing anything that can't be undone - like automatic save in video games.
 
-**Rule 64: Make it Beautiful and Pleasant**
- Use clean, attractive designs, choose pleasant colors and fonts, make interactions smooth and satisfying, create an experience people enjoy using - like a well-designed park.
+**Rule 64: Make it Beautiful and Pleasant** Use clean, attractive designs, choose pleasant colors and fonts, make interactions smooth and satisfying, create an experience people enjoy using - like a well-designed park.
 
-**Rule 65: Respect People's Time**
- Load quickly and respond instantly, don't make people wait unnecessarily, streamline common tasks, value every second of people's time - like express checkout lines.
+**Rule 65: Respect People's Time** Load quickly and respond instantly, don't make people wait unnecessarily, streamline common tasks, value every second of people's time - like express checkout lines.
 
-**Rule 66: Write Clean, Readable Code**
- Make code easy to understand and modify, use clear names and simple structures, document why decisions were made, keep code organized and consistent - like writing clear, neat notes.
+**Rule 67: Handle Edge Cases Gracefully** Plan for things going wrong, handle errors without crashing, provide helpful error messages, recover smoothly from problems - like having a plan B when things don't go as expected.
 
-**Rule 67: Handle Edge Cases Gracefully**
- Plan for things going wrong, handle errors without crashing, provide helpful error messages, recover smoothly from problems - like having a plan B when things don't go as expected.
+**Rule 68: Encourage Better Ways of Working** Suggest improvements to processes, help teams adopt better practices, make good habits easy to form, reward continuous improvement - like a good coach.
 
-**Rule 68: Encourage Better Ways of Working**
- Suggest improvements to processes, help teams adopt better practices, make good habits easy to form, reward continuous improvement - like a good coach.
+**Rule 69: Adapt to Different Skill Levels** Help beginners learn quickly, support experts with advanced features, don't force one way of working on everyone, grow with people as they learn and improve - like books with different reading levels.
 
-**Rule 69: Adapt to Different Skill Levels**
- Help beginners learn quickly, support experts with advanced features, don't force one way of working on everyone, grow with people as they learn and improve - like books with different reading levels.
+**Rule 70: Be Helpful, Not Annoying** Offer help when it's actually needed, know when to be quiet and stay out of the way, learn what kind of help each person prefers, get better at helping over time - like a helpful friend who knows when to help and when to let you figure things out.
 
-**Rule 70: Be Helpful, Not Annoying**
- Offer help when it's actually needed, know when to be quiet and stay out of the way, learn what kind of help each person prefers, get better at helping over time - like a helpful friend who knows when to help and when to let you figure things out.
+**Rule 71: Explain AI Decisions Clearly** Don't be a "black box" - show your reasoning, help people understand why you're making suggestions, be honest about uncertainty and limitations, build trust through transparency - like showing your math work instead of just the answer.
 
-**Rule 71: Explain AI Decisions Clearly**
- Don't be a "black box" - show your reasoning, help people understand why you're making suggestions, be honest about uncertainty and limitations, build trust through transparency - like showing your math work instead of just the answer.
+**Rule 72: Demonstrate Clear Value** Show how the product saves time and money, make benefits obvious and measurable, connect features to real business outcomes, prove your worth every day - like showing how studying leads to better grades.
 
-**Rule 72: Demonstrate Clear Value**
- Show how the product saves time and money, make benefits obvious and measurable, connect features to real business outcomes, prove your worth every day - like showing how studying leads to better grades.
+**Rule 73: Grow with the Customer** Work well for small teams and huge organizations, adapt to different industries and needs, support both simple and complex situations, scale smoothly as needs grow - like clothes that can expand as you grow.
 
-**Rule 73: Grow with the Customer**
- Work well for small teams and huge organizations, adapt to different industries and needs, support both simple and complex situations, scale smoothly as needs grow - like clothes that can expand as you grow.
+**Rule 74: Create "Magic Moments"** Occasionally surprise and delight users, make some tasks feel effortless and magical, exceed expectations in small, meaningful ways, create features that people love to show others - like finding an extra french fry at the bottom of the bag.
 
-**Rule 74: Create "Magic Moments"**
- Occasionally surprise and delight users, make some tasks feel effortless and magical, exceed expectations in small, meaningful ways, create features that people love to show others - like finding an extra french fry at the bottom of the bag.
-
-**Rule 75: Remove Friction Everywhere**
- Eliminate unnecessary steps and clicks, simplify complex processes, make common tasks fast and easy, smooth out rough edges in the experience - like making doors automatic so you don't have to push them.
+**Rule 75: Remove Friction Everywhere** Eliminate unnecessary steps and clicks, simplify complex processes, make common tasks fast and easy, smooth out rough edges in the experience - like making doors automatic so you don't have to push them.
 
 ---
-
- 🆘 WHAT TO SAY WHEN YOU NEED HELP
-
-When information is missing:
-> "I need more information about: [exactly what's missing]"
-
-When you see a security problem:
-> "SECURITY PROBLEM: [what's wrong]"
-
-When something will be too slow:
-> "PERFORMANCE PROBLEM: [what will be slow]"
-
-When it doesn't solve a real problem:
-> "PROBLEM-SOLVING ISSUE: [what frustration isn't addressed]"
-
-When it makes people think too hard:
-> "TOO COMPLEX: [what's confusing]"
-
-When teamwork is suffering:
-> "TEAMWORK PROBLEM: [what's making collaboration hard]"
-
-When something is frustrating users:
-> "FRUSTRATION ALERT: [what's causing annoyance]"
-
-When trust might be broken:
-> "TRUST ISSUE: [what might damage trust]"
-
-When value isn't clear:
-> "VALUE QUESTION: [why this matters to users]"
-
-When automation is too aggressive:
-> "AUTOMATION PROBLEM: [what should be manual]"
-
----
-
- ✅ DAILY CHECKLIST
-
- 🎯 DAILY BASICS
-[ ] I solved a real problem developers face
-[ ] I made someone's work easier or less frustrating
-[ ] I protected people's privacy and data
-[ ] I was clear and honest about what I'm doing
-
- 🤝 TEAMWORK
-[ ] I helped people collaborate better
-[ ] I made knowledge sharing easier
-[ ] I reduced the need for meetings and interruptions
-
- 🚀 DEVELOPER HAPPINESS
-[ ] I reduced daily frustrations
-[ ] I built confidence instead of fear
-[ ] I made something feel safer or more controlled
-
- 🔄 CONTINUOUS IMPROVEMENT
-[ ] I learned from how people actually work
-[ ] I made the product smarter over time
-[ ] I measured real improvements, not just activity
-
- 🛡️ TRUST & RELIABILITY
-[ ] I was predictable and consistent
-[ ] I never risked losing someone's work
-[ ] I built trust through reliable behavior
-
- 🎨 USER EXPERIENCE
-[ ] I respected people's time
-[ ] I made something beautiful and pleasant to use
-[ ] I created a moment of delight or satisfaction
-
- 💡 INTELLIGENT HELP
-[ ] I was helpful without being annoying
-[ ] I explained my reasoning clearly
-[ ] I adapted to different skill levels and styles
-
----
-
- 🌟 OUR ULTIMATE GOAL
-
-Remember: We're not just building software. We're making developers' lives better by:
-
-- Reducing their daily frustrations - Like fixing annoying problems
-- Helping them do their best work - Like giving them superpowers
-- Making complex things simple - Like good instructions
-- Building their confidence - Like encouraging coaches
-- Helping teams work together smoothly - Like good team sports
-- Preventing problems before they happen - Like seeing the future
-- Creating moments of joy in their workday - Like little surprises
-
-Every feature, every line of code, every decision should make developers happier, more productive, and more successful! 🌟
-
-These rules help us build a product that people don't just use - they love using it because it makes their work lives meaningfully better.
-
 # ZeroUI 2.0 — Code Review Constitution (Cursor)
 
 > Goal: Make every Pull Request (PR) **safe, readable, testable, and traceable** — even when code was generated by AI. Reviews must be in **simple English (8th‑grade)**, focus on **WHY**, and enforce our other Constitutions (Folder, Coding, API Contracts, Comments, Logging, Storage).
@@ -395,7 +221,6 @@ These rules help us build a product that people don't just use - they love using
 ---
 
 **Rule 76: Roles & Scope**
-
 - **Author:** writes the change, fills PR template, runs self‑checks.
 - **Reviewer:** verifies intent, risks, tests, and policy compliance. Gives clear, kind feedback.
 - **Gatekeeper (CI):** blocks merges on rule violations.
@@ -409,7 +234,6 @@ These rules help us build a product that people don't just use - they love using
 SLA: Reviews should start within **2 business days**.
 
 **Rule 77: Golden Rules (non‑negotiable)**
-
 1) **Why first.** The PR must state **What changed** and **Why we did it** (problem, constraints, trade‑offs).
 2) **Small, coherent diffs.** One intent per PR; feature‑flags for risky changes.
 3) **Tests prove behavior.** No code change without tests that **fail before** and **pass after** the change (or receipts proving behavior for non-code config).
@@ -420,7 +244,6 @@ SLA: Reviews should start within **2 business days**.
 ---
 
 **Rule 78: Review Outcomes & Severity**
-
 - **Approve** — meets all checks; minor nits optional.
 - **Request changes** — must fix blockers/majors.
 - **Comment** — non‑blocking feedback or ideas.
@@ -434,7 +257,6 @@ Severity levels the reviewer must tag:
 ---
 
 **Rule 79: Stop Conditions → Error Codes (CI/Reviewer)**
-
 - Missing PR context (what/why) .......................... `ERROR:REVIEW_CONTEXT_MISSING`
 - Violates Coding/Comments Constitution .................. `ERROR:COMMENT_POLICY_VIOLATION`
 - API contract drift (spec vs code) ...................... `ERROR:API_CONTRACT_DRIFT`
@@ -457,7 +279,6 @@ Severity levels the reviewer must tag:
 
 
 **Rule 80: Review Procedure (simple checklist)**
-
 ### A) Intent & Context (read first)
 - Problem statement clear? Why now?
 - Link to issue/ticket and receipts proving the problem (logs, failing test, steps to reproduce).
@@ -465,6 +286,9 @@ Severity levels the reviewer must tag:
 - **Return Contract formats enforced** (Unified Diff / New File / JSON) — PR must include correct output.
 
 ### B) Interfaces & Contracts
+
+> **Windows note:** Keep SoT directory depth conservative to avoid path-length issues; prefer short folder names and fewer nested levels.
+
 - OpenAPI/JSON Schemas updated; versioned; backward compatible?
 - Inputs/outputs validated; error taxonomy aligned; idempotency documented.
 - Cross‑service calls include timeouts, retries, **idempotencyKey**, and **trace propagation**.
@@ -512,7 +336,6 @@ Severity levels the reviewer must tag:
 
 
 **Rule 81: Evidence Required in PR**
-
 - **Screenshots or log snippets** (redacted) showing success/failure.
 - **Receipts** for significant actions (append‑only JSONL).
 - **Test results** (pass/fail) and, if relevant, benchmark numbers.
@@ -520,7 +343,15 @@ Severity levels the reviewer must tag:
 
 ---
 
-##  Micro‑Prompt Footer — Code Review (attach to AI review tasks)
+## Return Contract (canonical)
+
+Emit **exactly one** of:
+1. Unified diff (patch) suitable for `git apply`.
+2. Complete file (full replacement).
+3. JSON artifact (validated by schema when referenced).
+
+All domain sections MUST reference this canonical section instead of restating it.
+
 
 ```text
 MICRO_PROMPT_FOOTER — Code Review
@@ -537,47 +368,8 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 ---
 
-**Rule 82: PR Template Block — Code Review (paste into `.github/pull_request_template.md`)**
-
-```markdown
-### PR Intent
-- **What changed:**
-- **Why now (problem/constraint):**
-- **Scope:**
-- **Risk (Low/Med/High) + Mitigation:**
-- **Rollout/rollback plan:**
-
-### AI Provenance
-- **generated_by:** Cursor
-- **model:**
-- **prompt_hash:**
-- **assumptions/limits:**
-
-### Security/Privacy Impact
-- **New data flows or scopes:**
-- **AuthZ/AuthN changes:**
-- **PII risk & mitigations:**
-
-### Evidence
-- [ ] Logs/receipts attached (redacted)
-- [ ] Contract diffs (OpenAPI/Schema) included (+ publish/receipt where applicable)
-- [ ] Test results pasted (unit/integration)
-- [ ] Screenshots/benchmarks & **Perf Receipt** (if relevant)
-
-### Self‑Check (Author)
-- [ ] Comments updated (simple English; WHY + PLAN)
-- [ ] Logging meets schema; request.start/end present
-- [ ] Storage rules followed; migrations safe (additive‑first, concurrent index, backfill, dual RW if needed, down path)
-- [ ] Security/privacy reviewed; no secrets/PII
-- [ ] Observability updated (metrics/traces/alerts)
-- [ ] CODEOWNERS approval(s) requested (sensitive areas); two reviewers tagged if required
-```
-
----
-
 
 **Rule 83: Automation (CI/Pre‑commit)**
-
 - **Lint & format:** ruff/black (Python), eslint/biome (TS).
 - **Contracts:** diff and validate OpenAPI/Schema JSON; fail on breaking changes; require contract publish receipt where applicable.
 - **Comments:** check for file headers, function docs, PLAN blocks (regex/rules) — enforce Comments Constitution stop codes.
@@ -592,7 +384,6 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 
 
 **Rule 84: Review Comment Style (simple English)**
-
 - Be kind. Focus on the code, not the person.
 - Explain **why** you suggest a change. Use short sentences.
 - Offer a **concrete diff** when possible.
@@ -608,13 +399,21 @@ Output one of: Approve | Request changes | Comment. Include severity tags (Block
 ---
 
 **Rule 85: Return Contracts (review output)**
-
 - **Approve:** brief summary + any minor nits.
 - **Request changes:** list blockers/majors with bullet points and suggested fix.
 - **Comment:** ideas or questions; no merge block.
 
 ---
 
+
+**Rule 238: Tenant Overrides (Strict Contract)**  Overrides MUST include:
+```
+tenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],
+waiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],
+ttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},
+kid, signature
+```
+Overrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.
 ## 12) Quick Reviewer Checklist (one screen)
 
 - [ ] Why now + single scope  
@@ -644,59 +443,42 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - Work on ONE Sub-Feature at a time. Total change ≤ 50 LOC unless the user includes "LOC_OVERRIDE:<number>".
 - Minimal diffs only; do not rewrite files unless required. Keep published contracts stable unless explicitly instructed.
 
-**Rule 86: PYTHON (FastAPI) QUALITY GATES**
-- Tools: ruff + black (line length 100) + mypy --strict.
+**Rule 86: PYTHON (FastAPI) QUALITY GATES**- Tools: ruff + black (line length 100) + mypy --strict.
 - Runtime: Python 3.11+. Use Pydantic v2 models; never return raw ORM.
 - FastAPI: every route has response_model; validate inputs; error envelope only (no plain strings).
 - Async only for handlers; avoid blocking calls; httpx for async tests.
 - Packaging: pip-tools lock with hashes; no unpinned deps.
 
-**Rule 87: TYPESCRIPT QUALITY GATES**
-- tsconfig: "strict": true, "noImplicitAny": true, "exactOptionalPropertyTypes": true, ES2022+, ESNext modules.
+**Rule 87: TYPESCRIPT QUALITY GATES**- tsconfig: "strict": true, "noImplicitAny": true, "exactOptionalPropertyTypes": true, ES2022+, ESNext modules.
 - eslint + prettier required; no `any` in committed code.
 - API types are generated from OpenAPI; do not hand-roll DTOs for server contracts.
 
-**Rule 88: API CONTRACTS (HTTP)**
-- OpenAPI 3.1 is the source of truth; URI versioning /v1, /v2...
-- Mutations MUST accept Idempotency-Key; lists are cursor-paginated; standard headers include X-API-Version and X-Request-Id.
-- Stable error envelope with canonical codes; no 200-with-error patterns.
-- Changes that are breaking require a new major version and deprecation process.
-
-**Rule 89: DATABASE (PostgreSQL primary; SQLite for dev/test)**
-- SQLAlchemy 2.x; explicit columns (no SELECT *); name constraints/indexes.
+**Rule 89: DATABASE (PostgreSQL primary; SQLite for dev/test)**- SQLAlchemy 2.x; explicit columns (no SELECT *); name constraints/indexes.
 - Schema changes ONLY via Alembic; additive-first; include safe DOWN migration.
 - SQLite (dev/test) uses WAL + busy_timeout=5000; mirror Postgres schema.
 
-**Rule 90: SECURITY & SECRETS**
-- No secrets in code, tests, examples, logs, or repo. Use env + OS keyring/DPAPI. Provide .env.template only.
+**Rule 90: SECURITY & SECRETS**- No secrets in code, tests, examples, logs, or repo. Use env + OS keyring/DPAPI. Provide .env.template only.
 - Validate inputs; set security headers; CORS allowlist only (no * in prod).
 - Run dependency & secret scans; block known CVEs.
 
-**Rule 91: OBSERVABILITY & RECEIPTS**
-- Logs are structured JSON: timestamp, level, service, route, httpStatus, latencyMs, traceId/spanId, apiVersion.
+**Rule 91: OBSERVABILITY & RECEIPTS**- Logs are structured JSON: timestamp, level, service, route, httpStatus, latencyMs, traceId/spanId, apiVersion.
 - Emit JSONL receipts for privileged actions (planned/success/aborted/error) with ts_utc, monotonic_hw_time_ms, traceId, policy_snapshot_hash.
 
-**Rule 92: TESTING PROGRAM**
-- Tests first; pytest (≥90% where applicable) + httpx for API; property tests with hypothesis where valuable.
+**Rule 92: TESTING PROGRAM**- Tests first; pytest (≥90% where applicable) + httpx for API; property tests with hypothesis where valuable.
 - DB tests transactional with rollback; CI must run unit + integration tests; coverage must not drop.
 
-**Rule 93: LLM / OLLAMA**
-- Use pinned llama3 variant with deterministic params (low temperature, fixed seed); enforce token/time budgets.
+**Rule 93: LLM / OLLAMA**- Use pinned llama3 variant with deterministic params (low temperature, fixed seed); enforce token/time budgets.
 - Redact PII/secrets before inference; never log raw prompts with secrets.
 - For codegen, output ONLY the specified Return Contract format (see §12).
 
-**Rule 94: SUPPLY CHAIN & RELEASE INTEGRITY**
-- Signed commits/tags; SBOMs attached; pinned lockfiles (pip-tools with hashes, npm ci).
+**Rule 94: SUPPLY CHAIN & RELEASE INTEGRITY**- Signed commits/tags; SBOMs attached; pinned lockfiles (pip-tools with hashes, npm ci).
 - Container bases pinned by digest; non-root; read-only FS where possible.
 
-**Rule 95: PERFORMANCE & RELIABILITY**
-- Publish per-route SLOs (p95) in policy; add timeouts, retries (idempotent), backpressure; avoid event-loop blocking.
+**Rule 95: PERFORMANCE & RELIABILITY**- Publish per-route SLOs (p95) in policy; add timeouts, retries (idempotent), backpressure; avoid event-loop blocking.
 
-**Rule 96: DOCS & RUNBOOKS**
-- Accurate OpenAPI; examples for all responses; ADRs for architectural changes; runbooks for migrations/rollbacks.
+**Rule 96: DOCS & RUNBOOKS**- Accurate OpenAPI; examples for all responses; ADRs for architectural changes; runbooks for migrations/rollbacks.
 
-**Rule 97: RETURN CONTRACTS (OUTPUT FORMAT — MUST PICK ONE)**
-A) Unified Diff (default for code)
+**Rule 97: RETURN CONTRACTS (OUTPUT FORMAT — MUST PICK ONE)**A) Unified Diff (default for code)
 ```diff
 # repo-root-relative paths
 # unified diff (git-style) with only minimal changes
@@ -712,8 +494,7 @@ C) JSON Artifact (policy/config/schema)
 ```
 No extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-**Rule 98: STOP CONDITIONS → ERROR CODES**
-- Python/TS lint or format changes needed .................. ERROR:STYLE_VIOLATION
+**Rule 98: STOP CONDITIONS → ERROR CODES**- Python/TS lint or format changes needed .................. ERROR:STYLE_VIOLATION
 - Type errors (mypy/TS strict) ............................. ERROR:TYPECHECK_FAIL
 - Tests missing or not updated ............................. ERROR:TEST_MISSING
 - OpenAPI breaking change w/o version bump ................. ERROR:OPENAPI_DIFF_BREAK
@@ -735,6 +516,12 @@ END_CONSTITUTION
 
 ---
 
+
+**Rule 19: Use the Hybrid System Design** Our system has four parts:
+- IDE Extension → Only shows information (like a car dashboard)
+- Edge Agent → Processes data locally for privacy (like thinking in your head)
+- Client Cloud → Stores company's private data (like a company safe)
+- Our Cloud → Only gets anonymous, safe data (like public statistics)
 ## 2) Cursor **Micro-Prompt Footer** — attach to every task
 
 ```text
@@ -760,7 +547,6 @@ Output exactly ONE: Unified Diff | New File | JSON (see System §12). No extra p
 ---
 
 **Rule 99: Optional PR Template (drop in `.github/pull_request_template.md`)**
-
 ```markdown
 ## What changed?
 - Sub-Feature ID:
@@ -779,6 +565,14 @@ Output exactly ONE: Unified Diff | New File | JSON (see System §12). No extra p
 ---
 
 ### Error Code Registry (centralized)
+
+### How to mint a new error code
+1. Propose a short name and severity.
+2. Edit `components/error-codes.yaml` (sorted order).
+3. Reference the code in the relevant rule/contract.
+4. Add one example occurrence to receipts/logs.
+5. Submit PR; reviewers verify uniqueness and usage.
+
 Use the canonical HTTP error code registry defined under the API Contracts Constitution (`components/error-codes.yaml`). Do not define ad-hoc codes in application code; import the shared enum/module instead.
 
 ---
@@ -816,16 +610,14 @@ Readability Standard (R008)
   ✓ "Check if user is logged in" (Grade 3.2)
   ✗ "Verify authentication status of the current user session" (Grade 8.7)
 
-**Rule 217: WHERE COMMENTS MUST APPEAR**
-A) File‑level header (top of every file) — in simple English:
+**Rule 100: WHERE COMMENTS MUST APPEAR**A) File‑level header (top of every file) — in simple English:
    What, Why, Reads/Writes (paths/tables/receipts), Contracts/Policy IDs, Risks.
 B) Imports‑level (top import block) — group stdlib / third‑party / local and say **why** each group exists.
 C) Function/Class‑level (public APIs) — WHAT + WHY + Steps + Inputs/Outputs (special rules only) + Fails/Throws + Security/Privacy note.
 D) Variable‑level (non‑obvious values/constants) — meaning, units, allowed range, and reason.
 E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 
-**Rule 218: FILE‑TYPE FOCUS (add these in headers or near the write)**
-- config: explain each setting; safe defaults; allowed range.
+**Rule 101: FILE‑TYPE FOCUS (add these in headers or near the write)**- config: explain each setting; safe defaults; allowed range.
 - service: plain business rule; which API/DB it touches.
 - log: what we log and why; redaction rules; include traceId.
 - receipt: what decision is recorded; include ts_utc, monotonic_hw_time_ms, action, result, traceId, policy_snapshot_hash.
@@ -834,11 +626,9 @@ E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 - backup: schedule; retention; restore test plan.
 - audit: append‑only rule; who writes; integrity check (hash/signature).
 
-**Rule 100: SECURITY & PRIVACY**
-- No secrets or PII in comments or examples. Use synthetic data only.
+**Rule 102: SECURITY & PRIVACY**- No secrets or PII in comments or examples. Use synthetic data only.
 
-**Rule 101: TODO POLICY (R089)**
-- **Required Format**: `TODO(owner): description [ticket] [date]`
+**Rule 103: TODO POLICY (R089)**- **Required Format**: `TODO(owner): description [ticket] [date]`
 - **Flexible Formats** (all acceptable):
   - `TODO(john.doe): Fix login bug [BUG-123] [2024-12-31]`
   - `TODO(@team): Refactor API [TASK-456] [Q1-2025]`
@@ -848,8 +638,7 @@ E) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.
 - **Accountability**: Must include owner (name, @team, or "me")
 - **Optional**: Ticket number and due date for better tracking
 
-**Rule 102: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**
-A) Unified Diff (default for code)
+**Rule 104: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**A) Unified Diff (default for code)
 ```diff
 # repo‑root‑relative paths
 # unified diff (git‑style) with only the minimal changes
@@ -865,16 +654,14 @@ C) JSON Artifact (policy/config/schema)
 ```
 If output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-**Rule 103: SELF‑AUDIT BEFORE OUTPUT**
-- [ ] File header has What/Why/Reads‑Writes/Contracts/Risks
+**Rule 105: SELF‑AUDIT BEFORE OUTPUT**- [ ] File header has What/Why/Reads‑Writes/Contracts/Risks
 - [ ] Imports grouped and explained (why we need them)
 - [ ] Public APIs have simple docs with WHY + Steps + Fails/Throws + Security
 - [ ] Non‑obvious variables show meaning/units/range/reason
 - [ ] Tricky logic has a PLAN/RATIONALE block
 - [ ] No jargon; short sentences; no secrets/PII
 
-**Rule 104: STOP CONDITIONS → ERROR CODES**
-- Missing file header or public API docstring .......... ERROR:COMMENT_MISSING
+**Rule 106: STOP CONDITIONS → ERROR CODES**- Missing file header or public API docstring .......... ERROR:COMMENT_MISSING
 - Complex logic lacks a plan/rationale ................. ERROR:COMMENT_RATIONALE_MISSING
 - Readability issues (jargon/long sentences) ........... ERROR:READABILITY_COMPLEX
 - TODO without owner/date/ticket ....................... ERROR:TODO_UNBOUNDED (R089)
@@ -888,71 +675,6 @@ END_CONSTITUTION
 
 ---
 
-## 2) Micro‑Prompt Footer — Comments (attach to every task)
-
-```text
-MICRO_PROMPT_FOOTER — Comments (Simple English)
-
-=== MUST FOLLOW ===
-- Write/update: file header, import notes, function/class docs, variable notes, and logic PLANs.
-- Use simple English. Short sentences. Explain WHY and trade‑offs. Add units and ranges. Link to contracts/policy.
-
-=== RETURN ===
-Output exactly ONE: Unified Diff | New File | JSON (System §5). Show comment edits next to code edits.
-
-=== SELF‑CHECK ===
-- [ ] Header + imports + functions + variables + logic covered
-- [ ] WHY explained; short sentences; no jargon
-- [ ] Links and units present; no secrets/PII
-```
-
----
-
-**Rule 105: PR Checklist Block — Comments (Simple English)**
-
-```markdown
-### Comments (Simple English) — Required Checks
-
-**Universal**
-- [ ] File header explains **What** and **Why**, lists **Reads/Writes**, **Contracts/Policy IDs**, and **Risks**.
-- [ ] Imports have a short note by group (stdlib / third‑party / local) explaining **why** we need them.
-- [ ] Public APIs (functions/classes) have docstrings/TSDoc with: **Why**, **Steps**, **Inputs/Outputs (special rules only)**, **Fails/Throws**, **Security note**.
-- [ ] Non‑obvious variables have **meaning, units, range, reason**.
-- [ ] Tricky logic has a **PLAN/RATIONALE** block before the code.
-- [ ] Comments use **simple English** (short sentences, no jargon).
-- [ ] TODOs follow **R089 policy**: `TODO(owner): description [ticket] [date]` format
-- [ ] No secrets/PII in comments or examples. Examples are **synthetic**.
-
-**By file type**
-- [ ] **config**: each key has `description` and `$comment` (why default is safe).
-- [ ] **service**: header states the **business rule**; functions list **Steps** and **Fails**.
-- [ ] **log**: header lists **what** and **why** we log; fields note **redaction** and include **traceId**.
-- [ ] **receipt**: header says **which decision** we record; near write: **ts_utc, monotonic_hw_time_ms, action, result, traceId, policy_snapshot_hash**.
-- [ ] **db (migration)**: header has **Why now**, **online‑safe plan**, **rollback**, **cutover flag**.
-- [ ] **blob**: header says **format**, **size**, **path**, **privacy** (redaction/encryption).
-- [ ] **backup**: header lists **schedule**, **retention**, **restore test** plan.
-- [ ] **audit**: header states **append‑only**, **who writes**, **integrity check** (hash/signature).
-
-**Return contract**
-- [ ] Diff shows comment edits **next to** code edits (Unified Diff | New File | JSON only).
-```
-
----
-
-**Rule 106: AUTOMATION (CI / Pre-commit)**
-
-- **Header check:** ensure a file header exists near the top (regex: `^(What:|/\*\*\n \* What:)` within first 40 lines).
-- **PLAN check:** require a `PLAN` or `RATIONALE` block before code that includes retries/backoff, transactions/locks, feature flags, or complex pagination.
-- **Banned words check:** fail PR on banned words (utilize, leverage, aforementioned, herein, thusly, performant, instantiate).
-- **Readability check (best-effort):** flag very long sentences in comments (> 25 words) or heavy passive voice.
-- **Return Contract:** verify diffs include comment edits **next to** code edits.
-
----
-
-### Mini Examples by Level
-
-**Imports (Good):**
-```python
 # IMPORTS — Why we need them
 # stdlib: time, json → timers and structured output
 # third‑party: sqlalchemy → talk to DB; httpx → HTTP calls
@@ -974,6 +696,11 @@ MAX_BATCH = 100  # keep DB pool under 10; range 50..200
 
 ---
 
+
+**Rule 206: Comments in Simple English**Explain **what** and **why** in short sentences. Avoid jargon.
+
+---
+
 ## 2.1) Status Lifecycle
 - Add `x-status` to endpoints/schemas: `experimental | beta | ga | deprecated | sunset`.
 - **beta** requires consumer sign-off; **ga** requires full deprecation process; **sunset** requires `Sunset` header + date.
@@ -989,8 +716,7 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - Work on ONE Sub‑Feature at a time (unit of work). Total change ≤ 50 LOC unless the prompt includes "LOC_OVERRIDE:<number>".
 - Touch ONLY contract SoT and enforcement files unless explicitly asked to edit service code.
 
-**Rule 107: SOURCE OF TRUTH (PATHS YOU MAY TOUCH)**
-- Contract SoT lives under:
+**Rule 107: SOURCE OF TRUTH (PATHS YOU MAY TOUCH)**- Contract SoT lives under:
   configs/contracts/http/v*/ (OpenAPI 3.1: openapi.yaml, components.yaml, examples/)
   configs/contracts/async/   (AsyncAPI for events, if any)
   configs/schemas/           (shared JSON Schemas 2020‑12)
@@ -999,8 +725,7 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
   docs/api/                  (rendered docs configs)
 - Do NOT write contracts elsewhere. Path outside this tree → ERROR:SPEC_PATH_VIOLATION.
 
-**Rule 108: STYLE GUIDE (HTTP)**
-- Verbs: GET, POST, PUT, PATCH, DELETE (no RPC verbs).
+**Rule 108: STYLE GUIDE (HTTP)**- Verbs: GET, POST, PUT, PATCH, DELETE (no RPC verbs).
 - URIs: nouns + ids: /v1/projects/{projectId}/releases/{releaseId} (kebab‑case tokens).
 - IDs: UUIDv7 strings; never expose DB autoincrement ids.
 - Timestamps: ISO‑8601 UTC with Z; server stores timestamptz.
@@ -1010,29 +735,24 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - Headers (standard): X‑API‑Version, X‑Request‑Id, X‑RateLimit‑*, X‑Tenant‑Id (UUIDv7).
 - Error envelope (Problem JSON‑style): stable code, human message, traceId, optional details.
 
-**Rule 109: VERSIONING & COMPATIBILITY**
-- URI versioning (/v1, /v2). Any breaking change REQUIRES a new major and deprecation of the old.
+**Rule 109: VERSIONING & COMPATIBILITY**- URI versioning (/v1, /v2). Any breaking change REQUIRES a new major and deprecation of the old.
 - Breaking (block without bump): remove/rename field/endpoint; type change; optional→required; enum narrowing; behavior or default change.
 - Non‑breaking: add endpoint; add optional field; enum widening (consumers must tolerate unknowns).
 - Deprecation: mark deprecated: true, emit Sunset header with date, publish migration notes (≥90 days).
 
-**Rule 110: SECURITY CONTRACTED IN SPEC**
-- Auth schemes: JWT (aud, iss, exp, iat, kid) with documented scopes per route; (optional) mTLS.
+**Rule 110: SECURITY CONTRACTED IN SPEC**- Auth schemes: JWT (aud, iss, exp, iat, kid) with documented scopes per route; (optional) mTLS.
 - JWKS endpoint documented; require kid on tokens.
 - Rate limits: declare headers; exceeding returns 429 deterministically.
 - Tenancy: X‑Tenant‑Id semantics documented; isolation guarantees stated.
 
-**Rule 111: ERROR MODEL & MAPPING**
-- Canonical codes defined in components/error‑codes.yaml (code, description, consumer action, retriable?, observability tag).
+**Rule 111: ERROR MODEL & MAPPING**- Canonical codes defined in components/error‑codes.yaml (code, description, consumer action, retriable?, observability tag).
 - HTTP mapping: 400 VALIDATION_ERROR; 401 AUTH_UNAUTHENTICATED; 403 AUTH_FORBIDDEN; 404 RESOURCE_NOT_FOUND; 409 CONFLICT; 412 PRECONDITION_FAILED; 422 SEMANTIC_INVALID; 429 RATE_LIMITED; 500 INTERNAL_ERROR; 503 SERVICE_UNAVAILABLE.
 
-**Rule 112: CACHING & CONCURRENCY**
-- ETag/If‑Match required for racy PUT/PATCH; 412 on mismatch.
+**Rule 112: CACHING & CONCURRENCY**- ETag/If‑Match required for racy PUT/PATCH; 412 on mismatch.
 - If‑None‑Match + Last‑Modified/If‑Modified‑Since for cacheable GETs.
 - Document Cache‑Control and freshness lifetimes per route.
 
-**Rule 113: TOOLING & CI GATES (AUTOMATE DISCIPLINE)**
-- Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).
+**Rule 113: TOOLING & CI GATES (AUTOMATE DISCIPLINE)**- Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).
 - OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.
 - Example validation: JSON examples must validate against schemas for success & error cases.
 - Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.
@@ -1041,22 +761,13 @@ You are the Contract Engineer for a 100% AI‑Native, enterprise‑grade system 
 - TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.
 - Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.
 
-**Rule 114: RUNTIME ENFORCEMENT**
-- FastAPI services: Pydantic v2 models; response_model on every route; central error handler returns the envelope.
+**Rule 114: RUNTIME ENFORCEMENT**- FastAPI services: Pydantic v2 models; response_model on every route; central error handler returns the envelope.
 - Sampling validator middleware validates N% (1–5%) of live req/resp bodies against JSON Schemas; violations emit receipts with payload HASHES only.
 
-**Rule 115: RECEIPTS & GOVERNANCE**
-- Emit JSONL receipts for: contract.publish, contract.diff, contract.violation.
-- Receipt fields: ts_utc, monotonic_hw_time_ms, actor, service, action, version, traceId, policy_snapshot_hash, result.
-- Governance: CODEOWNERS requires Contract Owner + Guild approvals; PR review SLA ≤ 2 business days.
-- Optional `receipt_signature` (Ed25519) for high-trust actions (`contract.publish`, `contract.diff`).
-
-**Rule 116: METRICS & SLOs**
-- Track: CI‑blocked breaking attempts, time‑to‑deprecate, coverage (% endpoints with examples/tests/SDKs), runtime conformance error rate, consumer contract failures.
+**Rule 116: METRICS & SLOs**- Track: CI‑blocked breaking attempts, time‑to‑deprecate, coverage (% endpoints with examples/tests/SDKs), runtime conformance error rate, consumer contract failures.
 - Publish SLOs per GA route (p95 latency, error budgets) in docs/policy.
 
-**Rule 117: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**
-A) Unified Diff (default for contract edits)
+**Rule 117: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**A) Unified Diff (default for contract edits)
 ```diff
 # repo‑root‑relative paths
 # unified diff (git‑style) with only minimal changes
@@ -1072,8 +783,7 @@ C) JSON Artifact (policy/config/schema)
 ```
 No extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-**Rule 118: STOP CONDITIONS → ERROR CODES**
-- Spectral lint failure ................................. ERROR:OPENAPI_LINT_FAIL
+**Rule 118: STOP CONDITIONS → ERROR CODES**- Spectral lint failure ................................. ERROR:OPENAPI_LINT_FAIL
 - Breaking diff without version bump .................... ERROR:OPENAPI_DIFF_BREAK
 - Invalid or missing examples ........................... ERROR:EXAMPLES_INVALID
 - Provider/consumer contract tests failing .............. ERROR:CONTRACT_TEST_FAIL
@@ -1096,31 +806,22 @@ END_CONSTITUTION
 
 ---
 
-## 2) Micro‑Prompt Footer — API Contracts (attach to every contract task)
-
-```text
-MICRO_PROMPT_FOOTER — API Contracts
-
-=== MUST FOLLOW ===
-- Edit ONLY the SoT paths (configs/contracts/**, configs/schemas/**, tools/contract‑lint/**, tools/contract‑tests/**, docs/api/**).
-- Spectral lint + example validation must pass. OpenAPI diff must be non‑breaking unless version bump is included.
-- For service impact, ensure response_model + envelope are already in place (or specify follow‑up tasks).
-
-=== RETURN CONTRACT ===
-Output exactly ONE: Unified Diff | New File | JSON (see System §11). No extra prose.
-
-=== SELF‑AUDIT ===
-- [ ] ≤ 50 LOC (or LOC_OVERRIDE)
-- [ ] Lint & examples OK; diff OK (or bump)
-- [ ] Headers/scopes/pagination/error codes consistent
-- [ ] Receipts noted (contract.diff/publish)
-```
 # Cursor Constitution Pack — ZeroUI 2.0
 
 **Context:** 100% AI-Native, enterprise-grade system; interns on Windows (laptop-first); Hybrid deployment; no standalone UI (VS Code Extension + Edge Agent + Core). All standards are enforced as Cursor Constitution Constraints.
 
 ---
 
+
+**Rule 88: API CONTRACTS (HTTP)**- OpenAPI 3.1 is the source of truth; URI versioning /v1, /v2...
+- Mutations MUST accept Idempotency-Key; lists are cursor-paginated; standard headers include X-API-Version and X-Request-Id.
+- Stable error envelope with canonical codes; no 200-with-error patterns.
+- Changes that are breaking require a new major version and deprecation process.
+
+**Rule 122: API CONTRACTS (HTTP)**- OpenAPI 3.1 as source of truth. URI versioning: /v1, /v2 … Breaking changes require a new major and deprecation of old.
+- Stable error envelope with canonical codes; always return structured errors.
+- Idempotency-Key required for mutating endpoints; cursor-based pagination for lists; standard headers: X-API-Version, X-Request-Id (trace).
+- FastAPI: Pydantic v2 models; response_model set on every route; strict validation; never return raw ORM.
 ## 1) CURSOR_CONSTITUTION — paste into Cursor "System"
 
 ```text
@@ -1133,8 +834,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - Total change ≤ 50 LOC unless the prompt includes "LOC_OVERRIDE:<number>".
 - Prefer minimal diffs; modify, don't replace; keep external contracts stable unless explicitly asked.
 
-**Rule 119: PATHS & WRITES (ROOTED FILE SYSTEM)**
-- Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.
+**Rule 119: PATHS & WRITES (ROOTED FILE SYSTEM)**- Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.
 - You may only write under these allowlisted subfolders:
   servers/*/(config|services|logs|receipts|data)/**
   storage/*/(db|blobs|backups|audit)/**
@@ -1143,45 +843,27 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
   ZeroUIClientStorage, ZeroUIProductStorage, ZeroUILocalStorage, ZeroUISharedStorage.
 - Persistence MUST go via <server>/data/ (junction to paired storage). If junction missing → ERROR:JUNCTION_MISSING.
 
-**Rule 120: RECEIPTS, LOGGING & EVIDENCE**
-- For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.
-- Receipt fields: ts_utc (ISO-8601 Z), monotonic_hw_time_ms, actor (human|ai), service, action, status (planned|success|aborted|error), traceId, policy_snapshot_hash, inputs_hash/outputs_hash (if applicable), notes.
-- Logs MUST be structured JSON; do not log secrets or full request bodies.
-
-**Rule 121: POLICY, SECRETS & PRIVACY**
-- No hardcoded thresholds/messages. Read from policy snapshots/config. Enforce redaction for PII and secrets in examples, logs, receipts.
+**Rule 121: POLICY, SECRETS & PRIVACY**- No hardcoded thresholds/messages. Read from policy snapshots/config. Enforce redaction for PII and secrets in examples, logs, receipts.
 - Secrets never in repo or code. Use environment + OS keyring/DPAPI; .env.template only.
 
-**Rule 122: API CONTRACTS (HTTP)**
-- OpenAPI 3.1 as source of truth. URI versioning: /v1, /v2 … Breaking changes require a new major and deprecation of old.
-- Stable error envelope with canonical codes; always return structured errors.
-- Idempotency-Key required for mutating endpoints; cursor-based pagination for lists; standard headers: X-API-Version, X-Request-Id (trace).
-- FastAPI: Pydantic v2 models; response_model set on every route; strict validation; never return raw ORM.
-
-**Rule 123: DATABASE (PostgreSQL primary; SQLite dev/test)**
-- SQLAlchemy 2.x; explicit columns (no SELECT *); named constraints/indexes.
+**Rule 123: DATABASE (PostgreSQL primary; SQLite dev/test)**- SQLAlchemy 2.x; explicit columns (no SELECT *); named constraints/indexes.
 - Schema changes ONLY via Alembic; additive-first; include safe down migration.
 - SQLite dev/test pragmas: WAL + busy_timeout=5000ms; mirror Postgres schema.
 
-**Rule 124: PYTHON & TYPESCRIPT QUALITY GATES**
-- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).
+**Rule 124: PYTHON & TYPESCRIPT QUALITY GATES**- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).
 - TypeScript: eslint + prettier; tsconfig "strict": true and exactOptionalPropertyTypes; no any in committed code.
 - CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.
 
-**Rule 125: LLM / OLLAMA USAGE**
-- Use pinned llama3 variant with deterministic params (low temperature, fixed seed). Enforce token/latency budgets.
+**Rule 125: LLM / OLLAMA USAGE**- Use pinned llama3 variant with deterministic params (low temperature, fixed seed). Enforce token/latency budgets.
 - Never exfiltrate data; respect redaction policies. For generated outputs, emit ONLY the specified return contract (see §11).
 
-**Rule 126: WINDOWS-FIRST & FILE HYGIENE**
-- Respect EOL policy (.gitattributes): LF for code/config; CRLF for Windows scripts (.ps1, .iss, .wxs).
+**Rule 126: WINDOWS-FIRST & FILE HYGIENE**- Respect EOL policy (.gitattributes): LF for code/config; CRLF for Windows scripts (.ps1, .iss, .wxs).
 - Never write to storage/** directly; always via servers/*/data/**. Case-sensitive name checks on canonical folders.
 
-**Rule 127: TEST-FIRST & OBSERVABILITY**
-- Add/adjust tests to cover the change. Include metrics/logs where relevant (latencyMs, route, httpStatus, apiVersion).
+**Rule 127: TEST-FIRST & OBSERVABILITY**- Add/adjust tests to cover the change. Include metrics/logs where relevant (latencyMs, route, httpStatus, apiVersion).
 - If you change a contract or DB schema, also update tests, examples, and migrations within the same change.
 
-**Rule 128: RETURN CONTRACTS (OUTPUT FORMAT)**
-- You MUST output exactly ONE of the following formats:
+**Rule 128: RETURN CONTRACTS (OUTPUT FORMAT)**- You MUST output exactly ONE of the following formats:
   A) Unified Diff (default for code):
      ```diff
      # repo-root-relative paths
@@ -1198,8 +880,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
      ```
 - No extra prose, banners, or screenshots. If you cannot satisfy the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-**Rule 129: STOP CONDITIONS → ERROR CODES (MUST REFUSE)**
-- Outside allowlist path………………………… ERROR:OUTSIDE_ALLOWLIST
+**Rule 129: STOP CONDITIONS → ERROR CODES (MUST REFUSE)**- Outside allowlist path………………………… ERROR:OUTSIDE_ALLOWLIST
 - Unknown top-level folder name…………… ERROR:NAME_VIOLATION
 - ZEROUI_ROOT or root_mode invalid……… ERROR:PATH_ROOT_MISSING
 - Missing <server>/data junction…………… ERROR:JUNCTION_MISSING
@@ -1208,8 +889,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - Missing response_model / raw ORM……… ERROR:CONTRACT_VIOLATION
 - Alembic migration absent for schema…… ERROR:MIGRATION_REQUIRED
 
-**Rule 130: SELF-AUDIT BEFORE OUTPUT (CHECKLIST)**
-- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)
+**Rule 130: SELF-AUDIT BEFORE OUTPUT (CHECKLIST)**- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)
 - [ ] Paths resolve via ZEROUI_ROOT + paths.json; only allowlisted dirs
 - [ ] INTENT & RESULT receipts added where applicable
 - [ ] No secrets/PII; no hardcoded thresholds/messages
@@ -1217,8 +897,7 @@ You are the code generator for a 100% AI-Native, enterprise-grade system built b
 - [ ] Output matches one allowed RETURN CONTRACT format
 - Verify each `<server>/data` is a **junction** to its paired storage; if not, return `ERROR:JUNCTION_MISSING` before any writes.
 
-**Rule 131: DEFINITION OF DONE (PER SUB-FEATURE PR)**
-- Minimal diff; tests added/updated; receipts present
+**Rule 131: DEFINITION OF DONE (PER SUB-FEATURE PR)**- Minimal diff; tests added/updated; receipts present
 - Contracts stable or version-bumped with migration notes
 - Migrations included (with down path) if schema changed
 - Logs/metrics wired; rollback path clear (revert/migration down)
@@ -1228,61 +907,6 @@ END_CONSTITUTION
 
 ---
 
-## 2) MICRO_PROMPT_FOOTER — attach to every intern task
-
-```text
-MICRO_PROMPT_FOOTER — attach to every task
-
-=== PATH & SAFETY (MUST FOLLOW) ===
-- Resolve root via config/paths.json using ZEROUI_ROOT; NEVER hardcode paths.
-- Only write under servers/*/(config|services|logs|receipts|data)/** and storage/*/(db|blobs|backups|audit)/**.
-- Do NOT create new top-level names; persist via <server>/data/ junction only.
-- Dry-run: list all writes with absolute paths; if any outside allowlist → return ERROR:OUTSIDE_ALLOWLIST.
-- Append an INTENT receipt to <server>/receipts/ before writing; append RESULT after.
-
-=== RETURN CONTRACT (STRICT) ===
-- Output exactly ONE: Unified Diff | New File | JSON (see Constitution §11). No extra prose.
-
-=== SELF-AUDIT (TICK BEFORE OUTPUT) ===
-- [ ] ≤ 50 LOC (or LOC_OVERRIDE)
-- [ ] Paths valid; receipts added
-- [ ] No secrets/PII; no hardcoded thresholds/messages
-- [ ] Tests, contracts, migrations updated if relevant
-```
-
----
-
-## 3) SUB_FEATURE_CARD — interns fill; generator obeys
-
-```text
-SUB_FEATURE_CARD
-
-SUB_FEATURE_ID: M<module>.F<feature>.SF<subfeature>
-GOAL: <business outcome in plain English>
-ENTRYPOINT: <CLI command, API route, file path, or VS Code surface>
-INPUTS: <schemas, headers, policy keys>
-OUTPUTS: <files/responses/receipts that must exist>
-NON_NEGOTIABLES: <bullets referencing Constitution rules>
-TESTS_FIRST: yes
-LOC_CAP: 50
-```
-
----
-
-### `config/paths.json` (minimal schema)
-```json
-{
-  "root_mode": "env | legacy_userprofile",
-  "root_var": "ZEROUI_ROOT",
-  "standard_subdirs": ["config","services","logs","receipts","data"],
-  "standard_storage_subdirs": ["db","blobs","backups","audit"]
-}
-```
-
----
-
-### Error Codes (reference)
-Operational ERROR:* codes in this Constitution are distinct from HTTP error codes. For API error codes, reference the centralized `components/error-codes.yaml` in the API Contracts Constitution.
 # ZeroUI 2.0 — Logging & Troubleshooting Constitution (Cursor) — Revised
 
 > Goal: Make logs **easy to trace** and **easy to use** for debugging by interns who rely on AI code generation. Use simple English. All logs are **structured JSON** (one JSON object per line). No secrets or PII in logs.
@@ -1296,16 +920,14 @@ CURSOR_CONSTITUTION_LOGGING — ZeroUI 2.0
 
 You are the code generator. You MUST produce robust, structured logs that make troubleshooting easy. Use simple English. If any rule would be broken, STOP and return an ERROR code (§13).
 
-**Rule 132: LOG FORMAT & TRANSPORT**
-- Format: ONE JSON object per line (JSONL).
+**Rule 132: LOG FORMAT & TRANSPORT**- Format: ONE JSON object per line (JSONL).
 - Timestamps: ISO-8601 with Z (UTC). Include monotonic_hw_time_ms for ordering.
 - Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns.
 - Encoding: UTF-8 only, no BOM. No multi-line logs.
 - Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars.
 - Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform.
 
-**Rule 133: REQUIRED FIELDS (ALL LOGS)**
-- log_schema_version: "1.0"
+**Rule 133: REQUIRED FIELDS (ALL LOGS)**- log_schema_version: "1.0"
 - ts_utc, monotonic_hw_time_ms
 - level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL
 - service, version, env, host
@@ -1319,19 +941,16 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - idempotencyKey_hash (if present), cursor_hint (for pagination)
 - policy_snapshot_hash (if decision), feature_flag (if used)
 
-**Rule 134: FIELD CONSTRAINTS (TYPES & LIMITS)**
-- event ≤ 40 chars; pattern: ^[a-z]+(\.[a-z_]+)*$
+**Rule 134: FIELD CONSTRAINTS (TYPES & LIMITS)**- event ≤ 40 chars; pattern: ^[a-z]+(\.[a-z_]+)*$
 - error.code ≤ 40; error.message_redacted ≤ 512; stack_fingerprint ≤ 128
 - Truncate free-text fields > 512 chars. Arrays: max 50 items. Always include payload_size.
 - LOG_MAX_EVENT_BYTES default 65536; truncate & set truncation flags if exceeded.
 
-**Rule 135: HASHING POLICY (DETERMINISTIC)**
-- SHA-256 over UTF-8 bytes.
+**Rule 135: HASHING POLICY (DETERMINISTIC)**- SHA-256 over UTF-8 bytes.
 - userId_hash = sha256(tenant_salt || user_id). Do not cross-tenant correlate.
 - idempotencyKey_hash = sha256(key). payload_hash = sha256(redacted_payload_bytes).
 
-**Rule 136: STABLE EVENT NAMES (MUST USE)**
-- request.start / request.end (exactly one start and one end per handled request)
+**Rule 136: STABLE EVENT NAMES (MUST USE)**- request.start / request.end (exactly one start and one end per handled request)
 - db.query / db.error
 - cache.hit / cache.miss
 - external.call.start / external.call.end / external.call.error
@@ -1344,8 +963,7 @@ You are the code generator. You MUST produce robust, structured logs that make t
 
 2.1) LLM EVENT FIELDS
 
-**Rule 137: EVENT IDENTITY & WORKFLOW CORRELATION (LLM‑FRIENDLY)**
-- **event_id** (UUID; prefer time‑sortable IDs like UUIDv7/ULID) — unique per log line.
+**Rule 137: EVENT IDENTITY & WORKFLOW CORRELATION (LLM‑FRIENDLY)**- **event_id** (UUID; prefer time‑sortable IDs like UUIDv7/ULID) — unique per log line.
 - **caused_by** (event_id or null) — causal parent when not captured by parentSpanId.
 - **links[]** — related event/message/job IDs for async handoffs.
 - **job_id**, **queue_name**, **message_id**, **schedule_id** — background and queue processing.
@@ -1358,21 +976,18 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - model, input_tokens, output_tokens, latencyMs, prompt_hash, output_hash, policy_snapshot_hash.
 - Never log raw prompts/outputs. Always emit llm.invoke.end; if failure, include error.* and success=false.
 
-**Rule 138: LEVEL POLICY**
-- Dev: default INFO; allow DEBUG for local.
+**Rule 138: LEVEL POLICY**- Dev: default INFO; allow DEBUG for local.
 - Prod: INFO by default. DEBUG only with a temporary WAIVER (id + expiry).
 - Errors: use ERROR for failures that returned 4xx/5xx; WARN for recoverable issues.
 - Never log FATAL without an immediate exit path.
 - Map error.code to central error registry (same codes as API Contracts).
 
-**Rule 139: PRIVACY & PAYLOAD RULES**
-- NEVER log secrets or raw PII. Redact tokens, passwords, keys, Authorization headers, cookies.
+**Rule 139: PRIVACY & PAYLOAD RULES**- NEVER log secrets or raw PII. Redact tokens, passwords, keys, Authorization headers, cookies.
 - Do not log full request/response bodies. Log hashes, sizes, and a small redacted sample if needed.
 - Large values: truncate strings > 1024 bytes; arrays > 50 items; always include payload_size and payload_hash (SHA-256, hex).
 - Client IP: store anonymized/hashed form only.
 
-**Rule 140: CORRELATION & CONTEXT**
-- Read/propagate W3C headers: **traceparent** and **tracestate**. If missing, generate them.
+**Rule 140: CORRELATION & CONTEXT**- Read/propagate W3C headers: **traceparent** and **tracestate**. If missing, generate them.
 - Always attach **traceId/spanId** and pass **X-Request-Id** (generate if missing).
 - Exactly one **request.start** and one **request.end** per handled request (same traceId/requestId).
 - For retries/backoff: include **attempt**, **backoffMs**, **retryable**.
@@ -1380,30 +995,20 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - For async hops (queues/schedulers): include **links[]**, **job_id**, **queue_name**, **message_id**, **schedule_id**.
 - For cross‑request business flows: include **workflow_id** or **saga_id**.
 
-**Rule 141: RECEIPTS (AUDIT TRAIL)**
-- For privileged or business-significant actions: emit a receipt (append-only JSONL) and log event "receipt.emit" with the receipt_id.
+**Rule 141: RECEIPTS (AUDIT TRAIL)**- For privileged or business-significant actions: emit a receipt (append-only JSONL) and log event "receipt.emit" with the receipt_id.
 - Receipt fields: ts_utc, monotonic_hw_time_ms, actor (human|ai), service, action, result, traceId, policy_snapshot_hash, inputs_hash, outputs_hash.
 
-**Rule 142: PERFORMANCE BUDGETS & SAMPLING**
-- Logging overhead should be < 5% CPU and < 2% latency on hot paths.
+**Rule 142: PERFORMANCE BUDGETS & SAMPLING**- Logging overhead should be < 5% CPU and < 2% latency on hot paths.
 - Default sampling: DEBUG (1–10%), INFO (100%), TRACE (off).
 - Dynamic knobs (env): LOG_SAMPLE_DEBUG=0.1, LOG_SAMPLE_DB_QUERY=0.05, LOG_MAX_EVENT_BYTES=65536.
 - CI blocks events > LOG_MAX_EVENT_BYTES unless truncation fields are present.
 
-**Rule 143: PYTHON (FastAPI) & TYPESCRIPT RULES**
-- Use a shared logger util that enforces schema and redaction. No print() or console.log() for runtime logs.
+**Rule 143: PYTHON (FastAPI) & TYPESCRIPT RULES**- Use a shared logger util that enforces schema and redaction. No print() or console.log() for runtime logs.
 - FastAPI middleware: log request.start and request.end (route, method, status, latencyMs, traceId, requestId).
 - DB: log query summaries (table, op, row_count) not raw SQL; attach elapsedMs.
 - TS: add interceptors to log external.call.* with url_host, method, status, latencyMs.
 
-**Rule 144: STORAGE & RETENTION (LAPTOP-FIRST)**
-- Path: <server>/logs/YYYY-MM-DD/*.jsonl (daily). Rotate at 100MB; keep last 10 files locally.
-- Retention: app logs ≥ 14 days locally; receipts ≥ 90 days (or per policy).
-- Compression after rotation is allowed; do not compress live file.
-- Writing: UTF-8 (no BOM), CRLF-safe, one JSON per line with flush after each write. Guard against partial lines on power loss.
-
-**Rule 145: STOP CONDITIONS → ERROR CODES**
-- Unstructured (not JSON) or multi-line log ……… ERROR:UNSTRUCTURED_LOG
+**Rule 145: STOP CONDITIONS → ERROR CODES**- Unstructured (not JSON) or multi-line log ……… ERROR:UNSTRUCTURED_LOG
 - Missing traceId/requestId on request/end ……… ERROR:MISSING_TRACE_ID
 - Secrets/PII present in any log ………………… ERROR:PII_LEAK
 - Full payload logged (no redaction) ……………… ERROR:PAYLOAD_NOT_REDACTED
@@ -1414,8 +1019,7 @@ You are the code generator. You MUST produce robust, structured logs that make t
 - Invalid JSON (serialization) …………………… ERROR:JSON_INVALID
 - No link to receipt on privileged action ………… ERROR:MISSING_RECEIPT_LINK
 
-**Rule 146: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**
-A) Unified Diff (default for code)
+**Rule 146: RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)**A) Unified Diff (default for code)
 # repo-root-relative paths
 # unified diff (git-style) with only minimal changes
 B) New File (exactly one file)
@@ -1425,8 +1029,7 @@ C) JSON Artifact (policy/config/schema)
 { ...valid JSON only... }
 If output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.
 
-**Rule 147: SCHEMA VALIDATION (CI / PRE-COMMIT)**
-- Validate events against docs/log_schema_v1.json (JSON Schema) in CI and pre-commit.
+**Rule 147: SCHEMA VALIDATION (CI / PRE-COMMIT)**- Validate events against docs/log_schema_v1.json (JSON Schema) in CI and pre-commit.
 - Block merge if schema fails or if required fields/limits are missing.
 
 13) SELF-AUDIT (CHECK BEFORE OUTPUT)
@@ -1441,80 +1044,14 @@ END_CONSTITUTION
 
 ---
 
-## 2) Micro-Prompt Footer — Logging (attach to every task)
-
-```text
-MICRO_PROMPT_FOOTER — Logging (Simple English)
-
-=== MUST FOLLOW ===
-- Emit JSONL logs with required fields and redaction. Add request.start/request.end middleware.
-- Use shared logger util, not ad-hoc prints. Add traceId/spanId + requestId on all logs.
-- Add sampling to chatty paths. Hash + size every large payload. Link receipts for privileged actions.
-- Include log_schema_version and enforce field limits.
-
-=== RETURN CONTRACT ===
-Output exactly ONE: Unified Diff | New File | JSON (System §11). Show log schema or code near changed logic.
-
-=== SELF-CHECK ===
-- [ ] Required fields, correlation ids present
-- [ ] No secrets/PII; hashes + sizes; truncation
-- [ ] Sampling + performance budget ok; max event bytes enforced
-- [ ] Receipts linked for privileged actions; error.code mapped to registry
-```
-
----
-
-**Rule 148: PR Checklist — Logging (paste into `.github/pull_request_template.md`)**
-
-```markdown
-### Logging & Troubleshooting — Required Checks
-
-**Basics**
-- [ ] JSONL format with ISO-8601 UTC + monotonic time (ns→ms)
-- [ ] Required fields present: log_schema_version, level, traceId, spanId, requestId, event, latencyMs
-- [ ] Exactly one request.start and one request.end per request (same traceId/requestId)
-
-**Privacy & Safety**
-- [ ] No secrets/PII; Authorization/cookies redacted; IP anonymized
-- [ ] Payloads truncated + hashed; payload_size recorded
-- [ ] ERROR logs carry error.code + stack_fingerprint (not full stack)
-
-**Correlation & Context**
-- [ ] W3C trace headers propagated (traceparent/tracestate); X-Request-Id preserved
-- [ ] idempotencyKey_hash added where used; retry fields set (attempt/backoffMs)
-- [ ] Async hops include links[], job_id/queue_name/message_id/schedule_id
-- [ ] Business flows include workflow_id or saga_id
-
-**Deployment & Severity**
-- [ ] git_sha/build_id/config_version attached where relevant
-- [ ] severity_code (S0..S4) and user_impact (none|one|many) set on incidents
-
-**Platform-Specific**
-- [ ] FastAPI middleware present/updated; DB logs are summaries (table/op/rows/elapsedMs)
-- [ ] TS interceptors log external.call.* with host/method/status/latencyMs
-- [ ] LLM logs: model + tokens + latency; prompt_hash/output_hash; no raw prompts/outputs
-
-**Ops & Budgets**
-- [ ] Sampling configured via env (LOG_SAMPLE_*, LOG_MAX_EVENT_BYTES); performance budget respected (<5% overhead)
-- [ ] Log rotation and local retention set (daily + 100MB, keep 10)
-- [ ] Receipts emitted + receipt_id referenced for privileged actions
-```
-
----
-
-**Rule 149: LLM Export Tips (when asking an LLM to analyze failures)**
-- Export only the last N minutes and rows that match the traceId or requestId.
-- Sort by traceId, then monotonic_hw_time_ms; group by service.
-- Include fields: event_id, caused_by, links[], job_id/queue_name/message_id/schedule_id, workflow_id/saga_id, component, phase, error.*, severity_code, user_impact.
-- Ask the LLM: "Build a timeline of the failure. Show the causal chain using event_id/caused_by/links. Rank root cause candidates."
-
-
-
-
 # ZeroUI 2.0 Exception Handling Rules (Enhanced)
 
 🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes.
 
+
+**Rule 120: RECEIPTS, LOGGING & EVIDENCE**- For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.
+- Receipt fields: ts_utc (ISO-8601 Z), monotonic_hw_time_ms, actor (human|ai), service, action, status (planned|success|aborted|error), traceId, policy_snapshot_hash, inputs_hash/outputs_hash (if applicable), notes.
+- Logs MUST be structured JSON; do not log secrets or full request bodies.
 ## Scope
 Applies to APIs, CLIs, services, IDE extensions, and AI components.  
 Keep changes small and consistent across the codebase.
@@ -1523,45 +1060,35 @@ Keep changes small and consistent across the codebase.
 
 ## Basic Work Rules
 
-**Rule 150: Prevent First**  
-Validate inputs early (required, type, range, size). Prevention beats cure.
+**Rule 148: Prevent First**  Validate inputs early (required, type, range, size). Prevention beats cure.
 
-**Rule 151: Small, Stable Error Codes**  
-Adopt ~10–12 canonical codes with severity levels:
+**Rule 149: Small, Stable Error Codes**  Adopt ~10–12 canonical codes with severity levels:
 - `HIGH`: DEPENDENCY_FAILED, UNEXPECTED_ERROR, TIMEOUT
 - `MEDIUM`: RATE_LIMITED, CONFLICT, INVARIANT_VIOLATION  
 - `LOW`: VALIDATION_ERROR, NOT_FOUND, PERMISSION_DENIED, CANCELLED
 
-**Rule 152: Wrap & Chain**  
-When a low-level error occurs, wrap it into your code with a friendly message and keep the original as the cause. Never throw raw framework/driver errors at the edges.
+**Rule 150: Wrap & Chain**  When a low-level error occurs, wrap it into your code with a friendly message and keep the original as the cause. Never throw raw framework/driver errors at the edges.
 
-**Rule 153: Central Handler at Boundaries**  
-Have one handler per surface (API endpoint, CLI entry, IDE command) that:
+**Rule 151: Central Handler at Boundaries**  Have one handler per surface (API endpoint, CLI entry, IDE command) that:
 - maps codes → friendly messages
 - sets the right status/exit code  
 - logs details (with cause chain)
 
-**Rule 154: Friendly to Users, Detailed in Logs**  
-Users see short, calm guidance. Logs contain context and the cause chain. Never leak secrets.
+**Rule 152: Friendly to Users, Detailed in Logs**  Users see short, calm guidance. Logs contain context and the cause chain. Never leak secrets.
 
-**Rule 155: No Silent Catches**  
-Never swallow errors. If you catch it, either fix, retry (if safe), or wrap & bubble to the central handler.
+**Rule 153: No Silent Catches**  Never swallow errors. If you catch it, either fix, retry (if safe), or wrap & bubble to the central handler.
 
-**Rule 156: Add Context**  
-Always include where/what (operation name, ids, step) when wrapping. This speeds up root-cause analysis.
+**Rule 154: Add Context**  Always include where/what (operation name, ids, step) when wrapping. This speeds up root-cause analysis.
 
-**Rule 157: Cleanup Always**  
-Close files, sockets, timers; release locks. Use "always-run" cleanup paths. Avoid resource leaks.
+**Rule 155: Cleanup Always**  Close files, sockets, timers; release locks. Use "always-run" cleanup paths. Avoid resource leaks.
 
-**Rule 158: Error Recovery Patterns**  
-Define clear recovery actions for each error type:
+**Rule 156: Error Recovery Patterns**  Define clear recovery actions for each error type:
 - After `CANCELLED`: Reset operation state
 - After `DEPENDENCY_FAILED`: Show fallback content or retry later
 - After `VALIDATION_ERROR`: Guide user to correct input
 - Document when to show "Try Again" vs. "Contact Support"
 
-**Rule 159: New Developer Onboarding**  
-- Provide "First Error Handling Task" template
+**Rule 157: New Developer Onboarding**  - Provide "First Error Handling Task" template
 - Include examples of proper wrapping patterns  
 - Document the "why" behind each major rule
 - Pair new developers with error handling experts
@@ -1570,53 +1097,41 @@ Define clear recovery actions for each error type:
 
 ## Timeouts, Retries, Idempotency
 
-**Rule 160: Timeouts Everywhere**  
-All I/O (network, file, DB, subprocess) must have a timeout (configurable). No infinite waits.
+**Rule 158: Timeouts Everywhere**  All I/O (network, file, DB, subprocess) must have a timeout (configurable). No infinite waits.
 
-**Rule 161: Limited Retries with Backoff**  
-Retry only idempotent operations. Max 2–3 tries. Use exponential backoff + small jitter.
+**Rule 159: Limited Retries with Backoff**  Retry only idempotent operations. Max 2–3 tries. Use exponential backoff + small jitter.
 
-**Rule 162: Do Not Retry Non-Retriables**  
-No retries for validation errors, 401/403, 404, or business rule failures. Surface the issue; guide the user.
+**Rule 160: Do Not Retry Non-Retriables**  No retries for validation errors, 401/403, 404, or business rule failures. Surface the issue; guide the user.
 
-**Rule 163: Idempotency**  
-Design writes so they are safe to retry (keys/tokens/conflict handling). Document this in your service contract.
+**Rule 161: Idempotency**  Design writes so they are safe to retry (keys/tokens/conflict handling). Document this in your service contract.
 
 ---
 
 ## Mapping, Messaging, and UX
 
-**Rule 164: (Reserved)**  
-See **Rule 165: HTTP/Exit Mapping**.
+**Rule 162: (Reserved)**  See **Rule 165: HTTP/Exit Mapping**.
 
-**Rule 165: HTTP/Exit Mapping**  
-Map canonical codes to standard outcomes (e.g., 400/401/403/404/409/422/429/5xx). No "200 with error body".
+**Rule 163: HTTP/Exit Mapping**  Map canonical codes to standard outcomes (e.g., 400/401/403/404/409/422/429/5xx). No "200 with error body".
 
-**Rule 166: Message Catalog**  
-Keep a single catalog that maps each code → one friendly, human sentence. Translate here, not in code.
+**Rule 164: Message Catalog**  Keep a single catalog that maps each code → one friendly, human sentence. Translate here, not in code.
 
-**Rule 166: UI/IDE Behavior**  
-Keep UI responsive. Show short, actionable options: Retry / Cancel / Open Logs. No stack traces to users.
+**Rule 165: UI/IDE Behavior**  Keep UI responsive. Show short, actionable options: Retry / Cancel / Open Logs. No stack traces to users.
 
 ---
 
 ## Logging, Observability, and Safety
 
-**Rule 167: Structured Logs**  
-One JSON object per line. Include: timestamp, level, service, operation, error.code, trace/request ids, duration, attempt, retryable flag, severity, and a cause chain summary.
+**Rule 166: Structured Logs**  One JSON object per line. Include: timestamp, level, service, operation, error.code, trace/request ids, duration, attempt, retryable flag, severity, and a cause chain summary.
 
-**Rule 168: Correlation**  
-Propagate trace/request ids across calls. Log exactly one request.start and one request.end per request.
+**Rule 167: Correlation**  Propagate trace/request ids across calls. Log exactly one request.start and one request.end per request.
 
-**Rule 169: Privacy & Secrets**  
-Never log secrets or PII. Redact tokens, passwords, cookies, Authorization headers, and sensitive payloads. Log sizes/hashes, not raw bodies.
+**Rule 168: Privacy & Secrets**  Never log secrets or PII. Redact tokens, passwords, cookies, Authorization headers, and sensitive payloads. Log sizes/hashes, not raw bodies.
 
 ---
 
 ## Quality, Tests, and Governance
 
-**Rule 170: Test Failure Paths**  
-Write tests for:
+**Rule 169: Test Failure Paths**  Write tests for:
 - Happy path
 - Timeouts and 5xx errors  
 - 4xx errors (validation/permission)
@@ -1625,48 +1140,48 @@ Write tests for:
 - Error cause chain preservation
 - Recovery behavior after errors
 
-**Rule 171: Contracts & Docs**  
-Document the error envelope, code list, HTTP mapping, and examples. Keep examples up to date and non-PII.
+**Rule 170: Contracts & Docs**  Document the error envelope, code list, HTTP mapping, and examples. Keep examples up to date and non-PII.
 
-**Rule 172: Consistency Over Cleverness**  
-Prefer consistent handling over one-off fixes. If a new case appears, map it to an existing code first.
+**Rule 171: Consistency Over Cleverness**  Prefer consistent handling over one-off fixes. If a new case appears, map it to an existing code first.
 
-**Rule 173: Safe Defaults**  
-Default timeouts, retry caps, and user messages must be safe and configurable. No hidden magic numbers.
+**Rule 172: Safe Defaults**  Default timeouts, retry caps, and user messages must be safe and configurable. No hidden magic numbers.
 
 ---
 
+
+**Rule 115: RECEIPTS & GOVERNANCE**- Emit JSONL receipts for: contract.publish, contract.diff, contract.violation.
+- Receipt fields: ts_utc, monotonic_hw_time_ms, actor, service, action, version, traceId, policy_snapshot_hash, result.
+- Governance: CODEOWNERS requires Contract Owner + Guild approvals; PR review SLA ≤ 2 business days.
+- Optional `receipt_signature` (Ed25519) for high-trust actions (`contract.publish`, `contract.diff`).
 ## AI-Specific Error Handling
 
-**Rule 174: AI Decision Transparency**  
-When AI suggests something, include:
+**Rule 173: AI Decision Transparency**  When AI suggests something, include:
 - Confidence level (e.g., "I'm 85% sure this is right")
 - Reasoning explanation ("I'm suggesting this because...")
 - AI version information ("This was AI version 2.3")
 
-**Rule 175: AI Sandbox Safety**  
-AI should only work in a special "playground" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.
+**Rule 174: AI Sandbox Safety**  AI should only work in a special "playground" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.
 
-**Rule 176: AI Learning from Mistakes**  
-When the AI gets something wrong, it should remember that mistake and get smarter, just like learning from test questions.
+**Rule 175: AI Learning from Mistakes**  When the AI gets something wrong, it should remember that mistake and get smarter, just like learning from test questions.
 
-**Rule 177: AI Confidence Thresholds**  
-- High confidence (>90%): Apply automatically with user notification
+**Rule 176: AI Confidence Thresholds**  - High confidence (>90%): Apply automatically with user notification
 - Medium confidence (70-90%): Suggest with explanation
 - Low confidence (<70%): Ask for explicit user approval
 
 ---
 
+
+**Rule 272: NO Complex Error Handling**- ❌ **BANNED**: Try-catch blocks, exception handling, error chains
+- ❌ **BANNED**: Custom error types, error propagation
+- ❌ **BANNED**: Retry logic, circuit breakers, fallback mechanisms
+- ✅ **ALLOWED**: Simple if-else checks, basic validation
 ## System Integration & Recovery
 
-**Rule 178: Graceful Degradation**  
-When dependencies fail, provide reduced functionality rather than complete failure. Show clear status of what's working vs. limited.
+**Rule 177: Graceful Degradation**  When dependencies fail, provide reduced functionality rather than complete failure. Show clear status of what's working vs. limited.
 
-**Rule 179: State Recovery**  
-After crashes or failures, systems should recover to known good states. Maintain recovery checkpoints for long-running operations.
+**Rule 178: State Recovery**  After crashes or failures, systems should recover to known good states. Maintain recovery checkpoints for long-running operations.
 
-**Rule 180: Feature Flag Safety**  
-Use feature flags for risky changes with automatic rollback on error detection. Monitor error rates by flag state.
+**Rule 179: Feature Flag Safety**  Use feature flags for risky changes with automatic rollback on error detection. Monitor error rates by flag state.
 
 ---
 
@@ -1700,58 +1215,7 @@ Use feature flags for risky changes with automatic rollback on error detection. 
 
 **ERROR:GRADUAL_DEGRADATION_MISSING** — System fails completely instead of gracefully degrading.
 
----
 
-## Daily Checklist (Enhanced)
-
-✅ Input validation done (required/type/range/size)  
-✅ Timeouts set on all I/O operations  
-✅ Risky calls wrapped; no silent catches  
-✅ Retries ≤ 3 and idempotent only  
-✅ Error wrapped with context; original kept as cause  
-✅ Error mapped to canonical code with proper severity  
-✅ Central handler shows friendly message; sets proper status  
-✅ Recovery action defined for the error type  
-✅ AI decisions include confidence and reasoning  
-✅ Logs are structured; include trace/request ids and cause chain; no secrets  
-✅ HTTP/status mapping matches the standard  
-✅ Tests cover success + failures (timeout/5xx/4xx) + cleanup + recovery  
-✅ Graceful degradation paths verified  
-✅ State recovery mechanisms tested
-
----
-
-## New Developer Quick Start
-
-**First Error Handling Task:**
-1. Pick one endpoint/function
-2. Handle `VALIDATION_ERROR` cases  
-3. Use the message catalog for user messages
-4. Add tests for both success and validation failure
-5. Verify cleanup runs in all scenarios
-6. Document recovery actions for each error case
-
-**Common Patterns:**
-```javascript
-// Good: Wrap with context and recovery info
-try {
-  await database.save(user);
-} catch (error) {
-  throw new Error('Failed to save user profile', {
-    code: 'DEPENDENCY_FAILED',
-    severity: 'HIGH',
-    cause: error,
-    context: { userId: user.id, operation: 'saveProfile' },
-    recovery: 'Retry in 5 minutes or contact support if persistent',
-    userMessage: 'We\'re having trouble saving your profile right now'
-  });
-}
-```
-
-**Error Severity Response Matrix:**
-- **HIGH**: Immediate escalation + user notification + automatic recovery attempts
-- **MEDIUM**: Logged for review + user guidance + optional retry
-- **LOW**: User guidance only + continued operation
 
 
 # TypeScript Rules — Team Standard (Enhanced)
@@ -1766,294 +1230,222 @@ try {
 ---
 
 ## BASIC WORK RULES
-**Rule 181: Strict Mode Always**
-Turn on strict checks everywhere. (Meaning: the compiler catches more mistakes early.)
+**Rule 180: Strict Mode Always**Turn on strict checks everywhere. (Meaning: the compiler catches more mistakes early.)
 
-**Rule 182: No `any` in committed code**
-If you don't know the type, use **`unknown`** and **check it** before use.
+**Rule 182: Handle `null`/`undefined`**Use optional fields only when needed, and **check** before using values.
 
-**Rule 183: Handle `null`/`undefined`**
-Use optional fields only when needed, and **check** before using values.
+**Rule 183: Small, Clear Functions**Short functions, clear names. One job per function.
 
-**Rule 184: Small, Clear Functions**
-Short functions, clear names. One job per function.
-
-**Rule 185: Consistent Naming**
-
+**Rule 184: Consistent Naming**
 * files: kebab-case.ts
 * variables/functions: camelCase
 * types/interfaces/enums: PascalCase
 * constants: UPPER_SNAKE_CASE
 
-**Rule 186: Clear Shape Strategy**
-Use **`interface`** for object shapes you'll extend, **`type`** for unions and utilities. Stay consistent across the repo.
+**Rule 185: Clear Shape Strategy**Use **`interface`** for object shapes you'll extend, **`type`** for unions and utilities. Stay consistent across the repo.
 
-**Rule 187: Let the Compiler Infer**
-Don't add types the compiler already knows. (Meaning: avoid noisy annotations.)
+**Rule 186: Let the Compiler Infer**Don't add types the compiler already knows. (Meaning: avoid noisy annotations.)
 
-**Rule 188: Keep Imports Clean**
-No unused imports. Group by built-in, third-party, then local.
+**Rule 187: Keep Imports Clean**No unused imports. Group by built-in, third-party, then local.
 
 ---
 
 ## TYPE SYSTEM RULES
 
-**Rule 189: Describe the Shape**
-Make simple named types for real data (User, Order). Reuse them.
+**Rule 188: Describe the Shape**Make simple named types for real data (User, Order). Reuse them.
 
-**Rule 190: Union & Narrowing**
-If something can be **A or B**, say so. **Check which one** before using it.
+**Rule 189: Union & Narrowing**If something can be **A or B**, say so. **Check which one** before using it.
 
-**Rule 191: Readonly by Default**
-Prefer readonly arrays/props for values that should not change.
+**Rule 190: Readonly by Default**Prefer readonly arrays/props for values that should not change.
 
-**Rule 192: Discriminated Unions**
-When you have variants, add a simple **kind** field and switch on it. (Meaning: safer branching.)
+**Rule 191: Discriminated Unions**When you have variants, add a simple **kind** field and switch on it. (Meaning: safer branching.)
 
-**Rule 193: Utility Types, Not Duplicates**
-Use `Partial`, `Pick`, `Omit`, `Record` to avoid copy-pasting shapes.
+**Rule 192: Utility Types, Not Duplicates**Use `Partial`, `Pick`, `Omit`, `Record` to avoid copy-pasting shapes.
 
-**Rule 194: Generics, But Simple**
-Use generics when it truly makes code reusable. Keep names short and clear.
+**Rule 193: Generics, But Simple**Use generics when it truly makes code reusable. Keep names short and clear.
 
 ---
 
 ## ASYNC, ERRORS, AND SAFETY
 
-**Rule 195: No Unhandled Promises**
-Always `await` or handle `.catch`. Never let a promise fail silently.
+**Rule 194: No Unhandled Promises**Always `await` or handle `.catch`. Never let a promise fail silently.
 
-**Rule 196: Timeouts & Cancel**
-Use timeouts for network/work that may hang. Support **AbortController** for cancellable operations.
+**Rule 195: Timeouts & Cancel**Use timeouts for network/work that may hang. Support **AbortController** for cancellable operations.
 
-**Rule 197: Friendly Errors at Edges**
-Catch errors at boundaries (commands, routes) and show **short, calm messages**. Put details in logs (no secrets).
+**Rule 196: Friendly Errors at Edges**Catch errors at boundaries (commands, routes) and show **short, calm messages**. Put details in logs (no secrets).
 
-**Rule 198: Map Errors to Codes**
-Convert messy errors into a **small set** of stable codes (e.g., VALIDATION, NOT_FOUND, TIMEOUT, DEPENDENCY_FAILED, UNEXPECTED). Be consistent.
+**Rule 197: Map Errors to Codes**Convert messy errors into a **small set** of stable codes (e.g., VALIDATION, NOT_FOUND, TIMEOUT, DEPENDENCY_FAILED, UNEXPECTED). Be consistent.
 
-**Rule 199: Retries Are Limited**
-Retry only **safe** (idempotent) actions, at most 2–3 times, with backoff. Never retry validation or permission errors.
+**Rule 198: Retries Are Limited**Retry only **safe** (idempotent) actions, at most 2–3 times, with backoff. Never retry validation or permission errors.
 
 ---
 
 ## PROJECT STRUCTURE & BUILD
 
-**Rule 200: One Source of Truth**
-Keep types for APIs in one place (e.g., generated from contracts). Don't hand-roll duplicates.
+**Rule 199: One Source of Truth**Keep types for APIs in one place (e.g., generated from contracts). Don't hand-roll duplicates.
 
-**Rule 201: Folder Layout**
-Group by **feature**, then by file type (types, logic, tests). Avoid deep "barrel" re-exports chains.
+**Rule 200: Folder Layout**Group by **feature**, then by file type (types, logic, tests). Avoid deep "barrel" re-exports chains.
 
-**Rule 202: Paths & Aliases**
-Use path aliases in config (short imports), but **don't** create cycles.
+**Rule 201: Paths & Aliases**Use path aliases in config (short imports), but **don't** create cycles.
 
-**Rule 203: Modern Output Targets**
-Target modern JS (ES2022+) for optimal tree-shaking. Keep configs in repo. Builds must be reproducible.
+**Rule 202: Modern Output Targets**Target modern JS (ES2022+) for optimal tree-shaking. Keep configs in repo. Builds must be reproducible.
 
 ---
 
 ## QUALITY GATES (MUST PASS)
 
-**Rule 204: Lint & Format**
-Use eslint + prettier. No warnings in CI.
+**Rule 203: Lint & Format**Use eslint + prettier. No warnings in CI.
 
-**Rule 205: Type Check in CI**
-Run the compiler (`tsc`) with strict settings on every PR.
+**Rule 204: Type Check in CI**Run the compiler (`tsc`) with strict settings on every PR.
 
-**Rule 206: Tests for New Behavior**
-Add tests for new logic and for error paths (timeouts, bad input). Keep tests fast.
-
-**Rule 207: Comments in Simple English**
-Explain **what** and **why** in short sentences. Avoid jargon.
-
----
-
+**Rule 205: Tests for New Behavior**Add tests for new logic and for error paths (timeouts, bad input). Keep tests fast.
 ## SECURITY, PRIVACY, PERFORMANCE
 
-**Rule 208: No Secrets in Code or Logs**
-Never commit tokens/passwords. Redact sensitive values from logs.
+**Rule 208: Validate Untrusted Inputs at Runtime**Types help at build time only. Validate external data before use.
 
-**Rule 209: Validate Untrusted Inputs at Runtime**
-Types help at build time only. Validate external data before use.
-
-**Rule 210: Keep the UI Responsive**
-Do heavy work off the main thread. Show progress for long tasks.
+**Rule 209: Keep the UI Responsive**Do heavy work off the main thread. Show progress for long tasks.
 
 ---
 
 ## AI & CODE GENERATION RULES
 
-**Rule 211: Review AI Code Thoroughly**
-All AI-generated TypeScript must be reviewed by humans. Verify types, error handling, and security match our standards.
+**Rule 210: Review AI Code Thoroughly**All AI-generated TypeScript must be reviewed by humans. Verify types, error handling, and security match our standards.
 
-**Rule 212: Monitor Bundle Impact**
-Use path imports for large libraries. Avoid barrel imports in hot paths. Set bundle size budgets and monitor them.
+**Rule 211: Monitor Bundle Impact**Use path imports for large libraries. Avoid barrel imports in hot paths. Set bundle size budgets and monitor them.
 
-**Rule 213: Quality Dependencies**
-Prefer packages with built-in TypeScript definitions. Use `@types/` packages from DefinitelyTyped. Audit dependencies for type safety.
+**Rule 212: Quality Dependencies**Prefer packages with built-in TypeScript definitions. Use `@types/` packages from DefinitelyTyped. Audit dependencies for type safety.
 
-**Rule 214: Test Type Boundaries**
-Write tests that verify type narrowing works. Test error cases to ensure proper typing. Use `@ts-expect-error` for expected type failures.
+**Rule 213: Test Type Boundaries**Write tests that verify type narrowing works. Test error cases to ensure proper typing. Use `@ts-expect-error` for expected type failures.
 
-**Rule 215: Gradual Migration Strategy**
-When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.
+**Rule 214: Gradual Migration Strategy**When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.
 
 ---
 
+
+**Rule 66: Write Clean, Readable Code** Make code easy to understand and modify, use clear names and simple structures, document why decisions were made, keep code organized and consistent - like writing clear, neat notes.
+
+**Rule 82: PR Template Block — Code Review (paste into `.github/pull_request_template.md`)**
+```markdown
+### PR Intent
+- **What changed:**
+- **Why now (problem/constraint):**
+- **Scope:**
+- **Risk (Low/Med/High) + Mitigation:**
+- **Rollout/rollback plan:**
+
+### AI Provenance
+- **generated_by:** Cursor
+- **model:**
+- **prompt_hash:**
+- **assumptions/limits:**
+
+### Security/Privacy Impact
+- **New data flows or scopes:**
+- **AuthZ/AuthN changes:**
+- **PII risk & mitigations:**
+
+### Evidence
+- [ ] Logs/receipts attached (redacted)
+- [ ] Contract diffs (OpenAPI/Schema) included (+ publish/receipt where applicable)
+- [ ] Test results pasted (unit/integration)
+- [ ] Screenshots/benchmarks & **Perf Receipt** (if relevant)
+
+### Self‑Check (Author)
+- [ ] Comments updated (simple English; WHY + PLAN)
+- [ ] Logging meets schema; request.start/end present
+- [ ] Storage rules followed; migrations safe (additive‑first, concurrent index, backfill, dual RW if needed, down path)
+- [ ] Security/privacy reviewed; no secrets/PII
+- [ ] Observability updated (metrics/traces/alerts)
+- [ ] CODEOWNERS approval(s) requested (sensitive areas); two reviewers tagged if required
+```
+
+---
+
+**Rule 181: No `any` in committed code**If you don't know the type, use **`unknown`** and **check it** before use.
+
+**Rule 207: No Secrets in Code or Logs**Never commit tokens/passwords. Redact sensitive values from logs.
+
+**Rule 253: Self-Documenting Code**Code should read like a story, not a puzzle.
+- ❌ `if (x > 0 && y < 100)` → ✅ `if (user_age_is_valid && score_is_within_range)`
+- ❌ `return calc(x, y, z)` → ✅ `return calculate_total_price(quantity, unit_price, tax_rate)`
+- ❌ `processUserData()` → ✅ `validate_user_email_and_save_to_database()`
+
+**Rule 259: Visual Code Layout**Use whitespace to group related ideas.
+- Align similar operations
+- Use consistent indentation (4 spaces)
+- Leave blank lines between logical sections
+
+**Rule 266: Code as Documentation**The code itself should be the primary documentation.
+- Comments should only explain "why", not "what"
+- If you need comments to explain "what", the code needs to be clearer
 ## STORAGE GOVERNANCE RULES (4-PLANE ARCHITECTURE)
 
 🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared).
 
-**Rule 216: Name Casing & Charset (Kebab-Case Only)**
-All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.
+**Rule 215: Name Casing & Charset (Kebab-Case Only)**All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.
 
-**Rule 217: No Source Code/PII in Stores**
-Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.
+**Rule 216: No Source Code/PII in Stores**Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.
 
-**Rule 218: No Secrets/Private Keys on Disk**
-Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.
+**Rule 217: No Secrets/Private Keys on Disk**Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.
 
-**Rule 219: JSONL Receipts (Newline-Delimited, Signed, Append-Only)**
-Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).
+**Rule 218: JSONL Receipts (Newline-Delimited, Signed, Append-Only)**Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).
 
-**Rule 220: Time Partitions Use UTC (dt=YYYY-MM-DD)**
-All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.
+**Rule 219: Time Partitions Use UTC (dt=YYYY-MM-DD)**All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.
 
-**Rule 221: Policy Snapshots Must Be Signed**
-All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.
+**Rule 220: Policy Snapshots Must Be Signed**All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.
 
-**Rule 222: Dual Storage Compliance (JSONL Authority, DB Mirrors)**
-JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.
+**Rule 221: Dual Storage Compliance (JSONL Authority, DB Mirrors)**JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.
 
-**Rule 223: Path Resolution via ZU_ROOT Environment Variable**
-All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.
+**Rule 222: Path Resolution via ZU_ROOT Environment Variable**All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.
 
-**Rule 224: Receipts Validation (Signed, Append-Only, No Code/PII)**
-When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode "a", never "w"; never truncate or seek.
+**Rule 223: Receipts Validation (Signed, Append-Only, No Code/PII)**When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode "a", never "w"; never truncate or seek.
 
-**Rule 225: Evidence Watermarks Per-Consumer Structure**
-Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.
+**Rule 224: Evidence Watermarks Per-Consumer Structure**Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.
 
-**Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**
-When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:
+**Rule 225: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:
 - IDE: `agent/tmp/UNCLASSIFIED__<slug>`
 - Tenant/Product: `ingest/staging/unclassified/<slug>`
 Resolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.
 
-**Rule 227: Observability/Adapters Use dt= Partitions**
-Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):
+**Rule 226: Observability/Adapters Use dt= Partitions**Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):
 - `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`
 - `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`
 - `reporting/marts/dt=YYYY-MM-DD/`
 - `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`
 
-**Rule 228: Laptop Receipts Use YYYY/MM Partitioning**
-Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.
+**Rule 227: Laptop Receipts Use YYYY/MM Partitioning**Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.
 
-**Rule 229: (Deprecated)**  
-See **Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**.
+**Rule 228: (Deprecated)**  See **Rule 226: RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)**.
 
-**Rule 230: (Deprecated)**  
-See **Rule 227: Observability/Adapters Use dt= Partitions**.
+**Rule 229: (Deprecated)**  See **Rule 227: Observability/Adapters Use dt= Partitions**.
 
-**Rule 231: (Deprecated)**  
-See **Rule 228: Laptop Receipts Use YYYY/MM Partitioning**.
+**Rule 230: (Deprecated)**  See **Rule 228: Laptop Receipts Use YYYY/MM Partitioning**.
 
 ---
 
+
+**Rule 144: STORAGE & RETENTION (LAPTOP-FIRST)**- Path: <server>/logs/YYYY-MM-DD/*.jsonl (daily). Rotate at 100MB; keep last 10 files locally.
+- Retention: app logs ≥ 14 days locally; receipts ≥ 90 days (or per policy).
+- Compression after rotation is allowed; do not compress live file.
+- Writing: UTF-8 (no BOM), CRLF-safe, one JSON per line with flush after each write. Guard against partial lines on power loss.
+
+**Rule 239: Override Storage & Lifecycle**  Store overrides **outside** `gsmd/` (runtime/config store). Log issuance and expiry via receipts. When `ttl` elapses, the override is invalid without re-approval.
 ## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)
 
-* **ERROR:TS_STRICT_OFF** — strict checks are disabled.
-* **ERROR:ANY_USED** — `any` found in committed code.
-* **ERROR:PROMISE_UNHANDLED** — promise without `await`/`.catch`.
-* **ERROR:NULL_UNHANDLED** — missing checks for optional/nullable.
-* **ERROR:NARROWING_MISSING** — union used without type checks.
-* **ERROR:CYCLE_IMPORTS** — circular imports/barrel chain.
-* **ERROR:DUPLICATE_DTOS** — hand-rolled API types instead of shared/generated ones.
-* **ERROR:LINT_FAIL** — linter errors or warnings in CI.
-* **ERROR:TESTS_MISSING** — new logic without tests.
-* **ERROR:SECRETS_LEAK** — secrets/PII in code, samples, or logs.
-* **ERROR:EXCEPTION_POLICY_DRIFT** — errors not mapped to the approved code list.
-* **ERROR:AI_CODE_UNREVIEWED** — AI-generated TypeScript without human review.
-* **ERROR:BUNDLE_BLOAT** — Import patterns that significantly increase bundle size.
-* **ERROR:DEPENDENCY_TYPE_UNSAFE** — Using untyped or poorly-typed dependencies.
-* **ERROR:TYPE_TEST_MISSING** — Complex types without boundary tests.
-* **ERROR:MIGRATION_VIOLATION** — Breaking type safety during JS to TS migration.
-
----
-
-## DAILY CHECKLIST (30 seconds)
-
-* [ ] Strict mode on; no `any`
-* [ ] Optional/nullable values checked
-* [ ] Unions narrowed before use
-* [ ] Promises awaited/handled
-* [ ] Friendly error at edges; details in logs (no secrets)
-* [ ] Timeouts/cancel for I/O; small safe retries
-* [ ] Lint + type-check pass
-* [ ] Tests cover happy + failure paths
-* [ ] No circular imports; no duplicate types
-* [ ] AI-generated code reviewed
-* [ ] Bundle size within limits
-* [ ] Dependencies properly typed
-
----
-
-## QUICK START (apply today)
-
-1. Turn **strict** on.
-2. Replace top 3 `any` with real types or `unknown` + checks.
-3. Add a **central error handler** at the boundary (command/route).
-4. Set a **default timeout** for network/file work.
-5. Create a tiny **type library** for your main data shapes and reuse it.
-6. **Review all AI code** for type safety and standards compliance.
-7. **Set bundle size budgets** and monitor imports.
-8. **Audit dependencies** for type definitions.
-
----
-
-## NEW DEVELOPER ONBOARDING
-
-**First TypeScript Task:**
-1. Fix 3 `any` types in existing code
-2. Add proper error handling to one async function
-3. Write tests for the fixed function
-4. Review one AI-generated TypeScript file
-5. Verify no new lint warnings
-6. Check bundle size impact
-
-**Common Patterns:**
-```typescript
-// Good: AI-generated code with proper typing
-interface User {
-  id: string;
-  name: string;
-}
-
-// Instead of `any`, use specific types
-function processUser(user: User) {
-  // TypeScript knows user has id and name
-}
-```
-
+> For additional qualitative guidance (non-normative), see `docs/guides/simple-code-checklist.md`.
 # GSMD — Cursor Enforcement Rules (Appendix)
 
-**Rule 232: GSMD Source of Truth (SOT) Paths**  
-Policy snapshots live only under:
+**Rule 231: GSMD Source of Truth (SOT) Paths**  Policy snapshots live only under:
 ```
 gsmd/modules/M{NN}/{slug}/v{major}/snapshot.json
 ```
 Treat these files as the **single source of truth** for governance decisions. Do not place snapshots anywhere else.
 
-**Rule 233: Read-Only Policy Assets**  
-You MUST NOT edit or overwrite existing files under `gsmd/**`. To change policy, create a **new version folder** (e.g., `v2/`) and add a new `snapshot.json`. Keep older versions intact.
+**Rule 232: Read-Only Policy Assets**  You MUST NOT edit or overwrite existing files under `gsmd/**`. To change policy, create a **new version folder** (e.g., `v2/`) and add a new `snapshot.json`. Keep older versions intact.
 
-**Rule 234: Versioning Is Append-Only**  
-Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.
+**Rule 233: Versioning Is Append-Only**  Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.
 
-**Rule 235: Snapshot Identity & Integrity**  
-Every snapshot MUST satisfy:
+**Rule 234: Snapshot Identity & Integrity**  Every snapshot MUST satisfy:
 - `snapshot_id` pattern: `SNAP.M\d{2}.[a-z0-9_.]+.(v|V)\d+`
 - `module_id` pattern: `M\d{2}`
 - `snapshot_hash` equal to **sha256** of file contents (hex) prefixed with `sha256:`
@@ -2061,90 +1453,63 @@ Every snapshot MUST satisfy:
 - `effective_from` ISO-8601  
 Use `tools/gsmd-check.ps1` to verify. Fail CI if any check fails.
 
-**Rule 236: Valid Evaluation Points Only**  
-Allowed values are exactly:
+**Rule 235: Valid Evaluation Points Only**  Allowed values are exactly:
 ```
 pre-commit | pre-merge | pre-deploy | post-deploy
 ```
 Code and receipts must use only these values.
 
-**Rule 237: Decision Receipts — Required Fields**  
-Every GSMD decision MUST emit a signed receipt containing at minimum:
+**Rule 236: Decision Receipts — Required Fields**  Every GSMD decision MUST emit a signed receipt containing at minimum:
 ```
 decision, rationale, policy_snapshot_hash, policy_version_ids[],
 evaluation_point, actor_id, repo_id, timestamps.hw, signature
 ```
 Values for `policy_snapshot_hash` and `policy_version_ids[]` MUST come from the snapshot actually used.
 
-**Rule 238: Receipt Discipline (Append-Only, Signed)**  
-Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.
+**Rule 237: Receipt Discipline (Append-Only, Signed)**  Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.
 
-**Rule 239: Tenant Overrides (Strict Contract)**  
-Overrides MUST include:
-```
-tenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],
-waiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],
-ttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},
-kid, signature
-```
-Overrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.
-
-**Rule 240: Override Storage & Lifecycle**  
-Store overrides **outside** `gsmd/` (runtime/config store). Log issuance and expiry via receipts. When `ttl` elapses, the override is invalid without re-approval.
-
-**Rule 241: Decisions & Modes (Status Pill)**  
-Implement decisions using the canonical set only:
+**Rule 240: Decisions & Modes (Status Pill)**  Implement decisions using the canonical set only:
 ```
 pass | warn | soft_block | hard_block
 ```
 Honor snapshot `messages.status_pill.*` and `rollout.default_mode`. Do not invent new statuses.
 
-**Rule 242: Rollout & Cohorts**  
-If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.
+**Rule 241: Rollout & Cohorts**  If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.
 
-**Rule 243: Privacy & Redaction**  
-Apply any rules present under `privacy.redactions` **before** logging or emitting receipts. Never log raw PII or secrets. Log **hashes/sizes** instead of raw payloads.
+**Rule 242: Privacy & Redaction**  Apply any rules present under `privacy.redactions` **before** logging or emitting receipts. Never log raw PII or secrets. Log **hashes/sizes** instead of raw payloads.
 
-**Rule 244: Evidence & Required Receipts**  
-If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist **before** returning a terminal decision.
+**Rule 243: Evidence & Required Receipts**  If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist **before** returning a terminal decision.
 
-**Rule 245: Tests Fixtures Must Match Policy**  
-Where `tests.fixtures[]` are present, unit/integration tests MUST prove the declared outcomes (`pass | warn | soft_block | hard_block`). Do not merge if observed outcomes differ from fixtures.
+**Rule 244: Tests Fixtures Must Match Policy**  Where `tests.fixtures[]` are present, unit/integration tests MUST prove the declared outcomes (`pass | warn | soft_block | hard_block`). Do not merge if observed outcomes differ from fixtures.
 
-**Rule 246: Mandatory CI Gates**  
-Every PR touching policy or enforcement MUST run:
+**Rule 245: Mandatory CI Gates**  Every PR touching policy or enforcement MUST run:
 ```
 ./tools/gsmd-check.ps1 -Root ./gsmd -VerboseOutput
 ```
 Block merge on any failure.
 
-**Rule 247: Release Manifests (Merkle Root)**  
-Before publishing a policy release, generate a manifest and (optionally) sign it:
+**Rule 246: Release Manifests (Merkle Root)**  Before publishing a policy release, generate a manifest and (optionally) sign it:
 ```
 ./tools/manifest-build.ps1   -Root ./gsmd -OutDir ./gsmd/releases -Kid "<KID>"
 ./tools/manifest-verify.ps1  -Root . -Manifest <path\\to\\manifest.json>
 ```
 Block release if file hashes or Merkle root mismatch.
 
-**Rule 248: Runtime Snapshot Binding**  
-At decision time, the engine MUST bind to the exact snapshot referenced by the receipt (`policy_version_ids[]` and `policy_snapshot_hash`). Never apply a different snapshot than the one recorded.
+**Rule 247: Runtime Snapshot Binding**  At decision time, the engine MUST bind to the exact snapshot referenced by the receipt (`policy_version_ids[]` and `policy_snapshot_hash`). Never apply a different snapshot than the one recorded.
 
-**Rule 249: Cursor Behavior for GSMD**  
-Cursor MUST NOT propose edits under `gsmd/**`. It MUST:
+**Rule 248: Cursor Behavior for GSMD**  Cursor MUST NOT propose edits under `gsmd/**`. It MUST:
 - Read the relevant snapshot fields first
 - Surface `snapshot_id`, `policy_version_ids[]`, `policy_snapshot_hash`
 - Propose **new version** files for policy changes (no in-place edits)
 - Suggest running the CI gates above
 
-**Rule 250: Return Contracts for GSMD Artifacts**  
-For policy work, output only one of:
+**Rule 249: Return Contracts for GSMD Artifacts**  For policy work, output only one of:
 - **New File** → for adding `.../v{new}/snapshot.json` (full file content)
 - **JSON Artifact** → for overrides/receipts (valid JSON only)
 - **Unified Diff** → never used to mutate existing snapshots; use only for non-policy code/config  
 Violations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.
 
-**Rule 251: Stop Conditions → GSMD Error Codes**  
-- Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`  
+**Rule 250: Stop Conditions → GSMD Error Codes**  - Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`  
 - Attempt to modify existing snapshot ............... `ERROR:GSMD_MUTATION_DENIED`  
 - Hash mismatch vs `snapshot_hash` .................. `ERROR:GSMD_HASH_MISMATCH`  
 - Missing/invalid signature or `kid` ................ `ERROR:GSMD_SIGNATURE_MISSING`  
@@ -2158,8 +1523,7 @@ Violations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.
 - Tests/fixtures absent for declared policy ......... `ERROR:GSMD_TESTS_MISSING`  
 - Return contract not honored ....................... `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`
 
-**Rule 252: Self-Audit Before Output (GSMD)**  
-- [ ] Not editing existing `gsmd/**`; new version only when needed  
+**Rule 251: Self-Audit Before Output (GSMD)**  - [ ] Not editing existing `gsmd/**`; new version only when needed  
 - [ ] Snapshot patterns/fields valid; `snapshot_hash` recomputes  
 - [ ] Evaluation point valid; decision ∈ {pass,warn,soft_block,hard_block}  
 - [ ] Receipt fields complete and signed; values sourced from snapshot  
@@ -2181,73 +1545,50 @@ Applies to all code, comments, and documentation. Keep changes small and consist
 
 ## Basic Readability Rules
 
-**Rule 253: Plain English Variable Names**
-Use descriptive, everyday words instead of technical jargon or abbreviations.
+**Rule 252: Plain English Variable Names**Use descriptive, everyday words instead of technical jargon or abbreviations.
 - ❌ `usr_ctx_mgr` → ✅ `user_account_manager`
 - ❌ `db_conn_pool` → ✅ `database_connections`
 - ❌ `cfg_mgr` → ✅ `settings_manager`
 - ❌ `calc_total` → ✅ `calculate_total_price`
 
-**Rule 254: Self-Documenting Code**
-Code should read like a story, not a puzzle.
-- ❌ `if (x > 0 && y < 100)` → ✅ `if (user_age_is_valid && score_is_within_range)`
-- ❌ `return calc(x, y, z)` → ✅ `return calculate_total_price(quantity, unit_price, tax_rate)`
-- ❌ `processUserData()` → ✅ `validate_user_email_and_save_to_database()`
-
-**Rule 255: One Concept Per Function**
-Each function should do exactly one thing.
+**Rule 254: One Concept Per Function**Each function should do exactly one thing.
 - Maximum 20 lines per function
 - Function name should clearly describe what it does
 - Break complex functions into smaller, focused ones
 
-**Rule 256: Explain the "Why", Not Just the "What"**
-Comments should explain business logic, not code mechanics.
+**Rule 255: Explain the "Why", Not Just the "What"**Comments should explain business logic, not code mechanics.
 - ❌ `// Increment counter` → ✅ `// Count failed login attempts to detect brute force attacks`
 - ❌ `// Loop through array` → ✅ `// Check each customer's payment status to identify overdue accounts`
 
-**Rule 257: Avoid Mental Gymnastics**
-No nested ternary operators, complex one-liners, or clever tricks.
+**Rule 256: Avoid Mental Gymnastics**No nested ternary operators, complex one-liners, or clever tricks.
 - ❌ `result = a ? b : c ? d : e` → ✅ Use clear if-else statements
 - ❌ `return x && y && z ? process() : null` → ✅ Break into simple steps
 
-**Rule 258: Use Real-World Analogies**
-Compare technical concepts to everyday experiences.
+**Rule 257: Use Real-World Analogies**Compare technical concepts to everyday experiences.
 - ❌ `"Database connection pooling"` → ✅ `"Like a taxi stand - cars wait for passengers instead of creating new ones each time"`
 - ❌ `"API rate limiting"` → ✅ `"Like a bouncer at a club - only letting in a certain number of people per minute"`
 
-**Rule 259: Progressive Complexity**
-Start simple, add complexity only when needed.
+**Rule 258: Progressive Complexity**Start simple, add complexity only when needed.
 - Use helper functions to break down complex operations
 - ❌ One 100-line function → ✅ Five 20-line functions with clear names
 
-**Rule 260: Visual Code Layout**
-Use whitespace to group related ideas.
-- Align similar operations
-- Use consistent indentation (4 spaces)
-- Leave blank lines between logical sections
-
-**Rule 261: Error Messages That Help**
-Error messages should guide users to solutions.
+**Rule 260: Error Messages That Help**Error messages should guide users to solutions.
 - ❌ `"Error 500"` → ✅ `"The email address 'john@' is missing the domain part. Please enter a complete email like 'john@example.com'"`
 - ❌ `"Null pointer exception"` → ✅ `"The user's profile picture is missing. Please upload a photo or use the default avatar."`
 
-**Rule 262: Consistent Naming Patterns**
-Use the same word for the same concept throughout.
+**Rule 261: Consistent Naming Patterns**Use the same word for the same concept throughout.
 - ❌ Mixing `user`, `usr`, `customer`, `client` → ✅ Always use `user`
 - ❌ Mixing `get`, `fetch`, `retrieve` → ✅ Always use `get`
 
-**Rule 263: Avoid Abbreviations**
-Write out full words unless universally understood.
+**Rule 262: Avoid Abbreviations**Write out full words unless universally understood.
 - ❌ `calc`, `mgr`, `ctx` → ✅ `calculate`, `manager`, `context`
 - ✅ Allow common ones: `id`, `url`, `api`, `db`
 
-**Rule 264: Business Language Over Technical Language**
-Use domain terms that business people understand.
+**Rule 263: Business Language Over Technical Language**Use domain terms that business people understand.
 - ❌ `"Execute database transaction"` → ✅ `"Save the customer's order"`
 - ❌ `"Initialize object instance"` → ✅ `"Create a new user account"`
 
-**Rule 265: Show Your Work**
-Break complex calculations into steps with intermediate variables.
+**Rule 264: Show Your Work**Break complex calculations into steps with intermediate variables.
 - ❌ `return (a * b) + (c * d) - (e / f)` → ✅ 
 ```python
 base_price = quantity * unit_price
@@ -2257,23 +1598,15 @@ final_price = base_price + tax_amount - discount
 return final_price
 ```
 
-**Rule 266: Fail Gracefully with Helpful Messages**
-When something goes wrong, explain what the user should do.
+**Rule 265: Fail Gracefully with Helpful Messages**When something goes wrong, explain what the user should do.
 - Provide next steps, not just error codes
 - ❌ `"Validation failed"` → ✅ `"The password must be at least 8 characters long. Please add 3 more characters."`
 
-**Rule 267: Code as Documentation**
-The code itself should be the primary documentation.
-- Comments should only explain "why", not "what"
-- If you need comments to explain "what", the code needs to be clearer
-
-**Rule 268: Test Names That Tell a Story**
-Test names should describe the scenario and expected outcome.
+**Rule 267: Test Names That Tell a Story**Test names should describe the scenario and expected outcome.
 - ❌ `test_user()` → ✅ `test_user_can_login_with_valid_credentials()`
 - ❌ `test_error()` → ✅ `test_system_shows_helpful_message_when_email_is_invalid()`
 
-**Rule 269: Constants That Explain Themselves**
-Use named constants instead of magic numbers.
+**Rule 268: Constants That Explain Themselves**Use named constants instead of magic numbers.
 - ❌ `if (age > 18)` → ✅ `if (age >= MINIMUM_ADULT_AGE)`
 - ❌ `timeout = 5000` → ✅ `timeout = FIVE_SECONDS_IN_MILLISECONDS`
 
@@ -2281,69 +1614,53 @@ Use named constants instead of magic numbers.
 
 ## Advanced Concepts (BANNED)
 
-**Rule 270: NO Advanced Programming Concepts**
-- ❌ **BANNED**: Closures, decorators, lambda functions, generators, async/await, promises, callbacks
+**Rule 269: NO Advanced Programming Concepts**- ❌ **BANNED**: Closures, decorators, lambda functions, generators, async/await, promises, callbacks
 - ❌ **BANNED**: Functional programming (map, filter, reduce, fold)
 - ❌ **BANNED**: Object-oriented inheritance, polymorphism, abstract classes
 - ❌ **BANNED**: Design patterns (singleton, factory, observer, etc.)
 - ✅ **ALLOWED**: Simple if-else, for loops, basic functions, simple classes
 
-**Rule 271: NO Complex Data Structures**
-- ❌ **BANNED**: Nested dictionaries, complex objects, arrays of objects
+**Rule 270: NO Complex Data Structures**- ❌ **BANNED**: Nested dictionaries, complex objects, arrays of objects
 - ❌ **BANNED**: Hash maps, sets, tuples, linked lists, trees
 - ❌ **BANNED**: JSON parsing, XML parsing, complex serialization
 - ✅ **ALLOWED**: Simple arrays, simple objects with 2-3 properties max
 
-**Rule 272: NO Advanced String Manipulation**
-- ❌ **BANNED**: Regular expressions, complex string methods
+**Rule 271: NO Advanced String Manipulation**- ❌ **BANNED**: Regular expressions, complex string methods
 - ❌ **BANNED**: Template literals, string interpolation
 - ❌ **BANNED**: Encoding/decoding, base64, hashing
 - ✅ **ALLOWED**: Basic string concatenation, simple replace, length check
 
-**Rule 273: NO Complex Error Handling**
-- ❌ **BANNED**: Try-catch blocks, exception handling, error chains
-- ❌ **BANNED**: Custom error types, error propagation
-- ❌ **BANNED**: Retry logic, circuit breakers, fallback mechanisms
-- ✅ **ALLOWED**: Simple if-else checks, basic validation
-
-**Rule 274: NO Advanced Control Flow**
-- ❌ **BANNED**: Switch statements, ternary operators, nested conditions
+**Rule 273: NO Advanced Control Flow**- ❌ **BANNED**: Switch statements, ternary operators, nested conditions
 - ❌ **BANNED**: Recursion, complex loops, break/continue
 - ❌ **BANNED**: Goto statements, early returns in complex functions
 - ✅ **ALLOWED**: Simple if-else chains, basic for/while loops
 
-**Rule 275: NO Advanced Functions**
-- ❌ **BANNED**: Function overloading, default parameters, rest parameters
+**Rule 274: NO Advanced Functions**- ❌ **BANNED**: Function overloading, default parameters, rest parameters
 - ❌ **BANNED**: Higher-order functions, function composition
 - ❌ **BANNED**: Currying, partial application, function factories
 - ✅ **ALLOWED**: Simple functions with 1-3 parameters, basic return statements
 
-**Rule 276: NO Advanced Array Operations**
-- ❌ **BANNED**: Array methods (map, filter, reduce, forEach, some, every)
+**Rule 275: NO Advanced Array Operations**- ❌ **BANNED**: Array methods (map, filter, reduce, forEach, some, every)
 - ❌ **BANNED**: Array destructuring, spread operators
 - ❌ **BANNED**: Multi-dimensional arrays, array manipulation
 - ✅ **ALLOWED**: Basic array access with [index], simple for loops
 
-**Rule 277: NO Advanced Logic**
-- ❌ **BANNED**: Boolean algebra, bitwise operations
+**Rule 276: NO Advanced Logic**- ❌ **BANNED**: Boolean algebra, bitwise operations
 - ❌ **BANNED**: Complex conditional logic, nested conditions
 - ❌ **BANNED**: Logical operators beyond basic AND/OR
 - ✅ **ALLOWED**: Simple true/false checks, basic comparisons
 
-**Rule 278: NO Advanced Language Features**
-- ❌ **BANNED**: TypeScript generics, Python decorators, Java annotations
+**Rule 277: NO Advanced Language Features**- ❌ **BANNED**: TypeScript generics, Python decorators, Java annotations
 - ❌ **BANNED**: Advanced JavaScript features, complex type systems
 - ❌ **BANNED**: Metaprogramming, reflection, dynamic code generation
 - ✅ **ALLOWED**: Basic language syntax only
 
-**Rule 279: NO Advanced Libraries**
-- ❌ **BANNED**: Third-party libraries, frameworks, complex dependencies
+**Rule 278: NO Advanced Libraries**- ❌ **BANNED**: Third-party libraries, frameworks, complex dependencies
 - ❌ **BANNED**: Package managers, dependency management
 - ❌ **BANNED**: External APIs, web services, complex integrations
 - ✅ **ALLOWED**: Basic language built-ins only
 
-**Rule 280: ENFORCE Simple Level**
-- **MANDATORY**: Every line of code must be understandable by an 8th grader
+**Rule 279: ENFORCE Simple Level**- **MANDATORY**: Every line of code must be understandable by an 8th grader
 - **MANDATORY**: No technical jargon without explanation
 - **MANDATORY**: Use simple, everyday words
 - **MANDATORY**: Break complex operations into simple steps
@@ -2392,40 +1709,8 @@ Use named constants instead of magic numbers.
 
 **ERROR:SIMPLE_LEVEL_VIOLATION** — Code fails 8th-grade readability test
 
----
 
-## Daily Checklist (Simple Code)
 
-✅ Variable names use plain English words  
-✅ Functions do one thing and are under 20 lines  
-✅ Comments explain "why", not "what"  
-✅ No abbreviations or technical jargon  
-✅ Code reads like a story, not a puzzle  
-✅ Error messages guide users to solutions  
-✅ Complex calculations broken into steps  
-✅ No advanced programming concepts used  
-✅ No complex data structures  
-✅ No advanced string/array/object operations  
-✅ No complex error handling or control flow  
-✅ No advanced language features or libraries  
-✅ Every line understandable to an 8th grader  
-✅ Business language used instead of technical terms  
-✅ Consistent naming patterns throughout
-
----
-
-## New Developer Quick Start
-
-**First Simple Code Task:**
-1. Pick one function with complex logic
-2. Break it into 3-5 simple functions with clear names
-3. Replace technical terms with business language
-4. Add comments explaining "why" for each step
-5. Test that an 8th grader can understand what it does
-6. Verify no advanced concepts are used
-
-**Common Patterns:**
-```python
 # Good: Simple, readable code
 def calculate_total_price(quantity, unit_price, tax_rate):
     # Calculate the base cost before tax
@@ -2443,3 +1728,290 @@ def calc(x, y, z): return (x * y) + (x * y * z)
 
 **Readability Test:**
 Ask yourself: "Could an 8th grader read this code and understand what it does?" If the answer is no, simplify it.
+
+
+### Receipt Schema (machine-readable excerpt)
+Fields listed here are referenced by the Constitution; schema is an aid for validation.
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ZeroUI Receipt",
+  "type": "object",
+  "required": ["actor_id"],
+  "properties": {
+    "actor_id": {"type": "string"},
+    "decision": {"type": "string"},
+    "hash": {"type": "string"},
+    "kid": {"type": "string"},
+    "policy_snapshot_hash": {"type": "string"},
+    "receipt_id": {"type": "string"},
+    "route": {"type": "string"},
+    "severity": {"type": "string"}
+  }
+}
+```
+
+
+---
+
+## Rule Index (machine-readable)
+The table lists each rule in the order it appears. Original numbers are preserved; use **RID** as the stable identifier.
+
+| Section | Original No. | Title | RID |
+|---|---:|---|---|
+
+---
+
+# Appendix — Storage Scripts Enforcement (Derived from `storage-scripts/`)
+
+> These rules enforce the folder structure created by `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1` and documented in `storage-scripts/*.md`. They do **not** change existing rule numbers. Use the stop‑codes in CI to block drift.
+
+### SG-301 — IDE plane: receipts layout (per repo)
+**Rule 280: IDE plane: receipts layout (per repo)**
+
+**Rule.** Under `ide/agent/receipts/` every `<repo-id>` must contain:
+```
+ide/agent/receipts/<repo-id>/{yyyy}/{mm}/
+ide/agent/receipts/<repo-id>/{index|quarantine|checkpoints}/
+```
+- `yyyy`=`[0-9]{4}`, `mm`=`(0[1-9]|1[0-2])`
+- Only these three management folders are allowed at that level.
+
+**Stop codes**
+- `ERROR:IDE_RECEIPTS_MISSING_INDEX`
+- `ERROR:IDE_RECEIPTS_MISSING_QA`
+- `ERROR:IDE_RECEIPTS_LAYOUT_DRIFT`
+
+---
+
+### SG-302 — IDE plane: agent workspace invariants
+**Rule 281: IDE plane: agent workspace invariants**
+
+**Rule.** The only permitted top-level categories under `ide/agent/` are:
+```
+policy/cache
+trust/pubkeys
+config/consent
+queue/evidence/{pending|sent|failed}
+logs/metrics
+db
+llm/{prompts|tools|adapters|cache/{token|embedding}|redaction|runs}
+```
+**Stop codes**
+- `ERROR:IDE_AGENT_DIR_UNKNOWN`
+- `ERROR:IDE_QUEUE_STATE_UNKNOWN`
+
+---
+
+### SG-303 — Tenant plane: evidence store shape
+**Rule 282: Tenant plane: evidence store shape**
+
+**Rule.** `evidence/` must contain exactly:
+```
+receipts/ , manifests/ , checksums/ , dlq/ , watermarks/<consumer-id>/
+```
+- `<consumer-id>` must be kebab-case `[a-z0-9-]+`.
+- No other top-level entries allowed under `evidence/`.
+
+**Stop codes**
+- `ERROR:EVIDENCE_DIR_UNKNOWN`
+- `ERROR:WATERMARKS_MISSING_CONSUMER`
+- `ERROR:CONSUMER_ID_SLUG_INVALID`
+
+---
+
+### SG-304 — Tenant plane: ingest staging & RFC fallback
+**Rule 283: Tenant plane: ingest staging & RFC fallback**
+
+**Rule.** `ingest/staging/` exists; optional `ingest/staging/unclassified/` is created via `-StampUnclassified <slug>`.
+- Fallback slug format: `UNCLASSIFIED__<slug>` (kebab-case slug).
+- Must be resolved/moved within 24h.
+
+**Stop codes**
+- `ERROR:UNCLASSIFIED_SLUG_INVALID`
+- `ERROR:UNCLASSIFIED_STALE`
+
+---
+
+### SG-305 — Observability partitions (Tenant)
+**Rule 284: Observability partitions (Tenant)**
+
+**Rule.** Only these kinds are allowed under `observability/`:
+```
+metrics/ , traces/ , logs/
+```
+Each must be date-partitioned: `dt=YYYY-MM-DD/`.
+
+**Stop codes**
+- `ERROR:OBS_KIND_UNKNOWN`
+- `ERROR:OBS_DT_PARTITION_MISSING`
+- `ERROR:OBS_DT_FORMAT_INVALID`
+
+---
+
+### SG-306 — Adapters capture (Tenant)
+**Rule 285: Adapters capture (Tenant)**
+
+**Rule.** Only these capture points are allowed under `adapters/`:
+```
+webhooks/ , gateway-logs/
+```
+Each supports optional date partition: `dt=YYYY-MM-DD/`.
+
+**Stop codes**
+- `ERROR:ADAPTERS_DIR_UNKNOWN`
+- `ERROR:ADAPTERS_DT_FORMAT_INVALID`
+
+---
+
+### SG-307 — Reporting marts (Tenant)
+**Rule 286: Reporting marts (Tenant)**
+
+**Rule.** `reporting/marts/` must be date-partitioned `dt=YYYY-MM-DD/`.  
+If you introduce table subfolders, they must be kebab-case.
+
+**Stop codes**
+- `ERROR:MARTS_DT_PARTITION_MISSING`
+- `ERROR:MARTS_TABLE_SLUG_INVALID`
+
+---
+
+### SG-308 — Policy trust layout (Tenant & Product)
+**Rule 287: Policy trust layout (Tenant & Product)**
+
+**Rule.** Only **public keys** belong under:
+```
+policy/trust/pubkeys/      (tenant)
+trust/pubkeys/             (product)
+pki/pubkeys/               (shared)
+```
+**Stop codes**
+- `ERROR:PRIVATE_KEY_ON_DISK`
+
+---
+
+### SG-309 — Product plane structure
+**Rule 288: Product plane structure**
+
+**Rule.** Allowed top-level categories and optional partitions:
+```
+adapters/gateway-logs[/dt=YYYY-MM-DD]
+service-metrics[/dt=YYYY-MM-DD]
+reporting/tenants/aggregates[/dt=YYYY-MM-DD]
+trust/pubkeys
+```
+**Stop codes**
+- `ERROR:PRODUCT_DIR_UNKNOWN`
+- `ERROR:PRODUCT_DT_FORMAT_INVALID`
+
+---
+
+### SG-310 — Shared plane structure
+**Rule 289: Shared plane structure**
+
+**Rule.** Allowed top-level categories:
+```
+pki/pubkeys
+observability/otel
+siem
+bi-lake/curated/zero-ui
+governance/controls/zero-ui
+```
+**Stop codes**
+- `ERROR:SHARED_DIR_UNKNOWN`
+
+---
+
+### SG-311 — Deprecated alias gating
+**Rule 290: Deprecated alias gating**
+
+**Rule.** `meta/schema/` is **forbidden by default**; may exist only when scaffold/CI runs with `-CompatAliases:true`, and must be tracked by a waiver receipt.
+
+**Stop codes**
+- `ERROR:DEPRECATED_ALIAS_USED`
+- `ERROR:DEPRECATED_ALIAS_DRIFT`
+
+---
+
+### SG-312 — Partitions & stamps: single source of truth
+**Rule 291: Partitions & stamps: single source of truth**
+
+**Rule.** 
+- Date partitions must come from `-CreateDt` (`YYYY-MM-DD`) → `dt=YYYY-MM-DD/`.
+- IDE receipts **must** use `{yyyy}/{mm}` layout derived from the same date.
+- No `dt=` without a valid `-CreateDt`; no `{yyyy}/{mm}` outside IDE receipts.
+
+**Stop codes**
+- `ERROR:CREATE_DT_MISSING`
+- `ERROR:PARTITION_MISMATCH`
+
+---
+
+### SG-313 — Shards configuration (declarative)
+**Rule 292: Shards configuration (declarative)**
+
+**Rule.** Shards must be **declared** as `{0|16|256}`; scaffold does not create shard directories implicitly. If shards are present, they must follow `shard={00..ff}` (for 256) or `shard={0..15}` (for 16), zero-padded consistently.
+
+**Stop codes**
+- `ERROR:SHARD_COUNT_INVALID`
+- `ERROR:SHARD_LAYOUT_INVALID`
+
+---
+
+### SG-314 — Scaffold behavior: directories-only & idempotent
+**Rule 293: Scaffold behavior: directories-only & idempotent**
+
+**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.
+
+**Stop codes**
+- `ERROR:SCAFFOLD_CREATED_FILES`
+- `ERROR:SCAFFOLD_NOT_IDEMPOTENT`
+
+---
+
+## Path‑Lint Allowlist (CI/Pre‑commit)
+
+Use these exact allowlists/regexes to validate paths. Block any non‑matching path with the related stop code.
+
+```regex
+# IDE receipts
+^ide/agent/receipts/[a-z0-9-]+/(index|quarantine|checkpoints)/$
+^ide/agent/receipts/[a-z0-9-]+/[0-9]{4}/(0[1-9]|1[0-2])/$
+
+# IDE agent workspace
+^ide/agent/(policy/cache|trust/pubkeys|config/consent|db)/$
+^ide/agent/queue/evidence/(pending|sent|failed)/$
+^ide/agent/logs/metrics/$
+^ide/agent/llm/(prompts|tools|adapters|redaction|runs)/$
+^ide/agent/llm/cache/(token|embedding)/$
+
+# Tenant evidence
+^[a-z0-9-]+/evidence/(receipts|manifests|checksums|dlq)/$
+^[a-z0-9-]+/evidence/watermarks/[a-z0-9-]+/$
+
+# Tenant ingest & RFC fallback
+^[a-z0-9-]+/ingest/staging/$
+^[a-z0-9-]+/ingest/staging/unclassified/$
+
+# Tenant observability & adapters (date-partitioned)
+^[a-z0-9-]+/observability/(metrics|traces|logs)/dt=[0-9]{4}-[0-9]{2}-[0-9]{2}/$
+^[a-z0-9-]+/adapters/(webhooks|gateway-logs)/dt=[0-9]{4}-[0-9]{2}-[0-9]{2}/$
+
+# Tenant reporting marts
+^[a-z0-9-]+/reporting/marts(/([a-z0-9-]+))?/dt=[0-9]{4}-[0-9]{2}-[0-9]{2}/$
+
+# Tenant policy
+^[a-z0-9-]+/policy/snapshots/$
+^[a-z0-9-]+/policy/trust/pubkeys/$
+^[a-z0-9-]+/meta/schema/$  # forbidden unless -CompatAliases:true + waiver
+
+# Product plane
+^product/(adapters/gateway-logs|service-metrics)(/dt=[0-9]{4}-[0-9]{2}-[0-9]{2})?/$
+^product/reporting/tenants/aggregates(/dt=[0-9]{4}-[0-9]{2}-[0-9]{2})?/$
+^product/trust/pubkeys/$
+
+# Shared plane
+^shared/(pki/pubkeys|observability/otel|siem|bi-lake/curated/zero-ui|governance/controls/zero-ui)/$
+```
+
+> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/scaffold.md`, `storage-scripts/INTEGRATION.md`.

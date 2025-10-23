@@ -1,5 +1,6 @@
 # Python
 __pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 *.so
@@ -22,6 +23,7 @@ wheels/
 MANIFEST
 
 # Virtual environments
+/.venv/
 .venv/
 venv/
 ENV/
@@ -87,12 +89,6 @@ tmp/
 # OS files
 desktop.ini
 
-# Python
-*.pyc
-
-# Test artifacts
-.pytest_cache/
-*.cover
 
 # Requirements lock
 requirements.lock
