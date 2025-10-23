@@ -1,0 +1,4161 @@
+{
+  "total_rules": 293,
+  "rule_numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67,
+    68,
+    69,
+    70,
+    71,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    78,
+    79,
+    80,
+    81,
+    82,
+    83,
+    84,
+    85,
+    86,
+    87,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95,
+    96,
+    97,
+    98,
+    99,
+    100,
+    101,
+    102,
+    103,
+    104,
+    105,
+    106,
+    107,
+    108,
+    109,
+    110,
+    111,
+    112,
+    113,
+    114,
+    115,
+    116,
+    117,
+    118,
+    119,
+    120,
+    121,
+    122,
+    123,
+    124,
+    125,
+    126,
+    127,
+    128,
+    129,
+    130,
+    131,
+    132,
+    133,
+    134,
+    135,
+    136,
+    137,
+    138,
+    139,
+    140,
+    141,
+    142,
+    143,
+    144,
+    145,
+    146,
+    147,
+    148,
+    149,
+    150,
+    151,
+    152,
+    153,
+    154,
+    155,
+    156,
+    157,
+    158,
+    159,
+    160,
+    161,
+    162,
+    163,
+    164,
+    165,
+    166,
+    167,
+    168,
+    169,
+    170,
+    171,
+    172,
+    173,
+    174,
+    175,
+    176,
+    177,
+    178,
+    179,
+    180,
+    181,
+    182,
+    183,
+    184,
+    185,
+    186,
+    187,
+    188,
+    189,
+    190,
+    191,
+    192,
+    193,
+    194,
+    195,
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204,
+    205,
+    206,
+    207,
+    208,
+    209,
+    210,
+    211,
+    212,
+    213,
+    214,
+    215,
+    216,
+    217,
+    218,
+    219,
+    220,
+    221,
+    222,
+    223,
+    224,
+    225,
+    226,
+    227,
+    228,
+    229,
+    230,
+    231,
+    232,
+    233,
+    234,
+    235,
+    236,
+    237,
+    238,
+    239,
+    240,
+    241,
+    242,
+    243,
+    244,
+    245,
+    246,
+    247,
+    248,
+    249,
+    250,
+    251,
+    252,
+    253,
+    254,
+    255,
+    256,
+    257,
+    258,
+    259,
+    260,
+    261,
+    262,
+    263,
+    264,
+    265,
+    266,
+    267,
+    268,
+    269,
+    270,
+    271,
+    272,
+    273,
+    274,
+    275,
+    276,
+    277,
+    278,
+    279,
+    280,
+    281,
+    282,
+    283,
+    284,
+    285,
+    286,
+    287,
+    288,
+    289,
+    290,
+    291,
+    292,
+    293
+  ],
+  "missing_numbers": [],
+  "highest_rule": 293,
+  "lowest_rule": 1,
+  "categories": {
+    "Teamwork": [
+      {
+        "number": 50,
+        "title": "Build for Real Team Work",
+        "content": "Make collaboration natural and easy, help teams share knowledge automatically, reduce meetings and emails through better tools, make it easy to help each other without interrupting work - like good group project tools.",
+        "line_number": 166,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 51,
+        "title": "Prevent Knowledge Silos",
+        "content": "Automatically identify who knows what, suggest when to share important information, help teams learn from each other's successes, make expertise easy to find when needed - like knowing which friend to ask for help with different subjects.",
+        "line_number": 168,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 52,
+        "title": "Reduce Frustration Daily",
+        "content": "Fix the small annoyances that add up, automate boring repetitive tasks, make hard things easier, celebrate small wins and progress - like making daily chores less annoying.",
+        "line_number": 170,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 53,
+        "title": "Build Confidence, Not Fear",
+        "content": "Make deployments feel safe and controlled, provide safety nets for mistakes, show progress and improvements clearly, help people learn without embarrassment - like training wheels on a bike.",
+        "line_number": 172,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 54,
+        "title": "Learn and Adapt Constantly",
+        "content": "Watch how people actually use the product, learn from what works and what doesn't, make the product smarter over time, adapt to different team styles and needs - like a teacher who adjusts to how students learn best.",
+        "line_number": 174,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 55,
+        "title": "Measure What Matters",
+        "content": "Track real improvements, not just activity, measure time saved and stress reduced, watch for positive behavior changes, count problems prevented, not just fixed - like measuring learning, not just time spent studying.",
+        "line_number": 176,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 56,
+        "title": "Catch Issues Early",
+        "content": "Find problems when they're small and easy to fix, warn about potential issues before they happen, suggest simple fixes for common mistakes, prevent small issues from becoming big problems - like fixing a small leak before it becomes a flood.",
+        "line_number": 178,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 57,
+        "title": "Build Safety Into Everything",
+        "content": "Always have an \"undo\" button, make dangerous actions hard to do accidentally, provide multiple ways to recover from mistakes, test changes safely before applying them - like safety features in cars.",
+        "line_number": 180,
+        "category": "Teamwork",
+        "section": null
+      },
+      {
+        "number": 58,
+        "title": "Automate Wisely",
+        "content": "Only automate things that are boring or error-prone, always let people review and approve important changes, make automation helpful, not annoying, explain what the automation is doing and why - like a helpful robot assistant.",
+        "line_number": 182,
+        "category": "Teamwork",
+        "section": null
+      }
+    ],
+    "Logging": [
+      {
+        "number": 80,
+        "title": "Review Procedure (simple checklist)",
+        "content": "",
+        "line_number": 281,
+        "category": "Logging",
+        "section": null
+      },
+      {
+        "number": 120,
+        "title": "RECEIPTS, LOGGING & EVIDENCE",
+        "content": "- For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.",
+        "line_number": 1052,
+        "category": "Logging",
+        "section": "🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes."
+      },
+      {
+        "number": 132,
+        "title": "LOG FORMAT & TRANSPORT",
+        "content": "- Format: ONE JSON object per line (JSONL).",
+        "line_number": 923,
+        "category": "Logging",
+        "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+      },
+      {
+        "number": 133,
+        "title": "REQUIRED FIELDS (ALL LOGS)",
+        "content": "- log_schema_version: \"1.0\"",
+        "line_number": 930,
+        "category": "Logging",
+        "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+      },
+      {
+        "number": 148,
+        "title": "Prevent First",
+        "content": "Validate inputs early (required, type, range, size). Prevention beats cure.",
+        "line_number": 1063,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 149,
+        "title": "Small, Stable Error Codes",
+        "content": "Adopt ~10–12 canonical codes with severity levels:",
+        "line_number": 1065,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 150,
+        "title": "Wrap & Chain",
+        "content": "When a low-level error occurs, wrap it into your code with a friendly message and keep the original as the cause. Never throw raw framework/driver errors at the edges.",
+        "line_number": 1070,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      }
+    ],
+    "TypeScript": [
+      {
+        "number": 87,
+        "title": "TYPESCRIPT QUALITY GATES",
+        "content": "- tsconfig: \"strict\": true, \"noImplicitAny\": true, \"exactOptionalPropertyTypes\": true, ES2022+, ESNext modules.",
+        "line_number": 452,
+        "category": "TypeScript",
+        "section": "## Cursor **System** Constitution — Coding Standards"
+      },
+      {
+        "number": 89,
+        "title": "DATABASE (PostgreSQL primary; SQLite for dev/test)",
+        "content": "- SQLAlchemy 2.x; explicit columns (no SELECT *); name constraints/indexes.",
+        "line_number": 456,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 90,
+        "title": "SECURITY & SECRETS",
+        "content": "- No secrets in code, tests, examples, logs, or repo. Use env + OS keyring/DPAPI. Provide .env.template only.",
+        "line_number": 460,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 91,
+        "title": "OBSERVABILITY & RECEIPTS",
+        "content": "- Logs are structured JSON: timestamp, level, service, route, httpStatus, latencyMs, traceId/spanId, apiVersion.",
+        "line_number": 464,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 92,
+        "title": "TESTING PROGRAM",
+        "content": "- Tests first; pytest (≥90% where applicable) + httpx for API; property tests with hypothesis where valuable.",
+        "line_number": 467,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 93,
+        "title": "LLM / OLLAMA",
+        "content": "- Use pinned llama3 variant with deterministic params (low temperature, fixed seed); enforce token/time budgets.",
+        "line_number": 470,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 124,
+        "title": "PYTHON & TYPESCRIPT QUALITY GATES",
+        "content": "- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).",
+        "line_number": 853,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 125,
+        "title": "LLM / OLLAMA USAGE",
+        "content": "- Use pinned llama3 variant with deterministic params (low temperature, fixed seed). Enforce token/latency budgets.",
+        "line_number": 857,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 126,
+        "title": "WINDOWS-FIRST & FILE HYGIENE",
+        "content": "- Respect EOL policy (.gitattributes): LF for code/config; CRLF for Windows scripts (.ps1, .iss, .wxs).",
+        "line_number": 860,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 127,
+        "title": "TEST-FIRST & OBSERVABILITY",
+        "content": "- Add/adjust tests to cover the change. Include metrics/logs where relevant (latencyMs, route, httpStatus, apiVersion).",
+        "line_number": 863,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 128,
+        "title": "RETURN CONTRACTS (OUTPUT FORMAT)",
+        "content": "- You MUST output exactly ONE of the following formats:",
+        "line_number": 866,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 143,
+        "title": "PYTHON (FastAPI) & TYPESCRIPT RULES",
+        "content": "- Use a shared logger util that enforces schema and redaction. No print() or console.log() for runtime logs.",
+        "line_number": 1006,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 145,
+        "title": "STOP CONDITIONS → ERROR CODES",
+        "content": "- Unstructured (not JSON) or multi-line log ……… ERROR:UNSTRUCTURED_LOG",
+        "line_number": 1011,
+        "category": "TypeScript",
+        "section": null
+      },
+      {
+        "number": 146,
+        "title": "RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)",
+        "content": "A) Unified Diff (default for code)",
+        "line_number": 1022,
+        "category": "TypeScript",
+        "section": null
+      }
+    ],
+    "GSMD": [
+      {
+        "number": 231,
+        "title": "GSMD Source of Truth (SOT) Paths",
+        "content": "Policy snapshots live only under:",
+        "line_number": 1438,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 232,
+        "title": "Read-Only Policy Assets",
+        "content": "You MUST NOT edit or overwrite existing files under `gsmd/",
+        "line_number": 1444,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 233,
+        "title": "Versioning Is Append-Only",
+        "content": "Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.",
+        "line_number": 1446,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 234,
+        "title": "Snapshot Identity & Integrity",
+        "content": "Every snapshot MUST satisfy:",
+        "line_number": 1448,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 235,
+        "title": "Valid Evaluation Points Only",
+        "content": "Allowed values are exactly:",
+        "line_number": 1456,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 236,
+        "title": "Decision Receipts — Required Fields",
+        "content": "Every GSMD decision MUST emit a signed receipt containing at minimum:",
+        "line_number": 1462,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 237,
+        "title": "Receipt Discipline (Append-Only, Signed)",
+        "content": "Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.",
+        "line_number": 1469,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 240,
+        "title": "Decisions & Modes (Status Pill)",
+        "content": "Implement decisions using the canonical set only:",
+        "line_number": 1471,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 241,
+        "title": "Rollout & Cohorts",
+        "content": "If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.",
+        "line_number": 1477,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 242,
+        "title": "Privacy & Redaction",
+        "content": "Apply any rules present under `privacy.redactions`",
+        "line_number": 1479,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 243,
+        "title": "Evidence & Required Receipts",
+        "content": "If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist",
+        "line_number": 1481,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 248,
+        "title": "Cursor Behavior for GSMD",
+        "content": "Cursor MUST NOT propose edits under `gsmd/",
+        "line_number": 1500,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 249,
+        "title": "Return Contracts for GSMD Artifacts",
+        "content": "For policy work, output only one of:",
+        "line_number": 1506,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 250,
+        "title": "Stop Conditions → GSMD Error Codes",
+        "content": "- Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`",
+        "line_number": 1512,
+        "category": "GSMD",
+        "section": null
+      },
+      {
+        "number": 251,
+        "title": "Self-Audit Before Output (GSMD)",
+        "content": "- [ ] Not editing existing `gsmd/",
+        "line_number": 1526,
+        "category": "GSMD",
+        "section": null
+      }
+    ]
+  },
+  "sections": {
+    "🎯 BASIC WORK RULES": [
+      {
+        "number": 1,
+        "title": "Do Exactly What's Asked",
+        "content": "If your friend asks you to make a peanut butter sandwich, don't add jelly unless they ask for it. Follow instructions exactly without adding your own ideas.",
+        "line_number": 7,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      },
+      {
+        "number": 2,
+        "title": "Only Use Information You're Given",
+        "content": "If you're baking cookies and the recipe doesn't say how much sugar to use, stop and ask. Don't guess or make up an amount.",
+        "line_number": 9,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      },
+      {
+        "number": 3,
+        "title": "Protect People's Privacy",
+        "content": "Treat everyone's personal information like a secret diary. Don't look at it, don't share it, and definitely don't write it down where others can see it.",
+        "line_number": 11,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      },
+      {
+        "number": 4,
+        "title": "Use Settings Files, Not Hardcoded Numbers",
+        "content": "Instead of writing \"use 10 apples\" in your recipe, write \"use [number] apples\" and keep the number 10 in a separate note. This way you can easily change to 12 apples later.",
+        "line_number": 13,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      },
+      {
+        "number": 5,
+        "title": "Keep Good Records",
+        "content": "Like keeping a science lab notebook - write down what you did, when you did it, and what happened. Use the format your teacher asks for, and don't add extra stuff they didn't request.",
+        "line_number": 15,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      },
+      {
+        "number": 6,
+        "title": "Never Break Things During Updates",
+        "content": "When updating a video game, you should still be able to play while it updates. If the update causes problems, you can instantly switch back to the old version.",
+        "line_number": 22,
+        "category": null,
+        "section": "🎯 BASIC WORK RULES"
+      }
+    ],
+    "🏗️ SYSTEM DESIGN RULES": [
+      {
+        "number": 20,
+        "title": "Make All 18 Modules Look the Same",
+        "content": "All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.",
+        "line_number": 63,
+        "category": null,
+        "section": "🏗️ SYSTEM DESIGN RULES"
+      },
+      {
+        "number": 21,
+        "title": "Process Data Locally First",
+        "content": "",
+        "line_number": 65,
+        "category": null,
+        "section": "🏗️ SYSTEM DESIGN RULES"
+      },
+      {
+        "number": 22,
+        "title": "Don't Make People Configure Before Using",
+        "content": "Things should work right out of the box. Like a new video game - you can start playing immediately, and only set up complex controls later if you want.",
+        "line_number": 70,
+        "category": null,
+        "section": "🏗️ SYSTEM DESIGN RULES"
+      },
+      {
+        "number": 23,
+        "title": "Show Information Gradually",
+        "content": "",
+        "line_number": 72,
+        "category": null,
+        "section": "🏗️ SYSTEM DESIGN RULES"
+      },
+      {
+        "number": 24,
+        "title": "Organize Features Clearly",
+        "content": "",
+        "line_number": 77,
+        "category": null,
+        "section": "🏗️ SYSTEM DESIGN RULES"
+      }
+    ],
+    "🎯 PROBLEM-SOLVING RULES": [
+      {
+        "number": 31,
+        "title": "Solve Real Developer Problems",
+        "content": "Every feature must fix a real frustration developers face, like making homework easier by having better tools.",
+        "line_number": 105,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      },
+      {
+        "number": 32,
+        "title": "Help People Work Better",
+        "content": "",
+        "line_number": 107,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      },
+      {
+        "number": 33,
+        "title": "Prevent Problems Before They Happen",
+        "content": "Stop issues before they become big problems, like fixing a small leak before it floods the house.",
+        "line_number": 112,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      },
+      {
+        "number": 34,
+        "title": "Be Extra Careful with Private Data",
+        "content": "",
+        "line_number": 114,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      },
+      {
+        "number": 35,
+        "title": "Don't Make People Think Too Hard",
+        "content": "Fix common issues with one click, give suggestions without interrupting, automate boring tasks, teach as you go - like having a helpful friend.",
+        "line_number": 119,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      },
+      {
+        "number": 36,
+        "title": "MMM Engine - Change Behavior",
+        "content": "Help people stop making the same mistakes, increase use of best practices, reduce need for manual fixes, help people solve problems themselves - like a good habit coach.",
+        "line_number": 121,
+        "category": null,
+        "section": "🎯 PROBLEM-SOLVING RULES"
+      }
+    ],
+    "🔧 PLATFORM RULES": [
+      {
+        "number": 40,
+        "title": "Use All Platform Features",
+        "content": "Use all our built-in tools:",
+        "line_number": 135,
+        "category": null,
+        "section": "🔧 PLATFORM RULES"
+      },
+      {
+        "number": 41,
+        "title": "Process Data Quickly",
+        "content": "Handle urgent data in less than 1 second (like answering important texts immediately), group less important data (like checking regular mail once a day), check data quality as it comes in.",
+        "line_number": 146,
+        "category": null,
+        "section": "🔧 PLATFORM RULES"
+      },
+      {
+        "number": 42,
+        "title": "Help Without Interrupting",
+        "content": "Give help when needed, not before (like waiting to be asked), match help to how complex the task is (like simple vs complex instructions), let experts turn off basic help.",
+        "line_number": 148,
+        "category": null,
+        "section": "🔧 PLATFORM RULES"
+      },
+      {
+        "number": 43,
+        "title": "Handle Emergencies Well",
+        "content": "Make the right action obvious (like big red stop button), provide one-click solutions, offer multiple ways to recover, show clear progress updates - like good emergency instructions.",
+        "line_number": 150,
+        "category": null,
+        "section": "🔧 PLATFORM RULES"
+      },
+      {
+        "number": 44,
+        "title": "Make Developers Happier",
+        "content": "Reduce time spent switching between tasks, cut down on boring repetitive work, increase time spent on meaningful coding, build confidence in deployments - like making schoolwork more enjoyable.",
+        "line_number": 152,
+        "category": null,
+        "section": "🔧 PLATFORM RULES"
+      }
+    ],
+    "## AI & CODE GENERATION RULES": [
+      {
+        "number": 66,
+        "title": "Write Clean, Readable Code",
+        "content": "Make code easy to understand and modify, use clear names and simple structures, document why decisions were made, keep code organized and consistent - like writing clear, neat notes.",
+        "line_number": 1325,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 82,
+        "title": "PR Template Block — Code Review (paste into `.github/pull_request_template.md`)",
+        "content": "",
+        "line_number": 1327,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 210,
+        "title": "Review AI Code Thoroughly",
+        "content": "All AI-generated TypeScript must be reviewed by humans. Verify types, error handling, and security match our standards.",
+        "line_number": 1312,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 211,
+        "title": "Monitor Bundle Impact",
+        "content": "Use path imports for large libraries. Avoid barrel imports in hot paths. Set bundle size budgets and monitor them.",
+        "line_number": 1314,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 212,
+        "title": "Quality Dependencies",
+        "content": "Prefer packages with built-in TypeScript definitions. Use `@types/` packages from DefinitelyTyped. Audit dependencies for type safety.",
+        "line_number": 1316,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 213,
+        "title": "Test Type Boundaries",
+        "content": "Write tests that verify type narrowing works. Test error cases to ensure proper typing. Use `@ts-expect-error` for expected type failures.",
+        "line_number": 1318,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      },
+      {
+        "number": 214,
+        "title": "Gradual Migration Strategy",
+        "content": "When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.",
+        "line_number": 1320,
+        "category": null,
+        "section": "## AI & CODE GENERATION RULES"
+      }
+    ],
+    "### I) Dependencies & Risk": [
+      {
+        "number": 81,
+        "title": "Evidence Required in PR",
+        "content": "",
+        "line_number": 338,
+        "category": null,
+        "section": "### I) Dependencies & Risk"
+      }
+    ],
+    "## Cursor **System** Constitution — Coding Standards": [
+      {
+        "number": 86,
+        "title": "PYTHON (FastAPI) QUALITY GATES",
+        "content": "- Tools: ruff + black (line length 100) + mypy --strict.",
+        "line_number": 446,
+        "category": null,
+        "section": "## Cursor **System** Constitution — Coding Standards"
+      },
+      {
+        "number": 87,
+        "title": "TYPESCRIPT QUALITY GATES",
+        "content": "- tsconfig: \"strict\": true, \"noImplicitAny\": true, \"exactOptionalPropertyTypes\": true, ES2022+, ESNext modules.",
+        "line_number": 452,
+        "category": "TypeScript",
+        "section": "## Cursor **System** Constitution — Coding Standards"
+      }
+    ],
+    "## 1) System Constitution — API Contract Program": [
+      {
+        "number": 107,
+        "title": "SOURCE OF TRUTH (PATHS YOU MAY TOUCH)",
+        "content": "- Contract SoT lives under:",
+        "line_number": 719,
+        "category": null,
+        "section": "## 1) System Constitution — API Contract Program"
+      }
+    ],
+    "## 1) CURSOR_CONSTITUTION — paste into Cursor \"System\"": [
+      {
+        "number": 119,
+        "title": "PATHS & WRITES (ROOTED FILE SYSTEM)",
+        "content": "- Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.",
+        "line_number": 837,
+        "category": null,
+        "section": "## 1) CURSOR_CONSTITUTION — paste into Cursor \"System\""
+      }
+    ],
+    "🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes.": [
+      {
+        "number": 120,
+        "title": "RECEIPTS, LOGGING & EVIDENCE",
+        "content": "- For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.",
+        "line_number": 1052,
+        "category": "Logging",
+        "section": "🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes."
+      }
+    ],
+    "## 1) System Constitution — Logging (paste into Cursor \"System\")": [
+      {
+        "number": 132,
+        "title": "LOG FORMAT & TRANSPORT",
+        "content": "- Format: ONE JSON object per line (JSONL).",
+        "line_number": 923,
+        "category": "Logging",
+        "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+      },
+      {
+        "number": 133,
+        "title": "REQUIRED FIELDS (ALL LOGS)",
+        "content": "- log_schema_version: \"1.0\"",
+        "line_number": 930,
+        "category": "Logging",
+        "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+      }
+    ],
+    "## Basic Work Rules": [
+      {
+        "number": 148,
+        "title": "Prevent First",
+        "content": "Validate inputs early (required, type, range, size). Prevention beats cure.",
+        "line_number": 1063,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 149,
+        "title": "Small, Stable Error Codes",
+        "content": "Adopt ~10–12 canonical codes with severity levels:",
+        "line_number": 1065,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 150,
+        "title": "Wrap & Chain",
+        "content": "When a low-level error occurs, wrap it into your code with a friendly message and keep the original as the cause. Never throw raw framework/driver errors at the edges.",
+        "line_number": 1070,
+        "category": "Logging",
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 151,
+        "title": "Central Handler at Boundaries",
+        "content": "Have one handler per surface (API endpoint, CLI entry, IDE command) that:",
+        "line_number": 1072,
+        "category": null,
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 152,
+        "title": "Friendly to Users, Detailed in Logs",
+        "content": "Users see short, calm guidance. Logs contain context and the cause chain. Never leak secrets.",
+        "line_number": 1077,
+        "category": null,
+        "section": "## Basic Work Rules"
+      },
+      {
+        "number": 153,
+        "title": "No Silent Catches",
+        "content": "Never swallow errors. If you catch it, either fix, retry (if safe), or wrap & bubble to the central handler.",
+        "line_number": 1079,
+        "category": null,
+        "section": "## Basic Work Rules"
+      }
+    ],
+    "## Timeouts, Retries, Idempotency": [
+      {
+        "number": 158,
+        "title": "Timeouts Everywhere",
+        "content": "All I/O (network, file, DB, subprocess) must have a timeout (configurable). No infinite waits.",
+        "line_number": 1100,
+        "category": null,
+        "section": "## Timeouts, Retries, Idempotency"
+      },
+      {
+        "number": 159,
+        "title": "Limited Retries with Backoff",
+        "content": "Retry only idempotent operations. Max 2–3 tries. Use exponential backoff + small jitter.",
+        "line_number": 1102,
+        "category": null,
+        "section": "## Timeouts, Retries, Idempotency"
+      },
+      {
+        "number": 160,
+        "title": "Do Not Retry Non-Retriables",
+        "content": "No retries for validation errors, 401/403, 404, or business rule failures. Surface the issue; guide the user.",
+        "line_number": 1104,
+        "category": null,
+        "section": "## Timeouts, Retries, Idempotency"
+      },
+      {
+        "number": 161,
+        "title": "Idempotency",
+        "content": "Design writes so they are safe to retry (keys/tokens/conflict handling). Document this in your service contract.",
+        "line_number": 1106,
+        "category": null,
+        "section": "## Timeouts, Retries, Idempotency"
+      }
+    ],
+    "## Mapping, Messaging, and UX": [
+      {
+        "number": 162,
+        "title": "(Reserved)",
+        "content": "See",
+        "line_number": 1112,
+        "category": null,
+        "section": "## Mapping, Messaging, and UX"
+      },
+      {
+        "number": 163,
+        "title": "HTTP/Exit Mapping",
+        "content": "Map canonical codes to standard outcomes (e.g., 400/401/403/404/409/422/429/5xx). No \"200 with error body\".",
+        "line_number": 1114,
+        "category": null,
+        "section": "## Mapping, Messaging, and UX"
+      },
+      {
+        "number": 164,
+        "title": "Message Catalog",
+        "content": "Keep a single catalog that maps each code → one friendly, human sentence. Translate here, not in code.",
+        "line_number": 1116,
+        "category": null,
+        "section": "## Mapping, Messaging, and UX"
+      },
+      {
+        "number": 165,
+        "title": "UI/IDE Behavior",
+        "content": "Keep UI responsive. Show short, actionable options: Retry / Cancel / Open Logs. No stack traces to users.",
+        "line_number": 1118,
+        "category": null,
+        "section": "## Mapping, Messaging, and UX"
+      }
+    ],
+    "## Logging, Observability, and Safety": [
+      {
+        "number": 166,
+        "title": "Structured Logs",
+        "content": "One JSON object per line. Include: timestamp, level, service, operation, error.code, trace/request ids, duration, attempt, retryable flag, severity, and a cause chain summary.",
+        "line_number": 1124,
+        "category": null,
+        "section": "## Logging, Observability, and Safety"
+      },
+      {
+        "number": 167,
+        "title": "Correlation",
+        "content": "Propagate trace/request ids across calls. Log exactly one request.start and one request.end per request.",
+        "line_number": 1126,
+        "category": null,
+        "section": "## Logging, Observability, and Safety"
+      },
+      {
+        "number": 168,
+        "title": "Privacy & Secrets",
+        "content": "Never log secrets or PII. Redact tokens, passwords, cookies, Authorization headers, and sensitive payloads. Log sizes/hashes, not raw bodies.",
+        "line_number": 1128,
+        "category": null,
+        "section": "## Logging, Observability, and Safety"
+      }
+    ],
+    "## Quality, Tests, and Governance": [
+      {
+        "number": 169,
+        "title": "Test Failure Paths",
+        "content": "Write tests for:",
+        "line_number": 1134,
+        "category": null,
+        "section": "## Quality, Tests, and Governance"
+      },
+      {
+        "number": 170,
+        "title": "Contracts & Docs",
+        "content": "Document the error envelope, code list, HTTP mapping, and examples. Keep examples up to date and non-PII.",
+        "line_number": 1143,
+        "category": null,
+        "section": "## Quality, Tests, and Governance"
+      },
+      {
+        "number": 171,
+        "title": "Consistency Over Cleverness",
+        "content": "Prefer consistent handling over one-off fixes. If a new case appears, map it to an existing code first.",
+        "line_number": 1145,
+        "category": null,
+        "section": "## Quality, Tests, and Governance"
+      },
+      {
+        "number": 172,
+        "title": "Safe Defaults",
+        "content": "Default timeouts, retry caps, and user messages must be safe and configurable. No hidden magic numbers.",
+        "line_number": 1147,
+        "category": null,
+        "section": "## Quality, Tests, and Governance"
+      }
+    ],
+    "## AI-Specific Error Handling": [
+      {
+        "number": 173,
+        "title": "AI Decision Transparency",
+        "content": "When AI suggests something, include:",
+        "line_number": 1158,
+        "category": null,
+        "section": "## AI-Specific Error Handling"
+      },
+      {
+        "number": 174,
+        "title": "AI Sandbox Safety",
+        "content": "AI should only work in a special \"playground\" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.",
+        "line_number": 1163,
+        "category": null,
+        "section": "## AI-Specific Error Handling"
+      },
+      {
+        "number": 175,
+        "title": "AI Learning from Mistakes",
+        "content": "When the AI gets something wrong, it should remember that mistake and get smarter, just like learning from test questions.",
+        "line_number": 1165,
+        "category": null,
+        "section": "## AI-Specific Error Handling"
+      },
+      {
+        "number": 176,
+        "title": "AI Confidence Thresholds",
+        "content": "- High confidence (>90%): Apply automatically with user notification",
+        "line_number": 1167,
+        "category": null,
+        "section": "## AI-Specific Error Handling"
+      },
+      {
+        "number": 272,
+        "title": "NO Complex Error Handling",
+        "content": "- ❌",
+        "line_number": 1174,
+        "category": null,
+        "section": "## AI-Specific Error Handling"
+      }
+    ],
+    "## System Integration & Recovery": [
+      {
+        "number": 177,
+        "title": "Graceful Degradation",
+        "content": "When dependencies fail, provide reduced functionality rather than complete failure. Show clear status of what's working vs. limited.",
+        "line_number": 1180,
+        "category": null,
+        "section": "## System Integration & Recovery"
+      },
+      {
+        "number": 178,
+        "title": "State Recovery",
+        "content": "After crashes or failures, systems should recover to known good states. Maintain recovery checkpoints for long-running operations.",
+        "line_number": 1182,
+        "category": null,
+        "section": "## System Integration & Recovery"
+      },
+      {
+        "number": 179,
+        "title": "Feature Flag Safety",
+        "content": "Use feature flags for risky changes with automatic rollback on error detection. Monitor error rates by flag state.",
+        "line_number": 1184,
+        "category": null,
+        "section": "## System Integration & Recovery"
+      }
+    ],
+    "## BASIC WORK RULES": [
+      {
+        "number": 180,
+        "title": "Strict Mode Always",
+        "content": "Turn on strict checks everywhere. (Meaning: the compiler catches more mistakes early.)",
+        "line_number": 1233,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 182,
+        "title": "Handle `null`/`undefined`",
+        "content": "Use optional fields only when needed, and",
+        "line_number": 1235,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 183,
+        "title": "Small, Clear Functions",
+        "content": "Short functions, clear names. One job per function.",
+        "line_number": 1237,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 184,
+        "title": "Consistent Naming",
+        "content": "",
+        "line_number": 1239,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 185,
+        "title": "Clear Shape Strategy",
+        "content": "Use",
+        "line_number": 1245,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 186,
+        "title": "Let the Compiler Infer",
+        "content": "Don't add types the compiler already knows. (Meaning: avoid noisy annotations.)",
+        "line_number": 1247,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      },
+      {
+        "number": 187,
+        "title": "Keep Imports Clean",
+        "content": "No unused imports. Group by built-in, third-party, then local.",
+        "line_number": 1249,
+        "category": null,
+        "section": "## BASIC WORK RULES"
+      }
+    ],
+    "### Self‑Check (Author)": [
+      {
+        "number": 181,
+        "title": "No `any` in committed code",
+        "content": "If you don't know the type, use",
+        "line_number": 1364,
+        "category": null,
+        "section": "### Self‑Check (Author)"
+      },
+      {
+        "number": 207,
+        "title": "No Secrets in Code or Logs",
+        "content": "Never commit tokens/passwords. Redact sensitive values from logs.",
+        "line_number": 1366,
+        "category": null,
+        "section": "### Self‑Check (Author)"
+      },
+      {
+        "number": 253,
+        "title": "Self-Documenting Code",
+        "content": "Code should read like a story, not a puzzle.",
+        "line_number": 1368,
+        "category": null,
+        "section": "### Self‑Check (Author)"
+      }
+    ],
+    "## TYPE SYSTEM RULES": [
+      {
+        "number": 188,
+        "title": "Describe the Shape",
+        "content": "Make simple named types for real data (User, Order). Reuse them.",
+        "line_number": 1255,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      },
+      {
+        "number": 189,
+        "title": "Union & Narrowing",
+        "content": "If something can be",
+        "line_number": 1257,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      },
+      {
+        "number": 190,
+        "title": "Readonly by Default",
+        "content": "Prefer readonly arrays/props for values that should not change.",
+        "line_number": 1259,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      },
+      {
+        "number": 191,
+        "title": "Discriminated Unions",
+        "content": "When you have variants, add a simple",
+        "line_number": 1261,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      },
+      {
+        "number": 192,
+        "title": "Utility Types, Not Duplicates",
+        "content": "Use `Partial`, `Pick`, `Omit`, `Record` to avoid copy-pasting shapes.",
+        "line_number": 1263,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      },
+      {
+        "number": 193,
+        "title": "Generics, But Simple",
+        "content": "Use generics when it truly makes code reusable. Keep names short and clear.",
+        "line_number": 1265,
+        "category": null,
+        "section": "## TYPE SYSTEM RULES"
+      }
+    ],
+    "## ASYNC, ERRORS, AND SAFETY": [
+      {
+        "number": 194,
+        "title": "No Unhandled Promises",
+        "content": "Always `await` or handle `.catch`. Never let a promise fail silently.",
+        "line_number": 1271,
+        "category": null,
+        "section": "## ASYNC, ERRORS, AND SAFETY"
+      },
+      {
+        "number": 195,
+        "title": "Timeouts & Cancel",
+        "content": "Use timeouts for network/work that may hang. Support",
+        "line_number": 1273,
+        "category": null,
+        "section": "## ASYNC, ERRORS, AND SAFETY"
+      },
+      {
+        "number": 196,
+        "title": "Friendly Errors at Edges",
+        "content": "Catch errors at boundaries (commands, routes) and show",
+        "line_number": 1275,
+        "category": null,
+        "section": "## ASYNC, ERRORS, AND SAFETY"
+      },
+      {
+        "number": 197,
+        "title": "Map Errors to Codes",
+        "content": "Convert messy errors into a",
+        "line_number": 1277,
+        "category": null,
+        "section": "## ASYNC, ERRORS, AND SAFETY"
+      },
+      {
+        "number": 198,
+        "title": "Retries Are Limited",
+        "content": "Retry only",
+        "line_number": 1279,
+        "category": null,
+        "section": "## ASYNC, ERRORS, AND SAFETY"
+      }
+    ],
+    "## PROJECT STRUCTURE & BUILD": [
+      {
+        "number": 199,
+        "title": "One Source of Truth",
+        "content": "Keep types for APIs in one place (e.g., generated from contracts). Don't hand-roll duplicates.",
+        "line_number": 1285,
+        "category": null,
+        "section": "## PROJECT STRUCTURE & BUILD"
+      },
+      {
+        "number": 200,
+        "title": "Folder Layout",
+        "content": "Group by",
+        "line_number": 1287,
+        "category": null,
+        "section": "## PROJECT STRUCTURE & BUILD"
+      },
+      {
+        "number": 201,
+        "title": "Paths & Aliases",
+        "content": "Use path aliases in config (short imports), but",
+        "line_number": 1289,
+        "category": null,
+        "section": "## PROJECT STRUCTURE & BUILD"
+      },
+      {
+        "number": 202,
+        "title": "Modern Output Targets",
+        "content": "Target modern JS (ES2022+) for optimal tree-shaking. Keep configs in repo. Builds must be reproducible.",
+        "line_number": 1291,
+        "category": null,
+        "section": "## PROJECT STRUCTURE & BUILD"
+      }
+    ],
+    "## QUALITY GATES (MUST PASS)": [
+      {
+        "number": 203,
+        "title": "Lint & Format",
+        "content": "Use eslint + prettier. No warnings in CI.",
+        "line_number": 1297,
+        "category": null,
+        "section": "## QUALITY GATES (MUST PASS)"
+      },
+      {
+        "number": 204,
+        "title": "Type Check in CI",
+        "content": "Run the compiler (`tsc`) with strict settings on every PR.",
+        "line_number": 1299,
+        "category": null,
+        "section": "## QUALITY GATES (MUST PASS)"
+      },
+      {
+        "number": 205,
+        "title": "Tests for New Behavior",
+        "content": "Add tests for new logic and for error paths (timeouts, bad input). Keep tests fast.",
+        "line_number": 1301,
+        "category": null,
+        "section": "## QUALITY GATES (MUST PASS)"
+      }
+    ],
+    "## SECURITY, PRIVACY, PERFORMANCE": [
+      {
+        "number": 208,
+        "title": "Validate Untrusted Inputs at Runtime",
+        "content": "Types help at build time only. Validate external data before use.",
+        "line_number": 1304,
+        "category": null,
+        "section": "## SECURITY, PRIVACY, PERFORMANCE"
+      },
+      {
+        "number": 209,
+        "title": "Keep the UI Responsive",
+        "content": "Do heavy work off the main thread. Show progress for long tasks.",
+        "line_number": 1306,
+        "category": null,
+        "section": "## SECURITY, PRIVACY, PERFORMANCE"
+      }
+    ],
+    "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared).": [
+      {
+        "number": 215,
+        "title": "Name Casing & Charset (Kebab-Case Only)",
+        "content": "All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.",
+        "line_number": 1385,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 216,
+        "title": "No Source Code/PII in Stores",
+        "content": "Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.",
+        "line_number": 1387,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 217,
+        "title": "No Secrets/Private Keys on Disk",
+        "content": "Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.",
+        "line_number": 1389,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 218,
+        "title": "JSONL Receipts (Newline-Delimited, Signed, Append-Only)",
+        "content": "Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).",
+        "line_number": 1391,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 219,
+        "title": "Time Partitions Use UTC (dt=YYYY-MM-DD)",
+        "content": "All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.",
+        "line_number": 1393,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 220,
+        "title": "Policy Snapshots Must Be Signed",
+        "content": "All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.",
+        "line_number": 1395,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 221,
+        "title": "Dual Storage Compliance (JSONL Authority, DB Mirrors)",
+        "content": "JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.",
+        "line_number": 1397,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 222,
+        "title": "Path Resolution via ZU_ROOT Environment Variable",
+        "content": "All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.",
+        "line_number": 1399,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      },
+      {
+        "number": 223,
+        "title": "Receipts Validation (Signed, Append-Only, No Code/PII)",
+        "content": "When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode \"a\", never \"w\"; never truncate or seek.",
+        "line_number": 1401,
+        "category": null,
+        "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+      }
+    ],
+    "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)": [
+      {
+        "number": 231,
+        "title": "GSMD Source of Truth (SOT) Paths",
+        "content": "Policy snapshots live only under:",
+        "line_number": 1438,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 232,
+        "title": "Read-Only Policy Assets",
+        "content": "You MUST NOT edit or overwrite existing files under `gsmd/",
+        "line_number": 1444,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 233,
+        "title": "Versioning Is Append-Only",
+        "content": "Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.",
+        "line_number": 1446,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      },
+      {
+        "number": 234,
+        "title": "Snapshot Identity & Integrity",
+        "content": "Every snapshot MUST satisfy:",
+        "line_number": 1448,
+        "category": "GSMD",
+        "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+      }
+    ],
+    "## Basic Readability Rules": [
+      {
+        "number": 252,
+        "title": "Plain English Variable Names",
+        "content": "Use descriptive, everyday words instead of technical jargon or abbreviations.",
+        "line_number": 1548,
+        "category": null,
+        "section": "## Basic Readability Rules"
+      },
+      {
+        "number": 254,
+        "title": "One Concept Per Function",
+        "content": "Each function should do exactly one thing.",
+        "line_number": 1554,
+        "category": null,
+        "section": "## Basic Readability Rules"
+      },
+      {
+        "number": 255,
+        "title": "Explain the \"Why\", Not Just the \"What\"",
+        "content": "Comments should explain business logic, not code mechanics.",
+        "line_number": 1559,
+        "category": null,
+        "section": "## Basic Readability Rules"
+      },
+      {
+        "number": 256,
+        "title": "Avoid Mental Gymnastics",
+        "content": "No nested ternary operators, complex one-liners, or clever tricks.",
+        "line_number": 1563,
+        "category": null,
+        "section": "## Basic Readability Rules"
+      }
+    ],
+    "## Advanced Concepts (BANNED)": [
+      {
+        "number": 269,
+        "title": "NO Advanced Programming Concepts",
+        "content": "- ❌",
+        "line_number": 1617,
+        "category": null,
+        "section": "## Advanced Concepts (BANNED)"
+      },
+      {
+        "number": 270,
+        "title": "NO Complex Data Structures",
+        "content": "- ❌",
+        "line_number": 1623,
+        "category": null,
+        "section": "## Advanced Concepts (BANNED)"
+      },
+      {
+        "number": 271,
+        "title": "NO Advanced String Manipulation",
+        "content": "- ❌",
+        "line_number": 1628,
+        "category": null,
+        "section": "## Advanced Concepts (BANNED)"
+      },
+      {
+        "number": 273,
+        "title": "NO Advanced Control Flow",
+        "content": "- ❌",
+        "line_number": 1633,
+        "category": null,
+        "section": "## Advanced Concepts (BANNED)"
+      }
+    ],
+    "### SG-301 — IDE plane: receipts layout (per repo)": [
+      {
+        "number": 280,
+        "title": "IDE plane: receipts layout (per repo)",
+        "content": "",
+        "line_number": 1770,
+        "category": null,
+        "section": "### SG-301 — IDE plane: receipts layout (per repo)"
+      }
+    ],
+    "### SG-302 — IDE plane: agent workspace invariants": [
+      {
+        "number": 281,
+        "title": "IDE plane: agent workspace invariants",
+        "content": "",
+        "line_number": 1788,
+        "category": null,
+        "section": "### SG-302 — IDE plane: agent workspace invariants"
+      }
+    ],
+    "### SG-303 — Tenant plane: evidence store shape": [
+      {
+        "number": 282,
+        "title": "Tenant plane: evidence store shape",
+        "content": "",
+        "line_number": 1807,
+        "category": null,
+        "section": "### SG-303 — Tenant plane: evidence store shape"
+      }
+    ],
+    "### SG-304 — Tenant plane: ingest staging & RFC fallback": [
+      {
+        "number": 283,
+        "title": "Tenant plane: ingest staging & RFC fallback",
+        "content": "",
+        "line_number": 1824,
+        "category": null,
+        "section": "### SG-304 — Tenant plane: ingest staging & RFC fallback"
+      }
+    ],
+    "### SG-305 — Observability partitions (Tenant)": [
+      {
+        "number": 284,
+        "title": "Observability partitions (Tenant)",
+        "content": "",
+        "line_number": 1837,
+        "category": null,
+        "section": "### SG-305 — Observability partitions (Tenant)"
+      }
+    ],
+    "### SG-306 — Adapters capture (Tenant)": [
+      {
+        "number": 285,
+        "title": "Adapters capture (Tenant)",
+        "content": "",
+        "line_number": 1853,
+        "category": null,
+        "section": "### SG-306 — Adapters capture (Tenant)"
+      }
+    ],
+    "### SG-307 — Reporting marts (Tenant)": [
+      {
+        "number": 286,
+        "title": "Reporting marts (Tenant)",
+        "content": "",
+        "line_number": 1868,
+        "category": null,
+        "section": "### SG-307 — Reporting marts (Tenant)"
+      }
+    ],
+    "### SG-308 — Policy trust layout (Tenant & Product)": [
+      {
+        "number": 287,
+        "title": "Policy trust layout (Tenant & Product)",
+        "content": "",
+        "line_number": 1880,
+        "category": null,
+        "section": "### SG-308 — Policy trust layout (Tenant & Product)"
+      }
+    ],
+    "### SG-309 — Product plane structure": [
+      {
+        "number": 288,
+        "title": "Product plane structure",
+        "content": "",
+        "line_number": 1894,
+        "category": null,
+        "section": "### SG-309 — Product plane structure"
+      }
+    ],
+    "### SG-310 — Shared plane structure": [
+      {
+        "number": 289,
+        "title": "Shared plane structure",
+        "content": "",
+        "line_number": 1910,
+        "category": null,
+        "section": "### SG-310 — Shared plane structure"
+      }
+    ],
+    "### SG-311 — Deprecated alias gating": [
+      {
+        "number": 290,
+        "title": "Deprecated alias gating",
+        "content": "",
+        "line_number": 1926,
+        "category": null,
+        "section": "### SG-311 — Deprecated alias gating"
+      }
+    ],
+    "### SG-312 — Partitions & stamps: single source of truth": [
+      {
+        "number": 291,
+        "title": "Partitions & stamps: single source of truth",
+        "content": "",
+        "line_number": 1937,
+        "category": null,
+        "section": "### SG-312 — Partitions & stamps: single source of truth"
+      }
+    ],
+    "### SG-313 — Shards configuration (declarative)": [
+      {
+        "number": 292,
+        "title": "Shards configuration (declarative)",
+        "content": "",
+        "line_number": 1951,
+        "category": null,
+        "section": "### SG-313 — Shards configuration (declarative)"
+      }
+    ],
+    "### SG-314 — Scaffold behavior: directories-only & idempotent": [
+      {
+        "number": 293,
+        "title": "Scaffold behavior: directories-only & idempotent",
+        "content": "",
+        "line_number": 1962,
+        "category": null,
+        "section": "### SG-314 — Scaffold behavior: directories-only & idempotent"
+      }
+    ]
+  },
+  "all_rules": [
+    {
+      "number": 1,
+      "title": "Do Exactly What's Asked",
+      "content": "If your friend asks you to make a peanut butter sandwich, don't add jelly unless they ask for it. Follow instructions exactly without adding your own ideas.",
+      "line_number": 7,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 2,
+      "title": "Only Use Information You're Given",
+      "content": "If you're baking cookies and the recipe doesn't say how much sugar to use, stop and ask. Don't guess or make up an amount.",
+      "line_number": 9,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 3,
+      "title": "Protect People's Privacy",
+      "content": "Treat everyone's personal information like a secret diary. Don't look at it, don't share it, and definitely don't write it down where others can see it.",
+      "line_number": 11,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 4,
+      "title": "Use Settings Files, Not Hardcoded Numbers",
+      "content": "Instead of writing \"use 10 apples\" in your recipe, write \"use [number] apples\" and keep the number 10 in a separate note. This way you can easily change to 12 apples later.",
+      "line_number": 13,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 5,
+      "title": "Keep Good Records",
+      "content": "Like keeping a science lab notebook - write down what you did, when you did it, and what happened. Use the format your teacher asks for, and don't add extra stuff they didn't request.",
+      "line_number": 15,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 6,
+      "title": "Never Break Things During Updates",
+      "content": "When updating a video game, you should still be able to play while it updates. If the update causes problems, you can instantly switch back to the old version.",
+      "line_number": 22,
+      "category": null,
+      "section": "🎯 BASIC WORK RULES"
+    },
+    {
+      "number": 7,
+      "title": "Make Things Fast",
+      "content": "",
+      "line_number": 26,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 8,
+      "title": "Be Honest About AI Decisions",
+      "content": "When AI suggests something, it should say:",
+      "line_number": 31,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 9,
+      "title": "Check Your Data",
+      "content": "Make sure the AI's training data is like a fair test - balanced questions, up-to-date information, and correct answers.",
+      "line_number": 41,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 10,
+      "title": "Keep AI Safe",
+      "content": "AI should only work in a special \"playground\" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.",
+      "line_number": 43,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 11,
+      "title": "Learn from Mistakes",
+      "content": "When the AI gets something wrong, it should remember that mistake and get smarter, just like you learn from getting test questions wrong.",
+      "line_number": 45,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 12,
+      "title": "Test Everything",
+      "content": "Always try things out before saying they work. Don't break things that already work. Test both simple cases and tricky situations.",
+      "line_number": 47,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 13,
+      "title": "Write Good Instructions",
+      "content": "Give people working examples they can try themselves, clear explanations of how to use things, and troubleshooting guides for when things go wrong.",
+      "line_number": 49,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 14,
+      "title": "Keep Good Logs",
+      "content": "Write clear notes that are easy to read, use special tracking numbers to follow requests through the system, and measure both technical numbers and business results.",
+      "line_number": 51,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 15,
+      "title": "Make Changes Easy to Undo",
+      "content": "Prefer adding new features rather than changing old ones. Use on/off switches for features. Write down how to go back if something doesn't work.",
+      "line_number": 53,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 16,
+      "title": "Make Things Repeatable",
+      "content": "Write down exactly what ingredients (versions) you used. Don't depend on special kitchen equipment (computer setups). Include simple steps so others can recreate your work.",
+      "line_number": 55,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 17,
+      "title": "Keep Different Parts Separate",
+      "content": "The display screen (user interface) only shows information. The thinking part (business logic) only does calculations. Never mix these two jobs.",
+      "line_number": 57,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 18,
+      "title": "Be Fair to Everyone",
+      "content": "Use clear, simple language everyone can understand. Don't use tricky designs that might confuse people. Make sure people with disabilities can use everything.",
+      "line_number": 59,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 19,
+      "title": "Use the Hybrid System Design",
+      "content": "Our system has four parts:",
+      "line_number": 520,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 20,
+      "title": "Make All 18 Modules Look the Same",
+      "content": "All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.",
+      "line_number": 63,
+      "category": null,
+      "section": "🏗️ SYSTEM DESIGN RULES"
+    },
+    {
+      "number": 21,
+      "title": "Process Data Locally First",
+      "content": "",
+      "line_number": 65,
+      "category": null,
+      "section": "🏗️ SYSTEM DESIGN RULES"
+    },
+    {
+      "number": 22,
+      "title": "Don't Make People Configure Before Using",
+      "content": "Things should work right out of the box. Like a new video game - you can start playing immediately, and only set up complex controls later if you want.",
+      "line_number": 70,
+      "category": null,
+      "section": "🏗️ SYSTEM DESIGN RULES"
+    },
+    {
+      "number": 23,
+      "title": "Show Information Gradually",
+      "content": "",
+      "line_number": 72,
+      "category": null,
+      "section": "🏗️ SYSTEM DESIGN RULES"
+    },
+    {
+      "number": 24,
+      "title": "Organize Features Clearly",
+      "content": "",
+      "line_number": 77,
+      "category": null,
+      "section": "🏗️ SYSTEM DESIGN RULES"
+    },
+    {
+      "number": 25,
+      "title": "Be Smart About Data",
+      "content": "",
+      "line_number": 81,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 26,
+      "title": "Work Without Internet",
+      "content": "Core features must work offline, like being able to write in a notebook when you don't have WiFi. Save actions and sync when you're back online.",
+      "line_number": 86,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 27,
+      "title": "Register Modules the Same Way",
+      "content": "All 18 modules should sign up using the same process, like every student using the same enrollment form.",
+      "line_number": 88,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 28,
+      "title": "Make All Modules Feel Like One Product",
+      "content": "Use the same command names everywhere, make status indicators look the same, handle errors the same way - like different apps made by the same company.",
+      "line_number": 90,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 29,
+      "title": "Design for Quick Adoption",
+      "content": "",
+      "line_number": 92,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 30,
+      "title": "Test User Experience",
+      "content": "",
+      "line_number": 97,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 31,
+      "title": "Solve Real Developer Problems",
+      "content": "Every feature must fix a real frustration developers face, like making homework easier by having better tools.",
+      "line_number": 105,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 32,
+      "title": "Help People Work Better",
+      "content": "",
+      "line_number": 107,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 33,
+      "title": "Prevent Problems Before They Happen",
+      "content": "Stop issues before they become big problems, like fixing a small leak before it floods the house.",
+      "line_number": 112,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 34,
+      "title": "Be Extra Careful with Private Data",
+      "content": "",
+      "line_number": 114,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 35,
+      "title": "Don't Make People Think Too Hard",
+      "content": "Fix common issues with one click, give suggestions without interrupting, automate boring tasks, teach as you go - like having a helpful friend.",
+      "line_number": 119,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 36,
+      "title": "MMM Engine - Change Behavior",
+      "content": "Help people stop making the same mistakes, increase use of best practices, reduce need for manual fixes, help people solve problems themselves - like a good habit coach.",
+      "line_number": 121,
+      "category": null,
+      "section": "🎯 PROBLEM-SOLVING RULES"
+    },
+    {
+      "number": 37,
+      "title": "Detection Engine - Be Accurate",
+      "content": "",
+      "line_number": 123,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 38,
+      "title": "Risk Modules - Safety First",
+      "content": "Never make situations worse, always provide undo options, support gradual improvements, verify before big changes - like safety rules in science lab.",
+      "line_number": 129,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 39,
+      "title": "Success Dashboards - Show Business Value",
+      "content": "Connect engineering work to company results, show money saved and time gained, track both current and future benefits - like showing how studying leads to better grades.",
+      "line_number": 131,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 40,
+      "title": "Use All Platform Features",
+      "content": "Use all our built-in tools:",
+      "line_number": 135,
+      "category": null,
+      "section": "🔧 PLATFORM RULES"
+    },
+    {
+      "number": 41,
+      "title": "Process Data Quickly",
+      "content": "Handle urgent data in less than 1 second (like answering important texts immediately), group less important data (like checking regular mail once a day), check data quality as it comes in.",
+      "line_number": 146,
+      "category": null,
+      "section": "🔧 PLATFORM RULES"
+    },
+    {
+      "number": 42,
+      "title": "Help Without Interrupting",
+      "content": "Give help when needed, not before (like waiting to be asked), match help to how complex the task is (like simple vs complex instructions), let experts turn off basic help.",
+      "line_number": 148,
+      "category": null,
+      "section": "🔧 PLATFORM RULES"
+    },
+    {
+      "number": 43,
+      "title": "Handle Emergencies Well",
+      "content": "Make the right action obvious (like big red stop button), provide one-click solutions, offer multiple ways to recover, show clear progress updates - like good emergency instructions.",
+      "line_number": 150,
+      "category": null,
+      "section": "🔧 PLATFORM RULES"
+    },
+    {
+      "number": 44,
+      "title": "Make Developers Happier",
+      "content": "Reduce time spent switching between tasks, cut down on boring repetitive work, increase time spent on meaningful coding, build confidence in deployments - like making schoolwork more enjoyable.",
+      "line_number": 152,
+      "category": null,
+      "section": "🔧 PLATFORM RULES"
+    },
+    {
+      "number": 45,
+      "title": "Track Problems You Prevent",
+      "content": "Count security issues caught early, track deployment failures avoided, measure knowledge gaps found and fixed, watch technical debt prevented - like counting accidents that didn't happen because of safety measures.",
+      "line_number": 154,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 46,
+      "title": "Build Compliance into Workflow",
+      "content": "Check rules automatically during development, monitor compliance in real-time, generate audit reports easily, assess impact of rule changes - like having built-in spell check while writing.",
+      "line_number": 156,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 47,
+      "title": "Security Should Help, Not Block",
+      "content": "Security tips shouldn't break concentration, automate common security fixes, explain security rules in simple terms, prioritize security risks by importance - like friendly security guards rather than prison guards.",
+      "line_number": 158,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 48,
+      "title": "Support Gradual Adoption",
+      "content": "Let teams start with 3-5 most useful modules, each module should work well on its own, show clear paths to add more modules, provide value at every step - like learning math starting with addition, then multiplication.",
+      "line_number": 160,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 49,
+      "title": "Scale from Small to Huge",
+      "content": "Work for 1 developer or 10,000, handle 100 events per day or 10 million, support simple systems and complex ones, meet basic needs and strict regulations - like a playground that works for both small kids and professional athletes.",
+      "line_number": 162,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 50,
+      "title": "Build for Real Team Work",
+      "content": "Make collaboration natural and easy, help teams share knowledge automatically, reduce meetings and emails through better tools, make it easy to help each other without interrupting work - like good group project tools.",
+      "line_number": 166,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 51,
+      "title": "Prevent Knowledge Silos",
+      "content": "Automatically identify who knows what, suggest when to share important information, help teams learn from each other's successes, make expertise easy to find when needed - like knowing which friend to ask for help with different subjects.",
+      "line_number": 168,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 52,
+      "title": "Reduce Frustration Daily",
+      "content": "Fix the small annoyances that add up, automate boring repetitive tasks, make hard things easier, celebrate small wins and progress - like making daily chores less annoying.",
+      "line_number": 170,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 53,
+      "title": "Build Confidence, Not Fear",
+      "content": "Make deployments feel safe and controlled, provide safety nets for mistakes, show progress and improvements clearly, help people learn without embarrassment - like training wheels on a bike.",
+      "line_number": 172,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 54,
+      "title": "Learn and Adapt Constantly",
+      "content": "Watch how people actually use the product, learn from what works and what doesn't, make the product smarter over time, adapt to different team styles and needs - like a teacher who adjusts to how students learn best.",
+      "line_number": 174,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 55,
+      "title": "Measure What Matters",
+      "content": "Track real improvements, not just activity, measure time saved and stress reduced, watch for positive behavior changes, count problems prevented, not just fixed - like measuring learning, not just time spent studying.",
+      "line_number": 176,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 56,
+      "title": "Catch Issues Early",
+      "content": "Find problems when they're small and easy to fix, warn about potential issues before they happen, suggest simple fixes for common mistakes, prevent small issues from becoming big problems - like fixing a small leak before it becomes a flood.",
+      "line_number": 178,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 57,
+      "title": "Build Safety Into Everything",
+      "content": "Always have an \"undo\" button, make dangerous actions hard to do accidentally, provide multiple ways to recover from mistakes, test changes safely before applying them - like safety features in cars.",
+      "line_number": 180,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 58,
+      "title": "Automate Wisely",
+      "content": "Only automate things that are boring or error-prone, always let people review and approve important changes, make automation helpful, not annoying, explain what the automation is doing and why - like a helpful robot assistant.",
+      "line_number": 182,
+      "category": "Teamwork",
+      "section": null
+    },
+    {
+      "number": 59,
+      "title": "Learn from Experts",
+      "content": "Watch how the best developers work, copy their successful patterns, help everyone work like the experts, share best practices across the whole team - like learning sports from professional athletes.",
+      "line_number": 184,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 60,
+      "title": "Show the Right Information at the Right Time",
+      "content": "Don't overwhelm people with too much information, show what's important right now, hide complexity until it's needed, make status and progress clear at a glance - like a good car dashboard.",
+      "line_number": 186,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 61,
+      "title": "Make Dependencies Visible",
+      "content": "Show how different pieces connect and depend on each other, warn when changes might affect other people, help teams coordinate without meetings, make the system's architecture easy to understand - like a map showing how roads connect.",
+      "line_number": 188,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 62,
+      "title": "Be Predictable and Consistent",
+      "content": "Work the same way every time, don't surprise people with unexpected behavior, explain clearly what will happen before it happens, build trust through reliability - like a reliable friend.",
+      "line_number": 190,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 63,
+      "title": "Never Lose People's Work",
+      "content": "Save work automatically and frequently, provide clear recovery options, back up important information, warn before doing anything that can't be undone - like automatic save in video games.",
+      "line_number": 192,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 64,
+      "title": "Make it Beautiful and Pleasant",
+      "content": "Use clean, attractive designs, choose pleasant colors and fonts, make interactions smooth and satisfying, create an experience people enjoy using - like a well-designed park.",
+      "line_number": 194,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 65,
+      "title": "Respect People's Time",
+      "content": "Load quickly and respond instantly, don't make people wait unnecessarily, streamline common tasks, value every second of people's time - like express checkout lines.",
+      "line_number": 196,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 66,
+      "title": "Write Clean, Readable Code",
+      "content": "Make code easy to understand and modify, use clear names and simple structures, document why decisions were made, keep code organized and consistent - like writing clear, neat notes.",
+      "line_number": 1325,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 67,
+      "title": "Handle Edge Cases Gracefully",
+      "content": "Plan for things going wrong, handle errors without crashing, provide helpful error messages, recover smoothly from problems - like having a plan B when things don't go as expected.",
+      "line_number": 198,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 68,
+      "title": "Encourage Better Ways of Working",
+      "content": "Suggest improvements to processes, help teams adopt better practices, make good habits easy to form, reward continuous improvement - like a good coach.",
+      "line_number": 200,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 69,
+      "title": "Adapt to Different Skill Levels",
+      "content": "Help beginners learn quickly, support experts with advanced features, don't force one way of working on everyone, grow with people as they learn and improve - like books with different reading levels.",
+      "line_number": 202,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 70,
+      "title": "Be Helpful, Not Annoying",
+      "content": "Offer help when it's actually needed, know when to be quiet and stay out of the way, learn what kind of help each person prefers, get better at helping over time - like a helpful friend who knows when to help and when to let you figure things out.",
+      "line_number": 204,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 71,
+      "title": "Explain AI Decisions Clearly",
+      "content": "Don't be a \"black box\" - show your reasoning, help people understand why you're making suggestions, be honest about uncertainty and limitations, build trust through transparency - like showing your math work instead of just the answer.",
+      "line_number": 206,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 72,
+      "title": "Demonstrate Clear Value",
+      "content": "Show how the product saves time and money, make benefits obvious and measurable, connect features to real business outcomes, prove your worth every day - like showing how studying leads to better grades.",
+      "line_number": 208,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 73,
+      "title": "Grow with the Customer",
+      "content": "Work well for small teams and huge organizations, adapt to different industries and needs, support both simple and complex situations, scale smoothly as needs grow - like clothes that can expand as you grow.",
+      "line_number": 210,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 74,
+      "title": "Create \"Magic Moments\"",
+      "content": "Occasionally surprise and delight users, make some tasks feel effortless and magical, exceed expectations in small, meaningful ways, create features that people love to show others - like finding an extra french fry at the bottom of the bag.",
+      "line_number": 212,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 75,
+      "title": "Remove Friction Everywhere",
+      "content": "Eliminate unnecessary steps and clicks, simplify complex processes, make common tasks fast and easy, smooth out rough edges in the experience - like making doors automatic so you don't have to push them.",
+      "line_number": 214,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 76,
+      "title": "Roles & Scope",
+      "content": "",
+      "line_number": 223,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 77,
+      "title": "Golden Rules (non‑negotiable)",
+      "content": "",
+      "line_number": 236,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 78,
+      "title": "Review Outcomes & Severity",
+      "content": "",
+      "line_number": 246,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 79,
+      "title": "Stop Conditions → Error Codes (CI/Reviewer)",
+      "content": "",
+      "line_number": 259,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 80,
+      "title": "Review Procedure (simple checklist)",
+      "content": "",
+      "line_number": 281,
+      "category": "Logging",
+      "section": null
+    },
+    {
+      "number": 81,
+      "title": "Evidence Required in PR",
+      "content": "",
+      "line_number": 338,
+      "category": null,
+      "section": "### I) Dependencies & Risk"
+    },
+    {
+      "number": 82,
+      "title": "PR Template Block — Code Review (paste into `.github/pull_request_template.md`)",
+      "content": "",
+      "line_number": 1327,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 83,
+      "title": "Automation (CI/Pre‑commit)",
+      "content": "",
+      "line_number": 372,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 84,
+      "title": "Review Comment Style (simple English)",
+      "content": "",
+      "line_number": 386,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 85,
+      "title": "Return Contracts (review output)",
+      "content": "",
+      "line_number": 401,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 86,
+      "title": "PYTHON (FastAPI) QUALITY GATES",
+      "content": "- Tools: ruff + black (line length 100) + mypy --strict.",
+      "line_number": 446,
+      "category": null,
+      "section": "## Cursor **System** Constitution — Coding Standards"
+    },
+    {
+      "number": 87,
+      "title": "TYPESCRIPT QUALITY GATES",
+      "content": "- tsconfig: \"strict\": true, \"noImplicitAny\": true, \"exactOptionalPropertyTypes\": true, ES2022+, ESNext modules.",
+      "line_number": 452,
+      "category": "TypeScript",
+      "section": "## Cursor **System** Constitution — Coding Standards"
+    },
+    {
+      "number": 88,
+      "title": "API CONTRACTS (HTTP)",
+      "content": "- OpenAPI 3.1 is the source of truth; URI versioning /v1, /v2...",
+      "line_number": 816,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 89,
+      "title": "DATABASE (PostgreSQL primary; SQLite for dev/test)",
+      "content": "- SQLAlchemy 2.x; explicit columns (no SELECT *); name constraints/indexes.",
+      "line_number": 456,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 90,
+      "title": "SECURITY & SECRETS",
+      "content": "- No secrets in code, tests, examples, logs, or repo. Use env + OS keyring/DPAPI. Provide .env.template only.",
+      "line_number": 460,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 91,
+      "title": "OBSERVABILITY & RECEIPTS",
+      "content": "- Logs are structured JSON: timestamp, level, service, route, httpStatus, latencyMs, traceId/spanId, apiVersion.",
+      "line_number": 464,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 92,
+      "title": "TESTING PROGRAM",
+      "content": "- Tests first; pytest (≥90% where applicable) + httpx for API; property tests with hypothesis where valuable.",
+      "line_number": 467,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 93,
+      "title": "LLM / OLLAMA",
+      "content": "- Use pinned llama3 variant with deterministic params (low temperature, fixed seed); enforce token/time budgets.",
+      "line_number": 470,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 94,
+      "title": "SUPPLY CHAIN & RELEASE INTEGRITY",
+      "content": "- Signed commits/tags; SBOMs attached; pinned lockfiles (pip-tools with hashes, npm ci).",
+      "line_number": 474,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 95,
+      "title": "PERFORMANCE & RELIABILITY",
+      "content": "- Publish per-route SLOs (p95) in policy; add timeouts, retries (idempotent), backpressure; avoid event-loop blocking.",
+      "line_number": 477,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 96,
+      "title": "DOCS & RUNBOOKS",
+      "content": "- Accurate OpenAPI; examples for all responses; ADRs for architectural changes; runbooks for migrations/rollbacks.",
+      "line_number": 479,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 97,
+      "title": "RETURN CONTRACTS (OUTPUT FORMAT — MUST PICK ONE)",
+      "content": "A) Unified Diff (default for code)",
+      "line_number": 481,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 98,
+      "title": "STOP CONDITIONS → ERROR CODES",
+      "content": "- Python/TS lint or format changes needed .................. ERROR:STYLE_VIOLATION",
+      "line_number": 497,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 99,
+      "title": "Optional PR Template (drop in `.github/pull_request_template.md`)",
+      "content": "",
+      "line_number": 549,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 100,
+      "title": "WHERE COMMENTS MUST APPEAR",
+      "content": "A) File‑level header (top of every file) — in simple English:",
+      "line_number": 613,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 101,
+      "title": "FILE‑TYPE FOCUS (add these in headers or near the write)",
+      "content": "- config: explain each setting; safe defaults; allowed range.",
+      "line_number": 620,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 102,
+      "title": "SECURITY & PRIVACY",
+      "content": "- No secrets or PII in comments or examples. Use synthetic data only.",
+      "line_number": 629,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 103,
+      "title": "TODO POLICY (R089)",
+      "content": "-",
+      "line_number": 631,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 104,
+      "title": "RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)",
+      "content": "A) Unified Diff (default for code)",
+      "line_number": 641,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 105,
+      "title": "SELF‑AUDIT BEFORE OUTPUT",
+      "content": "- [ ] File header has What/Why/Reads‑Writes/Contracts/Risks",
+      "line_number": 657,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 106,
+      "title": "STOP CONDITIONS → ERROR CODES",
+      "content": "- Missing file header or public API docstring .......... ERROR:COMMENT_MISSING",
+      "line_number": 664,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 107,
+      "title": "SOURCE OF TRUTH (PATHS YOU MAY TOUCH)",
+      "content": "- Contract SoT lives under:",
+      "line_number": 719,
+      "category": null,
+      "section": "## 1) System Constitution — API Contract Program"
+    },
+    {
+      "number": 108,
+      "title": "STYLE GUIDE (HTTP)",
+      "content": "- Verbs: GET, POST, PUT, PATCH, DELETE (no RPC verbs).",
+      "line_number": 728,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 109,
+      "title": "VERSIONING & COMPATIBILITY",
+      "content": "- URI versioning (/v1, /v2). Any breaking change REQUIRES a new major and deprecation of the old.",
+      "line_number": 738,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 110,
+      "title": "SECURITY CONTRACTED IN SPEC",
+      "content": "- Auth schemes: JWT (aud, iss, exp, iat, kid) with documented scopes per route; (optional) mTLS.",
+      "line_number": 743,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 111,
+      "title": "ERROR MODEL & MAPPING",
+      "content": "- Canonical codes defined in components/error‑codes.yaml (code, description, consumer action, retriable?, observability tag).",
+      "line_number": 748,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 112,
+      "title": "CACHING & CONCURRENCY",
+      "content": "- ETag/If‑Match required for racy PUT/PATCH; 412 on mismatch.",
+      "line_number": 751,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 113,
+      "title": "TOOLING & CI GATES (AUTOMATE DISCIPLINE)",
+      "content": "- Spectral lint with custom rules (naming, security schemes, pagination, error envelope, examples-present) in `tools/contract-lint/.spectral.yaml` (required).",
+      "line_number": 755,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 114,
+      "title": "RUNTIME ENFORCEMENT",
+      "content": "- FastAPI services: Pydantic v2 models; response_model on every route; central error handler returns the envelope.",
+      "line_number": 764,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 115,
+      "title": "RECEIPTS & GOVERNANCE",
+      "content": "- Emit JSONL receipts for: contract.publish, contract.diff, contract.violation.",
+      "line_number": 1152,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 116,
+      "title": "METRICS & SLOs",
+      "content": "- Track: CI‑blocked breaking attempts, time‑to‑deprecate, coverage (% endpoints with examples/tests/SDKs), runtime conformance error rate, consumer contract failures.",
+      "line_number": 767,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 117,
+      "title": "RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)",
+      "content": "A) Unified Diff (default for contract edits)",
+      "line_number": 770,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 118,
+      "title": "STOP CONDITIONS → ERROR CODES",
+      "content": "- Spectral lint failure ................................. ERROR:OPENAPI_LINT_FAIL",
+      "line_number": 786,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 119,
+      "title": "PATHS & WRITES (ROOTED FILE SYSTEM)",
+      "content": "- Resolve all paths via ZEROUI_ROOT + config/paths.json. Never hardcode drive letters or usernames.",
+      "line_number": 837,
+      "category": null,
+      "section": "## 1) CURSOR_CONSTITUTION — paste into Cursor \"System\""
+    },
+    {
+      "number": 120,
+      "title": "RECEIPTS, LOGGING & EVIDENCE",
+      "content": "- For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after.",
+      "line_number": 1052,
+      "category": "Logging",
+      "section": "🎯 **Purpose:** Keep apps stable, users calm, and debugging easy—by turning messy errors into a few clear, friendly outcomes."
+    },
+    {
+      "number": 121,
+      "title": "POLICY, SECRETS & PRIVACY",
+      "content": "- No hardcoded thresholds/messages. Read from policy snapshots/config. Enforce redaction for PII and secrets in examples, logs, receipts.",
+      "line_number": 846,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 122,
+      "title": "API CONTRACTS (HTTP)",
+      "content": "- OpenAPI 3.1 as source of truth. URI versioning: /v1, /v2 … Breaking changes require a new major and deprecation of old.",
+      "line_number": 821,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 123,
+      "title": "DATABASE (PostgreSQL primary; SQLite dev/test)",
+      "content": "- SQLAlchemy 2.x; explicit columns (no SELECT *); named constraints/indexes.",
+      "line_number": 849,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 124,
+      "title": "PYTHON & TYPESCRIPT QUALITY GATES",
+      "content": "- Python: ruff + black (line-length 100) + mypy --strict; tests with pytest (≥90% where applicable).",
+      "line_number": 853,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 125,
+      "title": "LLM / OLLAMA USAGE",
+      "content": "- Use pinned llama3 variant with deterministic params (low temperature, fixed seed). Enforce token/latency budgets.",
+      "line_number": 857,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 126,
+      "title": "WINDOWS-FIRST & FILE HYGIENE",
+      "content": "- Respect EOL policy (.gitattributes): LF for code/config; CRLF for Windows scripts (.ps1, .iss, .wxs).",
+      "line_number": 860,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 127,
+      "title": "TEST-FIRST & OBSERVABILITY",
+      "content": "- Add/adjust tests to cover the change. Include metrics/logs where relevant (latencyMs, route, httpStatus, apiVersion).",
+      "line_number": 863,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 128,
+      "title": "RETURN CONTRACTS (OUTPUT FORMAT)",
+      "content": "- You MUST output exactly ONE of the following formats:",
+      "line_number": 866,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 129,
+      "title": "STOP CONDITIONS → ERROR CODES (MUST REFUSE)",
+      "content": "- Outside allowlist path………………………… ERROR:OUTSIDE_ALLOWLIST",
+      "line_number": 883,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 130,
+      "title": "SELF-AUDIT BEFORE OUTPUT (CHECKLIST)",
+      "content": "- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)",
+      "line_number": 892,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 131,
+      "title": "DEFINITION OF DONE (PER SUB-FEATURE PR)",
+      "content": "- Minimal diff; tests added/updated; receipts present",
+      "line_number": 900,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 132,
+      "title": "LOG FORMAT & TRANSPORT",
+      "content": "- Format: ONE JSON object per line (JSONL).",
+      "line_number": 923,
+      "category": "Logging",
+      "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+    },
+    {
+      "number": 133,
+      "title": "REQUIRED FIELDS (ALL LOGS)",
+      "content": "- log_schema_version: \"1.0\"",
+      "line_number": 930,
+      "category": "Logging",
+      "section": "## 1) System Constitution — Logging (paste into Cursor \"System\")"
+    },
+    {
+      "number": 134,
+      "title": "FIELD CONSTRAINTS (TYPES & LIMITS)",
+      "content": "- event ≤ 40 chars; pattern: ^[a-z]+(\\.[a-z_]+)*$",
+      "line_number": 944,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 135,
+      "title": "HASHING POLICY (DETERMINISTIC)",
+      "content": "- SHA-256 over UTF-8 bytes.",
+      "line_number": 949,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 136,
+      "title": "STABLE EVENT NAMES (MUST USE)",
+      "content": "- request.start / request.end (exactly one start and one end per handled request)",
+      "line_number": 953,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 137,
+      "title": "EVENT IDENTITY & WORKFLOW CORRELATION (LLM‑FRIENDLY)",
+      "content": "-",
+      "line_number": 966,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 138,
+      "title": "LEVEL POLICY",
+      "content": "- Dev: default INFO; allow DEBUG for local.",
+      "line_number": 979,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 139,
+      "title": "PRIVACY & PAYLOAD RULES",
+      "content": "- NEVER log secrets or raw PII. Redact tokens, passwords, keys, Authorization headers, cookies.",
+      "line_number": 985,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 140,
+      "title": "CORRELATION & CONTEXT",
+      "content": "- Read/propagate W3C headers:",
+      "line_number": 990,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 141,
+      "title": "RECEIPTS (AUDIT TRAIL)",
+      "content": "- For privileged or business-significant actions: emit a receipt (append-only JSONL) and log event \"receipt.emit\" with the receipt_id.",
+      "line_number": 998,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 142,
+      "title": "PERFORMANCE BUDGETS & SAMPLING",
+      "content": "- Logging overhead should be < 5% CPU and < 2% latency on hot paths.",
+      "line_number": 1001,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 143,
+      "title": "PYTHON (FastAPI) & TYPESCRIPT RULES",
+      "content": "- Use a shared logger util that enforces schema and redaction. No print() or console.log() for runtime logs.",
+      "line_number": 1006,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 144,
+      "title": "STORAGE & RETENTION (LAPTOP-FIRST)",
+      "content": "- Path: <server>/logs/YYYY-MM-DD/*.jsonl (daily). Rotate at 100MB; keep last 10 files locally.",
+      "line_number": 1427,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 145,
+      "title": "STOP CONDITIONS → ERROR CODES",
+      "content": "- Unstructured (not JSON) or multi-line log ……… ERROR:UNSTRUCTURED_LOG",
+      "line_number": 1011,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 146,
+      "title": "RETURN CONTRACTS (OUTPUT FORMAT — PICK ONE)",
+      "content": "A) Unified Diff (default for code)",
+      "line_number": 1022,
+      "category": "TypeScript",
+      "section": null
+    },
+    {
+      "number": 147,
+      "title": "SCHEMA VALIDATION (CI / PRE-COMMIT)",
+      "content": "- Validate events against docs/log_schema_v1.json (JSON Schema) in CI and pre-commit.",
+      "line_number": 1032,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 148,
+      "title": "Prevent First",
+      "content": "Validate inputs early (required, type, range, size). Prevention beats cure.",
+      "line_number": 1063,
+      "category": "Logging",
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 149,
+      "title": "Small, Stable Error Codes",
+      "content": "Adopt ~10–12 canonical codes with severity levels:",
+      "line_number": 1065,
+      "category": "Logging",
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 150,
+      "title": "Wrap & Chain",
+      "content": "When a low-level error occurs, wrap it into your code with a friendly message and keep the original as the cause. Never throw raw framework/driver errors at the edges.",
+      "line_number": 1070,
+      "category": "Logging",
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 151,
+      "title": "Central Handler at Boundaries",
+      "content": "Have one handler per surface (API endpoint, CLI entry, IDE command) that:",
+      "line_number": 1072,
+      "category": null,
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 152,
+      "title": "Friendly to Users, Detailed in Logs",
+      "content": "Users see short, calm guidance. Logs contain context and the cause chain. Never leak secrets.",
+      "line_number": 1077,
+      "category": null,
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 153,
+      "title": "No Silent Catches",
+      "content": "Never swallow errors. If you catch it, either fix, retry (if safe), or wrap & bubble to the central handler.",
+      "line_number": 1079,
+      "category": null,
+      "section": "## Basic Work Rules"
+    },
+    {
+      "number": 154,
+      "title": "Add Context",
+      "content": "Always include where/what (operation name, ids, step) when wrapping. This speeds up root-cause analysis.",
+      "line_number": 1081,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 155,
+      "title": "Cleanup Always",
+      "content": "Close files, sockets, timers; release locks. Use \"always-run\" cleanup paths. Avoid resource leaks.",
+      "line_number": 1083,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 156,
+      "title": "Error Recovery Patterns",
+      "content": "Define clear recovery actions for each error type:",
+      "line_number": 1085,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 157,
+      "title": "New Developer Onboarding",
+      "content": "- Provide \"First Error Handling Task\" template",
+      "line_number": 1091,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 158,
+      "title": "Timeouts Everywhere",
+      "content": "All I/O (network, file, DB, subprocess) must have a timeout (configurable). No infinite waits.",
+      "line_number": 1100,
+      "category": null,
+      "section": "## Timeouts, Retries, Idempotency"
+    },
+    {
+      "number": 159,
+      "title": "Limited Retries with Backoff",
+      "content": "Retry only idempotent operations. Max 2–3 tries. Use exponential backoff + small jitter.",
+      "line_number": 1102,
+      "category": null,
+      "section": "## Timeouts, Retries, Idempotency"
+    },
+    {
+      "number": 160,
+      "title": "Do Not Retry Non-Retriables",
+      "content": "No retries for validation errors, 401/403, 404, or business rule failures. Surface the issue; guide the user.",
+      "line_number": 1104,
+      "category": null,
+      "section": "## Timeouts, Retries, Idempotency"
+    },
+    {
+      "number": 161,
+      "title": "Idempotency",
+      "content": "Design writes so they are safe to retry (keys/tokens/conflict handling). Document this in your service contract.",
+      "line_number": 1106,
+      "category": null,
+      "section": "## Timeouts, Retries, Idempotency"
+    },
+    {
+      "number": 162,
+      "title": "(Reserved)",
+      "content": "See",
+      "line_number": 1112,
+      "category": null,
+      "section": "## Mapping, Messaging, and UX"
+    },
+    {
+      "number": 163,
+      "title": "HTTP/Exit Mapping",
+      "content": "Map canonical codes to standard outcomes (e.g., 400/401/403/404/409/422/429/5xx). No \"200 with error body\".",
+      "line_number": 1114,
+      "category": null,
+      "section": "## Mapping, Messaging, and UX"
+    },
+    {
+      "number": 164,
+      "title": "Message Catalog",
+      "content": "Keep a single catalog that maps each code → one friendly, human sentence. Translate here, not in code.",
+      "line_number": 1116,
+      "category": null,
+      "section": "## Mapping, Messaging, and UX"
+    },
+    {
+      "number": 165,
+      "title": "UI/IDE Behavior",
+      "content": "Keep UI responsive. Show short, actionable options: Retry / Cancel / Open Logs. No stack traces to users.",
+      "line_number": 1118,
+      "category": null,
+      "section": "## Mapping, Messaging, and UX"
+    },
+    {
+      "number": 166,
+      "title": "Structured Logs",
+      "content": "One JSON object per line. Include: timestamp, level, service, operation, error.code, trace/request ids, duration, attempt, retryable flag, severity, and a cause chain summary.",
+      "line_number": 1124,
+      "category": null,
+      "section": "## Logging, Observability, and Safety"
+    },
+    {
+      "number": 167,
+      "title": "Correlation",
+      "content": "Propagate trace/request ids across calls. Log exactly one request.start and one request.end per request.",
+      "line_number": 1126,
+      "category": null,
+      "section": "## Logging, Observability, and Safety"
+    },
+    {
+      "number": 168,
+      "title": "Privacy & Secrets",
+      "content": "Never log secrets or PII. Redact tokens, passwords, cookies, Authorization headers, and sensitive payloads. Log sizes/hashes, not raw bodies.",
+      "line_number": 1128,
+      "category": null,
+      "section": "## Logging, Observability, and Safety"
+    },
+    {
+      "number": 169,
+      "title": "Test Failure Paths",
+      "content": "Write tests for:",
+      "line_number": 1134,
+      "category": null,
+      "section": "## Quality, Tests, and Governance"
+    },
+    {
+      "number": 170,
+      "title": "Contracts & Docs",
+      "content": "Document the error envelope, code list, HTTP mapping, and examples. Keep examples up to date and non-PII.",
+      "line_number": 1143,
+      "category": null,
+      "section": "## Quality, Tests, and Governance"
+    },
+    {
+      "number": 171,
+      "title": "Consistency Over Cleverness",
+      "content": "Prefer consistent handling over one-off fixes. If a new case appears, map it to an existing code first.",
+      "line_number": 1145,
+      "category": null,
+      "section": "## Quality, Tests, and Governance"
+    },
+    {
+      "number": 172,
+      "title": "Safe Defaults",
+      "content": "Default timeouts, retry caps, and user messages must be safe and configurable. No hidden magic numbers.",
+      "line_number": 1147,
+      "category": null,
+      "section": "## Quality, Tests, and Governance"
+    },
+    {
+      "number": 173,
+      "title": "AI Decision Transparency",
+      "content": "When AI suggests something, include:",
+      "line_number": 1158,
+      "category": null,
+      "section": "## AI-Specific Error Handling"
+    },
+    {
+      "number": 174,
+      "title": "AI Sandbox Safety",
+      "content": "AI should only work in a special \"playground\" (sandbox) away from real computers. It can look at code and make suggestions, but never actually run code on people's machines.",
+      "line_number": 1163,
+      "category": null,
+      "section": "## AI-Specific Error Handling"
+    },
+    {
+      "number": 175,
+      "title": "AI Learning from Mistakes",
+      "content": "When the AI gets something wrong, it should remember that mistake and get smarter, just like learning from test questions.",
+      "line_number": 1165,
+      "category": null,
+      "section": "## AI-Specific Error Handling"
+    },
+    {
+      "number": 176,
+      "title": "AI Confidence Thresholds",
+      "content": "- High confidence (>90%): Apply automatically with user notification",
+      "line_number": 1167,
+      "category": null,
+      "section": "## AI-Specific Error Handling"
+    },
+    {
+      "number": 177,
+      "title": "Graceful Degradation",
+      "content": "When dependencies fail, provide reduced functionality rather than complete failure. Show clear status of what's working vs. limited.",
+      "line_number": 1180,
+      "category": null,
+      "section": "## System Integration & Recovery"
+    },
+    {
+      "number": 178,
+      "title": "State Recovery",
+      "content": "After crashes or failures, systems should recover to known good states. Maintain recovery checkpoints for long-running operations.",
+      "line_number": 1182,
+      "category": null,
+      "section": "## System Integration & Recovery"
+    },
+    {
+      "number": 179,
+      "title": "Feature Flag Safety",
+      "content": "Use feature flags for risky changes with automatic rollback on error detection. Monitor error rates by flag state.",
+      "line_number": 1184,
+      "category": null,
+      "section": "## System Integration & Recovery"
+    },
+    {
+      "number": 180,
+      "title": "Strict Mode Always",
+      "content": "Turn on strict checks everywhere. (Meaning: the compiler catches more mistakes early.)",
+      "line_number": 1233,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 181,
+      "title": "No `any` in committed code",
+      "content": "If you don't know the type, use",
+      "line_number": 1364,
+      "category": null,
+      "section": "### Self‑Check (Author)"
+    },
+    {
+      "number": 182,
+      "title": "Handle `null`/`undefined`",
+      "content": "Use optional fields only when needed, and",
+      "line_number": 1235,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 183,
+      "title": "Small, Clear Functions",
+      "content": "Short functions, clear names. One job per function.",
+      "line_number": 1237,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 184,
+      "title": "Consistent Naming",
+      "content": "",
+      "line_number": 1239,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 185,
+      "title": "Clear Shape Strategy",
+      "content": "Use",
+      "line_number": 1245,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 186,
+      "title": "Let the Compiler Infer",
+      "content": "Don't add types the compiler already knows. (Meaning: avoid noisy annotations.)",
+      "line_number": 1247,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 187,
+      "title": "Keep Imports Clean",
+      "content": "No unused imports. Group by built-in, third-party, then local.",
+      "line_number": 1249,
+      "category": null,
+      "section": "## BASIC WORK RULES"
+    },
+    {
+      "number": 188,
+      "title": "Describe the Shape",
+      "content": "Make simple named types for real data (User, Order). Reuse them.",
+      "line_number": 1255,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 189,
+      "title": "Union & Narrowing",
+      "content": "If something can be",
+      "line_number": 1257,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 190,
+      "title": "Readonly by Default",
+      "content": "Prefer readonly arrays/props for values that should not change.",
+      "line_number": 1259,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 191,
+      "title": "Discriminated Unions",
+      "content": "When you have variants, add a simple",
+      "line_number": 1261,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 192,
+      "title": "Utility Types, Not Duplicates",
+      "content": "Use `Partial`, `Pick`, `Omit`, `Record` to avoid copy-pasting shapes.",
+      "line_number": 1263,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 193,
+      "title": "Generics, But Simple",
+      "content": "Use generics when it truly makes code reusable. Keep names short and clear.",
+      "line_number": 1265,
+      "category": null,
+      "section": "## TYPE SYSTEM RULES"
+    },
+    {
+      "number": 194,
+      "title": "No Unhandled Promises",
+      "content": "Always `await` or handle `.catch`. Never let a promise fail silently.",
+      "line_number": 1271,
+      "category": null,
+      "section": "## ASYNC, ERRORS, AND SAFETY"
+    },
+    {
+      "number": 195,
+      "title": "Timeouts & Cancel",
+      "content": "Use timeouts for network/work that may hang. Support",
+      "line_number": 1273,
+      "category": null,
+      "section": "## ASYNC, ERRORS, AND SAFETY"
+    },
+    {
+      "number": 196,
+      "title": "Friendly Errors at Edges",
+      "content": "Catch errors at boundaries (commands, routes) and show",
+      "line_number": 1275,
+      "category": null,
+      "section": "## ASYNC, ERRORS, AND SAFETY"
+    },
+    {
+      "number": 197,
+      "title": "Map Errors to Codes",
+      "content": "Convert messy errors into a",
+      "line_number": 1277,
+      "category": null,
+      "section": "## ASYNC, ERRORS, AND SAFETY"
+    },
+    {
+      "number": 198,
+      "title": "Retries Are Limited",
+      "content": "Retry only",
+      "line_number": 1279,
+      "category": null,
+      "section": "## ASYNC, ERRORS, AND SAFETY"
+    },
+    {
+      "number": 199,
+      "title": "One Source of Truth",
+      "content": "Keep types for APIs in one place (e.g., generated from contracts). Don't hand-roll duplicates.",
+      "line_number": 1285,
+      "category": null,
+      "section": "## PROJECT STRUCTURE & BUILD"
+    },
+    {
+      "number": 200,
+      "title": "Folder Layout",
+      "content": "Group by",
+      "line_number": 1287,
+      "category": null,
+      "section": "## PROJECT STRUCTURE & BUILD"
+    },
+    {
+      "number": 201,
+      "title": "Paths & Aliases",
+      "content": "Use path aliases in config (short imports), but",
+      "line_number": 1289,
+      "category": null,
+      "section": "## PROJECT STRUCTURE & BUILD"
+    },
+    {
+      "number": 202,
+      "title": "Modern Output Targets",
+      "content": "Target modern JS (ES2022+) for optimal tree-shaking. Keep configs in repo. Builds must be reproducible.",
+      "line_number": 1291,
+      "category": null,
+      "section": "## PROJECT STRUCTURE & BUILD"
+    },
+    {
+      "number": 203,
+      "title": "Lint & Format",
+      "content": "Use eslint + prettier. No warnings in CI.",
+      "line_number": 1297,
+      "category": null,
+      "section": "## QUALITY GATES (MUST PASS)"
+    },
+    {
+      "number": 204,
+      "title": "Type Check in CI",
+      "content": "Run the compiler (`tsc`) with strict settings on every PR.",
+      "line_number": 1299,
+      "category": null,
+      "section": "## QUALITY GATES (MUST PASS)"
+    },
+    {
+      "number": 205,
+      "title": "Tests for New Behavior",
+      "content": "Add tests for new logic and for error paths (timeouts, bad input). Keep tests fast.",
+      "line_number": 1301,
+      "category": null,
+      "section": "## QUALITY GATES (MUST PASS)"
+    },
+    {
+      "number": 206,
+      "title": "Comments in Simple English",
+      "content": "Explain",
+      "line_number": 700,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 207,
+      "title": "No Secrets in Code or Logs",
+      "content": "Never commit tokens/passwords. Redact sensitive values from logs.",
+      "line_number": 1366,
+      "category": null,
+      "section": "### Self‑Check (Author)"
+    },
+    {
+      "number": 208,
+      "title": "Validate Untrusted Inputs at Runtime",
+      "content": "Types help at build time only. Validate external data before use.",
+      "line_number": 1304,
+      "category": null,
+      "section": "## SECURITY, PRIVACY, PERFORMANCE"
+    },
+    {
+      "number": 209,
+      "title": "Keep the UI Responsive",
+      "content": "Do heavy work off the main thread. Show progress for long tasks.",
+      "line_number": 1306,
+      "category": null,
+      "section": "## SECURITY, PRIVACY, PERFORMANCE"
+    },
+    {
+      "number": 210,
+      "title": "Review AI Code Thoroughly",
+      "content": "All AI-generated TypeScript must be reviewed by humans. Verify types, error handling, and security match our standards.",
+      "line_number": 1312,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 211,
+      "title": "Monitor Bundle Impact",
+      "content": "Use path imports for large libraries. Avoid barrel imports in hot paths. Set bundle size budgets and monitor them.",
+      "line_number": 1314,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 212,
+      "title": "Quality Dependencies",
+      "content": "Prefer packages with built-in TypeScript definitions. Use `@types/` packages from DefinitelyTyped. Audit dependencies for type safety.",
+      "line_number": 1316,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 213,
+      "title": "Test Type Boundaries",
+      "content": "Write tests that verify type narrowing works. Test error cases to ensure proper typing. Use `@ts-expect-error` for expected type failures.",
+      "line_number": 1318,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 214,
+      "title": "Gradual Migration Strategy",
+      "content": "When converting JavaScript to TypeScript, use `// @ts-check` in JS files first. Add JSDoc types before conversion. Convert one module at a time.",
+      "line_number": 1320,
+      "category": null,
+      "section": "## AI & CODE GENERATION RULES"
+    },
+    {
+      "number": 215,
+      "title": "Name Casing & Charset (Kebab-Case Only)",
+      "content": "All folder names must use kebab-case: only lowercase letters, numbers, and hyphens [a-z0-9-]. No uppercase, no underscores, no spaces. This ensures consistency and avoids path resolution issues across platforms.",
+      "line_number": 1385,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 216,
+      "title": "No Source Code/PII in Stores",
+      "content": "Storage must never contain source code or personally identifiable information (PII). Use handles, IDs, and metadata only. Receipts and evidence stores are for facts about work, not the work itself.",
+      "line_number": 1387,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 217,
+      "title": "No Secrets/Private Keys on Disk",
+      "content": "Never store secrets, passwords, API keys, or private keys on disk. Use secrets manager, HSM, or KMS. Only public keys may be stored in `trust/pubkeys/`. Load sensitive configuration from environment variables or secure vaults.",
+      "line_number": 1389,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 218,
+      "title": "JSONL Receipts (Newline-Delimited, Signed, Append-Only)",
+      "content": "Receipts are the legal truth. Format: newline-delimited JSON (JSONL), one record per line. Each line must be signed over canonical JSON. Receipts are append-only—never modify or delete existing entries. Invalid lines go to quarantine (laptop) or DLQ (cloud).",
+      "line_number": 1391,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 219,
+      "title": "Time Partitions Use UTC (dt=YYYY-MM-DD)",
+      "content": "All time-based partitions must use UTC format: `dt=YYYY-MM-DD` (zero-padded). Example: `dt=2025-10-20`. Never use local time, YYYYMMDD format, or MM-DD-YYYY. Optional hot sharding: `dt=.../shard={00..ff}/`.",
+      "line_number": 1393,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 220,
+      "title": "Policy Snapshots Must Be Signed",
+      "content": "All policy snapshots and templates must be signed. Laptops cache policies; authoritative publishing happens in the Product plane. Policy files are JSON and signed for integrity verification.",
+      "line_number": 1395,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 221,
+      "title": "Dual Storage Compliance (JSONL Authority, DB Mirrors)",
+      "content": "JSONL is the authority. Databases (SQLite/Postgres) mirror data for read/query performance, storing raw JSON verbatim with minimal indexes. The database is a read/index plane only. Always write to JSONL first, then mirror to DB.",
+      "line_number": 1397,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 222,
+      "title": "Path Resolution via ZU_ROOT Environment Variable",
+      "content": "All storage paths must be resolved via `ZU_ROOT` environment variable or `config/paths.json`. Never hardcode absolute paths like `D:\\ZeroUI` or `/home/user/zeroui`. Enables portable, configurable deployments.",
+      "line_number": 1399,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 223,
+      "title": "Receipts Validation (Signed, Append-Only, No Code/PII)",
+      "content": "When reading receipts, always verify signatures. Receipts must never contain source code or PII—only handles, IDs, and metadata. Enforce append-only semantics: use file mode \"a\", never \"w\"; never truncate or seek.",
+      "line_number": 1401,
+      "category": null,
+      "section": "🎯 **Purpose:** Enforce data governance, privacy, and security across the 4-plane ZeroUI storage architecture (IDE, Tenant, Product, Shared)."
+    },
+    {
+      "number": 224,
+      "title": "Evidence Watermarks Per-Consumer Structure",
+      "content": "Evidence watermarks must follow per-consumer structure: `.../evidence/watermarks/{consumer-id}/`. Each consumer (metrics, traces, logs, etc.) has its own watermark directory for tracking processing progress.",
+      "line_number": 1403,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 225,
+      "title": "RFC Fallback Pattern (UNCLASSIFIED__slug, 24h Resolution)",
+      "content": "When data classification is ambiguous, use RFC fallback: `UNCLASSIFIED__<slug>` (kebab-case slug). Place in:",
+      "line_number": 1405,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 226,
+      "title": "Observability/Adapters Use dt= Partitions",
+      "content": "Observability and adapter paths require date partitions (`dt=YYYY-MM-DD`):",
+      "line_number": 1410,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 227,
+      "title": "Laptop Receipts Use YYYY/MM Partitioning",
+      "content": "Laptop (IDE) receipts use month partitioning: `ide/agent/receipts/{repo-id}/{YYYY}/{MM}/`. Example: `ide/agent/receipts/zeroui2-0/2025/10/`. Auxiliary folders (index, quarantine, checkpoints) live under the same repo path.",
+      "line_number": 1416,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 228,
+      "title": "(Deprecated)",
+      "content": "See",
+      "line_number": 1418,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 229,
+      "title": "(Deprecated)",
+      "content": "See",
+      "line_number": 1420,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 230,
+      "title": "(Deprecated)",
+      "content": "See",
+      "line_number": 1422,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 231,
+      "title": "GSMD Source of Truth (SOT) Paths",
+      "content": "Policy snapshots live only under:",
+      "line_number": 1438,
+      "category": "GSMD",
+      "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+    },
+    {
+      "number": 232,
+      "title": "Read-Only Policy Assets",
+      "content": "You MUST NOT edit or overwrite existing files under `gsmd/",
+      "line_number": 1444,
+      "category": "GSMD",
+      "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+    },
+    {
+      "number": 233,
+      "title": "Versioning Is Append-Only",
+      "content": "Breaking or behavioral changes require a new `v{major}` directory. Do not mutate prior versions. Use the `deprecates[]` field when formally superseding older snapshots.",
+      "line_number": 1446,
+      "category": "GSMD",
+      "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+    },
+    {
+      "number": 234,
+      "title": "Snapshot Identity & Integrity",
+      "content": "Every snapshot MUST satisfy:",
+      "line_number": 1448,
+      "category": "GSMD",
+      "section": "## STOP CONDITIONS → ERROR CODES (REFUSE & FIX)"
+    },
+    {
+      "number": 235,
+      "title": "Valid Evaluation Points Only",
+      "content": "Allowed values are exactly:",
+      "line_number": 1456,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 236,
+      "title": "Decision Receipts — Required Fields",
+      "content": "Every GSMD decision MUST emit a signed receipt containing at minimum:",
+      "line_number": 1462,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 237,
+      "title": "Receipt Discipline (Append-Only, Signed)",
+      "content": "Receipts are newline-delimited JSON (JSONL), append-only. Never rewrite. Each receipt is signed; reject or quarantine any receipt missing a signature.",
+      "line_number": 1469,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 238,
+      "title": "Tenant Overrides (Strict Contract)",
+      "content": "Overrides MUST include:",
+      "line_number": 409,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 239,
+      "title": "Override Storage & Lifecycle",
+      "content": "Store overrides",
+      "line_number": 1432,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 240,
+      "title": "Decisions & Modes (Status Pill)",
+      "content": "Implement decisions using the canonical set only:",
+      "line_number": 1471,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 241,
+      "title": "Rollout & Cohorts",
+      "content": "If `rollout.cohorts` or `rollout.ladder` are present, enforce exactly as declared. If absent, use `rollout.default_mode`. Never assume implied cohorts.",
+      "line_number": 1477,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 242,
+      "title": "Privacy & Redaction",
+      "content": "Apply any rules present under `privacy.redactions`",
+      "line_number": 1479,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 243,
+      "title": "Evidence & Required Receipts",
+      "content": "If `evidence.map[]` or `receipts.required[]` are present in the snapshot, collect the named artifacts (or their hashes) and ensure required receipts exist",
+      "line_number": 1481,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 244,
+      "title": "Tests Fixtures Must Match Policy",
+      "content": "Where `tests.fixtures[]` are present, unit/integration tests MUST prove the declared outcomes (`pass | warn | soft_block | hard_block`). Do not merge if observed outcomes differ from fixtures.",
+      "line_number": 1483,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 245,
+      "title": "Mandatory CI Gates",
+      "content": "Every PR touching policy or enforcement MUST run:",
+      "line_number": 1485,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 246,
+      "title": "Release Manifests (Merkle Root)",
+      "content": "Before publishing a policy release, generate a manifest and (optionally) sign it:",
+      "line_number": 1491,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 247,
+      "title": "Runtime Snapshot Binding",
+      "content": "At decision time, the engine MUST bind to the exact snapshot referenced by the receipt (`policy_version_ids[]` and `policy_snapshot_hash`). Never apply a different snapshot than the one recorded.",
+      "line_number": 1498,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 248,
+      "title": "Cursor Behavior for GSMD",
+      "content": "Cursor MUST NOT propose edits under `gsmd/",
+      "line_number": 1500,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 249,
+      "title": "Return Contracts for GSMD Artifacts",
+      "content": "For policy work, output only one of:",
+      "line_number": 1506,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 250,
+      "title": "Stop Conditions → GSMD Error Codes",
+      "content": "- Writing outside SOT tree .......................... `ERROR:GSMD_SOT_VIOLATION`",
+      "line_number": 1512,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 251,
+      "title": "Self-Audit Before Output (GSMD)",
+      "content": "- [ ] Not editing existing `gsmd/",
+      "line_number": 1526,
+      "category": "GSMD",
+      "section": null
+    },
+    {
+      "number": 252,
+      "title": "Plain English Variable Names",
+      "content": "Use descriptive, everyday words instead of technical jargon or abbreviations.",
+      "line_number": 1548,
+      "category": null,
+      "section": "## Basic Readability Rules"
+    },
+    {
+      "number": 253,
+      "title": "Self-Documenting Code",
+      "content": "Code should read like a story, not a puzzle.",
+      "line_number": 1368,
+      "category": null,
+      "section": "### Self‑Check (Author)"
+    },
+    {
+      "number": 254,
+      "title": "One Concept Per Function",
+      "content": "Each function should do exactly one thing.",
+      "line_number": 1554,
+      "category": null,
+      "section": "## Basic Readability Rules"
+    },
+    {
+      "number": 255,
+      "title": "Explain the \"Why\", Not Just the \"What\"",
+      "content": "Comments should explain business logic, not code mechanics.",
+      "line_number": 1559,
+      "category": null,
+      "section": "## Basic Readability Rules"
+    },
+    {
+      "number": 256,
+      "title": "Avoid Mental Gymnastics",
+      "content": "No nested ternary operators, complex one-liners, or clever tricks.",
+      "line_number": 1563,
+      "category": null,
+      "section": "## Basic Readability Rules"
+    },
+    {
+      "number": 257,
+      "title": "Use Real-World Analogies",
+      "content": "Compare technical concepts to everyday experiences.",
+      "line_number": 1567,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 258,
+      "title": "Progressive Complexity",
+      "content": "Start simple, add complexity only when needed.",
+      "line_number": 1571,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 259,
+      "title": "Visual Code Layout",
+      "content": "Use whitespace to group related ideas.",
+      "line_number": 1373,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 260,
+      "title": "Error Messages That Help",
+      "content": "Error messages should guide users to solutions.",
+      "line_number": 1575,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 261,
+      "title": "Consistent Naming Patterns",
+      "content": "Use the same word for the same concept throughout.",
+      "line_number": 1579,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 262,
+      "title": "Avoid Abbreviations",
+      "content": "Write out full words unless universally understood.",
+      "line_number": 1583,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 263,
+      "title": "Business Language Over Technical Language",
+      "content": "Use domain terms that business people understand.",
+      "line_number": 1587,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 264,
+      "title": "Show Your Work",
+      "content": "Break complex calculations into steps with intermediate variables.",
+      "line_number": 1591,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 265,
+      "title": "Fail Gracefully with Helpful Messages",
+      "content": "When something goes wrong, explain what the user should do.",
+      "line_number": 1601,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 266,
+      "title": "Code as Documentation",
+      "content": "The code itself should be the primary documentation.",
+      "line_number": 1378,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 267,
+      "title": "Test Names That Tell a Story",
+      "content": "Test names should describe the scenario and expected outcome.",
+      "line_number": 1605,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 268,
+      "title": "Constants That Explain Themselves",
+      "content": "Use named constants instead of magic numbers.",
+      "line_number": 1609,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 269,
+      "title": "NO Advanced Programming Concepts",
+      "content": "- ❌",
+      "line_number": 1617,
+      "category": null,
+      "section": "## Advanced Concepts (BANNED)"
+    },
+    {
+      "number": 270,
+      "title": "NO Complex Data Structures",
+      "content": "- ❌",
+      "line_number": 1623,
+      "category": null,
+      "section": "## Advanced Concepts (BANNED)"
+    },
+    {
+      "number": 271,
+      "title": "NO Advanced String Manipulation",
+      "content": "- ❌",
+      "line_number": 1628,
+      "category": null,
+      "section": "## Advanced Concepts (BANNED)"
+    },
+    {
+      "number": 272,
+      "title": "NO Complex Error Handling",
+      "content": "- ❌",
+      "line_number": 1174,
+      "category": null,
+      "section": "## AI-Specific Error Handling"
+    },
+    {
+      "number": 273,
+      "title": "NO Advanced Control Flow",
+      "content": "- ❌",
+      "line_number": 1633,
+      "category": null,
+      "section": "## Advanced Concepts (BANNED)"
+    },
+    {
+      "number": 274,
+      "title": "NO Advanced Functions",
+      "content": "- ❌",
+      "line_number": 1638,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 275,
+      "title": "NO Advanced Array Operations",
+      "content": "- ❌",
+      "line_number": 1643,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 276,
+      "title": "NO Advanced Logic",
+      "content": "- ❌",
+      "line_number": 1648,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 277,
+      "title": "NO Advanced Language Features",
+      "content": "- ❌",
+      "line_number": 1653,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 278,
+      "title": "NO Advanced Libraries",
+      "content": "- ❌",
+      "line_number": 1658,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 279,
+      "title": "ENFORCE Simple Level",
+      "content": "-",
+      "line_number": 1663,
+      "category": null,
+      "section": null
+    },
+    {
+      "number": 280,
+      "title": "IDE plane: receipts layout (per repo)",
+      "content": "",
+      "line_number": 1770,
+      "category": null,
+      "section": "### SG-301 — IDE plane: receipts layout (per repo)"
+    },
+    {
+      "number": 281,
+      "title": "IDE plane: agent workspace invariants",
+      "content": "",
+      "line_number": 1788,
+      "category": null,
+      "section": "### SG-302 — IDE plane: agent workspace invariants"
+    },
+    {
+      "number": 282,
+      "title": "Tenant plane: evidence store shape",
+      "content": "",
+      "line_number": 1807,
+      "category": null,
+      "section": "### SG-303 — Tenant plane: evidence store shape"
+    },
+    {
+      "number": 283,
+      "title": "Tenant plane: ingest staging & RFC fallback",
+      "content": "",
+      "line_number": 1824,
+      "category": null,
+      "section": "### SG-304 — Tenant plane: ingest staging & RFC fallback"
+    },
+    {
+      "number": 284,
+      "title": "Observability partitions (Tenant)",
+      "content": "",
+      "line_number": 1837,
+      "category": null,
+      "section": "### SG-305 — Observability partitions (Tenant)"
+    },
+    {
+      "number": 285,
+      "title": "Adapters capture (Tenant)",
+      "content": "",
+      "line_number": 1853,
+      "category": null,
+      "section": "### SG-306 — Adapters capture (Tenant)"
+    },
+    {
+      "number": 286,
+      "title": "Reporting marts (Tenant)",
+      "content": "",
+      "line_number": 1868,
+      "category": null,
+      "section": "### SG-307 — Reporting marts (Tenant)"
+    },
+    {
+      "number": 287,
+      "title": "Policy trust layout (Tenant & Product)",
+      "content": "",
+      "line_number": 1880,
+      "category": null,
+      "section": "### SG-308 — Policy trust layout (Tenant & Product)"
+    },
+    {
+      "number": 288,
+      "title": "Product plane structure",
+      "content": "",
+      "line_number": 1894,
+      "category": null,
+      "section": "### SG-309 — Product plane structure"
+    },
+    {
+      "number": 289,
+      "title": "Shared plane structure",
+      "content": "",
+      "line_number": 1910,
+      "category": null,
+      "section": "### SG-310 — Shared plane structure"
+    },
+    {
+      "number": 290,
+      "title": "Deprecated alias gating",
+      "content": "",
+      "line_number": 1926,
+      "category": null,
+      "section": "### SG-311 — Deprecated alias gating"
+    },
+    {
+      "number": 291,
+      "title": "Partitions & stamps: single source of truth",
+      "content": "",
+      "line_number": 1937,
+      "category": null,
+      "section": "### SG-312 — Partitions & stamps: single source of truth"
+    },
+    {
+      "number": 292,
+      "title": "Shards configuration (declarative)",
+      "content": "",
+      "line_number": 1951,
+      "category": null,
+      "section": "### SG-313 — Shards configuration (declarative)"
+    },
+    {
+      "number": 293,
+      "title": "Scaffold behavior: directories-only & idempotent",
+      "content": "",
+      "line_number": 1962,
+      "category": null,
+      "section": "### SG-314 — Scaffold behavior: directories-only & idempotent"
+    }
+  ],
+  "enable_disable_validation": {
+    "consistent": true,
+    "total_rules_checked": 293,
+    "enabled_mismatches": 0,
+    "disabled_mismatches": 0,
+    "missing_enabled_fields": 0,
+    "validation_details": []
+  }
+}

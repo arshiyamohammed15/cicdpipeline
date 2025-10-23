@@ -23,6 +23,13 @@ except ImportError:
     from config.enhanced_config_manager import EnhancedConfigManager
     from config.constitution.config_manager import ConstitutionRuleManager
 
+# Import hook configuration manager
+try:
+    from validator.hook_config_manager import HookConfigManager
+except ImportError:
+    # Fallback for testing environment
+    HookConfigManager = None
+
 
 class ComprehensivePreImplementationValidator:
     """
@@ -36,6 +43,9 @@ class ComprehensivePreImplementationValidator:
         # Connect to constitution database
         self.config_manager = EnhancedConfigManager()
         self.constitution_manager = ConstitutionRuleManager()
+        
+        # Initialize hook configuration manager
+        self.hook_config_manager = HookConfigManager() if HookConfigManager else None
         
         # Load actual categories and rule ranges from database
         self.rule_categories = self._load_actual_categories()
@@ -95,6 +105,20 @@ class ComprehensivePreImplementationValidator:
             'simple_readability': self._validate_simple_readability_rules
         }
     
+    def _is_rule_enabled(self, rule_id: int) -> bool:
+        """
+        Check if a specific rule is enabled.
+        
+        Args:
+            rule_id: The rule ID to check
+            
+        Returns:
+            True if the rule is enabled, False otherwise
+        """
+        if self.hook_config_manager:
+            return self.hook_config_manager.is_rule_enabled(rule_id)
+        return True  # Default to enabled if no config manager
+    
     def validate_prompt(self, prompt: str, file_type: str = None, task_type: str = None) -> List[Violation]:
         """
         Validate prompt against ALL 280 Constitution rules.
@@ -149,6 +173,11 @@ class ComprehensivePreImplementationValidator:
             
             for rule in basic_work_rules:
                 rule_number = rule['rule_number']
+                
+                # Check if this specific rule is enabled
+                if not self._is_rule_enabled(rule_number):
+                    continue
+                
                 rule_content = rule['content']
                 rule_title = rule['title']
                 
@@ -224,7 +253,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 83: Automation (CI/Pre-commit)
-        if self._detects_manual_processes(prompt):
+        if self._is_rule_enabled(83) and self._detects_manual_processes(prompt):
             violations.append(Violation(
                 rule_id='R083',
                 severity=Severity.ERROR,
@@ -260,7 +289,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 90: Security & secrets
-        if self._detects_secrets_in_code(prompt):
+        if self._is_rule_enabled(90) and self._detects_secrets_in_code(prompt):
             violations.append(Violation(
                 rule_id='R090',
                 severity=Severity.ERROR,
@@ -286,7 +315,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 132: Log format & transport
-        if 'log' in prompt.lower() and not self._detects_structured_logging(prompt):
+        if self._is_rule_enabled(132) and 'log' in prompt.lower() and not self._detects_structured_logging(prompt):
             violations.append(Violation(
                 rule_id='R132',
                 severity=Severity.ERROR,
@@ -312,7 +341,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 150: Prevent first
-        if self._detects_reactive_error_handling(prompt):
+        if self._is_rule_enabled(150) and self._detects_reactive_error_handling(prompt):
             violations.append(Violation(
                 rule_id='R150',
                 severity=Severity.ERROR,
@@ -338,7 +367,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 181: Strict mode always
-        if 'typescript' in prompt.lower() and not self._detects_strict_mode(prompt):
+        if self._is_rule_enabled(181) and 'typescript' in prompt.lower() and not self._detects_strict_mode(prompt):
             violations.append(Violation(
                 rule_id='R181',
                 severity=Severity.ERROR,
@@ -364,7 +393,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 216: Kebab-case naming
-        if 'storage' in prompt.lower() and self._detects_non_kebab_case(prompt):
+        if self._is_rule_enabled(216) and 'storage' in prompt.lower() and self._detects_non_kebab_case(prompt):
             violations.append(Violation(
                 rule_id='R216',
                 severity=Severity.ERROR,
@@ -390,7 +419,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 232: GSMD source of truth paths
-        if 'policy' in prompt.lower() and not self._detects_gsmd_paths(prompt):
+        if self._is_rule_enabled(232) and 'policy' in prompt.lower() and not self._detects_gsmd_paths(prompt):
             violations.append(Violation(
                 rule_id='R232',
                 severity=Severity.ERROR,
@@ -406,7 +435,7 @@ class ComprehensivePreImplementationValidator:
         violations = []
         
         # Rule 253: Plain English variable names
-        if self._detects_abbreviations(prompt):
+        if self._is_rule_enabled(253) and self._detects_abbreviations(prompt):
             violations.append(Violation(
                 rule_id='R253',
                 severity=Severity.ERROR,

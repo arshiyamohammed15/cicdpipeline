@@ -20,9 +20,15 @@ Usage:
 import re
 import json
 import argparse
+import sys
 from pathlib import Path
-from typing import Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass, asdict
+
+# Add the project root to Python path for imports
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
 
 @dataclass
@@ -37,6 +43,17 @@ class Rule:
 
 
 @dataclass
+class EnableDisableValidation:
+    """Enable/Disable field validation results"""
+    consistent: bool
+    total_rules_checked: int
+    enabled_mismatches: int
+    disabled_mismatches: int
+    missing_enabled_fields: int
+    validation_details: List[Dict[str, Any]]
+
+
+@dataclass
 class ConstitutionAnalysis:
     """Complete analysis of the constitution"""
     total_rules: int
@@ -47,6 +64,7 @@ class ConstitutionAnalysis:
     missing_numbers: List[int]
     highest_rule: int
     lowest_rule: int
+    enable_disable_validation: Optional[EnableDisableValidation] = None
 
 
 class ConstitutionAnalyzer:
@@ -172,6 +190,9 @@ class ConstitutionAnalyzer:
                     sections[rule.section] = []
                 sections[rule.section].append(rule)
         
+        # Perform Enable/Disable validation
+        enable_disable_validation = self.validate_enable_disable_consistency()
+        
         self.analysis = ConstitutionAnalysis(
             total_rules=total_rules,
             rules=self.rules,
@@ -180,7 +201,8 @@ class ConstitutionAnalyzer:
             rule_numbers=rule_numbers,
             missing_numbers=missing_numbers,
             highest_rule=highest_rule,
-            lowest_rule=lowest_rule
+            lowest_rule=lowest_rule,
+            enable_disable_validation=enable_disable_validation
         )
         
         return self.analysis
@@ -208,6 +230,87 @@ class ConstitutionAnalyzer:
         
         return matching_rules
     
+    def validate_enable_disable_consistency(self) -> EnableDisableValidation:
+        """
+        Validate Enable/Disable field consistency across all sources.
+        This method checks for consistency between database, JSON export, and config files.
+        """
+        try:
+            # Import sync manager to access consistency checking
+            from config.constitution.sync_manager import get_sync_manager
+            
+            sync_manager = get_sync_manager()
+            consistency_result = sync_manager.verify_consistency_across_sources()
+            
+            # Extract Enable/Disable specific information
+            enabled_mismatches = 0
+            disabled_mismatches = 0
+            missing_enabled_fields = 0
+            validation_details = []
+            
+            if not consistency_result.get("consistent", True):
+                differences = consistency_result.get("differences", [])
+                
+                for diff in differences:
+                    rule_number = diff.get("rule_number")
+                    enabled_info = diff.get("enabled", {})
+                    
+                    # Check for enabled mismatches
+                    enabled_values = []
+                    for source, value in enabled_info.items():
+                        if value is not None:
+                            enabled_values.append((source, value))
+                    
+                    if len(enabled_values) >= 2:
+                        unique_values = set(v for _, v in enabled_values)
+                        if len(unique_values) > 1:
+                            # Determine if it's an enabled or disabled mismatch
+                            true_count = sum(1 for _, v in enabled_values if v is True)
+                            false_count = sum(1 for _, v in enabled_values if v is False)
+                            
+                            if true_count > false_count:
+                                enabled_mismatches += 1
+                            else:
+                                disabled_mismatches += 1
+                            
+                            validation_details.append({
+                                "rule_number": rule_number,
+                                "sources": dict(enabled_values),
+                                "mismatch_type": "enabled" if true_count > false_count else "disabled"
+                            })
+                    
+                    # Check for missing enabled fields
+                    if not any(v is not None for v in enabled_info.values()):
+                        missing_enabled_fields += 1
+                        validation_details.append({
+                            "rule_number": rule_number,
+                            "sources": dict(enabled_info),
+                            "mismatch_type": "missing_enabled_field"
+                        })
+            
+            total_rules_checked = consistency_result.get("summary", {}).get("total_rules_observed", 0)
+            consistent = enabled_mismatches == 0 and disabled_mismatches == 0 and missing_enabled_fields == 0
+            
+            return EnableDisableValidation(
+                consistent=consistent,
+                total_rules_checked=total_rules_checked,
+                enabled_mismatches=enabled_mismatches,
+                disabled_mismatches=disabled_mismatches,
+                missing_enabled_fields=missing_enabled_fields,
+                validation_details=validation_details
+            )
+            
+        except Exception as e:
+            # Return error state if validation fails
+            return EnableDisableValidation(
+                consistent=False,
+                total_rules_checked=0,
+                enabled_mismatches=0,
+                disabled_mismatches=0,
+                missing_enabled_fields=0,
+                validation_details=[{"error": str(e)}]
+            )
+    
     def export_analysis(self, output_path: str) -> None:
         """Export complete analysis to JSON file"""
         if not self.analysis:
@@ -228,7 +331,8 @@ class ConstitutionAnalyzer:
                 section: [asdict(rule) for rule in rules]
                 for section, rules in self.analysis.sections.items()
             },
-            'all_rules': [asdict(rule) for rule in self.analysis.rules]
+            'all_rules': [asdict(rule) for rule in self.analysis.rules],
+            'enable_disable_validation': asdict(self.analysis.enable_disable_validation) if self.analysis.enable_disable_validation else None
         }
         
         with open(output_path, 'w', encoding='utf-8') as f:
@@ -258,6 +362,30 @@ class ConstitutionAnalyzer:
         
         if len(self.analysis.rules) > 10:
             print(f"  ... and {len(self.analysis.rules) - 10} more rules")
+        
+        # Enable/Disable validation summary
+        if self.analysis.enable_disable_validation:
+            validation = self.analysis.enable_disable_validation
+            print(f"\nEnable/Disable Field Validation:")
+            print(f"  Consistent: {'Yes' if validation.consistent else 'No'}")
+            print(f"  Total Rules Checked: {validation.total_rules_checked}")
+            print(f"  Enabled Mismatches: {validation.enabled_mismatches}")
+            print(f"  Disabled Mismatches: {validation.disabled_mismatches}")
+            print(f"  Missing Enabled Fields: {validation.missing_enabled_fields}")
+            
+            if validation.validation_details and len(validation.validation_details) > 0:
+                print(f"\nValidation Details (showing first 5):")
+                for detail in validation.validation_details[:5]:
+                    if "error" in detail:
+                        print(f"  Error: {detail['error']}")
+                    else:
+                        rule_num = detail.get("rule_number", "Unknown")
+                        mismatch_type = detail.get("mismatch_type", "Unknown")
+                        sources = detail.get("sources", {})
+                        print(f"  Rule {rule_num}: {mismatch_type} - {sources}")
+                
+                if len(validation.validation_details) > 5:
+                    print(f"  ... and {len(validation.validation_details) - 5} more issues")
     
     def print_rule_details(self, rule: Rule) -> None:
         """Print detailed information about a specific rule"""
@@ -290,6 +418,7 @@ Examples:
   python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --summary
   python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --rule 1
   python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --search "privacy"
+  python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --validate-enable-disable
   python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --output analysis.json
         """
     )
@@ -300,6 +429,7 @@ Examples:
     parser.add_argument('--rule', '-r', type=int, help='Show specific rule number')
     parser.add_argument('--search', help='Search rules by content')
     parser.add_argument('--category', help='Show rules by category')
+    parser.add_argument('--validate-enable-disable', action='store_true', help='Validate Enable/Disable field consistency')
     
     args = parser.parse_args()
     
@@ -330,6 +460,31 @@ Examples:
         elif args.category:
             category_rules = analyzer.get_rules_by_category(args.category)
             analyzer.print_category_results(args.category, category_rules)
+        
+        elif args.validate_enable_disable:
+            # Show Enable/Disable validation results
+            validation = analyzer.validate_enable_disable_consistency()
+            print("=" * 60)
+            print("ENABLE/DISABLE FIELD VALIDATION")
+            print("=" * 60)
+            print(f"Consistent: {'Yes' if validation.consistent else 'No'}")
+            print(f"Total Rules Checked: {validation.total_rules_checked}")
+            print(f"Enabled Mismatches: {validation.enabled_mismatches}")
+            print(f"Disabled Mismatches: {validation.disabled_mismatches}")
+            print(f"Missing Enabled Fields: {validation.missing_enabled_fields}")
+            
+            if validation.validation_details:
+                print(f"\nDetailed Validation Results:")
+                for detail in validation.validation_details:
+                    if "error" in detail:
+                        print(f"  Error: {detail['error']}")
+                    else:
+                        rule_num = detail.get("rule_number", "Unknown")
+                        mismatch_type = detail.get("mismatch_type", "Unknown")
+                        sources = detail.get("sources", {})
+                        print(f"  Rule {rule_num}: {mismatch_type}")
+                        for source, value in sources.items():
+                            print(f"    {source}: {value}")
         
         else:
             # Default: show summary
