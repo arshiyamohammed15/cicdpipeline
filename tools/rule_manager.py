@@ -141,7 +141,7 @@ class RuleManager:
             
             # Check database
             try:
-                db_rule = self.constitution_manager.get_rule(rule_number)
+                db_rule = self.constitution_manager.get_rule_by_number(rule_number)
                 if db_rule:
                     sources_status["database"]["exists"] = True
                     sources_status["database"]["enabled"] = db_rule.get("enabled", True)
@@ -168,7 +168,12 @@ class RuleManager:
                     rule_key = str(rule_number)
                     if "rules" in config_data and rule_key in config_data["rules"]:
                         sources_status["config"]["exists"] = True
-                        sources_status["config"]["enabled"] = config_data["rules"][rule_key].get("enabled", True)
+                        enabled_value = config_data["rules"][rule_key].get("enabled", True)
+                        # Convert integer 0/1 to boolean if needed
+                        if isinstance(enabled_value, int):
+                            sources_status["config"]["enabled"] = bool(enabled_value)
+                        else:
+                            sources_status["config"]["enabled"] = enabled_value
             except Exception as e:
                 print(f"Warning: Could not check config for rule {rule_number}: {e}")
             
@@ -209,8 +214,22 @@ class RuleManager:
         if not enabled_values:
             return None
         
-        true_count = sum(1 for v in enabled_values if v is True)
-        false_count = sum(1 for v in enabled_values if v is False)
+        # Normalize values to boolean (handle 0/1 integers)
+        normalized_values = []
+        for v in enabled_values:
+            if isinstance(v, int):
+                normalized_values.append(bool(v))
+            elif isinstance(v, bool):
+                normalized_values.append(v)
+            else:
+                # Skip non-boolean values
+                continue
+        
+        if not normalized_values:
+            return None
+        
+        true_count = sum(1 for v in normalized_values if v is True)
+        false_count = sum(1 for v in normalized_values if v is False)
         
         if true_count > false_count:
             return True

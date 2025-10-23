@@ -2,13 +2,14 @@
 
 ## Problem Statement
 
-Previously, constitution rules existed in **4 places**:
+Previously, constitution rules existed in **5 places**:
 1. **Markdown** - `ZeroUI2.0_Master_Constitution.md`
 2. **SQLite Database** - `config/constitution_rules.db`
 3. **JSON Export** - `config/constitution_rules.json`
 4. **Config** - `config/constitution_config.json`
+5. **Hooks** - `config/hook_config.json`
 
-**Issue**: Adding, removing, or updating a rule required manual changes in all 4 locations, creating:
+**Issue**: Adding, removing, or updating a rule required manual changes in all 5 locations, creating:
 - Complex inconsistencies
 - Manual synchronization overhead
 - Risk of conflicting data
@@ -55,6 +56,13 @@ Previously, constitution rules existed in **4 places**:
       │  • disabled_at           │
       │  NO rule content here!   │
       └──────────────────────────┘
+      │
+      │ HOOKS (Pre-Implementation)
+      │ hook_config.json
+      │ • enabled: true/false
+      │ • category mappings
+      │ • enforcement rules
+      └──────────────────────────┘
 ```
 
 ### Key Concepts
@@ -62,7 +70,8 @@ Previously, constitution rules existed in **4 places**:
 1. **Markdown = Source**: All rule content lives ONLY in Markdown
 2. **DB/JSON = Caches**: Auto-generated from Markdown, never edited directly
 3. **Config = State**: Only stores enabled/disabled flags, no content
-4. **One-Way Flow**: Markdown → DB/JSON (rebuild), never the reverse
+4. **Hooks = Enforcement**: Pre-implementation rule enforcement, synchronized with state
+5. **One-Way Flow**: Markdown → DB/JSON (rebuild), never the reverse
 
 ## Workflow: How to Modify Rules
 

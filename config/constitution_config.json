@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2025-10-23T17:55:19.581410",
+  "last_updated": "2025-10-23T19:04:07.151545",
   "primary_backend": "sqlite",
   "backend_config": {
     "sqlite": {
@@ -28,1762 +28,1762 @@
   },
   "rules": {
     "1": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:57.890354",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Testing disable functionality",
+      "disabled_at": "2025-10-23T18:50:46.116604",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "2": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:57.906213",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:09.617160",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "3": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:57.949738",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:09.888399",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "4": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:57.969936",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:10.159736",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "5": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.001482",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:10.418568",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "6": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.033037",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:10.647644",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "7": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.078326",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:10.886704",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "8": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.110826",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:11.130620",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "9": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.146254",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:11.408290",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "10": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.174690",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:11.549216",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "11": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.206467",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:11.755764",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "12": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.239195",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:11.888587",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "13": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.269770",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:12.101319",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "14": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.301687",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:12.333900",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "15": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.333156",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:12.587798",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "16": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.366328",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:12.810818",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "17": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.408836",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:12.980228",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "18": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.424789",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:13.206474",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "19": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.472332",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:13.491685",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "20": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.488068",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:13.728201",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "21": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.520162",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:13.909756",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "22": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.551862",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:14.190042",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "23": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.583839",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:14.444655",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "24": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.616973",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:14.675269",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "25": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.647516",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:14.844948",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "26": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.679685",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:14.964363",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "27": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.711934",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:15.208334",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "28": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.742900",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:15.536316",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "29": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.778611",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:15.711583",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "30": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.813899",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:15.947786",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "31": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.853301",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:16.187070",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "32": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.869054",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:16.468445",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "33": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.909520",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:16.704093",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "34": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.941273",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:16.939988",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "35": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:58.972886",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:17.176630",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "36": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.004922",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:17.323017",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "37": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.036603",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:17.535025",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "38": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.068483",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:17.757666",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "39": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.105475",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:18.058115",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "40": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.131585",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:18.322229",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "41": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.163133",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:18.546306",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "42": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.194902",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:18.793047",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "43": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.226737",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.074665",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "44": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.258098",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.214288",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "45": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.290948",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.325386",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "46": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.321414",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.398670",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "47": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.353171",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.467092",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "48": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.384546",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.531396",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "49": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.416290",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.602308",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "50": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.443319",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.671070",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "51": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.485341",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.761027",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "52": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.515747",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.847336",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "53": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.544291",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:19.940284",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "54": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.577227",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.022430",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "55": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.601771",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.098614",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "56": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.644285",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.184547",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "57": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.674466",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.265618",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "58": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.708975",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.331045",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "59": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.740037",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.394722",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "60": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.772035",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.464967",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "61": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.802584",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.563694",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "62": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.833636",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.639071",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "63": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.863749",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.711483",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "64": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.894425",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.777435",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "65": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.928060",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.846207",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "66": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.960376",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.908674",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "67": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:25:59.993905",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:20.978545",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "68": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.025266",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.047285",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "69": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.057319",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.114149",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "70": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.087405",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.180485",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "71": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.119037",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.238708",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "72": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.150961",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.313392",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "73": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.184239",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.379890",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "74": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.214290",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.448263",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "75": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.254095",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.525110",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "76": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.285077",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.587637",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "77": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.316954",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.649571",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "78": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.350613",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.712734",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "79": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.479816",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.794842",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "80": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.511016",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.866927",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "81": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.544287",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:21.940973",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "82": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.572996",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.019569",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "83": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.610754",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.080292",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "84": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.644272",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.146203",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "85": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.684621",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.221583",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "86": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.710990",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.293836",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "87": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.744292",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.361437",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "88": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.777445",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.430055",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "89": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.812584",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.497164",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "90": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.844458",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.564079",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "91": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.876203",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.639263",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "92": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.908120",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.722122",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "93": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.941194",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.795454",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "94": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:00.972014",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.863014",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "95": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.009763",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.922017",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "96": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.042297",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:22.987838",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "97": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.077701",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.053743",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "98": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.115027",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.115735",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "99": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.148536",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.189936",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "100": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.179271",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.263585",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "101": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.213081",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.330985",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "102": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.244241",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.394957",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "103": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.274995",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.461366",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "104": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.305506",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.525772",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "105": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.327627",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.598724",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "106": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.371391",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.665754",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "107": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.409914",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.737105",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "108": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.439960",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.810478",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "109": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.474497",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.887017",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "110": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.505877",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:23.948990",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "111": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.536297",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.014167",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "112": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.572071",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.080936",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "113": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.594348",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.144052",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "114": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.623903",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.209833",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "115": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.655837",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.278279",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "116": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.694169",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.343117",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "117": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.734611",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.410633",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "118": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.811282",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.483667",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "119": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.864374",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.548047",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "120": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.894273",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.618074",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "121": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.924825",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.685281",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "122": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.966369",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.798821",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "123": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:01.997843",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.882973",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "124": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.027213",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:24.948861",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "125": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.060781",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.011695",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "126": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.094369",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.089882",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "127": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.126979",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.161574",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "128": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.160741",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.225583",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "129": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.194221",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.287844",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "130": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.226002",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.346686",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "131": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.253101",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.407549",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "132": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.295619",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.488740",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "133": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.329077",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.551392",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "134": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.364588",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.615937",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "135": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.396089",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.676740",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "136": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.427319",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.741219",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "137": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.457027",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.804581",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "138": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.488960",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.866964",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "139": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.522766",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.929572",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "140": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.557826",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:25.995430",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "141": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.583674",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.062630",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "142": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.626187",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.129319",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "143": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.662011",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.193313",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "144": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.694233",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.253418",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "145": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.730584",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.316994",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "146": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.758954",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.386867",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "147": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.798759",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.454510",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "148": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.833633",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.515744",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "149": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.863754",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.589195",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "150": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.897248",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.663599",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "151": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.928853",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.726262",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "152": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.958724",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.789393",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "153": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:02.990547",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.852729",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "154": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.027637",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.924080",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "155": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.062066",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:26.995706",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "156": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.110816",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.058552",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "157": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.144332",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.176853",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "158": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.180547",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.246087",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "159": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.211910",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.308558",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "160": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.245438",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.373831",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "161": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.277718",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.443115",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "162": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.313025",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.511473",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "163": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.344366",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.580042",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "164": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.377511",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.649747",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "165": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.411672",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.721537",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "166": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.447988",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.798064",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "167": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.480902",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.865723",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "168": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.512420",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:27.943944",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "169": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.545445",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.016425",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "170": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.577336",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.084795",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "171": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.610682",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.148257",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "172": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.641921",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.211901",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "173": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.676505",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.279553",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "174": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.713797",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.349233",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "175": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.744394",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.410178",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "176": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.772968",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.478412",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "177": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.803697",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.544953",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "178": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.835945",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.611034",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "179": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.867718",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.679977",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "180": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.900877",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.744793",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "181": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.939273",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.811286",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "182": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.963228",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.882782",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "183": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:03.994324",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:28.945601",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "184": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.030380",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.012840",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "185": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.060967",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.080058",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "186": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.090042",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.167072",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "187": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.121552",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.231607",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "188": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.153129",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.307500",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "189": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.193881",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.371293",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "190": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.227654",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.439330",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "191": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.260721",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.500308",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "192": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.295756",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.563373",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "193": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.327484",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.627753",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "194": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.353428",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.701963",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "195": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.394273",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.765738",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "196": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.417044",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.832196",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "197": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.464989",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.898104",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "198": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.508108",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:29.960115",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "199": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.543581",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.024749",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "200": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.575218",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.092246",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "201": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.623886",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.154797",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "202": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.654779",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.213324",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "203": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.687424",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.273392",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "204": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.715719",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.344065",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "205": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.752990",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.410176",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "206": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.783896",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.481403",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "207": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.807754",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.550416",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "208": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.856207",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.613416",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "209": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.885883",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.679903",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "210": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.926769",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.745051",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "211": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.958544",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.808810",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "212": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:04.990087",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.876457",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "213": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.011168",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:30.945495",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "214": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.058898",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.010909",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "215": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.090676",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.078193",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "216": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.122140",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.145762",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "217": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.153845",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.211896",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "218": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.194063",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.287735",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "219": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.228966",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.347322",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "220": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.260665",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.407028",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "221": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.294372",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.466018",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "222": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.328316",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.527809",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "223": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.361780",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.594496",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "224": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.395855",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.660667",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "225": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.420696",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.728707",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "226": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.451199",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.789067",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "227": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.482871",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.857134",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "228": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.528740",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.918208",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "229": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.562013",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:31.982440",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "230": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.594828",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.047298",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "231": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.636728",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.113415",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "232": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.670609",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.178539",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "233": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.706772",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.245081",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "234": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.741018",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.311933",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "235": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.871717",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.378093",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "236": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.907633",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.445579",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "237": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.937802",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.509966",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "238": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:05.971007",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.590666",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "239": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.009159",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.648359",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "240": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.045103",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.712789",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "241": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.082981",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.793008",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "242": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.114257",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.859644",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "243": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.146212",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:32.927310",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "244": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.179609",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.082775",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "245": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.210927",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.159565",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "246": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.244456",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.230437",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "247": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.266159",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.295151",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "248": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.310456",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.360943",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "249": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.342175",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.430884",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "250": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.377772",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.510143",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "251": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.410936",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.579427",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "252": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.444502",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.645379",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "253": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.477728",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.718088",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "254": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.512868",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.783749",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "255": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.549253",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.851487",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "256": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.580802",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.910524",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "257": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.616527",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:33.975288",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "258": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.648971",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.044734",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "259": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.680401",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.112724",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "260": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.710889",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.180439",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "261": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.750255",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.244990",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "262": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.782168",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.446751",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "263": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.815756",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.560956",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "264": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.843964",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.630371",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "265": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.883186",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.690283",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "266": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.916396",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.757243",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "267": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.954373",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.815159",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "268": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:06.987291",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.879081",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "269": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.020614",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:34.960686",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "270": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.054409",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.031557",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "271": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.086072",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.094309",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "272": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.120550",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.156916",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "273": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.151701",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.227733",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "274": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.199722",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.294690",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "275": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.223489",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.357028",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "276": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.261173",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.418148",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "277": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.297344",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.476528",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "278": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.329273",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.533523",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "279": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.360948",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.591975",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "280": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.392805",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.654924",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "281": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.424489",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.713335",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "282": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.462201",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.775840",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "283": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.487438",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.832965",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "284": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.531003",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.892477",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "285": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.562521",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:35.962976",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "286": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.598132",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.023182",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "287": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.633526",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.082462",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "288": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.662630",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.147888",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "289": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.701254",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.225988",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "290": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.732554",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.291060",
+      "updated_at": "2025-10-23T19:04:07.149543"
     },
     "291": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.770568",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.355702",
+      "updated_at": "2025-10-23T19:04:07.151545"
     },
     "292": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.804391",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.429723",
+      "updated_at": "2025-10-23T19:04:07.151545"
     },
     "293": {
-      "enabled": 0,
-      "reason": "Maintenance mode",
-      "disabled_at": "2025-10-23T16:26:07.835784",
-      "updated_at": "2025-10-23T17:55:19.581410"
+      "enabled": false,
+      "reason": "Auto-sync: Majority disabled",
+      "disabled_at": "2025-10-23T18:50:36.497951",
+      "updated_at": "2025-10-23T19:04:07.151545"
     }
   },
   "constitution_version": "2.0",

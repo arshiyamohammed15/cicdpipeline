@@ -99,8 +99,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:57.890354"
+        "disabled_reason": "Testing disable functionality",
+        "disabled_at": "2025-10-23T18:50:46.124582"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -120,8 +120,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:57.922297"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:09.655782"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -141,8 +141,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:57.962422"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:09.926147"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -162,8 +162,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:57.985579"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:10.200411"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -183,8 +183,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.017306"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:10.450457"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -204,8 +204,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.048733"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:10.685012"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -225,8 +225,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.093266"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:10.923128"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -246,8 +246,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.129663"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:11.176949"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -267,8 +267,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.159600"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:11.428923"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -288,8 +288,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.190718"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:11.574171"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -309,8 +309,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.222170"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:11.775506"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -330,8 +330,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.253879"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:11.906565"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -351,8 +351,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.286882"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:12.125218"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -372,8 +372,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.318450"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:12.370347"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -393,8 +393,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.360810"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:12.631118"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -414,8 +414,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.392732"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:12.835193"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -435,8 +435,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.424789"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:13.018486"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -456,8 +456,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.456465"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:13.244832"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -477,8 +477,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.488068"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:13.545548"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -498,8 +498,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.504203"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:13.759646"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -519,8 +519,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.536174"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:13.928892"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -540,8 +540,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.570552"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:14.253254"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -561,8 +561,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.599526"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:14.469758"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -582,8 +582,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.631475"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:14.706671"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -603,8 +603,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.663579"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:14.856652"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -624,8 +624,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.701291"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:14.994005"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -645,8 +645,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.727120"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:15.293314"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -666,8 +666,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.758576"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:15.569909"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -687,8 +687,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.791335"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:15.746447"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -708,8 +708,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.834943"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:15.976898"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -729,8 +729,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.869054"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:16.261433"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -750,8 +750,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.898048"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:16.505426"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -771,8 +771,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.927263"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:16.728611"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -792,8 +792,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.957070"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:16.976194"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -813,8 +813,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:58.989001"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:17.209366"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -834,8 +834,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.020857"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:17.350564"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -855,8 +855,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.052730"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:17.564270"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -876,8 +876,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.090852"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:17.794497"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -897,8 +897,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.115945"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:18.092361"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -918,8 +918,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.149621"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:18.338643"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -939,8 +939,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.179180"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:18.577790"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -960,8 +960,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.210887"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:18.825556"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -981,8 +981,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.242453"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.095514"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1002,8 +1002,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.273952"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.229341"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1023,8 +1023,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.305665"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.340174"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1044,8 +1044,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.337531"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.407877"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1065,8 +1065,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.368911"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.473687"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1086,8 +1086,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.400533"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.540868"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1107,8 +1107,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.428801"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.610495"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1128,8 +1128,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.468352"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.678576"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1149,8 +1149,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.498582"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.776075"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1170,8 +1170,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.528239"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.859012"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1191,8 +1191,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.558183"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:19.948102"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1212,8 +1212,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.585849"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.030482"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1233,8 +1233,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.625544"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.109327"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1254,8 +1254,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.648740"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.195401"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1275,8 +1275,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.680693"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.274344"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1296,8 +1296,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.713579"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.341159"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1317,8 +1317,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.752243"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.403254"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1338,8 +1338,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.777367"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.476607"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1359,8 +1359,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.815933"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.576946"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1380,8 +1380,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.846953"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.647347"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1401,8 +1401,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.877723"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.721062"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1422,8 +1422,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.901508"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.786481"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1443,8 +1443,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.944202"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.855878"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1464,8 +1464,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:25:59.977485"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.921956"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1485,8 +1485,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.011707"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:20.987570"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1506,8 +1506,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.040154"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.056865"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1527,8 +1527,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.071463"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.122177"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1548,8 +1548,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.105851"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.191282"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1569,8 +1569,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.134884"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.259186"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1590,8 +1590,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.169545"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.323146"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1611,8 +1611,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.198379"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.391522"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1632,8 +1632,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.234412"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.460855"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1653,8 +1653,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.263091"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.533761"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1674,8 +1674,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.298918"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.595518"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1695,8 +1695,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.325821"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.657530"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1716,8 +1716,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.373641"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.721725"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1737,8 +1737,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.495549"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.803299"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1758,8 +1758,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.525425"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.877932"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1779,8 +1779,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.560902"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:21.951308"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1800,8 +1800,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.594352"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.027925"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1821,8 +1821,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.627700"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.092880"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1842,8 +1842,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.668593"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.156050"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1863,8 +1863,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.700375"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.228883"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1884,8 +1884,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.732229"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.303402"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1905,8 +1905,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.759276"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.370048"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1926,8 +1926,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.780490"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.438794"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1947,8 +1947,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.828523"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.506835"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1968,8 +1968,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.860156"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.573359"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -1989,8 +1989,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.894443"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.652540"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2010,8 +2010,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.924059"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.729890"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2031,8 +2031,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.961140"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.803636"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2052,8 +2052,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:00.990108"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.872794"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2073,8 +2073,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.026564"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.929920"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2094,8 +2094,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.061040"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:22.997050"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2115,8 +2115,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.098201"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.060922"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.399035",
@@ -2136,8 +2136,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.129309"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.125450"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2157,8 +2157,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.162556"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.198730"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2178,8 +2178,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.199327"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.272902"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2199,8 +2199,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.229000"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.340939"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2220,8 +2220,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.261271"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.403641"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2241,8 +2241,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.290997"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.470575"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2262,8 +2262,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.312599"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.536152"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2283,8 +2283,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.351138"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.608154"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2304,8 +2304,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.394014"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.675250"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2325,8 +2325,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.422760"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.742700"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2346,8 +2346,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.454861"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.820186"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2367,8 +2367,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.486853"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.894691"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2388,8 +2388,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.518591"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:23.959052"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2409,8 +2409,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.545526"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.022610"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2430,8 +2430,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.577259"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.089888"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2451,8 +2451,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.607978"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.151378"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2472,8 +2472,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.644034"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.219833"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2493,8 +2493,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.677676"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.285600"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2514,8 +2514,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.711021"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.351402"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2535,8 +2535,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.750288"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.420116"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2556,8 +2556,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.843102"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.493242"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2577,8 +2577,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.877611"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.558056"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2598,8 +2598,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.914852"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.627008"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2619,8 +2619,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.952356"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.693057"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2640,8 +2640,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:01.984081"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.810851"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2661,8 +2661,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.013201"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.894122"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2682,8 +2682,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.044283"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:24.957648"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2703,8 +2703,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.078726"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.022709"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2724,8 +2724,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.111224"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.101293"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2745,8 +2745,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.144512"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.170982"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2766,8 +2766,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.178205"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.233919"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2787,8 +2787,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.210984"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.294888"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2808,8 +2808,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.239215"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.355467"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2829,8 +2829,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.280108"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.414424"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2850,8 +2850,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.313057"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.495721"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2871,8 +2871,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.348826"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.559848"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2892,8 +2892,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.380333"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.624356"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2913,8 +2913,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.412113"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.685450"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2934,8 +2934,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.443264"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.749524"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2955,8 +2955,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.473050"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.811816"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2976,8 +2976,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.507004"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.876244"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -2997,8 +2997,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.543811"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:25.939497"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3018,8 +3018,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.577625"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.005894"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3039,8 +3039,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.610514"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.071905"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3060,8 +3060,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.644252"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.140175"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3081,8 +3081,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.677836"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.201557"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3102,8 +3102,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.714998"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.260915"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3123,8 +3123,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.750341"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.327972"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3144,8 +3144,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.783743"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.397922"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3165,8 +3165,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.816131"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.461289"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3186,8 +3186,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.847693"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.528096"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3207,8 +3207,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.881496"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.596579"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3228,8 +3228,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.915101"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.673134"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3249,8 +3249,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.942617"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.733736"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3270,8 +3270,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:02.974443"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.796101"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3291,8 +3291,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.010990"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.863458"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3312,8 +3312,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.046313"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:26.934377"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3333,8 +3333,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.079240"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.005672"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3354,8 +3354,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.129027"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.064891"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3375,8 +3375,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.164531"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.186899"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3396,8 +3396,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.197897"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.256210"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3417,8 +3417,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.227751"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.316085"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3438,8 +3438,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.265147"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.385198"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3459,8 +3459,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.298008"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.451572"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3480,8 +3480,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.327006"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.520433"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3501,8 +3501,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.361174"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.589402"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3522,8 +3522,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.396904"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.657292"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3543,8 +3543,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.429665"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.729411"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3564,8 +3564,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.466882"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.806763"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3585,8 +3585,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.498665"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.875415"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3606,8 +3606,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.528903"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:27.951789"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3627,8 +3627,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.564795"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.026719"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3648,8 +3648,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.593998"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.094531"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3669,8 +3669,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.627667"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.157680"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3690,8 +3690,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.659802"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.220635"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3711,8 +3711,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.698721"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.289873"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3732,8 +3732,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.730101"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.359285"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3753,8 +3753,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.757171"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.419454"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3774,8 +3774,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.794011"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.488925"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3795,8 +3795,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.827379"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.553883"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3816,8 +3816,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.861150"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.620811"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3837,8 +3837,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.884922"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.689739"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3858,8 +3858,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.915399"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.757185"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3879,8 +3879,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.947065"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.819327"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3900,8 +3900,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:03.979107"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.890163"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3921,8 +3921,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.010670"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:28.953414"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3942,8 +3942,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.043980"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.023532"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3963,8 +3963,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.073988"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.094337"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -3984,8 +3984,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.105854"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.175907"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4005,8 +4005,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.137284"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.244081"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4026,8 +4026,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.185275"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.315339"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4047,8 +4047,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.210976"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.380355"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4068,8 +4068,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.241885"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.446788"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4089,8 +4089,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.273954"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.508165"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4110,8 +4110,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.312379"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.572512"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4131,8 +4131,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.345388"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.636442"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4152,8 +4152,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.377425"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.711287"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4173,8 +4173,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.401105"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.775235"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4194,8 +4194,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.434297"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.832196"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4215,8 +4215,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.492092"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.906170"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4236,8 +4236,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.526817"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:29.968579"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4257,8 +4257,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.563351"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.031652"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4278,8 +4278,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.602443"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.098329"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4299,8 +4299,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.639648"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.161607"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4320,8 +4320,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.672889"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.221702"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4341,8 +4341,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.701956"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.279840"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4362,8 +4362,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.737969"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.355573"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4383,8 +4383,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.769880"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.418139"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4404,8 +4404,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.801236"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.491295"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4425,8 +4425,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.838504"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.559420"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4446,8 +4446,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.877376"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.622318"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4467,8 +4467,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.911015"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.690275"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4488,8 +4488,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.945029"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.753747"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4509,8 +4509,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:04.977073"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.817211"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4530,8 +4530,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.003998"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.886443"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4551,8 +4551,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.042138"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:30.954188"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4572,8 +4572,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.077892"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.020188"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4593,8 +4593,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.111091"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.087729"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4614,8 +4614,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.144544"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.156794"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4635,8 +4635,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.177895"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.220596"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4656,8 +4656,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.211947"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.294059"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4677,8 +4677,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.244552"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.349916"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4698,8 +4698,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.276511"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.414043"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4719,8 +4719,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.312797"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.475040"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4740,8 +4740,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.346762"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.538198"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4761,8 +4761,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.380335"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.600420"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4782,8 +4782,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.403809"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.668128"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4803,8 +4803,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.435242"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.737870"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4824,8 +4824,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.466857"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.793187"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4845,8 +4845,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.513222"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.863545"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4866,8 +4866,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.546223"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.927243"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4887,8 +4887,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.577985"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:31.992046"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4908,8 +4908,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.618970"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.056408"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4929,8 +4929,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.655849"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.122749"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4950,8 +4950,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.688315"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.186083"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.404511",
@@ -4971,8 +4971,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.720566"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.254633"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -4992,8 +4992,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.760988"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.321427"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5013,8 +5013,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.891877"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.387359"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5034,8 +5034,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.922990"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.452503"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5055,8 +5055,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.952141"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.516948"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5076,8 +5076,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:05.981918"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.596384"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5097,8 +5097,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.025626"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.657325"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5118,8 +5118,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.065223"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.721302"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5139,8 +5139,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.100231"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.804321"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5160,8 +5160,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.132461"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.867031"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5181,8 +5181,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.163594"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:32.936609"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5202,8 +5202,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.196906"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.096888"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5223,8 +5223,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.227919"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.167160"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5244,8 +5244,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.261114"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.239854"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5265,8 +5265,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.294458"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.303543"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5286,8 +5286,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.327876"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.369839"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5307,8 +5307,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.361209"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.443259"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5328,8 +5328,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.394547"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.520340"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5349,8 +5349,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.427574"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.588695"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5370,8 +5370,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.459416"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.654726"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5391,8 +5391,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.491547"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.727538"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5412,8 +5412,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.533500"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.796840"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5433,8 +5433,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.565040"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.859338"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5454,8 +5454,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.603011"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.919605"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5475,8 +5475,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.632956"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:33.983805"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5496,8 +5496,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.666383"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.051512"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5517,8 +5517,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.699532"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.122351"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5538,8 +5538,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.732498"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.191352"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5559,8 +5559,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.767150"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.259662"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5580,8 +5580,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.801001"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.480175"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5601,8 +5601,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.833707"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.570109"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5622,8 +5622,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.867370"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.638524"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5643,8 +5643,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.899618"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.696740"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5664,8 +5664,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.938455"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.762790"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5685,8 +5685,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:06.970149"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.823227"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5706,8 +5706,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.006439"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.888539"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5727,8 +5727,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.034887"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:34.966847"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5748,8 +5748,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.073607"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.041685"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5769,8 +5769,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.105530"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.101473"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5790,8 +5790,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.137885"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.163531"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5811,8 +5811,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.183505"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.235222"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5832,8 +5832,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.211376"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.305657"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5853,8 +5853,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.245484"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.364571"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5874,8 +5874,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.282327"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.425440"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5895,8 +5895,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.313521"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.483154"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5916,8 +5916,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.345930"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.540855"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5937,8 +5937,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.378514"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.598956"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5958,8 +5958,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.411080"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.661086"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -5979,8 +5979,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.446448"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.721406"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6000,8 +6000,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.477972"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.782128"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6021,8 +6021,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.515483"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.840854"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6042,8 +6042,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.546767"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.898732"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6063,8 +6063,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.577472"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:35.971873"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6084,8 +6084,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.618511"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.030244"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6105,8 +6105,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.649402"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.090435"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6126,8 +6126,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.677965"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.160579"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6147,8 +6147,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.719026"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.233732"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6168,8 +6168,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.753617"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.297799"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6189,8 +6189,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.788637"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.366006"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6210,8 +6210,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.822506"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.438644"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",
@@ -6231,8 +6231,8 @@
       "config": {
         "default_enabled": true,
         "notes": "",
-        "disabled_reason": "Maintenance mode",
-        "disabled_at": "2025-10-23T16:26:07.858242"
+        "disabled_reason": "Auto-sync: Majority disabled",
+        "disabled_at": "2025-10-23T18:50:36.508423"
       },
       "metadata": {
         "created_at": "2025-10-23T13:14:06.405758",

@@ -334,6 +334,8 @@ class ConstitutionRulesDB:
                 rule = dict(row)
                 rule['json_metadata'] = json.loads(rule['json_metadata'])
                 rule['config_data'] = json.loads(rule['config_data']) if rule['config_data'] else {}
+                # Convert enabled from integer to boolean
+                rule['enabled'] = bool(rule['enabled'])
                 rules.append(rule)
             
             return rules
@@ -362,6 +364,8 @@ class ConstitutionRulesDB:
                 rule = dict(row)
                 rule['json_metadata'] = json.loads(rule['json_metadata'])
                 rule['config_data'] = json.loads(rule['config_data']) if rule['config_data'] else {}
+                # Convert enabled from integer to boolean
+                rule['enabled'] = bool(rule['enabled'])
                 return rule
             
             return None

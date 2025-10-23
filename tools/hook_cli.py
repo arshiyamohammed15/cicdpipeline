@@ -187,7 +187,7 @@ class HookCLI:
         try:
             stats = self.config_manager.get_statistics()
             
-            print("\n📊 Hook Statistics")
+            print("\nHook Statistics")
             print("=" * 30)
             print(f"Total Rules: {stats['total_rules']}")
             print(f"Enabled Rules: {stats['enabled_rules']} ({stats['enabled_percentage']:.1f}%)")

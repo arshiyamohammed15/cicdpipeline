@@ -2,11 +2,12 @@
 
 ## Overview
 
-The ZeroUI 2.0 Rule Manager (`tools/rule_manager.py`) provides comprehensive rule management capabilities across all 4 sources in the constitution system:
+The ZeroUI 2.0 Rule Manager (`tools/rule_manager.py`) provides comprehensive rule management capabilities across all 5 sources in the constitution system:
 
 - **Database** (SQLite)
 - **JSON Export** (constitution_rules.json)
 - **Config** (constitution_config.json)
+- **Hooks** (Pre-implementation hooks)
 - **Markdown** (read-only for content)
 
 ## Installation & Setup
@@ -64,6 +65,7 @@ python tools/rule_manager.py --status-rule 150
 #   Database enabled: True
 #   JSON export enabled: True
 #   Config enabled: True
+#   Hooks enabled: True
 #   Consistent: Yes
 ```
 
@@ -94,7 +96,7 @@ python tools/rule_manager.py --disable-rule 150 --sources database config
 python tools/rule_manager.py --enable-rule 150 --sources json_export
 
 # Update all sources (including markdown - read-only)
-python tools/rule_manager.py --enable-rule 150 --sources markdown database json_export config
+python tools/rule_manager.py --enable-rule 150 --sources markdown database json_export config hooks
 ```
 
 ### Configuration Data
@@ -136,7 +138,7 @@ python tools/rule_manager.py --disable-all --reason "Database migration in progr
 | `--status` | Show status of all rules | No | `--status` |
 | `--status-rule RULE_NUMBER` | Show status of a specific rule | No | `--status-rule 150` |
 | `--sync-all` | Synchronize all sources | No | `--sync-all` |
-| `--sources SOURCE_LIST` | Specify which sources to update | No | `--sources database config` |
+| `--sources SOURCE_LIST` | Specify which sources to update | No | `--sources database config hooks` |
 | `--help` | Show help message | No | `--help` |
 
 ### Available Sources
@@ -147,6 +149,7 @@ python tools/rule_manager.py --disable-all --reason "Database migration in progr
 | `database` | SQLite constitution rules database | Read/Write |
 | `json_export` | JSON export file | Read/Write |
 | `config` | Configuration file | Read/Write |
+| `hooks` | Pre-implementation hooks configuration | Read/Write |
 
 ## Common Workflows
 
@@ -177,11 +180,11 @@ python tools/rule_manager.py --enable-rule 150 --config-data '{"test_complete": 
 ### 3. Selective Updates
 
 ```bash
-# Update only database and config (skip JSON export)
+# Update only database and config (skip JSON export and hooks)
 python tools/rule_manager.py --disable-rule 150 --sources database config --reason "Temporary disable for debugging"
 
-# Update only JSON export
-python tools/rule_manager.py --enable-rule 150 --sources json_export
+# Update only JSON export and hooks
+python tools/rule_manager.py --enable-rule 150 --sources json_export hooks
 ```
 
 ### 4. Consistency Checking
@@ -217,6 +220,7 @@ ENABLE RULE 150 RESULTS:
   database: OK Enabled in database
   config: OK Enabled in config
   json_export: OK Enabled in JSON export
+  hooks: OK Enabled in hooks
 ```
 
 ### Error Handling
@@ -227,6 +231,7 @@ DISABLE RULE 150 RESULTS:
   database: OK Disabled in database
   config: FAIL Config error: Permission denied
   json_export: OK Disabled in JSON export
+  hooks: OK Disabled in hooks
 ```
 
 ## Best Practices
@@ -340,6 +345,7 @@ python tools/rule_manager.py --enable-all
 - **Database**: `config/constitution_rules.db`
 - **JSON Export**: `config/constitution_rules.json`
 - **Config**: `config/constitution_config.json`
+- **Hooks**: `config/hook_config.json`
 - **Markdown**: `docs/architecture/ZeroUI2.0_Master_Constitution.md`
 
 ## Support
@@ -352,5 +358,5 @@ For issues or questions:
 
 ---
 
-*Last updated: 2024-12-19*
-*ZeroUI 2.0 Rule Manager v1.0*
+*Last updated: 2025-01-23*
+*ZeroUI 2.0 Rule Manager v1.1*

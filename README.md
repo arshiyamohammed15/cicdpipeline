@@ -12,6 +12,7 @@ A Python-based automated code review tool that validates code against the ZeroUI
 - **Category-Based Validation**: Requirements, Privacy & Security, Performance, Architecture, System Design, Problem-Solving, Platform, Teamwork, Testing & Safety, Code Quality, Code Review, API Contracts, Coding Standards, Comments, Folder Standards, Logging, Exception Handling, TypeScript
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
+- **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
 
 ## Installation
 
@@ -53,6 +54,19 @@ pytest validator/rules/tests -q
 
 # Run Exception Handling tests specifically
 python config/constitution/tests/test_exception_handling/test_rules_150_181_simple.py
+```
+
+### Rule Manager (Enhanced)
+```bash
+# Check rule status across all 5 sources
+python tools/rule_manager.py --status
+
+# Enable/disable rules with intelligent conflict resolution
+python tools/rule_manager.py --enable-rule 150
+python tools/rule_manager.py --disable-rule 150 --reason "Testing"
+
+# Sync all sources to fix inconsistencies
+python tools/rule_manager.py --sync-all
 ```
 
 ### Generate HTML Report
@@ -2077,6 +2091,24 @@ def test_no_any_violation():
 - ✅ **No Hardcoded Numbers**: All tests use dynamic rule discovery
 - ✅ **Constitution Integration**: Tests read from constitution database
 - ✅ **Documentation**: Complete examples and migration guide
+
+## Changelog
+
+### v1.1.1 (January 2025) - Rule Manager Fixes
+- **Fixed Database Method Error**: Resolved `get_rule` method missing error by using `get_rule_by_number()`
+- **Fixed Boolean Type Consistency**: Converted integer 0/1 values to proper boolean False/True across all sources
+- **Enhanced Majority Vote Logic**: Improved conflict resolution to handle mixed data types (0, False, True)
+- **Database Boolean Conversion**: Fixed database methods to return boolean values instead of integers
+- **Improved Error Handling**: Better error messages and graceful degradation for missing sources
+- **Complete 5-Source Support**: Full support for Database, JSON Export, Config, Hooks, and Markdown sources
+
+### v1.1 (December 2024) - Enhanced Rule Consistency Verification
+- **5-Source Management**: Now manages rules across Database, JSON Export, Config, Hooks, and Markdown
+- **Intelligent Conflict Resolution**: Uses majority vote with priority fallback for consistency
+- **Enhanced Status Reporting**: Detailed source status and conflict resolution information
+- **Selective Source Updates**: Control which sources to update with `--sources` flag
+- **Bulk Operations**: Enable/disable all rules across all sources
+- **Automatic Synchronization**: Fix inconsistencies with `--sync-all` command
 
 ## Support
 

@@ -434,7 +434,23 @@ class HookConfigManager:
         Returns:
             Dictionary with configuration statistics
         """
-        total_rules = sum(len(config['rules']) for config in self.hook_categories.values())
+        # Get all rules that have been configured (either explicitly or by category)
+        all_configured_rules = set()
+        
+        # Add rules from individual configuration
+        for rule_id_str in self.config['individual_rules'].keys():
+            all_configured_rules.add(int(rule_id_str))
+        
+        # Add rules from category configuration
+        for category in HookCategory:
+            cat_status = self.get_category_status(category)
+            if cat_status['status'] == HookStatus.ENABLED.value:
+                # Add all rules in this category
+                start, end = self.hook_categories[category]['rule_range']
+                for rule_id in range(start, end + 1):
+                    all_configured_rules.add(rule_id)
+        
+        total_rules = len(all_configured_rules)
         enabled_rules = len(self.get_enabled_rules())
         disabled_rules = len(self.get_disabled_rules())
         
