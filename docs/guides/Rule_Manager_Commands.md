@@ -20,6 +20,22 @@ cd D:\Projects\ZeroUI2.0
 # The script automatically adds the project root to sys.path
 ```
 
+## Parameter Format Guide
+
+The rule manager uses **two different parameter formats**:
+
+### **Simple String Parameters** (No escaping needed)
+- `--reason`: Simple text string
+- Example: `--reason "System maintenance"`
+
+### **JSON Parameters** (PowerShell requires escaping)
+- `--config-data`: JSON object string
+- Example: `--config-data '{\"key\": \"value\"}'`
+
+**Why the difference?**
+- `--reason` is a simple text field (no JSON parsing)
+- `--config-data` is parsed as JSON (requires valid JSON syntax)
+
 ## Basic Commands
 
 ### Enable/Disable Individual Rules
@@ -28,11 +44,11 @@ cd D:\Projects\ZeroUI2.0
 # Enable a specific rule
 python tools/rule_manager.py --enable-rule 150
 
-# Disable a specific rule with reason
+# Disable a specific rule with reason (SIMPLE STRING - no escaping needed)
 python tools/rule_manager.py --disable-rule 150 --reason "Too restrictive for current project"
 
-# Enable with custom configuration
-python tools/rule_manager.py --enable-rule 150 --config-data '{"priority": "high", "notes": "Critical rule"}'
+# Enable with custom configuration (JSON FORMAT - PowerShell requires escaped quotes)
+python tools/rule_manager.py --enable-rule 150 --config-data '{\"priority\": \"high\", \"notes\": \"Critical rule\"}'
 ```
 
 ### Enable/Disable All Rules
@@ -41,11 +57,11 @@ python tools/rule_manager.py --enable-rule 150 --config-data '{"priority": "high
 # Enable all rules
 python tools/rule_manager.py --enable-all
 
-# Disable all rules for maintenance
+# Disable all rules for maintenance (SIMPLE STRING - no escaping needed)
 python tools/rule_manager.py --disable-all --reason "System maintenance"
 
-# Enable all rules with configuration
-python tools/rule_manager.py --enable-all --config-data '{"maintenance_complete": true, "enabled_at": "2024-01-15"}'
+# Enable all rules with configuration (JSON FORMAT - PowerShell requires escaped quotes)
+python tools/rule_manager.py --enable-all --config-data '{\"maintenance_complete\": true, \"enabled_at\": \"2024-01-15\"}'
 ```
 
 ## Status and Monitoring
@@ -104,11 +120,11 @@ python tools/rule_manager.py --enable-rule 150 --sources markdown database json_
 Add custom configuration when enabling rules:
 
 ```bash
-# Enable with priority and notes
-python tools/rule_manager.py --enable-rule 150 --config-data '{"priority": "high", "notes": "Critical for security"}'
+# Enable with priority and notes (PowerShell - use escaped quotes)
+python tools/rule_manager.py --enable-rule 150 --config-data '{\"priority\": \"high\", \"notes\": \"Critical for security\"}'
 
-# Enable all with maintenance metadata
-python tools/rule_manager.py --enable-all --config-data '{"maintenance_complete": true, "version": "2.1", "updated_by": "admin"}'
+# Enable all with maintenance metadata (PowerShell - use escaped quotes)
+python tools/rule_manager.py --enable-all --config-data '{\"maintenance_complete\": true, \"version\": \"2.1\", \"updated_by\": \"admin\"}'
 ```
 
 ### Detailed Reasons
@@ -304,6 +320,21 @@ python tools/rule_manager.py --sync-all
    
    # List all rules
    python tools/rule_manager.py --status
+   ```
+
+4. **PowerShell JSON Issues**
+   ```bash
+   # ❌ Wrong (PowerShell strips quotes from JSON)
+   python tools/rule_manager.py --enable-rule 150 --config-data '{"priority": "high"}'
+   
+   # ✅ Correct (PowerShell - use escaped quotes for JSON)
+   python tools/rule_manager.py --enable-rule 150 --config-data '{\"priority\": \"high\"}'
+   
+   # ✅ Simple strings work fine (no escaping needed)
+   python tools/rule_manager.py --disable-rule 150 --reason "System maintenance"
+   
+   # Example with multiple JSON properties
+   python tools/rule_manager.py --enable-all --config-data '{\"maintenance_complete\": true, \"version\": \"2.1\"}'
    ```
 
 ### Debug Mode

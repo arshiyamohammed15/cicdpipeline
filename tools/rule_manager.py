@@ -769,8 +769,8 @@ Examples:
             if args.config_data:
                 try:
                     config_data = json.loads(args.config_data)
-                except json.JSONDecodeError:
-                    print("Error: Invalid JSON in --config-data")
+                except json.JSONDecodeError as e:
+                    print(f"Error: Invalid JSON in --config-data: {e}")
                     return 1
             
             results = rule_manager.enable_rule(args.enable_rule, config_data, args.sources)
@@ -786,8 +786,8 @@ Examples:
             if args.config_data:
                 try:
                     config_data = json.loads(args.config_data)
-                except json.JSONDecodeError:
-                    print("Error: Invalid JSON in --config-data")
+                except json.JSONDecodeError as e:
+                    print(f"Error: Invalid JSON in --config-data: {e}")
                     return 1
             
             results = rule_manager.enable_all_rules(config_data, args.sources)

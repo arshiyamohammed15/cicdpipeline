@@ -1,6 +1,6 @@
 {
   "version": "2.0",
-  "last_updated": "2025-10-23T19:04:07.151545",
+  "last_updated": "2025-10-23T19:26:20.137848",
   "primary_backend": "sqlite",
   "backend_config": {
     "sqlite": {
@@ -28,1762 +28,2055 @@
   },
   "rules": {
     "1": {
-      "enabled": false,
-      "reason": "Testing disable functionality",
-      "disabled_at": "2025-10-23T18:50:46.116604",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.271500"
     },
     "2": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:09.617160",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.309290"
     },
     "3": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:09.888399",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.347503"
     },
     "4": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:10.159736",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.386491"
     },
     "5": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:10.418568",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.422169"
     },
     "6": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:10.647644",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.459177"
     },
     "7": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:10.886704",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.490240"
     },
     "8": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:11.130620",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.537828"
     },
     "9": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:11.408290",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.569609"
     },
     "10": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:11.549216",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.601341"
     },
     "11": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:11.755764",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.648628"
     },
     "12": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:11.888587",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.687776"
     },
     "13": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:12.101319",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.728177"
     },
     "14": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:12.333900",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.765314"
     },
     "15": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:12.587798",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.798549"
     },
     "16": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:12.810818",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.841894"
     },
     "17": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:12.980228",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.881469"
     },
     "18": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:13.206474",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.917087"
     },
     "19": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:13.491685",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.960904"
     },
     "20": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:13.728201",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:08.998513"
     },
     "21": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:13.909756",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.037017"
     },
     "22": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:14.190042",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.073390"
     },
     "23": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:14.444655",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.102036"
     },
     "24": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:14.675269",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.145269"
     },
     "25": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:14.844948",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.184508"
     },
     "26": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:14.964363",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.230422"
     },
     "27": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:15.208334",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.259826"
     },
     "28": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:15.536316",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.292989"
     },
     "29": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:15.711583",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.341163"
     },
     "30": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:15.947786",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.382673"
     },
     "31": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:16.187070",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.415189"
     },
     "32": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:16.468445",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.462343"
     },
     "33": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:16.704093",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.504306"
     },
     "34": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:16.939988",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.540321"
     },
     "35": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:17.176630",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.576448"
     },
     "36": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:17.323017",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.617414"
     },
     "37": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:17.535025",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.654547"
     },
     "38": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:17.757666",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.690244"
     },
     "39": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:18.058115",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.715966"
     },
     "40": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:18.322229",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.764686"
     },
     "41": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:18.546306",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.803446"
     },
     "42": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:18.793047",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.841782"
     },
     "43": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.074665",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.874479"
     },
     "44": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.214288",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.915600"
     },
     "45": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.325386",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.956777"
     },
     "46": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.398670",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:09.993777"
     },
     "47": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.467092",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.028747"
     },
     "48": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.531396",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.069654"
     },
     "49": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.602308",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.103762"
     },
     "50": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.671070",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.159856"
     },
     "51": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.761027",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.197503"
     },
     "52": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.847336",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.235029"
     },
     "53": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:19.940284",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.265265"
     },
     "54": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.022430",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.309403"
     },
     "55": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.098614",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.346099"
     },
     "56": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.184547",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.384885"
     },
     "57": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.265618",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.420731"
     },
     "58": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.331045",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.448994"
     },
     "59": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.394722",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.497017"
     },
     "60": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.464967",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.536517"
     },
     "61": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.563694",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.569395"
     },
     "62": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.639071",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.610530"
     },
     "63": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.711483",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.648581"
     },
     "64": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.777435",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.687657"
     },
     "65": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.846207",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.722199"
     },
     "66": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.908674",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.770119"
     },
     "67": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:20.978545",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.806813"
     },
     "68": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.047285",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.846712"
     },
     "69": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.114149",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.883776"
     },
     "70": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.180485",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.920663"
     },
     "71": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.238708",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.950828"
     },
     "72": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.313392",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:10.982146"
     },
     "73": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.379890",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.031911"
     },
     "74": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.448263",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.070066"
     },
     "75": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.525110",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.107960"
     },
     "76": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.587637",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.139714"
     },
     "77": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.649571",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.178522"
     },
     "78": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.712734",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.219136"
     },
     "79": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.794842",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.261696"
     },
     "80": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.866927",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.305912"
     },
     "81": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:21.940973",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.345593"
     },
     "82": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.019569",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.381862"
     },
     "83": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.080292",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.417284"
     },
     "84": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.146203",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.455082"
     },
     "85": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.221583",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.490636"
     },
     "86": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.293836",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.534940"
     },
     "87": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.361437",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.576631"
     },
     "88": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.430055",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.615273"
     },
     "89": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.497164",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.647112"
     },
     "90": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.564079",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.687999"
     },
     "91": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.639263",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.732011"
     },
     "92": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.722122",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.767804"
     },
     "93": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.795454",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.807160"
     },
     "94": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.863014",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.849473"
     },
     "95": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.922017",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.878859"
     },
     "96": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:22.987838",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.926713"
     },
     "97": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.053743",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.958716"
     },
     "98": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.115735",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:11.998641"
     },
     "99": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.189936",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.035862"
     },
     "100": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.263585",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.071779"
     },
     "101": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.330985",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.160786"
     },
     "102": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.394957",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.208314"
     },
     "103": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.461366",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.245543"
     },
     "104": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.525772",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.272172"
     },
     "105": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.598724",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.319740"
     },
     "106": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.665754",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.351317"
     },
     "107": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.737105",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.382779"
     },
     "108": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.810478",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.429786"
     },
     "109": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.887017",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.479454"
     },
     "110": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:23.948990",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.516804"
     },
     "111": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.014167",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.557916"
     },
     "112": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.080936",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.595765"
     },
     "113": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.144052",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.631357"
     },
     "114": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.209833",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.659531"
     },
     "115": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.278279",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.706992"
     },
     "116": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.343117",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.752999"
     },
     "117": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.410633",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.792417"
     },
     "118": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.483667",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.825701"
     },
     "119": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.548047",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.866656"
     },
     "120": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.618074",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.899925"
     },
     "121": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.685281",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.945671"
     },
     "122": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.798821",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:12.983789"
     },
     "123": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.882973",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.021371"
     },
     "124": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:24.948861",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.056332"
     },
     "125": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.011695",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.097594"
     },
     "126": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.089882",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.131932"
     },
     "127": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.161574",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.160868"
     },
     "128": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.225583",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.215111"
     },
     "129": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.287844",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.253239"
     },
     "130": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.346686",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.303122"
     },
     "131": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.407549",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.347593"
     },
     "132": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.488740",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.389626"
     },
     "133": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.551392",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.430994"
     },
     "134": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.615937",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.477223"
     },
     "135": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.676740",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.517717"
     },
     "136": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.741219",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.596448"
     },
     "137": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.804581",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.650735"
     },
     "138": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.866964",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.702908"
     },
     "139": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.929572",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.741613"
     },
     "140": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:25.995430",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.781935"
     },
     "141": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.062630",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.820245"
     },
     "142": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.129319",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.864992"
     },
     "143": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.193313",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.905084"
     },
     "144": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.253418",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:13.961418"
     },
     "145": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.316994",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.002575"
     },
     "146": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.386867",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.042073"
     },
     "147": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.454510",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.082444"
     },
     "148": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.515744",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.122599"
     },
     "149": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.589195",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.155154"
     },
     "150": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.663599",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.201307"
     },
     "151": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.726262",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.238233"
     },
     "152": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.789393",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.268714"
     },
     "153": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.852729",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.318185"
     },
     "154": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.924080",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.348676"
     },
     "155": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:26.995706",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.390258"
     },
     "156": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.058552",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.429845"
     },
     "157": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.176853",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.469526"
     },
     "158": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.246087",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.509487"
     },
     "159": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.308558",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.550902"
     },
     "160": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.373831",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.597560"
     },
     "161": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.443115",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.642346"
     },
     "162": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.511473",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.683578"
     },
     "163": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.580042",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.722490"
     },
     "164": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.649747",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.761454"
     },
     "165": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.721537",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.803607"
     },
     "166": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.798064",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.847648"
     },
     "167": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.865723",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.891087"
     },
     "168": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:27.943944",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.937832"
     },
     "169": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.016425",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:14.977655"
     },
     "170": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.084795",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.018548"
     },
     "171": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.148257",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.060143"
     },
     "172": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.211901",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.100817"
     },
     "173": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.279553",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.141548"
     },
     "174": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.349233",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.180937"
     },
     "175": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.410178",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.220603"
     },
     "176": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.478412",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.273063"
     },
     "177": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.544953",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.316696"
     },
     "178": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.611034",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.355839"
     },
     "179": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.679977",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.400134"
     },
     "180": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.744793",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.433619"
     },
     "181": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.811286",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.476254"
     },
     "182": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.882782",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.514417"
     },
     "183": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:28.945601",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.551400"
     },
     "184": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.012840",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.588825"
     },
     "185": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.080058",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.631994"
     },
     "186": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.167072",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.671509"
     },
     "187": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.231607",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.710351"
     },
     "188": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.307500",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.754479"
     },
     "189": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.371293",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.797566"
     },
     "190": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.439330",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.834659"
     },
     "191": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.500308",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.867974"
     },
     "192": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.563373",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.917929"
     },
     "193": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.627753",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.958893"
     },
     "194": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.701963",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:15.998563"
     },
     "195": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.765738",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.039424"
     },
     "196": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.832196",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.078664"
     },
     "197": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.898104",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.123534"
     },
     "198": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:29.960115",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.167447"
     },
     "199": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.024749",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.220159"
     },
     "200": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.092246",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.269290"
     },
     "201": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.154797",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.321435"
     },
     "202": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.213324",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.359930"
     },
     "203": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.273392",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.397756"
     },
     "204": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.344065",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.434970"
     },
     "205": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.410176",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.473167"
     },
     "206": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.481403",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.504853"
     },
     "207": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.550416",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.549271"
     },
     "208": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.613416",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.589109"
     },
     "209": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.679903",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.630955"
     },
     "210": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.745051",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.667074"
     },
     "211": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.808810",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.701295"
     },
     "212": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.876457",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.747800"
     },
     "213": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:30.945495",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.786323"
     },
     "214": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.010909",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.818325"
     },
     "215": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.078193",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.849867"
     },
     "216": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.145762",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.895960"
     },
     "217": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.211896",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.935410"
     },
     "218": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.287735",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:16.971174"
     },
     "219": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.347322",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.001732"
     },
     "220": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.407028",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.042047"
     },
     "221": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.466018",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.083767"
     },
     "222": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.527809",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.122418"
     },
     "223": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.594496",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.189793"
     },
     "224": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.660667",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.237116"
     },
     "225": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.728707",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.282168"
     },
     "226": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.789067",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.321891"
     },
     "227": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.857134",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.359449"
     },
     "228": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.918208",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.397829"
     },
     "229": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:31.982440",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.435131"
     },
     "230": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.047298",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.479544"
     },
     "231": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.113415",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.516301"
     },
     "232": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.178539",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.557680"
     },
     "233": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.245081",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.593779"
     },
     "234": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.311933",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.633206"
     },
     "235": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.378093",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.671642"
     },
     "236": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.445579",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.710425"
     },
     "237": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.509966",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.753873"
     },
     "238": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.590666",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.796020"
     },
     "239": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.648359",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.833769"
     },
     "240": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.712789",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.881056"
     },
     "241": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.793008",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.917313"
     },
     "242": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.859644",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.966953"
     },
     "243": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:32.927310",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:17.999968"
     },
     "244": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.082775",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.040230"
     },
     "245": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.159565",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.081586"
     },
     "246": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.230437",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.116615"
     },
     "247": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.295151",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.154729"
     },
     "248": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.360943",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.199702"
     },
     "249": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.430884",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.240779"
     },
     "250": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.510143",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.286694"
     },
     "251": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.579427",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.328997"
     },
     "252": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.645379",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.370486"
     },
     "253": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.718088",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.414504"
     },
     "254": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.783749",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.455504"
     },
     "255": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.851487",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.493757"
     },
     "256": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.910524",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.534873"
     },
     "257": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:33.975288",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.570267"
     },
     "258": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.044734",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.609420"
     },
     "259": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.112724",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.657661"
     },
     "260": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.180439",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.693267"
     },
     "261": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.244990",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.734140"
     },
     "262": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.446751",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.772353"
     },
     "263": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.560956",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.810814"
     },
     "264": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.630371",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.846496"
     },
     "265": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.690283",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.882089"
     },
     "266": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.757243",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.933499"
     },
     "267": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.815159",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:18.970026"
     },
     "268": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.879081",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.003504"
     },
     "269": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:34.960686",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.048788"
     },
     "270": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.031557",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.086229"
     },
     "271": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.094309",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.118239"
     },
     "272": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.156916",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.149532"
     },
     "273": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.227733",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.205033"
     },
     "274": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.294690",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.243962"
     },
     "275": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.357028",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.282101"
     },
     "276": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.418148",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.414563"
     },
     "277": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.476528",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.467095"
     },
     "278": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.533523",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.503491"
     },
     "279": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.591975",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.551920"
     },
     "280": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.654924",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.591593"
     },
     "281": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.713335",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.640645"
     },
     "282": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.775840",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.682464"
     },
     "283": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.832965",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.730987"
     },
     "284": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.892477",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.776092"
     },
     "285": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:35.962976",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.821237"
     },
     "286": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.023182",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.865496"
     },
     "287": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.082462",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.904949"
     },
     "288": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.147888",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.940813"
     },
     "289": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.225988",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:19.981429"
     },
     "290": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.291060",
-      "updated_at": "2025-10-23T19:04:07.149543"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:20.020169"
     },
     "291": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.355702",
-      "updated_at": "2025-10-23T19:04:07.151545"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:20.054778"
     },
     "292": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.429723",
-      "updated_at": "2025-10-23T19:04:07.151545"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:20.097621"
     },
     "293": {
-      "enabled": false,
-      "reason": "Auto-sync: Majority disabled",
-      "disabled_at": "2025-10-23T18:50:36.497951",
-      "updated_at": "2025-10-23T19:04:07.151545"
+      "enabled": true,
+      "config": {
+        "maintenance_complete": true
+      },
+      "updated_at": "2025-10-23T19:26:20.137848"
     }
   },
   "constitution_version": "2.0",
