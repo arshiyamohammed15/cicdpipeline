@@ -46,7 +46,7 @@ class TestConstitutionRulesBase(unittest.TestCase):
                 category_data = json.load(f)
                 self.category_rules[rule_file.stem] = category_data
         
-        self.validator = ConstitutionValidator()
+        self.validator = ConstitutionValidator(str(self.rules_file))
         self.optimized_validator = OptimizedConstitutionValidator(str(self.config_dir))
         self.config_manager = EnhancedConfigManager(str(self.config_dir))
 

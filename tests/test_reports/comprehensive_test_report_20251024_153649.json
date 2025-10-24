@@ -1,0 +1,446 @@
+{
+  "summary": {
+    "total_tests": 0,
+    "total_passed": 0,
+    "total_failed": 0,
+    "total_errors": 0,
+    "success_rate": 0,
+    "execution_time": 0.002071380615234375,
+    "memory_usage_mb": 0.0,
+    "timestamp": "2025-10-24T15:36:49.095268"
+  },
+  "categories": {
+    "basic_work_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "system_design_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "problem_solving_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "platform_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "teamwork_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.002071380615234375,
+      "memory_usage_mb": 0.0
+    },
+    "code_review_constitution": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "coding_standards": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "comments_constitution": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "api_contracts": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "logging_constitution": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "exception_handling": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "typescript_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "storage_governance": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "gsmd_enforcement": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "code_readability": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "storage_scripts": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    }
+  },
+  "detailed_results": {
+    "basic_work_rules": {
+      "TestBasicWorkRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "basic_work_rules"
+      }
+    },
+    "system_design_rules": {
+      "TestSystemDesignRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "system_design_rules"
+      }
+    },
+    "problem_solving_rules": {
+      "TestProblemSolvingRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "problem_solving_rules"
+      }
+    },
+    "platform_rules": {
+      "TestPlatformRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "platform_rules"
+      }
+    },
+    "teamwork_rules": {
+      "TestTeamworkRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.002071380615234375,
+        "memory_usage_mb": 0.0,
+        "category": "teamwork_rules"
+      }
+    },
+    "code_review_constitution": {
+      "TestCodeReviewConstitution": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "code_review_constitution"
+      }
+    },
+    "coding_standards": {
+      "TestCodingStandards": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "coding_standards"
+      }
+    },
+    "comments_constitution": {
+      "TestCommentsConstitution": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "comments_constitution"
+      }
+    },
+    "api_contracts": {
+      "TestApiContracts": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "api_contracts"
+      }
+    },
+    "logging_constitution": {
+      "TestLoggingConstitution": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "logging_constitution"
+      }
+    },
+    "exception_handling": {
+      "TestExceptionHandling": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "exception_handling"
+      }
+    },
+    "typescript_rules": {
+      "TestTypescriptRules": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "typescript_rules"
+      }
+    },
+    "storage_governance": {
+      "TestStorageGovernance": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "storage_governance"
+      }
+    },
+    "gsmd_enforcement": {
+      "TestGsmdEnforcement": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "gsmd_enforcement"
+      }
+    },
+    "code_readability": {
+      "TestCodeReadability": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "code_readability"
+      }
+    },
+    "storage_scripts": {
+      "TestStorageScripts": {
+        "success": false,
+        "error": "ComprehensiveTestRunner._discover_test_suites.<locals>.<lambda>() takes 1 positional argument but 2 were given",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "storage_scripts"
+      }
+    }
+  },
+  "metrics": {
+    "summary": {
+      "total_tests": 16,
+      "passed_tests": 0,
+      "failed_tests": 16,
+      "skipped_tests": 0,
+      "success_rate": 0.0,
+      "execution_time": 0.002071380615234375,
+      "memory_usage_mb": 0.0
+    },
+    "test_results": [
+      {
+        "test_name": "basic_work_rules_TestBasicWorkRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0931969
+      },
+      {
+        "test_name": "system_design_rules_TestSystemDesignRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0931969
+      },
+      {
+        "test_name": "problem_solving_rules_TestProblemSolvingRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0931969
+      },
+      {
+        "test_name": "platform_rules_TestPlatformRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0931969
+      },
+      {
+        "test_name": "teamwork_rules_TestTeamworkRules",
+        "result": "failed",
+        "execution_time": 0.002071380615234375,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "code_review_constitution_TestCodeReviewConstitution",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "coding_standards_TestCodingStandards",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "comments_constitution_TestCommentsConstitution",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "api_contracts_TestApiContracts",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "logging_constitution_TestLoggingConstitution",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "exception_handling_TestExceptionHandling",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "typescript_rules_TestTypescriptRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "storage_governance_TestStorageGovernance",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "gsmd_enforcement_TestGsmdEnforcement",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "code_readability_TestCodeReadability",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      {
+        "test_name": "storage_scripts_TestStorageScripts",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      }
+    ],
+    "performance_metrics": {
+      "average_test_time": 0.00012946128845214844,
+      "slowest_test": {
+        "test_name": "teamwork_rules_TestTeamworkRules",
+        "result": "failed",
+        "execution_time": 0.002071380615234375,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0952682
+      },
+      "fastest_test": {
+        "test_name": "basic_work_rules_TestBasicWorkRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761300409.0931969
+      }
+    }
+  }
+}

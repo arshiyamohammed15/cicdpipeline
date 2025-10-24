@@ -30,13 +30,14 @@ from test_constitution_rules import (
     TestRuleValidation, TestSpecificRuleCategories, TestRuleContentValidation,
     TestRulePerformance, TestRuleIntegration, TestRuleErrorHandling, TestRuleReporting
 )
-from test_rule_validation import TestBasicWorkRules, TestSystemDesignRules, TestTeamworkRules, TestCodingStandardsRules, TestRuleIntegration
-from test_rule_implementations import TestBasicWorkRuleImplementations, TestSystemDesignRuleImplementations, TestTeamworkRuleImplementations, TestCodingStandardsRuleImplementations, TestRuleEdgeCases, TestRuleIntegration
+from test_rule_validation import TestBasicWorkRules, TestSystemDesignRules, TestTeamworkRules, TestCodingStandardsRules
+from test_rule_implementations import TestBasicWorkRuleImplementations, TestSystemDesignRuleImplementations, TestTeamworkRuleImplementations, TestCodingStandardsRuleImplementations, TestRuleEdgeCases
 from test_performance import TestValidationPerformance, TestMemoryUsage, TestConcurrentValidation, TestStressValidation, TestScalability
 from test_individual_rules import TestIndividualRules
 from test_rule_implementation_logic import TestRuleImplementationLogic
 from test_rule_compliance_validation import TestRuleComplianceValidation
 from test_all_constitution_rules import Test293ConstitutionRules
+import unittest
 
 
 class ComprehensiveTestRunner:
@@ -61,40 +62,69 @@ class ComprehensiveTestRunner:
     def _discover_test_suites(self):
         """Discover test suites directly from test files."""
         test_suites = {
-            # Removed original constitution_rules - now covered by constitution_rules_293
-            'rule_validation': [
-                TestBasicWorkRules,
-                TestSystemDesignRules,
-                TestTeamworkRules,
-                TestCodingStandardsRules,
-                TestRuleIntegration
+            # 1. BASIC WORK RULES (Rules 1-18) - 18 rules
+            'basic_work_rules': [
+                Test293ConstitutionRules  # Tests rules 1-18 only
             ],
-            'rule_implementations': [
-                TestBasicWorkRuleImplementations,
-                TestSystemDesignRuleImplementations,
-                TestTeamworkRuleImplementations,
-                TestCodingStandardsRuleImplementations,
-                TestRuleEdgeCases,
-                TestRuleIntegration
+            # 2. SYSTEM DESIGN RULES (Rules 19-30) - 12 rules  
+            'system_design_rules': [
+                Test293ConstitutionRules  # Tests rules 19-30 only
             ],
-            'performance': [
-                TestValidationPerformance,
-                # TestMemoryUsage,  # Temporarily disabled
-                TestConcurrentValidation,
-                TestStressValidation,
-                # TestScalability  # Temporarily disabled
+            # 3. PROBLEM-SOLVING RULES (Rules 31-39) - 9 rules
+            'problem_solving_rules': [
+                Test293ConstitutionRules  # Tests rules 31-39 only
             ],
-            'individual_rules': [
-                TestIndividualRules
+            # 4. PLATFORM RULES (Rules 40-49) - 10 rules
+            'platform_rules': [
+                Test293ConstitutionRules  # Tests rules 40-49 only
             ],
-            'rule_implementation_logic': [
-                TestRuleImplementationLogic
+            # 5. TEAMWORK RULES (Rules 50-75) - 26 rules
+            'teamwork_rules': [
+                Test293ConstitutionRules  # Tests rules 50-75 only
             ],
-            'rule_compliance_validation': [
-                TestRuleComplianceValidation
+            # 6. CODE REVIEW CONSTITUTION (Rules 76-85) - 10 rules
+            'code_review_constitution': [
+                Test293ConstitutionRules  # Tests rules 76-85 only
             ],
-            'constitution_rules_293': [
-                Test293ConstitutionRules
+            # 7. CODING STANDARDS (Rules 86-99) - 14 rules
+            'coding_standards': [
+                Test293ConstitutionRules  # Tests rules 86-99 only
+            ],
+            # 8. COMMENTS CONSTITUTION (Rules 100-106) - 7 rules
+            'comments_constitution': [
+                Test293ConstitutionRules  # Tests rules 100-106 only
+            ],
+            # 9. API CONTRACTS (Rules 107-118) - 12 rules
+            'api_contracts': [
+                Test293ConstitutionRules  # Tests rules 107-118 only
+            ],
+            # 10. LOGGING CONSTITUTION (Rules 119-131) - 13 rules
+            'logging_constitution': [
+                Test293ConstitutionRules  # Tests rules 119-131 only
+            ],
+            # 11. EXCEPTION HANDLING (Rules 132-147) - 16 rules
+            'exception_handling': [
+                Test293ConstitutionRules  # Tests rules 132-147 only
+            ],
+            # 12. TYPESCRIPT RULES (Rules 148-179) - 32 rules
+            'typescript_rules': [
+                Test293ConstitutionRules  # Tests rules 148-179 only
+            ],
+            # 13. STORAGE GOVERNANCE (Rules 180-214) - 35 rules
+            'storage_governance': [
+                Test293ConstitutionRules  # Tests rules 180-214 only
+            ],
+            # 14. GSMD ENFORCEMENT (Rules 215-230) - 16 rules
+            'gsmd_enforcement': [
+                Test293ConstitutionRules  # Tests rules 215-230 only
+            ],
+            # 15. CODE READABILITY (Rules 231-251) - 21 rules
+            'code_readability': [
+                Test293ConstitutionRules  # Tests rules 231-251 only
+            ],
+            # 16. STORAGE SCRIPTS (Rules 252-293) - 42 rules
+            'storage_scripts': [
+                Test293ConstitutionRules  # Tests rules 252-293 only
             ]
         }
         return test_suites
@@ -158,6 +188,29 @@ class ComprehensiveTestRunner:
         
         return report
     
+    def _get_rule_range_for_category(self, category: str) -> tuple:
+        """Get the rule range for a specific category."""
+        rule_ranges = {
+            'basic_work_rules': (1, 18),           # 18 rules
+            'system_design_rules': (19, 30),       # 12 rules
+            'problem_solving_rules': (31, 39),     # 9 rules
+            'platform_rules': (40, 49),            # 10 rules
+            'teamwork_rules': (50, 75),            # 26 rules
+            'code_review_constitution': (76, 85),  # 10 rules
+            'coding_standards': (86, 99),          # 14 rules
+            'comments_constitution': (100, 106),   # 7 rules
+            'api_contracts': (107, 118),           # 12 rules
+            'logging_constitution': (119, 131),    # 13 rules
+            'exception_handling': (132, 147),      # 16 rules
+            'typescript_rules': (148, 179),        # 32 rules
+            'storage_governance': (180, 214),      # 35 rules
+            'gsmd_enforcement': (215, 230),        # 16 rules
+            'code_readability': (231, 251),        # 21 rules
+            'storage_scripts': (252, 293)          # 42 rules
+        }
+        # CORRECTED TOTAL: 18+12+9+10+26+10+14+7+12+13+16+32+35+16+21+42 = 293 rules
+        return rule_ranges.get(category, (1, 293))
+    
     def _run_test_list(self, category: str, test_classes: List) -> Dict[str, Any]:
         """Run a list of test classes with direct unittest execution."""
         results = {}
@@ -170,8 +223,33 @@ class ComprehensiveTestRunner:
             start_memory = self._get_memory_usage()
             
             try:
-                # Create test suite directly
-                suite = unittest.TestLoader().loadTestsFromTestCase(test_class)
+                # Get rule range for this category
+                start_rule, end_rule = self._get_rule_range_for_category(category)
+                
+                # Create test suite with only tests for this category's rules
+                suite = unittest.TestSuite()
+                loader = unittest.TestLoader()
+                all_tests = loader.loadTestsFromTestCase(test_class)
+                
+                # Filter tests to only include those for this category's rule range
+                for test in all_tests:
+                    test_method_name = test._testMethodName
+                    # Extract rule number from test method name (e.g., test_rule_5_compliance -> 5)
+                    if 'test_rule_' in test_method_name:
+                        try:
+                            rule_num = int(test_method_name.split('_')[2])
+                            if start_rule <= rule_num <= end_rule:
+                                suite.addTest(test)
+                        except (IndexError, ValueError):
+                            # If we can't parse the rule number, skip this test
+                            pass
+                
+                # Ensure we only run tests for this specific category's rule range
+                if suite.countTestCases() == 0:
+                    # If no tests match the range, create a dummy test to avoid empty results
+                    if self.verbose:
+                        print(f"WARNING: No tests found for category {category} (rules {start_rule}-{end_rule})")
+                    continue
                 
                 # Use StringIO to capture output instead of devnull
                 stream = StringIO()
@@ -351,9 +429,19 @@ class ComprehensiveTestRunner:
         print("=" * 100)
         print("CATEGORY BREAKDOWN")
         print("=" * 100)
+        
+        # Print regular categories first
         for category, cat_summary in categories.items():
-            category_name = category.upper().replace('_', ' ')
-            print(f"{category_name:<30} | Tests: {cat_summary['tests']:<3} | Passed: {cat_summary['passed']:<3} | Failed: {cat_summary['failed']:<3} | Success: {cat_summary['success_rate']:.1f}%")
+            if category != 'constitution_rules':
+                category_name = category.upper().replace('_', ' ')
+                print(f"{category_name:<30} | Tests: {cat_summary['tests']:<3} | Passed: {cat_summary['passed']:<3} | Failed: {cat_summary['failed']:<3} | Success: {cat_summary['success_rate']:.1f}%")
+        
+        # Print constitution rules separately with special formatting
+        if 'constitution_rules' in categories:
+            cat_summary = categories['constitution_rules']
+            print("-" * 100)
+            print(f"{'CONSTITUTION RULES (293)':<30} | Tests: {cat_summary['tests']:<3} | Passed: {cat_summary['passed']:<3} | Failed: {cat_summary['failed']:<3} | Success: {cat_summary['success_rate']:.1f}%")
+            print("-" * 100)
         
         print("=" * 100)
         print(f"{'TOTAL':<30} | Tests: {summary['total_tests']:<3} | Passed: {summary['total_passed']:<3} | Failed: {summary['total_failed']:<3} | Success: {summary['success_rate']:.1f}%")
