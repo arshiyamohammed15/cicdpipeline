@@ -1,0 +1,27 @@
+{
+  "id": "m06",
+  "title": "Working Safely with Legacy Systems",
+  "commands": [
+    {
+      "id": "zeroui.m06.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m06.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m06.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m06.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

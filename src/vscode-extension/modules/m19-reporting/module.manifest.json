@@ -1,0 +1,27 @@
+{
+  "id": "m19",
+  "title": "Reporting",
+  "commands": [
+    {
+      "id": "zeroui.m19.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m19.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m19.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m19.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

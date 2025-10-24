@@ -1,0 +1,27 @@
+{
+  "id": "m16",
+  "title": "ROI Dashboard",
+  "commands": [
+    {
+      "id": "zeroui.m16.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m16.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m16.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m16.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

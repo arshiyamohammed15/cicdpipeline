@@ -1,0 +1,27 @@
+{
+  "id": "m20",
+  "title": "QA & Testing Deficiencies",
+  "commands": [
+    {
+      "id": "zeroui.m20.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m20.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m20.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m20.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

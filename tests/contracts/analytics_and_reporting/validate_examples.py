@@ -1,0 +1,11 @@
+# Minimal example loader for analytics_and_reporting
+import json, pathlib
+
+base = pathlib.Path(__file__).resolve().parents[3] / "contracts" / "analytics_and_reporting" / "examples"
+names = ["decision_response_ok.json","decision_response_error.json","evidence_link_valid.json","feedback_receipt_valid.json","receipt_valid.json"]
+
+for n in names:
+    p = base / n
+    data = json.loads(p.read_text(encoding="utf-8"))
+    assert isinstance(data, (dict, list)), f"Example {n} is not JSON object/list"
+print("OK: loaded 5 examples for analytics_and_reporting")

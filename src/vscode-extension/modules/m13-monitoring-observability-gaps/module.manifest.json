@@ -1,0 +1,27 @@
+{
+  "id": "m13",
+  "title": "Monitoring & Observability Gaps",
+  "commands": [
+    {
+      "id": "zeroui.m13.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m13.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m13.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m13.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

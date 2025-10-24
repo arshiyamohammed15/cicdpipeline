@@ -1,0 +1,27 @@
+{
+  "id": "m10",
+  "title": "Integration Adapters",
+  "commands": [
+    {
+      "id": "zeroui.m10.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m10.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m10.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m10.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

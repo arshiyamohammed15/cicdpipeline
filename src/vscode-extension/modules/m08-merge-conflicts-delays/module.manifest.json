@@ -1,0 +1,27 @@
+{
+  "id": "m08",
+  "title": "Merge Conflicts & Delays",
+  "commands": [
+    {
+      "id": "zeroui.m08.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m08.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m08.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m08.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

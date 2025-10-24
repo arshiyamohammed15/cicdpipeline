@@ -1,0 +1,27 @@
+{
+  "id": "m15",
+  "title": "Product Success Monitoring",
+  "commands": [
+    {
+      "id": "zeroui.m15.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m15.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m15.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m15.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

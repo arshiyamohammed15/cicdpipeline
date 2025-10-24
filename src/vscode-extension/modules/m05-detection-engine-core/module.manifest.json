@@ -1,0 +1,27 @@
+{
+  "id": "m05",
+  "title": "Detection Engine Core",
+  "commands": [
+    {
+      "id": "zeroui.m05.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m05.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m05.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m05.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

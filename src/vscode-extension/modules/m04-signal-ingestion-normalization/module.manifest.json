@@ -1,0 +1,27 @@
+{
+  "id": "m04",
+  "title": "Signal Ingestion & Normalization",
+  "commands": [
+    {
+      "id": "zeroui.m04.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m04.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m04.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m04.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

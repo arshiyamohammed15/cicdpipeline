@@ -1,0 +1,27 @@
+{
+  "id": "m02",
+  "title": "Cross-Cutting Concern Services",
+  "commands": [
+    {
+      "id": "zeroui.m02.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m02.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m02.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m02.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

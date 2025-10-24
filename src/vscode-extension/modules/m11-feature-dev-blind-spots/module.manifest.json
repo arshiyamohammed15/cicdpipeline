@@ -1,0 +1,27 @@
+{
+  "id": "m11",
+  "title": "Feature Development Blind Spots",
+  "commands": [
+    {
+      "id": "zeroui.m11.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m11.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m11.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m11.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

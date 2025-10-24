@@ -1,0 +1,27 @@
+{
+  "id": "m12",
+  "title": "Knowledge Silo Prevention",
+  "commands": [
+    {
+      "id": "zeroui.m12.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m12.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m12.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m12.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

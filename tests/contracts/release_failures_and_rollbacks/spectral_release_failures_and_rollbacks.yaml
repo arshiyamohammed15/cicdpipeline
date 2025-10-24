@@ -1,0 +1,8 @@
+extends: "spectral:oas"
+rules:
+  oas3-api-should-have-info: true
+  paths-kebab-case: off
+  operation-operationId: off
+  path-params-defined: off
+  openapi-tags: off
+documentationUrl: "file://contracts/release_failures_and_rollbacks/openapi/openapi_release_failures_and_rollbacks.yaml"

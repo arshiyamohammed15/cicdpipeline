@@ -1,0 +1,27 @@
+{
+  "id": "m14",
+  "title": "Client Admin Dashboard",
+  "commands": [
+    {
+      "id": "zeroui.m14.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m14.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m14.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m14.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

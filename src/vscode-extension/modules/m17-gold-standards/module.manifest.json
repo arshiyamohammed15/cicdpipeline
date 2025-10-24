@@ -1,0 +1,27 @@
+{
+  "id": "m17",
+  "title": "Gold Standards",
+  "commands": [
+    {
+      "id": "zeroui.m17.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m17.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m17.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m17.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

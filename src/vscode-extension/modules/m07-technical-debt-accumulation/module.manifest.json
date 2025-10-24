@@ -1,0 +1,27 @@
+{
+  "id": "m07",
+  "title": "Technical Debt Accumulation",
+  "commands": [
+    {
+      "id": "zeroui.m07.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m07.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m07.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m07.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

@@ -1,0 +1,27 @@
+{
+  "id": "m03",
+  "title": "Release Failures & Rollbacks",
+  "commands": [
+    {
+      "id": "zeroui.m03.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m03.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m03.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m03.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

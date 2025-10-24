@@ -1,0 +1,27 @@
+{
+  "id": "m09",
+  "title": "Compliance & Security Challenges",
+  "commands": [
+    {
+      "id": "zeroui.m09.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m09.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m09.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m09.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

@@ -1,0 +1,8 @@
+{
+  "receipt_id": "TEMPLATE-0001",
+  "issued_at": "2025-01-01T00:00:00Z",
+  "signature": "ed25519:REPLACE",
+  "payload": {
+    "note": "template receipt payload"
+  }
+}

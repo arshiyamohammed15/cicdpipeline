@@ -1,0 +1,67 @@
+{
+  "module_name": "Knowledge Integrity & Discovery",
+  "module_slug": "knowledge_integrity_and_discovery",
+  "generated_utc": "2025-10-24T01:22:50Z",
+  "entries": [
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/README.md",
+      "size": 376,
+      "sha256": "55f9614aa302636a6a00fe49a411e67b1933e3954b3318dd298965053c8c7c8d"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/examples/decision_response_error.json",
+      "size": 128,
+      "sha256": "643c9ccd7daca86d3ac91a289d587cc6d35234df015ce2f1d484136ce414ed3e"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/examples/decision_response_ok.json",
+      "size": 104,
+      "sha256": "703674f0b9b1d545403c6690feae7775fb993694fd873fdfa638759934dfcfbc"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/examples/evidence_link_valid.json",
+      "size": 99,
+      "sha256": "40afa502327ba90f5568d5173b14c78c349da44a91b99d96e1f36ec01190a3cb"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/examples/feedback_receipt_valid.json",
+      "size": 101,
+      "sha256": "04466eabb86fb668796a11fed3f5eca75f877bcb50387c5251239e70b4510a2d"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/examples/receipt_valid.json",
+      "size": 167,
+      "sha256": "cbd084b58c13256718861d2fdf7ab6c950cae70e07be32de80b580092e6ca098"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/openapi/openapi_knowledge_integrity_and_discovery.yaml",
+      "size": 129,
+      "sha256": "ad543f17bfcedce07184e79c7c5e4a45490e4e49737bc3bcabaaee9c1a90dcba"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/schemas/decision_response.schema.json",
+      "size": 215,
+      "sha256": "70d93b7fb5627de6ab56e7ee7ea5f5f32f1acd7839dbbe08490c55edc41615a2"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/schemas/envelope.schema.json",
+      "size": 206,
+      "sha256": "3441db1a87030d4183616621483b24740c595a4963eed70486eb65d743fc0cf4"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/schemas/evidence_link.schema.json",
+      "size": 211,
+      "sha256": "2ae660d293b034f5045e66d181b0e0dac1ff35f45e30ffeea14e2a23cf7078f7"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/schemas/feedback_receipt.schema.json",
+      "size": 214,
+      "sha256": "570396bb17d4b534ef759724176c9f6eaed952587122789d6503439db7e25709"
+    },
+    {
+      "path": "contracts/knowledge_integrity_and_discovery/schemas/receipt.schema.json",
+      "size": 205,
+      "sha256": "5ca9ed4859c9fece386453f2e5020e33b6ddbec2425e7bd6ebf73fc5db8f40c5"
+    }
+  ]
+}

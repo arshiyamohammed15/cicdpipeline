@@ -1,0 +1,27 @@
+{
+  "id": "m01",
+  "title": "MMM Engine",
+  "commands": [
+    {
+      "id": "zeroui.m01.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m01.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m01.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m01.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

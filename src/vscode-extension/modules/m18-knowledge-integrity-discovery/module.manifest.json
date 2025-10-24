@@ -1,0 +1,27 @@
+{
+  "id": "m18",
+  "title": "Knowledge Integrity & Discovery",
+  "commands": [
+    {
+      "id": "zeroui.m18.showDecisionCard",
+      "title": "Show Decision Card"
+    },
+    {
+      "id": "zeroui.m18.viewReceipt",
+      "title": "View Last Receipt"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m18.showDecisionCard"
+      },
+      {
+        "command": "zeroui.m18.viewReceipt"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}

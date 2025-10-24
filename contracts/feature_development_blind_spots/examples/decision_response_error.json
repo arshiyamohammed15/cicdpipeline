@@ -1,0 +1,8 @@
+{
+  "ok": false,
+  "result": null,
+  "error": {
+    "code": "TEMPLATE",
+    "message": "template: replace with real error"
+  }
+}
