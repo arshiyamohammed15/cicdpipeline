@@ -170,7 +170,7 @@ def main():
     results = runner.run_all_tests()
     
     # Save results
-    output_dir = Path("test_reports")
+    output_dir = Path("tests/test_reports")
     output_dir.mkdir(exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")

@@ -43,7 +43,7 @@ import unittest
 class ComprehensiveTestRunner:
     """Comprehensive test runner for all constitution rule tests."""
     
-    def __init__(self, verbose: bool = True, parallel: bool = False, output_dir: str = "test_reports", clear_cache: bool = True, no_cache: bool = True):
+    def __init__(self, verbose: bool = True, parallel: bool = False, output_dir: str = "tests/test_reports", clear_cache: bool = True, no_cache: bool = True):
         self.verbose = verbose
         self.parallel = parallel
         self.output_dir = Path(output_dir)
@@ -481,7 +481,7 @@ def main():
     parser = argparse.ArgumentParser(description='ZEROUI 2.0 Constitution Rules - Comprehensive Test Runner')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose output')
     parser.add_argument('--parallel', '-p', action='store_true', help='Run tests in parallel')
-    parser.add_argument('--output-dir', '-o', default='test_reports', help='Output directory for reports')
+    parser.add_argument('--output-dir', '-o', default='tests/test_reports', help='Output directory for reports')
     parser.add_argument('--category', '-c', help='Run specific test category')
     parser.add_argument('--clear-cache', action='store_true', help='Clear test cache before running')
     parser.add_argument('--no-cache', action='store_true', help='Disable test caching (same as --clear-cache)')

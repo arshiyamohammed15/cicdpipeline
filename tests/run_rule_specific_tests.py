@@ -33,7 +33,7 @@ class RuleSpecificTestRunner:
         self.clear_cache = clear_cache
         self.no_cache = no_cache
         self.project_root = Path(__file__).parent.parent
-        self.output_dir = self.project_root / "test_reports"
+        self.output_dir = self.project_root / "tests" / "test_reports"
         self.output_dir.mkdir(exist_ok=True)
         
         # Initialize testers
