@@ -36,7 +36,7 @@ from test_performance import TestValidationPerformance, TestMemoryUsage, TestCon
 from test_individual_rules import TestIndividualRules
 from test_rule_implementation_logic import TestRuleImplementationLogic
 from test_rule_compliance_validation import TestRuleComplianceValidation
-from test_complete_293_rules_final import TestComplete293RulesFinal
+from test_all_constitution_rules import Test293ConstitutionRules
 
 
 class ComprehensiveTestRunner:
@@ -61,17 +61,7 @@ class ComprehensiveTestRunner:
     def _discover_test_suites(self):
         """Discover test suites directly from test files."""
         test_suites = {
-            'constitution_rules': [
-                TestRuleStructure,
-                TestRuleCategories,
-                TestRuleValidation,
-                TestSpecificRuleCategories,
-                TestRuleContentValidation,
-                TestRulePerformance,
-                TestRuleIntegration,
-                TestRuleErrorHandling,
-                TestRuleReporting
-            ],
+            # Removed original constitution_rules - now covered by constitution_rules_293
             'rule_validation': [
                 TestBasicWorkRules,
                 TestSystemDesignRules,
@@ -103,8 +93,8 @@ class ComprehensiveTestRunner:
             'rule_compliance_validation': [
                 TestRuleComplianceValidation
             ],
-            'complete_293_rules_final': [
-                TestComplete293RulesFinal
+            'constitution_rules_293': [
+                Test293ConstitutionRules
             ]
         }
         return test_suites
@@ -141,24 +131,14 @@ class ComprehensiveTestRunner:
     
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites and generate comprehensive report."""
-        if self.verbose:
-            print("=" * 100)
-            print("ZEROUI 2.0 CONSTITUTION RULES - COMPREHENSIVE TEST SUITE")
-            print("=" * 100)
-            print(f"Test Execution Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-            print(f"Total Test Categories: {len(self.test_suites)}")
-            print(f"Parallel Execution: {'Enabled' if self.parallel else 'Disabled'}")
-            print("=" * 100)
+        # Silent execution - no header output
         
         self.metrics.start_testing()
         
         results = {}
         
-        # Run each test category
+        # Run each test category silently
         for category, test_classes in self.test_suites.items():
-            if self.verbose:
-                print(f"\n{'='*20} {category.upper().replace('_', ' ')} TESTS {'='*20}")
-            
             if isinstance(test_classes, list):
                 category_results = self._run_test_list(category, test_classes)
             else:
@@ -171,8 +151,7 @@ class ComprehensiveTestRunner:
         # Generate comprehensive report
         report = self._generate_comprehensive_report(results)
         
-        if self.verbose:
-            self._print_comprehensive_summary(report)
+        self._print_comprehensive_summary(report)
         
         # Save detailed report
         self._save_detailed_report(report)
@@ -185,8 +164,7 @@ class ComprehensiveTestRunner:
         
         for test_class in test_classes:
             class_name = test_class.__name__
-            if self.verbose:
-                print(f"\nRunning {class_name}...")
+            # Silent execution
             
             start_time = time.time()
             start_memory = self._get_memory_usage()
@@ -222,15 +200,7 @@ class ComprehensiveTestRunner:
                     'output': stream.getvalue()
                 }
                 
-                if self.verbose:
-                    status = "PASSED" if result.wasSuccessful() else "FAILED"
-                    print(f"  {class_name}: {status} ({result.testsRun} tests, {execution_time:.2f}s)")
-                    if result.failures:
-                        for test, traceback in result.failures:
-                            print(f"    FAIL: {test}")
-                    if result.errors:
-                        for test, traceback in result.errors:
-                            print(f"    ERROR: {test}")
+                # Silent execution
                 
             except Exception as e:
                 execution_time = time.time() - start_time
@@ -246,8 +216,7 @@ class ComprehensiveTestRunner:
                     'category': category
                 }
                 
-                if self.verbose:
-                    print(f"  {class_name}: ERROR - {str(e)}")
+                # Silent execution
         
         return results
     
@@ -379,24 +348,15 @@ class ComprehensiveTestRunner:
         summary = report['summary']
         categories = report['categories']
         
-        print("\n" + "=" * 100)
-        print("COMPREHENSIVE TEST EXECUTION SUMMARY")
         print("=" * 100)
-        print(f"Total Tests: {summary['total_tests']}")
-        print(f"Passed: {summary['total_passed']}")
-        print(f"Failed: {summary['total_failed']}")
-        print(f"Errors: {summary['total_errors']}")
-        print(f"Success Rate: {summary['success_rate']:.1f}%")
-        print(f"Total Execution Time: {summary['execution_time']:.2f} seconds")
-        print(f"Total Memory Usage: {summary['memory_usage_mb']:.2f} MB")
-        
-        print("\n" + "-" * 100)
         print("CATEGORY BREAKDOWN")
-        print("-" * 100)
+        print("=" * 100)
         for category, cat_summary in categories.items():
             category_name = category.upper().replace('_', ' ')
-            print(f"{category_name:<20} | Tests: {cat_summary['tests']:<6} | Passed: {cat_summary['passed']:<6} | Failed: {cat_summary['failed']:<6} | Success: {cat_summary['success_rate']:.1f}%")
+            print(f"{category_name:<30} | Tests: {cat_summary['tests']:<3} | Passed: {cat_summary['passed']:<3} | Failed: {cat_summary['failed']:<3} | Success: {cat_summary['success_rate']:.1f}%")
         
+        print("=" * 100)
+        print(f"{'TOTAL':<30} | Tests: {summary['total_tests']:<3} | Passed: {summary['total_passed']:<3} | Failed: {summary['total_failed']:<3} | Success: {summary['success_rate']:.1f}%")
         print("=" * 100)
     
     def _save_detailed_report(self, report: Dict[str, Any]):

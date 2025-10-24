@@ -1,0 +1,565 @@
+{
+  "summary": {
+    "total_tests": 98,
+    "total_passed": 98,
+    "total_failed": 0,
+    "total_errors": 0,
+    "success_rate": 100.0,
+    "execution_time": 2.069324016571045,
+    "memory_usage_mb": 0.4921875,
+    "timestamp": "2025-10-24T14:13:45.973206"
+  },
+  "categories": {
+    "constitution_rules": {
+      "tests": 25,
+      "passed": 25,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.29788923263549805,
+      "memory_usage_mb": 0.49609375
+    },
+    "rule_validation": {
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.018573522567749023,
+      "memory_usage_mb": -0.0390625
+    },
+    "rule_implementations": {
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.09705114364624023,
+      "memory_usage_mb": 0.0234375
+    },
+    "performance": {
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "individual_rules": {
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.5225157737731934,
+      "memory_usage_mb": 0.01171875
+    },
+    "rule_implementation_logic": {
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.5879979133605957,
+      "memory_usage_mb": 0.0
+    },
+    "rule_compliance_validation": {
+      "tests": 10,
+      "passed": 10,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 100.0,
+      "execution_time": 0.5452964305877686,
+      "memory_usage_mb": 0.0
+    }
+  },
+  "detailed_results": {
+    "constitution_rules": {
+      "TestRuleStructure": {
+        "success": true,
+        "tests_run": 5,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.07445096969604492,
+        "memory_usage_mb": 0.34375,
+        "category": "constitution_rules",
+        "output": "test_all_rules_have_required_fields (test_constitution_rules.TestRuleStructure.test_all_rules_have_required_fields)\nVerify all rules have required metadata fields. ... ok\ntest_priority_levels_consistency (test_constitution_rules.TestRuleStructure.test_priority_levels_consistency)\nVerify all rules have valid priority levels. ... ok\ntest_rule_categories_consistency (test_constitution_rules.TestRuleStructure.test_rule_categories_consistency)\nVerify rule categories match category definitions. ... ok\ntest_rule_numbering_sequence (test_constitution_rules.TestRuleStructure.test_rule_numbering_sequence)\nVerify rule numbers are sequential from 1 to 293. ... ok\ntest_total_rule_count (test_constitution_rules.TestRuleStructure.test_total_rule_count)\nVerify exactly 293 rules exist. ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.071s\n\nOK\n"
+      },
+      "TestRuleCategories": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.021050214767456055,
+        "memory_usage_mb": 0.03515625,
+        "category": "constitution_rules",
+        "output": "test_category_rule_counts (test_constitution_rules.TestRuleCategories.test_category_rule_counts)\nVerify category rule counts match expectations. ... ok\ntest_critical_priority_rules (test_constitution_rules.TestRuleCategories.test_critical_priority_rules)\nVerify critical priority rules are properly identified. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.021s\n\nOK\n"
+      },
+      "TestRuleValidation": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.02073359489440918,
+        "memory_usage_mb": 0.07421875,
+        "category": "constitution_rules",
+        "output": "test_rule_enable_disable_functionality (test_constitution_rules.TestRuleValidation.test_rule_enable_disable_functionality)\nTest rule enable/disable functionality. ... ok\ntest_rule_validation_consistency (test_constitution_rules.TestRuleValidation.test_rule_validation_consistency)\nTest that rule validation is consistent across validators. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.022s\n\nOK\n"
+      },
+      "TestSpecificRuleCategories": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.04079437255859375,
+        "memory_usage_mb": 0.046875,
+        "category": "constitution_rules",
+        "output": "test_basic_work_rules (test_constitution_rules.TestSpecificRuleCategories.test_basic_work_rules)\nTest basic work rules (rules 1-18). ... ok\ntest_system_design_rules (test_constitution_rules.TestSpecificRuleCategories.test_system_design_rules)\nTest system design rules. ... ok\ntest_teamwork_rules (test_constitution_rules.TestSpecificRuleCategories.test_teamwork_rules)\nTest teamwork rules. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.041s\n\nOK\n"
+      },
+      "TestRuleContentValidation": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.027320146560668945,
+        "memory_usage_mb": -0.01953125,
+        "category": "constitution_rules",
+        "output": "test_rule_configuration_consistency (test_constitution_rules.TestRuleContentValidation.test_rule_configuration_consistency)\nTest rule configuration consistency. ... ok\ntest_rule_content_consistency (test_constitution_rules.TestRuleContentValidation.test_rule_content_consistency)\nTest rule content consistency and format. ... ok\ntest_rule_titles_not_empty (test_constitution_rules.TestRuleContentValidation.test_rule_titles_not_empty)\nVerify all rules have non-empty titles. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.033s\n\nOK\n"
+      },
+      "TestRulePerformance": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.03499770164489746,
+        "memory_usage_mb": 0.0390625,
+        "category": "constitution_rules",
+        "output": "test_memory_usage_efficiency (test_constitution_rules.TestRulePerformance.test_memory_usage_efficiency)\nTest that validation doesn't consume excessive memory. ... ok\ntest_validation_performance (test_constitution_rules.TestRulePerformance.test_validation_performance)\nTest that validation completes within acceptable time limits. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.028s\n\nOK\n"
+      },
+      "TestRuleIntegration": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.014661312103271484,
+        "memory_usage_mb": -0.1015625,
+        "category": "constitution_rules",
+        "output": "test_multiple_rule_violations (test_rule_implementations.TestRuleIntegration.test_multiple_rule_violations)\nTest detection of multiple rule violations. ... ok\ntest_rule_dependency_handling (test_rule_implementations.TestRuleIntegration.test_rule_dependency_handling)\nTest handling of rule dependencies. ... ok\ntest_rule_priority_handling (test_rule_implementations.TestRuleIntegration.test_rule_priority_handling)\nTest that rule priorities are properly handled. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.023s\n\nOK\n"
+      },
+      "TestRuleErrorHandling": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.04227042198181152,
+        "memory_usage_mb": 0.09375,
+        "category": "constitution_rules",
+        "output": "test_invalid_rule_id_handling (test_constitution_rules.TestRuleErrorHandling.test_invalid_rule_id_handling)\nTest handling of invalid rule IDs. ... ok\ntest_malformed_rule_data_handling (test_constitution_rules.TestRuleErrorHandling.test_malformed_rule_data_handling)\nTest handling of malformed rule data. ... ok\ntest_rule_validation_with_empty_content (test_constitution_rules.TestRuleErrorHandling.test_rule_validation_with_empty_content)\nTest rule validation with empty file content. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.033s\n\nOK\n"
+      },
+      "TestRuleReporting": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.021610498428344727,
+        "memory_usage_mb": -0.015625,
+        "category": "constitution_rules",
+        "output": "test_rule_metrics_collection (test_constitution_rules.TestRuleReporting.test_rule_metrics_collection)\nTest collection of rule validation metrics. ... ok\ntest_violation_reporting (test_constitution_rules.TestRuleReporting.test_violation_reporting)\nTest violation reporting accuracy. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.022s\n\nOK\n"
+      }
+    },
+    "rule_validation": {
+      "TestBasicWorkRules": {
+        "success": true,
+        "tests_run": 5,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0010497570037841797,
+        "memory_usage_mb": 0.0078125,
+        "category": "rule_validation",
+        "output": "test_rule_2_information_usage (test_rule_validation.TestBasicWorkRules.test_rule_2_information_usage)\nTest Rule 2: Only Use Information You're Given ... ok\ntest_rule_3_privacy_protection (test_rule_validation.TestBasicWorkRules.test_rule_3_privacy_protection)\nTest Rule 3: Protect People's Privacy ... ok\ntest_rule_4_settings_files (test_rule_validation.TestBasicWorkRules.test_rule_4_settings_files)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers ... ok\ntest_rule_4_settings_usage (test_rule_validation.TestBasicWorkRules.test_rule_4_settings_usage)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers ... ok\ntest_rule_5_record_keeping (test_rule_validation.TestBasicWorkRules.test_rule_5_record_keeping)\nTest Rule 5: Keep Good Records ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nOK\n"
+      },
+      "TestSystemDesignRules": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0010063648223876953,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation",
+        "output": "test_rule_22_architecture_consistency (test_rule_validation.TestSystemDesignRules.test_rule_22_architecture_consistency)\nTest Rule 22: Architecture Consistency ... ok\ntest_rule_25_separation_of_concerns (test_rule_validation.TestSystemDesignRules.test_rule_25_separation_of_concerns)\nTest Rule 25: Separation of Concerns ... ok\ntest_rule_26_dependency_injection (test_rule_validation.TestSystemDesignRules.test_rule_26_dependency_injection)\nTest Rule 26: Dependency Injection ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nOK\n"
+      },
+      "TestTeamworkRules": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation",
+        "output": "test_rule_52_collaboration_standards (test_rule_validation.TestTeamworkRules.test_rule_52_collaboration_standards)\nTest Rule 52: Collaboration Standards ... ok\ntest_rule_53_code_review_readiness (test_rule_validation.TestTeamworkRules.test_rule_53_code_review_readiness)\nTest Rule 53: Code Review Readiness ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK\n"
+      },
+      "TestCodingStandardsRules": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation",
+        "output": "test_rule_function_length (test_rule_validation.TestCodingStandardsRules.test_rule_function_length)\nTest function length rules ... ok\ntest_rule_naming_conventions (test_rule_validation.TestCodingStandardsRules.test_rule_naming_conventions)\nTest naming convention rules ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.001s\n\nOK\n"
+      },
+      "TestRuleIntegration": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.01651740074157715,
+        "memory_usage_mb": -0.046875,
+        "category": "rule_validation",
+        "output": "test_multiple_rule_violations (test_rule_implementations.TestRuleIntegration.test_multiple_rule_violations)\nTest detection of multiple rule violations. ... ok\ntest_rule_dependency_handling (test_rule_implementations.TestRuleIntegration.test_rule_dependency_handling)\nTest handling of rule dependencies. ... ok\ntest_rule_priority_handling (test_rule_implementations.TestRuleIntegration.test_rule_priority_handling)\nTest that rule priorities are properly handled. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.017s\n\nOK\n"
+      }
+    },
+    "rule_implementations": {
+      "TestBasicWorkRuleImplementations": {
+        "success": true,
+        "tests_run": 5,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.024243831634521484,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations",
+        "output": "test_rule_1_documentation_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_1_documentation_implementation)\nTest Rule 1: Documentation Required - Implementation ... ok\ntest_rule_2_information_usage_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_2_information_usage_implementation)\nTest Rule 2: Only Use Information You're Given - Implementation ... ok\ntest_rule_3_privacy_protection_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_3_privacy_protection_implementation)\nTest Rule 3: Protect People's Privacy - Implementation ... ok\ntest_rule_4_settings_files_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_4_settings_files_implementation)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers - Implementation ... ok\ntest_rule_5_record_keeping_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_5_record_keeping_implementation)\nTest Rule 5: Keep Good Records - Implementation ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.024s\n\nOK\n"
+      },
+      "TestSystemDesignRuleImplementations": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.015594482421875,
+        "memory_usage_mb": -0.0078125,
+        "category": "rule_implementations",
+        "output": "test_rule_22_architecture_consistency_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_22_architecture_consistency_implementation)\nTest Rule 22: Architecture Consistency - Implementation ... ok\ntest_rule_25_separation_of_concerns_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_25_separation_of_concerns_implementation)\nTest Rule 25: Separation of Concerns - Implementation ... ok\ntest_rule_26_dependency_injection_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_26_dependency_injection_implementation)\nTest Rule 26: Dependency Injection - Implementation ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nOK\n"
+      },
+      "TestTeamworkRuleImplementations": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.008929967880249023,
+        "memory_usage_mb": 0.0078125,
+        "category": "rule_implementations",
+        "output": "test_rule_52_collaboration_standards_implementation (test_rule_implementations.TestTeamworkRuleImplementations.test_rule_52_collaboration_standards_implementation)\nTest Rule 52: Collaboration Standards - Implementation ... ok\ntest_rule_53_code_review_readiness_implementation (test_rule_implementations.TestTeamworkRuleImplementations.test_rule_53_code_review_readiness_implementation)\nTest Rule 53: Code Review Readiness - Implementation ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nOK\n"
+      },
+      "TestCodingStandardsRuleImplementations": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.01246953010559082,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations",
+        "output": "test_function_length_implementation (test_rule_implementations.TestCodingStandardsRuleImplementations.test_function_length_implementation)\nTest function length rules implementation. ... ok\ntest_naming_conventions_implementation (test_rule_implementations.TestCodingStandardsRuleImplementations.test_naming_conventions_implementation)\nTest naming convention rules implementation. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nOK\n"
+      },
+      "TestRuleEdgeCases": {
+        "success": true,
+        "tests_run": 4,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.02108168601989746,
+        "memory_usage_mb": 0.01171875,
+        "category": "rule_implementations",
+        "output": "test_empty_file_handling (test_rule_implementations.TestRuleEdgeCases.test_empty_file_handling)\nTest handling of empty files. ... ok\ntest_malformed_code_handling (test_rule_implementations.TestRuleEdgeCases.test_malformed_code_handling)\nTest handling of malformed code. ... ok\ntest_unicode_handling (test_rule_implementations.TestRuleEdgeCases.test_unicode_handling)\nTest handling of Unicode characters. ... ok\ntest_very_long_lines_handling (test_rule_implementations.TestRuleEdgeCases.test_very_long_lines_handling)\nTest handling of very long lines. ... ok\n\n----------------------------------------------------------------------\nRan 4 tests in 0.020s\n\nOK\n"
+      },
+      "TestRuleIntegration": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.014731645584106445,
+        "memory_usage_mb": 0.01171875,
+        "category": "rule_implementations",
+        "output": "test_multiple_rule_violations (test_rule_implementations.TestRuleIntegration.test_multiple_rule_violations)\nTest detection of multiple rule violations. ... ok\ntest_rule_dependency_handling (test_rule_implementations.TestRuleIntegration.test_rule_dependency_handling)\nTest handling of rule dependencies. ... ok\ntest_rule_priority_handling (test_rule_implementations.TestRuleIntegration.test_rule_priority_handling)\nTest that rule priorities are properly handled. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.015s\n\nOK\n"
+      }
+    },
+    "performance": {
+      "TestValidationPerformance": {
+        "success": true,
+        "tests_run": 4,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "test_large_file_validation_performance (test_performance.TestValidationPerformance.test_large_file_validation_performance)\nTest validation performance on large files. ... skipped 'Performance tests temporarily disabled'\ntest_medium_file_validation_performance (test_performance.TestValidationPerformance.test_medium_file_validation_performance)\nTest validation performance on medium files. ... skipped 'Performance tests temporarily disabled'\ntest_small_file_validation_performance (test_performance.TestValidationPerformance.test_small_file_validation_performance)\nTest validation performance on small files. ... skipped 'Performance tests temporarily disabled'\ntest_very_large_file_validation_performance (test_performance.TestValidationPerformance.test_very_large_file_validation_performance)\nTest validation performance on very large files. ... skipped 'Performance tests temporarily disabled'\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK (skipped=4)\n"
+      },
+      "TestConcurrentValidation": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "test_concurrent_validation_processes (test_performance.TestConcurrentValidation.test_concurrent_validation_processes)\nTest validation performance with multiple processes. ... skipped 'Performance tests temporarily disabled'\ntest_concurrent_validation_threads (test_performance.TestConcurrentValidation.test_concurrent_validation_threads)\nTest validation performance with multiple threads. ... skipped 'Performance tests temporarily disabled'\n\n----------------------------------------------------------------------\nRan 2 tests in 0.000s\n\nOK (skipped=2)\n"
+      },
+      "TestStressValidation": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "test_memory_pressure_stress (test_performance.TestStressValidation.test_memory_pressure_stress)\nTest validation under memory pressure. ... skipped 'Performance tests temporarily disabled'\ntest_mixed_file_sizes_stress (test_performance.TestStressValidation.test_mixed_file_sizes_stress)\nTest validation with mixed file sizes. ... skipped 'Performance tests temporarily disabled'\ntest_rapid_validation_stress (test_performance.TestStressValidation.test_rapid_validation_stress)\nTest rapid successive validation calls. ... skipped 'Performance tests temporarily disabled'\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK (skipped=3)\n"
+      }
+    },
+    "individual_rules": {
+      "TestIndividualRules": {
+        "success": true,
+        "tests_run": 10,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.5225157737731934,
+        "memory_usage_mb": 0.01171875,
+        "category": "individual_rules",
+        "output": "test_rule_12_compliance (test_individual_rules.TestIndividualRules.test_rule_12_compliance)\nTest Rule 12: Test Everything. ... ok\ntest_rule_17_compliance (test_individual_rules.TestIndividualRules.test_rule_17_compliance)\nTest Rule 17: Keep Different Parts Separate. ... ok\ntest_rule_18_compliance (test_individual_rules.TestIndividualRules.test_rule_18_compliance)\nTest Rule 18: Be Fair to Everyone. ... ok\ntest_rule_1_compliance (test_individual_rules.TestIndividualRules.test_rule_1_compliance)\nTest Rule 1: Do Exactly What's Asked. ... ok\ntest_rule_2_compliance (test_individual_rules.TestIndividualRules.test_rule_2_compliance)\nTest Rule 2: Only Use Information You're Given. ... ok\ntest_rule_3_compliance (test_individual_rules.TestIndividualRules.test_rule_3_compliance)\nTest Rule 3: Protect People's Privacy. ... ok\ntest_rule_4_compliance (test_individual_rules.TestIndividualRules.test_rule_4_compliance)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers. ... ok\ntest_rule_5_compliance (test_individual_rules.TestIndividualRules.test_rule_5_compliance)\nTest Rule 5: Keep Good Records. ... ok\ntest_rule_7_compliance (test_individual_rules.TestIndividualRules.test_rule_7_compliance)\nTest Rule 7: Make Things Fast. ... ok\ntest_rule_8_compliance (test_individual_rules.TestIndividualRules.test_rule_8_compliance)\nTest Rule 8: Be Honest About AI Decisions. ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.522s\n\nOK\n"
+      }
+    },
+    "rule_implementation_logic": {
+      "TestRuleImplementationLogic": {
+        "success": true,
+        "tests_run": 10,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.5879979133605957,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementation_logic",
+        "output": "test_rule_12_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_12_implementation_logic)\nTest Rule 12: Test Everything - Implementation Logic. ... ok\ntest_rule_17_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_17_implementation_logic)\nTest Rule 17: Keep Different Parts Separate - Implementation Logic. ... ok\ntest_rule_18_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_18_implementation_logic)\nTest Rule 18: Be Fair to Everyone - Implementation Logic. ... ok\ntest_rule_1_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_1_implementation_logic)\nTest Rule 1: Do Exactly What's Asked - Implementation Logic. ... ok\ntest_rule_2_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_2_implementation_logic)\nTest Rule 2: Only Use Information You're Given - Implementation Logic. ... ok\ntest_rule_3_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_3_implementation_logic)\nTest Rule 3: Protect People's Privacy - Implementation Logic. ... ok\ntest_rule_4_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_4_implementation_logic)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers - Implementation Logic. ... ok\ntest_rule_5_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_5_implementation_logic)\nTest Rule 5: Keep Good Records - Implementation Logic. ... ok\ntest_rule_7_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_7_implementation_logic)\nTest Rule 7: Make Things Fast - Implementation Logic. ... ok\ntest_rule_8_implementation_logic (test_rule_implementation_logic.TestRuleImplementationLogic.test_rule_8_implementation_logic)\nTest Rule 8: Be Honest About AI Decisions - Implementation Logic. ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.592s\n\nOK\n"
+      }
+    },
+    "rule_compliance_validation": {
+      "TestRuleComplianceValidation": {
+        "success": true,
+        "tests_run": 10,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.5452964305877686,
+        "memory_usage_mb": 0.0,
+        "category": "rule_compliance_validation",
+        "output": "test_rule_12_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_12_compliance_validation)\nTest Rule 12: Test Everything - Compliance Validation. ... ok\ntest_rule_17_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_17_compliance_validation)\nTest Rule 17: Keep Different Parts Separate - Compliance Validation. ... ok\ntest_rule_18_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_18_compliance_validation)\nTest Rule 18: Be Fair to Everyone - Compliance Validation. ... ok\ntest_rule_1_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_1_compliance_validation)\nTest Rule 1: Do Exactly What's Asked - Compliance Validation. ... ok\ntest_rule_2_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_2_compliance_validation)\nTest Rule 2: Only Use Information You're Given - Compliance Validation. ... ok\ntest_rule_3_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_3_compliance_validation)\nTest Rule 3: Protect People's Privacy - Compliance Validation. ... ok\ntest_rule_4_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_4_compliance_validation)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers - Compliance Validation. ... ok\ntest_rule_5_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_5_compliance_validation)\nTest Rule 5: Keep Good Records - Compliance Validation. ... ok\ntest_rule_7_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_7_compliance_validation)\nTest Rule 7: Make Things Fast - Compliance Validation. ... ok\ntest_rule_8_compliance_validation (test_rule_compliance_validation.TestRuleComplianceValidation.test_rule_8_compliance_validation)\nTest Rule 8: Be Honest About AI Decisions - Compliance Validation. ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.542s\n\nOK\n"
+      }
+    }
+  },
+  "metrics": {
+    "summary": {
+      "total_tests": 26,
+      "passed_tests": 26,
+      "failed_tests": 0,
+      "skipped_tests": 0,
+      "success_rate": 100.0,
+      "execution_time": 2.0813372135162354,
+      "memory_usage_mb": 0.49609375
+    },
+    "test_results": [
+      {
+        "test_name": "constitution_rules_TestRuleStructure",
+        "result": "passed",
+        "execution_time": 0.07445096969604492,
+        "memory_usage": 360448,
+        "timestamp": 1761295423.967322
+      },
+      {
+        "test_name": "constitution_rules_TestRuleCategories",
+        "result": "passed",
+        "execution_time": 0.021050214767456055,
+        "memory_usage": 36864,
+        "timestamp": 1761295423.9883723
+      },
+      {
+        "test_name": "constitution_rules_TestRuleValidation",
+        "result": "passed",
+        "execution_time": 0.02073359489440918,
+        "memory_usage": 77824,
+        "timestamp": 1761295424.0097353
+      },
+      {
+        "test_name": "constitution_rules_TestSpecificRuleCategories",
+        "result": "passed",
+        "execution_time": 0.04079437255859375,
+        "memory_usage": 49152,
+        "timestamp": 1761295424.0525322
+      },
+      {
+        "test_name": "constitution_rules_TestRuleContentValidation",
+        "result": "passed",
+        "execution_time": 0.027320146560668945,
+        "memory_usage": -20480,
+        "timestamp": 1761295424.0798523
+      },
+      {
+        "test_name": "constitution_rules_TestRulePerformance",
+        "result": "passed",
+        "execution_time": 0.03499770164489746,
+        "memory_usage": 40960,
+        "timestamp": 1761295424.11485
+      },
+      {
+        "test_name": "constitution_rules_TestRuleIntegration",
+        "result": "passed",
+        "execution_time": 0.014661312103271484,
+        "memory_usage": -106496,
+        "timestamp": 1761295424.1295114
+      },
+      {
+        "test_name": "constitution_rules_TestRuleErrorHandling",
+        "result": "passed",
+        "execution_time": 0.04227042198181152,
+        "memory_usage": 98304,
+        "timestamp": 1761295424.1717818
+      },
+      {
+        "test_name": "constitution_rules_TestRuleReporting",
+        "result": "passed",
+        "execution_time": 0.021610498428344727,
+        "memory_usage": -16384,
+        "timestamp": 1761295424.1944191
+      },
+      {
+        "test_name": "rule_validation_TestBasicWorkRules",
+        "result": "passed",
+        "execution_time": 0.0010497570037841797,
+        "memory_usage": 8192,
+        "timestamp": 1761295424.1965077
+      },
+      {
+        "test_name": "rule_validation_TestSystemDesignRules",
+        "result": "passed",
+        "execution_time": 0.0010063648223876953,
+        "memory_usage": 0,
+        "timestamp": 1761295424.197514
+      },
+      {
+        "test_name": "rule_validation_TestTeamworkRules",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.197514
+      },
+      {
+        "test_name": "rule_validation_TestCodingStandardsRules",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.198855
+      },
+      {
+        "test_name": "rule_validation_TestRuleIntegration",
+        "result": "passed",
+        "execution_time": 0.01651740074157715,
+        "memory_usage": -49152,
+        "timestamp": 1761295424.2163887
+      },
+      {
+        "test_name": "rule_implementations_TestBasicWorkRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.024243831634521484,
+        "memory_usage": 0,
+        "timestamp": 1761295424.2416582
+      },
+      {
+        "test_name": "rule_implementations_TestSystemDesignRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.015594482421875,
+        "memory_usage": -8192,
+        "timestamp": 1761295424.2572527
+      },
+      {
+        "test_name": "rule_implementations_TestTeamworkRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.008929967880249023,
+        "memory_usage": 8192,
+        "timestamp": 1761295424.2661827
+      },
+      {
+        "test_name": "rule_implementations_TestCodingStandardsRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.01246953010559082,
+        "memory_usage": 0,
+        "timestamp": 1761295424.2786522
+      },
+      {
+        "test_name": "rule_implementations_TestRuleEdgeCases",
+        "result": "passed",
+        "execution_time": 0.02108168601989746,
+        "memory_usage": 12288,
+        "timestamp": 1761295424.2997339
+      },
+      {
+        "test_name": "rule_implementations_TestRuleIntegration",
+        "result": "passed",
+        "execution_time": 0.014731645584106445,
+        "memory_usage": 12288,
+        "timestamp": 1761295424.3144655
+      },
+      {
+        "test_name": "performance_TestValidationPerformance",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.3154857
+      },
+      {
+        "test_name": "performance_TestConcurrentValidation",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.316379
+      },
+      {
+        "test_name": "performance_TestStressValidation",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.316379
+      },
+      {
+        "test_name": "individual_rules_TestIndividualRules",
+        "result": "passed",
+        "execution_time": 0.5225157737731934,
+        "memory_usage": 12288,
+        "timestamp": 1761295424.839912
+      },
+      {
+        "test_name": "rule_implementation_logic_TestRuleImplementationLogic",
+        "result": "passed",
+        "execution_time": 0.5879979133605957,
+        "memory_usage": 0,
+        "timestamp": 1761295425.4279099
+      },
+      {
+        "test_name": "rule_compliance_validation_TestRuleComplianceValidation",
+        "result": "passed",
+        "execution_time": 0.5452964305877686,
+        "memory_usage": 0,
+        "timestamp": 1761295425.9732063
+      }
+    ],
+    "performance_metrics": {
+      "average_test_time": 0.0795893852527325,
+      "slowest_test": {
+        "test_name": "rule_implementation_logic_TestRuleImplementationLogic",
+        "result": "passed",
+        "execution_time": 0.5879979133605957,
+        "memory_usage": 0,
+        "timestamp": 1761295425.4279099
+      },
+      "fastest_test": {
+        "test_name": "rule_validation_TestTeamworkRules",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761295424.197514
+      }
+    }
+  }
+}
