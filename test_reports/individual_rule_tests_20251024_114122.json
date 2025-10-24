@@ -1,0 +1,69 @@
+{
+  "results": {
+    "1": {
+      "rule_number": 1,
+      "rule_name": "Do Exactly What's Asked",
+      "violations": [],
+      "compliant": true
+    },
+    "2": {
+      "rule_number": 2,
+      "rule_name": "Only Use Information You're Given",
+      "violations": [],
+      "compliant": true
+    },
+    "3": {
+      "rule_number": 3,
+      "rule_name": "Protect People's Privacy",
+      "violations": [],
+      "compliant": true
+    },
+    "4": {
+      "rule_number": 4,
+      "rule_name": "Use Settings Files, Not Hardcoded Numbers",
+      "violations": [],
+      "compliant": true
+    },
+    "5": {
+      "rule_number": 5,
+      "rule_name": "Keep Good Records",
+      "violations": [],
+      "compliant": true
+    },
+    "7": {
+      "rule_number": 7,
+      "rule_name": "Make Things Fast",
+      "violations": [],
+      "compliant": true
+    },
+    "8": {
+      "rule_number": 8,
+      "rule_name": "Be Honest About AI Decisions",
+      "violations": [],
+      "compliant": true
+    },
+    "12": {
+      "rule_number": 12,
+      "rule_name": "Test Everything",
+      "violations": [],
+      "compliant": true
+    },
+    "17": {
+      "rule_number": 17,
+      "rule_name": "Keep Different Parts Separate",
+      "violations": [],
+      "compliant": true
+    },
+    "18": {
+      "rule_number": 18,
+      "rule_name": "Be Fair to Everyone",
+      "violations": [],
+      "compliant": true
+    }
+  },
+  "total_rules_tested": 10,
+  "total_violations": 0,
+  "compliance_rate": 100.0,
+  "execution_time": 0.5637564659118652,
+  "test_type": "individual_rules"
+}

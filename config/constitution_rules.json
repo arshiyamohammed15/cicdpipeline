@@ -95,7 +95,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -119,7 +119,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -141,7 +141,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -163,7 +163,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -185,7 +185,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "Where we keep these records:\n- Action receipts → Like a shopping list that only gets longer (JSONL files)\n- Error and performance notes → Like an organized notebook (SQLite database)\n- Everything stays private → Never leaves your computer without permission",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -207,7 +207,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "\"During Updates\" means: The time from when you click \"update\" until the new version is completely ready and working properly.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -229,7 +229,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "- Programs should start faster than microwaving popcorn (under 2 seconds)\n- Buttons should respond instantly when clicked (under 0.1 seconds)\n- Don't use too much computer memory - like not hogging all the closet space",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -251,7 +251,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "- \"I'm 85% sure this is right\" (confidence level)\n- \"I'm suggesting this because...\" (explanation)\n- \"This was AI version 2.3\" (which brain version made the decision)\nWhere this information is stored:\n1. Your computer - Private notes about your work\n2. Your company's private storage - Team review notes\n3. Our cloud (anonymous only) - Just patterns like \"suggestion X was 85% confident\" - no actual code or personal info",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -273,7 +273,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -295,7 +295,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -317,7 +317,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -339,7 +339,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -361,7 +361,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -383,7 +383,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -405,7 +405,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -427,7 +427,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -449,7 +449,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -471,7 +471,7 @@
       "category": "basic_work",
       "priority": "critical",
       "content": "🏗️ SYSTEM DESIGN RULES",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -493,7 +493,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- IDE Extension → Only shows information (like a car dashboard)\n- Edge Agent → Processes data locally for privacy (like thinking in your head)\n- Client Cloud → Stores company's private data (like a company safe)\n- Our Cloud → Only gets anonymous, safe data (like public statistics)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -515,7 +515,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -537,7 +537,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Source code → Never leaves the company (like secret recipes)\n- Development data → Stays in company cloud (like work notes)\n- Anonymous patterns → Can go to our cloud (like \"people prefer chocolate over vanilla\" - no specific info)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -559,7 +559,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -581,7 +581,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Level 1 → Basic status (like a traffic light - red/yellow/green)\n- Level 2 → Suggestions when relevant (like a friend saying \"try this\")\n- Level 3 → Full tools when asked (like opening a complete toolbox)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -603,7 +603,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "18 Main Areas → Specific Features → Detailed Tools\nLike a school: School → Grade Levels → Classrooms → Subjects",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -625,7 +625,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- Never send → Source code, passwords, personal info (like your diary)\n- Company cloud only → Team metrics, security scans (like company reports)\n- Our cloud allowed → Anonymous patterns, general insights (like \"most people work better in the morning\")",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -647,7 +647,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -669,7 +669,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -691,7 +691,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -713,7 +713,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- People should get value in first 30 seconds (like instant fun in a game)\n- 80% of users should use each module (like most students using the library)\n- 90% should still be using after 30 days (like people sticking with a good habit)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -735,7 +735,7 @@
       "category": "system_design",
       "priority": "critical",
       "content": "- No setup needed before use (like instant-on TV)\n- First interaction in under 30 seconds (like quick-start instructions)\n- System almost never crashes (like reliable car)\n- Buttons respond instantly (like light switches)\n 🎯 PROBLEM-SOLVING RULES",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -757,7 +757,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -779,7 +779,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Mirror → Show people what they're doing now (like a mirror)\n- Mentor → Guide them to better ways (like a coach)\n- Multiplier → Help them do more of what works (like a turbo boost)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -801,7 +801,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -823,7 +823,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Never look at → Production passwords, user personal data (like bank codes)\n- Process locally → Code analysis, performance checks (like thinking privately)\n- Share only → Anonymous patterns, general insights (like \"students learn better with examples\")",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -845,7 +845,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -867,7 +867,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -889,7 +889,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "- Wrong alerts → Less than 2% for critical issues (like rarely crying wolf)\n- Missed problems → Less than 1% for security (like rarely missing real danger)\n- Show confidence levels clearly (like saying \"I'm very sure\" or \"I'm guessing\")\n- Learn from corrections (like learning from mistakes)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -911,7 +911,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -933,7 +933,7 @@
       "category": "problem_solving",
       "priority": "critical",
       "content": "🔧 PLATFORM RULES",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -955,7 +955,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "- Identity → Who can do what (like hall passes)\n- Data governance → Keep data safe and legal (like library rules)\n- Configuration → Settings management (like thermostat controls)\n- Alerting → Notify people when needed (like doorbells)\n- Health → Monitor system performance (like health checkups)\n- API → Connect to other systems (like phone chargers)\n- Backup → Protect against data loss (like photo backups)\n- Deployment → Update safely (like careful home repairs)\n- Behavior intelligence → Learn from usage (like learning friends' preferences)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -977,7 +977,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -999,7 +999,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1021,7 +1021,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1043,7 +1043,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1065,7 +1065,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1087,7 +1087,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1109,7 +1109,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1131,7 +1131,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1153,7 +1153,7 @@
       "category": "platform",
       "priority": "critical",
       "content": "🤝 TEAMWORK RULES",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1175,7 +1175,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1197,7 +1197,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1219,7 +1219,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1241,7 +1241,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1263,7 +1263,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1285,7 +1285,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1307,7 +1307,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1329,7 +1329,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1351,7 +1351,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1373,7 +1373,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1395,7 +1395,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1417,7 +1417,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1439,7 +1439,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1461,7 +1461,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1483,7 +1483,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1505,7 +1505,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1527,7 +1527,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1549,7 +1549,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1571,7 +1571,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1593,7 +1593,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1615,7 +1615,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1637,7 +1637,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1659,7 +1659,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1681,7 +1681,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1703,7 +1703,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1725,7 +1725,7 @@
       "category": "teamwork",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1747,7 +1747,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Author:** writes the change, fills PR template, runs self‑checks.\n- **Reviewer:** verifies intent, risks, tests, and policy compliance. Gives clear, kind feedback.\n- **Gatekeeper (CI):** blocks merges on rule violations.\n- **AI Assistant (Cursor):** may propose diffs; must follow this Constitution and stop on rule errors.\n**Scope & Size Limits**\n- **AI code‑gen task limit:** ≤ **50 LOC** changed unless the prompt includes `LOC_OVERRIDE:<number>`.\n- **PR size guidance:** ≤ **300 LOC** changed (tests excluded). If larger, split or include a **Rollout Plan**.\n- Sensitive areas (auth, policy, contracts, receipts, migrations) require **CODEOWNERS** approval and may need **two reviewers** (see §9).\nSLA: Reviews should start within **2 business days**.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1769,7 +1769,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "1) **Why first.** The PR must state **What changed** and **Why we did it** (problem, constraints, trade‑offs).\n2) **Small, coherent diffs.** One intent per PR; feature‑flags for risky changes.\n3) **Tests prove behavior.** No code change without tests that **fail before** and **pass after** the change (or receipts proving behavior for non-code config).\n4) **Simple English comments.** Follow the Comments Constitution at file/imports/function/variable/logic levels.\n5) **Security & privacy first.** No secrets/PII in code, comments, logs, tests, or fixtures.\n6) **Reversible.** Include a rollback/disable plan for non‑trivial changes (flags or revert steps).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1791,7 +1791,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Approve** — meets all checks; minor nits optional.\n- **Request changes** — must fix blockers/majors.\n- **Comment** — non‑blocking feedback or ideas.\nSeverity levels the reviewer must tag:\n- **Blocker:** merge must **not** proceed (critical gaps).\n- **Major:** must fix before merge (important, not existential).\n- **Minor:** should fix soon or follow‑up issue.\n- **Nit:** style/wording; optional.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1813,7 +1813,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- Missing PR context (what/why) .......................... `ERROR:REVIEW_CONTEXT_MISSING`\n- Violates Coding/Comments Constitution .................. `ERROR:COMMENT_POLICY_VIOLATION`\n- API contract drift (spec vs code) ...................... `ERROR:API_CONTRACT_DRIFT`\n- Security/privacy gap (secrets/PII/logs) ................ `ERROR:SECURITY_GAP`\n- Logging missing/weak (no request.start/end etc.) ....... `ERROR:LOGGING_GAP`\n- Storage rule broken (blob in DB, no metadata row) ...... `ERROR:STORAGE_RULE_VIOLATION`\n- Missing/weak tests (no coverage for change) ............ `ERROR:TESTS_MISSING`\n- Migration risk (no plan/backout/flags) ................. `ERROR:MIGRATION_RISK`\n- Perf regression risk (no budget/measurement) ........... `ERROR:PERF_REGRESSION`\n- Observability gap (no metrics/traces/alerts) ........... `ERROR:OBS_GAP`\n- Folder/structure naming drift .......................... `ERROR:FOLDER_DRIFT`\n- Return contract not honored (diff/file/json) ........... `ERROR:RETURN_CONTRACT_VIOLATION`\n- CODEOWNERS approval missing (sensitive areas) .......... `ERROR:CODEOWNERS_MISSING`\n- Two‑person rule not met (sensitive areas) .............. `ERROR:TWO_PERSON_RULE_VIOLATION`\n- AI provenance missing in PR template ................... `ERROR:AI_PROVENANCE_MISSING`\n- API receipts/contract diffs not attached ............... `ERROR:API_RECEIPTS_MISSING`\n- Dependency license/CVE policy failed ................... `ERROR:DEPENDENCY_POLICY_FAIL`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1835,7 +1835,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1857,7 +1857,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Screenshots or log snippets** (redacted) showing success/failure.\n- **Receipts** for significant actions (append‑only JSONL).\n- **Test results** (pass/fail) and, if relevant, benchmark numbers.\n- **Contract diffs** (`openapi.yaml`, schema JSON) and migration IDs.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1879,7 +1879,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "```markdown",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1901,7 +1901,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- **Lint & format:** ruff/black (Python), eslint/biome (TS).\n- **Contracts:** diff and validate OpenAPI/Schema JSON; fail on breaking changes; require contract publish receipt where applicable.\n- **Comments:** check for file headers, function docs, PLAN blocks (regex/rules) — enforce Comments Constitution stop codes.\n- **Logging:** validate sample log lines against `docs/log_schema_v1.json`; fail on missing fields/oversize; enforce request.start/end.\n- **Security:** secret scanners; dependency audit with **license allowlist** and **CVE threshold** gate.\n- **Storage:** forbid blobs in DB; require DB metadata rows for file writes (static checks where possible).\n- **Tests:** require new/changed paths covered; run unit/integration; collect perf receipts for hot paths.\n- **Governance:** require **CODEOWNERS** approval for sensitive paths and **two reviewers** (owner + guild) where mandated.\n- **Receipts:** ensure `receipt.emit` present for privileged/business‑critical actions.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1923,7 +1923,7 @@
       "category": "code_review",
       "priority": "critical",
       "content": "- Be kind. Focus on the code, not the person.\n- Explain **why** you suggest a change. Use short sentences.\n- Offer a **concrete diff** when possible.\n- Mark severity: **Blocker/Major/Minor/Nit**.\n- Ask clarifying questions; avoid sarcasm or jargon.\n**Examples**  \n- *Blocker:* \"Idempotency not enforced on retry; please add idempotencyKey and conflict handling.\"  \n- *Major:* \"API response adds a field without version bump; please update OpenAPI and mark as non‑breaking.\"  \n- *Minor:* \"Comment uses jargon ('instantiate'). Please rewrite in simple English.\"  \n- *Nit:* \"Consider renaming var to match style: `maxBatch` → `MAX_BATCH`.\"",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1945,7 +1945,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- **Approve:** brief summary + any minor nits.\n- **Request changes:** list blockers/majors with bullet points and suggested fix.\n- **Comment:** ideas or questions; no merge block.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1967,7 +1967,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Runtime: Python 3.11+. Use Pydantic v2 models; never return raw ORM.\n- FastAPI: every route has response_model; validate inputs; error envelope only (no plain strings).\n- Async only for handlers; avoid blocking calls; httpx for async tests.\n- Packaging: pip-tools lock with hashes; no unpinned deps.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -1989,7 +1989,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- eslint + prettier required; no `any` in committed code.\n- API types are generated from OpenAPI; do not hand-roll DTOs for server contracts.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2011,7 +2011,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Mutations MUST accept Idempotency-Key; lists are cursor-paginated; standard headers include X-API-Version and X-Request-Id.\n- Stable error envelope with canonical codes; no 200-with-error patterns.\n- Changes that are breaking require a new major version and deprecation process.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2033,7 +2033,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Schema changes ONLY via Alembic; additive-first; include safe DOWN migration.\n- SQLite (dev/test) uses WAL + busy_timeout=5000; mirror Postgres schema.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2055,7 +2055,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Validate inputs; set security headers; CORS allowlist only (no * in prod).\n- Run dependency & secret scans; block known CVEs.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2077,7 +2077,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Emit JSONL receipts for privileged actions (planned/success/aborted/error) with ts_utc, monotonic_hw_time_ms, traceId, policy_snapshot_hash.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2099,7 +2099,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- DB tests transactional with rollback; CI must run unit + integration tests; coverage must not drop.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2121,7 +2121,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Redact PII/secrets before inference; never log raw prompts with secrets.\n- For codegen, output ONLY the specified Return Contract format (see §12).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2143,7 +2143,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Container bases pinned by digest; non-root; read-only FS where possible.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2165,7 +2165,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2187,7 +2187,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2209,7 +2209,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "```diff\n# repo-root-relative paths\n# unified diff (git-style) with only minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: relative/path/to/new_file.ext\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nNo extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2231,7 +2231,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "- Type errors (mypy/TS strict) ............................. ERROR:TYPECHECK_FAIL\n- Tests missing or not updated ............................. ERROR:TEST_MISSING\n- OpenAPI breaking change w/o version bump ................. ERROR:OPENAPI_DIFF_BREAK\n- Alembic migration required but absent .................... ERROR:MIGRATION_REQUIRED\n- Secrets or PII exposed / hardcoded ....................... ERROR:SECRETS_LEAK\n- Writing outside allowed Return Contract format ........... ERROR:RETURN_CONTRACT_VIOLATION\n- Change exceeds LOC cap (no override) ..................... ERROR:LOC_LIMIT\n14) SELF-AUDIT BEFORE OUTPUT (MUST TICK)\n- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)\n- [ ] Lint/format/type-checks pass in principle\n- [ ] Tests added/updated; coverage unchanged or higher\n- [ ] OpenAPI accurate; no breaking change (or version bumped)\n- [ ] Alembic migration added if schema changed (with DOWN)\n- [ ] Logs structured; receipts for privileged actions\n- [ ] No secrets/PII in code/tests/examples/logs\nEND_CONSTITUTION\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2253,7 +2253,7 @@
       "category": "coding_standards",
       "priority": "critical",
       "content": "```markdown",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2275,7 +2275,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "What, Why, Reads/Writes (paths/tables/receipts), Contracts/Policy IDs, Risks.\nB) Imports‑level (top import block) — group stdlib / third‑party / local and say **why** each group exists.\nC) Function/Class‑level (public APIs) — WHAT + WHY + Steps + Inputs/Outputs (special rules only) + Fails/Throws + Security/Privacy note.\nD) Variable‑level (non‑obvious values/constants) — meaning, units, allowed range, and reason.\nE) Logic‑level (before tricky if/loops) — a short PLAN/RATIONALE in bullets.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2297,7 +2297,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- service: plain business rule; which API/DB it touches.\n- log: what we log and why; redaction rules; include traceId.\n- receipt: what decision is recorded; include ts_utc, monotonic_hw_time_ms, action, result, traceId, policy_snapshot_hash.\n- db (migration): why now; online‑safe plan (additive first, concurrent index); rollback; cutover flag.\n- blob: format; size limits; storage path; privacy (redaction/encryption if any).\n- backup: schedule; retention; restore test plan.\n- audit: append‑only rule; who writes; integrity check (hash/signature).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2319,7 +2319,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2341,7 +2341,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- **Flexible Formats** (all acceptable):\n  - `TODO(john.doe): Fix login bug [BUG-123] [2024-12-31]`\n  - `TODO(@team): Refactor API [TASK-456] [Q1-2025]`\n  - `TODO(me): Add tests [2024-12-15]`\n  - `TODO(owner): description` (minimal acceptable)\n- **Auto-Formatting**: System can suggest standard format\n- **Accountability**: Must include owner (name, @team, or \"me\")\n- **Optional**: Ticket number and due date for better tracking",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2363,7 +2363,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "```diff\n# repo‑root‑relative paths\n# unified diff (git‑style) with only the minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: relative/path/to/new_file.ext\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nIf output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2385,7 +2385,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- [ ] Imports grouped and explained (why we need them)\n- [ ] Public APIs have simple docs with WHY + Steps + Fails/Throws + Security\n- [ ] Non‑obvious variables show meaning/units/range/reason\n- [ ] Tricky logic has a PLAN/RATIONALE block\n- [ ] No jargon; short sentences; no secrets/PII",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2407,7 +2407,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- Complex logic lacks a plan/rationale ................. ERROR:COMMENT_RATIONALE_MISSING\n- Readability issues (jargon/long sentences) ........... ERROR:READABILITY_COMPLEX\n- TODO without owner/date/ticket ....................... ERROR:TODO_UNBOUNDED (R089)\n- Secrets/PII in comments .............................. ERROR:COMMENT_SECRETS\n- Comment restates code only ........................... ERROR:COMMENT_REDUNDANT\n- Units/range missing for key variable ................. ERROR:UNIT_MISSING\n- Header lacks contract/policy link when relevant ...... ERROR:LINK_MISSING\n- Return format not honored ............................ ERROR:RETURN_CONTRACT_VIOLATION\nEND_CONSTITUTION\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2429,7 +2429,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "configs/contracts/http/v*/ (OpenAPI 3.1: openapi.yaml, components.yaml, examples/)\n  configs/contracts/async/   (AsyncAPI for events, if any)\n  configs/schemas/           (shared JSON Schemas 2020‑12)\n  tools/contract‑lint/       (spectral rules)\n  tools/contract‑tests/      (provider + consumer contract test config)\n  docs/api/                  (rendered docs configs)\n- Do NOT write contracts elsewhere. Path outside this tree → ERROR:SPEC_PATH_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2451,7 +2451,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- URIs: nouns + ids: /v1/projects/{projectId}/releases/{releaseId} (kebab‑case tokens).\n- IDs: UUIDv7 strings; never expose DB autoincrement ids.\n- Timestamps: ISO‑8601 UTC with Z; server stores timestamptz.\n- Pagination: cursor‑based with nextCursor (no offset pagination for high‑volume lists).\n- Idempotency: all mutating routes accept Idempotency‑Key; conflicting replay → 409 with prior receipt ref.\n**Idempotency retention window:** default **24h** (document per route if different). Store a hash of the request body per key; mismatched replay returns **409** with a link to the original receipt.\n- Headers (standard): X‑API‑Version, X‑Request‑Id, X‑RateLimit‑*, X‑Tenant‑Id (UUIDv7).\n- Error envelope (Problem JSON‑style): stable code, human message, traceId, optional details.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2473,7 +2473,7 @@
       "category": "comments",
       "priority": "critical",
       "content": "- Breaking (block without bump): remove/rename field/endpoint; type change; optional→required; enum narrowing; behavior or default change.\n- Non‑breaking: add endpoint; add optional field; enum widening (consumers must tolerate unknowns).\n- Deprecation: mark deprecated: true, emit Sunset header with date, publish migration notes (≥90 days).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2495,7 +2495,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- JWKS endpoint documented; require kid on tokens.\n- Rate limits: declare headers; exceeding returns 429 deterministically.\n- Tenancy: X‑Tenant‑Id semantics documented; isolation guarantees stated.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2517,7 +2517,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- HTTP mapping: 400 VALIDATION_ERROR; 401 AUTH_UNAUTHENTICATED; 403 AUTH_FORBIDDEN; 404 RESOURCE_NOT_FOUND; 409 CONFLICT; 412 PRECONDITION_FAILED; 422 SEMANTIC_INVALID; 429 RATE_LIMITED; 500 INTERNAL_ERROR; 503 SERVICE_UNAVAILABLE.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2539,7 +2539,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- If‑None‑Match + Last‑Modified/If‑Modified‑Since for cacheable GETs.\n- Document Cache‑Control and freshness lifetimes per route.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2561,7 +2561,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- OpenAPI diff gate: PR fails on breaking changes unless version bump + approval present.\n- Example validation: JSON examples must validate against schemas for success & error cases.\n- Contract tests: provider (schemathesis/Prism/Dredd) + consumer‑driven (Pact) for top consumers.\n- Mock server: boot from spec for previews. SDKs generated on release (TS & Python) — no hand‑rolled DTOs.\n**SDK naming/versioning policy:**\n- TypeScript packages: `@zeroui/api-v<major>` (e.g., `@zeroui/api-v1`); SDK major bumps on API major changes.\n- Python packages: `zeroui_api_v<major>` (e.g., `zeroui_api_v1`) with SemVer aligned to contract minor/patch.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2583,7 +2583,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Sampling validator middleware validates N% (1–5%) of live req/resp bodies against JSON Schemas; violations emit receipts with payload HASHES only.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2605,7 +2605,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc, monotonic_hw_time_ms, actor, service, action, version, traceId, policy_snapshot_hash, result.\n- Governance: CODEOWNERS requires Contract Owner + Guild approvals; PR review SLA ≤ 2 business days.\n- Optional `receipt_signature` (Ed25519) for high-trust actions (`contract.publish`, `contract.diff`).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2627,7 +2627,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Publish SLOs per GA route (p95 latency, error budgets) in docs/policy.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2649,7 +2649,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "```diff\n# repo‑root‑relative paths\n# unified diff (git‑style) with only minimal changes\n```\nB) New File (exactly one file)\n```text\n#path: configs/contracts/http/v1/openapi.yaml\n<entire file content only>\n```\nC) JSON Artifact (policy/config/schema)\n```json\n{ ...valid JSON only... }\n```\nNo extra prose. If you cannot meet the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2671,7 +2671,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Breaking diff without version bump .................... ERROR:OPENAPI_DIFF_BREAK\n- Invalid or missing examples ........................... ERROR:EXAMPLES_INVALID\n- Provider/consumer contract tests failing .............. ERROR:CONTRACT_TEST_FAIL\n- Spec path outside SoT tree ............................ ERROR:SPEC_PATH_VIOLATION\n- PII in examples or raw bodies in receipts/logs ........ ERROR:PII_LEAK\n- Missing required headers/security/pagination contract . ERROR:CONTRACT_INCOMPLETE\n- Return format not honored ............................. ERROR:RETURN_CONTRACT_VIOLATION\n- Change exceeds LOC cap (no override) .................. ERROR:LOC_LIMIT\n13) SELF‑AUDIT BEFORE OUTPUT\n- [ ] ≤ 50 LOC (or LOC_OVERRIDE present)\n- [ ] Spectral lint passes; examples validate\n- [ ] OpenAPI diff non‑breaking (or version bumped + notes)\n- [ ] Contract tests adjusted (provider + consumers if applicable)\n- [ ] Security headers/scopes/JWKS documented; error codes from registry\n- [ ] Pagination/idempotency/caching semantics present where relevant\n- [ ] Receipts for contract.diff/publish; no PII; logs structured\nEND_CONSTITUTION\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2693,7 +2693,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- You may only write under these allowlisted subfolders:\n  servers/*/(config|services|logs|receipts|data)/**\n  storage/*/(db|blobs|backups|audit)/**\n- Never create new top-level names besides these eight:\n  ZeroUIClientServer, ZeroUIProductServer, ZeroUILocalServer, ZeroUISharedServer;\n  ZeroUIClientStorage, ZeroUIProductStorage, ZeroUILocalStorage, ZeroUISharedStorage.\n- Persistence MUST go via <server>/data/ (junction to paired storage). If junction missing → ERROR:JUNCTION_MISSING.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2715,7 +2715,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc (ISO-8601 Z), monotonic_hw_time_ms, actor (human|ai), service, action, status (planned|success|aborted|error), traceId, policy_snapshot_hash, inputs_hash/outputs_hash (if applicable), notes.\n- Logs MUST be structured JSON; do not log secrets or full request bodies.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2737,7 +2737,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Secrets never in repo or code. Use environment + OS keyring/DPAPI; .env.template only.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2759,7 +2759,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Stable error envelope with canonical codes; always return structured errors.\n- Idempotency-Key required for mutating endpoints; cursor-based pagination for lists; standard headers: X-API-Version, X-Request-Id (trace).\n- FastAPI: Pydantic v2 models; response_model set on every route; strict validation; never return raw ORM.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2781,7 +2781,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Schema changes ONLY via Alembic; additive-first; include safe down migration.\n- SQLite dev/test pragmas: WAL + busy_timeout=5000ms; mirror Postgres schema.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2803,7 +2803,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- TypeScript: eslint + prettier; tsconfig \"strict\": true and exactOptionalPropertyTypes; no any in committed code.\n- CI expectations: lint/type/test pass; coverage not reduced; OpenAPI diff gate for breaking changes; migrations check.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2825,7 +2825,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Never exfiltrate data; respect redaction policies. For generated outputs, emit ONLY the specified return contract (see §11).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2847,7 +2847,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Never write to storage/** directly; always via servers/*/data/**. Case-sensitive name checks on canonical folders.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2869,7 +2869,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- If you change a contract or DB schema, also update tests, examples, and migrations within the same change.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2891,7 +2891,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "A) Unified Diff (default for code):\n     ```diff\n     # repo-root-relative paths\n     # unified diff (git-style) with only minimal changes\n     ```\n  B) New File (exactly one file):\n     ```text\n     #path: relative/path/to/new_file.ext\n     <entire file content only>\n     ```\n  C) JSON Artifact (policy/config/schema):\n     ```json\n     { …valid JSON only… }\n     ```\n- No extra prose, banners, or screenshots. If you cannot satisfy the chosen format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2913,7 +2913,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Unknown top-level folder name…………… ERROR:NAME_VIOLATION\n- ZEROUI_ROOT or root_mode invalid……… ERROR:PATH_ROOT_MISSING\n- Missing <server>/data junction…………… ERROR:JUNCTION_MISSING\n- Attempt to hardcode secrets/thresholds… ERROR:POLICY_VIOLATION\n- Change exceeds LOC cap……………………… ERROR:LOC_LIMIT\n- Missing response_model / raw ORM……… ERROR:CONTRACT_VIOLATION\n- Alembic migration absent for schema…… ERROR:MIGRATION_REQUIRED",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2935,7 +2935,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- [ ] Paths resolve via ZEROUI_ROOT + paths.json; only allowlisted dirs\n- [ ] INTENT & RESULT receipts added where applicable\n- [ ] No secrets/PII; no hardcoded thresholds/messages\n- [ ] Lint/type/tests pass in principle; OpenAPI/Alembic updated if relevant\n- [ ] Output matches one allowed RETURN CONTRACT format\n- Verify each `<server>/data` is a **junction** to its paired storage; if not, return `ERROR:JUNCTION_MISSING` before any writes.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2957,7 +2957,7 @@
       "category": "api_contracts",
       "priority": "critical",
       "content": "- Contracts stable or version-bumped with migration notes\n- Migrations included (with down path) if schema changed\n- Logs/metrics wired; rollback path clear (revert/migration down)\nEND_CONSTITUTION\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -2979,7 +2979,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Timestamps: ISO-8601 with Z (UTC). Include monotonic_hw_time_ms for ordering.\n- Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns.\n- Encoding: UTF-8 only, no BOM. No multi-line logs.\n- Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars.\n- Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3001,7 +3001,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- ts_utc, monotonic_hw_time_ms\n- level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL\n- service, version, env, host\n- traceId, spanId, parentSpanId (W3C trace context). If missing, generate and propagate.\n- requestId (X-Request-Id), userId_hash (if applicable), tenantId (UUIDv7) — userId_hash is salted per-tenant.\n- event: short stable name, e.g., \"request.start\", \"request.end\", \"db.query\", \"external.call\", \"receipt.emit\"\n- route/method/status (for HTTP), apiVersion\n- latencyMs, attempt, retryable\n- payload_hash, payload_size, sample_reason (if sampled)\n- error.code, error.message_redacted, error.stack_fingerprint (when level ≥ ERROR)\n- idempotencyKey_hash (if present), cursor_hint (for pagination)\n- policy_snapshot_hash (if decision), feature_flag (if used)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3023,7 +3023,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- error.code ≤ 40; error.message_redacted ≤ 512; stack_fingerprint ≤ 128\n- Truncate free-text fields > 512 chars. Arrays: max 50 items. Always include payload_size.\n- LOG_MAX_EVENT_BYTES default 65536; truncate & set truncation flags if exceeded.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3045,7 +3045,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- userId_hash = sha256(tenant_salt || user_id). Do not cross-tenant correlate.\n- idempotencyKey_hash = sha256(key). payload_hash = sha256(redacted_payload_bytes).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3067,7 +3067,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- db.query / db.error\n- cache.hit / cache.miss\n- external.call.start / external.call.end / external.call.error\n- llm.invoke.start / llm.invoke.end / llm.invoke.error\n- receipt.emit\n- contract.violation\n- policy.decision\n- migration.start / migration.end\n- app.start / app.stop / health.ok / health.error\n2.1) LLM EVENT FIELDS",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3089,7 +3089,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- **caused_by** (event_id or null) — causal parent when not captured by parentSpanId.\n- **links[]** — related event/message/job IDs for async handoffs.\n- **job_id**, **queue_name**, **message_id**, **schedule_id** — background and queue processing.\n- **workflow_id**, **saga_id** — multi‑request or long‑running business flows.\n- **component** — sub‑system name (e.g., policy.engine, payments.gateway).\n- **phase** — one of: input | process | output | cleanup.\n- **git_sha**, **build_id**, **config_version** — deployment fingerprints.\n- **severity_code** — S0..S4; **user_impact** — none | one | many.\n- model, input_tokens, output_tokens, latencyMs, prompt_hash, output_hash, policy_snapshot_hash.\n- Never log raw prompts/outputs. Always emit llm.invoke.end; if failure, include error.* and success=false.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3111,7 +3111,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Prod: INFO by default. DEBUG only with a temporary WAIVER (id + expiry).\n- Errors: use ERROR for failures that returned 4xx/5xx; WARN for recoverable issues.\n- Never log FATAL without an immediate exit path.\n- Map error.code to central error registry (same codes as API Contracts).",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3133,7 +3133,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Do not log full request/response bodies. Log hashes, sizes, and a small redacted sample if needed.\n- Large values: truncate strings > 1024 bytes; arrays > 50 items; always include payload_size and payload_hash (SHA-256, hex).\n- Client IP: store anonymized/hashed form only.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3155,7 +3155,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Always attach **traceId/spanId** and pass **X-Request-Id** (generate if missing).\n- Exactly one **request.start** and one **request.end** per handled request (same traceId/requestId).\n- For retries/backoff: include **attempt**, **backoffMs**, **retryable**.\n- For idempotency: include **idempotencyKey_hash** + **replay=true/false**.\n- For async hops (queues/schedulers): include **links[]**, **job_id**, **queue_name**, **message_id**, **schedule_id**.\n- For cross‑request business flows: include **workflow_id** or **saga_id**.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3177,7 +3177,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Receipt fields: ts_utc, monotonic_hw_time_ms, actor (human|ai), service, action, result, traceId, policy_snapshot_hash, inputs_hash, outputs_hash.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3199,7 +3199,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Default sampling: DEBUG (1–10%), INFO (100%), TRACE (off).\n- Dynamic knobs (env): LOG_SAMPLE_DEBUG=0.1, LOG_SAMPLE_DB_QUERY=0.05, LOG_MAX_EVENT_BYTES=65536.\n- CI blocks events > LOG_MAX_EVENT_BYTES unless truncation fields are present.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3221,7 +3221,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- FastAPI middleware: log request.start and request.end (route, method, status, latencyMs, traceId, requestId).\n- DB: log query summaries (table, op, row_count) not raw SQL; attach elapsedMs.\n- TS: add interceptors to log external.call.* with url_host, method, status, latencyMs.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3243,7 +3243,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Retention: app logs ≥ 14 days locally; receipts ≥ 90 days (or per policy).\n- Compression after rotation is allowed; do not compress live file.\n- Writing: UTF-8 (no BOM), CRLF-safe, one JSON per line with flush after each write. Guard against partial lines on power loss.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3265,7 +3265,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Missing traceId/requestId on request/end ……… ERROR:MISSING_TRACE_ID\n- Secrets/PII present in any log ………………… ERROR:PII_LEAK\n- Full payload logged (no redaction) ……………… ERROR:PAYLOAD_NOT_REDACTED\n- Missing error.code on ERROR level ……………… ERROR:MISSING_ERROR_CODE\n- Oversized event (> LOG_MAX_EVENT_BYTES) ……… ERROR:OVERSIZED_EVENT\n- Chatty code without sampling …………………… ERROR:SAMPLING_MISSING\n- Log level policy violated ……………………… ERROR:LOG_LEVEL_VIOLATION\n- Invalid JSON (serialization) …………………… ERROR:JSON_INVALID\n- No link to receipt on privileged action ………… ERROR:MISSING_RECEIPT_LINK",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3287,7 +3287,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "# repo-root-relative paths\n# unified diff (git-style) with only minimal changes\nB) New File (exactly one file)\n#path: relative/path/to/new_file.ext\n<entire file content only>\nC) JSON Artifact (policy/config/schema)\n{ ...valid JSON only... }\nIf output cannot meet a format → ERROR:RETURN_CONTRACT_VIOLATION.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3309,7 +3309,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- Block merge if schema fails or if required fields/limits are missing.\n13) SELF-AUDIT (CHECK BEFORE OUTPUT)\n- [ ] JSONL, ISO-8601 Z, monotonic time (ns→ms), Windows-safe write\n- [ ] Required fields present (traceId, requestId, event, level, latencyMs, schema version)\n- [ ] No secrets/PII; payloads hashed/truncated; sizes included\n- [ ] Sampling set for chatty events; budgets respected; runtime knobs documented\n- [ ] request.start/request.end present with correlation\n- [ ] Receipts for privileged actions; link receipt_id in logs; error.code maps to registry\nEND_CONSTITUTION\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3331,7 +3331,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3353,7 +3353,7 @@
       "category": "logging",
       "priority": "critical",
       "content": "- `HIGH`: DEPENDENCY_FAILED, UNEXPECTED_ERROR, TIMEOUT\n- `MEDIUM`: RATE_LIMITED, CONFLICT, INVARIANT_VIOLATION  \n- `LOW`: VALIDATION_ERROR, NOT_FOUND, PERMISSION_DENIED, CANCELLED",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3375,7 +3375,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3397,7 +3397,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- maps codes → friendly messages\n- sets the right status/exit code  \n- logs details (with cause chain)",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3419,7 +3419,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3441,7 +3441,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3463,7 +3463,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3485,7 +3485,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3507,7 +3507,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- After `CANCELLED`: Reset operation state\n- After `DEPENDENCY_FAILED`: Show fallback content or retry later\n- After `VALIDATION_ERROR`: Guide user to correct input\n- Document when to show \"Try Again\" vs. \"Contact Support\"",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3529,7 +3529,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Include examples of proper wrapping patterns  \n- Document the \"why\" behind each major rule\n- Pair new developers with error handling experts",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3551,7 +3551,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3573,7 +3573,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3595,7 +3595,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3617,7 +3617,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3639,7 +3639,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3661,7 +3661,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3683,7 +3683,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3705,7 +3705,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3727,7 +3727,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3749,7 +3749,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3771,7 +3771,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3793,7 +3793,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Happy path\n- Timeouts and 5xx errors  \n- 4xx errors (validation/permission)\n- Dependency failures\n- Cleanup execution verification\n- Error cause chain preservation\n- Recovery behavior after errors",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3815,7 +3815,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3837,7 +3837,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3859,7 +3859,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3881,7 +3881,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Confidence level (e.g., \"I'm 85% sure this is right\")\n- Reasoning explanation (\"I'm suggesting this because...\")\n- AI version information (\"This was AI version 2.3\")",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3903,7 +3903,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3925,7 +3925,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3947,7 +3947,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "- Medium confidence (70-90%): Suggest with explanation\n- Low confidence (<70%): Ask for explicit user approval",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3969,7 +3969,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -3991,7 +3991,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4013,7 +4013,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4035,7 +4035,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4057,7 +4057,7 @@
       "category": "exception_handling",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4079,7 +4079,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4101,7 +4101,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4123,7 +4123,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "* files: kebab-case.ts\n* variables/functions: camelCase\n* types/interfaces/enums: PascalCase\n* constants: UPPER_SNAKE_CASE",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4145,7 +4145,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4167,7 +4167,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4189,7 +4189,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4211,7 +4211,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4233,7 +4233,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4255,7 +4255,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4277,7 +4277,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4299,7 +4299,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4321,7 +4321,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4343,7 +4343,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4365,7 +4365,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4387,7 +4387,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4409,7 +4409,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4431,7 +4431,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4453,7 +4453,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4475,7 +4475,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4497,7 +4497,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4519,7 +4519,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4541,7 +4541,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4563,7 +4563,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4585,7 +4585,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4607,7 +4607,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4629,7 +4629,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4651,7 +4651,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4673,7 +4673,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4695,7 +4695,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4717,7 +4717,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4739,7 +4739,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4761,7 +4761,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4783,7 +4783,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4805,7 +4805,7 @@
       "category": "typescript",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4827,7 +4827,7 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4849,7 +4849,7 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4871,7 +4871,7 @@
       "category": "documentation",
       "priority": "critical",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4893,7 +4893,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4915,7 +4915,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4937,7 +4937,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4959,7 +4959,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -4981,7 +4981,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5003,7 +5003,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5025,7 +5025,7 @@
       "category": "other",
       "priority": "important",
       "content": "- IDE: `agent/tmp/UNCLASSIFIED__<slug>`\n- Tenant/Product: `ingest/staging/unclassified/<slug>`\nResolve within 24 hours via RFC process, then move to canonical location with proper manifests and checksums.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5047,7 +5047,7 @@
       "category": "other",
       "priority": "important",
       "content": "- `observability/(metrics|traces|logs)/dt=YYYY-MM-DD/`\n- `adapters/(webhooks|gateway-logs)/dt=YYYY-MM-DD/`\n- `reporting/marts/dt=YYYY-MM-DD/`\n- `service-metrics/(metrics|traces|logs)/dt=YYYY-MM-DD/`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5069,7 +5069,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5091,7 +5091,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5113,7 +5113,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5135,7 +5135,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5157,7 +5157,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\ngsmd/modules/M{NN}/{slug}/v{major}/snapshot.json\n```\nTreat these files as the **single source of truth** for governance decisions. Do not place snapshots anywhere else.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5179,7 +5179,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5201,7 +5201,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5223,7 +5223,7 @@
       "category": "other",
       "priority": "important",
       "content": "- `snapshot_id` pattern: `SNAP.M\\d{2}.[a-z0-9_.]+.(v|V)\\d+`\n- `module_id` pattern: `M\\d{2}`\n- `snapshot_hash` equal to **sha256** of file contents (hex) prefixed with `sha256:`\n- `signature` and `kid` present\n- `effective_from` ISO-8601  \nUse `tools/gsmd-check.ps1` to verify. Fail CI if any check fails.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5245,7 +5245,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\npre-commit | pre-merge | pre-deploy | post-deploy\n```\nCode and receipts must use only these values.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5267,7 +5267,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\ndecision, rationale, policy_snapshot_hash, policy_version_ids[],\nevaluation_point, actor_id, repo_id, timestamps.hw, signature\n```\nValues for `policy_snapshot_hash` and `policy_version_ids[]` MUST come from the snapshot actually used.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5289,7 +5289,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5311,7 +5311,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\ntenant_id, scope.module_id[, scope.slug][, scope.evaluation_point],\nwaiver.reason[, waiver.ticket_id][, waiver.evidence_refs[]],\nttl (ISO-8601), approvals[>=2]{user, role, approved_at (ISO-8601)},\nkid, signature\n```\nOverrides are **time-boxed** (honor `ttl`) and require **two or more approvals**. No permanent overrides.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5333,7 +5333,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5355,7 +5355,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\npass | warn | soft_block | hard_block\n```\nHonor snapshot `messages.status_pill.*` and `rollout.default_mode`. Do not invent new statuses.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5377,7 +5377,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5399,7 +5399,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5421,7 +5421,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5443,7 +5443,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5465,7 +5465,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\n./tools/gsmd-check.ps1 -Root ./gsmd -VerboseOutput\n```\nBlock merge on any failure.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5487,7 +5487,7 @@
       "category": "other",
       "priority": "important",
       "content": "```\n./tools/manifest-build.ps1   -Root ./gsmd -OutDir ./gsmd/releases -Kid \"<KID>\"\n./tools/manifest-verify.ps1  -Root . -Manifest <path\\\\to\\\\manifest.json>\n```\nBlock release if file hashes or Merkle root mismatch.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5509,7 +5509,7 @@
       "category": "other",
       "priority": "important",
       "content": "",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5531,7 +5531,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Read the relevant snapshot fields first\n- Surface `snapshot_id`, `policy_version_ids[]`, `policy_snapshot_hash`\n- Propose **new version** files for policy changes (no in-place edits)\n- Suggest running the CI gates above",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5553,7 +5553,7 @@
       "category": "other",
       "priority": "important",
       "content": "- **New File** → for adding `.../v{new}/snapshot.json` (full file content)\n- **JSON Artifact** → for overrides/receipts (valid JSON only)\n- **Unified Diff** → never used to mutate existing snapshots; use only for non-policy code/config  \nViolations → `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`.",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5575,7 +5575,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Attempt to modify existing snapshot ............... `ERROR:GSMD_MUTATION_DENIED`  \n- Hash mismatch vs `snapshot_hash` .................. `ERROR:GSMD_HASH_MISMATCH`  \n- Missing/invalid signature or `kid` ................ `ERROR:GSMD_SIGNATURE_MISSING`  \n- Invalid evaluation_point .......................... `ERROR:GSMD_EVALPOINT_INVALID`  \n- Receipt missing required fields ................... `ERROR:GSMD_RECEIPT_FIELDS_MISSING`  \n- Override missing ttl/approvals/signature .......... `ERROR:GSMD_OVERRIDE_INVALID`  \n- Approvals < 2 on override ......................... `ERROR:GSMD_APPROVALS_INSUFFICIENT`  \n- Manifest verify (hash/Merkle) fail ................ `ERROR:GSMD_MANIFEST_INVALID`  \n- Decision not in allowed set ....................... `ERROR:GSMD_DECISION_INVALID`  \n- Privacy redaction not applied ..................... `ERROR:GSMD_PRIVACY_DRIFT`  \n- Tests/fixtures absent for declared policy ......... `ERROR:GSMD_TESTS_MISSING`  \n- Return contract not honored ....................... `ERROR:GSMD_RETURN_CONTRACT_VIOLATION`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5597,7 +5597,7 @@
       "category": "other",
       "priority": "important",
       "content": "- [ ] Snapshot patterns/fields valid; `snapshot_hash` recomputes  \n- [ ] Evaluation point valid; decision ∈ {pass,warn,soft_block,hard_block}  \n- [ ] Receipt fields complete and signed; values sourced from snapshot  \n- [ ] Overrides time-boxed (ttl) with ≥2 approvals; signed  \n- [ ] CI gates added (`gsmd-check`, manifest build/verify)  \n- [ ] Privacy redactions applied; no PII/secrets in logs or receipts  \n- [ ] Output matches allowed return contract",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5619,7 +5619,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `usr_ctx_mgr` → ✅ `user_account_manager`\n- ❌ `db_conn_pool` → ✅ `database_connections`\n- ❌ `cfg_mgr` → ✅ `settings_manager`\n- ❌ `calc_total` → ✅ `calculate_total_price`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5641,7 +5641,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `if (x > 0 && y < 100)` → ✅ `if (user_age_is_valid && score_is_within_range)`\n- ❌ `return calc(x, y, z)` → ✅ `return calculate_total_price(quantity, unit_price, tax_rate)`\n- ❌ `processUserData()` → ✅ `validate_user_email_and_save_to_database()`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5663,7 +5663,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Maximum 20 lines per function\n- Function name should clearly describe what it does\n- Break complex functions into smaller, focused ones",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5685,7 +5685,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `// Increment counter` → ✅ `// Count failed login attempts to detect brute force attacks`\n- ❌ `// Loop through array` → ✅ `// Check each customer's payment status to identify overdue accounts`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5707,7 +5707,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `result = a ? b : c ? d : e` → ✅ Use clear if-else statements\n- ❌ `return x && y && z ? process() : null` → ✅ Break into simple steps",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5729,7 +5729,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Database connection pooling\"` → ✅ `\"Like a taxi stand - cars wait for passengers instead of creating new ones each time\"`\n- ❌ `\"API rate limiting\"` → ✅ `\"Like a bouncer at a club - only letting in a certain number of people per minute\"`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5751,7 +5751,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Use helper functions to break down complex operations\n- ❌ One 100-line function → ✅ Five 20-line functions with clear names",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5773,7 +5773,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Align similar operations\n- Use consistent indentation (4 spaces)\n- Leave blank lines between logical sections",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5795,7 +5795,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Error 500\"` → ✅ `\"The email address 'john@' is missing the domain part. Please enter a complete email like 'john@example.com'\"`\n- ❌ `\"Null pointer exception\"` → ✅ `\"The user's profile picture is missing. Please upload a photo or use the default avatar.\"`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5817,7 +5817,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ Mixing `user`, `usr`, `customer`, `client` → ✅ Always use `user`\n- ❌ Mixing `get`, `fetch`, `retrieve` → ✅ Always use `get`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5839,7 +5839,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `calc`, `mgr`, `ctx` → ✅ `calculate`, `manager`, `context`\n- ✅ Allow common ones: `id`, `url`, `api`, `db`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5861,7 +5861,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `\"Execute database transaction\"` → ✅ `\"Save the customer's order\"`\n- ❌ `\"Initialize object instance\"` → ✅ `\"Create a new user account\"`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5883,7 +5883,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `return (a * b) + (c * d) - (e / f)` → ✅ \n```python\nbase_price = quantity * unit_price\ntax_amount = base_price * tax_rate\ndiscount = base_price * discount_percentage\nfinal_price = base_price + tax_amount - discount\nreturn final_price\n```",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5905,7 +5905,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Provide next steps, not just error codes\n- ❌ `\"Validation failed\"` → ✅ `\"The password must be at least 8 characters long. Please add 3 more characters.\"`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5927,7 +5927,7 @@
       "category": "other",
       "priority": "important",
       "content": "- Comments should only explain \"why\", not \"what\"\n- If you need comments to explain \"what\", the code needs to be clearer",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5949,7 +5949,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `test_user()` → ✅ `test_user_can_login_with_valid_credentials()`\n- ❌ `test_error()` → ✅ `test_system_shows_helpful_message_when_email_is_invalid()`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5971,7 +5971,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ `if (age > 18)` → ✅ `if (age >= MINIMUM_ADULT_AGE)`\n- ❌ `timeout = 5000` → ✅ `timeout = FIVE_SECONDS_IN_MILLISECONDS`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -5993,7 +5993,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Functional programming (map, filter, reduce, fold)\n- ❌ **BANNED**: Object-oriented inheritance, polymorphism, abstract classes\n- ❌ **BANNED**: Design patterns (singleton, factory, observer, etc.)\n- ✅ **ALLOWED**: Simple if-else, for loops, basic functions, simple classes",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6015,7 +6015,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Hash maps, sets, tuples, linked lists, trees\n- ❌ **BANNED**: JSON parsing, XML parsing, complex serialization\n- ✅ **ALLOWED**: Simple arrays, simple objects with 2-3 properties max",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6037,7 +6037,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Template literals, string interpolation\n- ❌ **BANNED**: Encoding/decoding, base64, hashing\n- ✅ **ALLOWED**: Basic string concatenation, simple replace, length check",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6059,7 +6059,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Custom error types, error propagation\n- ❌ **BANNED**: Retry logic, circuit breakers, fallback mechanisms\n- ✅ **ALLOWED**: Simple if-else checks, basic validation",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6081,7 +6081,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Recursion, complex loops, break/continue\n- ❌ **BANNED**: Goto statements, early returns in complex functions\n- ✅ **ALLOWED**: Simple if-else chains, basic for/while loops",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6103,7 +6103,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Higher-order functions, function composition\n- ❌ **BANNED**: Currying, partial application, function factories\n- ✅ **ALLOWED**: Simple functions with 1-3 parameters, basic return statements",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6125,7 +6125,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Array destructuring, spread operators\n- ❌ **BANNED**: Multi-dimensional arrays, array manipulation\n- ✅ **ALLOWED**: Basic array access with [index], simple for loops",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6147,7 +6147,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Complex conditional logic, nested conditions\n- ❌ **BANNED**: Logical operators beyond basic AND/OR\n- ✅ **ALLOWED**: Simple true/false checks, basic comparisons",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6169,7 +6169,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Advanced JavaScript features, complex type systems\n- ❌ **BANNED**: Metaprogramming, reflection, dynamic code generation\n- ✅ **ALLOWED**: Basic language syntax only",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6191,7 +6191,7 @@
       "category": "other",
       "priority": "important",
       "content": "- ❌ **BANNED**: Package managers, dependency management\n- ❌ **BANNED**: External APIs, web services, complex integrations\n- ✅ **ALLOWED**: Basic language built-ins only",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6213,7 +6213,7 @@
       "category": "other",
       "priority": "important",
       "content": "- **MANDATORY**: No technical jargon without explanation\n- **MANDATORY**: Use simple, everyday words\n- **MANDATORY**: Break complex operations into simple steps\n- **MANDATORY**: Write code that reads like plain English\n- **MANDATORY**: If an 8th grader can't understand it, rewrite it",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6235,7 +6235,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Under `ide/agent/receipts/` every `<repo-id>` must contain:\n```\nide/agent/receipts/<repo-id>/{yyyy}/{mm}/\nide/agent/receipts/<repo-id>/{index|quarantine|checkpoints}/\n```\n- `yyyy`=`[0-9]{4}`, `mm`=`(0[1-9]|1[0-2])`\n- Only these three management folders are allowed at that level.\n**Stop codes**\n- `ERROR:IDE_RECEIPTS_MISSING_INDEX`\n- `ERROR:IDE_RECEIPTS_MISSING_QA`\n- `ERROR:IDE_RECEIPTS_LAYOUT_DRIFT`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6257,7 +6257,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** The only permitted top-level categories under `ide/agent/` are:\n```\npolicy/cache\ntrust/pubkeys\nconfig/consent\nqueue/evidence/{pending|sent|failed}\nlogs/metrics\ndb\nllm/{prompts|tools|adapters|cache/{token|embedding}|redaction|runs}\n```\n**Stop codes**\n- `ERROR:IDE_AGENT_DIR_UNKNOWN`\n- `ERROR:IDE_QUEUE_STATE_UNKNOWN`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6279,7 +6279,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `evidence/` must contain exactly:\n```\nreceipts/ , manifests/ , checksums/ , dlq/ , watermarks/<consumer-id>/\n```\n- `<consumer-id>` must be kebab-case `[a-z0-9-]+`.\n- No other top-level entries allowed under `evidence/`.\n**Stop codes**\n- `ERROR:EVIDENCE_DIR_UNKNOWN`\n- `ERROR:WATERMARKS_MISSING_CONSUMER`\n- `ERROR:CONSUMER_ID_SLUG_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6301,7 +6301,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `ingest/staging/` exists; optional `ingest/staging/unclassified/` is created via `-StampUnclassified <slug>`.\n- Fallback slug format: `UNCLASSIFIED__<slug>` (kebab-case slug).\n- Must be resolved/moved within 24h.\n**Stop codes**\n- `ERROR:UNCLASSIFIED_SLUG_INVALID`\n- `ERROR:UNCLASSIFIED_STALE`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6323,7 +6323,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only these kinds are allowed under `observability/`:\n```\nmetrics/ , traces/ , logs/\n```\nEach must be date-partitioned: `dt=YYYY-MM-DD/`.\n**Stop codes**\n- `ERROR:OBS_KIND_UNKNOWN`\n- `ERROR:OBS_DT_PARTITION_MISSING`\n- `ERROR:OBS_DT_FORMAT_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6345,7 +6345,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only these capture points are allowed under `adapters/`:\n```\nwebhooks/ , gateway-logs/\n```\nEach supports optional date partition: `dt=YYYY-MM-DD/`.\n**Stop codes**\n- `ERROR:ADAPTERS_DIR_UNKNOWN`\n- `ERROR:ADAPTERS_DT_FORMAT_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6367,7 +6367,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `reporting/marts/` must be date-partitioned `dt=YYYY-MM-DD/`.  \nIf you introduce table subfolders, they must be kebab-case.\n**Stop codes**\n- `ERROR:MARTS_DT_PARTITION_MISSING`\n- `ERROR:MARTS_TABLE_SLUG_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6389,7 +6389,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Only **public keys** belong under:\n```\npolicy/trust/pubkeys/      (tenant)\ntrust/pubkeys/             (product)\npki/pubkeys/               (shared)\n```\n**Stop codes**\n- `ERROR:PRIVATE_KEY_ON_DISK`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6411,7 +6411,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Allowed top-level categories and optional partitions:\n```\nadapters/gateway-logs[/dt=YYYY-MM-DD]\nservice-metrics[/dt=YYYY-MM-DD]\nreporting/tenants/aggregates[/dt=YYYY-MM-DD]\ntrust/pubkeys\n```\n**Stop codes**\n- `ERROR:PRODUCT_DIR_UNKNOWN`\n- `ERROR:PRODUCT_DT_FORMAT_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6433,7 +6433,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Allowed top-level categories:\n```\npki/pubkeys\nobservability/otel\nsiem\nbi-lake/curated/zero-ui\ngovernance/controls/zero-ui\n```\n**Stop codes**\n- `ERROR:SHARED_DIR_UNKNOWN`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6455,7 +6455,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** `meta/schema/` is **forbidden by default**; may exist only when scaffold/CI runs with `-CompatAliases:true`, and must be tracked by a waiver receipt.\n**Stop codes**\n- `ERROR:DEPRECATED_ALIAS_USED`\n- `ERROR:DEPRECATED_ALIAS_DRIFT`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6477,7 +6477,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** \n- Date partitions must come from `-CreateDt` (`YYYY-MM-DD`) → `dt=YYYY-MM-DD/`.\n- IDE receipts **must** use `{yyyy}/{mm}` layout derived from the same date.\n- No `dt=` without a valid `-CreateDt`; no `{yyyy}/{mm}` outside IDE receipts.\n**Stop codes**\n- `ERROR:CREATE_DT_MISSING`\n- `ERROR:PARTITION_MISMATCH`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6499,7 +6499,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Shards must be **declared** as `{0|16|256}`; scaffold does not create shard directories implicitly. If shards are present, they must follow `shard={00..ff}` (for 256) or `shard={0..15}` (for 16), zero-padded consistently.\n**Stop codes**\n- `ERROR:SHARD_COUNT_INVALID`\n- `ERROR:SHARD_LAYOUT_INVALID`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
@@ -6521,7 +6521,7 @@
       "category": "other",
       "priority": "important",
       "content": "**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.\n**Stop codes**\n- `ERROR:SCAFFOLD_CREATED_FILES`\n- `ERROR:SCAFFOLD_NOT_IDEMPOTENT`",
-      "enabled": false,
+      "enabled": true,
       "config": {
         "default_enabled": true,
         "notes": "",
