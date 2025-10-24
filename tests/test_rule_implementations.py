@@ -27,18 +27,15 @@ from validator.rules.coding_standards import CodingStandardsValidator
 class TestRuleImplementationBase(unittest.TestCase):
     """Base class for rule implementation tests."""
     
-    @classmethod
-    def setUpClass(cls):
-        """Set up test environment for rule implementations."""
-        cls.config_dir = Path(__file__).parent.parent / "config"
-        cls.rules_file = cls.config_dir / "constitution_rules.json"
-        
-        # Load constitution rules
-        with open(cls.rules_file, 'r', encoding='utf-8') as f:
-            cls.constitution_data = json.load(f)
-    
     def setUp(self):
         """Set up for each test method."""
+        self.config_dir = Path(__file__).parent.parent / "config"
+        self.rules_file = self.config_dir / "constitution_rules.json"
+        
+        # Load constitution rules fresh for each test
+        with open(self.rules_file, 'r', encoding='utf-8') as f:
+            self.constitution_data = json.load(f)
+        
         self.basic_validator = BasicWorkValidator()
         self.system_validator = SystemDesignValidator()
         self.teamwork_validator = TeamworkValidator()
