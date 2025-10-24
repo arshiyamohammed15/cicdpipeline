@@ -273,7 +273,7 @@ class OptimizedConstitutionValidator:
         
         return violations
     
-    def validate_file(self, file_path: str) -> ValidationResult:
+    def validate_file(self, file_path: str, content: str = None) -> ValidationResult:
         """
         Validate a single Python file with optimized performance.
         
@@ -285,12 +285,13 @@ class OptimizedConstitutionValidator:
         """
         start_time = time.time()
         
-        try:
-            # Read file content
-            with open(file_path, 'r', encoding='utf-8') as f:
-                content = f.read()
-        except Exception as e:
-            raise IOError(f"Could not read file {file_path}: {e}")
+        if content is None:
+            try:
+                # Read file content
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+            except Exception as e:
+                raise IOError(f"Could not read file {file_path}: {e}")
         
         # Parse AST with caching
         tree = self._parse_ast(file_path, content)

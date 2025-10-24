@@ -1,0 +1,378 @@
+{
+  "summary": {
+    "total_tests": 34,
+    "total_passed": 22,
+    "total_failed": 4,
+    "total_errors": 8,
+    "success_rate": 64.70588235294117,
+    "execution_time": 0.10965800285339355,
+    "memory_usage_mb": 2.26953125,
+    "timestamp": "2025-10-24T08:42:30.486588"
+  },
+  "categories": {
+    "constitution_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.00390625
+    },
+    "rule_validation": {
+      "tests": 15,
+      "passed": 12,
+      "failed": 2,
+      "errors": 1,
+      "success_rate": 80.0,
+      "execution_time": 0.026288747787475586,
+      "memory_usage_mb": -0.38671875
+    },
+    "rule_implementations": {
+      "tests": 19,
+      "passed": 15,
+      "failed": 2,
+      "errors": 2,
+      "success_rate": 78.94736842105263,
+      "execution_time": 0.06964468955993652,
+      "memory_usage_mb": 2.61328125
+    },
+    "performance": {
+      "tests": 0,
+      "passed": -5,
+      "failed": 0,
+      "errors": 5,
+      "success_rate": 0,
+      "execution_time": 0.013724565505981445,
+      "memory_usage_mb": 0.0390625
+    }
+  },
+  "detailed_results": {
+    "constitution_rules": {
+      "TestConstitutionRulesBase": {
+        "success": true,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.00390625,
+        "category": "constitution_rules"
+      }
+    },
+    "rule_validation": {
+      "TestBasicWorkRules": {
+        "success": true,
+        "tests_run": 5,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.03125,
+        "category": "rule_validation",
+        "output": "test_rule_2_information_usage (test_rule_validation.TestBasicWorkRules.test_rule_2_information_usage)\nTest Rule 2: Only Use Information You're Given ... ok\ntest_rule_3_privacy_protection (test_rule_validation.TestBasicWorkRules.test_rule_3_privacy_protection)\nTest Rule 3: Protect People's Privacy ... ok\ntest_rule_4_settings_files (test_rule_validation.TestBasicWorkRules.test_rule_4_settings_files)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers ... ok\ntest_rule_4_settings_usage (test_rule_validation.TestBasicWorkRules.test_rule_4_settings_usage)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers ... ok\ntest_rule_5_record_keeping (test_rule_validation.TestBasicWorkRules.test_rule_5_record_keeping)\nTest Rule 5: Keep Good Records ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.003s\n\nOK\n"
+      },
+      "TestSystemDesignRules": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation",
+        "output": "test_rule_22_architecture_consistency (test_rule_validation.TestSystemDesignRules.test_rule_22_architecture_consistency)\nTest Rule 22: Architecture Consistency ... ok\ntest_rule_25_separation_of_concerns (test_rule_validation.TestSystemDesignRules.test_rule_25_separation_of_concerns)\nTest Rule 25: Separation of Concerns ... ok\ntest_rule_26_dependency_injection (test_rule_validation.TestSystemDesignRules.test_rule_26_dependency_injection)\nTest Rule 26: Dependency Injection ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.002s\n\nOK\n"
+      },
+      "TestTeamworkRules": {
+        "success": false,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.009563684463500977,
+        "memory_usage_mb": 0.16015625,
+        "category": "rule_validation",
+        "output": "test_rule_52_collaboration_standards (test_rule_validation.TestTeamworkRules.test_rule_52_collaboration_standards)\nTest Rule 52: Collaboration Standards ... ok\ntest_rule_53_code_review_readiness (test_rule_validation.TestTeamworkRules.test_rule_53_code_review_readiness)\nTest Rule 53: Code Review Readiness ... ERROR\n\n======================================================================\nERROR: test_rule_53_code_review_readiness (test_rule_validation.TestTeamworkRules.test_rule_53_code_review_readiness)\nTest Rule 53: Code Review Readiness\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_validation.py\", line 203, in test_rule_53_code_review_readiness\n    violations = self.validator.validate_code_review_readiness(good_code)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\rules\\teamwork.py\", line 52, in validate_code_review_readiness\n    violations.append(Violation(\n                      ^^^^^^^^^^\nTypeError: Violation.__init__() got an unexpected keyword argument 'title'\n\n----------------------------------------------------------------------\nRan 2 tests in 0.004s\n\nFAILED (errors=1)\n"
+      },
+      "TestCodingStandardsRules": {
+        "success": false,
+        "tests_run": 2,
+        "failures": 2,
+        "errors": 0,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.00390625,
+        "category": "rule_validation",
+        "output": "test_rule_function_length (test_rule_validation.TestCodingStandardsRules.test_rule_function_length)\nTest function length rules ... FAIL\ntest_rule_naming_conventions (test_rule_validation.TestCodingStandardsRules.test_rule_naming_conventions)\nTest naming convention rules ... FAIL\n\n======================================================================\nFAIL: test_rule_function_length (test_rule_validation.TestCodingStandardsRules.test_rule_function_length)\nTest function length rules\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_validation.py\", line 269, in test_rule_function_length\n    self.assertGreater(len(violations), 0)\nAssertionError: 0 not greater than 0\n\n======================================================================\nFAIL: test_rule_naming_conventions (test_rule_validation.TestCodingStandardsRules.test_rule_naming_conventions)\nTest naming convention rules\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_validation.py\", line 239, in test_rule_naming_conventions\n    self.assertGreater(len(violations), 0)\nAssertionError: 0 not greater than 0\n\n----------------------------------------------------------------------\nRan 2 tests in 0.003s\n\nFAILED (failures=2)\n"
+      },
+      "TestRuleIntegration": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.01672506332397461,
+        "memory_usage_mb": -0.58203125,
+        "category": "rule_validation",
+        "output": "test_multiple_rule_violations (test_rule_implementations.TestRuleIntegration.test_multiple_rule_violations)\nTest detection of multiple rule violations. ... ok\ntest_rule_dependency_handling (test_rule_implementations.TestRuleIntegration.test_rule_dependency_handling)\nTest handling of rule dependencies. ... ok\ntest_rule_priority_handling (test_rule_implementations.TestRuleIntegration.test_rule_priority_handling)\nTest that rule priorities are properly handled. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.011s\n\nOK\n"
+      }
+    },
+    "rule_implementations": {
+      "TestBasicWorkRuleImplementations": {
+        "success": false,
+        "tests_run": 5,
+        "failures": 2,
+        "errors": 1,
+        "execution_time": 0.016770601272583008,
+        "memory_usage_mb": 0.35546875,
+        "category": "rule_implementations",
+        "output": "test_rule_1_documentation_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_1_documentation_implementation)\nTest Rule 1: Documentation Required - Implementation ... ok\ntest_rule_2_information_usage_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_2_information_usage_implementation)\nTest Rule 2: Only Use Information You're Given - Implementation ... FAIL\ntest_rule_3_privacy_protection_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_3_privacy_protection_implementation)\nTest Rule 3: Protect People's Privacy - Implementation ... ok\ntest_rule_4_settings_files_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_4_settings_files_implementation)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers - Implementation ... FAIL\ntest_rule_5_record_keeping_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_5_record_keeping_implementation)\nTest Rule 5: Keep Good Records - Implementation ... ERROR\n\n======================================================================\nERROR: test_rule_5_record_keeping_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_5_record_keeping_implementation)\nTest Rule 5: Keep Good Records - Implementation\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_implementations.py\", line 182, in test_rule_5_record_keeping_implementation\n    violations = self.basic_validator.validate_record_keeping(bad_code)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\rules\\basic_work.py\", line 120, in validate_record_keeping\n    violations.append(Violation(\n                      ^^^^^^^^^^\nTypeError: Violation.__init__() got an unexpected keyword argument 'title'\n\n======================================================================\nFAIL: test_rule_2_information_usage_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_2_information_usage_implementation)\nTest Rule 2: Only Use Information You're Given - Implementation\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_implementations.py\", line 100, in test_rule_2_information_usage_implementation\n    self.assertGreater(len(violations), 0, \"Improper information usage should fail\")\nAssertionError: 0 not greater than 0 : Improper information usage should fail\n\n======================================================================\nFAIL: test_rule_4_settings_files_implementation (test_rule_implementations.TestBasicWorkRuleImplementations.test_rule_4_settings_files_implementation)\nTest Rule 4: Use Settings Files, Not Hardcoded Numbers - Implementation\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_implementations.py\", line 153, in test_rule_4_settings_files_implementation\n    self.assertGreater(len(violations), 0, \"Hardcoded values should fail\")\nAssertionError: 0 not greater than 0 : Hardcoded values should fail\n\n----------------------------------------------------------------------\nRan 5 tests in 0.017s\n\nFAILED (failures=2, errors=1)\n"
+      },
+      "TestSystemDesignRuleImplementations": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.011671781539916992,
+        "memory_usage_mb": 0.66796875,
+        "category": "rule_implementations",
+        "output": "test_rule_22_architecture_consistency_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_22_architecture_consistency_implementation)\nTest Rule 22: Architecture Consistency - Implementation ... ok\ntest_rule_25_separation_of_concerns_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_25_separation_of_concerns_implementation)\nTest Rule 25: Separation of Concerns - Implementation ... ok\ntest_rule_26_dependency_injection_implementation (test_rule_implementations.TestSystemDesignRuleImplementations.test_rule_26_dependency_injection_implementation)\nTest Rule 26: Dependency Injection - Implementation ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.014s\n\nOK\n"
+      },
+      "TestTeamworkRuleImplementations": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.008443355560302734,
+        "memory_usage_mb": 0.453125,
+        "category": "rule_implementations",
+        "output": "test_rule_52_collaboration_standards_implementation (test_rule_implementations.TestTeamworkRuleImplementations.test_rule_52_collaboration_standards_implementation)\nTest Rule 52: Collaboration Standards - Implementation ... ok\ntest_rule_53_code_review_readiness_implementation (test_rule_implementations.TestTeamworkRuleImplementations.test_rule_53_code_review_readiness_implementation)\nTest Rule 53: Code Review Readiness - Implementation ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.010s\n\nOK\n"
+      },
+      "TestCodingStandardsRuleImplementations": {
+        "success": true,
+        "tests_run": 2,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.016362905502319336,
+        "memory_usage_mb": 0.421875,
+        "category": "rule_implementations",
+        "output": "test_function_length_implementation (test_rule_implementations.TestCodingStandardsRuleImplementations.test_function_length_implementation)\nTest function length rules implementation. ... ok\ntest_naming_conventions_implementation (test_rule_implementations.TestCodingStandardsRuleImplementations.test_naming_conventions_implementation)\nTest naming convention rules implementation. ... ok\n\n----------------------------------------------------------------------\nRan 2 tests in 0.011s\n\nOK\n"
+      },
+      "TestRuleEdgeCases": {
+        "success": false,
+        "tests_run": 4,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.008244037628173828,
+        "memory_usage_mb": 0.4296875,
+        "category": "rule_implementations",
+        "output": "test_empty_file_handling (test_rule_implementations.TestRuleEdgeCases.test_empty_file_handling)\nTest handling of empty files. ... ERROR\ntest_malformed_code_handling (test_rule_implementations.TestRuleEdgeCases.test_malformed_code_handling)\nTest handling of malformed code. ... ok\ntest_unicode_handling (test_rule_implementations.TestRuleEdgeCases.test_unicode_handling)\nTest handling of Unicode characters. ... ok\ntest_very_long_lines_handling (test_rule_implementations.TestRuleEdgeCases.test_very_long_lines_handling)\nTest handling of very long lines. ... ok\n\n======================================================================\nERROR: test_empty_file_handling (test_rule_implementations.TestRuleEdgeCases.test_empty_file_handling)\nTest handling of empty files.\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_rule_implementations.py\", line 421, in test_empty_file_handling\n    violations = validator.validate_information_usage(empty_code)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'SystemDesignValidator' object has no attribute 'validate_information_usage'\n\n----------------------------------------------------------------------\nRan 4 tests in 0.011s\n\nFAILED (errors=1)\n"
+      },
+      "TestRuleIntegration": {
+        "success": true,
+        "tests_run": 3,
+        "failures": 0,
+        "errors": 0,
+        "execution_time": 0.008152008056640625,
+        "memory_usage_mb": 0.28515625,
+        "category": "rule_implementations",
+        "output": "test_multiple_rule_violations (test_rule_implementations.TestRuleIntegration.test_multiple_rule_violations)\nTest detection of multiple rule violations. ... ok\ntest_rule_dependency_handling (test_rule_implementations.TestRuleIntegration.test_rule_dependency_handling)\nTest handling of rule dependencies. ... ok\ntest_rule_priority_handling (test_rule_implementations.TestRuleIntegration.test_rule_priority_handling)\nTest that rule priorities are properly handled. ... ok\n\n----------------------------------------------------------------------\nRan 3 tests in 0.011s\n\nOK\n"
+      }
+    },
+    "performance": {
+      "TestValidationPerformance": {
+        "success": false,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.008776187896728516,
+        "memory_usage_mb": 0.03515625,
+        "category": "performance",
+        "output": "setUpClass (test_performance.TestValidationPerformance) ... ERROR\n\n======================================================================\nERROR: setUpClass (test_performance.TestValidationPerformance)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_performance.py\", line 37, in setUpClass\n    cls.validator = ConstitutionValidator(\"config\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 43, in __init__\n    self.config = self._load_config()\n                  ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 77, in _load_config\n    with open(self.config_path, 'r', encoding='utf-8') as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'config'\n\n----------------------------------------------------------------------\nRan 0 tests in 0.002s\n\nFAILED (errors=1)\n"
+      },
+      "TestMemoryUsage": {
+        "success": false,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.00390625,
+        "category": "performance",
+        "output": "setUpClass (test_performance.TestMemoryUsage) ... ERROR\n\n======================================================================\nERROR: setUpClass (test_performance.TestMemoryUsage)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_performance.py\", line 37, in setUpClass\n    cls.validator = ConstitutionValidator(\"config\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 43, in __init__\n    self.config = self._load_config()\n                  ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 77, in _load_config\n    with open(self.config_path, 'r', encoding='utf-8') as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'config'\n\n----------------------------------------------------------------------\nRan 0 tests in 0.001s\n\nFAILED (errors=1)\n"
+      },
+      "TestConcurrentValidation": {
+        "success": false,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "setUpClass (test_performance.TestConcurrentValidation) ... ERROR\n\n======================================================================\nERROR: setUpClass (test_performance.TestConcurrentValidation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_performance.py\", line 37, in setUpClass\n    cls.validator = ConstitutionValidator(\"config\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 43, in __init__\n    self.config = self._load_config()\n                  ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 77, in _load_config\n    with open(self.config_path, 'r', encoding='utf-8') as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'config'\n\n----------------------------------------------------------------------\nRan 0 tests in 0.001s\n\nFAILED (errors=1)\n"
+      },
+      "TestStressValidation": {
+        "success": false,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "setUpClass (test_performance.TestStressValidation) ... ERROR\n\n======================================================================\nERROR: setUpClass (test_performance.TestStressValidation)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_performance.py\", line 37, in setUpClass\n    cls.validator = ConstitutionValidator(\"config\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 43, in __init__\n    self.config = self._load_config()\n                  ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 77, in _load_config\n    with open(self.config_path, 'r', encoding='utf-8') as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'config'\n\n----------------------------------------------------------------------\nRan 0 tests in 0.001s\n\nFAILED (errors=1)\n"
+      },
+      "TestScalability": {
+        "success": false,
+        "tests_run": 0,
+        "failures": 0,
+        "errors": 1,
+        "execution_time": 0.00494837760925293,
+        "memory_usage_mb": 0.0,
+        "category": "performance",
+        "output": "setUpClass (test_performance.TestScalability) ... ERROR\n\n======================================================================\nERROR: setUpClass (test_performance.TestScalability)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_performance.py\", line 37, in setUpClass\n    cls.validator = ConstitutionValidator(\"config\")\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 43, in __init__\n    self.config = self._load_config()\n                  ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\Projects\\ZeroUI2.0\\validator\\core.py\", line 77, in _load_config\n    with open(self.config_path, 'r', encoding='utf-8') as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nPermissionError: [Errno 13] Permission denied: 'config'\n\n----------------------------------------------------------------------\nRan 0 tests in 0.001s\n\nFAILED (errors=1)\n"
+      }
+    }
+  },
+  "metrics": {
+    "summary": {
+      "total_tests": 17,
+      "passed_tests": 8,
+      "failed_tests": 9,
+      "skipped_tests": 0,
+      "success_rate": 47.05882352941176,
+      "execution_time": 0.10965800285339355,
+      "memory_usage_mb": 2.296875
+    },
+    "test_results": [
+      {
+        "test_name": "constitution_rules_TestConstitutionRulesBase",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761275550.37693
+      },
+      {
+        "test_name": "rule_validation_TestBasicWorkRules",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 32768,
+        "timestamp": 1761275550.37693
+      },
+      {
+        "test_name": "rule_validation_TestSystemDesignRules",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761275550.37693
+      },
+      {
+        "test_name": "rule_validation_TestTeamworkRules",
+        "result": "failed",
+        "execution_time": 0.009563684463500977,
+        "memory_usage": 167936,
+        "timestamp": 1761275550.3864937
+      },
+      {
+        "test_name": "rule_validation_TestCodingStandardsRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761275550.3864937
+      },
+      {
+        "test_name": "rule_validation_TestRuleIntegration",
+        "result": "passed",
+        "execution_time": 0.01672506332397461,
+        "memory_usage": -610304,
+        "timestamp": 1761275550.4032187
+      },
+      {
+        "test_name": "rule_implementations_TestBasicWorkRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.016770601272583008,
+        "memory_usage": 372736,
+        "timestamp": 1761275550.4199893
+      },
+      {
+        "test_name": "rule_implementations_TestSystemDesignRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.011671781539916992,
+        "memory_usage": 700416,
+        "timestamp": 1761275550.4316611
+      },
+      {
+        "test_name": "rule_implementations_TestTeamworkRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.008443355560302734,
+        "memory_usage": 475136,
+        "timestamp": 1761275550.4401045
+      },
+      {
+        "test_name": "rule_implementations_TestCodingStandardsRuleImplementations",
+        "result": "passed",
+        "execution_time": 0.016362905502319336,
+        "memory_usage": 442368,
+        "timestamp": 1761275550.4564674
+      },
+      {
+        "test_name": "rule_implementations_TestRuleEdgeCases",
+        "result": "failed",
+        "execution_time": 0.008244037628173828,
+        "memory_usage": 450560,
+        "timestamp": 1761275550.4647114
+      },
+      {
+        "test_name": "rule_implementations_TestRuleIntegration",
+        "result": "passed",
+        "execution_time": 0.008152008056640625,
+        "memory_usage": 299008,
+        "timestamp": 1761275550.4728634
+      },
+      {
+        "test_name": "performance_TestValidationPerformance",
+        "result": "failed",
+        "execution_time": 0.008776187896728516,
+        "memory_usage": 36864,
+        "timestamp": 1761275550.4816396
+      },
+      {
+        "test_name": "performance_TestMemoryUsage",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761275550.4816396
+      },
+      {
+        "test_name": "performance_TestConcurrentValidation",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761275550.4816396
+      },
+      {
+        "test_name": "performance_TestStressValidation",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761275550.4816396
+      },
+      {
+        "test_name": "performance_TestScalability",
+        "result": "failed",
+        "execution_time": 0.00494837760925293,
+        "memory_usage": 0,
+        "timestamp": 1761275550.486588
+      }
+    ],
+    "performance_metrics": {
+      "average_test_time": 0.006450470756081974,
+      "slowest_test": {
+        "test_name": "rule_implementations_TestBasicWorkRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.016770601272583008,
+        "memory_usage": 372736,
+        "timestamp": 1761275550.4199893
+      },
+      "fastest_test": {
+        "test_name": "constitution_rules_TestConstitutionRulesBase",
+        "result": "passed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761275550.37693
+      }
+    }
+  }
+}

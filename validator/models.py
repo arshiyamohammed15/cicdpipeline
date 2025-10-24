@@ -11,6 +11,10 @@ from typing import Dict, List, Optional
 
 class Severity(Enum):
     """Severity levels for rule violations."""
+    CRITICAL = "critical"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
     ERROR = "error"
     WARNING = "warning"
     INFO = "info"

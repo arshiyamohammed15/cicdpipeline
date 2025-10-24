@@ -1,0 +1,370 @@
+{
+  "summary": {
+    "total_tests": 0,
+    "total_passed": 0,
+    "total_failed": 0,
+    "total_errors": 0,
+    "success_rate": 0,
+    "execution_time": 0.0,
+    "memory_usage_mb": 0.0078125,
+    "timestamp": "2025-10-24T08:15:55.697538"
+  },
+  "categories": {
+    "constitution_rules": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "rule_validation": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    },
+    "rule_implementations": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0078125
+    },
+    "performance": {
+      "tests": 0,
+      "passed": 0,
+      "failed": 0,
+      "errors": 0,
+      "success_rate": 0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0
+    }
+  },
+  "detailed_results": {
+    "constitution_rules": {
+      "TestConstitutionRulesBase": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "constitution_rules"
+      }
+    },
+    "rule_validation": {
+      "TestBasicWorkRules": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation"
+      },
+      "TestSystemDesignRules": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation"
+      },
+      "TestTeamworkRules": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation"
+      },
+      "TestCodingStandardsRules": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation"
+      },
+      "TestRuleIntegration": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_validation"
+      }
+    },
+    "rule_implementations": {
+      "TestBasicWorkRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestSystemDesignRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.00390625,
+        "category": "rule_implementations"
+      },
+      "TestTeamworkRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestCodingStandardsRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestCommentsRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestLoggingRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestPerformanceRuleImplementations": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.00390625,
+        "category": "rule_implementations"
+      },
+      "TestRuleEdgeCases": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      },
+      "TestRuleIntegration": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "rule_implementations"
+      }
+    },
+    "performance": {
+      "TestValidationPerformance": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance"
+      },
+      "TestMemoryUsage": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance"
+      },
+      "TestConcurrentValidation": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance"
+      },
+      "TestStressValidation": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance"
+      },
+      "TestScalability": {
+        "success": false,
+        "error": "name 'unittest' is not defined",
+        "execution_time": 0.0,
+        "memory_usage_mb": 0.0,
+        "category": "performance"
+      }
+    }
+  },
+  "metrics": {
+    "summary": {
+      "total_tests": 20,
+      "passed_tests": 0,
+      "failed_tests": 20,
+      "skipped_tests": 0,
+      "success_rate": 0.0,
+      "execution_time": 0.0,
+      "memory_usage_mb": 0.0078125
+    },
+    "test_results": [
+      {
+        "test_name": "constitution_rules_TestConstitutionRulesBase",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_validation_TestBasicWorkRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_validation_TestSystemDesignRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_validation_TestTeamworkRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_validation_TestCodingStandardsRules",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_validation_TestRuleIntegration",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestBasicWorkRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestSystemDesignRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestTeamworkRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestCodingStandardsRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestCommentsRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestLoggingRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestPerformanceRuleImplementations",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 4096,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestRuleEdgeCases",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "rule_implementations_TestRuleIntegration",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "performance_TestValidationPerformance",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "performance_TestMemoryUsage",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "performance_TestConcurrentValidation",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "performance_TestStressValidation",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      {
+        "test_name": "performance_TestScalability",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      }
+    ],
+    "performance_metrics": {
+      "average_test_time": 0.0,
+      "slowest_test": {
+        "test_name": "constitution_rules_TestConstitutionRulesBase",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      },
+      "fastest_test": {
+        "test_name": "constitution_rules_TestConstitutionRulesBase",
+        "result": "failed",
+        "execution_time": 0.0,
+        "memory_usage": 0,
+        "timestamp": 1761273955.6975389
+      }
+    }
+  }
+}

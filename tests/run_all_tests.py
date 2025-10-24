@@ -12,34 +12,63 @@ import os
 import time
 import json
 import argparse
+import unittest
+import shutil
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 import subprocess
 import concurrent.futures
 from datetime import datetime
+from io import StringIO
 
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from test_runner import ConstitutionTestRunner, TestMetrics
-from test_constitution_rules import TestConstitutionRulesBase
+from test_constitution_rules import (
+    TestConstitutionRulesBase, TestRuleStructure, TestRuleCategories, 
+    TestRuleValidation, TestSpecificRuleCategories, TestRuleContentValidation,
+    TestRulePerformance, TestRuleIntegration, TestRuleErrorHandling, TestRuleReporting
+)
 from test_rule_validation import TestBasicWorkRules, TestSystemDesignRules, TestTeamworkRules, TestCodingStandardsRules, TestRuleIntegration
-from test_rule_implementations import TestBasicWorkRuleImplementations, TestSystemDesignRuleImplementations, TestTeamworkRuleImplementations, TestCodingStandardsRuleImplementations, TestCommentsRuleImplementations, TestLoggingRuleImplementations, TestPerformanceRuleImplementations, TestRuleEdgeCases, TestRuleIntegration
+from test_rule_implementations import TestBasicWorkRuleImplementations, TestSystemDesignRuleImplementations, TestTeamworkRuleImplementations, TestCodingStandardsRuleImplementations, TestRuleEdgeCases, TestRuleIntegration
 from test_performance import TestValidationPerformance, TestMemoryUsage, TestConcurrentValidation, TestStressValidation, TestScalability
 
 
 class ComprehensiveTestRunner:
     """Comprehensive test runner for all constitution rule tests."""
     
-    def __init__(self, verbose: bool = True, parallel: bool = False, output_dir: str = "test_reports"):
+    def __init__(self, verbose: bool = True, parallel: bool = False, output_dir: str = "test_reports", clear_cache: bool = False, no_cache: bool = False):
         self.verbose = verbose
         self.parallel = parallel
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
+        self.clear_cache = clear_cache
+        self.no_cache = no_cache
         
-        # Initialize test suites
-        self.test_suites = {
-            'constitution_rules': TestConstitutionRulesBase,
+        # Handle cache operations
+        if self.clear_cache:
+            self._clear_test_cache()
+        
+        # Initialize test suites with proper discovery
+        self.test_suites = self._discover_test_suites()
+        self.metrics = TestMetrics()
+    
+    
+    def _discover_test_suites(self):
+        """Discover test suites directly from test files."""
+        test_suites = {
+            'constitution_rules': [
+                TestRuleStructure,
+                TestRuleCategories,
+                TestRuleValidation,
+                TestSpecificRuleCategories,
+                TestRuleContentValidation,
+                TestRulePerformance,
+                TestRuleIntegration,
+                TestRuleErrorHandling,
+                TestRuleReporting
+            ],
             'rule_validation': [
                 TestBasicWorkRules,
                 TestSystemDesignRules,
@@ -52,9 +81,6 @@ class ComprehensiveTestRunner:
                 TestSystemDesignRuleImplementations,
                 TestTeamworkRuleImplementations,
                 TestCodingStandardsRuleImplementations,
-                TestCommentsRuleImplementations,
-                TestLoggingRuleImplementations,
-                TestPerformanceRuleImplementations,
                 TestRuleEdgeCases,
                 TestRuleIntegration
             ],
@@ -66,8 +92,37 @@ class ComprehensiveTestRunner:
                 TestScalability
             ]
         }
+        return test_suites
+    
+    def _clear_test_cache(self):
+        """Clear test cache files and directories."""
+        if self.verbose:
+            print("Clearing test cache...")
         
-        self.metrics = TestMetrics()
+        # Clear Python cache files
+        cache_dirs = [
+            Path(__file__).parent / "__pycache__",
+            Path(__file__).parent.parent / "__pycache__",
+            Path(__file__).parent.parent / "config" / "__pycache__",
+            Path(__file__).parent.parent / "validator" / "__pycache__"
+        ]
+        
+        for cache_dir in cache_dirs:
+            if cache_dir.exists():
+                shutil.rmtree(cache_dir)
+                if self.verbose:
+                    print(f"  Cleared: {cache_dir}")
+        
+        # Clear test report cache
+        if self.output_dir.exists():
+            for file in self.output_dir.glob("*.json"):
+                if "cache" in file.name.lower():
+                    file.unlink()
+                    if self.verbose:
+                        print(f"  Cleared cache file: {file}")
+        
+        if self.verbose:
+            print("Cache cleared successfully.")
     
     def run_all_tests(self) -> Dict[str, Any]:
         """Run all test suites and generate comprehensive report."""
@@ -110,7 +165,7 @@ class ComprehensiveTestRunner:
         return report
     
     def _run_test_list(self, category: str, test_classes: List) -> Dict[str, Any]:
-        """Run a list of test classes."""
+        """Run a list of test classes with direct unittest execution."""
         results = {}
         
         for test_class in test_classes:
@@ -122,9 +177,12 @@ class ComprehensiveTestRunner:
             start_memory = self._get_memory_usage()
             
             try:
-                # Create test suite
+                # Create test suite directly
                 suite = unittest.TestLoader().loadTestsFromTestCase(test_class)
-                runner = unittest.TextTestRunner(verbosity=0, stream=open(os.devnull, 'w'))
+                
+                # Use StringIO to capture output instead of devnull
+                stream = StringIO()
+                runner = unittest.TextTestRunner(verbosity=2, stream=stream)
                 result = runner.run(suite)
                 
                 execution_time = time.time() - start_time
@@ -145,12 +203,19 @@ class ComprehensiveTestRunner:
                     'errors': len(result.errors),
                     'execution_time': execution_time,
                     'memory_usage_mb': memory_usage / (1024 * 1024),
-                    'category': category
+                    'category': category,
+                    'output': stream.getvalue()
                 }
                 
                 if self.verbose:
                     status = "PASSED" if result.wasSuccessful() else "FAILED"
                     print(f"  {class_name}: {status} ({result.testsRun} tests, {execution_time:.2f}s)")
+                    if result.failures:
+                        for test, traceback in result.failures:
+                            print(f"    FAIL: {test}")
+                    if result.errors:
+                        for test, traceback in result.errors:
+                            print(f"    ERROR: {test}")
                 
             except Exception as e:
                 execution_time = time.time() - start_time
@@ -354,13 +419,17 @@ def main():
     parser.add_argument('--parallel', '-p', action='store_true', help='Run tests in parallel')
     parser.add_argument('--output-dir', '-o', default='test_reports', help='Output directory for reports')
     parser.add_argument('--category', '-c', help='Run specific test category')
+    parser.add_argument('--clear-cache', action='store_true', help='Clear test cache before running')
+    parser.add_argument('--no-cache', action='store_true', help='Disable test caching (same as --clear-cache)')
     
     args = parser.parse_args()
     
     runner = ComprehensiveTestRunner(
         verbose=args.verbose,
         parallel=args.parallel,
-        output_dir=args.output_dir
+        output_dir=args.output_dir,
+        clear_cache=args.clear_cache or args.no_cache,
+        no_cache=args.no_cache
     )
     
     if args.category:

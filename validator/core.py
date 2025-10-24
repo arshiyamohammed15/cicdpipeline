@@ -32,7 +32,7 @@ class ConstitutionValidator:
     against the single source of truth during CI.
     """
     
-    def __init__(self, config_path: str = "rules_config.json"):
+    def __init__(self, config_path: str = "config/constitution_rules.json"):
         """
         Initialize the validator with configuration.
         
@@ -238,6 +238,14 @@ class ConstitutionValidator:
     def _check_performance_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check performance rules (8, 67)."""
         violations = []
+        
+        # Check if validation_patterns exists in config
+        if "validation_patterns" not in self.config:
+            return violations
+            
+        if "performance" not in self.config["validation_patterns"]:
+            return violations
+            
         patterns = self.config["validation_patterns"]["performance"]["patterns"]
         
         # Check for wildcard imports
@@ -291,6 +299,14 @@ class ConstitutionValidator:
     def _check_testing_safety_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check testing and safety rules (7, 14, 59, 69)."""
         violations = []
+        
+        # Check if validation_patterns exists in config
+        if "validation_patterns" not in self.config:
+            return violations
+            
+        if "testing_safety" not in self.config["validation_patterns"]:
+            return violations
+            
         patterns = self.config["validation_patterns"]["testing_safety"]["patterns"]
         
         # Check for error handling
@@ -320,6 +336,14 @@ class ConstitutionValidator:
     def _check_code_quality_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check code quality rules (15, 18, 68)."""
         violations = []
+        
+        # Check if validation_patterns exists in config
+        if "validation_patterns" not in self.config:
+            return violations
+            
+        if "code_quality" not in self.config["validation_patterns"]:
+            return violations
+            
         patterns = self.config["validation_patterns"]["code_quality"]["patterns"]
         
         # Check function length

@@ -1,0 +1,1 @@
+{"version":3,"file":"EvidenceDrawerManager.d.ts","sourceRoot":"","sources":["EvidenceDrawerManager.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,MAAM,QAAQ,CAAC;AAEjC,qBAAa,qBAAsB,YAAW,MAAM,CAAC,UAAU;IAC3D,OAAO,CAAC,YAAY,CAAkC;;IAM/C,kBAAkB,CAAC,YAAY,CAAC,EAAE,GAAG,GAAG,IAAI;IAuBnD,OAAO,CAAC,iBAAiB;IAmDzB,OAAO,CAAC,qBAAqB;IActB,OAAO,IAAI,IAAI;CAKzB"}

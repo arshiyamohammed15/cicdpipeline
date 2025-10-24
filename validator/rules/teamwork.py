@@ -28,6 +28,49 @@ class TeamworkValidator:
         self.fail_fast_patterns = [
             'raise', 'return', 'exit', 'abort', 'fail', 'error'
         ]
+    
+    def validate_information_usage(self, content: str) -> List[Violation]:
+        """Validate information usage patterns for teamwork."""
+        violations = []
+        # Basic validation - return empty list for now
+        return violations
+    
+    def validate_collaboration_standards(self, content: str) -> List[Violation]:
+        """Validate Rule 52: Collaboration Standards"""
+        violations = []
+        # Check for collaboration patterns
+        if not re.search(r'def\s+\w+', content):
+            violations.append(Violation(
+                rule_id="rule_52",
+                rule_number=52,
+                rule_name="Collaboration Standards",
+                severity=Severity.MEDIUM,
+                message="Ensure proper function definitions for collaboration",
+                file_path="",
+                line_number=1,
+                column_number=1
+            ))
+        return violations
+    
+    def validate_code_review_readiness(self, content: str) -> List[Violation]:
+        """Validate Rule 53: Code Review Readiness"""
+        violations = []
+        # Check for code review readiness - look for docstrings or comments
+        has_docstring = re.search(r'""".*"""', content, re.DOTALL)
+        has_comments = re.search(r'#\s+', content)
+        
+        if not has_docstring and not has_comments:
+            violations.append(Violation(
+                rule_id="rule_53",
+                rule_number=53,
+                rule_name="Code Review Readiness",
+                severity=Severity.LOW,
+                message="Add comments or docstrings for code review readiness",
+                file_path="",
+                line_number=1,
+                column_number=1
+            ))
+        return violations
         
     def validate_early_issue_detection(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """

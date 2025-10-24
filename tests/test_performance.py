@@ -24,7 +24,7 @@ import string
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from validator.optimized_core import OptimizedConstitutionValidator
+from validator.core import ConstitutionValidator
 from validator.models import ValidationResult, Violation, Severity
 
 
@@ -34,7 +34,7 @@ class PerformanceTestBase(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up performance test environment."""
-        cls.validator = OptimizedConstitutionValidator("config")
+        cls.validator = ConstitutionValidator("config/constitution_rules.json")
         cls.test_files_dir = Path(__file__).parent / "test_files"
         cls.test_files_dir.mkdir(exist_ok=True)
         
@@ -142,8 +142,10 @@ class TestValidationPerformance(PerformanceTestBase):
         with open(self.test_files_dir / "small.py", 'r') as f:
             content = f.read()
         
+        # Create a temporary file for testing
+        test_file = self.test_files_dir / "small.py"
         result, execution_time = self._measure_execution_time(
-            self.validator.validate_file, "small.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Small file validation should complete within 1 second
@@ -159,8 +161,9 @@ class TestValidationPerformance(PerformanceTestBase):
         with open(self.test_files_dir / "medium.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "medium.py"
         result, execution_time = self._measure_execution_time(
-            self.validator.validate_file, "medium.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Medium file validation should complete within 5 seconds
@@ -172,8 +175,9 @@ class TestValidationPerformance(PerformanceTestBase):
         with open(self.test_files_dir / "large.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "large.py"
         result, execution_time = self._measure_execution_time(
-            self.validator.validate_file, "large.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Large file validation should complete within 30 seconds
@@ -185,8 +189,9 @@ class TestValidationPerformance(PerformanceTestBase):
         with open(self.test_files_dir / "very_large.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "very_large.py"
         result, execution_time = self._measure_execution_time(
-            self.validator.validate_file, "very_large.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Very large file validation should complete within 60 seconds
@@ -202,8 +207,9 @@ class TestMemoryUsage(PerformanceTestBase):
         with open(self.test_files_dir / "small.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "small.py"
         result, memory_usage = self._measure_memory_usage(
-            self.validator.validate_file, "small.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Memory usage should be reasonable (less than 10MB)
@@ -215,8 +221,9 @@ class TestMemoryUsage(PerformanceTestBase):
         with open(self.test_files_dir / "medium.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "medium.py"
         result, memory_usage = self._measure_memory_usage(
-            self.validator.validate_file, "medium.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Memory usage should be reasonable (less than 50MB)
@@ -228,8 +235,9 @@ class TestMemoryUsage(PerformanceTestBase):
         with open(self.test_files_dir / "large.py", 'r') as f:
             content = f.read()
         
+        test_file = self.test_files_dir / "large.py"
         result, memory_usage = self._measure_memory_usage(
-            self.validator.validate_file, "large.py", content
+            self.validator.validate_file, str(test_file)
         )
         
         # Memory usage should be reasonable (less than 100MB)
@@ -245,7 +253,11 @@ class TestMemoryUsage(PerformanceTestBase):
         
         # Run validation multiple times
         for i in range(10):
-            self.validator.validate_file(f"test_{i}.py", content)
+            test_file = self.test_files_dir / f"test_{i}.py"
+            # Create temporary file for each test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            self.validator.validate_file(str(test_file))
             gc.collect()  # Force garbage collection
         
         final_memory = psutil.Process().memory_info().rss
@@ -265,7 +277,11 @@ class TestConcurrentValidation(PerformanceTestBase):
             content = f.read()
         
         def validate_file(file_id):
-            return self.validator.validate_file(f"concurrent_{file_id}.py", content)
+            test_file = self.test_files_dir / f"concurrent_{file_id}.py"
+            # Create temporary file for each test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            return self.validator.validate_file(str(test_file))
         
         start_time = time.time()
         
@@ -288,8 +304,12 @@ class TestConcurrentValidation(PerformanceTestBase):
             content = f.read()
         
         def validate_file_process(file_id):
-            validator = OptimizedConstitutionValidator("config")
-            return validator.validate_file(f"process_{file_id}.py", content)
+            validator = ConstitutionValidator("config/constitution_rules.json")
+            test_file = self.test_files_dir / f"process_{file_id}.py"
+            # Create temporary file for each test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            return validator.validate_file(str(test_file))
         
         start_time = time.time()
         
@@ -319,7 +339,11 @@ class TestStressValidation(PerformanceTestBase):
         
         # Perform 100 rapid validations
         for i in range(100):
-            result = self.validator.validate_file(f"stress_{i}.py", content)
+            test_file = self.test_files_dir / f"stress_{i}.py"
+            # Create temporary file for each test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            result = self.validator.validate_file(str(test_file))
             self.assertIsInstance(result, ValidationResult)
         
         execution_time = time.time() - start_time
@@ -341,7 +365,11 @@ class TestStressValidation(PerformanceTestBase):
             with open(self.test_files_dir / file_size, 'r') as f:
                 content = f.read()
             
-            result = self.validator.validate_file(f"mixed_{i}_{file_size}", content)
+            test_file = self.test_files_dir / f"mixed_{i}_{file_size}"
+            # Create temporary file for each test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            result = self.validator.validate_file(str(test_file))
             results.append(result)
         
         execution_time = time.time() - start_time
@@ -365,7 +393,11 @@ class TestStressValidation(PerformanceTestBase):
                 content = f.read()
             
             # Validation should still work under memory pressure
-            result = self.validator.validate_file("memory_pressure.py", content)
+            test_file = self.test_files_dir / "memory_pressure.py"
+            # Create temporary file for test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            result = self.validator.validate_file(str(test_file))
             self.assertIsInstance(result, ValidationResult)
             
         finally:
@@ -387,7 +419,11 @@ class TestScalability(PerformanceTestBase):
                 content = f.read()
             
             start_time = time.time()
-            result = self.validator.validate_file(f"scalability_{rule_count}.py", content)
+            test_file = self.test_files_dir / f"scalability_{rule_count}.py"
+            # Create temporary file for test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            result = self.validator.validate_file(str(test_file))
             execution_time = time.time() - start_time
             
             # Execution time should scale reasonably with rule count
@@ -408,7 +444,11 @@ class TestScalability(PerformanceTestBase):
                 content = f.read()
             
             start_time = time.time()
-            result = self.validator.validate_file(f"scalability_{filename}", content)
+            test_file = self.test_files_dir / f"scalability_{filename}"
+            # Create temporary file for test
+            with open(test_file, 'w') as f:
+                f.write(content)
+            result = self.validator.validate_file(str(test_file))
             execution_time = time.time() - start_time
             
             self.assertLess(execution_time, max_time, 

@@ -38,6 +38,106 @@ class CodingStandardsValidator:
             'R088': self._validate_packaging_policy
         }
     
+    def validate_information_usage(self, content: str) -> List[Violation]:
+        """Validate information usage patterns for coding standards."""
+        violations = []
+        # Basic validation - return empty list for now
+        return violations
+    
+    def validate_naming_conventions(self, content: str) -> List[Violation]:
+        """Validate naming conventions"""
+        violations = []
+        
+        # Check for bad naming patterns
+        lines = content.split('\n')
+        for i, line in enumerate(lines, 1):
+            # Check for poor function names (too short, unclear)
+            if re.search(r'def\s+[a-z]{1,3}\s*\(', line):
+                violations.append(Violation(
+                    rule_id="rule_030",
+                    rule_number=30,
+                    rule_name="Naming Conventions",
+                    severity=Severity.MEDIUM,
+                    message=f"Line {i}: Function name too short or unclear",
+                    file_path="",
+                    line_number=i,
+                    column_number=1
+                ))
+            
+            # Check for class names that should be PascalCase
+            if re.search(r'class\s+[a-z]', line):
+                violations.append(Violation(
+                    rule_id="rule_030",
+                    rule_number=30,
+                    rule_name="Naming Conventions",
+                    severity=Severity.MEDIUM,
+                    message=f"Line {i}: Class name should be PascalCase",
+                    file_path="",
+                    line_number=i,
+                    column_number=1
+                ))
+        
+        return violations
+    
+    def validate_function_length(self, content: str) -> List[Violation]:
+        """Validate function length"""
+        violations = []
+        
+        # Simple check for functions with more than 10 lines
+        lines = content.split('\n')
+        function_lines = 0
+        in_function = False
+        function_start = 0
+        
+        for i, line in enumerate(lines, 1):
+            if re.search(r'def\s+\w+', line):
+                if in_function and function_lines > 10:  # Check previous function
+                    violations.append(Violation(
+                        rule_id="rule_031",
+                        rule_number=31,
+                        rule_name="Function Length",
+                        severity=Severity.MEDIUM,
+                        message=f"Function too long ({function_lines} lines)",
+                        file_path="",
+                        line_number=function_start,
+                        column_number=1
+                    ))
+                in_function = True
+                function_start = i
+                function_lines = 0
+            elif in_function:
+                if re.search(r'^def\s+', line) or re.search(r'^class\s+', line):
+                    if function_lines > 10:
+                        violations.append(Violation(
+                            rule_id="rule_031",
+                            rule_number=31,
+                            rule_name="Function Length",
+                            severity=Severity.MEDIUM,
+                            message=f"Function too long ({function_lines} lines)",
+                            file_path="",
+                            line_number=function_start,
+                            column_number=1
+                        ))
+                    in_function = False
+                    function_lines = 0
+                else:
+                    function_lines += 1
+        
+        # Check last function if file ends
+        if in_function and function_lines > 10:
+            violations.append(Violation(
+                rule_id="rule_031",
+                rule_number=31,
+                rule_name="Function Length",
+                severity=Severity.MEDIUM,
+                message=f"Function too long ({function_lines} lines)",
+                file_path="",
+                line_number=function_start,
+                column_number=1
+            ))
+        
+        return violations
+    
     def validate(self, file_path: str, content: str) -> List[Violation]:
         """Validate coding standards compliance for a file."""
         violations = []

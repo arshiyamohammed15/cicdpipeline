@@ -1,0 +1,11 @@
+ZEROUI 2.0 CONSTITUTION RULES - TEST SUMMARY
+==================================================
+
+Test Execution: 2025-10-24T08:36:45.549830
+Total Tests: 51
+Passed: 21
+Failed: 3
+Errors: 27
+Success Rate: 41.2%
+Execution Time: 30.78 seconds
+Memory Usage: 672.38 MB

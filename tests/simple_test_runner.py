@@ -370,7 +370,13 @@ def main():
     
     # Exit with appropriate code
     total_tests = 4
-    passed_tests = sum(1 for r in results.values() if r.get('success', False))
+    passed_tests = 0
+    
+    for test_name, result in results.items():
+        if isinstance(result, dict) and result.get('success', False):
+            passed_tests += 1
+        elif isinstance(result, bool) and result:
+            passed_tests += 1
     
     if passed_tests == total_tests:
         sys.exit(0)

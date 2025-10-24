@@ -27,6 +27,77 @@ class SystemDesignValidator:
         self.standard_methods = ['__init__', 'setup', 'configure', 'initialize', 'start', 'stop', 'cleanup']
         self.standard_error_types = ['ValueError', 'TypeError', 'RuntimeError', 'ConfigurationError']
         self.standard_return_patterns = ['bool', 'dict', 'list', 'str', 'int', 'None']
+    
+    def validate_information_usage(self, content: str) -> List[Violation]:
+        """Validate information usage patterns for system design."""
+        violations = []
+        # Basic validation - return empty list for now
+        return violations
+    
+    def validate_architecture_consistency(self, content: str) -> List[Violation]:
+        """Validate Rule 22: Architecture Consistency"""
+        violations = []
+        # Check for consistent architecture patterns
+        if not re.search(r'class\s+\w+', content):
+            violations.append(Violation(
+                rule_id="rule_022",
+                rule_number=22,
+                rule_name="Architecture Consistency",
+                severity=Severity.HIGH,
+                message="Ensure consistent class structure",
+                file_path="",
+                line_number=1,
+                column_number=1
+            ))
+        return violations
+    
+    def validate_separation_of_concerns(self, content: str) -> List[Violation]:
+        """Validate Rule 25: Separation of Concerns"""
+        violations = []
+        # Check for mixed concerns
+        mixed_patterns = [
+            r'def\s+\w+.*log.*',
+            r'def\s+\w+.*config.*',
+            r'def\s+\w+.*database.*'
+        ]
+        
+        lines = content.split('\n')
+        for i, line in enumerate(lines, 1):
+            for pattern in mixed_patterns:
+                if re.search(pattern, line, re.IGNORECASE):
+                    violations.append(Violation(
+                        rule_number=25,
+                        title="Separation of Concerns",
+                        severity=Severity.MEDIUM,
+                        message=f"Line {i}: Separate concerns into different modules",
+                        line_number=i,
+                        column_number=1
+                    ))
+        return violations
+    
+    def validate_dependency_injection(self, content: str) -> List[Violation]:
+        """Validate Rule 26: Dependency Injection"""
+        violations = []
+        # Check for hardcoded dependencies
+        hardcoded_patterns = [
+            r'new\s+\w+\(\)',
+            r'=\s+\w+\(\)',
+            r'import\s+\w+'
+        ]
+        
+        lines = content.split('\n')
+        for i, line in enumerate(lines, 1):
+            for pattern in hardcoded_patterns:
+                if re.search(pattern, line):
+                    violations.append(Violation(
+                        rule_number=26,
+                        title="Dependency Injection",
+                        severity=Severity.MEDIUM,
+                        message=f"Line {i}: Use dependency injection instead of hardcoded dependencies",
+                        line_number=i,
+                        column_number=1
+                    ))
+        return violations
         
     def validate_consistent_modules(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
