@@ -13,15 +13,116 @@ A Python-based automated code review tool that validates code against the ZeroUI
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
 - **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
+- **🚀 Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against all 293 constitution rules before AI code generation occurs
 
 ## Installation
 
 1. Clone or download the validator files
 2. Ensure Python 3.9+ is installed
-3. Install dependencies (optional):
+3. Install dependencies:
    ```bash
    pip install -r requirements.txt
+   pip install -r requirements-api.txt  # For automatic enforcement
    ```
+
+## 🚀 Automatic AI Code Generation Enforcement
+
+The system now includes **100% automatic enforcement** of all 293 ZeroUI constitution rules before any AI code generation occurs.
+
+### Start the Validation Service
+
+```bash
+# Start the automatic enforcement service
+python tools/enhanced_cli.py --start-validation-service
+
+# Or start directly
+python tools/start_validation_service.py
+```
+
+### API Endpoints
+
+The validation service provides these endpoints:
+
+- `GET /health` - Service health check
+- `POST /validate` - Validate prompt against constitution rules
+- `POST /generate` - Generate code with validation (OpenAI, Cursor, etc.)
+- `GET /integrations` - List available AI service integrations
+- `GET /stats` - Get service statistics
+
+### Usage Examples
+
+#### Validate Prompt
+```bash
+curl -X POST http://localhost:5000/validate \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "create a function that uses hardcoded values", "file_type": "python"}'
+```
+
+#### Generate Code with Validation
+```bash
+curl -X POST http://localhost:5000/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "create a simple user authentication function",
+    "service": "openai",
+    "file_type": "python",
+    "task_type": "api"
+  }'
+```
+
+#### CLI Integration
+```bash
+# Validate prompt before generation
+python enhanced_cli.py --validate-prompt "create a React component" --prompt-file-type typescript
+
+# Start service with custom port
+python enhanced_cli.py --start-validation-service --service-port 8080
+```
+
+### VS Code Integration
+
+1. Install the ZeroUI VS Code extension
+2. Configure validation service URL in settings:
+   ```json
+   {
+     "zeroui.validationServiceUrl": "http://localhost:5000",
+     "zeroui.autoValidatePrompts": true,
+     "zeroui.blockOnViolations": true
+   }
+   ```
+
+3. Use commands:
+   - `ZeroUI: Validate Prompt Against Constitution`
+   - `ZeroUI: Generate Code with Constitution Validation`
+
+### Configuration
+
+Update `config/hook_config.json`:
+
+```json
+{
+  "global_settings": {
+    "ai_service_integration": {
+      "enabled": true,
+      "validation_service_url": "http://localhost:5000",
+      "supported_services": ["openai", "cursor"],
+      "default_service": "openai",
+      "auto_validate": true,
+      "fail_on_violation": true,
+      "block_on_violation": true
+    }
+  }
+}
+```
+
+### Environment Variables
+
+```bash
+export OPENAI_API_KEY="your-openai-api-key"
+export CURSOR_API_KEY="your-cursor-api-key"
+export OPENAI_MODEL="gpt-4"
+export VALIDATION_SERVICE_PORT="5000"
+```
 
 ## Quick Start
 

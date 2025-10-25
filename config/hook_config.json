@@ -5,7 +5,16 @@
   "global_settings": {
     "default_status": "enabled",
     "strict_mode": true,
-    "context_aware": true
+    "context_aware": true,
+    "ai_service_integration": {
+      "enabled": true,
+      "validation_service_url": "http://localhost:5000",
+      "supported_services": ["openai", "cursor"],
+      "default_service": "openai",
+      "auto_validate": true,
+      "fail_on_violation": true,
+      "block_on_violation": true
+    }
   },
   "categories": {},
   "individual_rules": {

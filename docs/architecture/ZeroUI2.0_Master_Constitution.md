@@ -60,7 +60,7 @@ Where this information is stored:
 
  🏗️ SYSTEM DESIGN RULES
 
-**Rule 20: Make All 18 Modules Look the Same** All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.
+**Rule 20: Make All 20 Modules Look the Same** All 18 tools should use the same buttons, menus, and look. Like different rooms in the same house - they have the same light switches and door handles.
 
 **Rule 21: Process Data Locally First**
 - Source code → Never leaves the company (like secret recipes)

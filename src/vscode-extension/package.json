@@ -70,6 +70,16 @@
         "command": "zeroui.compliance.exportReport",
         "title": "Export Security Report",
         "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.validatePrompt",
+        "title": "Validate Prompt Against Constitution",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.generateCode",
+        "title": "Generate Code with Constitution Validation",
+        "category": "ZeroUI"
       }
     ],
     "views": {
@@ -97,6 +107,32 @@
           "group": "navigation"
         }
       ]
+    },
+    "configuration": {
+      "title": "ZeroUI Constitution Validation",
+      "properties": {
+        "zeroui.validationServiceUrl": {
+          "type": "string",
+          "default": "http://localhost:5000",
+          "description": "URL of the Constitution Validation Service"
+        },
+        "zeroui.autoValidatePrompts": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically validate prompts before code generation"
+        },
+        "zeroui.blockOnViolations": {
+          "type": "boolean",
+          "default": true,
+          "description": "Block code generation when constitution violations are detected"
+        },
+        "zeroui.preferredAIService": {
+          "type": "string",
+          "enum": ["openai", "cursor", "claude"],
+          "default": "openai",
+          "description": "Preferred AI service for code generation"
+        }
+      }
     }
   },
   "scripts": {

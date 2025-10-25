@@ -1486,6 +1486,10 @@ class EnhancedCLI:
             if self._handle_backend_commands(args):
                 return 0
             
+            # Handle validation service startup
+            if args.start_validation_service:
+                return self._handle_start_validation_service(args)
+
             # Handle prompt validation
             if args.validate_prompt:
                 return self._handle_prompt_validation(args)
@@ -1539,33 +1543,115 @@ class EnhancedCLI:
             self.performance_monitor.stop_monitoring()
     
     def _handle_prompt_validation(self, args):
-        """Handle prompt validation."""
+        """Handle prompt validation using the API service."""
         try:
-            from validator.pre_implementation_hooks import PreImplementationHookManager
-            hook_manager = PreImplementationHookManager()
-            
-            result = hook_manager.validate_before_generation(
-                args.validate_prompt, 
-                file_type=args.prompt_file_type,
-                task_type=args.prompt_task_type
-            )
-            
-            if not result['valid']:
-                safe_print(f"❌ Prompt validation failed ({len(result['violations'])} violations)")
-                for violation in result['violations']:
-                    safe_print(f"  {violation.rule_id}: {violation.message}")
+            import requests
+
+            # Use API service instead of direct hooks
+            validation_url = "http://localhost:5000/validate"
+
+            payload = {
+                'prompt': args.validate_prompt,
+                'file_type': args.prompt_file_type or 'python',
+                'task_type': args.prompt_task_type or 'general'
+            }
+
+            safe_print(f"Validating prompt against {validation_url}...")
+            response = requests.post(validation_url, json=payload, timeout=30)
+
+            if response.status_code == 200:
+                result = response.json()
+
+                if result['valid']:
+                    safe_print(f"✅ Prompt validated against {result['total_rules_checked']} constitution rules")
+                    if result['recommendations']:
+                        safe_print("Recommendations:")
+                        for rec in result['recommendations']:
+                            safe_print(f"  • {rec}")
+                    return 0
+                else:
+                    safe_print(f"❌ Prompt validation failed ({len(result['violations'])} violations)")
+                    for violation in result['violations']:
+                        rule_id = violation.get('rule_id', 'Unknown')
+                        message = violation.get('message', 'No message')
+                        safe_print(f"  {rule_id}: {message}")
+                    return 1
+            else:
+                safe_print(f"❌ Validation service error: {response.status_code}")
+                safe_print(f"Response: {response.text}")
                 return 1
-            
-            safe_print(f"✅ Prompt validated against {result['total_rules_checked']} rules")
-            if result['recommendations']:
-                safe_print("Recommendations:")
-                for rec in result['recommendations']:
-                    safe_print(f"  • {rec}")
-            
-            return 0
-            
+
+        except requests.exceptions.ConnectionError:
+            safe_print("❌ Validation service not running. Start with: python tools/start_validation_service.py")
+            return 1
         except Exception as e:
             safe_print(f"Error during prompt validation: {e}")
+            return 1
+
+    def _handle_start_validation_service(self, args):
+        """Start the constitution validation service."""
+        try:
+            import subprocess
+            import os
+            from pathlib import Path
+
+            safe_print(f"Starting Constitution Validation Service on port {args.service_port}...")
+            safe_print("This service enforces all 293 ZeroUI constitution rules before AI code generation.")
+            safe_print("Press Ctrl+C to stop the service.")
+
+            # Start the service in a subprocess
+            service_script = Path(__file__).parent / "start_validation_service.py"
+
+            env = os.environ.copy()
+            env['VALIDATION_SERVICE_PORT'] = str(args.service_port)
+
+            process = subprocess.Popen(
+                [sys.executable, str(service_script)],
+                env=env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+
+            # Wait for service to start
+            import time
+            time.sleep(2)
+
+            # Check if service started successfully
+            import requests
+            try:
+                response = requests.get(f"http://localhost:{args.service_port}/health", timeout=5)
+                if response.status_code == 200:
+                    health_data = response.json()
+                    safe_print(f"✅ Service started successfully!")
+                    safe_print(f"Available integrations: {', '.join(health_data.get('integrations', []))}")
+                    safe_print(f"Status: {health_data.get('status', 'unknown')}")
+                    safe_print(f"Service URL: http://localhost:{args.service_port}")
+                    safe_print("Use Ctrl+C to stop the service.")
+
+                    # Keep the service running
+                    try:
+                        process.wait()
+                    except KeyboardInterrupt:
+                        safe_print("\nStopping validation service...")
+                        process.terminate()
+                        process.wait()
+                        safe_print("Service stopped.")
+                        return 0
+                else:
+                    safe_print(f"❌ Service health check failed: {response.status_code}")
+                    return 1
+            except requests.exceptions.ConnectionError:
+                safe_print("❌ Service failed to start or is not responding")
+                stdout, stderr = process.communicate(timeout=5)
+                if stdout:
+                    safe_print(f"Service output: {stdout}")
+                if stderr:
+                    safe_print(f"Service errors: {stderr}")
+                return 1
+
+        except Exception as e:
+            safe_print(f"Error starting validation service: {e}")
             return 1
 
 
@@ -1609,7 +1695,18 @@ Examples:
         "--prompt-task-type",
         help="Task type for prompt validation (storage, logging, api, etc.)"
     )
-    
+    prompt_group.add_argument(
+        "--start-validation-service",
+        action="store_true",
+        help="Start the constitution validation service"
+    )
+    prompt_group.add_argument(
+        "--service-port",
+        type=int,
+        default=5000,
+        help="Port for validation service (default: 5000)"
+    )
+
     # Output options
     parser.add_argument(
         "--format", "-fmt",
