@@ -199,14 +199,14 @@ class ComprehensiveTestRunner:
         print("\nCOVERAGE SUMMARY:")
         print("-" * 70)
         print("Files Tested: 7")
-        print("  - MASTER GENERIC RULES.json (293 rules)")
+        print("  - MASTER GENERIC RULES.json (301 rules)")
         print("  - VSCODE EXTENSION RULES.json (10 rules)")
         print("  - LOGGING & TROUBLESHOOTING RULES.json (11 rules)")
         print("  - MODULES AND GSMD MAPPING RULES.json (19 rules)")
         print("  - GSMD AND MODULE MAPPING RULES.json (10 rules)")
         print("  - TESTING RULES.json (22 rules)")
         print("  - COMMENTS RULES.json (30 rules)")
-        print("Total Rules: 395")
+        print("Total Rules: 403")
         print("-" * 70)
         
         # Success rate

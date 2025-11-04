@@ -1,0 +1,406 @@
+{
+  "constitution_rules": [
+    {
+      "rule_id": "TST-001",
+      "title": "Prioritize Determinism Over Speed",
+      "category": "Testing Philosophy",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Reproducible test runs are superior to fast but flaky runs.",
+      "requirements": ["Configure test frameworks to prioritize reproducible outcomes over execution speed."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-002",
+      "title": "Eliminate Test-Result Caching",
+      "category": "Testing Philosophy",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Disable or purge all framework caches before every run.",
+      "requirements": ["Treat cached test discovery or compiled output as defect sources."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-003",
+      "title": "Enforce Hermetic Test Runs",
+      "category": "Testing Philosophy",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Tests must not access network, system clocks, global OS state, or previous runs.",
+      "requirements": ["All tests operate in complete isolation without external dependencies."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-004",
+      "title": "Maintain Test Independence",
+      "category": "Testing Philosophy",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Tests must pass when run alone or in any sequence.",
+      "requirements": ["Each test must be completely self-contained without shared state."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-005",
+      "title": "Maintain Standard Repository Structure",
+      "category": "Project Structure",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Use src/, tests/ with subdirectories unit/, component/, integration/, fixtures/, helpers/.",
+      "requirements": ["Adhere to standardized directory hierarchy with clear separation."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-006",
+      "title": "Use Standard Test Naming Conventions",
+      "category": "Project Structure",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Python: test_*.py or *_test.py; TypeScript/JavaScript: *.test.(ts|js) or *.spec.(ts|js).",
+      "requirements": ["Follow established naming patterns for automatic test discovery."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-007",
+      "title": "Purge Cache Directories Pre-Execution",
+      "category": "Cache Management",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Delete Python, Node.js, and tooling caches before test execution.",
+      "requirements": ["Remove all designated cache directories before test execution begins."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-008",
+      "title": "Disable Framework Caching",
+      "category": "Cache Management",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Use framework-specific flags to disable caching mechanisms.",
+      "requirements": ["Configure pytest, Jest, Vitest, Mocha with explicit cache-disabling flags."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-009",
+      "title": "Maintain Unit Test Purity",
+      "category": "Test Design",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Unit tests must be pure functions with no I/O, network, or time dependencies.",
+      "requirements": ["Unit tests operate without external dependencies, network calls, or time-based behavior."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-010",
+      "title": "Use Table-Driven Test Structure",
+      "category": "Test Design",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Unit tests must use table-driven tests for clarity.",
+      "requirements": ["Employ table-driven patterns with test cases in structured data format."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-011",
+      "title": "Use In-Memory Doubles for Component Tests",
+      "category": "Test Design",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Component tests must use in-memory doubles only for cross-module interactions.",
+      "requirements": ["Employ in-memory test doubles (mocks, stubs, fakes) avoiding real external systems."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-012",
+      "title": "Use Real Adapters for Integration Tests",
+      "category": "Test Design",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Integration tests must use real adapters with isolated instances.",
+      "requirements": ["Employ real adapters and drivers with in-process instances or containerized dependencies."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-013",
+      "title": "Prohibit Internet Access in Tests",
+      "category": "Test Design",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "No calls to public Internet in unit, component, or integration tests.",
+      "requirements": ["Tests must not make calls to public Internet services or external APIs."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-014",
+      "title": "Control Randomness and Time",
+      "category": "Determinism",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "All randomness must be seeded; time must be frozen or explicitly controlled.",
+      "requirements": ["Use TEST_RANDOM_SEED for randomness and time-freezing helpers for temporal behavior."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-015",
+      "title": "Prohibit Test Retries",
+      "category": "Determinism",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Flaky tests are bugs; do not mask with retries.",
+      "requirements": ["Test frameworks must not employ automatic retry mechanisms."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-016",
+      "title": "Organize Fixtures and Data",
+      "category": "Test Data",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Fixtures under tests/fixtures/, read-only, prefer synthetic data, hash large fixtures.",
+      "requirements": ["Locate fixtures in designated directory, use read-only access, prefer synthetic data, record hashes for large fixtures."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-017",
+      "title": "Generate Test Evidence",
+      "category": "Reporting",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Emit jUnit XML reports and run manifest with seeds, versions, and hashes.",
+      "requirements": ["Produce standardized machine-readable output artifacts for each test execution."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-018",
+      "title": "Design AI-Generated Tests Deterministically",
+      "category": "AI Generation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Assume cache purging, use TEST_RANDOM_SEED, compose hermetic tests.",
+      "requirements": ["AI-generated tests must be deterministic, hermetic, and cache-independent."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-019",
+      "title": "Organize AI-Generated Tests Properly",
+      "category": "AI Generation",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Place tests in correct directories, use pure helpers, minimize dependencies.",
+      "requirements": ["Follow directory structure, create pure helper functions, prefer standard libraries."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-020",
+      "title": "Ensure AI-Generated Test Quality",
+      "category": "AI Generation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Limit test scope, provide complete implementations, create actionable failures.",
+      "requirements": ["Tests must be focused, complete, runnable, and have clear failure messages."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-021",
+      "title": "Enforce Quality Gates",
+      "category": "Quality Assurance",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "All tests must pass, no network access, valid artifacts, cache elimination verified.",
+      "requirements": ["Test runs succeed only when meeting all quality criteria."],
+      "validation": "Automated test execution verifies compliance."
+    },
+    {
+      "rule_id": "TST-022",
+      "title": "Conduct Comprehensive Test Reviews",
+      "category": "Code Review",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-06-15T14:30:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-TEST-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "description": "Verify determinism, completeness, organization, harness usage, artifacts, cache elimination.",
+      "requirements": ["Code reviews must validate all test quality aspects before approval."],
+      "validation": "Automated test execution verifies compliance."
+    }
+  ],
+  "metadata": {
+    "total_rules": 22,
+    "version": "1.0.0",
+    "last_updated": "2024-06-15T14:30:00Z",
+    "constitution_name": "ZeroUI2.0 Cursor Testing Constitution"
+  }
+}

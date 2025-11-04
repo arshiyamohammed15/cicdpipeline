@@ -354,9 +354,9 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         cls.loader = ConstitutionRuleLoader(constitution_dir)
     
     def test_master_generic_rules_count(self):
-        """Verify MASTER GENERIC RULES has exactly 293 rules."""
+        """Verify MASTER GENERIC RULES has exactly 301 rules."""
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
-        self.assertEqual(len(rules), 293, "MASTER GENERIC RULES must have 293 rules")
+        self.assertEqual(len(rules), 301, "MASTER GENERIC RULES must have 301 rules")
     
     def test_vscode_extension_rules_count(self):
         """Verify VSCODE EXTENSION RULES has exactly 10 rules."""
@@ -389,7 +389,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         self.assertEqual(len(rules), 30, "COMMENTS RULES must have 30 rules")
     
     def test_total_rules_count(self):
-        """Verify total rule count across all files is 395."""
+        """Verify total rule count across all files is 403."""
         total = 0
         files = [
             'MASTER GENERIC RULES.json',
@@ -402,7 +402,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         ]
         for filename in files:
             total += len(self.loader.get_all_rules(filename))
-        self.assertEqual(total, 395, "Total rules across all files must be 395")
+        self.assertEqual(total, 403, "Total rules across all files must be 403")
     
     def test_no_duplicate_rule_ids_within_file(self):
         """Verify no duplicate rule IDs within each file."""

@@ -312,11 +312,12 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
                     cls.files_data[filename] = json.load(f)
     
     def test_all_master_rules_present(self):
-        """Verify all 293 master rules are present."""
+        """Verify all 301 master rules are present."""
         rules = self.files_data.get('MASTER GENERIC RULES.json', {}).get('constitution_rules', [])
         rule_ids = {r.get('rule_id') for r in rules}
         
         expected_ids = {f'R-{i:03d}' for i in range(1, 294)}
+        expected_ids.update({f'CTC-{i}' for i in range(294, 302)})
         missing = expected_ids - rule_ids
         extra = rule_ids - expected_ids
         
@@ -360,8 +361,8 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
         self.assertEqual(len(missing), 0, f"Missing comments rules: {missing}")
         self.assertEqual(len(extra), 0, f"Extra comments rules: {extra}")
     
-    def test_total_rule_count_395(self):
-        """Verify total rule count is exactly 395."""
+    def test_total_rule_count_403(self):
+        """Verify total rule count is exactly 403."""
         total = 0
         files = [
             'MASTER GENERIC RULES.json',
@@ -377,7 +378,7 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
             rules = self.files_data.get(filename, {}).get('constitution_rules', [])
             total += len(rules)
         
-        self.assertEqual(total, 395, f"Expected 395 total rules, got {total}")
+        self.assertEqual(total, 403, f"Expected 403 total rules, got {total}")
 
 
 if __name__ == '__main__':

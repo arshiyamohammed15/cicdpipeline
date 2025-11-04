@@ -6602,10 +6602,208 @@
         "> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/scaffold.md`, `storage-scripts/INTEGRATION.md`."
       ],
       "validation": "Compliance verified through automated checks and code review."
+    },
+    {
+      "rule_id": "CTC-294",
+      "title": "Rule Conflict Resolution Framework",
+      "category": "Testing Governance",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-GOV-004"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Establish formal conflict resolution when testing rules contradict other constitutional rules. Security rules always take precedence over testing requirements.",
+      "requirements": [
+        "Implement automated conflict detection between testing and master constitution rules",
+        "Document resolution path in test execution receipts",
+        "Maintain conflict resolution audit trail for compliance evidence"
+      ],
+      "validation": "Automated: conflict detector with precedence ordering audit",
+      "resolution_order": [
+        "Security",
+        "Structural", 
+        "Testing",
+        "Generic"
+      ],
+      "applicability": "All testing rule conflict scenarios"
+    },
+    {
+      "rule_id": "CTC-295",
+      "title": "Cross-Constitution Validation Gateway",
+      "category": "Testing Governance",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-VAL-001"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Validate no contradictions exist between Testing Constitution and Master Constitution documents. Ensure testing requirements don't violate core system principles.",
+      "requirements": [
+        "Static analysis of normalized rule graphs across all constitutional documents",
+        "Fail CI on detection of mutually exclusive requirements",
+        "Generate machine-readable conflict report with specific rule_id mappings"
+      ],
+      "validation": "Automated: cross-document consistency checker with violation reporting",
+      "applicability": "All constitutional document validation"
+    },
+    {
+      "rule_id": "CTC-296",
+      "title": "Module Identity Integrity Validation",
+      "category": "Testing Infrastructure",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-STR-008"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Ensure Module IDs (M01-M20) maintain consistent identity mapping across GSMD folders, Extension modules, and policy version IDs used by test systems.",
+      "requirements": [
+        "Validate 1:1 mapping integrity across all module identity stores",
+        "Fail fast on detection of unmapped or duplicate module IDs",
+        "Maintain module identity registry as testing source of truth"
+      ],
+      "validation": "Automated: schema validation across path patterns and policy manifests",
+      "applicability": "All module identifier validation in test environments"
+    },
+    {
+      "rule_id": "CTC-297",
+      "title": "Version Compatibility Matrix Enforcement",
+      "category": "Testing Infrastructure",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-STR-009"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Standardize and enforce version compatibility between Testing Constitution and Master/Module rule sets through automated matrix validation.",
+      "requirements": [
+        "Enforce semantic version format X.Y.Z across all constitutional rule files",
+        "Generate compatibility matrix artifact during CI pipeline execution",
+        "Block deployments on version compatibility violations"
+      ],
+      "validation": "Automated: JSON schema validation with matrix generator integration",
+      "applicability": "All version compatibility validation scenarios"
+    },
+    {
+      "rule_id": "CTC-298",
+      "title": "Test Lifecycle Coverage Mandate",
+      "category": "Testing Process",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-PROC-002"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Require comprehensive test coverage for all system lifecycle states including deprecation, migration, rollback, and configuration inheritance scenarios.",
+      "requirements": [
+        "Provide explicitly named tests for each defined lifecycle state",
+        "Emit verifiable receipts proving exercise of each lifecycle scenario",
+        "Maintain lifecycle test coverage metrics and compliance evidence"
+      ],
+      "validation": "Automated: test discovery enforcing lifecycle-tagged case presence",
+      "applicability": "All system lifecycle testing requirements"
+    },
+    {
+      "rule_id": "CTC-299",
+      "title": "Automated Compliance Evidence Generation",
+      "category": "Testing Governance",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-OBS-004"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Mandate automated generation of compliance evidence bundles for every PR proving constitutional adherence across all rule sets.",
+      "requirements": [
+        "Produce machine-readable evidence including conflict analysis and validation results",
+        "Attach compliance evidence artifact to CI execution runs",
+        "Store receipt pointers for all compliance validation events"
+      ],
+      "validation": "Automated: CI evidence bundle generation with receipt signing",
+      "applicability": "All PR compliance validation requirements"
+    },
+    {
+      "rule_id": "CTC-300",
+      "title": "Testing Rule Metadata Standardization",
+      "category": "Testing Governance",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-STR-010"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Enforce standardized metadata requirements for all testing constitution rules to ensure consistency and machine-readability.",
+      "requirements": [
+        "Require complete metadata including rule_id, title, category, description, severity_level",
+        "Mandate version, effective_date, last_updated, last_updated_by, applicability fields",
+        "Enforce policy_linkage object with policy_version_ids[] and policy_snapshot_hash"
+      ],
+      "validation": "Automated: JSON schema validation rejecting incomplete rule metadata",
+      "applicability": "All testing rule metadata validation and enforcement"
+    },
+    {
+      "rule_id": "CTC-301",
+      "title": "Standardized Test Reporting Framework",
+      "category": "Testing Process",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2025-11-03",
+      "last_updated": "2025-11-03T00:06:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-OBS-005"],
+        "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "status": "active",
+      "description": "Establish mandatory standardized reporting formats for all test executions including both human-readable and machine-processable outputs.",
+      "requirements": [
+        "Require JUnit XML or equivalent test result format emission",
+        "Mandate signed JSONL receipt lines summarizing constitutional adherence",
+        "Enforce append-only JSONL policy with comprehensive receipt field inclusion"
+      ],
+      "validation": "Automated: post-test hook validation of reporting format compliance",
+      "applicability": "All test execution reporting and evidence collection"
     }
   ],
   "metadata": {
-    "total_rules": 293,
+    "total_rules": 301,
     "version": "1.0.0",
     "effective_date": "2024-01-01",
     "last_updated": "2024-01-01T00:00:00Z",
