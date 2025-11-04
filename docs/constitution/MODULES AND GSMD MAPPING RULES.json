@@ -1,0 +1,353 @@
+{
+  "constitution_rules": [
+    {
+      "rule_id": "STR-001",
+      "title": "Enforce One-to-One Module↔Folder Binding",
+      "category": "Structural Mapping",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "For each module code MXX, bind exactly one extension folder and exactly one GSMD folder to that code.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "STR-002",
+      "title": "Use Module Code as Authoritative Primary Key",
+      "category": "Structural Mapping",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Treat module code (M01…M20) as the sole authoritative identifier for joins/lookups across tools, folders, and snapshots.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "STR-003",
+      "title": "Require Extension Folder Path",
+      "category": "Structural Mapping",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "For each MXX, the extension folder MUST exist at `src/modules/mXX-<slug>/`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "STR-004",
+      "title": "Require GSMD Folder Path",
+      "category": "Structural Mapping",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "For each MXX, the GSMD folder MUST exist at `gsmd/gsmd/modules/MXX/`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-001",
+      "title": "Require Core Snapshot Files",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Each GSMD module MUST contain:\n• `messages/v1/snapshot.json` with `messages.problems`, `messages.status_pill`, `messages.cards`\n• `receipts_schema/v1/snapshot.json` with `receipts.required`, `receipts.optional`",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-002",
+      "title": "Require Top-Level Fields in All Snapshots",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Every `.../v1/snapshot.json` MUST include all required top-level fields defined in the Constitution.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-003",
+      "title": "Enforce Snapshot Versioning",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "`schema_version` MUST equal \"1.0.0\" and `version.major` MUST equal `1`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-004",
+      "title": "Enforce Single Policy Version ID",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "`policy_version_ids` MUST be an array of length 1.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-005",
+      "title": "Enforce KID Format (“ed25519”)",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "`kid` MUST contain the substring \"ed25519\".",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "SCH-006",
+      "title": "Enforce Evaluation Points List Type",
+      "category": "Schema Requirements",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "`evaluation_points` MUST be a list/array.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-001",
+      "title": "CI: Verify Canonical Folders per Module",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "For each MXX, assert exactly one extension folder at `src/modules/mXX-<slug>/` and exactly one GSMD folder at `gsmd/gsmd/modules/MXX/`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-002",
+      "title": "CI: Validate Top-Level Snapshot Fields",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate that every `.../v1/snapshot.json` contains all required top-level fields.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-003",
+      "title": "CI: Validate Messages Snapshot Keys",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate `messages.problems`, `messages.status_pill`, `messages.cards` exist in `messages/v1/snapshot.json`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-004",
+      "title": "CI: Validate Receipts Schema Keys",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate `receipts.required` and `receipts.optional` exist in `receipts_schema/v1/snapshot.json`.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-005",
+      "title": "CI: Validate Snapshot Version Pair",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate `schema_version == \"1.0.0\"` and `version.major == 1` in all snapshots.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-006",
+      "title": "CI: Validate KID Format",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate `kid` contains \"ed25519\" in all snapshots.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "VAL-007",
+      "title": "CI: Validate Evaluation Points Type",
+      "category": "CI / Automated Validation",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Validate `evaluation_points` is a list/array.",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "LCM-001",
+      "title": "Add Module Procedure",
+      "category": "Lifecycle Management",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "To add a module: create both canonical folders (STR-003/STR-004); add required snapshots and keys (SCH-001…SCH-006); then pass all CI checks (VAL-001…VAL-007).",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    },
+    {
+      "rule_id": "LCM-002",
+      "title": "Remove Module Procedure",
+      "category": "Lifecycle Management",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["POL-MOD-GSMD-1.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "To remove a module: delete both canonical folders; update any enumerations/mappings; re-run CI to ensure no dangling references (VAL-001).",
+      "requirements": [],
+      "validation": "Automated checks verify compliance with stated requirements."
+    }
+  ],
+  "metadata": {
+    "total_rules": 19,
+    "version": "1.0.0",
+    "effective_date": "2024-01-01",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "constitution_name": "ZeroUI2.0 Modules and GSMD Mapping Constitution"
+  }
+}

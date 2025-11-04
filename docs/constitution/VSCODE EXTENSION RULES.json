@@ -1,0 +1,231 @@
+{
+  "constitution_rules": [
+    {
+      "rule_id": "ARC-001",
+      "title": "Enforce Static Package Contributions",
+      "category": "Architecture",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "All package.json contributions (commands, menus, views, keybindings, configuration) must be statically defined at package build time. Runtime modification or dynamic addition of VS Code extension contributions is strictly prohibited.",
+      "requirements": [
+        "package.json contributions MUST exist at package time; Runtime mutation NOT allowed"
+      ],
+      "validation": "Build-time validation of generated package.json contributions; Runtime monitoring for any dynamic contribution registration attempts"
+    },
+    {
+      "rule_id": "ARC-002",
+      "title": "Restrict Scope to IDE Surfaces Only",
+      "category": "Architecture",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The extension scope is strictly limited to IDE-only surfaces including Status Pill, Decision Card, Evidence Drawer, Quick Actions, and Receipt. Web UI development is explicitly excluded from scope.",
+      "requirements": [
+        "Defines scope as IDE-only surfaces (Status Pill → Decision Card → Evidence Drawer → Quick Actions → Receipt); explicitly excludes web UI"
+      ],
+      "validation": "Code review for any web UI components; Architecture review of all surface implementations"
+    },
+    {
+      "rule_id": "ARC-003",
+      "title": "Exclude Server and Policy Definitions",
+      "category": "Architecture",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "This constitution governs only the VS Code extension architecture and explicitly excludes definitions for server endpoints or policy content.",
+      "requirements": [
+        "Specifies this constitution does not define server endpoints or policy content"
+      ],
+      "validation": "Review constitution references; Validate no server/policy definitions in extension code"
+    },
+    {
+      "rule_id": "PER-001",
+      "title": "Ensure Fast Extension Activation",
+      "category": "Performance",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "performance@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The extension activation function must return quickly, with all heavy initialization work deferred to command handlers to prevent VS Code startup delays.",
+      "requirements": [
+        "activate() MUST return quickly; heavy work MUST be deferred to command handlers"
+      ],
+      "validation": "Performance testing of activation time; Code review for deferred initialization patterns"
+    },
+    {
+      "rule_id": "ARC-004",
+      "title": "Implement Context Key Driven Menus",
+      "category": "Architecture",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "All menu visibility and enablement must be controlled through VS Code context keys using setContext commands and when clauses.",
+      "requirements": [
+        "Menus MUST be driven via setContext and when clauses"
+      ],
+      "validation": "Code review for context key usage; Menu contribution validation"
+    },
+    {
+      "rule_id": "UI-001",
+      "title": "Standardize Single Status Bar Item",
+      "category": "UI",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "ui@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The extension must use a single shared Status Bar item with composition logic rather than multiple individual status items.",
+      "requirements": [
+        "Standardize on single shared Status Bar item with composition logic"
+      ],
+      "validation": "Code review for status bar usage; Runtime validation of single status item"
+    },
+    {
+      "rule_id": "DIST-001",
+      "title": "Enforce Single Extension Artifact",
+      "category": "Distribution",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "distribution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The repository must produce and distribute exactly one VS Code extension artifact. Multi-extension packaging is strictly prohibited.",
+      "requirements": [
+        "Repository MUST ship one extension artifact; multi-extension packaging NOT permitted"
+      ],
+      "validation": "Build output validation; Package manifest review"
+    },
+    {
+      "rule_id": "FS-001",
+      "title": "Maintain Canonical Directory Structure",
+      "category": "File Structure",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The project must exactly follow the authoritative directory structure defined in the constitution without deviation.",
+      "requirements": [
+        "Must follow specified directory layout exactly as defined"
+      ],
+      "validation": "Directory structure validation; File location audits"
+    },
+    {
+      "rule_id": "ARC-005",
+      "title": "Isolate Core Framework Code",
+      "category": "Architecture",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "The src/core/ directory must contain only shared framework code. Product-specific logic is strictly prohibited in core.",
+      "requirements": [
+        "src/core/ contains shared framework code only; Product logic MUST NOT be placed in core/"
+      ],
+      "validation": "Code review of core directory; Dependency analysis"
+    },
+    {
+      "rule_id": "FS-002",
+      "title": "Contain Features in Module Directories",
+      "category": "File Structure",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-06-01",
+      "last_updated": "2024-06-01T00:00:00Z",
+      "last_updated_by": "architecture@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "CONSTITUTION_VSCode_v1"
+        ],
+        "policy_snapshot_hash": "sha256:a1b2c3..."
+      },
+      "description": "All feature implementation code must reside within src/modules/<slug>/ directories with the specified file structure.",
+      "requirements": [
+        "All feature code MUST live under src/modules/<slug>/ with specified files"
+      ],
+      "validation": "File location validation; Module boundary enforcement"
+    }
+  ],
+  "metadata": {
+    "total_rules": 10,
+    "version": "1.0.0",
+    "effective_date": "2024-06-01",
+    "last_updated": "2024-06-01T00:00:00Z",
+    "constitution_name": "ZeroUI2.0 VS Code Extension Constitution"
+  }
+}

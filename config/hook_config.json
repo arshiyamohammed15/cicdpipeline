@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "created_at": "2025-10-23T18:49:41.617515",
-  "updated_at": "2025-10-24T11:13:02.101403",
+  "updated_at": "2025-11-04T16:03:57.586304",
   "global_settings": {
     "default_status": "enabled",
     "strict_mode": true,
@@ -9,14 +9,26 @@
     "ai_service_integration": {
       "enabled": true,
       "validation_service_url": "http://localhost:5000",
-      "supported_services": ["openai", "cursor"],
+      "supported_services": [
+        "openai",
+        "cursor"
+      ],
       "default_service": "openai",
       "auto_validate": true,
       "fail_on_violation": true,
       "block_on_violation": true
     }
   },
-  "categories": {},
+  "categories": {
+    "typescript": {
+      "name": "TypeScript Rules",
+      "description": "TypeScript development standards and practices",
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
+      "rule_count": 35
+    }
+  },
   "individual_rules": {
     "1": {
       "status": "enabled",
@@ -265,9 +277,9 @@
       "category": "basic_work"
     },
     "42": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:48.034062",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.586304",
+      "disabled_reason": "Testing specific rule",
       "category": "basic_work"
     },
     "43": {
@@ -1099,213 +1111,213 @@
       "category": "error_handling"
     },
     "181": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.502435",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "182": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.546380",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "183": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.580105",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "184": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.608998",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "185": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.653386",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "186": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.683015",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "187": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.715047",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "188": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.762111",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "189": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.793922",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "190": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.825971",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "191": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.857751",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "192": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.905322",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "193": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.943307",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "194": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:55.970501",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "195": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.026624",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "196": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.064214",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "197": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.111687",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "198": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.143855",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "199": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.191594",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "200": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.233138",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "201": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.270699",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "202": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.302387",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "203": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.350391",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "204": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.391910",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "205": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.456652",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "206": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.494427",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "207": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.543969",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "208": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.607408",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "209": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.650892",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "210": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.692530",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "211": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.733585",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "212": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.775362",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "213": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.809354",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "214": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.887823",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "215": {
-      "status": "enabled",
-      "enabled_at": "2025-10-24T11:12:56.967481",
-      "enabled_reason": null,
+      "status": "disabled",
+      "disabled_at": "2025-11-04T16:03:57.583218",
+      "disabled_reason": "Testing purposes",
       "category": "typescript"
     },
     "216": {

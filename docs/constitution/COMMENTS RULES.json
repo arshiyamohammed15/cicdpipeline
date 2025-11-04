@@ -1,0 +1,713 @@
+
+{
+  "constitution_rules": [
+    {
+      "rule_id": "DOC-001",
+      "title": "Work on One Sub-Feature at a Time",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Restricts focus to a single sub-feature per coding session to maintain clarity and prevent scope creep.",
+      "requirements": [
+        "Identify exactly one sub-feature",
+        "Define clear completion criteria",
+        "Avoid mixing multiple features"
+      ],
+      "validation": "Code changes must be traceable to single, well-defined sub-feature.",
+      "error_condition": "ERROR:SCOPE_VIOLATION"
+    },
+    {
+      "rule_id": "DOC-002",
+      "title": "Enforce 50 LOC Change Limit",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Enforces 50-line maximum change limit with explicit override requirement.",
+      "requirements": [
+        "Count all changed lines",
+        "Require LOC_OVERRIDE:<number> for exceptions"
+      ],
+      "validation": "Total changes (add+modify+delete) ≤50 without override.",
+      "error_condition": "ERROR:SIZE_VIOLATION"
+    },
+    {
+      "rule_id": "DOC-003",
+      "title": "Keep Diffs Minimal",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Minor",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires minimal, focused code changes to reduce review complexity.",
+      "requirements": [
+        "Make only necessary changes",
+        "Avoid unrelated refactoring",
+        "Group related changes"
+      ],
+      "validation": "Changes focused on stated purpose without unnecessary modifications.",
+      "error_condition": "ERROR:DIFF_COMPLEXITY"
+    },
+    {
+      "rule_id": "DOC-004",
+      "title": "Synchronize Comments with Code Changes",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates comment updates occur simultaneously with code changes.",
+      "requirements": [
+        "Update comments in same commit",
+        "Ensure accuracy",
+        "Include in same PR"
+      ],
+      "validation": "Code changes must include corresponding comment updates.",
+      "error_condition": "ERROR:COMMENT_DRIFT"
+    },
+    {
+      "rule_id": "DOC-005",
+      "title": "Use Short Sentences in Comments",
+      "category": "Readability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Limits comment sentences to 20 words maximum for readability.",
+      "requirements": [
+        "Maximum 20 words per sentence",
+        "Break complex thoughts",
+        "Avoid run-ons"
+      ],
+      "validation": "All comment sentences ≤20 words.",
+      "error_condition": "ERROR:READABILITY_COMPLEX"
+    },
+    {
+      "rule_id": "DOC-006",
+      "title": "Use Simple English Vocabulary",
+      "category": "Readability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires everyday vocabulary accessible to 8th-grade reading level.",
+      "requirements": [
+        "Use common words",
+        "Avoid academic vocabulary",
+        "Target middle school comprehension"
+      ],
+      "validation": "Comments use vocabulary from common English word lists.",
+      "error_condition": "ERROR:READABILITY_COMPLEX"
+    },
+    {
+      "rule_id": "DOC-007",
+      "title": "Avoid Unexplained Technical Jargon",
+      "category": "Readability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Prohibits technical jargon without plain English explanations.",
+      "requirements": [
+        "Avoid domain terminology",
+        "Use \"meaning: <plain words>\" for necessary terms"
+      ],
+      "validation": "Technical terms have immediate plain English definitions.",
+      "error_condition": "ERROR:READABILITY_COMPLEX"
+    },
+    {
+      "rule_id": "DOC-008",
+      "title": "Use Active Voice",
+      "category": "Readability",
+      "enabled": true,
+      "severity_level": "Minor",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates active voice for clearer communication.",
+      "requirements": [
+        "Use subject-verb-object structure",
+        "Avoid passive constructions"
+      ],
+      "validation": "Comments use active voice with clear subjects performing actions.",
+      "error_condition": "ERROR:READABILITY_COMPLEX"
+    },
+    {
+      "rule_id": "DOC-009",
+      "title": "Use Bullets for Step Explanations",
+      "category": "Readability",
+      "enabled": true,
+      "severity_level": "Minor",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Specifies bullet point format for procedural explanations.",
+      "requirements": [
+        "Use bullets for sequential steps",
+        "Start with action verbs",
+        "Keep atomic"
+      ],
+      "validation": "Multi-step processes use bulleted lists.",
+      "error_condition": "ERROR:READABILITY_COMPLEX"
+    },
+    {
+      "rule_id": "DOC-010",
+      "title": "Explain Design Decisions Not Code",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Directs comments toward rationale rather than code restatement.",
+      "requirements": [
+        "Explain design choices",
+        "Document trade-offs",
+        "Focus on intent"
+      ],
+      "validation": "Comments provide rationale beyond code description.",
+      "error_condition": "ERROR:COMMENT_REDUNDANT"
+    },
+    {
+      "rule_id": "DOC-011",
+      "title": "Include Comprehensive File Headers",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires file headers explaining purpose, dependencies, contracts, risks.",
+      "requirements": [
+        "What: purpose",
+        "Why: rationale",
+        "Reads/Writes: data",
+        "Contracts: agreements",
+        "Risks: issues"
+      ],
+      "validation": "Every file has header with all required sections.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-012",
+      "title": "Document Import Rationale",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates organized import documentation with rationale.",
+      "requirements": [
+        "Group imports (stdlib/third-party/local)",
+        "Explain purpose",
+        "Justify dependencies"
+      ],
+      "validation": "Import blocks have explanatory comments with grouping.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-013",
+      "title": "Document Public APIs Completely",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Specifies comprehensive API documentation covering purpose, behavior, errors, security.",
+      "requirements": [
+        "WHAT: purpose",
+        "WHY: rationale",
+        "Steps: sequence",
+        "Inputs/Outputs: contracts",
+        "Fails/Throws: errors",
+        "Security: notes"
+      ],
+      "validation": "Public functions/classes have complete documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-014",
+      "title": "Document Non-Obvious Variables",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires detailed variable documentation including meaning, units, ranges, rationale.",
+      "requirements": [
+        "Meaning: purpose",
+        "Units: context",
+        "Range: values",
+        "Reason: design"
+      ],
+      "validation": "Non-obvious variables have inline documentation with all elements.",
+      "error_condition": "ERROR:UNIT_MISSING"
+    },
+    {
+      "rule_id": "DOC-015",
+      "title": "Provide Logic PLAN/RATIONALE Blocks",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates pre-logic explanation blocks for complex conditional/iterative code.",
+      "requirements": [
+        "Place before complex if/loops",
+        "Use bulleted format",
+        "Explain reasoning"
+      ],
+      "validation": "Complex logic preceded by PLAN/RATIONALE comment blocks.",
+      "error_condition": "ERROR:COMMENT_RATIONALE_MISSING"
+    },
+    {
+      "rule_id": "DOC-016",
+      "title": "Document Configuration Settings",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires configuration documentation including safety rationale and constraints.",
+      "requirements": [
+        "Explain purpose",
+        "Document safe defaults",
+        "Specify allowed ranges",
+        "Justify safety"
+      ],
+      "validation": "All configuration settings have descriptive comments and constraints.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-017",
+      "title": "Document Service Business Rules",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates business rule documentation and external dependency mapping.",
+      "requirements": [
+        "State business rule",
+        "Document APIs/DBs accessed",
+        "Explain boundaries"
+      ],
+      "validation": "Service files have business rule statements and dependency documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-018",
+      "title": "Document Logging Purpose and Rules",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Specifies logging purpose, data protection, traceability requirements.",
+      "requirements": [
+        "Document what/why logged",
+        "Specify redaction rules",
+        "Require traceId"
+      ],
+      "validation": "Logging code includes purpose documentation and privacy protections.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-019",
+      "title": "Document Receipt Audit Trails",
+      "category": "Audit",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Defines audit trail requirements with timestamp and context data.",
+      "requirements": [
+        "Document decisions",
+        "Include ts_utc, monotonic_hw_time_ms, action, result, traceId, policy_snapshot_hash"
+      ],
+      "validation": "Receipt generation includes all specified audit trail fields.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-020",
+      "title": "Document Database Migration Safety",
+      "category": "Data Management",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires migration justification, zero-downtime strategy, recovery procedures.",
+      "requirements": [
+        "Explain why now",
+        "Document online-safe plan",
+        "Specify rollback",
+        "Include cutover flag"
+      ],
+      "validation": "Database migrations have complete safety and recovery documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-021",
+      "title": "Document Blob Storage Specifications",
+      "category": "Data Management",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates binary data documentation including format, size, paths, privacy.",
+      "requirements": [
+        "Document format",
+        "Specify size limits",
+        "Define storage paths",
+        "Document privacy controls"
+      ],
+      "validation": "Blob handling includes format, size, path, and privacy documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-022",
+      "title": "Document Backup Operations",
+      "category": "Data Management",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Specifies backup operational parameters, retention, verification.",
+      "requirements": [
+        "Document schedule",
+        "Specify retention",
+        "Define restore tests",
+        "Document verification"
+      ],
+      "validation": "Backup systems have complete operational documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-023",
+      "title": "Document Audit Trail Integrity",
+      "category": "Audit",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Defines audit immutability, authorship, integrity verification.",
+      "requirements": [
+        "Document append-only",
+        "Specify writers",
+        "Define integrity checks (hash/signature)"
+      ],
+      "validation": "Audit systems have integrity and immutability documentation.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-024",
+      "title": "Prohibit Secrets and PII in Comments",
+      "category": "Security",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Prohibits sensitive information; mandates synthetic test data.",
+      "requirements": [
+        "No secrets/PII",
+        "Use synthetic data",
+        "Redact sensitive information"
+      ],
+      "validation": "Comments and examples use synthetic data, exclude sensitive information.",
+      "error_condition": "ERROR:COMMENT_SECRETS"
+    },
+    {
+      "rule_id": "DOC-025",
+      "title": "Enforce Output Format Standards",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Restricts output to Unified Diff, New File, or JSON only.",
+      "requirements": [
+        "Use Unified Diff for changes",
+        "New File for creation",
+        "JSON for config"
+      ],
+      "validation": "All outputs match specified format types.",
+      "error_condition": "ERROR:RETURN_CONTRACT_VIOLATION"
+    },
+    {
+      "rule_id": "DOC-026",
+      "title": "Enforce TODO Accountability",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires accountability for unfinished work with owner, date, ticket.",
+      "requirements": [
+        "Require owner",
+        "Mandate due date",
+        "Require ticket",
+        "Allow WAIVER with end date"
+      ],
+      "validation": "TODOs include owner, date, ticket or valid waiver.",
+      "error_condition": "ERROR:TODO_UNBOUNDED"
+    },
+    {
+      "rule_id": "DOC-027",
+      "title": "Enforce Policy and Contract Links",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires explicit linking to governing contracts/policies.",
+      "requirements": [
+        "Reference contracts",
+        "Link to policies",
+        "Cite specifications",
+        "Document compliance"
+      ],
+      "validation": "Code references applicable governing documents.",
+      "error_condition": "ERROR:LINK_MISSING"
+    },
+    {
+      "rule_id": "DOC-028",
+      "title": "Maintain Complete Documentation Coverage",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Mandates comprehensive documentation across all required locations.",
+      "requirements": [
+        "Update headers",
+        "Maintain imports",
+        "Document functions",
+        "Annotate variables",
+        "Provide logic PLANs"
+      ],
+      "validation": "All documentation locations maintained and updated.",
+      "error_condition": "ERROR:COMMENT_MISSING"
+    },
+    {
+      "rule_id": "DOC-029",
+      "title": "Include Quantitative Context",
+      "category": "Documentation",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires quantitative context for values including units, ranges.",
+      "requirements": [
+        "Specify units",
+        "Document ranges",
+        "Provide constraints",
+        "Include scaling factors"
+      ],
+      "validation": "Quantitative values have proper context and units.",
+      "error_condition": "ERROR:UNIT_MISSING"
+    },
+    {
+      "rule_id": "DOC-030",
+      "title": "Synchronize Comment and Code Presentation",
+      "category": "Process Control",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "2.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": ["ZEROUI-COMMENTS-2.0"],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Requires synchronized display of code and comment changes.",
+      "requirements": [
+        "Show comment edits with code",
+        "Use unified diff",
+        "Maintain synchronization"
+      ],
+      "validation": "Diffs show comment and code changes together.",
+      "error_condition": "ERROR:RETURN_CONTRACT_VIOLATION"
+    }
+  ],
+  "metadata": {
+    "total_rules": 30,
+    "version": "2.0.0",
+    "effective_date": "2024-01-01",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "constitution_name": "ZeroUI2.0 Comments Constitution"
+  }
+}

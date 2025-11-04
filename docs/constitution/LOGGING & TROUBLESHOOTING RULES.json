@@ -1,0 +1,256 @@
+{
+  "constitution_rules": [
+    {
+      "rule_id": "OBS-001",
+      "title": "Require Schema Version in Logs",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "All log entries must include the log_schema_version field set to \"1.0\" to ensure consistent parsing and schema validation across all logging systems.",
+      "requirements": [
+        "The `log_schema_version: \"1.0\"` field must be present in every JSONL log entry."
+      ],
+      "validation": "CI systems must reject any log entry missing the schema version field.",
+      "error_condition": "Missing log_schema_version triggers ERROR:SCHEMA_VIOLATION"
+    },
+    {
+      "rule_id": "OBS-002",
+      "title": "Use JSONL Format for Logs",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "All log entries must use JSONL format with exactly one JSON object per line for consistent parsing and processing.",
+      "requirements": [
+        "Format: ONE JSON object per line (JSONL)"
+      ],
+      "validation": "CI systems must validate JSONL format compliance",
+      "error_condition": "Multi-line logs trigger ERROR:UNSTRUCTURED_LOG"
+    },
+    {
+      "rule_id": "OBS-003",
+      "title": "Standardize Timestamp Format",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "All timestamps must use ISO-8601 UTC format with monotonic hardware time for precise ordering.",
+      "requirements": [
+        "Timestamps: ISO-8601 with Z (UTC). Include monotonic_hw_time_ms for ordering"
+      ],
+      "validation": "Validate timestamp format and presence in CI"
+    },
+    {
+      "rule_id": "OBS-004",
+      "title": "Require Monotonic Time Precision",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Use high-precision monotonic time sources and convert to milliseconds for consistent timing measurements.",
+      "requirements": [
+        "Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-005",
+      "title": "Enforce UTF-8 Encoding",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Critical",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Ensure consistent character encoding without BOM and prevent multi-line log entries.",
+      "requirements": [
+        "Encoding: UTF-8 only, no BOM. No multi-line logs"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-006",
+      "title": "Ensure Cross-Platform Compatibility",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Maintain log integrity across Windows and other platforms with proper line endings and path length limits.",
+      "requirements": [
+        "Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-007",
+      "title": "Define Output Destination Rules",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Major",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Specify different output destinations for development vs production environments.",
+      "requirements": [
+        "Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-008",
+      "title": "Require Timestamp Fields",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "All log entries must include both UTC and monotonic hardware timestamps for temporal correlation.",
+      "requirements": [
+        "ts_utc, monotonic_hw_time_ms required in all logs"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-009",
+      "title": "Enforce Log Level Enumeration",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Standardize log level values to ensure consistent severity classification across all services.",
+      "requirements": [
+        "level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL required in all logs"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-010",
+      "title": "Require Service Identification",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "All logs must include service metadata for proper attribution and filtering in distributed systems.",
+      "requirements": [
+        "service, version, env, host required in all logs"
+      ],
+      "validation": ""
+    },
+    {
+      "rule_id": "OBS-011",
+      "title": "Enforce Distributed Tracing Context",
+      "category": "Observability",
+      "enabled": true,
+      "severity_level": "Blocker",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated_by": "logging-policy@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "PV-LOG-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Implement W3C trace context propagation and generate missing tracing identifiers.",
+      "requirements": [
+        "traceId, spanId, parentSpanId (W3C trace context) required. If missing, generate and propagate"
+      ],
+      "validation": "",
+      "error_condition": "Missing traceId triggers ERROR:MISSING_TRACE_ID"
+    }
+  ],
+  "metadata": {
+    "total_rules": 11,
+    "version": "2.0.0",
+    "effective_date": "2024-01-01",
+    "last_updated": "2024-01-01T00:00:00Z",
+    "constitution_name": "ZeroUI2.0 Logging and Troubleshooting Constitution"
+  }
+}
