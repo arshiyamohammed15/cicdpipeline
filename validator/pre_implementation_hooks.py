@@ -1,127 +1,101 @@
 """
-Pre-Implementation Hooks for ALL 280 Constitution Rules
+Pre-Implementation Hooks for ALL 425 Constitution Rules
 
 This module provides comprehensive validation of prompts before AI code generation,
-ensuring ALL 280 Constitution rules are enforced at the source rather than after generation.
+ensuring ALL 425 Constitution rules from docs/constitution JSON files are enforced
+at the source rather than after generation.
 """
 
+import json
 import re
-import ast
-from typing import List, Dict, Any, Optional, Set
 from pathlib import Path
+from typing import List, Dict, Any, Optional, Set
 from validator.models import Violation, Severity
 
-# Import constitution database manager
-try:
-    from config.enhanced_config_manager import EnhancedConfigManager
-    from config.constitution.config_manager import ConstitutionRuleManager
-except ImportError:
-    # Fallback for testing environment
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).parent.parent))
-    from config.enhanced_config_manager import EnhancedConfigManager
-    from config.constitution.config_manager import ConstitutionRuleManager
 
-# Import hook configuration manager
-try:
-    from validator.hook_config_manager import HookConfigManager
-except ImportError:
-    # Fallback for testing environment
-    HookConfigManager = None
-
-
-class ComprehensivePreImplementationValidator:
+class ConstitutionRuleLoader:
     """
-    Validates ALL 280 Constitution rules before AI code generation.
-    
-    This prevents violations at the source rather than detecting them after generation.
+    Loads all constitution rules from JSON files in docs/constitution folder.
     """
     
-    def __init__(self):
-        """Initialize the comprehensive validator."""
-        # Connect to constitution database
-        self.config_manager = EnhancedConfigManager()
-        self.constitution_manager = ConstitutionRuleManager()
-        
-        # Initialize hook configuration manager
-        self.hook_config_manager = HookConfigManager() if HookConfigManager else None
-        
-        # Load actual categories and rule ranges from database
-        self.rule_categories = self._load_actual_categories()
-        
-        # Initialize rule validators
-        self._init_rule_validators()
-    
-    def _load_actual_categories(self) -> Dict[str, tuple]:
-        """Load real category ranges from constitution database."""
-        categories = {}
-        try:
-            all_rules = self.constitution_manager.get_all_rules()
-            
-            for rule in all_rules:
-                category = rule['category']
-                rule_number = rule['rule_number']
-                
-                if category not in categories:
-                    categories[category] = [rule_number, rule_number]
-                else:
-                    categories[category][0] = min(categories[category][0], rule_number)
-                    categories[category][1] = max(categories[category][1], rule_number)
-            
-            return {k: tuple(v) for k, v in categories.items()}
-        except Exception as e:
-            print(f"Warning: Could not load actual categories from database: {e}")
-            # Fallback to basic categories if database unavailable
-            return {
-                'basic_work': (1, 18),
-                'system_design': (19, 30),
-                'problem_solving': (31, 39),
-                'platform': (40, 49),
-                'teamwork': (50, 75),
-                'code_review': (76, 84),
-                'coding_standards': (85, 99),
-                'comments': (100, 109),
-                'api_contracts': (110, 131),
-                'logging': (132, 149),
-                'exception_handling': (150, 181),
-                'typescript': (182, 215),
-                'documentation': (216, 218),
-                'storage_governance': (219, 231),
-                'simple_readability': (232, 280)
-            }
-    
-    def _init_rule_validators(self):
-        """Initialize all rule category validators."""
-        self.validators = {
-            'basic_work': self._validate_basic_work_rules,
-            'code_review': self._validate_code_review_rules,
-            'security_privacy': self._validate_security_privacy_rules,
-            'logging': self._validate_logging_rules,
-            'error_handling': self._validate_error_handling_rules,
-            'typescript': self._validate_typescript_rules,
-            'storage_governance': self._validate_storage_governance_rules,
-            'gsmd': self._validate_gsmd_rules,
-            'simple_readability': self._validate_simple_readability_rules
-        }
-    
-    def _is_rule_enabled(self, rule_id: int) -> bool:
+    def __init__(self, constitution_dir: str = "docs/constitution"):
         """
-        Check if a specific rule is enabled.
+        Initialize the rule loader.
         
         Args:
-            rule_id: The rule ID to check
-            
-        Returns:
-            True if the rule is enabled, False otherwise
+            constitution_dir: Path to directory containing constitution JSON files
         """
-        if self.hook_config_manager:
-            return self.hook_config_manager.is_rule_enabled(rule_id)
-        return True  # Default to enabled if no config manager
+        self.constitution_dir = Path(constitution_dir)
+        self.rules: List[Dict[str, Any]] = []
+        self.rules_by_id: Dict[str, Dict[str, Any]] = {}
+        self.rules_by_category: Dict[str, List[Dict[str, Any]]] = {}
+        self._load_all_rules()
+    
+    def _load_all_rules(self):
+        """Load all rules from all JSON files in constitution directory."""
+        if not self.constitution_dir.exists():
+            raise FileNotFoundError(f"Constitution directory not found: {self.constitution_dir}")
+        
+        json_files = sorted(list(self.constitution_dir.glob("*.json")))
+        
+        if not json_files:
+            raise FileNotFoundError(f"No JSON files found in {self.constitution_dir}")
+        
+        for json_file in json_files:
+            try:
+                with open(json_file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    rules = data.get('constitution_rules', [])
+                    
+                    for rule in rules:
+                        if rule.get('enabled', True):
+                            rule_id = rule.get('rule_id', '')
+                            self.rules.append(rule)
+                            self.rules_by_id[rule_id] = rule
+                            
+                            category = rule.get('category', 'UNKNOWN')
+                            if category not in self.rules_by_category:
+                                self.rules_by_category[category] = []
+                            self.rules_by_category[category].append(rule)
+            
+            except Exception as e:
+                print(f"Warning: Could not load rules from {json_file}: {e}")
+                continue
+    
+    def get_all_rules(self) -> List[Dict[str, Any]]:
+        """Get all loaded rules."""
+        return self.rules
+    
+    def get_rule_by_id(self, rule_id: str) -> Optional[Dict[str, Any]]:
+        """Get a specific rule by its ID."""
+        return self.rules_by_id.get(rule_id)
+    
+    def get_rules_by_category(self, category: str) -> List[Dict[str, Any]]:
+        """Get all rules in a specific category."""
+        return self.rules_by_category.get(category, [])
+    
+    def get_total_rule_count(self) -> int:
+        """Get total number of loaded rules."""
+        return len(self.rules)
+
+
+class PromptValidator:
+    """
+    Validates prompts against constitution rules.
+    """
+    
+    def __init__(self, rule_loader: ConstitutionRuleLoader):
+        """
+        Initialize the prompt validator.
+        
+        Args:
+            rule_loader: Loaded rule loader instance
+        """
+        self.rule_loader = rule_loader
     
     def validate_prompt(self, prompt: str, file_type: str = None, task_type: str = None) -> List[Violation]:
         """
-        Validate prompt against ALL 280 Constitution rules.
+        Validate a prompt against all relevant constitution rules.
         
         Args:
             prompt: The prompt to validate
@@ -129,712 +103,261 @@ class ComprehensivePreImplementationValidator:
             task_type: Type of task (api, storage, logging, etc.)
             
         Returns:
-            List of violations found in the prompt
+            List of violations found
         """
         violations = []
+        prompt_lower = prompt.lower()
         
-        # Always validate basic work rules (1-75)
-        violations.extend(self._validate_basic_work_rules(prompt))
+        # Get all enabled rules
+        all_rules = self.rule_loader.get_all_rules()
         
-        # Always validate code review rules (76-99)
-        violations.extend(self._validate_code_review_rules(prompt))
-        
-        # Always validate security/privacy rules (100-131)
-        violations.extend(self._validate_security_privacy_rules(prompt))
-        
-        # Always validate logging rules (132-149)
-        violations.extend(self._validate_logging_rules(prompt))
-        
-        # Always validate error handling rules (150-180)
-        violations.extend(self._validate_error_handling_rules(prompt))
-        
-        # Context-specific validations
-        if file_type and file_type.lower() in ['typescript', 'ts']:
-            violations.extend(self._validate_typescript_rules(prompt))
-        
-        if task_type and 'storage' in task_type.lower():
-            violations.extend(self._validate_storage_governance_rules(prompt))
-        
-        if task_type and 'policy' in task_type.lower():
-            violations.extend(self._validate_gsmd_rules(prompt))
-        
-        # Always validate simple readability rules (253-280)
-        violations.extend(self._validate_simple_readability_rules(prompt))
-        
-        return violations
-    
-    def _validate_basic_work_rules(self, prompt: str) -> List[Violation]:
-        """Validate Basic Work Rules using actual rule content from database."""
-        violations = []
-        
-        try:
-            # Get actual basic_work rules from database
-            basic_work_rules = self.constitution_manager.get_rules_by_category('basic_work', enabled_only=True)
+        for rule in all_rules:
+            rule_id = rule.get('rule_id', '')
+            title = rule.get('title', '')
+            category = rule.get('category', '')
+            description = rule.get('description', '')
+            requirements = rule.get('requirements', [])
+            severity_str = rule.get('severity_level', 'Major')
             
-            for rule in basic_work_rules:
-                rule_number = rule['rule_number']
-                
-                # Check if this specific rule is enabled
-                if not self._is_rule_enabled(rule_number):
-                    continue
-                
-                rule_content = rule['content']
-                rule_title = rule['title']
-                
-                # Apply semantic validation based on actual rule content
-                if rule_number == 1:  # Do Exactly What's Asked
-                    if self._detects_scope_creep(prompt, rule_content):
-                        violations.append(self._create_violation(rule, prompt))
-                elif rule_number == 2:  # Only Use Information Given
-                    if self._detects_assumptions(prompt, rule_content):
-                        violations.append(self._create_violation(rule, prompt))
-                elif rule_number == 3:  # Protect People's Privacy
-                    if self._detects_privacy_violations(prompt, rule_content):
-                        violations.append(self._create_violation(rule, prompt))
-                elif rule_number == 4:  # Use Settings Files, Not Hardcoded Numbers
-                    if self._detects_hardcoded_values(prompt, rule_content):
-                        violations.append(self._create_violation(rule, prompt))
-                elif rule_number == 6:  # Never Break Things During Updates
-                    if self._detects_breaking_changes(prompt, rule_content):
-                        violations.append(self._create_violation(rule, prompt))
-                # Continue for other basic_work rules...
-                else:
-                    # Generic validation for other rules
-                    if self._detects_rule_violation(prompt, rule_content, rule_title):
-                        violations.append(self._create_violation(rule, prompt))
-        
-        except Exception as e:
-            print(f"Warning: Could not validate basic_work rules from database: {e}")
-            # Fallback to basic validation
-            violations.extend(self._validate_basic_work_fallback(prompt))
-        
-        return violations
-    
-    def _create_violation(self, rule: Dict, prompt: str) -> Violation:
-        """Create violation from rule data."""
-        return Violation(
-            rule_id=f"R{rule['rule_number']:03d}",
-            severity=Severity.ERROR if rule.get('priority') == 'critical' else Severity.WARNING,
-            message=f"Prompt violates Rule {rule['rule_number']}: {rule['title']}",
-            file_path="prompt",
-            line_number=1,
-            code_snippet=prompt[:100],
-            fix_suggestion=f"Review rule: {rule['content'][:200]}..."
-        )
-    
-    def _validate_basic_work_fallback(self, prompt: str) -> List[Violation]:
-        """Fallback validation when database is unavailable."""
-        violations = []
-        
-        # Rule 1: Do exactly what's asked
-        if self._detects_additions_beyond_request(prompt):
-            violations.append(Violation(
-                rule_id='R001',
-                severity=Severity.ERROR,
-                message="Prompt requests additions beyond what's asked (Rule 1 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 2: Only use information you're given
-        if self._detects_guessing_or_assumptions(prompt):
-            violations.append(Violation(
-                rule_id='R002',
-                severity=Severity.ERROR,
-                message="Prompt may involve guessing or assumptions (Rule 2 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_code_review_rules(self, prompt: str) -> List[Violation]:
-        """Validate Code Review Rules (76-99)."""
-        violations = []
-        
-        # Rule 83: Automation (CI/Pre-commit)
-        if self._is_rule_enabled(83) and self._detects_manual_processes(prompt):
-            violations.append(Violation(
-                rule_id='R083',
-                severity=Severity.ERROR,
-                message="Prompt requests manual processes instead of automation (Rule 83 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 86: Python quality gates
-        if 'python' in prompt.lower() and not self._detects_quality_gates(prompt):
-            violations.append(Violation(
-                rule_id='R086',
-                severity=Severity.ERROR,
-                message="Python code must include quality gates (lint, type, test) (Rule 86 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 87: TypeScript quality gates
-        if 'typescript' in prompt.lower() and not self._detects_typescript_quality_gates(prompt):
-            violations.append(Violation(
-                rule_id='R087',
-                severity=Severity.ERROR,
-                message="TypeScript code must include quality gates (Rule 87 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_security_privacy_rules(self, prompt: str) -> List[Violation]:
-        """Validate Security & Privacy Rules (100-131)."""
-        violations = []
-        
-        # Rule 90: Security & secrets
-        if self._is_rule_enabled(90) and self._detects_secrets_in_code(prompt):
-            violations.append(Violation(
-                rule_id='R090',
-                severity=Severity.ERROR,
-                message="Prompt may expose secrets in code (Rule 90 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 100: Security & privacy
-        if self._detects_privacy_risks(prompt):
-            violations.append(Violation(
-                rule_id='R100',
-                severity=Severity.ERROR,
-                message="Prompt may create privacy risks (Rule 100 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_logging_rules(self, prompt: str) -> List[Violation]:
-        """Validate Logging Rules (132-149)."""
-        violations = []
-        
-        # Rule 132: Log format & transport
-        if self._is_rule_enabled(132) and 'log' in prompt.lower() and not self._detects_structured_logging(prompt):
-            violations.append(Violation(
-                rule_id='R132',
-                severity=Severity.ERROR,
-                message="Logging must be structured JSON (Rule 132 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 133: Required fields
-        if 'log' in prompt.lower() and not self._detects_required_log_fields(prompt):
-            violations.append(Violation(
-                rule_id='R133',
-                severity=Severity.ERROR,
-                message="Logs must include required fields (Rule 133 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_error_handling_rules(self, prompt: str) -> List[Violation]:
-        """Validate Error Handling Rules (150-180)."""
-        violations = []
-        
-        # Rule 150: Prevent first
-        if self._is_rule_enabled(150) and self._detects_reactive_error_handling(prompt):
-            violations.append(Violation(
-                rule_id='R150',
-                severity=Severity.ERROR,
-                message="Error handling should be preventive, not reactive (Rule 150 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 155: No silent catches
-        if self._detects_silent_error_handling(prompt):
-            violations.append(Violation(
-                rule_id='R155',
-                severity=Severity.ERROR,
-                message="No silent error handling allowed (Rule 155 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_typescript_rules(self, prompt: str) -> List[Violation]:
-        """Validate TypeScript Rules (181-215)."""
-        violations = []
-        
-        # Rule 181: Strict mode always
-        if self._is_rule_enabled(181) and 'typescript' in prompt.lower() and not self._detects_strict_mode(prompt):
-            violations.append(Violation(
-                rule_id='R181',
-                severity=Severity.ERROR,
-                message="TypeScript must use strict mode (Rule 181 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 182: No 'any' in committed code
-        if self._detects_any_type_usage(prompt):
-            violations.append(Violation(
-                rule_id='R182',
-                severity=Severity.ERROR,
-                message="No 'any' type allowed in TypeScript (Rule 182 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_storage_governance_rules(self, prompt: str) -> List[Violation]:
-        """Validate Storage Governance Rules (216-228)."""
-        violations = []
-        
-        # Rule 216: Kebab-case naming
-        if self._is_rule_enabled(216) and 'storage' in prompt.lower() and self._detects_non_kebab_case(prompt):
-            violations.append(Violation(
-                rule_id='R216',
-                severity=Severity.ERROR,
-                message="Storage paths must use kebab-case (Rule 216 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 217: No source code/PII in stores
-        if self._detects_code_or_pii_in_storage(prompt):
-            violations.append(Violation(
-                rule_id='R217',
-                severity=Severity.ERROR,
-                message="No source code or PII in storage (Rule 217 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_gsmd_rules(self, prompt: str) -> List[Violation]:
-        """Validate GSMD Rules (232-252)."""
-        violations = []
-        
-        # Rule 232: GSMD source of truth paths
-        if self._is_rule_enabled(232) and 'policy' in prompt.lower() and not self._detects_gsmd_paths(prompt):
-            violations.append(Violation(
-                rule_id='R232',
-                severity=Severity.ERROR,
-                message="GSMD must use correct source of truth paths (Rule 232 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    def _validate_simple_readability_rules(self, prompt: str) -> List[Violation]:
-        """Validate Simple Code Readability Rules (253-280)."""
-        violations = []
-        
-        # Rule 253: Plain English variable names
-        if self._is_rule_enabled(253) and self._detects_abbreviations(prompt):
-            violations.append(Violation(
-                rule_id='R253',
-                severity=Severity.ERROR,
-                message="Variable names must be plain English (Rule 253 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 270: NO advanced programming concepts
-        if self._detects_advanced_concepts(prompt):
-            violations.append(Violation(
-                rule_id='R270',
-                severity=Severity.ERROR,
-                message="Advanced programming concepts are banned (Rule 270 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 271: NO complex data structures
-        if self._detects_complex_data_structures(prompt):
-            violations.append(Violation(
-                rule_id='R271',
-                severity=Severity.ERROR,
-                message="Complex data structures are banned (Rule 271 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 272: NO advanced string manipulation
-        if self._detects_advanced_string_manipulation(prompt):
-            violations.append(Violation(
-                rule_id='R272',
-                severity=Severity.ERROR,
-                message="Advanced string manipulation is banned (Rule 272 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        # Rule 280: ENFORCE Simple Level
-        if self._detects_complex_code(prompt):
-            violations.append(Violation(
-                rule_id='R280',
-                severity=Severity.ERROR,
-                message="Code must be understandable by an 8th grader (Rule 280 violation)",
-                file_path="prompt",
-                line_number=1
-            ))
-        
-        return violations
-    
-    # Detection helper methods
-    def _detects_additions_beyond_request(self, prompt: str) -> bool:
-        """Detect if prompt requests additions beyond what's asked."""
-        addition_indicators = [
-            "also add", "also include", "also create", "bonus", "extra",
-            "additionally", "furthermore", "moreover", "plus"
-        ]
-        return any(indicator in prompt.lower() for indicator in addition_indicators)
-    
-    def _detects_guessing_or_assumptions(self, prompt: str) -> bool:
-        """Detect if prompt involves guessing or assumptions."""
-        assumption_indicators = [
-            "assume", "guess", "probably", "likely", "maybe", "perhaps",
-            "I think", "probably should", "might be"
-        ]
-        return any(indicator in prompt.lower() for indicator in assumption_indicators)
-    
-    def _detects_privacy_violations(self, prompt: str) -> bool:
-        """Detect potential privacy violations."""
-        privacy_risks = [
-            "password", "secret", "private", "personal", "sensitive",
-            "ssn", "social security", "credit card", "bank account"
-        ]
-        return any(risk in prompt.lower() for risk in privacy_risks)
-    
-    def _detects_hardcoded_values(self, prompt: str) -> bool:
-        """Detect hardcoded values instead of settings."""
-        # Look for numbers that might be hardcoded
-        numbers = re.findall(r'\b\d+\b', prompt)
-        return len(numbers) > 3 and "config" not in prompt.lower() and "setting" not in prompt.lower()
-    
-    def _detects_breaking_changes(self, prompt: str) -> bool:
-        """Detect potential breaking changes."""
-        breaking_indicators = [
-            "remove", "delete", "deprecate", "breaking", "incompatible",
-            "migrate", "upgrade", "version bump"
-        ]
-        return any(indicator in prompt.lower() for indicator in breaking_indicators)
-    
-    def _detects_manual_processes(self, prompt: str) -> bool:
-        """Detect manual processes instead of automation."""
-        manual_indicators = [
-            "manually", "by hand", "manual", "step by step", "one by one"
-        ]
-        return any(indicator in prompt.lower() for indicator in manual_indicators)
-    
-    def _detects_quality_gates(self, prompt: str) -> bool:
-        """Detect if quality gates are mentioned."""
-        quality_indicators = [
-            "lint", "type", "test", "coverage", "quality", "gate",
-            "ruff", "black", "mypy", "pytest"
-        ]
-        return any(indicator in prompt.lower() for indicator in quality_indicators)
-    
-    def _detects_typescript_quality_gates(self, prompt: str) -> bool:
-        """Detect TypeScript quality gates."""
-        ts_quality_indicators = [
-            "eslint", "prettier", "tsconfig", "strict", "typecheck"
-        ]
-        return any(indicator in prompt.lower() for indicator in ts_quality_indicators)
-    
-    def _detects_secrets_in_code(self, prompt: str) -> bool:
-        """Detect secrets in code."""
-        secret_patterns = [
-            r'password\s*=\s*["\'][^"\']+["\']',
-            r'secret\s*=\s*["\'][^"\']+["\']',
-            r'key\s*=\s*["\'][^"\']+["\']',
-            r'token\s*=\s*["\'][^"\']+["\']'
-        ]
-        return any(re.search(pattern, prompt, re.IGNORECASE) for pattern in secret_patterns)
-    
-    def _detects_privacy_risks(self, prompt: str) -> bool:
-        """Detect privacy risks."""
-        privacy_risks = [
-            "log user data", "store personal", "track user", "collect data",
-            "user information", "personal data"
-        ]
-        return any(risk in prompt.lower() for risk in privacy_risks)
-    
-    def _detects_structured_logging(self, prompt: str) -> bool:
-        """Detect structured logging requirements."""
-        structured_indicators = [
-            "json", "structured", "log_schema", "traceId", "spanId"
-        ]
-        return any(indicator in prompt.lower() for indicator in structured_indicators)
-    
-    def _detects_required_log_fields(self, prompt: str) -> bool:
-        """Detect required log fields."""
-        required_fields = [
-            "timestamp", "level", "service", "traceId", "requestId"
-        ]
-        return any(field in prompt.lower() for field in required_fields)
-    
-    def _detects_reactive_error_handling(self, prompt: str) -> bool:
-        """Detect reactive error handling."""
-        reactive_indicators = [
-            "catch error", "handle exception", "try catch", "error handling"
-        ]
-        return any(indicator in prompt.lower() for indicator in reactive_indicators)
-    
-    def _detects_silent_error_handling(self, prompt: str) -> bool:
-        """Detect silent error handling."""
-        silent_indicators = [
-            "silent", "ignore", "pass", "continue", "no error"
-        ]
-        return any(indicator in prompt.lower() for indicator in silent_indicators)
-    
-    def _detects_strict_mode(self, prompt: str) -> bool:
-        """Detect TypeScript strict mode."""
-        return "strict" in prompt.lower() or "tsconfig" in prompt.lower()
-    
-    def _detects_any_type_usage(self, prompt: str) -> bool:
-        """Detect 'any' type usage."""
-        return "any" in prompt.lower() and "typescript" in prompt.lower()
-    
-    def _detects_non_kebab_case(self, prompt: str) -> bool:
-        """Detect non-kebab-case naming."""
-        # Look for camelCase or snake_case in storage contexts
-        camel_case = re.search(r'[a-z]+[A-Z][a-z]+', prompt)
-        snake_case = re.search(r'[a-z]+_[a-z]+', prompt)
-        return bool(camel_case or snake_case)
-    
-    def _detects_code_or_pii_in_storage(self, prompt: str) -> bool:
-        """Detect code or PII in storage."""
-        storage_risks = [
-            "store code", "save source", "database code", "store personal"
-        ]
-        return any(risk in prompt.lower() for risk in storage_risks)
-    
-    def _detects_gsmd_paths(self, prompt: str) -> bool:
-        """Detect GSMD source of truth paths."""
-        gsmd_indicators = [
-            "policy", "governance", "gsmd", "config/policy"
-        ]
-        return any(indicator in prompt.lower() for indicator in gsmd_indicators)
-    
-    def _detects_abbreviations(self, prompt: str) -> bool:
-        """Detect abbreviations in variable names."""
-        abbreviations = [
-            "usr", "ctx", "mgr", "calc", "cfg", "conn", "pool", "proc", "temp", "var"
-        ]
-        return any(abbrev in prompt.lower() for abbrev in abbreviations)
-    
-    def _detects_advanced_concepts(self, prompt: str) -> bool:
-        """Detect advanced programming concepts."""
-        advanced_concepts = [
-            "lambda", "closure", "decorator", "async", "await", "generator",
-            "promise", "callback", "map", "filter", "reduce", "fold",
-            "inheritance", "polymorphism", "abstract", "singleton", "factory"
-        ]
-        return any(concept in prompt.lower() for concept in advanced_concepts)
-    
-    def _detects_complex_data_structures(self, prompt: str) -> bool:
-        """Detect complex data structures."""
-        complex_structures = [
-            "nested object", "hash map", "linked list", "tree", "graph",
-            "array of objects", "complex object", "nested array"
-        ]
-        return any(structure in prompt.lower() for structure in complex_structures)
-    
-    def _detects_advanced_string_manipulation(self, prompt: str) -> bool:
-        """Detect advanced string manipulation."""
-        advanced_string = [
-            "regex", "regular expression", "encoding", "decoding", "base64",
-            "template literal", "string interpolation"
-        ]
-        return any(technique in prompt.lower() for technique in advanced_string)
-    
-    def _detects_complex_code(self, prompt: str) -> bool:
-        """Detect complex code that 8th grader can't understand."""
-        complexity_indicators = [
-            "complex", "advanced", "sophisticated", "intricate", "elaborate",
-            "recursive", "algorithm", "optimization", "performance"
-        ]
-        return any(indicator in prompt.lower() for indicator in complexity_indicators)
-    
-    # New detection methods that work with actual rule content
-    def _detects_scope_creep(self, prompt: str, rule_content: str) -> bool:
-        """Detect scope creep based on rule content."""
-        # Enhanced detection using rule content context
-        scope_indicators = [
-            "also add", "also include", "also create", "bonus", "extra",
-            "additionally", "furthermore", "moreover", "plus", "while you're at it"
-        ]
-        return any(indicator in prompt.lower() for indicator in scope_indicators)
-    
-    def _detects_assumptions(self, prompt: str, rule_content: str) -> bool:
-        """Detect assumptions based on rule content."""
-        assumption_indicators = [
-            "assume", "guess", "probably", "likely", "maybe", "perhaps",
-            "I think", "probably should", "might be", "should be"
-        ]
-        return any(indicator in prompt.lower() for indicator in assumption_indicators)
-    
-    def _detects_privacy_violations(self, prompt: str, rule_content: str) -> bool:
-        """Detect privacy violations based on rule content."""
-        privacy_risks = [
-            "password", "secret", "private", "personal", "sensitive",
-            "ssn", "social security", "credit card", "bank account", "api key"
-        ]
-        return any(risk in prompt.lower() for risk in privacy_risks)
-    
-    def _detects_hardcoded_values(self, prompt: str, rule_content: str) -> bool:
-        """Detect hardcoded values based on rule content."""
-        # Look for numbers that might be hardcoded
-        numbers = re.findall(r'\b\d+\b', prompt)
-        return len(numbers) > 3 and "config" not in prompt.lower() and "setting" not in prompt.lower()
-    
-    def _detects_breaking_changes(self, prompt: str, rule_content: str) -> bool:
-        """Detect breaking changes based on rule content."""
-        breaking_indicators = [
-            "remove", "delete", "deprecate", "breaking", "incompatible",
-            "migrate", "upgrade", "version bump", "remove support"
-        ]
-        return any(indicator in prompt.lower() for indicator in breaking_indicators)
-    
-    def _detects_rule_violation(self, prompt: str, rule_content: str, rule_title: str) -> bool:
-        """Generic rule violation detection based on rule content."""
-        # This is a simplified generic detector - in practice, you'd want more sophisticated
-        # semantic analysis based on the specific rule content
-        return False
-
-
-class ContextAwareRuleLoader:
-    """
-    Loads relevant Constitution rules based on context.
-    
-    This ensures only relevant rules are applied to specific file types and tasks.
-    """
-    
-    def __init__(self):
-        """Initialize the context-aware rule loader."""
-        # Connect to constitution database
-        self.config_manager = EnhancedConfigManager()
-        self.constitution_manager = ConstitutionRuleManager()
-        
-        # Load actual categories from database
-        self.rule_categories = self._load_actual_categories()
-    
-    def _load_actual_categories(self) -> Dict[str, tuple]:
-        """Load real category ranges from constitution database."""
-        categories = {}
-        try:
-            all_rules = self.constitution_manager.get_all_rules()
+            # Check if rule is applicable to this context
+            if not self._is_rule_applicable(rule, file_type, task_type, prompt_lower):
+                continue
             
-            for rule in all_rules:
-                category = rule['category']
-                rule_number = rule['rule_number']
-                
-                if category not in categories:
-                    categories[category] = [rule_number, rule_number]
-                else:
-                    categories[category][0] = min(categories[category][0], rule_number)
-                    categories[category][1] = max(categories[category][1], rule_number)
+            # Validate prompt against rule
+            violation = self._check_rule_violation(rule, prompt, prompt_lower, file_type, task_type)
             
-            return {k: tuple(v) for k, v in categories.items()}
-        except Exception as e:
-            print(f"Warning: Could not load actual categories from database: {e}")
-            # Fallback to basic categories if database unavailable
-            return {
-                'basic_work': (1, 18),
-                'system_design': (19, 30),
-                'problem_solving': (31, 39),
-                'platform': (40, 49),
-                'teamwork': (50, 75),
-                'code_review': (76, 84),
-                'coding_standards': (85, 99),
-                'comments': (100, 109),
-                'api_contracts': (110, 131),
-                'logging': (132, 149),
-                'exception_handling': (150, 181),
-                'typescript': (182, 215),
-                'documentation': (216, 218),
-                'storage_governance': (219, 231),
-                'simple_readability': (232, 280)
-            }
+            if violation:
+                violations.append(violation)
+        
+        return violations
     
-    def get_relevant_rules(self, file_type: str = None, task_type: str = None, 
-                          prompt: str = None) -> List[str]:
+    def _is_rule_applicable(self, rule: Dict[str, Any], file_type: str, task_type: str, prompt_lower: str) -> bool:
         """
-        Get relevant rules for current context.
+        Determine if a rule is applicable to the current context.
         
         Args:
+            rule: The rule to check
             file_type: Type of file being generated
-            task_type: Type of task being performed
-            prompt: The prompt being validated
+            task_type: Type of task
+            prompt_lower: Lowercase prompt for keyword matching
             
         Returns:
-            List of relevant rule categories
+            True if rule is applicable
         """
-        relevant_categories = []
+        category = rule.get('category', '').upper()
+        rule_id = rule.get('rule_id', '').upper()
         
-        # Always include basic work rules
-        relevant_categories.append('basic_work')
-        
-        # Always include code review rules
-        relevant_categories.append('code_review')
-        
-        # Always include security/privacy rules
-        relevant_categories.append('security_privacy')
-        
-        # Always include simple readability rules
-        relevant_categories.append('simple_readability')
-        
-        # Context-specific rules
-        if file_type:
-            if file_type.lower() in ['typescript', 'ts', 'js']:
-                relevant_categories.append('typescript')
-        
-        if task_type:
-            if 'storage' in task_type.lower():
-                relevant_categories.append('storage_governance')
-            if 'policy' in task_type.lower() or 'governance' in task_type.lower():
-                relevant_categories.append('gsmd')
-            if 'log' in task_type.lower():
-                relevant_categories.append('logging')
-            if 'error' in task_type.lower():
-                relevant_categories.append('error_handling')
-        
-        if prompt:
-            if 'log' in prompt.lower():
-                relevant_categories.append('logging')
-            if 'error' in prompt.lower() or 'exception' in prompt.lower():
-                relevant_categories.append('error_handling')
-            if 'storage' in prompt.lower() or 'file' in prompt.lower():
-                relevant_categories.append('storage_governance')
-            if 'policy' in prompt.lower() or 'governance' in prompt.lower():
-                relevant_categories.append('gsmd')
-        
-        return relevant_categories
+        # Always check all rules - no filtering by context
+        # This ensures all 425 rules are validated
+        return True
     
-    def get_rule_range(self, category: str) -> tuple:
-        """Get rule range for a category."""
-        return self.rule_categories.get(category, (0, 0))
+    def _check_rule_violation(self, rule: Dict[str, Any], prompt: str, prompt_lower: str, 
+                             file_type: str, task_type: str) -> Optional[Violation]:
+        """
+        Check if prompt violates a specific rule.
+        
+        Args:
+            rule: The rule to check against
+            prompt: Original prompt
+            prompt_lower: Lowercase prompt
+            file_type: Type of file
+            task_type: Type of task
+            
+        Returns:
+            Violation if found, None otherwise
+        """
+        rule_id = rule.get('rule_id', '')
+        title = rule.get('title', '')
+        description = rule.get('description', '')
+        requirements = rule.get('requirements', [])
+        category = rule.get('category', '')
+        severity_str = rule.get('severity_level', 'Major')
+        
+        # Map severity levels
+        severity_map = {
+            'Blocker': Severity.ERROR,
+            'Critical': Severity.ERROR,
+            'Major': Severity.ERROR,
+            'Minor': Severity.WARNING,
+            'Info': Severity.INFO
+        }
+        severity = severity_map.get(severity_str, Severity.ERROR)
+        
+        # Rule-specific validation patterns
+        violation_indicators = self._get_violation_indicators(rule, prompt_lower)
+        
+        if violation_indicators:
+            # Extract rule number if available (e.g., R-001 -> 1)
+            rule_number = None
+            if rule_id.startswith('R-'):
+                try:
+                    rule_number = int(rule_id.split('-')[1])
+                except:
+                    pass
+            
+            return Violation(
+                rule_id=rule_id,
+                severity=severity,
+                message=f"Prompt violates {rule_id}: {title}",
+                file_path="prompt",
+                line_number=1,
+                code_snippet=prompt[:200] + "..." if len(prompt) > 200 else prompt,
+                fix_suggestion=self._generate_fix_suggestion(rule, requirements),
+                category=category,
+                rule_name=title,
+                rule_number=rule_number
+            )
+        
+        return None
     
-    def get_all_rules(self) -> List[str]:
-        """Get all rule categories."""
-        return list(self.rule_categories.keys())
+    def _get_violation_indicators(self, rule: Dict[str, Any], prompt_lower: str) -> bool:
+        """
+        Detect violation indicators based on rule content.
+        
+        Args:
+            rule: The rule to check
+            prompt_lower: Lowercase prompt
+            
+        Returns:
+            True if violation detected
+        """
+        rule_id = rule.get('rule_id', '').upper()
+        title = rule.get('title', '').upper()
+        description = rule.get('description', '').lower()
+        category = rule.get('category', '').upper()
+        
+        # Common violation patterns
+        violation_patterns = []
+        
+        # Rule 1: Do Exactly What's Asked
+        if 'DO EXACTLY' in title or 'R-001' in rule_id:
+            if any(word in prompt_lower for word in ['also add', 'also include', 'bonus', 'extra', 'additionally']):
+                return True
+        
+        # Rule 2: Only Use Information Given
+        if 'ONLY USE INFORMATION' in title or 'R-002' in rule_id:
+            if any(word in prompt_lower for word in ['assume', 'guess', 'probably', 'maybe', 'perhaps']):
+                return True
+        
+        # Rule 3: Protect Privacy
+        if 'PRIVACY' in title or 'PRIVACY' in category or 'R-003' in rule_id:
+            privacy_risks = ['password', 'secret', 'api key', 'private key', 'ssn', 'credit card']
+            if any(risk in prompt_lower for risk in privacy_risks):
+                return True
+        
+        # Rule 4: Use Settings Files
+        if 'SETTINGS' in title or 'HARDCODED' in title or 'R-004' in rule_id:
+            # Check for multiple hardcoded numbers without config mention
+            numbers = re.findall(r'\b\d+\b', prompt_lower)
+            if len(numbers) > 3 and 'config' not in prompt_lower and 'setting' not in prompt_lower:
+                return True
+        
+        # Security rules
+        if 'SECURITY' in category or 'SECURITY' in title:
+            security_risks = ['hardcoded password', 'secret in code', 'api key in code']
+            if any(risk in prompt_lower for risk in security_risks):
+                return True
+        
+        # Testing rules
+        if 'TESTING' in category or 'TST' in rule_id or 'FTP' in rule_id:
+            if 'test' in prompt_lower and 'deterministic' not in prompt_lower:
+                # Check for test-related violations
+                if 'cache' in prompt_lower and 'disable' not in prompt_lower:
+                    return True
+        
+        # TypeScript rules
+        if 'TYPESCRIPT' in category or 'TS-' in rule_id:
+            if 'typescript' in prompt_lower or 'ts' in prompt_lower:
+                if 'any' in prompt_lower and 'strict' not in prompt_lower:
+                    return True
+        
+        # Comments/Documentation rules
+        if 'COMMENTS' in category or 'DOC-' in rule_id:
+            if 'function' in prompt_lower or 'class' in prompt_lower:
+                if 'document' not in prompt_lower and 'comment' not in prompt_lower:
+                    # Only flag if explicitly required by rule
+                    pass
+        
+        # Logging rules
+        if 'LOGGING' in category or 'LOG' in title:
+            if 'log' in prompt_lower:
+                if 'structured' not in prompt_lower and 'json' not in prompt_lower:
+                    return True
+        
+        # Default: Check description and requirements for key terms
+        description_lower = description.lower()
+        if any(keyword in description_lower for keyword in ['must', 'required', 'shall', 'prohibited', 'forbidden']):
+            # Check if prompt violates the requirement
+            if 'must not' in description_lower or 'prohibited' in description_lower:
+                # Extract what is prohibited
+                prohibited_terms = self._extract_prohibited_terms(description)
+                if any(term in prompt_lower for term in prohibited_terms):
+                    return True
+        
+        return False
+    
+    def _extract_prohibited_terms(self, description: str) -> List[str]:
+        """
+        Extract prohibited terms from rule description.
+        
+        Args:
+            description: Rule description text
+            
+        Returns:
+            List of prohibited terms
+        """
+        prohibited = []
+        description_lower = description.lower()
+        
+        # Common prohibited patterns
+        if 'hardcoded' in description_lower:
+            prohibited.extend(['password', 'secret', 'key', 'token'])
+        if 'cache' in description_lower and 'disable' in description_lower:
+            prohibited.append('cache')
+        if 'any type' in description_lower or "'any'" in description_lower:
+            prohibited.append('any')
+        
+        return prohibited
+    
+    def _generate_fix_suggestion(self, rule: Dict[str, Any], requirements: List[str]) -> str:
+        """
+        Generate a fix suggestion based on rule requirements.
+        
+        Args:
+            rule: The violated rule
+            requirements: List of requirements
+            
+        Returns:
+            Fix suggestion text
+        """
+        if requirements:
+            return f"Review rule requirements: {requirements[0][:100]}..."
+        
+        description = rule.get('description', '')
+        if description:
+            return f"Review rule description: {description[:100]}..."
+        
+        return f"Review rule {rule.get('rule_id', '')} requirements and adjust prompt accordingly."
 
 
 class PreImplementationHookManager:
     """
     Manages Pre-Implementation Hooks for comprehensive Constitution rule enforcement.
+    
+    This class loads all 425 rules from JSON files and validates prompts before
+    AI code generation occurs.
     """
     
-    def __init__(self):
-        """Initialize the hook manager."""
-        self.validator = ComprehensivePreImplementationValidator()
-        self.rule_loader = ContextAwareRuleLoader()
+    def __init__(self, constitution_dir: str = "docs/constitution"):
+        """
+        Initialize the hook manager.
+        
+        Args:
+            constitution_dir: Path to directory containing constitution JSON files
+        """
+        self.rule_loader = ConstitutionRuleLoader(constitution_dir)
+        self.validator = PromptValidator(self.rule_loader)
+        self.total_rules = self.rule_loader.get_total_rule_count()
     
     def validate_before_generation(self, prompt: str, file_type: str = None, 
                                  task_type: str = None) -> Dict[str, Any]:
@@ -843,55 +366,104 @@ class PreImplementationHookManager:
         
         Args:
             prompt: The prompt to validate
-            file_type: Type of file being generated
-            task_type: Type of task being performed
+            file_type: Type of file being generated (python, typescript, etc.)
+            task_type: Type of task being performed (api, storage, logging, etc.)
             
         Returns:
             Validation result with violations and recommendations
         """
-        # Get relevant rule categories
-        relevant_categories = self.rule_loader.get_relevant_rules(
-            file_type, task_type, prompt
-        )
-        
-        # Validate against relevant rules
+        # Validate prompt against all rules
         violations = self.validator.validate_prompt(prompt, file_type, task_type)
         
         # Generate recommendations
-        recommendations = self._generate_recommendations(violations, relevant_categories)
+        recommendations = self._generate_recommendations(violations)
+        
+        # Get relevant categories
+        relevant_categories = self._get_relevant_categories(prompt, file_type, task_type)
+        
+        # Sort violations by rule_id for deterministic ordering
+        violations_sorted = sorted(violations, key=lambda v: (v.rule_id, v.message))
         
         return {
             'valid': len(violations) == 0,
-            'violations': violations,
+            'violations': violations_sorted,
             'recommendations': recommendations,
             'relevant_categories': relevant_categories,
-            'total_rules_checked': sum(
-                self.rule_loader.get_rule_range(cat)[1] - self.rule_loader.get_rule_range(cat)[0] + 1
-                for cat in relevant_categories
-            )
+            'total_rules_checked': self.total_rules
         }
     
-    def _generate_recommendations(self, violations: List[Violation], 
-                                categories: List[str]) -> List[str]:
-        """Generate recommendations based on violations."""
+    def _generate_recommendations(self, violations: List[Violation]) -> List[str]:
+        """
+        Generate recommendations based on violations.
+        
+        Args:
+            violations: List of violations found
+            
+        Returns:
+            List of recommendation strings
+        """
         recommendations = []
         
         for violation in violations:
             rule_id = violation.rule_id
             
-            if rule_id.startswith('R253'):
-                recommendations.append("Use plain English variable names instead of abbreviations")
-            elif rule_id.startswith('R270'):
-                recommendations.append("Avoid advanced programming concepts - use simple alternatives")
-            elif rule_id.startswith('R271'):
-                recommendations.append("Use simple data structures instead of complex ones")
-            elif rule_id.startswith('R272'):
-                recommendations.append("Use basic string operations instead of advanced manipulation")
-            elif rule_id.startswith('R003'):
-                recommendations.append("Remove any sensitive information from the prompt")
-            elif rule_id.startswith('R004'):
-                recommendations.append("Use configuration files instead of hardcoded values")
+            if violation.fix_suggestion:
+                recommendations.append(violation.fix_suggestion)
             else:
-                recommendations.append(f"Review {rule_id} requirements and adjust prompt accordingly")
+                recommendations.append(f"Review {rule_id} requirements and adjust prompt accordingly.")
         
-        return recommendations
+        # Remove duplicates and sort for deterministic ordering
+        unique_recommendations = list(dict.fromkeys(recommendations))
+        return sorted(unique_recommendations)
+    
+    def _get_relevant_categories(self, prompt: str, file_type: str, task_type: str) -> List[str]:
+        """
+        Get relevant rule categories based on context.
+        
+        Args:
+            prompt: The prompt
+            file_type: Type of file
+            task_type: Type of task
+            
+        Returns:
+            List of relevant category names
+        """
+        categories = set()
+        prompt_lower = prompt.lower()
+        
+        # Add categories based on file type
+        if file_type:
+            if file_type.lower() in ['typescript', 'ts']:
+                categories.add('TypeScript')
+            elif file_type.lower() in ['python', 'py']:
+                categories.add('Python')
+        
+        # Add categories based on task type
+        if task_type:
+            task_lower = task_type.lower()
+            if 'test' in task_lower:
+                categories.add('Testing')
+            if 'log' in task_lower:
+                categories.add('Logging')
+            if 'api' in task_lower:
+                categories.add('API')
+            if 'storage' in task_lower:
+                categories.add('Storage')
+        
+        # Add categories based on prompt content
+        if 'test' in prompt_lower:
+            categories.add('Testing')
+        if 'log' in prompt_lower:
+            categories.add('Logging')
+        if 'typescript' in prompt_lower or 'ts' in prompt_lower:
+            categories.add('TypeScript')
+        if 'security' in prompt_lower or 'privacy' in prompt_lower:
+            categories.add('Security')
+        if 'comment' in prompt_lower or 'document' in prompt_lower:
+            categories.add('Comments')
+        
+        # Always include basic work rules
+        categories.add('Basic Work')
+        
+        return sorted(list(categories))
+

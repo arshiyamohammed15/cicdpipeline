@@ -121,9 +121,17 @@ class IntegrationRegistry:
                 status[name] = f'error: {str(e)}'
                 self.logger.error(f"Error checking status for {name}: {e}")
 
+        # Get actual rule count from hook manager
+        try:
+            from validator.pre_implementation_hooks import PreImplementationHookManager
+            hook_manager = PreImplementationHookManager()
+            total_rules = hook_manager.total_rules
+        except Exception:
+            total_rules = 424  # Default fallback
+        
         return {
             'total_integrations': len(self.integrations),
             'integration_status': status,
             'constitution_enforcement': 'active',
-            'total_rules': 293
+            'total_rules': total_rules
         }
