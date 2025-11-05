@@ -1,7 +1,7 @@
 # ZeroUI — Folder Business Rules (Authoritative, Windows‑first)
 
-**Version:** 1.1 • **Date:** 2025-10-18 (UTC)  
-**Scope:** Authoritative placement rules for the **4 planes** (Laptop, Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v1.1 aligns the spec with the Windows‑first scaffold and closes gaps (per‑consumer watermarks, dt= partitions for Observability/Adapters/Reporting, laptop month partition, legacy alias gating).
+**Version:** 2.0 • **Date:** 2025-11-05 (UTC)  
+**Scope:** Authoritative placement rules for the **4 planes** (IDE Plane, Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v2.0 simplifies the structure with lazy creation (parent folders only), consolidation (unified telemetry pattern), and flattening (reduced nesting depth from 5 to 3 levels).
 
 > **Principles**: JSONL receipts are the **legal truth**; policy snapshots are **signed**; privacy by default (**no code/PII** in stores); **no secrets/private keys** on disk; cloud buckets are represented locally under `ZU_ROOT` for development.
 
@@ -28,17 +28,48 @@
 ---
 
 ## 2) Windows‑first local root and planes mapping
-Set a single env var:
-- **Windows PowerShell**: `$env:ZU_ROOT = "D:\\ZeroUI"`  
+
+### Environment-Scoped ZU_ROOT Pattern
+
+ZU_ROOT should be environment-scoped to support multiple environments (development, integration, staging, production):
+
+**Configuration-Driven Approach:**
+- All environment setups are defined in `storage-scripts/config/environments.json`
+- Each environment can have multiple deployment types (local, onprem, cloud)
+- ZU_ROOT paths are validated against configuration rules
+
+**Environment Examples:**
+
+*development (local laptop):*
+- **Windows PowerShell**: `$env:ZU_ROOT = "D:\\ZeroUI\\development"`
+
+*integration/staging/production (on-prem):*
+- **Windows**: `$env:ZU_ROOT = "\\\\onprem-server\\ZeroUI\\{environment}"`
+- **Linux**: `$env:ZU_ROOT = "/mnt/storage/zero-ui/{environment}"`
+
+*integration/staging/production (cloud):*
+- **AWS S3**: `$env:ZU_ROOT = "s3://zero-ui-{environment}/{environment}"`
+- **Azure**: `$env:ZU_ROOT = "az://zero-ui-{environment}/{environment}"`
+- **GCS**: `$env:ZU_ROOT = "gs://zero-ui-{environment}/{environment}"`
+
+**Configuration Management:**
+Use `storage-scripts/tools/config_manager.ps1` to:
+- List available environments: `-Action list`
+- Validate configuration: `-Action validate -Env <env> -DeploymentType <type>`
+- Generate ZU_ROOT: `-Action generate -Env <env> -DeploymentType <type> -ZuRoot <base>`
+- Show environment config: `-Action show -Env <env>`
+
 *(macOS/Linux may mirror with the same structure, but Windows is the reference environment.)*
 
+### Plane Structure
+
 All four planes live under `ZU_ROOT`:
-- **IDE (laptop plane)** → `{ZU_ROOT}/ide/...`
+- **IDE Plane** → `{ZU_ROOT}/ide/...`
 - **Tenant** → `{ZU_ROOT}/tenant/...`
 - **Product** → `{ZU_ROOT}/product/...`
 - **Shared** → `{ZU_ROOT}/shared/...`
 
-> Note: Cloud bucket mappings may vary per environment; local scaffold is simplified to `{ZU_ROOT}/{plane}/…`.
+> Note: Cloud bucket mappings may vary per environment; local scaffold is simplified to `{ZU_ROOT}/{plane}/…`. See `storage-scripts/config/environments.json` for environment-specific configurations.
 
 ---
 
@@ -46,67 +77,66 @@ All four planes live under `ZU_ROOT`:
 **Q1. Secret or private key?** → **STOP** (secrets manager/HSM/KMS).  
 **Q2. Executable code/tests/fixtures?** → Keep in **source repo**.  
 **Q3. Signed fact by Agent/user feedback?** → **Receipt**:  
-- IDE: `ide/agent/receipts/{repo-id}/{yyyy}/{mm}/`  
-- Tenant/Product mirrors: `evidence/(decision|feedback)/{repo-id}/dt={date}/[shard=…/]`
+- IDE: `ide/receipts/{repo-id}/{yyyy}/{mm}/`  
+- Tenant/Product mirrors: `evidence/data/{repo-id}/dt={date}/[shard=…/]`
 **Q4. Derived from receipts (tables/aggregates/BI)?** → **Analytics**:  
 - Tenant: `reporting/marts/<table>/dt={date}/`  
 - Product: `reporting/tenants/{tenant-id}/{env}/aggregates/dt={date}/`  
 - Shared BI: `bi-lake/curated/zero-ui/{tenant-id}/{env}/dt={date}/`
-**Q5. Observability telemetry (OTel)?** → **Observability**:  
-- Tenant: `observability/(metrics|traces|logs)/dt={date}/`  
-- Product: `service-metrics/(metrics|traces|logs)/dt={date}/`  
-- Shared: `observability/otel/(metrics|traces|logs)/dt={date}/`
+**Q5. Observability telemetry (OTel)?** → **Telemetry**:  
+- All planes: `{plane}/telemetry/(metrics|traces|logs)/dt={date}/`
 **Q6. Policy snapshot/template/public key?** → **Policy/Trust**.  
 **Q7. Adapter/webhook event or gateway diagnostic?** → **Adapters** (`adapters/webhooks/{source}/dt=…/`, `adapters/gateway-logs/dt=…/`).  
 **Q8. LLM prompt/tool/adapter/guardrail/cache?** → **LLM** trees (no secrets/weights/PII).  
 **Q9. Governance/consent/retention/legal‑hold/catalog/lineage?** → **Governance/Audit/Catalog**.  
-**Q10. Still ambiguous?** → Use **fallback** and open an **RFC** (§8).
+**Q10. Still ambiguous?** → Use **fallback** and open an **RFC** (§5).
 
 ---
 
 ## 4) Per‑plane, per‑folder rules (aligned with scaffold)
 
 ### 4.1 IDE (`{ZU_ROOT}/ide/…`)
-- `agent/receipts/{repo-id}/{yyyy}/{mm}/` — **Append‑only signed JSONL**. No code/PII.  
-  Aux: `index/`, `quarantine/`, `checkpoints/` under the same repo path.  
-- `agent/policy/cache/` — Signed snapshots + `current` pointer.  
-- `agent/trust/pubkeys/` — **Public** keys only.  
-- `agent/config/consent/` — Non‑secret consent snapshots.  
-- `agent/queue/evidence/(pending|sent|failed)/` — Envelope refs only.  
-- `agent/logs/metrics/`, `agent/db/` (SQLite mirror, raw JSON).  
-- `agent/llm/(prompts|tools|adapters|cache/token|cache/embedding|redaction|runs)/` — Sanitized; **no secrets/weights/PII**.  
-- `agent/actor/fingerprint/` — Non‑secret device fingerprint.  
-- `agent/tmp/` — Temporary; also used by RFC stamping (`UNCLASSIFIED__<slug>`).  
-**Removed:** prior `extension/*` paths (presentation caches) are **not scaffolded** to avoid drift; teams may create them locally if needed.
+- `receipts/{repo-id}/{yyyy}/{mm}/` — **Append‑only signed JSONL**. No code/PII.  
+  Aux: `index/`, `quarantine/`, `checkpoints/` created on-demand under the same repo path.  
+- `policy/` — Signed snapshots + `current` pointer, cache, and `trust/pubkeys/` (public keys only).  
+- `config/` — Non‑secret consent snapshots and configuration.  
+- `queue/(pending|sent|failed)/` — Envelope refs only (created on-demand).  
+- `logs/`, `db/` (SQLite mirror, raw JSON).  
+- `llm/(prompts|tools|adapters|cache/token|cache/embedding|redaction|runs)/` — Sanitized; **no secrets/weights/PII** (created on-demand).  
+- `fingerprint/` — Non‑secret device fingerprint.  
+- `tmp/` — Temporary; also used by RFC stamping (`UNCLASSIFIED__<slug>`).  
+**Lazy creation:** Scaffold creates only parent folders; subfolders (like `receipts/{repo}/index/`, `llm/prompts/`) are created on-demand when needed.
 
 ### 4.2 Tenant (`{ZU_ROOT}/tenant/…`)
-- `evidence/(receipts|manifests|checksums|dlq|watermarks)/`  
+- `evidence/data/` — Merged receipts, manifests, checksums (created on-demand with dt= partitions).  
+- `evidence/dlq/` — Dead letter queue.  
+- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).  
 - `ingest/(staging|dlq)/` and `ingest/staging/unclassified/` — RFC fallback.  
-- `observability/(metrics|traces|logs)/dt=…/`.  
-- `adapters/(webhooks|gateway-logs)/dt=…/`.  
-- `reporting/marts/dt=…/`.  
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
+- `adapters/(webhooks|gateway-logs)/dt=…/` — Created on-demand.  
+- `reporting/marts/dt=…/` — Created on-demand.  
 - `policy/(snapshots|trust/pubkeys)/` — Signed; public keys only.  
 - `meta/schema/` — **Deprecated** legacy alias; created only with compatibility enabled.
 
 ### 4.3 Product (`{ZU_ROOT}/product/…`)
-- `policy-registry/(releases|templates|revocations)/`.  
-- `evidence/watermarks/`.  
-- `reporting/tenants/aggregates/dt=…/`.  
-- `adapters/gateway-logs/dt=…/`.  
-- `service-metrics/(metrics|traces|logs)/dt=…/`.  
-- `trust/pubkeys/`.
+- `policy/registry/(releases|templates|revocations)/` — Unified policy structure.  
+- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).  
+- `reporting/tenants/aggregates/dt=…/` — Created on-demand.  
+- `adapters/gateway-logs/dt=…/` — Created on-demand.  
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
+- `policy/trust/pubkeys/` — Public keys (merged with policy structure).
 
 ### 4.4 Shared (`{ZU_ROOT}/shared/…`)
-- `pki/(trust-anchors|intermediate|crl|key-rotation)/` (public only).  
-- `observability/otel/(metrics|traces|logs)/dt=…/`.  
-- `siem/(detections/zero-ui|events/dt=…/)`.  
+- `pki/` — All PKI files (trust-anchors, intermediate, CRL, key-rotation) in one folder (public only).  
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
+- `siem/(detections|events/dt=…/)` — Flattened SIEM structure.  
 - `bi-lake/curated/zero-ui/`.  
-- `governance/(controls/zero-ui|attestations)/`, `llm/(guardrails|routing|tools)/`.
+- `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools)/` — Flattened governance structure.
 
 ---
 
 ## 5) Fallbacks & RFC
-- **IDE**: `{ZU_ROOT}/ide/agent/tmp/UNCLASSIFIED__{slug}`  
+- **IDE**: `{ZU_ROOT}/ide/tmp/UNCLASSIFIED__{slug}`  
 - **Tenant/Product**: `.../ingest/staging/unclassified/{slug}`  
 Resolve within **24h** with an RFC; move to canonical; add manifests/checksums for evidence.
 
@@ -120,12 +150,14 @@ Unchanged from v1.0; refer to sections 9–12 of v1.0 with the following additio
 ---
 
 ## 7) Path templates (cheat sheet, updated)
-- **IDE receipts**: `ide/agent/receipts/{repo-id}/{yyyy}/{mm}/`  
-- **Tenant Observability**: `observability/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`  
-- **Tenant Adapters**: `adapters/(webhooks/{source}|gateway-logs)/dt={yyyy}-{mm}-{dd}/`  
-- **Tenant Reporting**: `reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`  
-- **Product Service Metrics**: `service-metrics/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`  
-- **Watermarks**: `*/watermarks/{consumer-id}/`  
+- **IDE receipts**: `ide/receipts/{repo-id}/{yyyy}/{mm}/`  
+- **Telemetry (all planes)**: `{plane}/telemetry/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`  
+- **Tenant Evidence**: `tenant/evidence/data/{repo-id}/dt={yyyy}-{mm}-{dd}/`  
+- **Tenant Adapters**: `tenant/adapters/(webhooks/{source}|gateway-logs)/dt={yyyy}-{mm}-{dd}/`  
+- **Tenant Reporting**: `tenant/reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`  
+- **Product Policy**: `product/policy/registry/(releases|templates|revocations)/`  
+- **Product Reporting**: `product/reporting/tenants/{tenant-id}/{env}/aggregates/dt={yyyy}-{mm}-{dd}/`  
+- **Watermarks**: `*/evidence/watermarks/{consumer-id}/`  
 - **Deprecated alias**: `tenant/.../meta/schema/` (opt‑in only)
 
-**End of file (v1.1).**
+**End of file (v2.0).**

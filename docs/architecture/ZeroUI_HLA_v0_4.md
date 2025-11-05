@@ -23,6 +23,7 @@ ZeroUI 2.0 implements a **three-tier hybrid architecture** with strict separatio
 #### **TIER 3: BUSINESS LOGIC LAYER**
 - **Cloud Services**: All business logic implementation
 - **Architecture**: Service-oriented with clear boundaries
+- **Implementation**: Python/FastAPI microservices
 - **Pattern**: Client/Product/Shared service separation
 - **Status**: ✅ Complete structure, no implementation
 
@@ -75,8 +76,13 @@ src/edge-agent/
 ### 📁 Cloud Services (Business Logic Layer)
 ```
 src/cloud-services/
-├── client-services/                # 13 business logic modules
+├── client-services/                # 13 business logic modules (FastAPI)
 │   ├── mmm-engine/
+│   │   ├── __init__.py
+│   │   ├── main.py                 # FastAPI app
+│   │   ├── routes.py               # API routes
+│   │   ├── services.py             # Business logic
+│   │   └── models.py               # Pydantic models
 │   ├── cross-cutting-concerns/
 │   ├── release-failures-rollbacks/
 │   ├── legacy-systems-safety/
@@ -89,7 +95,7 @@ src/cloud-services/
 │   ├── monitoring-observability-gaps/
 │   ├── client-admin-dashboard/
 │   └── qa-testing-deficiencies/
-├── product-services/               # 7 business logic modules
+├── product-services/               # 7 business logic modules (FastAPI)
 │   ├── signal-ingestion-normalization/
 │   ├── detection-engine-core/
 │   ├── product-success-monitoring/
@@ -97,11 +103,11 @@ src/cloud-services/
 │   ├── gold-standards/
 │   ├── knowledge-integrity-discovery/
 │   └── reporting/
-├── shared-services/                # 1 business logic module
+├── shared-services/                # 1 business logic module (FastAPI)
 │   └── qa-testing-deficiencies/
-├── adapter-gateway/                # Infrastructure service
-├── evidence-service/               # Infrastructure service
-└── policy-service/                 # Infrastructure service
+├── adapter-gateway/                # Infrastructure service (FastAPI)
+├── evidence-service/               # Infrastructure service (FastAPI)
+└── policy-service/                 # Infrastructure service (FastAPI)
 ```
 
 ## Architectural Principles
@@ -122,9 +128,11 @@ src/cloud-services/
 
 #### **Cloud Services**
 - **Business Logic**: All business logic resides here
+- **Implementation**: Python/FastAPI microservices
 - **Service Boundaries**: Clear Client/Product/Shared separation
-- **Modular**: Independent service modules
+- **Modular**: Independent service modules with FastAPI routers
 - **Infrastructure**: Gateway, evidence, and policy services
+- **API Design**: RESTful APIs with Pydantic models for validation
 
 ## Implementation Status
 

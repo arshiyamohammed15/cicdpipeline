@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "defaults": {
+    "tenant": "default-tenant",
+    "repo": "zero-ui",
+    "shards": 0
+  },
+  "environments": {
+    "development": {
+      "description": "Developer laptop local storage",
+      "deployment_types": {
+        "local": {
+          "backend": "filesystem",
+          "zu_root_pattern": "{base_path}/development",
+          "base_path_examples": {
+            "windows": "D:\\ZeroUI",
+            "macos": "/Users/{user}/ZeroUI",
+            "linux": "/home/{user}/ZeroUI"
+          },
+          "validation": {
+            "require_env_in_path": false,
+            "path_pattern": "^[A-Z]:\\\\|^/",
+            "allowed_hosts": ["localhost", "127.0.0.1"]
+          }
+        }
+      }
+    },
+    "integration": {
+      "description": "Integration testing environment",
+      "deployment_types": {
+        "onprem": {
+          "backend": "filesystem",
+          "zu_root_pattern": "{base_path}/integration",
+          "base_path_examples": {
+            "windows": "\\\\onprem-server\\ZeroUI\\integration",
+            "linux": "/mnt/storage/zero-ui/integration"
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^\\\\|^/mnt/|^/var/",
+            "allowed_hosts": ["onprem-server", "integration-server"]
+          }
+        },
+        "cloud": {
+          "backend": "s3",
+          "zu_root_pattern": "s3://{bucket}/integration",
+          "bucket_config": {
+            "bucket_name": "zero-ui-integration",
+            "region": "us-east-1",
+            "encryption": "kms",
+            "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/abc123"
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^s3://",
+            "allowed_buckets": ["zero-ui-integration"]
+          }
+        }
+      }
+    },
+    "staging": {
+      "description": "Pre-production staging environment",
+      "deployment_types": {
+        "onprem": {
+          "backend": "filesystem",
+          "zu_root_pattern": "{base_path}/staging",
+          "base_path_examples": {
+            "windows": "\\\\onprem-server\\ZeroUI\\staging",
+            "linux": "/mnt/storage/zero-ui/staging"
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^\\\\|^/mnt/|^/var/",
+            "allowed_hosts": ["onprem-server", "staging-server"]
+          }
+        },
+        "cloud": {
+          "backend": "s3",
+          "zu_root_pattern": "s3://{bucket}/staging",
+          "bucket_config": {
+            "bucket_name": "zero-ui-staging",
+            "region": "us-east-1",
+            "encryption": "kms",
+            "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/def456"
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^s3://",
+            "allowed_buckets": ["zero-ui-staging"]
+          }
+        }
+      }
+    },
+    "production": {
+      "description": "Production environment",
+      "deployment_types": {
+        "onprem": {
+          "backend": "filesystem",
+          "zu_root_pattern": "{base_path}/production",
+          "base_path_examples": {
+            "windows": "\\\\onprem-server\\ZeroUI\\production",
+            "linux": "/mnt/storage/zero-ui/production"
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^\\\\|^/mnt/|^/var/",
+            "allowed_hosts": ["onprem-server", "prod-server"],
+            "require_encryption": true
+          }
+        },
+        "cloud": {
+          "backend": "s3",
+          "zu_root_pattern": "s3://{bucket}/production",
+          "bucket_config": {
+            "bucket_name": "zero-ui-production",
+            "region": "us-east-1",
+            "encryption": "kms",
+            "kms_key_id": "arn:aws:kms:us-east-1:123456789012:key/ghi789",
+            "versioning": true,
+            "lifecycle_policy": {
+              "transition_to_ia": 30,
+              "transition_to_glacier": 90,
+              "expiration_days": 2555
+            }
+          },
+          "validation": {
+            "require_env_in_path": true,
+            "path_pattern": "^s3://",
+            "allowed_buckets": ["zero-ui-production"],
+            "require_encryption": true,
+            "require_versioning": true
+          }
+        }
+      }
+    }
+  },
+  "storage_backends": {
+    "filesystem": {
+      "type": "local",
+      "capabilities": ["mkdir", "write", "read", "list"],
+      "path_separator": "platform_default"
+    },
+    "s3": {
+      "type": "cloud",
+      "provider": "aws",
+      "capabilities": ["create_prefix", "upload", "download", "list"],
+      "path_separator": "/",
+      "sdk_required": "boto3"
+    },
+    "azure": {
+      "type": "cloud",
+      "provider": "azure",
+      "capabilities": ["create_prefix", "upload", "download", "list"],
+      "path_separator": "/",
+      "sdk_required": "azure-storage-blob"
+    },
+    "gcs": {
+      "type": "cloud",
+      "provider": "gcp",
+      "capabilities": ["create_prefix", "upload", "download", "list"],
+      "path_separator": "/",
+      "sdk_required": "google-cloud-storage"
+    }
+  }
+}
+

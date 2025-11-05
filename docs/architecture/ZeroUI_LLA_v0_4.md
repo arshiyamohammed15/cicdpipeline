@@ -21,7 +21,7 @@ ZeroUI 2.0 implements a **comprehensive low-level architecture** with detailed i
 - **Integration**: Module orchestration and task delegation
 
 #### **Cloud Services Implementation**
-- **Language**: TypeScript/Node.js
+- **Language**: Python/FastAPI
 - **Pattern**: Service-oriented architecture
 - **Architecture**: Microservices with clear boundaries
 - **Integration**: RESTful APIs and service communication
@@ -388,99 +388,170 @@ export class SecurityEnforcer implements DelegationInterface {
 src/cloud-services/
 ├── client-services/                # 13 business logic modules
 │   ├── mmm-engine/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── models/
-│   │   └── services/
+│   │   ├── __init__.py
+│   │   ├── main.py                 # FastAPI app
+│   │   ├── routes.py               # API routes
+│   │   ├── services.py             # Business logic
+│   │   ├── models.py               # Pydantic models
+│   │   └── middleware.py           # Custom middleware
 │   ├── cross-cutting-concerns/
-│   │   ├── commands/
-│   │   ├── index.ts
-│   │   ├── services/
-│   │   └── types.ts
+│   │   ├── __init__.py
+│   │   ├── main.py                 # FastAPI app
+│   │   ├── routes.py               # API routes
+│   │   ├── services.py             # Business logic
+│   │   └── models.py               # Pydantic models
 │   └── [11 other modules...]
 ├── product-services/               # 7 business logic modules
 │   ├── detection-engine-core/
-│   │   ├── commands/
-│   │   ├── index.ts
-│   │   ├── services/
-│   │   └── types.ts
+│   │   ├── __init__.py
+│   │   ├── main.py                 # FastAPI app
+│   │   ├── routes.py               # API routes
+│   │   ├── services.py             # Business logic
+│   │   └── models.py               # Pydantic models
 │   └── [6 other modules...]
 ├── shared-services/                # 1 business logic module
 │   └── qa-testing-deficiencies/
+│       ├── __init__.py
+│       ├── main.py
+│       ├── routes.py
+│       ├── services.py
+│       └── models.py
 ├── adapter-gateway/                # Infrastructure service
+│   ├── __init__.py
+│   ├── main.py
+│   └── routes.py
 ├── evidence-service/               # Infrastructure service
+│   ├── __init__.py
+│   ├── main.py
+│   └── routes.py
 └── policy-service/                 # Infrastructure service
+    ├── __init__.py
+    ├── main.py
+    └── routes.py
 ```
 
 ### 🔧 Service Implementation Patterns
 
-#### **Controller Pattern**
-```typescript
-export class MMMEngineController {
-    constructor(private mmmEngineService: MMMEngineService) {}
+#### **FastAPI App Pattern (main.py)**
+```python
+from datetime import datetime
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from .routes import router
+from .models import HealthResponse
 
-    @Post('/process')
-    async processData(@Body() data: ProcessDataRequest): Promise<ProcessDataResponse> {
-        try {
-            const result = await this.mmmEngineService.processData(data);
-            return {
-                success: true,
-                data: result,
-                timestamp: new Date().toISOString()
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: error.message,
-                timestamp: new Date().toISOString()
-            };
-        }
-    }
-}
+app = FastAPI(
+    title="ZeroUI MMM Engine Service",
+    version="2.0.0",
+    description="MMM Engine business logic service"
+)
+
+# CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Include routers
+app.include_router(router, prefix="/api/v1", tags=["mmm-engine"])
+
+@app.get("/health", response_model=HealthResponse)
+async def health_check():
+    return HealthResponse(status="healthy", timestamp=datetime.utcnow())
 ```
 
-#### **Service Pattern**
-```typescript
-export class MMMEngineService {
-    constructor(
-        private dataRepository: DataRepository,
-        private validationService: ValidationService
-    ) {}
+#### **Router Pattern (routes.py)**
+```python
+from datetime import datetime
+from fastapi import APIRouter, HTTPException, Depends
+from typing import List
+from .models import ProcessDataRequest, ProcessDataResponse
+from .services import MMMEngineService
 
-    async processData(data: ProcessDataRequest): Promise<ProcessDataResponse> {
-        // Validate input data
-        await this.validationService.validate(data);
-        
-        // Process data
-        const result = await this.dataRepository.process(data);
-        
-        // Return processed result
-        return result;
-    }
-}
+router = APIRouter()
+
+def get_service() -> MMMEngineService:
+    return MMMEngineService()
+
+@router.post("/process", response_model=ProcessDataResponse)
+async def process_data(
+    request: ProcessDataRequest,
+    service: MMMEngineService = Depends(get_service)
+) -> ProcessDataResponse:
+    try:
+        result = await service.process_data(request)
+        return ProcessDataResponse(
+            success=True,
+            data=result,
+            timestamp=datetime.utcnow().isoformat()
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 ```
 
-#### **Model Pattern**
-```typescript
-export interface MMMEngineData {
-    id: string;
-    metrics: {
-        collected: number;
-        processed: number;
-        errors: number;
-    };
-    status: 'active' | 'inactive' | 'error';
-    timestamp: Date;
-}
+#### **Service Pattern (services.py)**
+```python
+from typing import Optional
+from .models import ProcessDataRequest, ProcessDataResponse
+from .repositories import DataRepository
+from .validators import ValidationService
 
-export class MMMEngineModel {
-    constructor(
-        public id: string,
-        public metrics: Metrics,
-        public status: string,
-        public timestamp: Date
-    ) {}
-}
+class MMMEngineService:
+    def __init__(
+        self,
+        data_repository: Optional[DataRepository] = None,
+        validation_service: Optional[ValidationService] = None
+    ):
+        self.data_repository = data_repository or DataRepository()
+        self.validation_service = validation_service or ValidationService()
+
+    async def process_data(self, request: ProcessDataRequest) -> dict:
+        # Validate input data
+        await self.validation_service.validate(request)
+        
+        # Process data
+        result = await self.data_repository.process(request)
+        
+        # Return processed result
+        return result
+```
+
+#### **Pydantic Model Pattern (models.py)**
+```python
+from pydantic import BaseModel, Field
+from datetime import datetime
+from typing import Optional, Dict, Any
+
+class MMMEngineMetrics(BaseModel):
+    collected: int = Field(ge=0, description="Number of metrics collected")
+    processed: int = Field(ge=0, description="Number of metrics processed")
+    errors: int = Field(ge=0, description="Number of errors encountered")
+
+class MMMEngineData(BaseModel):
+    id: str = Field(..., description="Unique identifier")
+    metrics: MMMEngineMetrics = Field(..., description="Engine metrics")
+    status: str = Field(..., pattern="^(active|inactive|error)$", description="Service status")
+    timestamp: datetime = Field(default_factory=datetime.utcnow, description="Timestamp")
+
+class ProcessDataRequest(BaseModel):
+    data: Dict[str, Any] = Field(..., description="Input data to process")
+    options: Optional[Dict[str, Any]] = Field(None, description="Processing options")
+
+class ProcessDataResponse(BaseModel):
+    success: bool = Field(..., description="Operation success status")
+    data: Optional[Dict[str, Any]] = Field(None, description="Processed data")
+    error: Optional[str] = Field(None, description="Error message if failed")
+    timestamp: str = Field(..., description="Response timestamp")
+
+class HealthResponse(BaseModel):
+    status: str = Field(..., description="Service health status")
+    timestamp: datetime = Field(..., description="Health check timestamp")
 ```
 
 ## Data Flow Implementation
@@ -541,7 +612,8 @@ export class SecurityEnforcer {
 ### 🔗 Edge Agent ↔ Cloud Services
 - **Delegation**: Edge Agent delegates tasks to Cloud Services
 - **Validation**: Edge Agent validates results from Cloud Services
-- **Communication**: RESTful APIs and message queues
+- **Communication**: RESTful APIs (FastAPI) and message queues
+- **Protocol**: HTTP/HTTPS with JSON payloads
 
 ### 🔗 Cloud Services ↔ External Systems
 - **APIs**: RESTful APIs for external integration
@@ -561,9 +633,10 @@ export class SecurityEnforcer {
 - **Resource Optimization**: Dynamic resource allocation
 
 ### ⚡ Cloud Services Performance
-- **Microservices**: Independent scaling of services
-- **Database Optimization**: Efficient database queries
-- **API Optimization**: RESTful API performance tuning
+- **Microservices**: Independent scaling of FastAPI services
+- **Async Processing**: FastAPI async/await for concurrent requests
+- **Database Optimization**: Efficient database queries with async ORM
+- **API Optimization**: FastAPI performance tuning and response caching
 
 ## Security Implementation
 
@@ -573,9 +646,10 @@ export class SecurityEnforcer {
 - **Audit Logging**: Comprehensive audit trails
 
 ### 🔒 API Security
-- **Authentication**: OAuth2 and JWT tokens
-- **Authorization**: Role-based authorization
-- **Rate Limiting**: API rate limiting and throttling
+- **Authentication**: OAuth2 and JWT tokens (FastAPI Security)
+- **Authorization**: Role-based authorization (dependency injection)
+- **Rate Limiting**: API rate limiting and throttling (FastAPI middleware)
+- **Input Validation**: Pydantic models for request/response validation
 
 ### 🔒 Local Security
 - **Local Processing**: Sensitive data stays local

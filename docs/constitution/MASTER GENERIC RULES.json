@@ -6588,7 +6588,7 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "Scaffold behavior: directories-only & idempotent**\n\n**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.\n\n**Stop codes**\n- `ERROR:SCAFFOLD_CREATED_FILES`\n- `ERROR:SCAFFOLD_NOT_IDEMPOTENT`\n\n---\n\n## Path‑Lint Allowlist (CI/Pre‑commit)\n\nUse these exact allowlists/regexes to validate paths. Block any non‑matching path with the related stop code.\n\n[code block]\n\n> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/scaffold.md`, `storage-scripts/INTEGRATION.md`.",
+      "description": "Scaffold behavior: directories-only & idempotent**\n\n**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.\n\n**Stop codes**\n- `ERROR:SCAFFOLD_CREATED_FILES`\n- `ERROR:SCAFFOLD_NOT_IDEMPOTENT`\n\n---\n\n## Path‑Lint Allowlist (CI/Pre‑commit)\n\nUse these exact allowlists/regexes to validate paths. Block any non‑matching path with the related stop code.\n\n[code block]\n\n> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/INTEGRATION.md`.",
       "requirements": [
         "Scaffold behavior: directories-only & idempotent**",
         "**Rule.** Scaffold may create **directories only**; it must be idempotent. No placeholder files allowed.",
@@ -6599,7 +6599,7 @@
         "## Path‑Lint Allowlist (CI/Pre‑commit)",
         "Use these exact allowlists/regexes to validate paths. Block any non‑matching path with the related stop code.",
         "[code block]",
-        "> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/scaffold.md`, `storage-scripts/INTEGRATION.md`."
+        "> Source: `storage-scripts/tools/scaffold/zero_ui_scaffold.ps1`, `storage-scripts/folder-business-rules.md`, `storage-scripts/README_scaffold.md`, `storage-scripts/INTEGRATION.md`."
       ],
       "validation": "Compliance verified through automated checks and code review."
     },

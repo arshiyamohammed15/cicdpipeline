@@ -1854,8 +1854,7 @@ ZeroUI2.0/
 ├── storage-scripts/
 │   ├── INTEGRATION.md                     # Integration documentation
 │   ├── folder-business-rules.md           # Authoritative specification v1.1
-│   ├── README_scaffold.md                 # Scaffold documentation
-│   ├── scaffold.md                        # Quick start guide
+│   ├── README_scaffold.md                 # Scaffold documentation (includes quick start)
 │   └── tools/scaffold/
 │       └── zero_ui_scaffold.ps1           # PowerShell scaffold script
 └── ZeroUI2.0_Master_Constitution.md       # Updated with rules 216-228
