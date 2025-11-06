@@ -43,6 +43,7 @@ coverage.xml
 # Logs
 *.log
 logs/
+validation_service.log
 
 # Archives
 *.zip

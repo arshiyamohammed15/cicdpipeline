@@ -1,0 +1,39 @@
+# Exclude transient and log artifacts from distribution
+global-exclude *.log
+global-exclude validation_service.log
+global-exclude logs/
+global-exclude *.tmp
+global-exclude *.temp
+
+# Exclude backup files
+global-exclude *.backup.*
+global-exclude *.bak
+
+# Exclude cache and build artifacts
+global-exclude __pycache__/
+global-exclude *.pyc
+global-exclude *.pyo
+global-exclude .pytest_cache/
+global-exclude .coverage
+global-exclude htmlcov/
+global-exclude *.egg-info/
+
+# Exclude IDE and OS files
+global-exclude .vscode/
+global-exclude .idea/
+global-exclude .DS_Store
+global-exclude Thumbs.db
+global-exclude desktop.ini
+
+# Exclude environment and config files
+global-exclude .env
+global-exclude .env.local
+global-exclude *.local
+
+# Include necessary files
+include LICENSE
+include README.md
+include requirements*.txt
+recursive-include config *.json
+recursive-include docs *.md
+
