@@ -131,7 +131,7 @@ All four planes live under `ZU_ROOT`:
 - `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
 - `siem/(detections|events/dt=…/)` — Flattened SIEM structure.  
 - `bi-lake/curated/zero-ui/`.  
-- `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools)/` — Flattened governance structure.
+- `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools|ollama|tinyllama)/` — Flattened governance structure.
 
 ---
 

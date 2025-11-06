@@ -1,0 +1,14 @@
+{
+  "service_name": "ollama",
+  "base_url": "http://localhost:11434",
+  "timeout": 120,
+  "api_endpoints": {
+    "generate": "/api/generate",
+    "tags": "/api/tags",
+    "models": "/api/models"
+  },
+  "storage_path": "shared/llm/ollama",
+  "version": "1.0.0",
+  "description": "Ollama LLM service configuration for shared services plane"
+}
+

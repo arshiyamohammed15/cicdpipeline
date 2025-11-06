@@ -2,9 +2,9 @@
 """
 CLI tool for interacting with the LLM Service in the shared plane.
 
-What: Command-line interface for the Ollama AI Agent service
-Why: Provides easy access to LLM functionality from the command line
-Reads/Writes: Reads command-line arguments, writes HTTP requests to LLM service
+What: Command-line interface for the Ollama AI Agent service using shared services configuration
+Why: Provides easy access to LLM functionality from the command line, uses shared/llm/ollama and shared/llm/tinyllama configs
+Reads/Writes: Reads command-line arguments, writes HTTP requests to LLM service. Service reads from shared/llm/ollama/config.json and shared/llm/tinyllama/config.json
 Contracts: LLM Service API contract (/api/v1/prompt, /api/v1/health)
 Risks: Network failures, service unavailability, invalid responses
 """
@@ -257,13 +257,15 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
             available_port = find_available_port(host, start_port=port + 1)
             if available_port:
                 print(f"Options:", file=sys.stderr)
-                print(f"  1. Stop the service running on port {port}", file=sys.stderr)
+                print(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port", file=sys.stderr)
                 print(f"  2. Use port {available_port} (available): python {Path(__file__).name} --start-service --port {available_port}", file=sys.stderr)
-                print(f"  3. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
+                print(f"  3. Stop the service running on port {port}", file=sys.stderr)
+                print(f"  4. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
             else:
                 print(f"Options:", file=sys.stderr)
-                print(f"  1. Stop the service running on port {port}", file=sys.stderr)
-                print(f"  2. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
+                print(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port", file=sys.stderr)
+                print(f"  2. Stop the service running on port {port}", file=sys.stderr)
+                print(f"  3. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
             
             return 1
         

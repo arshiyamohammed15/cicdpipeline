@@ -18,7 +18,7 @@ class PromptRequest(BaseModel):
 
     prompt: str = Field(..., description="The prompt to send to the LLM", min_length=1)
     model: Optional[str] = Field(
-        default="tinyllama", description="Model name to use"
+        default="tinyllama", description="Model name to use (defaults to tinyllama from shared/llm/tinyllama/config.json)"
     )
     stream: Optional[bool] = Field(
         default=False, description="Whether to stream the response"

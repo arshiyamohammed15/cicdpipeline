@@ -1,33 +1,81 @@
 """
 Service layer for Ollama AI Agent.
 
-What: Business logic for interacting with Ollama LLM API at http://localhost:11434
-Why: Encapsulates LLM communication logic, provides abstraction for route handlers
-Reads/Writes: Reads environment variables (OLLAMA_BASE_URL, OLLAMA_TIMEOUT), writes HTTP requests to Ollama API
+What: Business logic for interacting with Ollama LLM API using shared services configuration
+Why: Encapsulates LLM communication logic, provides abstraction for route handlers, uses shared services plane configuration
+Reads/Writes: Reads configuration from shared/llm/ollama/config.json and shared/llm/tinyllama/config.json, writes HTTP requests to Ollama API
 Contracts: Ollama API contract (/api/generate, /api/tags), returns PromptResponse model
 Risks: Network failures, timeout errors, invalid API responses, potential exposure of prompts in error messages
 """
 
 import os
+import json
+from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
 import requests
 from .models import PromptRequest, PromptResponse
 
 
+def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
+    """
+    Load configuration from shared services plane.
+
+    Args:
+        config_type: Type of configuration ('ollama' or 'tinyllama')
+
+    Returns:
+        Configuration dictionary, or empty dict if not found
+    """
+    try:
+        # Find project root (go up from src/cloud-services/shared-services/ollama-ai-agent)
+        current_file = Path(__file__)
+        project_root = current_file.parent.parent.parent.parent.parent.parent
+        config_path = project_root / "shared" / "llm" / config_type / "config.json"
+        
+        if config_path.exists():
+            with open(config_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+    except Exception:
+        pass
+    
+    return {}
+
+
 class OllamaAIService:
-    """Service for interacting with Ollama LLM API."""
+    """Service for interacting with Ollama LLM API using shared services configuration."""
 
     def __init__(self, base_url: Optional[str] = None) -> None:
         """
         Initialize the Ollama AI Service.
 
         Args:
-            base_url: Base URL for Ollama API (default: http://localhost:11434)
+            base_url: Base URL for Ollama API (overrides config if provided)
         """
-        self.base_url = base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        self.generate_endpoint = f"{self.base_url}/api/generate"
-        self.timeout = int(os.getenv("OLLAMA_TIMEOUT", "120"))
+        # Load configuration from shared services plane
+        ollama_config = _load_shared_services_config("ollama")
+        tinyllama_config = _load_shared_services_config("tinyllama")
+        
+        # Use shared services config, fallback to environment, then default
+        self.base_url = (
+            base_url or 
+            os.getenv("OLLAMA_BASE_URL") or 
+            ollama_config.get("base_url", "http://localhost:11434")
+        )
+        
+        # Get API endpoints from config
+        api_endpoints = ollama_config.get("api_endpoints", {})
+        generate_path = api_endpoints.get("generate", "/api/generate")
+        self.generate_endpoint = f"{self.base_url}{generate_path}"
+        
+        # Get timeout from config
+        self.timeout = int(
+            os.getenv("OLLAMA_TIMEOUT") or 
+            ollama_config.get("timeout", "120")
+        )
+        
+        # Store Tinyllama config for default model
+        self.tinyllama_config = tinyllama_config
 
     def check_ollama_available(self) -> bool:
         """
@@ -37,10 +85,13 @@ class OllamaAIService:
             True if Ollama is available, False otherwise
         """
         try:
-            response = requests.get(
-                f"{self.base_url}/api/tags",
-                timeout=5
-            )
+            # Load config to get tags endpoint
+            ollama_config = _load_shared_services_config("ollama")
+            api_endpoints = ollama_config.get("api_endpoints", {})
+            tags_path = api_endpoints.get("tags", "/api/tags")
+            tags_endpoint = f"{self.base_url}{tags_path}"
+            
+            response = requests.get(tags_endpoint, timeout=5)
             return response.status_code == 200
         except Exception:
             return False
@@ -58,14 +109,26 @@ class OllamaAIService:
         Raises:
             Exception: If the request to Ollama fails
         """
+        # Get default model from Tinyllama config if available
+        default_model = "tinyllama"
+        if self.tinyllama_config:
+            default_model = self.tinyllama_config.get("model_id", "tinyllama:latest")
+        
+        # Merge default options from Tinyllama config
+        model_options = {}
+        if self.tinyllama_config and not request.options:
+            model_options = self.tinyllama_config.get("default_options", {}).copy()
+        
         payload: Dict[str, Any] = {
-            "model": request.model or "tinyllama",
+            "model": request.model or default_model,
             "prompt": request.prompt,
             "stream": request.stream or False
         }
 
         if request.options:
             payload["options"] = request.options
+        elif model_options:
+            payload["options"] = model_options
 
         try:
             response = requests.post(
@@ -80,10 +143,15 @@ class OllamaAIService:
             # Extract response text from Ollama API response
             response_text = result.get("response", "")
 
+            # Get default model from config
+            default_model = "tinyllama"
+            if self.tinyllama_config:
+                default_model = self.tinyllama_config.get("model_id", "tinyllama:latest")
+            
             return PromptResponse(
                 success=True,
                 response=response_text,
-                model=result.get("model", request.model or "tinyllama"),
+                model=result.get("model", request.model or default_model),
                 timestamp=datetime.utcnow().isoformat(),
                 metadata={
                     "total_duration": result.get("total_duration"),
