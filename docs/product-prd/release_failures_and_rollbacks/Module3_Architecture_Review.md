@@ -167,7 +167,8 @@
 
 ```
 %USERPROFILE%\.zeroui  policy\current.snapshot.json
-  receipts\{repo_id}\{yyyy}\{mm}\{dd}eceipts.jsonl
+  receipts\{repo_id}\{yyyy}\{mm}\{dd}
+eceipts.jsonl
   trust\public_keys.json
   logsgent.log
 ```

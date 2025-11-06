@@ -1,1 +1,0 @@
-{"version":3,"file":"ReceiptViewerManager.d.ts","sourceRoot":"","sources":["ReceiptViewerManager.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,MAAM,MAAM,QAAQ,CAAC;AAEjC,qBAAa,oBAAqB,YAAW,MAAM,CAAC,UAAU;IAC1D,OAAO,CAAC,YAAY,CAAkC;;IAM/C,iBAAiB,CAAC,WAAW,CAAC,EAAE,GAAG,GAAG,IAAI;IAuBjD,OAAO,CAAC,iBAAiB;IAwEzB,OAAO,CAAC,oBAAoB;IAyBrB,OAAO,IAAI,IAAI;CAKzB"}
