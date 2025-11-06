@@ -40,7 +40,9 @@ class TestDeterministicRuleLoading(unittest.TestCase):
         # All should be identical
         self.assertEqual(rules1, rules2, "Rule order should be deterministic across instances")
         self.assertEqual(rules2, rules3, "Rule order should be deterministic across instances")
-        self.assertEqual(len(rules1), 424, "Should load exactly 424 enabled rules")
+        # Verify all instances load same count from JSON files
+        self.assertEqual(len(rules1), len(rules2), "Should load same number of rules")
+        self.assertEqual(len(rules2), len(rules3), "Should load same number of rules")
     
     def test_rule_count_consistency(self):
         """Verify rule count is consistent across multiple loads."""
@@ -51,9 +53,13 @@ class TestDeterministicRuleLoading(unittest.TestCase):
             loader = ConstitutionRuleLoader()
             counts.append(loader.get_total_rule_count())
         
-        # All counts should be identical
+        # All counts should be identical (from JSON files - single source of truth)
         self.assertEqual(len(set(counts)), 1, "Rule count should be consistent")
-        self.assertEqual(counts[0], 424, "Should always load 424 rules")
+        # Verify count matches what hook manager reports
+        from validator.pre_implementation_hooks import PreImplementationHookManager
+        hook_manager = PreImplementationHookManager()
+        expected_count = hook_manager.total_rules
+        self.assertEqual(counts[0], expected_count, f"Should always load {expected_count} rules from JSON files")
     
     def test_rule_ids_consistency(self):
         """Verify rule IDs are consistent across multiple loads."""
@@ -137,20 +143,22 @@ class TestDeterministicValidation(unittest.TestCase):
         # Get rule IDs that were checked
         result = self.hook_manager.validate_before_generation(prompt)
         
-        # Verify total rules checked is always 424
+        # Verify total rules checked matches JSON files
+        expected_rules = self.hook_manager.total_rules
         self.assertEqual(
             result['total_rules_checked'],
-            424,
-            "Should always check exactly 424 rules"
+            expected_rules,
+            f"Should always check exactly {expected_rules} rules from JSON files"
         )
         
         # Verify same number of rules checked on repeat
         for _ in range(3):
             repeat_result = self.hook_manager.validate_before_generation(prompt)
+            expected_rules = self.hook_manager.total_rules
             self.assertEqual(
                 repeat_result['total_rules_checked'],
-                424,
-                "Rules checked should be consistent"
+                expected_rules,
+                f"Rules checked should be consistent ({expected_rules} from JSON files)"
             )
 
 
@@ -279,10 +287,11 @@ class TestRepeatableResults(unittest.TestCase):
             result2['total_rules_checked'],
             "Different instances should check same number of rules"
         )
+        expected_rules = manager1.total_rules
         self.assertEqual(
             result1['total_rules_checked'],
-            424,
-            "Should always check 424 rules"
+            expected_rules,
+            f"Should always check {expected_rules} rules from JSON files"
         )
     
     def test_rule_processing_order(self):

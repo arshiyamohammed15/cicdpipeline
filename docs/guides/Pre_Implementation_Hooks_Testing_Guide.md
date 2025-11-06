@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide provides comprehensive instructions for testing and verifying that pre-implementation hooks are working correctly. The hooks enforce all 424 enabled constitution rules before AI code generation occurs.
+This guide provides comprehensive instructions for testing and verifying that pre-implementation hooks are working correctly. The hooks enforce all enabled constitution rules from JSON files (single source of truth) before AI code generation occurs.
 
 ## Quick Verification
 
@@ -13,11 +13,11 @@ python tests/verify_hooks_working.py
 ```
 
 This script verifies:
-1. Rule loading (424 enabled rules)
+1. Rule loading (from JSON files - single source of truth)
 2. Violation detection
 3. Blocking behavior
 4. Integration points
-5. Rule count accuracy
+5. Rule count accuracy (matches JSON files)
 
 ## Comprehensive Test Suite
 
@@ -41,7 +41,7 @@ python tests/test_pre_implementation_hooks_comprehensive.py
 from validator.pre_implementation_hooks import PreImplementationHookManager
 
 hook_manager = PreImplementationHookManager()
-print(f"Loaded {hook_manager.total_rules} rules")  # Should print: 424
+print(f"Loaded {hook_manager.total_rules} rules")  # Actual count from JSON files
 ```
 
 ### 2. Test Violation Detection
@@ -57,7 +57,7 @@ result = hook_manager.validate_before_generation(prompt)
 
 print(f"Valid: {result['valid']}")  # Should be False
 print(f"Violations: {len(result['violations'])}")  # Should be > 0
-print(f"Rules checked: {result['total_rules_checked']}")  # Should be 424
+print(f"Rules checked: {result['total_rules_checked']}")  # Actual count from JSON files
 ```
 
 ### 3. Test Blocking Behavior
@@ -92,7 +92,7 @@ result = hook_manager.validate_before_generation(valid_prompt)
 
 print(f"Valid: {result['valid']}")
 print(f"Violations: {len(result['violations'])}")
-print(f"Rules checked: {result['total_rules_checked']}")  # Should be 424
+print(f"Rules checked: {result['total_rules_checked']}")  # Actual count from JSON files
 ```
 
 ### 5. Test API Endpoints
@@ -119,7 +119,7 @@ curl -X POST http://localhost:5000/validate \
 # {
 #   "valid": false,
 #   "violations": [...],
-#   "total_rules_checked": 424,
+#   "total_rules_checked": <actual_count_from_json_files>,
 #   ...
 # }
 ```
@@ -182,15 +182,15 @@ assert result['error'] == 'CONSTITUTION_VIOLATION'
 
 ## Verification Checklist
 
-- [ ] Rule loading: 424 enabled rules loaded
-- [ ] Disabled rule excluded: R-230 not loaded
+- [ ] Rule loading: All enabled rules loaded from JSON files (single source of truth)
+- [ ] Disabled rules excluded: Only enabled rules loaded
 - [ ] Violation detection: Known violations detected
 - [ ] Blocking: Generation blocked when violations found
 - [ ] Allowing: Generation proceeds when no violations
 - [ ] Integration points: All integrations use hooks
 - [ ] API endpoints: Validation endpoints work
 - [ ] Edge cases: Empty prompts, long prompts handled
-- [ ] Rule count: Matches JSON files (424 enabled)
+- [ ] Rule count: Matches JSON files (no hardcoded values)
 
 ## Continuous Testing
 
@@ -223,7 +223,7 @@ Add to your CI pipeline:
 
 ### Rules Not Loading
 
-**Symptoms**: `total_rules_checked` is less than 424
+**Symptoms**: `total_rules_checked` doesn't match JSON files
 
 **Check**:
 1. Verify JSON files exist in `docs/constitution/`
@@ -289,7 +289,7 @@ assert result['error'] == 'CONSTITUTION_VIOLATION'
 
 1. Validation returns `valid: false`
 2. `violations` array contains violation objects
-3. `total_rules_checked` is 424
+3. `total_rules_checked` matches count from JSON files
 4. Code generation is blocked
 5. Error response includes violation details
 
@@ -297,20 +297,21 @@ assert result['error'] == 'CONSTITUTION_VIOLATION'
 
 1. Validation returns `valid: true`
 2. `violations` array is empty
-3. `total_rules_checked` is 424
+3. `total_rules_checked` matches count from JSON files
 4. Code generation proceeds
 5. Success response includes validation info
 
 ## Success Criteria
 
 All tests pass when:
-- ✓ 424 enabled rules are loaded
+- ✓ All enabled rules from JSON files are loaded (single source of truth)
 - ✓ Known violations are detected
 - ✓ Generation is blocked for invalid prompts
 - ✓ Generation proceeds for valid prompts
 - ✓ All integration points work
 - ✓ API endpoints function correctly
 - ✓ Edge cases are handled
+- ✓ Rule counts match JSON files (no hardcoded values)
 
 ## Additional Resources
 

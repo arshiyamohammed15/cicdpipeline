@@ -135,17 +135,19 @@ def test_rule_count_consistency():
     from validator.pre_implementation_hooks import PreImplementationHookManager
     
     manager = PreImplementationHookManager()
+    expected_count = manager.total_rules
     
     counts = []
     for _ in range(10):
         result = manager.validate_before_generation("test prompt")
         counts.append(result['total_rules_checked'])
     
-    if all(c == 424 for c in counts):
-        print("   [OK] Rule count is always 424")
+    # All counts should be identical and match JSON files
+    if len(set(counts)) == 1 and counts[0] == expected_count:
+        print(f"   [OK] Rule count is always {expected_count} (from JSON files)")
         return True
     else:
-        print(f"   [FAIL] Rule count varies: {set(counts)}")
+        print(f"   [FAIL] Rule count varies: {set(counts)}, expected {expected_count}")
         return False
 
 
@@ -187,7 +189,7 @@ def main():
         print("  - Same prompt produces same result")
         print("  - Different instances produce same results")
         print("  - Violation order is deterministic")
-        print("  - Rule count is always 424")
+        print("  - Rule count is consistent (from JSON files)")
         return True
     else:
         print(f"\n[FAILURE] {total - passed} checks failed!")

@@ -23,11 +23,21 @@ def verify_rule_loading():
         from validator.pre_implementation_hooks import PreImplementationHookManager
         hook_manager = PreImplementationHookManager()
         
-        if hook_manager.total_rules == 424:
-            print(f"   [OK] Loaded {hook_manager.total_rules} enabled rules")
+        # Get actual expected count from JSON files (single source of truth)
+        import json
+        from pathlib import Path
+        constitution_dir = Path("docs/constitution")
+        json_files = list(constitution_dir.glob("*.json"))
+        expected_rules = sum(
+            sum(1 for r in json.load(open(f, 'r', encoding='utf-8')).get('constitution_rules', []) if r.get('enabled', True))
+            for f in json_files
+        )
+        
+        if hook_manager.total_rules == expected_rules:
+            print(f"   [OK] Loaded {hook_manager.total_rules} enabled rules from {len(json_files)} files")
             return True
         else:
-            print(f"   [FAIL] Expected 424 rules, got {hook_manager.total_rules}")
+            print(f"   [FAIL] Expected {expected_rules} rules, got {hook_manager.total_rules}")
             return False
     except Exception as e:
         print(f"   [FAIL] Error loading rules: {e}")
@@ -138,11 +148,16 @@ def verify_rule_count_accuracy():
                 enabled = sum(1 for r in rules if r.get('enabled', True))
                 total_enabled += enabled
         
-        if total_enabled == 424:
-            print(f"   [OK] JSON files have {total_enabled} enabled rules")
+        # Verify count matches what hook manager reports (single source of truth)
+        from validator.pre_implementation_hooks import PreImplementationHookManager
+        hook_manager = PreImplementationHookManager()
+        expected_count = hook_manager.total_rules
+        
+        if total_enabled == expected_count:
+            print(f"   [OK] JSON files have {total_enabled} enabled rules (matches hook manager)")
             return True
         else:
-            print(f"   [FAIL] JSON files have {total_enabled} enabled rules, expected 424")
+            print(f"   [FAIL] JSON files have {total_enabled} enabled rules, hook manager reports {expected_count}")
             return False
     except Exception as e:
         print(f"   [FAIL] Error verifying rule count: {e}")

@@ -3,7 +3,7 @@
 Comprehensive Test Suite for Pre-Implementation Hooks
 
 This test suite verifies that pre-implementation hooks:
-1. Load all 424 enabled rules from JSON files
+1. Load all enabled rules from JSON files (single source of truth)
 2. Detect violations correctly
 3. Block code generation when violations are found
 4. Allow code generation when no violations are found
@@ -12,6 +12,7 @@ This test suite verifies that pre-implementation hooks:
 7. Handle edge cases properly
 
 Strict testing with no assumptions - verifies actual behavior.
+Uses actual rule count from JSON files, not hardcoded values.
 """
 
 import sys
@@ -33,22 +34,30 @@ class TestRuleLoading(unittest.TestCase):
         self.hook_manager = PreImplementationHookManager()
     
     def test_total_rules_loaded(self):
-        """Verify exactly 424 enabled rules are loaded."""
+        """Verify all enabled rules are loaded from JSON files (single source of truth)."""
+        # Get actual count from JSON files
+        constitution_dir = Path("docs/constitution")
+        json_files = list(constitution_dir.glob("*.json"))
+        expected_rules = sum(
+            sum(1 for r in json.load(open(f, 'r', encoding='utf-8')).get('constitution_rules', []) if r.get('enabled', True))
+            for f in json_files
+        )
+        
         self.assertEqual(
             self.hook_manager.total_rules,
-            424,
-            f"Expected 424 enabled rules, got {self.hook_manager.total_rules}"
+            expected_rules,
+            f"Expected {expected_rules} enabled rules from {len(json_files)} files, got {self.hook_manager.total_rules}"
         )
     
     def test_rules_from_all_files(self):
-        """Verify rules are loaded from all 8 JSON files."""
+        """Verify rules are loaded from all JSON files in docs/constitution."""
         constitution_dir = Path("docs/constitution")
         json_files = list(constitution_dir.glob("*.json"))
         
-        self.assertEqual(
+        self.assertGreater(
             len(json_files),
-            8,
-            f"Expected 8 JSON files, found {len(json_files)}"
+            0,
+            f"Expected at least 1 JSON file, found {len(json_files)}"
         )
         
         # Verify all files are loaded
@@ -110,10 +119,12 @@ class TestViolationDetection(unittest.TestCase):
             0,
             "Should detect violations for hardcoded password"
         )
+        # Verify it checks all rules from JSON files
+        expected_rules = self.hook_manager.total_rules
         self.assertEqual(
             result['total_rules_checked'],
-            424,
-            "Should check all 424 rules"
+            expected_rules,
+            f"Should check all {expected_rules} rules from JSON files"
         )
     
     def test_assumption_detection(self):
@@ -156,7 +167,9 @@ class TestViolationDetection(unittest.TestCase):
         self.assertIn('valid', result)
         self.assertIn('violations', result)
         self.assertIn('total_rules_checked', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        # Verify it checks all rules from JSON files
+        expected_rules = self.hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_violation_structure(self):
         """Test that violations have correct structure."""
@@ -227,10 +240,11 @@ class TestBlockingBehavior(unittest.TestCase):
         # Mock the validation to pass
         from unittest.mock import patch
         with patch.object(self.integration.hook_manager, 'validate_before_generation') as mock_validate:
+            expected_rules = self.integration.hook_manager.total_rules
             mock_validate.return_value = {
                 'valid': True,
                 'violations': [],
-                'total_rules_checked': 424,
+                'total_rules_checked': expected_rules,
                 'recommendations': [],
                 'relevant_categories': []
             }
@@ -260,7 +274,11 @@ class TestIntegrationPoints(unittest.TestCase):
         self.assertIn('valid', result)
         self.assertIn('violations', result)
         self.assertIn('total_rules_checked', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        # Verify it checks all rules from JSON files
+        from validator.pre_implementation_hooks import PreImplementationHookManager
+        hook_manager = PreImplementationHookManager()
+        expected_rules = hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_openai_integration(self):
         """Test OpenAI integration uses hooks."""
@@ -320,7 +338,8 @@ class TestEdgeCases(unittest.TestCase):
         
         self.assertIn('valid', result)
         self.assertIn('violations', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        expected_rules = self.hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_very_long_prompt(self):
         """Test handling of very long prompt."""
@@ -329,7 +348,8 @@ class TestEdgeCases(unittest.TestCase):
         
         self.assertIn('valid', result)
         self.assertIn('violations', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        expected_rules = self.hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_special_characters(self):
         """Test handling of special characters in prompt."""
@@ -338,7 +358,8 @@ class TestEdgeCases(unittest.TestCase):
         
         self.assertIn('valid', result)
         self.assertIn('violations', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        expected_rules = self.hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_missing_file_type(self):
         """Test handling of missing file_type parameter."""
@@ -350,7 +371,8 @@ class TestEdgeCases(unittest.TestCase):
         
         self.assertIn('valid', result)
         self.assertIn('violations', result)
-        self.assertEqual(result['total_rules_checked'], 424)
+        expected_rules = self.hook_manager.total_rules
+        self.assertEqual(result['total_rules_checked'], expected_rules)
     
     def test_invalid_json_file_handling(self):
         """Test that missing JSON files are handled gracefully."""
@@ -367,7 +389,7 @@ class TestRuleCountAccuracy(unittest.TestCase):
     """Test that rule counts are accurate."""
     
     def test_rule_count_from_json_files(self):
-        """Verify rule count matches JSON files."""
+        """Verify rule count matches JSON files (single source of truth)."""
         constitution_dir = Path("docs/constitution")
         json_files = list(constitution_dir.glob("*.json"))
         
@@ -379,35 +401,48 @@ class TestRuleCountAccuracy(unittest.TestCase):
                 enabled = sum(1 for r in rules if r.get('enabled', True))
                 total_enabled += enabled
         
+        # Verify hook manager matches JSON files
+        from validator.pre_implementation_hooks import PreImplementationHookManager
+        hook_manager = PreImplementationHookManager()
+        
         self.assertEqual(
             total_enabled,
-            424,
-            f"JSON files have {total_enabled} enabled rules, expected 424"
+            hook_manager.total_rules,
+            f"JSON files have {total_enabled} enabled rules, hook manager reports {hook_manager.total_rules}"
         )
     
     def test_hook_manager_rule_count(self):
-        """Verify hook manager reports correct rule count."""
+        """Verify hook manager reports rule count from JSON files."""
         from validator.pre_implementation_hooks import PreImplementationHookManager
         
         hook_manager = PreImplementationHookManager()
         
+        # Get actual count from JSON files
+        constitution_dir = Path("docs/constitution")
+        json_files = list(constitution_dir.glob("*.json"))
+        expected_rules = sum(
+            sum(1 for r in json.load(open(f, 'r', encoding='utf-8')).get('constitution_rules', []) if r.get('enabled', True))
+            for f in json_files
+        )
+        
         self.assertEqual(
             hook_manager.total_rules,
-            424,
-            f"Hook manager reports {hook_manager.total_rules} rules, expected 424"
+            expected_rules,
+            f"Hook manager reports {hook_manager.total_rules} rules, JSON files have {expected_rules}"
         )
     
     def test_validation_result_rule_count(self):
-        """Verify validation results report correct rule count."""
+        """Verify validation results report rule count from JSON files."""
         from validator.pre_implementation_hooks import PreImplementationHookManager
         
         hook_manager = PreImplementationHookManager()
         result = hook_manager.validate_before_generation("test prompt")
         
+        expected_rules = hook_manager.total_rules
         self.assertEqual(
             result['total_rules_checked'],
-            424,
-            f"Validation result reports {result['total_rules_checked']} rules checked, expected 424"
+            expected_rules,
+            f"Validation result reports {result['total_rules_checked']} rules checked, hook manager has {expected_rules}"
         )
 
 
@@ -442,7 +477,7 @@ if __name__ == '__main__':
     print("=" * 80)
     print()
     print("Testing:")
-    print("  1. Rule loading (424 enabled rules)")
+    print("  1. Rule loading (from JSON files - single source of truth)")
     print("  2. Violation detection")
     print("  3. Blocking behavior")
     print("  4. Integration points")

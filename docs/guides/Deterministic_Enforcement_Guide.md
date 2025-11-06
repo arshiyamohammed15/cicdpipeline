@@ -52,7 +52,8 @@ result3 = manager.validate_before_generation(prompt)
 # All must be identical
 assert result1['valid'] == result2['valid'] == result3['valid']
 assert len(result1['violations']) == len(result2['violations']) == len(result3['violations'])
-assert result1['total_rules_checked'] == result2['total_rules_checked'] == 424
+# Rule count should be consistent (from JSON files - single source of truth)
+assert result1['total_rules_checked'] == result2['total_rules_checked'] == result3['total_rules_checked']
 ```
 
 ### 3. Consistency Requirements
@@ -156,7 +157,8 @@ result2 = manager2.validate_before_generation(prompt)
 
 assert result1['valid'] == result2['valid']
 assert len(result1['violations']) == len(result2['violations'])
-assert result1['total_rules_checked'] == result2['total_rules_checked'] == 424
+# Rule count should be consistent (from JSON files - single source of truth)
+assert result1['total_rules_checked'] == result2['total_rules_checked']
 ```
 
 ## Enforcement Guarantees
