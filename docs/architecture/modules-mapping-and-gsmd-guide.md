@@ -1,6 +1,6 @@
 # ZeroUI — Modules Mapping & GSMD Guide (Deterministic)
 
-> **Scope:** This file maps **module codes** (M01–M20) to their **VS Code extension folders** and **GSMD snapshot folders**, and records verifiable facts about `gsmd/`. It incorporates the validated architectural rules from `ARCHITECTURE_VSCode_Modular_Extension.md` and the strictly factual review of `ZeroUI2.0/gsmd`.
+> **Scope:** This file maps **module codes** (M01–M20) to their **VS Code extension folders** and **GSMD snapshot folders**, and records verifiable facts about `gsmd/`. It incorporates the validated architectural rules from `architecture-vscode-modular-extension.md` and the strictly factual review of `ZeroUI2.0/gsmd`.
 >
 > **No assumptions.** Everything here is derived from the attached architecture document and the contents of `ZeroUI2.0.zip` exactly as inspected.
 

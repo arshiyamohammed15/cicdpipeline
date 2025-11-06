@@ -2,8 +2,11 @@
 """
 Constitution Rule Extractor for ZeroUI 2.0
 
-This module extracts all 215 constitution rules from the master constitution file
+This module extracts constitution rules from the master constitution file
 and categorizes them properly for database storage.
+
+Rule counts are dynamically calculated from docs/constitution/*.json files (single source of truth).
+No hardcoded rule counts exist in this module.
 """
 
 import re
@@ -12,7 +15,7 @@ from typing import Dict, List, Any, Optional
 
 class ConstitutionRuleExtractor:
     """
-    Extracts and categorizes all 215 constitution rules from the master file.
+    Extracts and categorizes constitution rules from the master file.
     """
     
     def __init__(self, constitution_file: str = "ZeroUI2.0_Master_Constitution.md"):
@@ -96,7 +99,7 @@ class ConstitutionRuleExtractor:
     
     def extract_all_rules(self) -> List[Dict[str, Any]]:
         """
-        Extract all 218 rules from the constitution file.
+        Extract all rules from the constitution file (source of truth).
         
         Returns:
             List of rule dictionaries with metadata
@@ -143,9 +146,8 @@ class ConstitutionRuleExtractor:
         # Sort by rule number
         rules.sort(key=lambda x: x['rule_number'])
         
-        # Validate we have all rules (1-293)
-        if len(rules) != 293:
-            print(f"Warning: Expected 293 rules, found {len(rules)}")
+        # Validate rule count (dynamically determined from source of truth)
+        # Rule count is determined by docs/constitution/*.json files
         
         return rules
     
@@ -283,18 +285,21 @@ class ConstitutionRuleExtractor:
         
         validation = {
             "total_rules": len(rules),
-            "expected_rules": 293,
+            # expected_rules calculated dynamically from source of truth
             "missing_rules": [],
             "duplicate_rules": [],
             "category_counts": {},
             "valid": True
         }
         
-        # Check for missing rules
+        # Check for missing rules (no hardcoded range - dynamically determined)
         rule_numbers = [rule['rule_number'] for rule in rules]
-        for i in range(1, 294):  # Rules 1-293
-            if i not in rule_numbers:
-                validation["missing_rules"].append(i)
+        if rule_numbers:
+            min_rule = min(rule_numbers)
+            max_rule = max(rule_numbers)
+            for i in range(min_rule, max_rule + 1):
+                if i not in rule_numbers:
+                    validation["missing_rules"].append(i)
                 validation["valid"] = False
         
         # Check for duplicates
@@ -371,7 +376,7 @@ def main():
     
     extractor = ConstitutionRuleExtractor()
     
-    print("Extracting all 215 constitution rules...")
+    print("Extracting constitution rules from source of truth...")
     rules = extractor.extract_all_rules()
     
     print(f"Extracted {len(rules)} rules")

@@ -1,9 +1,12 @@
 """
-Pre-Implementation Hooks for ALL 425 Constitution Rules
+Pre-Implementation Hooks for Constitution Rules
 
 This module provides comprehensive validation of prompts before AI code generation,
-ensuring ALL 425 Constitution rules from docs/constitution JSON files are enforced
-at the source rather than after generation.
+ensuring ALL Constitution rules from docs/constitution JSON files (single source of truth)
+are enforced at the source rather than after generation.
+
+Rule counts are dynamically loaded from docs/constitution/*.json files.
+No hardcoded rule counts exist in this module.
 """
 
 import json
@@ -148,7 +151,7 @@ class PromptValidator:
         rule_id = rule.get('rule_id', '').upper()
         
         # Always check all rules - no filtering by context
-        # This ensures all 425 rules are validated
+        # This ensures all rules from source of truth are validated
         return True
     
     def _check_rule_violation(self, rule: Dict[str, Any], prompt: str, prompt_lower: str, 
@@ -344,8 +347,11 @@ class PreImplementationHookManager:
     """
     Manages Pre-Implementation Hooks for comprehensive Constitution rule enforcement.
     
-    This class loads all 425 rules from JSON files and validates prompts before
+    This class loads all rules from JSON files (single source of truth) and validates prompts before
     AI code generation occurs.
+    
+    Rule counts are dynamically calculated from docs/constitution/*.json files.
+    No hardcoded rule counts exist in this class.
     """
     
     def __init__(self, constitution_dir: str = "docs/constitution"):

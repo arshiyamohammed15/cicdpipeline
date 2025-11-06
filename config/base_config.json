@@ -1,6 +1,6 @@
 {
   "constitution_version": "2.0",
-  "total_rules": 215,
+  "_note": "total_rules is dynamically calculated from docs/constitution/*.json files (single source of truth). Do not hardcode rule counts.",
   "performance_targets": {
     "startup_time": 2.0,
     "button_response": 0.1,

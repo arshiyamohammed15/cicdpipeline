@@ -13,7 +13,7 @@ A Python-based automated code review tool that validates code against the ZeroUI
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
 - **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
-- **🚀 Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against all 293 constitution rules before AI code generation occurs
+- **🚀 Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against all 424 enabled constitution rules (425 total) before AI code generation occurs
 
 ## Installation
 
@@ -27,7 +27,7 @@ A Python-based automated code review tool that validates code against the ZeroUI
 
 ## 🚀 Automatic AI Code Generation Enforcement
 
-The system now includes **100% automatic enforcement** of all 293 ZeroUI constitution rules before any AI code generation occurs.
+The system now includes **100% automatic enforcement** of all 424 enabled ZeroUI constitution rules (425 total) before any AI code generation occurs.
 
 ### Start the Validation Service
 
@@ -225,48 +225,64 @@ python enhanced_cli.py --directory src/ --verbose
 python enhanced_cli.py --verify-consistency
 ```
 
-## Single Source of Truth: Markdown
+## Single Source of Truth: JSON Files
 
 ### Architecture
 
 The ZeroUI 2.0 Constitution uses a **Single Source of Truth** approach:
 
-1. **Markdown** - `ZeroUI2.0_Master_Constitution.md` (ONLY source of truth)
+1. **JSON Files** - `docs/constitution/*.json` (ONLY source of truth for rule counts)
    - All rule definitions, titles, content, categories
    - Version controlled, human-readable, easy to review in PRs
-   - The ONLY file you edit to add/remove/update rules
+   - The ONLY files you edit to add/remove/update rules
+   - **Rule counts are dynamically calculated from these files - NO hardcoded counts exist**
 
 2. **Database** - `config/constitution_rules.db` (SQLite)
-   - Auto-generated from Markdown
+   - Auto-generated from JSON files
    - Fast runtime queries
-   - **Read-only cache** - regenerated from Markdown
+   - **Read-only cache** - regenerated from JSON files
 
 3. **JSON Export** - `config/constitution_rules.json`
-   - Auto-generated from Markdown
+   - Auto-generated from JSON files
    - Backup/portability format
-   - **Read-only cache** - regenerated from Markdown
+   - **Read-only cache** - regenerated from JSON files
 
 4. **Config** - `config/constitution_config.json`
    - **Only stores runtime state**: enabled/disabled status
-   - Does NOT contain rule content (that's in Markdown)
+   - Does NOT contain rule content (that's in JSON files)
    - Preserved across rebuilds
+
+### Important: No Hardcoded Rule Counts
+
+**Principle**: The JSON files in `docs/constitution/` are the ONLY source of truth for rule counts. All rule counts are calculated dynamically from these files.
+
+- ❌ **DO NOT** hardcode rule counts in any configuration files
+- ❌ **DO NOT** hardcode rule counts in Python code
+- ✅ **USE** `config.constitution.rule_count_loader.get_rule_counts()` to get counts dynamically
+- ✅ **ALL** rule counts are calculated at runtime from `docs/constitution/*.json` files
 
 ### Workflow: How to Add/Update/Remove Rules
 
 ```bash
-# 1. Edit the ONLY source of truth
-vim ZeroUI2.0_Master_Constitution.md
+# 1. Edit the ONLY source of truth (JSON files)
+# Edit the appropriate JSON file in docs/constitution/
+vim docs/constitution/MASTER GENERIC RULES.json
 
-# 2. Rebuild derived artifacts (DB, JSON)
+# 2. Rule counts are automatically calculated from JSON files
+# No need to update any hardcoded counts - they're calculated dynamically
+
+# 3. Rebuild derived artifacts (DB, JSON) if needed
 python enhanced_cli.py --rebuild-from-markdown
 
-# 3. Verify everything is consistent
+# 4. Verify everything is consistent
 python enhanced_cli.py --verify-consistency
 
-# 4. Commit (only Markdown changes tracked)
-git add ZeroUI2.0_Master_Constitution.md
-git commit -m "Add Rule 219: New Security Rule"
+# 5. Commit (only JSON file changes tracked)
+git add docs/constitution/MASTER\ GENERIC\ RULES.json
+git commit -m "Add new rule to constitution"
 ```
+
+**Note**: Rule counts are automatically calculated from JSON files. Never hardcode rule counts anywhere.
 
 ### What Happens During Rebuild
 
@@ -306,7 +322,7 @@ python enhanced_cli.py --verify-consistency
 [OK] All sources are consistent
 
 Summary:
-  Total rules observed: 218
+  Total rules observed: 425
   Missing -> markdown: 0, db: 0, json: 0, config: 0
   Field mismatch rules: 0
   Enabled mismatch rules: 0
@@ -326,7 +342,7 @@ Key suites (invoked via `pytest validator/rules/tests -q`):
 ### Understanding Test Output
 
 **Coverage Reports:**
-- **Total Coverage**: Percentage of all 218 rules that were triggered
+- **Total Coverage**: Percentage of all 425 rules that were triggered
 - **Category Coverage**: Coverage within each category
 - **Priority Coverage**: Coverage by priority level (Critical/Important/Recommended)
 - **Missing Rules**: Rules that weren't triggered by the test code
@@ -357,7 +373,7 @@ Key suites (invoked via `pytest validator/rules/tests -q`):
 
 ## Rule Categories
 
-### Constitution Scope (215 rules)
+### Constitution Scope (425 total rules, 424 enabled)
 
 #### Basic Work (5 rules - 100% coverage)
 - **Rule 4**: Use Settings Files, Not Hardcoded Numbers - Configuration management validation
@@ -823,8 +839,8 @@ ZeroUI2.0/
 │   │   ├── queries.py                  # Common database queries
 │   │   └── logging_config.py           # Centralized logging configuration
 │   ├── constitution_config.json        # Main configuration (v2.0 format)
-│   ├── constitution_rules.db           # SQLite database (218 rules)
-│   ├── constitution_rules.json         # JSON export (218 rules)
+│   ├── constitution_rules.db           # SQLite database (425 rules)
+│   ├── constitution_rules.json         # JSON export (425 rules)
 │   ├── enhanced_config_manager.py      # Enhanced configuration manager
 │   ├── base_config.json                # Base configuration
 │   ├── sync_history.json               # Synchronization history
@@ -832,7 +848,7 @@ ZeroUI2.0/
 │   ├── rules/                          # Rule category configurations (17 files)
 │   └── patterns/                       # Validation patterns (2 files)
 ├── enhanced_cli.py                     # Enhanced CLI with backend management
-├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 218 rules
+├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 425 rules
 ├── validator/rules/exception_handling.py # Exception handling validator (Rules 150-181)
 ├── validator/rules/typescript.py       # TypeScript validator (Rules 182-215)
 ├── config/constitution/tests/test_exception_handling/ # Exception handling tests
@@ -1028,7 +1044,7 @@ python enhanced_cli.py --restore-database path         # Restore from backup
 
 #### Exception Handling Commands
 ```bash
-# Extract and validate all 215 rules (including Exception Handling and TypeScript)
+# Extract and validate all 425 rules (including Exception Handling, TypeScript, and Storage Governance)
 python config/constitution/rule_extractor.py
 
 # Run Exception Handling validator tests
@@ -1446,12 +1462,12 @@ The hybrid system consists of multiple interconnected components:
 - [x] Implement centralized logging configuration
 - [x] Add Exception Handling Rules 150-181 to databases and validator system
 - [x] Add TypeScript Rules 182-215 to databases and validator system
-- [x] Update rule extractor to support 215 total rules with exception_handling and typescript categories
+- [x] Update rule extractor to support 425 total rules (424 enabled) with exception_handling, typescript, and storage_governance categories
 - [x] Create ExceptionHandlingValidator with 31 validation methods
 - [x] Create TypeScriptValidator with 34 validation methods
 - [x] Integrate exception handling validation into core validator system
 - [x] Create comprehensive test suite for exception handling rules
-- [x] Update all configuration files to support 215 rules
+- [x] Update all configuration files to support 425 rules (424 enabled)
 
 ## 🚨 Exception Handling Rules Implementation (Rules 150-181)
 
@@ -1604,7 +1620,7 @@ except Exception as e:
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: Exception handling rules enforced
 - ✅ **Test Coverage**: 100% pass rate for all tests
-- ✅ **Configuration**: All config files updated to 215 rules
+- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
 - ✅ **Documentation**: README updated with implementation details
 
 ## 🚨 TypeScript Rules Implementation (Rules 182-215)
@@ -1626,7 +1642,7 @@ The ZeroUI 2.0 Constitution now includes 34 comprehensive TypeScript rules (182-
 - **AI Code Review**: Validates AI-generated code review (Rule 211)
 
 #### 2. **Database Integration**
-- **SQLite Database**: All 215 rules stored with proper categorization
+- **SQLite Database**: All 425 rules stored with proper categorization
 - **JSON Database**: Fallback storage with typescript category
 - **Rule Extraction**: Automatic extraction from constitution file
 - **Configuration Management**: Enable/disable rules 182-215
@@ -1642,10 +1658,10 @@ The ZeroUI 2.0 Constitution now includes 34 comprehensive TypeScript rules (182-
 
 #### Extract and Validate Rules
 ```bash
-# Extract all 215 rules from constitution
+# Extract all 425 rules from constitution
 python config/constitution/rule_extractor.py
 
-# Expected output: "Extracted 215 rules" with typescript category
+# Expected output: "Extracted 425 rules (424 enabled)" with all rule categories
 ```
 
 #### Run TypeScript Tests
@@ -1687,19 +1703,19 @@ ZeroUI2.0/
 │   ├── test_rules_182_215_simple.py       # Simple test suite (20+ tests)
 │   └── test_rules_182_215_comprehensive.py # Comprehensive test suite (34 classes)
 ├── config/constitution/
-│   ├── rule_extractor.py                  # Updated to extract 218 rules
-│   ├── database.py                        # Updated to support 218 rules
-│   └── constitution_rules_json.py         # Updated to support 218 rules
+│   ├── rule_extractor.py                  # Updated to extract 425 rules
+│   ├── database.py                        # Updated to support 425 rules
+│   └── constitution_rules_json.py         # Updated to support 425 rules
 ├── config/
-│   ├── base_config.json                   # Updated total_rules: 218
-│   ├── constitution_config.json           # Updated with all 218 rules
+│   ├── base_config.json                   # Updated total_rules: 425
+│   ├── constitution_config.json           # Updated with all 425 rules
 │   └── constitution_rules.json            # Updated with all rule categories
 └── enhanced_cli.py                        # Updated with TypeScript validator integration
 ```
 
 ### Rule Categories Updated
 
-- **Total Rules**: 180 → 215 (+34 TypeScript rules)
+- **Total Rules**: 180 → 215 → 425 (+34 TypeScript rules + 13 Storage Governance rules + additional rules)
 - **New Category**: `typescript` with 34 rules (182-215)
 - **Priority**: All TypeScript rules marked as "critical"
 - **Coverage**: 100% test coverage for all 34 rules
@@ -1753,11 +1769,11 @@ fetch('/api/data')
 
 ### Success Metrics
 
-- ✅ **Rule Extraction**: Successfully extracts all 215 rules
+- ✅ **Rule Extraction**: Successfully extracts all 425 rules (424 enabled)
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: TypeScriptValidator integrated into core system
 - ✅ **Test Coverage**: 100% pass rate for all tests
-- ✅ **Configuration**: All config files updated to 215 rules
+- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
 - ✅ **Documentation**: README updated with implementation details
 
 ## 🏗️ Storage Governance Rules Implementation (Rules 216-228)
@@ -1862,7 +1878,7 @@ ZeroUI2.0/
 
 ### Rule Categories Updated
 
-- **Total Rules**: 215 → 228 (+13 Storage Governance rules)
+- **Total Rules**: 215 → 228 → 425 (+13 Storage Governance rules + additional rules)
 - **New Category**: `storage_governance` with 13 rules (216-228)
 - **Priority**: All Storage Governance rules marked as "critical"
 - **Coverage**: 100% test coverage for all 13 rules
@@ -1945,9 +1961,9 @@ receipt_path = "ide/agent/receipts/repo-id/2025/10/"
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: StorageGovernanceValidator integrated into core system
 - ✅ **Test Coverage**: 100% pass rate for all 40+ tests
-- ✅ **Configuration**: All config files updated to 228 rules
+- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
 - ✅ **Documentation**: Complete integration guide and examples
-- ✅ **No Breaking Changes**: Backward compatible with existing 215 rules
+- ✅ **No Breaking Changes**: Backward compatible with existing 425 rules (424 enabled)
 
 ### Documentation
 

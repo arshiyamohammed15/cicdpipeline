@@ -140,7 +140,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -148,8 +148,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Optimize performance for all operations. Like a fast computer game - everything should respond quickly, not make people wait.",
+      "requirements": [
+        "Optimize performance for all operations and user interactions",
+        "Ensure response times meet performance targets",
+        "Profile and optimize slow operations"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -424,7 +428,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -432,8 +436,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Process data on the local device first before sending to servers. Like doing homework at your desk before turning it in - handle what you can locally to reduce delays and server load.",
+      "requirements": [
+        "Process data locally when possible before transmission",
+        "Minimize server round-trips by doing local computation",
+        "Only send necessary data to remote services"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -466,7 +474,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -474,8 +482,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Show information to users gradually, not all at once. Like a storybook - reveal pages one at a time so people can understand each part before moving to the next.",
+      "requirements": [
+        "Present information in progressive disclosure format",
+        "Show essential information first, details on demand",
+        "Avoid overwhelming users with too much information at once"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -508,7 +520,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -516,8 +528,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Be intelligent about how you handle data - use it efficiently and only when needed. Like a smart shopping list - only get what you need, when you need it.",
+      "requirements": [
+        "Use data efficiently and only when necessary",
+        "Cache data appropriately to avoid redundant operations",
+        "Minimize data transfer and storage requirements"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -594,7 +610,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -602,8 +618,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Design systems so new users can start using them quickly without extensive training. Like a simple video game - you can play immediately, and learn advanced moves later.",
+      "requirements": [
+        "Ensure systems work out of the box with minimal setup",
+        "Provide clear onboarding paths for new users",
+        "Design for intuitive use without extensive documentation"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -614,7 +634,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -622,8 +642,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Test how users actually experience your system, not just if it works. Like taste-testing food before serving - make sure it's good for the people eating it, not just technically correct.",
+      "requirements": [
+        "Test user experience and usability, not just functionality",
+        "Gather feedback from actual users during testing",
+        "Validate that the system meets user needs and expectations"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -656,7 +680,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -664,8 +688,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Build tools that help people work better and more efficiently. Like giving someone a better tool for their job - it should make their work easier and more effective.",
+      "requirements": [
+        "Design tools that improve productivity and workflow",
+        "Solve real problems developers and users face",
+        "Provide clear value and efficiency gains"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -698,7 +726,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -706,8 +734,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Be extremely careful when handling private or sensitive data. Like locking a diary - treat personal information with extra security and respect.",
+      "requirements": [
+        "Implement additional security measures for private data",
+        "Validate all access to sensitive information",
+        "Follow strict privacy and data protection protocols"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -762,7 +794,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -770,8 +802,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "The detection engine must be accurate and reliable. Like a good security system - it should correctly identify real problems without false alarms.",
+      "requirements": [
+        "Ensure detection accuracy and minimize false positives",
+        "Validate detection results before reporting",
+        "Maintain high precision and recall in problem detection"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1596,7 +1632,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1604,8 +1640,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Define clear roles and scope for each person or component. Like a team sport - everyone knows their position and what they're responsible for.",
+      "requirements": [
+        "Define clear roles and responsibilities for all team members",
+        "Establish scope boundaries for each component or system",
+        "Document role definitions and scope limits"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1616,7 +1656,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1624,8 +1664,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Golden rules are non-negotiable principles that must always be followed. Like traffic laws - these are fundamental rules that everyone must obey for safety and order.",
+      "requirements": [
+        "Identify and document non-negotiable golden rules",
+        "Enforce golden rules consistently without exceptions",
+        "Make golden rules clearly visible and understood by all"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1636,7 +1680,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1644,8 +1688,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Review outcomes and determine their severity levels. Like a doctor checking symptoms - assess how serious problems are and prioritize accordingly.",
+      "requirements": [
+        "Evaluate review outcomes and categorize by severity",
+        "Assign appropriate severity levels to issues found",
+        "Prioritize fixes based on severity assessment"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1656,7 +1704,7 @@
       "severity_level": "Blocker",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1664,8 +1712,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Define stop conditions that map to specific error codes for CI and reviewers. Like emergency codes at a hospital - each condition has a clear code that tells everyone what's wrong.",
+      "requirements": [
+        "Define stop conditions with specific error codes",
+        "Map conditions to standardized error codes",
+        "Ensure CI and reviewers can identify issues by error code"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1676,7 +1728,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1684,8 +1736,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Use a simple checklist for review procedures. Like a pilot's pre-flight checklist - follow a clear, step-by-step list to ensure nothing is missed.",
+      "requirements": [
+        "Create and maintain simple review checklists",
+        "Follow checklist procedures consistently",
+        "Update checklists based on lessons learned"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1696,7 +1752,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1704,8 +1760,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Require evidence in pull requests to prove changes work. Like showing your homework - provide proof that you've done the work correctly.",
+      "requirements": [
+        "Include evidence of testing and validation in PRs",
+        "Provide proof that changes meet requirements",
+        "Document verification steps taken"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1716,7 +1776,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1724,8 +1784,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Automate checks through CI and pre-commit hooks. Like a robot assistant - let automated systems check things so humans don't have to remember everything.",
+      "requirements": [
+        "Implement automated checks in CI pipelines",
+        "Use pre-commit hooks for early validation",
+        "Automate repetitive checks and validations"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1736,7 +1800,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1744,8 +1808,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Use simple English in review comments so everyone can understand. Like explaining to a friend - use clear, straightforward language without technical jargon.",
+      "requirements": [
+        "Write review comments in simple, clear English",
+        "Avoid unnecessary technical jargon",
+        "Ensure comments are understandable to all team members"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1756,7 +1824,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1764,8 +1832,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Document return contracts in review output. Like a recipe that says what you'll get - clearly state what each function or method returns so reviewers know what to expect.",
+      "requirements": [
+        "Document return types and contracts in code",
+        "Include return contract documentation in reviews",
+        "Ensure return contracts are clear and accurate"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1798,7 +1870,7 @@
       "severity_level": "Blocker",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1806,8 +1878,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "STOP CONDITIONS → ERROR CODES: When Python/TypeScript lint or format changes are needed, use error code ERROR:STYLE_VIOLATION. This signals that code style requirements have not been met.",
+      "requirements": [
+        "Detect Python/TypeScript lint or format violations",
+        "Return ERROR:STYLE_VIOLATION error code",
+        "Block merge until style violations are resolved"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1818,7 +1894,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1826,8 +1902,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Provide an optional PR template that can be dropped into .github/pull_request_template.md. Like a form - give people a template to fill out so they include all necessary information.",
+      "requirements": [
+        "Create PR template file in .github/pull_request_template.md",
+        "Make template optional but recommended",
+        "Include all necessary fields for PR information"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1838,7 +1918,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1846,8 +1926,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "SELF-AUDIT BEFORE OUTPUT: Verify that file headers include required sections: What the file does, Why it exists, What it reads/writes, Contracts/APIs, and Risks. This must be checked before code is considered complete.",
+      "requirements": [
+        "Check file header includes What/Why/Reads-Writes/Contracts/Risks sections",
+        "Perform self-audit before submitting code",
+        "Ensure all required header sections are present"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1858,7 +1942,7 @@
       "severity_level": "Blocker",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1866,8 +1950,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "STOP CONDITIONS → ERROR CODES: When file header or public API docstring is missing, use error code ERROR:COMMENT_MISSING. This indicates required documentation is absent.",
+      "requirements": [
+        "Detect missing file headers or public API docstrings",
+        "Return ERROR:COMMENT_MISSING error code",
+        "Block merge until documentation is added"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1900,7 +1988,7 @@
       "severity_level": "Blocker",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1908,8 +1996,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "STOP CONDITIONS → ERROR CODES: When Spectral lint fails (OpenAPI validation), use error code ERROR:OPENAPI_LINT_FAIL. This indicates OpenAPI specification violations.",
+      "requirements": [
+        "Run Spectral lint on OpenAPI specifications",
+        "Return ERROR:OPENAPI_LINT_FAIL when violations detected",
+        "Block merge until OpenAPI spec is valid"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -1920,7 +2012,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -1928,8 +2020,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "RECEIPTS, LOGGING & EVIDENCE: For any privileged action, append an INTENT receipt (JSONL) BEFORE writing code/data; then append a RESULT receipt after. This creates an audit trail of what was intended and what actually happened.",
+      "requirements": [
+        "Emit INTENT receipt before privileged actions",
+        "Emit RESULT receipt after privileged actions",
+        "Store receipts as JSONL for audit trail"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -2138,7 +2234,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -2146,8 +2242,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Provide new developers with a 'First Error Handling Task' template during onboarding. Like a training exercise - give new team members a clear, structured way to learn error handling.",
+      "requirements": [
+        "Create First Error Handling Task template",
+        "Include template in new developer onboarding",
+        "Provide clear guidance on error handling practices"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -2246,7 +2346,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -2254,8 +2354,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "This rule is reserved. See Rule 165 (R-165) for HTTP/Exit Mapping requirements. Rule 165 defines how HTTP status codes map to exit codes and error handling patterns.",
+      "requirements": [
+        "Refer to Rule 165 for HTTP/Exit Mapping specifications",
+        "Do not implement this reserved rule directly",
+        "Use Rule 165's requirements for HTTP/Exit mapping"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -2398,7 +2502,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2024-11-06T00:00:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -2406,9 +2510,11 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "Write tests for:",
+      "description": "Write tests for error paths and failure scenarios to ensure the system handles failures gracefully. Like testing a car's brakes - make sure things work when something goes wrong, not just when everything works perfectly.",
       "requirements": [
-        "Write tests for:"
+        "Write tests for error paths and exception handling",
+        "Test failure scenarios and edge cases",
+        "Ensure system handles failures gracefully without crashing"
       ],
       "validation": "Compliance verified through automated checks and code review."
     },
@@ -2486,7 +2592,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -2494,8 +2600,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "RECEIPTS & GOVERNANCE: Emit JSONL receipts for contract.publish, contract.diff, and contract.violation events. These receipts provide governance evidence of contract-related activities.",
+      "requirements": [
+        "Emit JSONL receipt for contract.publish events",
+        "Emit JSONL receipt for contract.diff events",
+        "Emit JSONL receipt for contract.violation events"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -2726,7 +2836,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -2734,8 +2844,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Use consistent naming conventions throughout the codebase. Like a library - everything should be organized and labeled the same way so you can find things easily.",
+      "requirements": [
+        "Follow consistent naming conventions across all code",
+        "Use same naming patterns for similar items",
+        "Document naming conventions and apply them consistently"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -3384,7 +3498,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -3392,8 +3506,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "PR Template Block for Code Review - a template section that can be pasted into .github/pull_request_template.md. This provides a standardized format for code review information in pull requests.",
+      "requirements": [
+        "Create PR template block for code review section",
+        "Make template available for .github/pull_request_template.md",
+        "Include all necessary code review fields"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -3668,7 +3786,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -3676,8 +3794,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "This rule is deprecated. See Rule 226 (R-226) for RFC Fallback Pattern requirements. Rule 226 defines the UNCLASSIFIED__slug pattern with 24-hour resolution requirements for handling unclassified data.",
+      "requirements": [
+        "Refer to Rule 226 for RFC Fallback Pattern specifications",
+        "Do not use this deprecated rule",
+        "Migrate to Rule 226's requirements for RFC fallback handling"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -3688,7 +3810,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -3696,8 +3818,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "This rule is deprecated. See Rule 227 (R-227) for Observability/Adapters partition requirements. Rule 227 defines how observability and adapters use dt= partitions for data organization.",
+      "requirements": [
+        "Refer to Rule 227 for Observability/Adapters partition specifications",
+        "Do not use this deprecated rule",
+        "Migrate to Rule 227's requirements for partition handling"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -3708,7 +3834,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -3716,8 +3842,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "This rule is deprecated. See Rule 228 (R-228) for Laptop Receipts partition requirements. Rule 228 defines YYYY/MM partitioning for laptop receipts based on date stamps.",
+      "requirements": [
+        "Refer to Rule 228 for Laptop Receipts partition specifications",
+        "Do not use this deprecated rule",
+        "Migrate to Rule 228's requirements for receipt partitioning"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4697,7 +4827,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4705,8 +4835,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "IDE plane receipts layout per repository. Defines the structure for storing receipts in the IDE agent workspace, organized by repository ID with date-based partitioning.",
+      "requirements": [
+        "Organize receipts by repository ID under ide/agent/receipts/",
+        "Use date-based partitioning (yyyy/mm format)",
+        "Maintain consistent layout structure across repositories"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4717,7 +4851,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4725,8 +4859,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "IDE plane agent workspace invariants. Defines the permitted top-level categories and structure under ide/agent/ directory. Ensures consistent workspace organization and prevents invalid directory structures.",
+      "requirements": [
+        "Define permitted top-level categories under ide/agent/",
+        "Enforce workspace structure invariants",
+        "Validate directory structure against defined rules"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4737,7 +4875,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4745,8 +4883,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Tenant plane evidence store shape. Defines the required structure for evidence storage under evidence/ directory, including consumer ID organization and watermarks tracking.",
+      "requirements": [
+        "Define evidence/ directory structure requirements",
+        "Enforce consumer ID organization (kebab-case format)",
+        "Maintain watermarks and consumer tracking"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4757,7 +4899,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4765,8 +4907,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Tenant plane ingest staging and RFC fallback. Defines requirements for ingest/staging/ directory and unclassified data handling with UNCLASSIFIED__slug pattern and 24-hour resolution requirement.",
+      "requirements": [
+        "Define ingest/staging/ directory structure",
+        "Implement UNCLASSIFIED__slug fallback pattern",
+        "Enforce 24-hour resolution for unclassified items"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4777,7 +4923,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4785,8 +4931,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Observability partitions in Tenant plane. Defines how observability data is partitioned using dt= date-based partitions for efficient data organization and retrieval.",
+      "requirements": [
+        "Use dt= date-based partitions for observability data",
+        "Follow YYYY-MM-DD partition format",
+        "Maintain partition consistency and validation"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4797,7 +4947,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4805,8 +4955,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Adapters capture in Tenant plane. Defines how adapter data is captured and stored in the tenant plane, including partition structure and data organization requirements.",
+      "requirements": [
+        "Define adapter data capture structure",
+        "Organize adapter data in tenant plane",
+        "Maintain adapter data partition and organization"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4817,7 +4971,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4825,8 +4979,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Reporting marts in Tenant plane. Defines the structure for reporting data marts, including organization, partitioning, and data access patterns for analytics and reporting.",
+      "requirements": [
+        "Define reporting marts structure in tenant plane",
+        "Organize reporting data for analytics access",
+        "Maintain reporting mart partition and organization"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4837,7 +4995,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4845,8 +5003,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Policy trust layout in Tenant and Product planes. Defines how policy trust information is organized and stored across tenant and product planes for policy verification and governance.",
+      "requirements": [
+        "Define policy trust layout structure",
+        "Organize policy trust data in tenant and product planes",
+        "Maintain policy trust verification and storage"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4857,7 +5019,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4865,8 +5027,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Product plane structure. Defines the overall organization and structure of the product plane, including directory layout, data organization, and access patterns.",
+      "requirements": [
+        "Define product plane directory structure",
+        "Organize data and components in product plane",
+        "Maintain product plane structure consistency"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4877,7 +5043,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4885,8 +5051,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Shared plane structure. Defines the organization and structure of the shared plane, including how shared resources, policies, and configurations are organized across tenants.",
+      "requirements": [
+        "Define shared plane directory structure",
+        "Organize shared resources and configurations",
+        "Maintain shared plane structure and access patterns"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4897,7 +5067,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4905,8 +5075,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Deprecated alias gating. Defines rules for handling deprecated aliases, specifically that meta/schema/ is forbidden by default and may only exist with CompatAliases flag and waiver receipt.",
+      "requirements": [
+        "Forbid meta/schema/ by default",
+        "Require CompatAliases flag and waiver receipt if used",
+        "Track deprecated alias usage with receipts"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4917,7 +5091,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4925,8 +5099,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Partitions & stamps: single source of truth. Defines that date partitions must come from -CreateDt (YYYY-MM-DD) and IDE receipts must use {yyyy}/{mm} layout derived from the same date source.",
+      "requirements": [
+        "Use -CreateDt as single source for date partitions",
+        "Map date to dt=YYYY-MM-DD/ partition format",
+        "Map same date to {yyyy}/{mm} for IDE receipts"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -4937,7 +5115,7 @@
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
-      "last_updated": "2024-01-01T00:00:00Z",
+      "last_updated": "2025-11-06T11:28:33.919820Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
         "policy_version_ids": [
@@ -4945,8 +5123,12 @@
         ],
         "policy_snapshot_hash": "unknown"
       },
-      "description": "",
-      "requirements": [],
+      "description": "Shards configuration (declarative). Defines that shards must be declared as {0|16|256} and scaffold does not create shard directories implicitly. Shard directories must follow consistent naming patterns.",
+      "requirements": [
+        "Declare shards as {0|16|256} explicitly",
+        "Do not create shard directories implicitly",
+        "Follow consistent shard naming patterns (shard={00..ff} for 256, shard={0..15} for 16)"
+      ],
       "validation": "Compliance verified through automated checks and code review."
     },
     {
@@ -6614,7 +6796,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-GOV-004"],
+        "policy_version_ids": [
+          "POL-GOV-004"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6627,7 +6811,7 @@
       "validation": "Automated: conflict detector with precedence ordering audit",
       "resolution_order": [
         "Security",
-        "Structural", 
+        "Structural",
         "Testing",
         "Generic"
       ],
@@ -6644,7 +6828,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-VAL-001"],
+        "policy_version_ids": [
+          "POL-VAL-001"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6668,7 +6854,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-STR-008"],
+        "policy_version_ids": [
+          "POL-STR-008"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6692,7 +6880,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-STR-009"],
+        "policy_version_ids": [
+          "POL-STR-009"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6716,7 +6906,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-PROC-002"],
+        "policy_version_ids": [
+          "POL-PROC-002"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6740,7 +6932,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-OBS-004"],
+        "policy_version_ids": [
+          "POL-OBS-004"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6764,7 +6958,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-STR-010"],
+        "policy_version_ids": [
+          "POL-STR-010"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",
@@ -6788,7 +6984,9 @@
       "last_updated": "2025-11-03T00:06:00Z",
       "last_updated_by": "constitution@zeroui.com",
       "policy_linkage": {
-        "policy_version_ids": ["POL-OBS-005"],
+        "policy_version_ids": [
+          "POL-OBS-005"
+        ],
         "policy_snapshot_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       },
       "status": "active",

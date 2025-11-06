@@ -88,7 +88,7 @@
       "requirements": [
         "Monotonic precision: use perf_counter_ns() (Python) / performance.now() (TS), store ms (rounded) from ns"
       ],
-      "validation": ""
+      "validation": "CI systems must validate monotonic time precision and format compliance"
     },
     {
       "rule_id": "OBS-005",
@@ -110,7 +110,7 @@
       "requirements": [
         "Encoding: UTF-8 only, no BOM. No multi-line logs"
       ],
-      "validation": ""
+      "validation": "CI systems must validate UTF-8 encoding and reject multi-line log entries"
     },
     {
       "rule_id": "OBS-006",
@@ -132,7 +132,7 @@
       "requirements": [
         "Windows/laptop: CRLF-safe, append with flush to avoid partial lines. Keep path length ≤ 240 chars"
       ],
-      "validation": ""
+      "validation": "CI systems must validate cross-platform compatibility requirements"
     },
     {
       "rule_id": "OBS-007",
@@ -154,7 +154,7 @@
       "requirements": [
         "Output: dev → console + file; prod → file/stream (ship to aggregator). Rotation handled by platform"
       ],
-      "validation": ""
+      "validation": "CI systems must validate output destination configuration per environment"
     },
     {
       "rule_id": "OBS-008",
@@ -176,7 +176,7 @@
       "requirements": [
         "ts_utc, monotonic_hw_time_ms required in all logs"
       ],
-      "validation": ""
+      "validation": "CI systems must reject any log entry missing required timestamp fields"
     },
     {
       "rule_id": "OBS-009",
@@ -198,7 +198,7 @@
       "requirements": [
         "level: TRACE|DEBUG|INFO|WARN|ERROR|FATAL required in all logs"
       ],
-      "validation": ""
+      "validation": "CI systems must validate log level enumeration compliance"
     },
     {
       "rule_id": "OBS-010",
@@ -220,7 +220,7 @@
       "requirements": [
         "service, version, env, host required in all logs"
       ],
-      "validation": ""
+      "validation": "CI systems must reject any log entry missing service identification fields"
     },
     {
       "rule_id": "OBS-011",
@@ -242,7 +242,7 @@
       "requirements": [
         "traceId, spanId, parentSpanId (W3C trace context) required. If missing, generate and propagate"
       ],
-      "validation": "",
+      "validation": "CI systems must validate distributed tracing context compliance",
       "error_condition": "Missing traceId triggers ERROR:MISSING_TRACE_ID"
     }
   ],

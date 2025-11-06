@@ -104,13 +104,12 @@ class ConstitutionStructureTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
     
     def test_all_files_exist(self):
-        """Verify all 7 constitution files exist."""
+        """Verify all 6 constitution files exist."""
         for filename in self.expected_files:
             with self.subTest(filename=filename):
                 file_path = self.loader.constitution_dir / filename
@@ -189,7 +188,6 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
@@ -373,10 +371,6 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         rules = self.loader.get_all_rules('MODULES AND GSMD MAPPING RULES.json')
         self.assertEqual(len(rules), 19, "MODULES AND GSMD MAPPING RULES must have 19 rules")
     
-    def test_gsmd_module_mapping_rules_count(self):
-        """Verify GSMD AND MODULE MAPPING RULES has exactly 10 rules."""
-        rules = self.loader.get_all_rules('GSMD AND MODULE MAPPING RULES.json')
-        self.assertEqual(len(rules), 10, "GSMD AND MODULE MAPPING RULES must have 10 rules")
     
     def test_testing_rules_count(self):
         """Verify TESTING RULES has exactly 22 rules."""
@@ -389,20 +383,19 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         self.assertEqual(len(rules), 30, "COMMENTS RULES must have 30 rules")
     
     def test_total_rules_count(self):
-        """Verify total rule count across all files is 403."""
+        """Verify total rule count across all files is 393."""
         total = 0
         files = [
             'MASTER GENERIC RULES.json',
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
         for filename in files:
             total += len(self.loader.get_all_rules(filename))
-        self.assertEqual(total, 403, "Total rules across all files must be 403")
+        self.assertEqual(total, 393, "Total rules across all files must be 393")
     
     def test_no_duplicate_rule_ids_within_file(self):
         """Verify no duplicate rule IDs within each file."""
@@ -411,7 +404,6 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]

@@ -31,7 +31,6 @@ def analyze_all_constitution_files() -> Tuple[Dict[str, int], int]:
         'VSCODE EXTENSION RULES.json',
         'LOGGING & TROUBLESHOOTING RULES.json',
         'MODULES AND GSMD MAPPING RULES.json',
-        'GSMD AND MODULE MAPPING RULES.json',
         'TESTING RULES.json',
         'COMMENTS RULES.json'
     ]

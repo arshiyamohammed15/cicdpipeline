@@ -32,6 +32,15 @@ try:
         ConstitutionRuleSemanticsTests,
         ConstitutionRuleRelationshipsTests
     )
+    from test_cursor_testing_rules import (
+        CursorTestingRulesStructureTests,
+        CursorTestingRulesFieldTests,
+        CursorTestingRulesContentTests,
+        CursorTestingRulesCategoryTests,
+        CursorTestingRulesSeverityTests,
+        CursorTestingRulesPolicyLinkageTests,
+        CursorTestingRulesConsistencyTests
+    )
 except ImportError:
     # Fall back to absolute imports (when running from project root)
     from tests.test_constitution_all_files import (
@@ -46,6 +55,15 @@ except ImportError:
     from tests.test_constitution_rule_semantics import (
         ConstitutionRuleSemanticsTests,
         ConstitutionRuleRelationshipsTests
+    )
+    from tests.test_cursor_testing_rules import (
+        CursorTestingRulesStructureTests,
+        CursorTestingRulesFieldTests,
+        CursorTestingRulesContentTests,
+        CursorTestingRulesCategoryTests,
+        CursorTestingRulesSeverityTests,
+        CursorTestingRulesPolicyLinkageTests,
+        CursorTestingRulesConsistencyTests
     )
 
 
@@ -102,7 +120,14 @@ class ComprehensiveTestRunner:
             ConstitutionRuleSpecificTests,
             ConstitutionRuleCompletenessTests,
             ConstitutionRuleSemanticsTests,
-            ConstitutionRuleRelationshipsTests
+            ConstitutionRuleRelationshipsTests,
+            CursorTestingRulesStructureTests,
+            CursorTestingRulesFieldTests,
+            CursorTestingRulesContentTests,
+            CursorTestingRulesCategoryTests,
+            CursorTestingRulesSeverityTests,
+            CursorTestingRulesPolicyLinkageTests,
+            CursorTestingRulesConsistencyTests
         ]
         
         for test_class in test_classes:
@@ -203,10 +228,10 @@ class ComprehensiveTestRunner:
         print("  - VSCODE EXTENSION RULES.json (10 rules)")
         print("  - LOGGING & TROUBLESHOOTING RULES.json (11 rules)")
         print("  - MODULES AND GSMD MAPPING RULES.json (19 rules)")
-        print("  - GSMD AND MODULE MAPPING RULES.json (10 rules)")
         print("  - TESTING RULES.json (22 rules)")
         print("  - COMMENTS RULES.json (30 rules)")
-        print("Total Rules: 403")
+        print("  - CURSOR TESTING RULES.json (22 rules)")
+        print("Total Rules: 415")
         print("-" * 70)
         
         # Success rate

@@ -1,0 +1,27 @@
+{
+  "start_time": "2025-11-06T11:55:39.964928",
+  "end_time": "2025-11-06T11:55:40.071079",
+  "duration_seconds": 0.106,
+  "total_tests": 67,
+  "passed": 64,
+  "failed": 3,
+  "errors": 0,
+  "skipped": 0,
+  "test_details": [
+    {
+      "test": "test_total_rule_count_403 (tests.test_constitution_rule_specific_coverage.ConstitutionRuleCompletenessTests.test_total_rule_count_403)",
+      "status": "FAILED",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_constitution_rule_specific_coverage.py\", line 361, in test_total_rule_count_403\n    self.assertEqual(total, 403, f\"Expected 403 total rules, got {total}\")\nAssertionError: 393 != 403 : Expected 403 total rules, got 393\n"
+    },
+    {
+      "test": "test_category_consistency (tests.test_constitution_rule_semantics.ConstitutionRuleSemanticsTests.test_category_consistency) (filename='GSMD AND MODULE MAPPING RULES.json')",
+      "status": "FAILED",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_constitution_rule_semantics.py\", line 260, in test_category_consistency\n    self.assertGreater(len(categories), 0)\nAssertionError: 0 not greater than 0\n"
+    },
+    {
+      "test": "test_modules_gsmd_references (tests.test_constitution_rule_semantics.ConstitutionRuleRelationshipsTests.test_modules_gsmd_references)",
+      "status": "FAILED",
+      "traceback": "Traceback (most recent call last):\n  File \"D:\\Projects\\ZeroUI2.0\\tests\\test_constitution_rule_semantics.py\", line 326, in test_modules_gsmd_references\n    self.assertTrue(\nAssertionError: False is not true : STR-001 should mention binding concept\n"
+    }
+  ]
+}

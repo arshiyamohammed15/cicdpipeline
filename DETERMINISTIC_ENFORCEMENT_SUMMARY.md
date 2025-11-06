@@ -200,7 +200,7 @@ assert len(set(str(r) for r in results)) == 1  # True
 4. **`docs/guides/Deterministic_Enforcement_Guide.md`**:
    - Complete guide on deterministic enforcement
 
-5. **`docs/architecture/Deterministic_Enforcement_Specification.md`**:
+5. **`docs/architecture/deterministic-enforcement-specification.md`**:
    - Technical specification document
 
 ---

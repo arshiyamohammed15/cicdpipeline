@@ -1,8 +1,11 @@
 """
 Constitution Rules Database Module for ZeroUI 2.0
 
-This module provides a SQLite database system to store and manage all 149
+This module provides a SQLite database system to store and manage
 constitution rules with configuration management for enabling/disabling rules.
+
+Rule counts are dynamically calculated from docs/constitution/*.json files (single source of truth).
+No hardcoded rule counts exist in this module.
 
 All rules are enabled by default and can be toggled on/off through the
 configuration system.
@@ -25,6 +28,7 @@ from .backend_factory import (
 from .sync_manager import get_sync_manager, sync_backends, verify_sync
 from .migration import get_migration_manager, migrate_sqlite_to_json, migrate_json_to_sqlite, repair_sync
 from .logging_config import get_constitution_logger, setup_logging
+from .rule_count_loader import RuleCountLoader, get_rule_count_loader, get_rule_counts
 
 __all__ = [
     "ConstitutionRulesDB",
@@ -50,5 +54,8 @@ __all__ = [
     "migrate_json_to_sqlite",
     "repair_sync",
     "get_constitution_logger",
-    "setup_logging"
+    "setup_logging",
+    "RuleCountLoader",
+    "get_rule_count_loader",
+    "get_rule_counts"
 ]

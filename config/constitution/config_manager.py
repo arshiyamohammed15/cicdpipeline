@@ -86,10 +86,17 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             json.dump(self.constitution_config, f, indent=2, ensure_ascii=False)
 
     def _derive_total_rules(self) -> int:
-        """Derive total rule count from the single source of truth if possible.
+        """Derive total rule count from the single source of truth (docs/constitution JSON files).
         Falls back to database count, then JSON export, else 0."""
         try:
-            # Prefer database
+            # SINGLE SOURCE OF TRUTH: Load from docs/constitution JSON files
+            from .rule_count_loader import get_rule_counts
+            counts = get_rule_counts()
+            return counts['total_rules']
+        except Exception:
+            pass
+        try:
+            # Fallback: check database
             if hasattr(self, 'db_manager') and self.db_manager is not None:
                 rules = self.db_manager.get_all_rules()
                 if rules:

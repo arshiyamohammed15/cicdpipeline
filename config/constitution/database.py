@@ -3,7 +3,10 @@
 Constitution Rules Database for ZeroUI 2.0
 
 This module provides SQLite database operations for storing and managing
-all 215 constitution rules with configuration management.
+constitution rules with configuration management.
+
+Rule counts are dynamically loaded from docs/constitution/*.json files (single source of truth).
+No hardcoded rule counts exist in this module.
 """
 
 import sqlite3
@@ -21,7 +24,7 @@ from contextlib import contextmanager
 
 class ConstitutionRulesDB:
     """
-    SQLite database manager for storing and managing all 215 constitution rules.
+    SQLite database manager for storing and managing constitution rules.
     
     Features:
     - Store all rules in JSON format with metadata
@@ -73,7 +76,7 @@ class ConstitutionRulesDB:
             # Create tables
             self._create_tables()
             
-            # Insert all 215 rules if database is empty
+            # Insert all rules from source of truth if database is empty
         except sqlite3.Error as e:
             logging.getLogger(__name__).error("Database initialization error: %s", e)
             raise
@@ -232,7 +235,7 @@ class ConstitutionRulesDB:
             return count == 0
     
     def _insert_all_rules(self):
-        """Insert all 215 constitution rules into the database."""
+        """Insert all constitution rules from source of truth into the database."""
         from .rule_extractor import ConstitutionRuleExtractor
         
         extractor = ConstitutionRuleExtractor()
@@ -280,21 +283,21 @@ class ConstitutionRulesDB:
             conn.commit()
     
     def _get_categories_data(self) -> List[Dict[str, Any]]:
-        """Get category metadata."""
+        """Get category metadata. Rule counts are calculated dynamically from actual rules."""
         return [
-            {"name": "basic_work", "description": "Core principles for all development work", "priority": "critical", "rule_count": 18},
-            {"name": "system_design", "description": "System architecture and design principles", "priority": "critical", "rule_count": 12},
-            {"name": "problem_solving", "description": "Problem-solving methodologies and approaches", "priority": "critical", "rule_count": 9},
-            {"name": "platform", "description": "Platform-specific rules and guidelines", "priority": "critical", "rule_count": 10},
-            {"name": "teamwork", "description": "Collaboration and team dynamics", "priority": "critical", "rule_count": 26},
-            {"name": "code_review", "description": "Code review processes and standards", "priority": "critical", "rule_count": 9},
-            {"name": "coding_standards", "description": "Technical coding standards and best practices", "priority": "critical", "rule_count": 13},
-            {"name": "comments", "description": "Documentation and commenting standards", "priority": "critical", "rule_count": 6},
-            {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 11},
-            {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 17},
-            {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 31},
-            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 34},
-            {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}
+            {"name": "basic_work", "description": "Core principles for all development work", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "system_design", "description": "System architecture and design principles", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "problem_solving", "description": "Problem-solving methodologies and approaches", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "platform", "description": "Platform-specific rules and guidelines", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "teamwork", "description": "Collaboration and team dynamics", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "code_review", "description": "Code review processes and standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "coding_standards", "description": "Technical coding standards and best practices", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "comments", "description": "Documentation and commenting standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}  # Calculated dynamically
         ]
     
     def get_all_rules(self, enabled_only: bool = False) -> List[Dict[str, Any]]:

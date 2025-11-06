@@ -2,8 +2,11 @@
 """
 JSON-based Constitution Rules Database for ZeroUI 2.0
 
-This module provides a JSON file-based system to store and manage all 215
+This module provides a JSON file-based system to store and manage
 constitution rules with configuration management.
+
+Rule counts are dynamically loaded from docs/constitution/*.json files (single source of truth).
+No hardcoded rule counts exist in this module.
 """
 
 import json
@@ -257,7 +260,7 @@ class ConstitutionRulesJSON:
                     logger.error(f"Failed to remove corrupted file: {e2}")
     
     def _create_database(self):
-        """Create new JSON database with all 215 rules."""
+        """Create new JSON database with all rules from source of truth."""
         try:
             from .rule_extractor import ConstitutionRuleExtractor
             
@@ -265,9 +268,10 @@ class ConstitutionRulesJSON:
             rules_data = extractor.extract_all_rules()
             
             # Initialize database structure
+            # total_rules will be calculated dynamically after rules are loaded
             self.data = {
                 "constitution_version": "2.0",
-                "total_rules": 215,
+                "total_rules": 0,  # Calculated dynamically from actual rules loaded
                 "last_updated": datetime.now().isoformat(),
                 "database_info": {
                     "format": "json",
@@ -278,24 +282,24 @@ class ConstitutionRulesJSON:
                 "categories": {},
                 "rules": {},
                 "statistics": {
-                    "total_rules": 215,
-                    "enabled_rules": 180,
-                    "disabled_rules": 0,
-                    "enabled_percentage": 100.0,
-                    "category_counts": {},
-                    "priority_counts": {}
+                    "total_rules": 0,  # Calculated dynamically from actual rules loaded
+                    "enabled_rules": 0,  # Calculated dynamically from actual rules loaded
+                    "disabled_rules": 0,  # Calculated dynamically from actual rules loaded
+                    "enabled_percentage": 0.0,  # Calculated dynamically
+                    "category_counts": {},  # Calculated dynamically
+                    "priority_counts": {}  # Calculated dynamically
                 },
                 "usage_history": [],
                 "validation_history": []
             }
             
-            # Add categories
+            # Add categories (rule_count will be calculated dynamically after rules are loaded)
             categories = self._get_categories_data()
             for category_data in categories:
                 self.data["categories"][category_data["name"]] = {
                     "description": category_data["description"],
                     "priority": category_data["priority"],
-                    "rule_count": category_data["rule_count"],
+                    "rule_count": 0,  # Will be calculated dynamically in _update_statistics()
                     "rules": []
                 }
             
@@ -334,28 +338,28 @@ class ConstitutionRulesJSON:
             # Save database
             self._save_database()
             
-            logger.info("Created new JSON database with all 215 rules")
+            logger.info("Created new JSON database with rules from source of truth")
             
         except Exception as e:
             logger.error(f"Failed to create JSON database: {e}")
             raise
     
     def _get_categories_data(self) -> List[Dict[str, Any]]:
-        """Get category metadata."""
+        """Get category metadata. Rule counts are calculated dynamically from actual rules."""
         return [
-            {"name": "basic_work", "description": "Core principles for all development work", "priority": "critical", "rule_count": 18},
-            {"name": "system_design", "description": "System architecture and design principles", "priority": "critical", "rule_count": 12},
-            {"name": "problem_solving", "description": "Problem-solving methodologies and approaches", "priority": "critical", "rule_count": 9},
-            {"name": "platform", "description": "Platform-specific rules and guidelines", "priority": "critical", "rule_count": 10},
-            {"name": "teamwork", "description": "Collaboration and team dynamics", "priority": "critical", "rule_count": 26},
-            {"name": "code_review", "description": "Code review processes and standards", "priority": "critical", "rule_count": 9},
-            {"name": "coding_standards", "description": "Technical coding standards and best practices", "priority": "critical", "rule_count": 13},
-            {"name": "comments", "description": "Documentation and commenting standards", "priority": "critical", "rule_count": 6},
-            {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 11},
-            {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 17},
-            {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 31},
-            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 34},
-            {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}
+            {"name": "basic_work", "description": "Core principles for all development work", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "system_design", "description": "System architecture and design principles", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "problem_solving", "description": "Problem-solving methodologies and approaches", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "platform", "description": "Platform-specific rules and guidelines", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "teamwork", "description": "Collaboration and team dynamics", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "code_review", "description": "Code review processes and standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "coding_standards", "description": "Technical coding standards and best practices", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "comments", "description": "Documentation and commenting standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "api_contracts", "description": "API design, contracts, and governance", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "logging", "description": "Logging and troubleshooting standards", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "exception_handling", "description": "Exception handling, timeouts, retries, and error recovery", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "typescript", "description": "TypeScript coding standards, type safety, and best practices", "priority": "critical", "rule_count": 0},  # Calculated dynamically
+            {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}  # Calculated dynamically
         ]
     
     def _update_statistics(self):
@@ -374,6 +378,10 @@ class ConstitutionRulesJSON:
         for rule in self.data["rules"].values():
             priority = rule["priority"]
             priority_counts[priority] = priority_counts.get(priority, 0) + 1
+        
+        # Update category rule_count fields dynamically
+        for category_name, category_data in self.data["categories"].items():
+            category_data["rule_count"] = category_counts.get(category_name, 0)
         
         self.data["statistics"] = {
             "total_rules": total_rules,

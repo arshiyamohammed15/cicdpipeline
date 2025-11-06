@@ -131,6 +131,16 @@
           "enum": ["openai", "cursor", "claude"],
           "default": "openai",
           "description": "Preferred AI service for code generation"
+        },
+        "zeroui.zuRoot": {
+          "type": "string",
+          "default": "",
+          "description": "ZU_ROOT path for storage operations (4-Plane Storage Architecture). If empty, uses ZU_ROOT environment variable."
+        },
+        "zeroui.repoId": {
+          "type": "string",
+          "default": "",
+          "description": "Repository identifier for receipt storage (kebab-case). If empty, uses workspace name."
         }
       }
     }

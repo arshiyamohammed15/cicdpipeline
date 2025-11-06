@@ -33,7 +33,6 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
@@ -220,7 +219,6 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
@@ -307,7 +305,6 @@ class ConstitutionRuleRelationshipsTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]

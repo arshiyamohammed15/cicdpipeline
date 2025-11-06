@@ -1,15 +1,30 @@
 import * as vscode from 'vscode';
+import { ReceiptStorageReader } from '../../shared/storage/ReceiptStorageReader';
+import { ReceiptParser, DecisionReceipt, FeedbackReceipt } from '../../shared/receipt-parser/ReceiptParser';
 
 export class ReceiptViewerManager implements vscode.Disposable {
     private webviewPanel: vscode.WebviewPanel | undefined;
+    private receiptReader: ReceiptStorageReader;
+    private receiptParser: ReceiptParser;
 
     constructor() {
-        // Initialize receipt viewer manager
+        // Initialize receipt storage reader
+        const zuRoot = vscode.workspace.getConfiguration('zeroui').get<string>('zuRoot') || process.env.ZU_ROOT || '';
+        this.receiptReader = new ReceiptStorageReader(zuRoot || undefined);
+        this.receiptParser = new ReceiptParser();
     }
 
-    public showReceiptViewer(receiptData?: any): void {
+    public async showReceiptViewer(receiptData?: DecisionReceipt | FeedbackReceipt): Promise<void> {
+        // If no receipt data provided, try to load latest receipts
+        if (!receiptData) {
+            receiptData = await this.loadLatestReceipt();
+        }
+
         if (this.webviewPanel) {
             this.webviewPanel.reveal(vscode.ViewColumn.Three);
+            if (receiptData) {
+                this.webviewPanel.webview.html = this.getWebviewContent(receiptData);
+            }
             return;
         }
 
@@ -28,6 +43,47 @@ export class ReceiptViewerManager implements vscode.Disposable {
         this.webviewPanel.onDidDispose(() => {
             this.webviewPanel = undefined;
         });
+    }
+
+    /**
+     * Load latest receipt from storage
+     */
+    private async loadLatestReceipt(): Promise<DecisionReceipt | FeedbackReceipt | undefined> {
+        try {
+            // Get repo ID from workspace or configuration
+            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') || 
+                          vscode.workspace.name || 
+                          'default-repo';
+
+            // Read latest receipts
+            const receipts = await this.receiptReader.readLatestReceipts(repoId, 1);
+            
+            if (receipts.length > 0) {
+                return receipts[0];
+            }
+        } catch (error) {
+            console.error('Failed to load latest receipt:', error);
+            vscode.window.showWarningMessage('Failed to load receipt from storage. Ensure ZU_ROOT is configured.');
+        }
+
+        return undefined;
+    }
+
+    /**
+     * Load receipts for a specific date range
+     */
+    public async loadReceiptsInRange(startDate: Date, endDate: Date): Promise<Array<DecisionReceipt | FeedbackReceipt>> {
+        try {
+            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') || 
+                          vscode.workspace.name || 
+                          'default-repo';
+
+            return await this.receiptReader.readReceiptsInRange(repoId, startDate, endDate);
+        } catch (error) {
+            console.error('Failed to load receipts:', error);
+            vscode.window.showErrorMessage('Failed to load receipts from storage');
+            return [];
+        }
     }
 
     private getWebviewContent(receiptData?: any): string {

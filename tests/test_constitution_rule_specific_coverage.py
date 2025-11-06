@@ -34,7 +34,6 @@ class ConstitutionRuleSpecificTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
@@ -168,19 +167,6 @@ class ConstitutionRuleSpecificTests(unittest.TestCase):
                 self._validate_rule_structure(rule, 'MODULES AND GSMD MAPPING RULES.json', rule_id)
                 self._validate_rule_content(rule, 'MODULES AND GSMD MAPPING RULES.json', rule_id)
     
-    def test_gsmd_module_mapping_rules_all(self):
-        """Test all GSMD AND MODULE MAPPING RULES."""
-        rules = self.files_data.get('GSMD AND MODULE MAPPING RULES.json', {}).get('constitution_rules', [])
-        
-        rule_ids = [r.get('rule_id') for r in rules]
-        self.assertEqual(len(rule_ids), 10, "Should have 10 rules")
-        
-        for rule in rules:
-            rule_id = rule.get('rule_id')
-            with self.subTest(rule_id=rule_id):
-                self._validate_rule_structure(rule, 'GSMD AND MODULE MAPPING RULES.json', rule_id)
-                self._validate_rule_content(rule, 'GSMD AND MODULE MAPPING RULES.json', rule_id)
-    
     def test_testing_rules_all(self):
         """Test all TESTING RULES."""
         rules = self.files_data.get('TESTING RULES.json', {}).get('constitution_rules', [])
@@ -300,7 +286,6 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
@@ -339,10 +324,6 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
         rules = self.files_data.get('MODULES AND GSMD MAPPING RULES.json', {}).get('constitution_rules', [])
         self.assertEqual(len(rules), 19, "Should have exactly 19 modules/GSMD mapping rules")
     
-    def test_all_gsmd_module_rules_present(self):
-        """Verify all 10 GSMD/module mapping rules are present."""
-        rules = self.files_data.get('GSMD AND MODULE MAPPING RULES.json', {}).get('constitution_rules', [])
-        self.assertEqual(len(rules), 10, "Should have exactly 10 GSMD/module mapping rules")
     
     def test_all_testing_rules_present(self):
         """Verify all 22 testing rules are present."""
@@ -369,7 +350,6 @@ class ConstitutionRuleCompletenessTests(unittest.TestCase):
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',
-            'GSMD AND MODULE MAPPING RULES.json',
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]

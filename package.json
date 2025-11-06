@@ -9,10 +9,17 @@
     "test:python:full": "pytest -q",
     "test:python:coverage": "pytest --cov=validator --cov-report=html --cov-report=term-missing",
     "test:validator": "pytest validator/rules/tests --cov=validator --cov-report=term-missing -v",
-    "test:all": "python run_all_tests.py"
+    "test:all": "python run_all_tests.py",
+    "test:storage": "jest --config jest.config.js --testPathPattern=storage",
+    "test:storage:watch": "jest --config jest.config.js --testPathPattern=storage --watch",
+    "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/node": "^20.11.17",
+    "@types/vscode": "^1.105.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.3.3"
   }
 }
