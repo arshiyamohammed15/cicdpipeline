@@ -28,10 +28,17 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
         Configuration dictionary, or empty dict if not found
     """
     try:
-        # Find project root (go up from src/cloud-services/shared-services/ollama-ai-agent)
-        current_file = Path(__file__)
-        project_root = current_file.parent.parent.parent.parent.parent.parent
-        config_path = project_root / "shared" / "llm" / config_type / "config.json"
+        # Get ZU_ROOT from environment variable (per folder-business-rules.md)
+        zu_root = os.getenv("ZU_ROOT")
+        
+        if zu_root:
+            # Use ZU_ROOT for shared services plane
+            config_path = Path(zu_root) / "shared" / "llm" / config_type / "config.json"
+        else:
+            # Fallback: try project root (for development/testing)
+            current_file = Path(__file__)
+            project_root = current_file.parent.parent.parent.parent.parent.parent
+            config_path = project_root / "shared" / "llm" / config_type / "config.json"
         
         if config_path.exists():
             with open(config_path, 'r', encoding='utf-8') as f:
@@ -76,6 +83,10 @@ class OllamaAIService:
         
         # Store Tinyllama config for default model
         self.tinyllama_config = tinyllama_config
+        
+        # Get configurable names from config
+        self.llm_name = ollama_config.get("llm_name", "Ollama")
+        self.model_name = tinyllama_config.get("model_name", "Tinyllama") if tinyllama_config else "Tinyllama"
 
     def check_ollama_available(self) -> bool:
         """

@@ -48,6 +48,12 @@ class HealthResponse(BaseModel):
     ollama_available: bool = Field(
         ..., description="Whether Ollama service is available"
     )
+    llm_name: Optional[str] = Field(
+        default=None, description="Configured LLM name (default: Ollama)"
+    )
+    model_name: Optional[str] = Field(
+        default=None, description="Configured model name (default: Tinyllama)"
+    )
 
 
 class ErrorDetail(BaseModel):

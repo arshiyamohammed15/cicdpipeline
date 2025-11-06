@@ -104,5 +104,7 @@ def health_check(
     return HealthResponse(
         status="healthy" if ollama_available else "degraded",
         timestamp=datetime.utcnow(),
-        ollama_available=ollama_available
+        ollama_available=ollama_available,
+        llm_name=service.llm_name,
+        model_name=service.model_name
     )

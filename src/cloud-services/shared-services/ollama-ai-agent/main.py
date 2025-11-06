@@ -12,12 +12,14 @@ import json
 import logging
 import os
 import socket
+from contextlib import asynccontextmanager
 from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .routes import router
 from .models import HealthResponse
 from .middleware import RequestLoggingMiddleware
+from .llm_manager import OllamaProcessManager
 
 # Service metadata per Rule 62
 SERVICE_NAME = "ollama-ai-agent"
@@ -32,10 +34,37 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Global Ollama process manager
+ollama_manager: OllamaProcessManager = OllamaProcessManager()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Lifespan context manager for FastAPI startup/shutdown events.
+    
+    Starts Ollama service on startup and stops it on shutdown.
+    """
+    # Startup: Start Ollama service
+    logger.info("Starting Ollama AI Agent service...")
+    if ollama_manager.start():
+        logger.info("Ollama service started successfully")
+    else:
+        logger.warning("Ollama service could not be started automatically. It may already be running.")
+    
+    yield
+    
+    # Shutdown: Stop Ollama service
+    logger.info("Shutting down Ollama AI Agent service...")
+    ollama_manager.stop()
+    logger.info("Ollama AI Agent service stopped")
+
+
 app = FastAPI(
     title="ZeroUI Ollama AI Agent Service",
     version="2.0.0",
-    description="AI Agent service for processing prompts via Ollama LLM (Shared Services Plane)"
+    description="AI Agent service for processing prompts via Ollama LLM (Shared Services Plane)",
+    lifespan=lifespan
 )
 
 # Request logging middleware (must be first to log all requests per Rule 173)
@@ -62,8 +91,14 @@ def health_check() -> HealthResponse:
     Returns:
         HealthResponse with service status
     """
+    from .services import OllamaAIService
+    service = OllamaAIService()
+    ollama_available = service.check_ollama_available()
+    
     return HealthResponse(
-        status="healthy",
+        status="healthy" if ollama_available else "degraded",
         timestamp=datetime.utcnow(),
-        ollama_available=False
+        ollama_available=ollama_available,
+        llm_name=service.llm_name,
+        model_name=service.model_name
     )
