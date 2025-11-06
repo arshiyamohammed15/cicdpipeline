@@ -1,4 +1,4 @@
-import { DelegationInterface } from '../interfaces/core/DelegationInterface';
+import { DelegationInterface, DelegationTask, DelegationResult } from '../interfaces/core/DelegationInterface';
 import { AgentOrchestrator } from './AgentOrchestrator';
 
 export class DelegationManager {
@@ -21,7 +21,7 @@ export class DelegationManager {
         console.log('Delegation Manager shut down');
     }
 
-    public async delegate(task: any): Promise<any> {
+    public async delegate(task: DelegationTask): Promise<DelegationResult> {
         if (!this.orchestrator) {
             throw new Error('Orchestrator not set');
         }
@@ -51,7 +51,7 @@ export class DelegationManager {
         return result;
     }
 
-    private determineTargetModule(task: any): string | null {
+    private determineTargetModule(task: DelegationTask): string | null {
         // Determine which module should handle this task
         const taskType = task.type || 'unknown';
 
@@ -73,7 +73,7 @@ export class DelegationManager {
         }
     }
 
-    private async executeDelegation(moduleName: string, task: any): Promise<any> {
+    private async executeDelegation(moduleName: string, task: DelegationTask): Promise<DelegationResult> {
         const module = this.orchestrator?.getModule(moduleName);
         
         if (!module) {
@@ -87,7 +87,7 @@ export class DelegationManager {
         return await module.delegate(task);
     }
 
-    private updateDelegationHistory(task: any, result: any): void {
+    private updateDelegationHistory(task: DelegationTask, result: DelegationResult): void {
         const lastEntry = this.delegationHistory[this.delegationHistory.length - 1];
         if (lastEntry) {
             lastEntry.result = result;

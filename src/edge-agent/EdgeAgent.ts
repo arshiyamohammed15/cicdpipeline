@@ -10,6 +10,7 @@ import { ResourceOptimizer } from './modules/resource-optimizer/ResourceOptimize
 import { ReceiptStorageService } from './shared/storage/ReceiptStorageService';
 import { ReceiptGenerator } from './shared/storage/ReceiptGenerator';
 import { PolicyStorageService } from './shared/storage/PolicyStorageService';
+import { DelegationTask, DelegationResult } from './interfaces/core/DelegationInterface';
 
 export class EdgeAgent {
     private orchestrator: AgentOrchestrator;
@@ -86,11 +87,11 @@ export class EdgeAgent {
     }
 
     // Delegation methods
-    public async delegateTask(task: any): Promise<any> {
+    public async delegateTask(task: DelegationTask): Promise<DelegationResult> {
         return await this.delegationManager.delegate(task);
     }
 
-    public async validateResult(result: any): Promise<boolean> {
+    public async validateResult(result: DelegationResult): Promise<boolean> {
         return await this.validationCoordinator.validate(result);
     }
 
@@ -103,9 +104,9 @@ export class EdgeAgent {
      * 
      * @param task Task to process
      * @param repoId Repository identifier
-     * @returns Promise<{result: any, receiptPath: string}> Processing result and receipt storage path
+     * @returns Promise<{result: DelegationResult, receiptPath: string}> Processing result and receipt storage path
      */
-    public async processTaskWithReceipt(task: any, repoId: string): Promise<{result: any, receiptPath: string}> {
+    public async processTaskWithReceipt(task: DelegationTask, repoId: string): Promise<{result: DelegationResult, receiptPath: string}> {
         // Process task through delegation
         const result = await this.delegateTask(task);
 

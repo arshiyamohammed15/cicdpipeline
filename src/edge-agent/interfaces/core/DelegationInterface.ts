@@ -2,16 +2,16 @@ export interface DelegationInterface {
     /**
      * Delegate a task to this module
      * @param task The task to delegate
-     * @returns Promise<any> The result of the delegation
+     * @returns Promise<DelegationResult> The result of the delegation
      */
-    delegate(task: any): Promise<any>;
+    delegate(task: DelegationTask): Promise<DelegationResult>;
 
     /**
      * Check if this module can handle the given task
      * @param task The task to check
      * @returns boolean True if this module can handle the task
      */
-    canHandle(task: any): boolean;
+    canHandle(task: DelegationTask): boolean;
 
     /**
      * Get the capabilities of this module

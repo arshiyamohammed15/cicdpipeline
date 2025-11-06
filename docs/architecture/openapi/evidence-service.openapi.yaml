@@ -1,0 +1,320 @@
+openapi: 3.1.0
+info:
+  title: "Evidence Service API"
+  version: "1.0.0"
+  description: |
+    Infrastructure service for evidence handle management and evidence storage.
+    Provides evidence storage, retrieval, and lifecycle management for decision receipts.
+    
+    **Service Type**: Infrastructure (Shared Services)
+    **Implementation**: Python/FastAPI
+servers:
+  - url: https://evidence-service.example.com
+    description: Production Evidence Service
+  - url: http://localhost:8001
+    description: Local development server
+paths:
+  /api/v1/evidence:
+    post:
+      summary: Store evidence and create evidence handle
+      description: |
+        Stores evidence content and returns an evidence handle that can be referenced in receipts.
+        Evidence handles are used in decision receipts to link to supporting evidence.
+      operationId: storeEvidence
+      tags:
+        - evidence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreEvidenceRequest'
+      responses:
+        '201':
+          description: Evidence stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceHandleResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/evidence/{evidence_id}:
+    get:
+      summary: Retrieve evidence by ID
+      description: |
+        Retrieves evidence content by evidence handle ID.
+        Used to fetch evidence referenced in decision receipts.
+      operationId: getEvidence
+      tags:
+        - evidence
+      parameters:
+        - name: evidence_id
+          in: path
+          required: true
+          description: Evidence handle identifier
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Evidence retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceResponse'
+        '404':
+          description: Evidence not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '410':
+          description: Evidence expired
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      summary: Delete evidence
+      description: |
+        Deletes evidence by ID. Used for cleanup and lifecycle management.
+        Requires appropriate authorization.
+      operationId: deleteEvidence
+      tags:
+        - evidence
+      parameters:
+        - name: evidence_id
+          in: path
+          required: true
+          description: Evidence handle identifier
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Evidence deleted successfully
+        '404':
+          description: Evidence not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/evidence/batch:
+    post:
+      summary: Store multiple evidence items
+      description: |
+        Stores multiple evidence items in a single request.
+        Returns an array of evidence handles.
+      operationId: storeEvidenceBatch
+      tags:
+        - evidence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreEvidenceBatchRequest'
+      responses:
+        '201':
+          description: Evidence items stored successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvidenceHandleBatchResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns service health status
+      operationId: healthCheck
+      tags:
+        - health
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+components:
+  schemas:
+    StoreEvidenceRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Evidence type (e.g., "log", "artifact", "metric")
+          example: "log"
+        description:
+          type: string
+          description: Human-readable description of the evidence
+          example: "Build log showing compilation errors"
+        content:
+          type: object
+          description: Evidence content (structure varies by type)
+          additionalProperties: true
+        expires_at:
+          type: string
+          format: date-time
+          description: Optional expiration time for the evidence
+          example: "2025-02-27T12:00:00Z"
+        metadata:
+          type: object
+          description: Optional metadata
+          additionalProperties: true
+      required:
+        - type
+        - description
+        - content
+    EvidenceHandleResponse:
+      type: object
+      description: Evidence handle that can be referenced in receipts
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL to retrieve the evidence
+          example: "https://evidence-service.example.com/api/v1/evidence/evt-123456"
+        type:
+          type: string
+          description: Evidence type
+          example: "log"
+        description:
+          type: string
+          description: Human-readable description
+          example: "Build log showing compilation errors"
+        expires_at:
+          type: string
+          format: date-time
+          description: Optional expiration time
+          example: "2025-02-27T12:00:00Z"
+        evidence_id:
+          type: string
+          description: Unique evidence identifier
+          example: "evt-123456"
+        created_at:
+          type: string
+          format: date-time
+          description: When evidence was created
+          example: "2025-01-27T12:00:00Z"
+      required:
+        - url
+        - type
+        - description
+        - evidence_id
+        - created_at
+    EvidenceResponse:
+      type: object
+      properties:
+        evidence_id:
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        content:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        expires_at:
+          type: string
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+        - evidence_id
+        - type
+        - description
+        - content
+        - created_at
+    StoreEvidenceBatchRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreEvidenceRequest'
+          minItems: 1
+          maxItems: 100
+      required:
+        - items
+    EvidenceHandleBatchResponse:
+      type: object
+      properties:
+        handles:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceHandleResponse'
+        count:
+          type: integer
+          description: Number of evidence handles created
+      required:
+        - handles
+        - count
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: ["healthy", "degraded", "unhealthy"]
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+      required:
+        - status
+        - timestamp
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+          required:
+            - code
+            - message
+      required:
+        - error
+

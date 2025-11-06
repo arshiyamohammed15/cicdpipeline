@@ -1,9 +1,10 @@
-import { ValidationInterface } from '../interfaces/core/ValidationInterface';
+import { ValidationInterface, ValidationRule } from '../interfaces/core/ValidationInterface';
 import { DelegationManager } from './DelegationManager';
+import { DelegationResult } from '../interfaces/core/DelegationInterface';
 
 export class ValidationCoordinator {
     private delegationManager: DelegationManager | null = null;
-    private validationRules: Map<string, any> = new Map();
+    private validationRules: Map<string, ValidationRule> = new Map();
     private validationHistory: any[] = [];
 
     public setDelegationManager(delegationManager: DelegationManager): void {
@@ -22,7 +23,7 @@ export class ValidationCoordinator {
         console.log('Validation Coordinator shut down');
     }
 
-    public async validate(result: any): Promise<boolean> {
+    public async validate(result: DelegationResult): Promise<boolean> {
         console.log('Validating result...');
 
         const validationResult = {
@@ -65,34 +66,35 @@ export class ValidationCoordinator {
     private setupValidationRules(): void {
         // Security validation
         this.validationRules.set('security', {
-            validate: async (result: any) => {
-                return result.securityValidated === true;
+            validate: async (result: DelegationResult) => {
+                return result.metadata.securityValidated === true;
             }
         });
 
         // Data integrity validation
         this.validationRules.set('integrity', {
-            validate: async (result: any) => {
-                return result.dataIntegrity === true;
+            validate: async (result: DelegationResult) => {
+                return result.metadata.dataIntegrity === true;
             }
         });
 
         // Performance validation
         this.validationRules.set('performance', {
-            validate: async (result: any) => {
-                return result.performanceMetrics && result.performanceMetrics.latency < 1000;
+            validate: async (result: DelegationResult) => {
+                return result.metadata.performanceMetrics && result.metadata.performanceMetrics.latency < 1000;
             }
         });
 
         // Compliance validation
         this.validationRules.set('compliance', {
-            validate: async (result: any) => {
-                return result.complianceChecked === true;
+            validate: async (result: DelegationResult) => {
+                // Compliance is validated if security and data integrity are both valid
+                return result.metadata.securityValidated === true && result.metadata.dataIntegrity === true;
             }
         });
     }
 
-    public addValidationRule(name: string, rule: any): void {
+    public addValidationRule(name: string, rule: ValidationRule): void {
         this.validationRules.set(name, rule);
         console.log(`Added validation rule: ${name}`);
     }

@@ -1,10 +1,12 @@
+import { DelegationResult } from './DelegationInterface';
+
 export interface ValidationInterface {
     /**
      * Validate a result against this module's validation rules
      * @param result The result to validate
      * @returns Promise<boolean> True if validation passes
      */
-    validate(result: any): Promise<boolean>;
+    validate(result: DelegationResult): Promise<boolean>;
 
     /**
      * Get the validation rules for this module
@@ -28,7 +30,7 @@ export interface ValidationInterface {
 export interface ValidationRule {
     name: string;
     description: string;
-    validate: (result: any) => Promise<boolean>;
+    validate: (result: DelegationResult) => Promise<boolean>;
     severity: 'low' | 'medium' | 'high' | 'critical';
     category: 'security' | 'performance' | 'compliance' | 'data-integrity';
 }
