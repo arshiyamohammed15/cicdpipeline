@@ -1,0 +1,9 @@
+{
+  "tests/test_constitution_comprehensive_runner.py::ConstitutionRuleCompletenessTests::test_total_rule_count_403": true,
+  "tests/test_constitution_comprehensive_runner.py::ConstitutionRuleSemanticsTests::test_category_consistency": true,
+  "tests/test_constitution_comprehensive_runner.py::ConstitutionRuleRelationshipsTests::test_modules_gsmd_references": true,
+  "tests/test_constitution_rule_semantics.py::ConstitutionRuleSemanticsTests::test_category_consistency": true,
+  "tests/test_constitution_rule_semantics.py::ConstitutionRuleRelationshipsTests::test_modules_gsmd_references": true,
+  "tests/test_constitution_rule_specific_coverage.py::ConstitutionRuleCompletenessTests::test_total_rule_count_403": true,
+  "tests/test_enforcement_flow.py::test_configuration_enforcement": true
+}

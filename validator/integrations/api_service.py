@@ -21,19 +21,42 @@ logger = logging.getLogger(__name__)
 def health_check():
     """Health check endpoint."""
     try:
+        from ..health import get_health_endpoint
+        health_status = get_health_endpoint()
+        
         integrations = integration_registry.list_integrations()
-        return jsonify({
-            'status': 'healthy',
-            'integrations': integrations,
-            'total_rules': 293,
-            'enforcement': 'active'
-        })
+        
+        # Add integration info to health status
+        health_status['integrations'] = integrations
+        health_status['integration_status'] = integration_registry.get_integration_status()
+        
+        status_code = 200 if health_status['status'] == 'healthy' else 503
+        return jsonify(health_status), status_code
     except Exception as e:
         logger.error(f"Health check error: {e}")
         return jsonify({
             'status': 'error',
             'message': str(e)
         }), 500
+
+@app.route('/healthz', methods=['GET'])
+def healthz():
+    """Kubernetes-style healthz endpoint (simple liveness probe)."""
+    try:
+        from ..health import HealthChecker
+        checker = HealthChecker()
+        rule_check = checker.check_rule_count_consistency()
+        
+        if rule_check['healthy']:
+            return jsonify({'status': 'ok'}), 200
+        else:
+            return jsonify({
+                'status': 'unhealthy',
+                'reason': rule_check.get('message', 'Rule count mismatch')
+            }), 503
+    except Exception as e:
+        logger.error(f"Healthz check error: {e}")
+        return jsonify({'status': 'error'}), 500
 
 @app.route('/generate', methods=['POST'])
 def generate_code():
