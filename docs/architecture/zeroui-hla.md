@@ -37,7 +37,16 @@ src/vscode-extension/
 ├── tsconfig.json                  # TypeScript configuration
 ├── shared/
 │   └── receipt-parser/            # Receipt parsing utilities
-└── ui/
+├── modules/                       # Module logic (manifest-based)
+│   ├── m01-mmm-engine/
+│   │   ├── module.manifest.json
+│   │   ├── index.ts               # export registerModule()
+│   │   ├── commands.ts
+│   │   ├── providers/            # status pill, diagnostics
+│   │   ├── views/                # DecisionCard sections
+│   │   └── actions/              # Quick actions
+│   └── [m02-m20 other modules...]
+└── ui/                            # UI components (presentation-only)
     ├── [Core UI Components]        # 6 core UI components
     │   ├── status-bar/
     │   ├── problems-panel/
@@ -48,8 +57,7 @@ src/vscode-extension/
     └── [20 Module UI Components]   # Module-specific UI
         ├── mmm-engine/
         ├── compliance-security-challenges/
-        ├── cross-cutting-concerns/
-        └── [17 other modules...]
+        └── [18 other modules...]
 ```
 
 ### 📁 Edge Agent (Processing Layer)

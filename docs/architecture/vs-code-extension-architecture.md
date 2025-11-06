@@ -27,7 +27,14 @@ src/vscode-extension/
 ├── package.json                   # Extension manifest
 ├── tsconfig.json                  # TypeScript configuration
 ├── .vscodeignore                  # Build ignore patterns
-└── .vscodeignore                   # VS Code ignore patterns
+├── modules/                       # Module logic (manifest-based)
+│   ├── m01-mmm-engine/
+│   │   ├── module.manifest.json
+│   │   ├── index.ts               # export registerModule()
+│   │   └── [commands, providers, views, actions]
+│   └── [m02-m20 other modules...]
+└── ui/                            # UI components (presentation-only)
+    └── [Core and module UI components]
 ```
 
 ### 📁 Core UI Components

@@ -1,0 +1,111 @@
+{
+  "snapshot_id": "SNAP.INIT.policy_snapshot.v1",
+  "module_id": "INIT",
+  "slug": "policy_snapshot",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "signature": "base64:PLACEHOLDER_SIGNATURE",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-27T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "policy.problem.initial"
+    ],
+    "status_pill": {
+      "pass": "policy.status.pass",
+      "warn": "policy.status.warn",
+      "soft_block": "policy.status.soft_block",
+      "hard_block": "policy.status.hard_block"
+    },
+    "cards": [
+      "policy.card.initial"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT2H",
+    "authoriser_roles": [
+      "admin",
+      "security_team"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:all",
+      "env:development"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.policy.decision",
+      "zero_ui.policy.verification"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "email",
+      "password",
+      "api_key"
+    ]
+  },
+  "evidence": {
+    "map": [
+      {
+        "kind": "artifact",
+        "selector": "path:/**/artifacts/**"
+      },
+      {
+        "kind": "log",
+        "selector": "otel:service/**"
+      }
+    ]
+  },
+  "receipts": {
+    "required": [
+      "decision",
+      "rationale",
+      "policy_snapshot_hash",
+      "policy_version_ids",
+      "evaluation_point",
+      "actor_id",
+      "repo_id",
+      "timestamps.hw",
+      "signature"
+    ],
+    "optional": [
+      "advisories",
+      "evidence_ids",
+      "cohort"
+    ]
+  },
+  "tests": {
+    "fixtures": []
+  }
+}
+

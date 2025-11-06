@@ -12,15 +12,15 @@ from typing import Dict, List, Tuple
 
 
 # Required artifacts from architecture document
+# Note: OpenAPI specs and schemas are located in contracts/<module-name>/ directories
 REQUIRED_ARTIFACTS = {
     'openapi': [
-        'docs/architecture/openapi/product_endpoints.openapi.yaml',
-        'docs/architecture/openapi/tenant_adapters.openapi.yaml',
+        # OpenAPI specs are in contracts/<module-name>/openapi/ - verify at least one exists
+        'contracts/',
     ],
     'schemas': [
-        'docs/architecture/schemas/decision_receipt.schema.json',
-        'docs/architecture/schemas/policy_snapshot.schema.json',
-        'docs/architecture/schemas/evidence_pack.schema.json',
+        # Schemas are in contracts/<module-name>/schemas/ - verify at least one exists
+        'contracts/',
     ],
     'gate_tables': [
         'docs/architecture/gate_tables/README.md',

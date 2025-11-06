@@ -459,18 +459,10 @@ Folder: docs/architecture/
 10_storage_retention.mmd
 
 openapi/
-
-product_endpoints.openapi.yaml
-
-tenant_adapters.openapi.yaml
+(Note: OpenAPI specs are located in contracts/<module-name>/openapi/ directory)
 
 schemas/
-
-decision_receipt.schema.json
-
-policy_snapshot.schema.json
-
-evidence_pack.schema.json
+(Note: JSON Schemas are located in contracts/<module-name>/schemas/ directory)
 
 gate_tables/
 
@@ -496,9 +488,9 @@ exports/ # SVG/PDF renders for sharing
 
 Implementation-readiness checklist (green = start coding) --- Each item mapped to paths
 
-APIs frozen: OpenAPI 3.1 → docs/architecture/openapi/*.openapi.yaml
+APIs frozen: OpenAPI 3.1 → contracts/<module-name>/openapi/*.yaml
 
-Schemas frozen: JSON Schema → docs/architecture/schemas/*.schema.json
+Schemas frozen: JSON Schema → contracts/<module-name>/schemas/*.schema.json
 
 Gate tables frozen: deterministic rubric → docs/architecture/gate_tables/gate_<name>.csv
 
@@ -530,9 +522,9 @@ Alert Rules stub → docs/architecture/slo/alerts.md
 
 2) Contracts you "freeze" (so no surprises later)
 
-OpenAPI specs (already mapped) → docs/architecture/openapi/*.openapi.yaml
+OpenAPI specs (already mapped) → contracts/<module-name>/openapi/*.yaml
 
-JSON Schemas (already mapped) → docs/architecture/schemas/*.schema.json
+JSON Schemas (already mapped) → contracts/<module-name>/schemas/*.schema.json
 
 Gate Tables (already mapped) → docs/architecture/gate_tables/*.csv
 
@@ -620,9 +612,9 @@ Alert Rules stub → docs/architecture/slo/alerts.md
 
 2) Contracts you "freeze" (so no surprises later)
 
-OpenAPI specs → docs/architecture/openapi/*.openapi.yaml
+OpenAPI specs → contracts/<module-name>/openapi/*.yaml
 
-JSON Schemas → docs/architecture/schemas/*.schema.json
+JSON Schemas → contracts/<module-name>/schemas/*.schema.json
 
 Gate Tables → docs/architecture/gate_tables/*.csv
 
@@ -672,13 +664,7 @@ Unified paths (single source of truth)
 
 docs/
 └─ architecture/
-├─ openapi/
-│ ├─ product_endpoints.openapi.yaml
-│ └─ tenant_adapters.openapi.yaml
-├─ schemas/
-│ ├─ decision_receipt.schema.json
-│ ├─ policy_snapshot.schema.json
-│ └─ evidence_pack.schema.json
+(Note: OpenAPI specs and schemas are located in contracts/<module-name>/ directories)
 ├─ gate_tables/
 │ ├─ gate_pr_size.csv
 │ └─ (additional) gate_<name>.csv

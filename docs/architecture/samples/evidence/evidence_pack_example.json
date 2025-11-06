@@ -1,0 +1,58 @@
+{
+  "evidence_pack_id": "EVP-2025-01-27-001",
+  "receipt_id": "RCP-2025-01-27-001",
+  "gate_id": "gate_pr_size",
+  "created_at": "2025-01-27T10:00:00Z",
+  "evidence_items": [
+    {
+      "evidence_id": "EVI-001",
+      "type": "github_pr",
+      "url": "https://github.com/example/repo/pull/123",
+      "description": "Pull request #123 - Feature implementation",
+      "metadata": {
+        "pr_number": 123,
+        "author": "developer@example.com",
+        "branch": "feature/new-feature",
+        "base_branch": "main"
+      },
+      "collected_at": "2025-01-27T10:00:00Z"
+    },
+    {
+      "evidence_id": "EVI-002",
+      "type": "code_diff",
+      "url": "https://github.com/example/repo/pull/123.diff",
+      "description": "Code diff for PR #123",
+      "metadata": {
+        "lines_added": 120,
+        "lines_deleted": 30,
+        "files_changed": 5
+      },
+      "collected_at": "2025-01-27T10:00:00Z"
+    },
+    {
+      "evidence_id": "EVI-003",
+      "type": "test_results",
+      "url": "https://ci.example.com/builds/12345",
+      "description": "CI test results for PR #123",
+      "metadata": {
+        "tests_passed": 45,
+        "tests_failed": 0,
+        "coverage": 85.5
+      },
+      "collected_at": "2025-01-27T10:05:00Z"
+    }
+  ],
+  "metadata": {
+    "policy_version_ids": ["POL-INIT"],
+    "snapshot_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+    "decision": {
+      "status": "pass",
+      "rationale": "PR size is within acceptable limits"
+    }
+  },
+  "retention": {
+    "expires_at": "2026-01-27T10:00:00Z",
+    "legal_hold": false
+  }
+}
+

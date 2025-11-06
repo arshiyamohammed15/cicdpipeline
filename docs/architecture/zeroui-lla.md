@@ -38,7 +38,16 @@ src/vscode-extension/
 ├── shared/
 │   └── receipt-parser/
 │       └── ReceiptParser.ts       # Receipt parsing logic
-└── ui/
+├── modules/                       # Module logic (manifest-based)
+│   ├── m01-mmm-engine/
+│   │   ├── module.manifest.json
+│   │   ├── index.ts               # export registerModule()
+│   │   ├── commands.ts
+│   │   ├── providers/
+│   │   ├── views/
+│   │   └── actions/
+│   └── [m02-m20 other modules...]
+└── ui/                            # UI components (presentation-only)
     ├── [Core UI Components]        # 6 core UI components
     └── [20 Module UI Components]  # Module-specific UI
 ```
