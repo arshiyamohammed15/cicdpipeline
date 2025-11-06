@@ -23,7 +23,7 @@ export class LocalInference implements DelegationInterface {
         const startTime = Date.now();
         
         try {
-            console.log(${className} processing task: );
+            console.log(`${this.constructor.name} processing task:`, task);
             
             const result = await this.processTask(task);
             
@@ -49,14 +49,14 @@ export class LocalInference implements DelegationInterface {
                 }
             };
 
-            console.log(${className} completed task: );
+            console.log(`${this.constructor.name} completed task:`, delegationResult);
             return delegationResult;
 
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
             
-            console.error(${className} failed task: , error);
+            console.error(`${this.constructor.name} failed task:`, error);
             
             return {
                 taskId: task.id,

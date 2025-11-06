@@ -17,6 +17,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as crypto from 'crypto';
 import { StoragePathResolver } from './StoragePathResolver';
 
 /**
@@ -147,6 +148,53 @@ export class PolicyStorageService {
         };
 
         fs.writeFileSync(currentFile, JSON.stringify(current, null, 2), 'utf-8');
+    }
+
+    /**
+     * Get active policy information for receipt generation
+     * Returns policy version IDs and snapshot hash from current cached policies
+     * 
+     * @param policyIds List of policy identifiers to get active versions for
+     * @returns Promise<{policy_version_ids: string[], snapshot_hash: string}>
+     */
+    public async getActivePolicyInfo(policyIds: string[] = ['default']): Promise<{
+        policy_version_ids: string[];
+        snapshot_hash: string;
+    }> {
+        const policyVersionIds: string[] = [];
+        const snapshotHashes: string[] = [];
+
+        for (const policyId of policyIds) {
+            const version = await this.readCurrentPolicyVersion(policyId);
+            if (version) {
+                const snapshot = await this.readCachedPolicy(policyId, version);
+                if (snapshot) {
+                    // Format: policy_id-version
+                    policyVersionIds.push(`${policyId}-${version}`);
+                    snapshotHashes.push(snapshot.snapshot_hash);
+                }
+            }
+        }
+
+        // If no policies found, return defaults
+        if (policyVersionIds.length === 0) {
+            return {
+                policy_version_ids: [],
+                snapshot_hash: ''
+            };
+        }
+
+        // Combine snapshot hashes into a single hash (deterministic)
+        // In production, this might use a Merkle tree or similar structure
+        const combinedHash = snapshotHashes.sort().join('|');
+        const finalHash = crypto.createHash('sha256')
+            .update(combinedHash)
+            .digest('hex');
+
+        return {
+            policy_version_ids: policyVersionIds,
+            snapshot_hash: `sha256:${finalHash}`
+        };
     }
 
     /**

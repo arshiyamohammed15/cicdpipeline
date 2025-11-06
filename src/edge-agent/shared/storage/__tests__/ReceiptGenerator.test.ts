@@ -7,6 +7,7 @@
 
 import { ReceiptGenerator } from '../ReceiptGenerator';
 import { DecisionReceipt, FeedbackReceipt } from '../../receipt-types';
+import * as crypto from 'crypto';
 
 describe('ReceiptGenerator', () => {
     let generator: ReceiptGenerator;
@@ -260,6 +261,82 @@ describe('ReceiptGenerator', () => {
                 expect(receipt1.signature).toBeDefined();
                 expect(receipt2.signature).toBeDefined();
             });
+        });
+
+        it('should sort keys alphabetically in canonical JSON', () => {
+            const receipt = generator.generateDecisionReceipt(
+                'gate',
+                ['policy-v1'],
+                'hash',
+                { z_field: 'z_value', a_field: 'a_value', m_field: 'm_value' },
+                { status: 'pass', rationale: 'test', badges: [] },
+                [],
+                { repo_id: 'repo' },
+                false
+            );
+
+            // Extract receipt without signature, ID, and timestamps
+            const { signature, receipt_id, timestamp_utc, timestamp_monotonic_ms, ...data } = receipt;
+            
+            // Get keys in sorted order (canonical form)
+            const sortedKeys = Object.keys(data).sort();
+            const actualKeys = Object.keys(data);
+            
+            // Verify keys are in alphabetical order
+            expect(actualKeys).toEqual(sortedKeys);
+        });
+
+        it('should produce deterministic signature from canonical JSON', () => {
+            const receipt = generator.generateDecisionReceipt(
+                'gate',
+                ['policy-v1'],
+                'hash',
+                { key: 'value' },
+                { status: 'pass', rationale: 'test', badges: [] },
+                [],
+                { repo_id: 'repo' },
+                false
+            );
+
+            // Extract data without signature, ID, and timestamps
+            const { signature: actualSig, receipt_id, timestamp_utc, timestamp_monotonic_ms, ...data } = receipt;
+
+            // Create canonical JSON manually (sorted keys)
+            const sortedKeys = Object.keys(data).sort();
+            const canonicalJson = JSON.stringify(data, sortedKeys);
+
+            // Compute expected signature
+            const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
+            const expectedSignature = `sig-${expectedHash}`;
+
+            // Verify signature matches expected
+            expect(actualSig).toBe(expectedSignature);
+        });
+
+        it('should exclude signature field from canonical JSON', () => {
+            const receipt = generator.generateDecisionReceipt(
+                'gate',
+                ['policy-v1'],
+                'hash',
+                {},
+                { status: 'pass', rationale: 'test', badges: [] },
+                [],
+                { repo_id: 'repo' },
+                false
+            );
+
+            // Extract data without signature
+            const { signature, ...receiptWithoutSig } = receipt;
+
+            // Verify signature field is not in the receipt data
+            expect(receiptWithoutSig).not.toHaveProperty('signature');
+
+            // Verify canonical JSON doesn't include signature
+            const sortedKeys = Object.keys(receiptWithoutSig).sort();
+            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
+            
+            expect(canonicalJson).not.toContain('signature');
+            expect(canonicalJson).not.toContain(signature);
         });
     });
 

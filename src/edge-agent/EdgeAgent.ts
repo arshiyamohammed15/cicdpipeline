@@ -112,11 +112,14 @@ export class EdgeAgent {
         // Validate result
         const isValid = await this.validateResult(result);
 
-        // Generate receipt
+        // Get active policy information from policy storage
+        const policyInfo = await this.policyStorage.getActivePolicyInfo(['default']);
+
+        // Generate receipt with policy information
         const receipt = this.receiptGenerator.generateDecisionReceipt(
             'edge-agent',
-            [], // TODO: Get policy version IDs from policy storage
-            '', // TODO: Get snapshot hash
+            policyInfo.policy_version_ids,
+            policyInfo.snapshot_hash,
             task.data || {},
             {
                 status: isValid ? 'pass' : 'warn',
