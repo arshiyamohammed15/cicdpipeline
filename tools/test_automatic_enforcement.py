@@ -151,11 +151,11 @@ def test_automatic_enforcement():
                 print("Generated code preview:")
                 print("-" * 30)
                 # Show first few lines of generated code
-                lines = result['generated_code'].split('\n')[:10]
-                for line in lines:
+                generated_lines = result['generated_code'].splitlines()
+                for line in generated_lines[:10]:
                     print(f"   {line}")
-                if len(result['generated_code'].split('\n')) > 10:
-                    print(f"   ... ({len(result['generated_code'].split('\n')) - 10} more lines)")
+                if len(generated_lines) > 10:
+                    print(f"   ... ({len(generated_lines) - 10} more lines)")
                 print("-" * 30)
             else:
                 print(f"   Error: {result.get('error', 'Unknown error')}")
@@ -183,7 +183,8 @@ def test_automatic_enforcement():
         health_response = requests.get("http://localhost:5000/health", timeout=5)
         if health_response.status_code == 200:
             health_data = health_response.json()
-            print("✅ Service Health: OK"            print(f"   Status: {health_data.get('status', 'unknown')}")
+            print("✅ Service Health: OK")
+            print(f"   Status: {health_data.get('status', 'unknown')}")
             print(f"   Total rules: {health_data.get('total_rules', 'unknown')}")
             print(f"   Enforcement: {health_data.get('enforcement', 'unknown')}")
             print(f"   Available integrations: {', '.join(health_data.get('integrations', []))}")

@@ -163,12 +163,38 @@ export class ReceiptGenerator {
      * @param receipt Receipt to sign (without signature field)
      * @returns string Signature string (format: sig-{sha256_hash})
      */
+    /**
+     * Create canonical JSON with sorted keys recursively
+     * This ensures deterministic output for signature generation
+     */
+    private toCanonicalJson(obj: any): string {
+        if (obj === null || typeof obj !== 'object') {
+            return JSON.stringify(obj);
+        }
+
+        if (Array.isArray(obj)) {
+            return '[' + obj.map(item => this.toCanonicalJson(item)).join(',') + ']';
+        }
+
+        const sortedKeys = Object.keys(obj).sort();
+        const sortedObj: any = {};
+        for (const key of sortedKeys) {
+            sortedObj[key] = obj[key];
+        }
+
+        const entries = sortedKeys.map(key => {
+            const value = sortedObj[key];
+            return JSON.stringify(key) + ':' + this.toCanonicalJson(value);
+        });
+
+        return '{' + entries.join(',') + '}';
+    }
+
     private signReceipt(receipt: any): string {
         // Create canonical JSON (sorted keys for deterministic output)
         // Note: Receipt is already without signature field (passed from generateDecisionReceipt/generateFeedbackReceipt)
-        // Sort keys for consistent canonical form (matches ReceiptStorageService.toCanonicalJson())
-        const sortedKeys = Object.keys(receipt).sort();
-        const canonicalJson = JSON.stringify(receipt, sortedKeys);
+        // Sort keys recursively for consistent canonical form (matches ReceiptStorageService.toCanonicalJson())
+        const canonicalJson = this.toCanonicalJson(receipt);
 
         // Generate deterministic signature using SHA-256 hash
         // This provides integrity verification and deterministic signing

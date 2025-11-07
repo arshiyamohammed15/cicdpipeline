@@ -141,8 +141,11 @@ describe('Storage Integration Tests', () => {
             const agent = new EdgeAgent(testZuRoot);
 
             const task = {
+                id: 'test-task-001',
                 type: 'test',
-                data: { input: 'test-data' }
+                priority: 'medium' as const,
+                data: { input: 'test-data' },
+                requirements: {}
             };
 
             const result = await agent.processTaskWithReceipt(task, testRepoId);

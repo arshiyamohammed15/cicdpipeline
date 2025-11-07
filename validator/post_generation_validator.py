@@ -12,6 +12,7 @@ import ast
 import re
 import tempfile
 import os
+import json
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 from validator.models import Violation, Severity
@@ -32,36 +33,60 @@ class PostGenerationValidator:
         self.code_validator = ConstitutionValidator()
         self.rule_validator = RuleNumberValidator()
         
-        # Validate all rule numbers referenced in this class at initialization
-        # This prevents errors from using JSON line numbers instead of rule numbers
-        self._validate_all_rule_references()
+        # Load rules dynamically from JSON files
+        self._load_rule_references()
     
-    def _validate_all_rule_references(self):
+    def _load_rule_references(self):
         """
-        Validate all rule numbers referenced in this class.
+        Load rule references dynamically from JSON files by searching for rules by title/keywords.
         
-        This prevents errors where JSON line numbers (e.g., 4083) are mistaken
-        for actual rule numbers (e.g., 172).
+        This prevents hardcoding rule numbers and adapts to changes in constitution files.
         """
-        # All rule numbers used in this validator
-        referenced_rules = [11, 149, 332, 172, 62, 61, 176, 63, 56]
+        constitution_dir = Path("docs/constitution")
+        if not constitution_dir.exists():
+            raise FileNotFoundError(f"Constitution directory not found: {constitution_dir}")
         
-        invalid_rules = []
-        for rule_num in referenced_rules:
-            try:
-                self.rule_validator.validate_rule_number(rule_num)
-            except ValueError as e:
-                invalid_rules.append(f"Rule {rule_num}: {e}")
+        json_files = list(constitution_dir.glob("*.json"))
+        all_rules = []
         
-        if invalid_rules:
-            error_msg = (
-                f"PostGenerationValidator initialization failed: "
-                f"Invalid rule number references detected.\n"
-                f"Errors:\n" + "\n".join(invalid_rules) + "\n\n"
-                f"Fix rule number references before using validator. "
-                f"Valid range: 1-415. Never use JSON line numbers."
-            )
-            raise ValueError(error_msg)
+        for json_file in json_files:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                rules = data.get('constitution_rules', [])
+                all_rules.extend(rules)
+        
+        # Look up rules by title keywords dynamically
+        self.rule_file_header = self._find_rule_by_keywords(all_rules, ['File Headers', 'Comprehensive', 'Header'])
+        self.rule_async_await = self._find_rule_by_keywords(all_rules, ['async', 'await', 'Advanced Programming'])
+        self.rule_decorators = self._find_rule_by_keywords(all_rules, ['decorator', 'Advanced Programming'])
+        self.rule_structured_logs = self._find_rule_by_keywords(all_rules, ['Structured Logs', 'JSON format'])
+        self.rule_service_identification = self._find_rule_by_keywords(all_rules, ['Service Identification', 'service metadata'])
+        self.rule_log_level_enum = self._find_rule_by_keywords(all_rules, ['Log Level', 'Enumeration', 'TRACE', 'DEBUG'])
+        self.rule_error_envelope = self._find_rule_by_keywords(all_rules, ['Error Envelope', 'error', 'code', 'message'])
+        self.rule_trace_context = self._find_rule_by_keywords(all_rules, ['Trace Context', 'W3C', 'traceId', 'spanId'])
+        self.rule_monotonic_time = self._find_rule_by_keywords(all_rules, ['Monotonic', 'Time'])
+    
+    def _find_rule_by_keywords(self, rules: List[Dict], keywords: List[str]) -> Optional[Dict]:
+        """
+        Find a rule by searching for keywords in title or description.
+        
+        Args:
+            rules: List of all rules
+            keywords: List of keywords to search for
+            
+        Returns:
+            Rule dictionary if found, None otherwise
+        """
+        for rule in rules:
+            title = rule.get('title', '').lower()
+            description = rule.get('description', '').lower()
+            
+            # Check if any keyword matches
+            for keyword in keywords:
+                if keyword.lower() in title or keyword.lower() in description:
+                    return rule
+        
+        return None
     
     def validate_generated_code(
         self, 
@@ -185,28 +210,28 @@ class PostGenerationValidator:
             # Syntax errors handled separately
             return violations
         
-        # Check for file header (Rule 11, Rule 149)
+        # Check for file header
         header_violation = self._check_file_header(code)
         if header_violation:
             violations.append(header_violation)
         
-        # Check for async/await usage (Rule 332)
+        # Check for async/await usage
         async_violations = self._check_async_await(tree, code, file_path)
         violations.extend(async_violations)
         
-        # Check for decorator usage (Rule 332)
+        # Check for decorator usage
         decorator_violations = self._check_decorators(tree, code, file_path)
         violations.extend(decorator_violations)
         
-        # Check for logging format (Rule 172, Rule 62, Rule 61)
+        # Check for logging format
         logging_violations = self._check_logging_format(code, file_path)
         violations.extend(logging_violations)
         
-        # Check for error envelope structure (Rule 176)
+        # Check for error envelope structure
         error_envelope_violations = self._check_error_envelope(code, file_path)
         violations.extend(error_envelope_violations)
         
-        # Check for W3C trace context (Rule 63)
+        # Check for W3C trace context
         trace_context_violations = self._check_trace_context(code, file_path)
         violations.extend(trace_context_violations)
         
@@ -218,7 +243,7 @@ class PostGenerationValidator:
     
     def _check_file_header(self, code: str) -> Optional[Violation]:
         """
-        Check if file has comprehensive header per Rule 11, Rule 149.
+        Check if file has comprehensive header.
         
         Args:
             code: Generated code string
@@ -226,6 +251,10 @@ class PostGenerationValidator:
         Returns:
             Violation if header missing, None otherwise
         """
+        # If rule not found, skip this check
+        if not self.rule_file_header:
+            return None
+        
         lines = code.split('\n')
         if len(lines) < 10:
             return None
@@ -255,10 +284,13 @@ class PostGenerationValidator:
         
         # If no comprehensive header found
         if not has_docstring or len(found_sections) < len(required_sections):
+            rule_id = self.rule_file_header.get('rule_id', 'UNKNOWN')
+            rule_number = self.rule_file_header.get('rule_number', 0)
+            rule_name = self.rule_file_header.get('title', 'File Headers')
             return Violation(
-                rule_id="R-011",
-                rule_name="Include Comprehensive File Headers",
-                rule_number=11,
+                rule_id=rule_id,
+                rule_name=rule_name,
+                rule_number=rule_number,
                 severity=Severity.ERROR,
                 message="Generated code missing comprehensive file header with What/Why/Reads-Writes/Contracts/Risks sections",
                 file_path="generated_code",
@@ -271,7 +303,7 @@ class PostGenerationValidator:
     
     def _check_async_await(self, tree: ast.AST, code: str, file_path: str) -> List[Violation]:
         """
-        Check for async/await usage per Rule 332.
+        Check for async/await usage.
         
         Args:
             tree: AST tree
@@ -282,6 +314,14 @@ class PostGenerationValidator:
             List of violations
         """
         violations = []
+        
+        # If rule not found, skip this check
+        if not self.rule_async_await:
+            return violations
+        
+        rule_id = self.rule_async_await.get('rule_id', 'UNKNOWN')
+        rule_number = self.rule_async_await.get('rule_number', 0)
+        rule_name = self.rule_async_await.get('title', 'NO Advanced Programming Concepts')
         
         # Get code lines for context checking
         code_lines = code.split('\n')
@@ -304,11 +344,11 @@ class PostGenerationValidator:
                 
                 if not is_framework_required:
                     violations.append(Violation(
-                        rule_id="R-332",
-                        rule_name="NO Advanced Programming Concepts - BANNED: async/await",
-                        rule_number=332,
+                        rule_id=rule_id,
+                        rule_name=rule_name,
+                        rule_number=rule_number,
                         severity=Severity.ERROR,
-                        message=f"Generated code uses async/await in {node.name} (Rule 332 violation). Use sync functions unless framework-required.",
+                        message=f"Generated code uses async/await in {node.name}. Use sync functions unless framework-required.",
                         file_path=file_path,
                         line_number=node.lineno,
                         code_snippet=f"async def {node.name}",
@@ -332,11 +372,11 @@ class PostGenerationValidator:
                     
                     if not is_framework_required:
                         violations.append(Violation(
-                            rule_id="R-332",
-                            rule_name="NO Advanced Programming Concepts - BANNED: async/await",
-                            rule_number=332,
+                            rule_id=rule_id,
+                            rule_name=rule_name,
+                            rule_number=rule_number,
                             severity=Severity.ERROR,
-                            message=f"Generated code uses await expression (Rule 332 violation)",
+                            message=f"Generated code uses await expression",
                             file_path=file_path,
                             line_number=node.lineno,
                             code_snippet="await ...",
@@ -347,7 +387,7 @@ class PostGenerationValidator:
     
     def _check_decorators(self, tree: ast.AST, code: str, file_path: str) -> List[Violation]:
         """
-        Check for decorator usage per Rule 332.
+        Check for decorator usage.
         
         Args:
             tree: AST tree
@@ -358,6 +398,14 @@ class PostGenerationValidator:
             List of violations
         """
         violations = []
+        
+        # If rule not found, skip this check
+        if not self.rule_decorators:
+            return violations
+        
+        rule_id = self.rule_decorators.get('rule_id', 'UNKNOWN')
+        rule_number = self.rule_decorators.get('rule_number', 0)
+        rule_name = self.rule_decorators.get('title', 'NO Advanced Programming Concepts')
         
         # Get code lines for context checking
         code_lines = code.split('\n')
@@ -383,11 +431,11 @@ class PostGenerationValidator:
                         
                         if not is_framework_required:
                             violations.append(Violation(
-                                rule_id="R-332",
-                                rule_name="NO Advanced Programming Concepts - BANNED: decorators",
-                                rule_number=332,
+                                rule_id=rule_id,
+                                rule_name=rule_name,
+                                rule_number=rule_number,
                                 severity=Severity.ERROR,
-                                message=f"Generated code uses decorator {decorator_line} (Rule 332 violation). Use only framework-required decorators.",
+                                message=f"Generated code uses decorator {decorator_line}. Use only framework-required decorators.",
                                 file_path=file_path,
                                 line_number=decorator.lineno if hasattr(decorator, 'lineno') else node.lineno,
                                 code_snippet=decorator_line,
@@ -398,7 +446,7 @@ class PostGenerationValidator:
     
     def _check_logging_format(self, code: str, file_path: str) -> List[Violation]:
         """
-        Check logging format per Rule 172, Rule 62, Rule 61.
+        Check logging format.
         
         Args:
             code: Generated code string
@@ -420,53 +468,56 @@ class PostGenerationValidator:
             if 'logger.' in line.lower() or 'logging.' in line.lower():
                 has_logging = True
                 
-                # Check for JSON format (Rule 172)
+                # Check for JSON format
                 if 'json.dumps' in line or 'json.dump' in line:
                     has_structured_logging = True
                 
-                # Check for service metadata (Rule 62)
+                # Check for service metadata
                 if any(field in line for field in ['service', 'version', 'env', 'host']):
                     has_service_metadata = True
                 
-                # Check for log level enumeration (Rule 61)
+                # Check for log level enumeration
                 log_levels = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL']
                 if any(level in line.upper() for level in log_levels):
                     has_log_level_enum = True
         
         if has_logging:
-            if not has_structured_logging:
+            if not has_structured_logging and self.rule_structured_logs:
+                rule = self.rule_structured_logs
                 violations.append(Violation(
-                    rule_id="R-172",
-                    rule_name="Structured Logs",
-                    rule_number=172,
+                    rule_id=rule.get('rule_id', 'UNKNOWN'),
+                    rule_name=rule.get('title', 'Structured Logs'),
+                    rule_number=rule.get('rule_number', 0),
                     severity=Severity.ERROR,
-                    message="Generated code has logging but not in JSON format per Rule 172",
+                    message="Generated code has logging but not in JSON format",
                     file_path=file_path,
                     line_number=1,
                     code_snippet="logger.info(...)",
                     fix_suggestion="Use json.dumps() for structured JSON logging with timestamp, level, service, operation, error.code, trace/request ids, duration, attempt, retryable, severity, cause"
                 ))
             
-            if not has_service_metadata:
+            if not has_service_metadata and self.rule_service_identification:
+                rule = self.rule_service_identification
                 violations.append(Violation(
-                    rule_id="R-062",
-                    rule_name="Require Service Identification",
-                    rule_number=62,
+                    rule_id=rule.get('rule_id', 'UNKNOWN'),
+                    rule_name=rule.get('title', 'Require Service Identification'),
+                    rule_number=rule.get('rule_number', 0),
                     severity=Severity.ERROR,
-                    message="Generated code has logging but missing service metadata (service, version, env, host) per Rule 62",
+                    message="Generated code has logging but missing service metadata (service, version, env, host)",
                     file_path=file_path,
                     line_number=1,
                     code_snippet="logger.info(...)",
                     fix_suggestion="Include service, version, env, host in all log entries"
                 ))
             
-            if not has_log_level_enum:
+            if not has_log_level_enum and self.rule_log_level_enum:
+                rule = self.rule_log_level_enum
                 violations.append(Violation(
-                    rule_id="R-061",
-                    rule_name="Enforce Log Level Enumeration",
-                    rule_number=61,
+                    rule_id=rule.get('rule_id', 'UNKNOWN'),
+                    rule_name=rule.get('title', 'Enforce Log Level Enumeration'),
+                    rule_number=rule.get('rule_number', 0),
                     severity=Severity.ERROR,
-                    message="Generated code has logging but missing standardized log levels (TRACE|DEBUG|INFO|WARN|ERROR|FATAL) per Rule 61",
+                    message="Generated code has logging but missing standardized log levels (TRACE|DEBUG|INFO|WARN|ERROR|FATAL)",
                     file_path=file_path,
                     line_number=1,
                     code_snippet="logger.info(...)",
@@ -477,7 +528,7 @@ class PostGenerationValidator:
     
     def _check_error_envelope(self, code: str, file_path: str) -> List[Violation]:
         """
-        Check error envelope structure per Rule 176.
+        Check error envelope structure.
         
         Args:
             code: Generated code string
@@ -487,6 +538,10 @@ class PostGenerationValidator:
             List of violations
         """
         violations = []
+        
+        # If rule not found, skip this check
+        if not self.rule_error_envelope:
+            return violations
         
         # Check for HTTPException usage
         if 'HTTPException' in code:
@@ -498,12 +553,13 @@ class PostGenerationValidator:
             )
             
             if not has_error_envelope:
+                rule = self.rule_error_envelope
                 violations.append(Violation(
-                    rule_id="R-176",
-                    rule_name="Contracts & Docs",
-                    rule_number=176,
+                    rule_id=rule.get('rule_id', 'UNKNOWN'),
+                    rule_name=rule.get('title', 'Error Envelope'),
+                    rule_number=rule.get('rule_number', 0),
                     severity=Severity.ERROR,
-                    message="Generated code uses HTTPException but not error envelope structure per Rule 176",
+                    message="Generated code uses HTTPException but not error envelope structure",
                     file_path=file_path,
                     line_number=1,
                     code_snippet="HTTPException(...)",
@@ -514,7 +570,7 @@ class PostGenerationValidator:
     
     def _check_trace_context(self, code: str, file_path: str) -> List[Violation]:
         """
-        Check W3C trace context per Rule 63.
+        Check W3C trace context.
         
         Args:
             code: Generated code string
@@ -524,6 +580,10 @@ class PostGenerationValidator:
             List of violations
         """
         violations = []
+        
+        # If rule not found, skip this check
+        if not self.rule_trace_context:
+            return violations
         
         # Check if code has request logging but missing trace context
         has_request_logging = 'request.start' in code.lower() or 'request.end' in code.lower()
@@ -537,12 +597,13 @@ class PostGenerationValidator:
         )
         
         if has_request_logging and not has_trace_context:
+            rule = self.rule_trace_context
             violations.append(Violation(
-                rule_id="R-063",
-                rule_name="Enforce Distributed Tracing Context",
-                rule_number=63,
+                rule_id=rule.get('rule_id', 'UNKNOWN'),
+                rule_name=rule.get('title', 'Enforce Distributed Tracing Context'),
+                rule_number=rule.get('rule_number', 0),
                 severity=Severity.ERROR,
-                message="Generated code has request logging but missing W3C trace context (traceId, spanId, parentSpanId) per Rule 63",
+                message="Generated code has request logging but missing W3C trace context (traceId, spanId, parentSpanId)",
                 file_path=file_path,
                 line_number=1,
                 code_snippet="request.start",

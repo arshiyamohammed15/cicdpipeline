@@ -1,0 +1,25 @@
+{
+  "global_settings": {
+    "ai_service_integration": {
+      "enabled": true,
+      "block_on_violation": true,
+      "fail_on_violation": false,
+      "service_endpoint": "https://api.example.com/validate",
+      "timeout_seconds": 30,
+      "retry_count": 3
+    },
+    "validation_mode": "strict",
+    "enforcement_level": "blocker"
+  },
+  "hook_settings": {
+    "pre_commit": {
+      "enabled": true,
+      "validate_on_commit": true
+    },
+    "pre_push": {
+      "enabled": true,
+      "validate_before_push": true
+    }
+  }
+}
+

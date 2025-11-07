@@ -78,10 +78,12 @@ describe('Receipt Flow Integration Test', () => {
         const task = {
             id: 'test-task-001',
             type: 'code_review',
+            priority: 'medium' as const,
             data: {
                 file_path: 'src/example.ts',
                 context: 'pre-commit'
-            }
+            },
+            requirements: {}
         };
 
         const result = await edgeAgent.processTaskWithReceipt(task, testRepoId);
@@ -150,7 +152,9 @@ describe('Receipt Flow Integration Test', () => {
         const task = {
             id: 'test-task-002',
             type: 'validation',
-            data: {}
+            priority: 'medium' as const,
+            data: {},
+            requirements: {}
         };
 
         const result = await edgeAgent.processTaskWithReceipt(task, testRepoId);
@@ -189,7 +193,9 @@ describe('Receipt Flow Integration Test', () => {
         const task = {
             id: 'test-task-003',
             type: 'validation',
-            data: {}
+            priority: 'medium' as const,
+            data: {},
+            requirements: {}
         };
 
         const result = await edgeAgent.processTaskWithReceipt(task, testRepoId);

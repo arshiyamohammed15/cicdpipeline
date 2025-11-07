@@ -51,10 +51,12 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task-001',
                 type: 'code_review',
+                priority: 'medium' as const,
                 data: {
                     file_path: 'src/example.ts',
                     context: 'pre-commit'
-                }
+                },
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -68,7 +70,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -90,7 +94,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: taskData
+                priority: 'medium' as const,
+                data: taskData,
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -106,7 +112,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
             const repoId = 'test-repo-id';
 
@@ -123,7 +131,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -155,7 +165,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -188,7 +200,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -238,7 +252,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -256,7 +272,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -286,7 +304,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -305,7 +325,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -323,7 +345,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -340,7 +364,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -356,7 +382,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -374,7 +402,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -387,7 +417,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: null as any
+                priority: 'medium' as const,
+                data: null as any,
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -402,7 +434,9 @@ describe('EdgeAgent', () => {
         it('should handle task with undefined data (should use empty object)', async () => {
             const task = {
                 id: 'test-task',
-                type: 'validation'
+                type: 'validation',
+                priority: 'medium' as const,
+                requirements: {}
                 // data is undefined
             } as any;
 
@@ -431,7 +465,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: complexData
+                priority: 'medium' as const,
+                data: complexData,
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -447,7 +483,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
             const repoId = 'test-repo-with-dashes';
 
@@ -464,7 +502,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -480,7 +520,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -498,12 +540,16 @@ describe('EdgeAgent', () => {
             const task1 = {
                 id: 'test-task-1',
                 type: 'validation',
-                data: { first: 'receipt' }
+                priority: 'medium' as const,
+                data: { first: 'receipt' },
+                requirements: {}
             };
             const task2 = {
                 id: 'test-task-2',
                 type: 'validation',
-                data: { second: 'receipt' }
+                priority: 'medium' as const,
+                data: { second: 'receipt' },
+                requirements: {}
             };
 
             const result1 = await edgeAgent.processTaskWithReceipt(task1, 'test-repo');
@@ -522,7 +568,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -552,7 +600,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -565,7 +615,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');
@@ -577,7 +629,9 @@ describe('EdgeAgent', () => {
             const task = {
                 id: 'test-task',
                 type: 'validation',
-                data: {}
+                priority: 'medium' as const,
+                data: {},
+                requirements: {}
             };
 
             const result = await edgeAgent.processTaskWithReceipt(task, 'test-repo');

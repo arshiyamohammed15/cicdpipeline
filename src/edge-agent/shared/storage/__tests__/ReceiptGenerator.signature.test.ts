@@ -39,13 +39,21 @@ describe('ReceiptGenerator Signature Implementation', () => {
             // Note: signReceipt receives receipt WITHOUT signature, but WITH all other fields
             const { signature, ...receiptWithoutSig } = receipt;
             
-            // Create canonical JSON manually (sorted keys) - this matches signReceipt implementation
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
-            
-            // Verify canonical JSON is created with sorted keys
-            const expectedCanonical = JSON.stringify(receiptWithoutSig, sortedKeys);
-            expect(canonicalJson).toBe(expectedCanonical);
+            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
+            const toCanonicalJson = (obj: any): string => {
+                if (obj === null || typeof obj !== 'object') {
+                    return JSON.stringify(obj);
+                }
+                if (Array.isArray(obj)) {
+                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+                }
+                const sortedKeys = Object.keys(obj).sort();
+                const entries = sortedKeys.map(key => {
+                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
+                });
+                return '{' + entries.join(',') + '}';
+            };
+            const canonicalJson = toCanonicalJson(receiptWithoutSig);
             
             // Verify signature is computed from canonical JSON
             const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
@@ -63,13 +71,21 @@ describe('ReceiptGenerator Signature Implementation', () => {
 
             const { signature, ...receiptWithoutSig } = receipt;
             
-            // Create canonical JSON manually (sorted keys)
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
-            
-            // Verify canonical JSON is created with sorted keys
-            const expectedCanonical = JSON.stringify(receiptWithoutSig, sortedKeys);
-            expect(canonicalJson).toBe(expectedCanonical);
+            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
+            const toCanonicalJson = (obj: any): string => {
+                if (obj === null || typeof obj !== 'object') {
+                    return JSON.stringify(obj);
+                }
+                if (Array.isArray(obj)) {
+                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+                }
+                const sortedKeys = Object.keys(obj).sort();
+                const entries = sortedKeys.map(key => {
+                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
+                });
+                return '{' + entries.join(',') + '}';
+            };
+            const canonicalJson = toCanonicalJson(receiptWithoutSig);
             
             // Verify signature is computed from canonical JSON
             const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
@@ -210,9 +226,21 @@ describe('ReceiptGenerator Signature Implementation', () => {
             // Extract data without signature (but WITH ID and timestamps - those are part of signed data)
             const { signature: actualSig, ...receiptWithoutSig } = receipt;
 
-            // Create canonical JSON manually (sorted keys) - this matches signReceipt implementation
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
+            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
+            const toCanonicalJson = (obj: any): string => {
+                if (obj === null || typeof obj !== 'object') {
+                    return JSON.stringify(obj);
+                }
+                if (Array.isArray(obj)) {
+                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+                }
+                const sortedKeys = Object.keys(obj).sort();
+                const entries = sortedKeys.map(key => {
+                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
+                });
+                return '{' + entries.join(',') + '}';
+            };
+            const canonicalJson = toCanonicalJson(receiptWithoutSig);
 
             // Compute expected signature (this is what signReceipt does internally)
             const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
@@ -266,9 +294,21 @@ describe('ReceiptGenerator Signature Implementation', () => {
             // Extract receipt data without signature (but WITH ID and timestamps - those are signed)
             const { signature, ...receiptWithoutSig } = receipt;
 
-            // Create canonical JSON manually (sorted keys) - this matches signReceipt implementation
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
+            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
+            const toCanonicalJson = (obj: any): string => {
+                if (obj === null || typeof obj !== 'object') {
+                    return JSON.stringify(obj);
+                }
+                if (Array.isArray(obj)) {
+                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+                }
+                const sortedKeys = Object.keys(obj).sort();
+                const entries = sortedKeys.map(key => {
+                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
+                });
+                return '{' + entries.join(',') + '}';
+            };
+            const canonicalJson = toCanonicalJson(receiptWithoutSig);
 
             // Compute expected hash
             const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
@@ -359,9 +399,21 @@ describe('ReceiptGenerator Signature Implementation', () => {
             const { signature: actualSig, ...receiptWithoutSig } = receipt;
 
             // Manually compute signature from data (without signature field)
-            // This matches the signReceipt implementation
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
+            // This matches the signReceipt implementation using toCanonicalJson
+            const toCanonicalJson = (obj: any): string => {
+                if (obj === null || typeof obj !== 'object') {
+                    return JSON.stringify(obj);
+                }
+                if (Array.isArray(obj)) {
+                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+                }
+                const sortedKeys = Object.keys(obj).sort();
+                const entries = sortedKeys.map(key => {
+                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
+                });
+                return '{' + entries.join(',') + '}';
+            };
+            const canonicalJson = toCanonicalJson(receiptWithoutSig);
             const computedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
             const computedSignature = `sig-${computedHash}`;
 

@@ -8,6 +8,7 @@
 import { ReceiptStorageReader } from '../ReceiptStorageReader';
 import { ReceiptParser } from '../../receipt-parser/ReceiptParser';
 import { DecisionReceipt, FeedbackReceipt } from '../../receipt-parser/ReceiptParser';
+import { ReceiptGenerator } from '../../../../edge-agent/shared/storage/ReceiptGenerator';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
@@ -15,6 +16,7 @@ import * as os from 'os';
 describe('ReceiptStorageReader', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-test-' + Date.now();
     let reader: ReceiptStorageReader;
+    let receiptGenerator: ReceiptGenerator;
     const testRepoId = 'test-repo-id';
 
     beforeEach(() => {
@@ -23,6 +25,7 @@ describe('ReceiptStorageReader', () => {
         }
         process.env.ZU_ROOT = testZuRoot;
         reader = new ReceiptStorageReader(testZuRoot);
+        receiptGenerator = new ReceiptGenerator();
     });
 
     afterEach(() => {
@@ -141,20 +144,34 @@ describe('ReceiptStorageReader', () => {
     });
 
     describe('Read Receipts In Range', () => {
-        const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => ({
-            receipt_id: receiptId,
-            gate_id: 'gate',
-            policy_version_ids: [],
-            snapshot_hash: 'hash',
-            timestamp_utc: date.toISOString(),
-            timestamp_monotonic_ms: date.getTime(),
-            inputs: {},
-            decision: { status: 'pass', rationale: '', badges: [] },
-            evidence_handles: [],
-            actor: { repo_id: testRepoId },
-            degraded: false,
-            signature: 'sig-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' // Valid signature format
-        });
+        const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
+            // Create receipt with ReceiptGenerator for valid signature format
+            const receipt = receiptGenerator.generateDecisionReceipt(
+                'gate',
+                [],
+                'hash',
+                {},
+                { status: 'pass', rationale: '', badges: [] },
+                [],
+                { repo_id: testRepoId },
+                false
+            );
+            // Return receipt with test values but keep valid signature format
+            return {
+                receipt_id: receiptId,
+                gate_id: 'gate',
+                policy_version_ids: [],
+                snapshot_hash: 'hash',
+                timestamp_utc: date.toISOString(),
+                timestamp_monotonic_ms: date.getTime(),
+                inputs: {},
+                decision: { status: 'pass', rationale: '', badges: [] },
+                evidence_handles: [],
+                actor: { repo_id: testRepoId },
+                degraded: false,
+                signature: receipt.signature // Use valid format signature from generator
+            };
+        };
 
         it('should read receipts within date range', async () => {
             const startDate = new Date('2025-01-15');
@@ -183,34 +200,50 @@ describe('ReceiptStorageReader', () => {
         });
 
         it('should handle receipts across multiple months', async () => {
-            const startDate = new Date('2025-01-28');
-            const endDate = new Date('2025-02-05');
+            const startDate = new Date(Date.UTC(2025, 0, 28)); // Jan 28, 2025 UTC
+            const endDate = new Date(Date.UTC(2025, 1, 5)); // Feb 5, 2025 UTC
 
-            const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => ({
-                receipt_id: receiptId,
-                gate_id: 'gate',
-                policy_version_ids: [],
-                snapshot_hash: 'hash',
-                timestamp_utc: date.toISOString(),
-                timestamp_monotonic_ms: date.getTime(),
-                inputs: {},
-                decision: { status: 'pass', rationale: '', badges: [] },
-                evidence_handles: [],
-                actor: { repo_id: testRepoId },
-                degraded: false,
-                signature: 'sig-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' // 64 hex chars
-            });
+            const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
+                // Create receipt with ReceiptGenerator for valid signature format
+                // Then create receipt with test values - signature validation only checks format
+                const receipt = receiptGenerator.generateDecisionReceipt(
+                    'gate',
+                    [],
+                    'hash',
+                    {},
+                    { status: 'pass', rationale: '', badges: [] },
+                    [],
+                    { repo_id: testRepoId },
+                    false
+                );
+                // Return receipt with test values but keep valid signature format
+                // Note: Signature won't match content, but validation only checks format
+                return {
+                    receipt_id: receiptId,
+                    gate_id: 'gate',
+                    policy_version_ids: [],
+                    snapshot_hash: 'hash',
+                    timestamp_utc: date.toISOString(),
+                    timestamp_monotonic_ms: date.getTime(),
+                    inputs: {},
+                    decision: { status: 'pass', rationale: '', badges: [] },
+                    evidence_handles: [],
+                    actor: { repo_id: testRepoId },
+                    degraded: false,
+                    signature: receipt.signature // Use valid format signature from generator
+                };
+            };
 
-            const receipt1 = createReceiptForDate('receipt-1', new Date('2025-01-30'));
-            const receipt2 = createReceiptForDate('receipt-2', new Date('2025-02-02'));
+            const receipt1 = createReceiptForDate('receipt-1', new Date(Date.UTC(2025, 0, 30))); // Jan 30, 2025 UTC
+            const receipt2 = createReceiptForDate('receipt-2', new Date(Date.UTC(2025, 1, 2))); // Feb 2, 2025 UTC
 
-            // Write to both months
-            const receiptDir1 = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
-            const receiptDir2 = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '02');
+            // Write to both months (use forward slashes for consistency with StoragePathResolver)
+            const receiptDir1 = `${testZuRoot}/ide/receipts/${testRepoId}/2025/01`;
+            const receiptDir2 = `${testZuRoot}/ide/receipts/${testRepoId}/2025/02`;
             fs.mkdirSync(receiptDir1, { recursive: true });
             fs.mkdirSync(receiptDir2, { recursive: true });
-            fs.writeFileSync(path.join(receiptDir1, 'receipts.jsonl'), JSON.stringify(receipt1) + '\n');
-            fs.writeFileSync(path.join(receiptDir2, 'receipts.jsonl'), JSON.stringify(receipt2) + '\n');
+            fs.writeFileSync(`${receiptDir1}/receipts.jsonl`, JSON.stringify(receipt1) + '\n');
+            fs.writeFileSync(`${receiptDir2}/receipts.jsonl`, JSON.stringify(receipt2) + '\n');
 
             const receipts = await reader.readReceiptsInRange(testRepoId, startDate, endDate);
 
@@ -224,29 +257,44 @@ describe('ReceiptStorageReader', () => {
             return 'receipt_id' in receipt ? receipt.receipt_id : receipt.feedback_id;
         };
 
-        const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => ({
-            receipt_id: receiptId,
-            gate_id: 'gate',
-            policy_version_ids: [],
-            snapshot_hash: 'hash',
-            timestamp_utc: date.toISOString(),
-            timestamp_monotonic_ms: date.getTime(),
-            inputs: {},
-            decision: { status: 'pass', rationale: '', badges: [] },
-            evidence_handles: [],
-            actor: { repo_id: testRepoId },
-            degraded: false,
-            signature: 'sig-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' // Valid signature format
-        });
+        const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
+            // Create receipt with ReceiptGenerator for valid signature format
+            const receipt = receiptGenerator.generateDecisionReceipt(
+                'gate',
+                [],
+                'hash',
+                {},
+                { status: 'pass', rationale: '', badges: [] },
+                [],
+                { repo_id: testRepoId },
+                false
+            );
+            // Return receipt with test values but keep valid signature format
+            return {
+                receipt_id: receiptId,
+                gate_id: 'gate',
+                policy_version_ids: [],
+                snapshot_hash: 'hash',
+                timestamp_utc: date.toISOString(),
+                timestamp_monotonic_ms: date.getTime(),
+                inputs: {},
+                decision: { status: 'pass', rationale: '', badges: [] },
+                evidence_handles: [],
+                actor: { repo_id: testRepoId },
+                degraded: false,
+                signature: receipt.signature // Use valid format signature from generator
+            };
+        };
 
         it('should return latest receipts sorted by timestamp', async () => {
             const now = new Date();
-            const receipt1 = createReceiptForDate('receipt-1', new Date(now.getTime() - 1000));
-            const receipt2 = createReceiptForDate('receipt-2', new Date(now.getTime() - 500));
-            const receipt3 = createReceiptForDate('receipt-3', now);
+            const nowUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
+            const receipt1 = createReceiptForDate('receipt-1', new Date(nowUTC.getTime() - 1000));
+            const receipt2 = createReceiptForDate('receipt-2', new Date(nowUTC.getTime() - 500));
+            const receipt3 = createReceiptForDate('receipt-3', nowUTC);
 
             // Use forward slashes (consistent with StoragePathResolver)
-            const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${now.getUTCFullYear()}/${(now.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+            const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${nowUTC.getUTCFullYear()}/${(nowUTC.getUTCMonth() + 1).toString().padStart(2, '0')}`;
             fs.mkdirSync(receiptDir, { recursive: true });
             fs.writeFileSync(
                 `${receiptDir}/receipts.jsonl`,
@@ -264,13 +312,14 @@ describe('ReceiptStorageReader', () => {
 
         it('should limit results to specified number', async () => {
             const now = new Date();
+            const nowUTC = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds()));
             const receipts = [];
             for (let i = 0; i < 20; i++) {
-                receipts.push(createReceiptForDate(`receipt-${i}`, new Date(now.getTime() - i * 1000)));
+                receipts.push(createReceiptForDate(`receipt-${i}`, new Date(nowUTC.getTime() - i * 1000)));
             }
 
             // Use forward slashes (consistent with StoragePathResolver)
-            const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${now.getUTCFullYear()}/${(now.getUTCMonth() + 1).toString().padStart(2, '0')}`;
+            const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${nowUTC.getUTCFullYear()}/${(nowUTC.getUTCMonth() + 1).toString().padStart(2, '0')}`;
             fs.mkdirSync(receiptDir, { recursive: true });
             fs.writeFileSync(
                 `${receiptDir}/receipts.jsonl`,

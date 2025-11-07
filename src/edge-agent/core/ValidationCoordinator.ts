@@ -66,6 +66,10 @@ export class ValidationCoordinator {
     private setupValidationRules(): void {
         // Security validation
         this.validationRules.set('security', {
+            name: 'security',
+            description: 'Validates that security checks have passed',
+            severity: 'critical',
+            category: 'security',
             validate: async (result: DelegationResult) => {
                 return result.metadata.securityValidated === true;
             }
@@ -73,6 +77,10 @@ export class ValidationCoordinator {
 
         // Data integrity validation
         this.validationRules.set('integrity', {
+            name: 'integrity',
+            description: 'Validates data integrity checks',
+            severity: 'high',
+            category: 'data-integrity',
             validate: async (result: DelegationResult) => {
                 return result.metadata.dataIntegrity === true;
             }
@@ -80,6 +88,10 @@ export class ValidationCoordinator {
 
         // Performance validation
         this.validationRules.set('performance', {
+            name: 'performance',
+            description: 'Validates performance metrics meet requirements',
+            severity: 'medium',
+            category: 'performance',
             validate: async (result: DelegationResult) => {
                 return result.metadata.performanceMetrics && result.metadata.performanceMetrics.latency < 1000;
             }
@@ -87,6 +99,10 @@ export class ValidationCoordinator {
 
         // Compliance validation
         this.validationRules.set('compliance', {
+            name: 'compliance',
+            description: 'Validates compliance with security and data integrity requirements',
+            severity: 'high',
+            category: 'compliance',
             validate: async (result: DelegationResult) => {
                 // Compliance is validated if security and data integrity are both valid
                 return result.metadata.securityValidated === true && result.metadata.dataIntegrity === true;

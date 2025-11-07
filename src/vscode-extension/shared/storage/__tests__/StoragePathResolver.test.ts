@@ -9,19 +9,26 @@ import { StoragePathResolver } from '../StoragePathResolver';
 import * as os from 'os';
 
 // Mock vscode module - create manual mock
-const mockGetConfiguration = jest.fn();
 const mockGet = jest.fn();
+const mockGetConfiguration = jest.fn(() => ({
+    get: mockGet
+}));
 
 jest.mock('vscode', () => {
+    // Create mock inside factory to avoid hoisting issues
+    const mockGetConfig = jest.fn(() => ({
+        get: jest.fn()
+    }));
     return {
         workspace: {
-            getConfiguration: mockGetConfiguration
+            getConfiguration: mockGetConfig
         }
     };
 }, { virtual: true });
 
-// Import after mocking
+// Get the mock after jest.mock has run
 const vscode = require('vscode');
+const actualMockGetConfiguration = vscode.workspace.getConfiguration;
 
 describe('StoragePathResolver (VS Code Extension)', () => {
     const originalEnv = process.env.ZU_ROOT;
@@ -30,7 +37,7 @@ describe('StoragePathResolver (VS Code Extension)', () => {
     beforeEach(() => {
         process.env.ZU_ROOT = testZuRoot;
         mockGet.mockReturnValue(undefined);
-        mockGetConfiguration.mockReturnValue({
+        actualMockGetConfiguration.mockReturnValue({
             get: mockGet
         });
     });
@@ -59,7 +66,7 @@ describe('StoragePathResolver (VS Code Extension)', () => {
             delete process.env.ZU_ROOT;
             const configZuRoot = '/config/zeroui';
             mockGet.mockReturnValue(configZuRoot);
-            mockGetConfiguration.mockReturnValue({
+            actualMockGetConfiguration.mockReturnValue({
                 get: mockGet
             });
 
@@ -76,7 +83,7 @@ describe('StoragePathResolver (VS Code Extension)', () => {
         it('should throw error if ZU_ROOT is not set anywhere', () => {
             delete process.env.ZU_ROOT;
             mockGet.mockReturnValue('');
-            mockGetConfiguration.mockReturnValue({
+            actualMockGetConfiguration.mockReturnValue({
                 get: mockGet
             });
 
@@ -93,7 +100,7 @@ describe('StoragePathResolver (VS Code Extension)', () => {
 
         it('should resolve receipt path with YYYY/MM partitioning', () => {
             const result = resolver.resolveReceiptPath('my-repo', 2025, 10);
-            expect(result).toContain('/ide/receipts/my-repo/2025/10/');
+            expect(result).toContain('/ide/receipts/my-repo/2025/10');
         });
 
         it('should validate kebab-case repo-id', () => {

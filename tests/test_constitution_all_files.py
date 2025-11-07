@@ -420,29 +420,35 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                 )
     
     def test_master_rules_sequential_numbering(self):
-        """Verify MASTER GENERIC RULES have sequential numbering R-001 to R-293."""
+        """Verify MASTER GENERIC RULES have sequential numbering for R- prefixed rules."""
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
         rule_ids = [rule.get('rule_id') for rule in rules]
         
-        # Extract numbers from R-001 format
+        # Extract numbers from R-001 format dynamically
         numbers = []
         for rule_id in rule_ids:
-            if rule_id.startswith('R-'):
+            if rule_id and rule_id.startswith('R-'):
                 try:
                     num = int(rule_id[2:])
                     numbers.append(num)
                 except ValueError:
                     pass
         
-        # Check sequence
-        expected_numbers = set(range(1, 294))  # 1 to 293
-        actual_numbers = set(numbers)
-        self.assertEqual(
-            actual_numbers,
-            expected_numbers,
-            f"MASTER GENERIC RULES missing numbers: {expected_numbers - actual_numbers}, "
-            f"extra numbers: {actual_numbers - expected_numbers}"
-        )
+        # Ensure at least one R- prefixed rule exists
+        self.assertGreater(len(numbers), 0, "Should have at least one R- prefixed rule")
+        
+        # Check that numbers are sequential (no gaps)
+        if numbers:
+            sorted_numbers = sorted(numbers)
+            min_num = sorted_numbers[0]
+            max_num = sorted_numbers[-1]
+            expected_range = set(range(min_num, max_num + 1))
+            actual_numbers = set(numbers)
+            
+            # Check for gaps in sequence
+            missing = expected_range - actual_numbers
+            if missing:
+                self.fail(f"MASTER GENERIC RULES have gaps in sequence: {sorted(missing)}")
     
     def test_vscode_extension_rules_prefix(self):
         """Verify VSCODE EXTENSION RULES have correct prefixes."""

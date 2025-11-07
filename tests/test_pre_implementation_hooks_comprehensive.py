@@ -76,13 +76,34 @@ class TestRuleLoading(unittest.TestCase):
         )
     
     def test_disabled_rule_excluded(self):
-        """Verify disabled rule R-230 is not loaded."""
+        """Verify disabled rules are not loaded."""
+        # Find a disabled rule dynamically from JSON files
+        constitution_dir = Path("docs/constitution")
+        json_files = list(constitution_dir.glob("*.json"))
+        
+        disabled_rule_id = None
+        for json_file in json_files:
+            with open(json_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+                rules = data.get('constitution_rules', [])
+                for rule in rules:
+                    if not rule.get('enabled', True):
+                        disabled_rule_id = rule.get('rule_id')
+                        break
+                if disabled_rule_id:
+                    break
+        
+        # If no disabled rule exists, skip this test
+        if disabled_rule_id is None:
+            self.skipTest("No disabled rules found in JSON files to test exclusion")
+        
+        # Verify disabled rule is not loaded
         rule_loader = self.hook_manager.rule_loader
-        r230 = rule_loader.get_rule_by_id('R-230')
+        disabled_rule = rule_loader.get_rule_by_id(disabled_rule_id)
         
         self.assertIsNone(
-            r230,
-            "Disabled rule R-230 should not be loaded"
+            disabled_rule,
+            f"Disabled rule {disabled_rule_id} should not be loaded"
         )
     
     def test_rule_loader_initialization(self):

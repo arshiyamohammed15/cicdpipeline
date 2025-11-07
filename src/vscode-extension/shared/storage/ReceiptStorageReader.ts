@@ -114,12 +114,22 @@ export class ReceiptStorageReader {
         const allReceipts: Array<DecisionReceipt | FeedbackReceipt> = [];
 
         // Iterate through months in range
-        const currentDate = new Date(startDate);
-        while (currentDate <= endDate) {
-            const year = currentDate.getUTCFullYear();
-            const month = currentDate.getUTCMonth() + 1;
+        const startYear = startDate.getUTCFullYear();
+        const startMonth = startDate.getUTCMonth() + 1;
+        const endYear = endDate.getUTCFullYear();
+        const endMonth = endDate.getUTCMonth() + 1;
 
-            const receipts = await this.readReceipts(repoId, year, month);
+        // Calculate number of months to iterate
+        const startMonthIndex = startYear * 12 + startMonth;
+        const endMonthIndex = endYear * 12 + endMonth;
+
+        for (let monthIndex = startMonthIndex; monthIndex <= endMonthIndex; monthIndex++) {
+            const year = Math.floor(monthIndex / 12);
+            const month = monthIndex % 12;
+            const actualMonth = month === 0 ? 12 : month;
+            const actualYear = month === 0 ? year - 1 : year;
+
+            const receipts = await this.readReceipts(repoId, actualYear, actualMonth);
             
             // Filter receipts by date range
             for (const receipt of receipts) {
@@ -128,9 +138,6 @@ export class ReceiptStorageReader {
                     allReceipts.push(receipt);
                 }
             }
-
-            // Move to next month
-            currentDate.setUTCMonth(currentDate.getUTCMonth() + 1);
         }
 
         return allReceipts;
@@ -152,7 +159,7 @@ export class ReceiptStorageReader {
         // Read from current month and previous months (up to 12 months back)
         const now = new Date();
         for (let i = 0; i < 12; i++) {
-            const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+            const date = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - i, 1));
             const year = date.getUTCFullYear();
             const month = date.getUTCMonth() + 1;
 
@@ -196,9 +203,19 @@ export class ReceiptStorageReader {
             return false;
         }
 
-        // Check signature format (should start with 'sig-' or be base64/hex)
-        if (!receipt.signature.startsWith('sig-') && 
-            !/^[A-Za-z0-9+/=]+$/.test(receipt.signature) && 
+        // Check signature format (should start with 'sig-' followed by 64 hex chars, or be base64/hex)
+        if (receipt.signature.startsWith('sig-')) {
+            // Format: sig-{64_hex_chars}
+            const hashPart = receipt.signature.substring(4);
+            if (!/^[0-9a-f]{64}$/i.test(hashPart)) {
+                console.warn(`Receipt signature format invalid: ${receipt.signature} (expected sig-{64_hex_chars})`);
+                return false;
+            }
+            return true;
+        }
+        
+        // Check if it's base64 or hex format
+        if (!/^[A-Za-z0-9+/=]+$/.test(receipt.signature) && 
             !/^[0-9a-fA-F]+$/.test(receipt.signature)) {
             console.warn('Receipt signature has invalid format');
             return false;

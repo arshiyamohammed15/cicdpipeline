@@ -112,7 +112,6 @@ inline-quotes = "double"
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pytest.ini_options]
-testpaths = ["validator/rules/tests","gsmd/gsmd/modules","tests/foundation"]
 addopts = "-q"
 python_files = [
     "test_*.py",
