@@ -128,7 +128,11 @@
         },
         "zeroui.preferredAIService": {
           "type": "string",
-          "enum": ["openai", "cursor", "claude"],
+          "enum": [
+            "openai",
+            "cursor",
+            "claude"
+          ],
           "default": "openai",
           "description": "Preferred AI service for code generation"
         },
@@ -153,13 +157,16 @@
     "test:validate-hermetic": "node test/validate-hermetic.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.70.0",
-    "@types/node": "16.x",
+    "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.1",
+    "@types/node": "16.x",
+    "@types/vscode": "^1.70.0",
     "@vscode/test-electron": "^2.3.0",
     "mocha": "^10.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^1.7.7"
+  }
 }

@@ -8,7 +8,7 @@
 import { ReceiptStorageReader } from '../ReceiptStorageReader';
 import { ReceiptParser } from '../../receipt-parser/ReceiptParser';
 import { DecisionReceipt, FeedbackReceipt } from '../../receipt-parser/ReceiptParser';
-import { ReceiptGenerator } from '../../../../edge-agent/shared/storage/ReceiptGenerator';
+import { ReceiptGenerator } from '../ReceiptGenerator';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';

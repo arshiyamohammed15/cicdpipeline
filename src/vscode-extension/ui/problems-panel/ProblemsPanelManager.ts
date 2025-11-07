@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 export class ProblemsPanelManager implements vscode.Disposable {
-    private problemsProvider: vscode.TreeDataProvider<any>;
+    private readonly problemsProvider: ProblemsProvider;
     private problemsView: vscode.TreeView<any>;
 
     constructor() {
@@ -54,7 +54,7 @@ class ProblemsProvider implements vscode.TreeDataProvider<any> {
     }
 
     public refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 
     public addProblem(problem: any): void {

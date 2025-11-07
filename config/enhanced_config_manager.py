@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from functools import lru_cache
 
-from .rule_registry import get_rule_metadata
+from validator.rule_registry import get_rule_metadata
 
 class EnhancedConfigManager:
     """

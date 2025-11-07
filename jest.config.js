@@ -19,6 +19,14 @@ module.exports = {
         '!src/**/*.d.ts',
         '!src/**/__tests__/**'
     ],
+    modulePathIgnorePatterns: [
+        '<rootDir>/src/vscode-extension/out',
+        '<rootDir>/src/vscode-extension/test'
+    ],
+    testPathIgnorePatterns: [
+        '/node_modules/',
+        '<rootDir>/src/vscode-extension/test/'
+    ],
     coverageDirectory: 'coverage',
     coverageReporters: ['text', 'lcov', 'html'],
     moduleFileExtensions: ['ts', 'js', 'json'],

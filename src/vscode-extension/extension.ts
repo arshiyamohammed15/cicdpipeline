@@ -102,14 +102,14 @@ import { DetectionEngineCoreExtensionInterface } from './ui/detection-engine-cor
 import { LegacySystemsSafetyExtensionInterface } from './ui/legacy-systems-safety/ExtensionInterface';
 import { TechnicalDebtAccumulationExtensionInterface } from './ui/technical-debt-accumulation/ExtensionInterface';
 import { MergeConflictsDelaysExtensionInterface } from './ui/merge-conflicts-delays/ExtensionInterface';
-import { ComplianceSecurityChallengesExtensionInterface } from './ui/compliance-security-challenges/ExtensionInterface';
+import { ComplianceSecurityExtensionInterface } from './ui/compliance-security-challenges/ExtensionInterface';
 import { IntegrationAdaptersExtensionInterface } from './ui/integration-adapters/ExtensionInterface';
 import { FeatureDevelopmentBlindSpotsExtensionInterface } from './ui/feature-development-blind-spots/ExtensionInterface';
 import { KnowledgeSiloPreventionExtensionInterface } from './ui/knowledge-silo-prevention/ExtensionInterface';
 import { MonitoringObservabilityGapsExtensionInterface } from './ui/monitoring-observability-gaps/ExtensionInterface';
 import { ClientAdminDashboardExtensionInterface } from './ui/client-admin-dashboard/ExtensionInterface';
 import { ProductSuccessMonitoringExtensionInterface } from './ui/product-success-monitoring/ExtensionInterface';
-import { ROIDashboardExtensionInterface } from './ui/roi-dashboard/ExtensionInterface';
+import { RoiDashboardExtensionInterface } from './ui/roi-dashboard/ExtensionInterface';
 import { GoldStandardsExtensionInterface } from './ui/gold-standards/ExtensionInterface';
 import { KnowledgeIntegrityDiscoveryExtensionInterface } from './ui/knowledge-integrity-discovery/ExtensionInterface';
 import { ReportingExtensionInterface } from './ui/reporting/ExtensionInterface';
@@ -140,14 +140,14 @@ export function activate(context: vscode.ExtensionContext) {
     const legacySystemsSafetyInterface = new LegacySystemsSafetyExtensionInterface();
     const technicalDebtAccumulationInterface = new TechnicalDebtAccumulationExtensionInterface();
     const mergeConflictsDelaysInterface = new MergeConflictsDelaysExtensionInterface();
-    const complianceSecurityChallengesInterface = new ComplianceSecurityChallengesExtensionInterface();
+    const complianceSecurityInterface = new ComplianceSecurityExtensionInterface();
     const integrationAdaptersInterface = new IntegrationAdaptersExtensionInterface();
     const featureDevelopmentBlindSpotsInterface = new FeatureDevelopmentBlindSpotsExtensionInterface();
     const knowledgeSiloPreventionInterface = new KnowledgeSiloPreventionExtensionInterface();
     const monitoringObservabilityGapsInterface = new MonitoringObservabilityGapsExtensionInterface();
     const clientAdminDashboardInterface = new ClientAdminDashboardExtensionInterface();
     const productSuccessMonitoringInterface = new ProductSuccessMonitoringExtensionInterface();
-    const roiDashboardInterface = new ROIDashboardExtensionInterface();
+    const roiDashboardInterface = new RoiDashboardExtensionInterface();
     const goldStandardsInterface = new GoldStandardsExtensionInterface();
     const knowledgeIntegrityDiscoveryInterface = new KnowledgeIntegrityDiscoveryExtensionInterface();
     const reportingInterface = new ReportingExtensionInterface();
@@ -245,8 +245,8 @@ export function activate(context: vscode.ExtensionContext) {
     technicalDebtAccumulationInterface.registerViews(context);
     mergeConflictsDelaysInterface.registerCommands(context);
     mergeConflictsDelaysInterface.registerViews(context);
-    complianceSecurityChallengesInterface.registerCommands(context);
-    complianceSecurityChallengesInterface.registerViews(context);
+    complianceSecurityInterface.registerCommands(context);
+    complianceSecurityInterface.registerViews(context);
     integrationAdaptersInterface.registerCommands(context);
     integrationAdaptersInterface.registerViews(context);
     featureDevelopmentBlindSpotsInterface.registerCommands(context);
@@ -292,7 +292,7 @@ export function activate(context: vscode.ExtensionContext) {
         legacySystemsSafetyInterface,
         technicalDebtAccumulationInterface,
         mergeConflictsDelaysInterface,
-        complianceSecurityChallengesInterface,
+        complianceSecurityInterface,
         integrationAdaptersInterface,
         featureDevelopmentBlindSpotsInterface,
         knowledgeSiloPreventionInterface,
