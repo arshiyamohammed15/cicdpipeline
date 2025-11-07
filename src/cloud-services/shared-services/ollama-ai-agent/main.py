@@ -47,8 +47,12 @@ async def lifespan(app: FastAPI):
     """
     # Startup: Start Ollama service
     logger.info("Starting Ollama AI Agent service...")
-    if ollama_manager.start():
-        logger.info("Ollama service started successfully")
+    start_result = ollama_manager.start()
+    if start_result:
+        if ollama_manager.using_existing:
+            logger.info("Ollama service is available (using existing instance - will stop when FastAPI stops)")
+        else:
+            logger.info("Ollama service started successfully by FastAPI")
     else:
         logger.warning("Ollama service could not be started automatically. It may already be running.")
     

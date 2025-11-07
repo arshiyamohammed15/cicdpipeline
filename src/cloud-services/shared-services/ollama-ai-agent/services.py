@@ -171,6 +171,8 @@ class OllamaAIService:
                     "eval_count": result.get("eval_count")
                 }
             )
+        except requests.exceptions.Timeout:
+            raise Exception(f"Ollama request timed out after {self.timeout}s. The model may be taking too long to generate or may be unresponsive. Try: 1) Restart Ollama service, 2) Check if model is loaded correctly, 3) Try a simpler prompt.")
         except requests.exceptions.RequestException as exc:
             raise Exception(f"Failed to communicate with Ollama service: {str(exc)}")
         except Exception as exc:

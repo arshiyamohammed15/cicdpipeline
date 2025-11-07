@@ -18,7 +18,70 @@ import time
 import socket
 from pathlib import Path
 from typing import Optional, Dict, Any
+from datetime import datetime, timezone, timedelta
 import requests
+
+
+def convert_to_ist(timestamp_str: str) -> str:
+    """
+    Convert UTC timestamp string to IST (Indian Standard Time, UTC+5:30).
+    
+    Args:
+        timestamp_str: ISO format timestamp string (e.g., "2025-11-07T01:03:53.997166")
+    
+    Returns:
+        Timestamp string in IST format
+    """
+    try:
+        # Parse the timestamp (assume UTC if no timezone info)
+        if timestamp_str.endswith('Z') or '+' in timestamp_str or timestamp_str.count('-') > 2:
+            # Has timezone info
+            dt = datetime.fromisoformat(timestamp_str.replace('Z', '+00:00'))
+        else:
+            # No timezone info, assume UTC
+            dt = datetime.fromisoformat(timestamp_str).replace(tzinfo=timezone.utc)
+        
+        # Convert to IST (UTC+5:30)
+        ist_offset = timedelta(hours=5, minutes=30)
+        ist_timezone = timezone(ist_offset)
+        ist_dt = dt.astimezone(ist_timezone)
+        
+        # Format as readable string
+        return ist_dt.strftime("%Y-%m-%d %H:%M:%S IST")
+    except Exception:
+        # If conversion fails, return original with IST label
+        return f"{timestamp_str} (IST conversion failed)"
+
+
+def format_duration(nanoseconds: int) -> str:
+    """
+    Convert nanoseconds to human-readable duration format (HH:MM:SS.mmm or equivalent).
+    
+    Args:
+        nanoseconds: Duration in nanoseconds
+    
+    Returns:
+        Formatted duration string (e.g., "00:00:09.066", "00:00:00.045", "01:23:45.123")
+    """
+    try:
+        # Convert nanoseconds to seconds (with milliseconds precision)
+        total_seconds = nanoseconds / 1_000_000_000.0
+        
+        # Calculate hours, minutes, seconds
+        hours = int(total_seconds // 3600)
+        minutes = int((total_seconds % 3600) // 60)
+        seconds = total_seconds % 60
+        
+        # Format with milliseconds (3 decimal places)
+        if hours > 0:
+            return f"{hours:02d}:{minutes:02d}:{seconds:06.3f}"
+        elif minutes > 0:
+            return f"{minutes:02d}:{seconds:06.3f}"
+        else:
+            return f"{seconds:.3f}s"
+    except Exception:
+        # If conversion fails, return original value
+        return f"{nanoseconds}ns"
 
 
 class LLMCLI:
@@ -183,11 +246,17 @@ class LLMCLI:
         if "model" in response:
             output.append(f"\nModel: {response['model']}")
         if "timestamp" in response:
-            output.append(f"Timestamp: {response['timestamp']}")
+            ist_timestamp = convert_to_ist(response['timestamp'])
+            output.append(f"Timestamp: {ist_timestamp}")
         if "metadata" in response and response["metadata"]:
             output.append(f"\nMetadata:")
             for key, value in response["metadata"].items():
-                output.append(f"  {key}: {value}")
+                # Format duration fields (total_duration, load_duration, etc.)
+                if key.endswith("_duration") and isinstance(value, (int, float)):
+                    formatted_value = format_duration(int(value))
+                    output.append(f"  {key}: {formatted_value}")
+                else:
+                    output.append(f"  {key}: {value}")
 
         return "\n".join(output)
 
@@ -209,9 +278,9 @@ class LLMCLI:
         if "error" in health:
             error_msg = health.get("message", "Unknown error")
             suggestion = health.get("suggestion", "")
-            result = f"❌ Health check failed: {error_msg}"
+            result = f"[FAIL] Health check failed: {error_msg}"
             if suggestion:
-                result += f"\n💡 {suggestion}"
+                result += f"\n[INFO] {suggestion}"
             return result
 
         status = health.get("status", "unknown")
@@ -220,9 +289,10 @@ class LLMCLI:
 
         output = []
         output.append(f"Service Status: {status.upper()}")
-        output.append(f"Ollama Available: {'✅ Yes' if ollama_available else '❌ No'}")
+        output.append(f"Ollama Available: {'[OK] Yes' if ollama_available else '[FAIL] No'}")
         if timestamp:
-            output.append(f"Timestamp: {timestamp}")
+            ist_timestamp = convert_to_ist(str(timestamp))
+            output.append(f"Timestamp: {ist_timestamp}")
 
         return "\n".join(output)
 

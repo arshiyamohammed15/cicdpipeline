@@ -13,6 +13,7 @@ import json
 import logging
 import subprocess
 import time
+import re
 from pathlib import Path
 from typing import Optional, Dict, Any
 import requests
@@ -77,11 +78,25 @@ def _get_ollama_executable_path() -> Optional[str]:
     if executable_path and Path(executable_path).exists():
         return executable_path
     
-    # Try default location
+    # Try default location with ZU_ROOT if set
     if zu_root:
         default_path = Path(zu_root) / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
         if default_path.exists():
             return str(default_path)
+    
+    # Try default ZU_ROOT location even if environment variable not set
+    # Default ZU_ROOT is typically D:\ZeroUI\development (per project configuration)
+    default_zu_root = "D:\\ZeroUI\\development"
+    default_path = Path(default_zu_root) / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
+    if default_path.exists():
+        return str(default_path)
+    
+    # Fallback: try project root (for development/testing)
+    current_file = Path(__file__)
+    project_root = current_file.parent.parent.parent.parent.parent.parent
+    fallback_path = project_root / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
+    if fallback_path.exists():
+        return str(fallback_path)
     
     return None
 
@@ -108,12 +123,103 @@ def _is_ollama_running(base_url: str = "http://localhost:11434") -> bool:
         return False
 
 
+def _get_port_from_url(base_url: str) -> int:
+    """
+    Extract port number from base URL.
+
+    Args:
+        base_url: Base URL (e.g., "http://localhost:11434")
+
+    Returns:
+        Port number, or default 11434 if not found
+    """
+    try:
+        # Extract port from URL (e.g., "http://localhost:11434" -> 11434)
+        match = re.search(r':(\d+)(?:/|$)', base_url)
+        if match:
+            return int(match.group(1))
+    except Exception:
+        pass
+    return 11434  # Default Ollama port
+
+
+def _find_ollama_process_by_port(port: int) -> Optional[int]:
+    """
+    Find Ollama process ID using the specified port.
+
+    Args:
+        port: Port number to check
+
+    Returns:
+        Process ID if found, None otherwise
+    """
+    try:
+        # Use netstat to find process using the port
+        result = subprocess.run(
+            ["netstat", "-ano"],
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        
+        if result.returncode == 0:
+            # Parse netstat output to find LISTENING on the port
+            for line in result.stdout.split('\n'):
+                if f':{port}' in line and 'LISTENING' in line:
+                    # Extract PID (last column)
+                    parts = line.strip().split()
+                    if len(parts) > 0:
+                        try:
+                            pid = int(parts[-1])
+                            return pid
+                        except (ValueError, IndexError):
+                            continue
+    except Exception as e:
+        logger.warning(f"Failed to find Ollama process on port {port}: {e}")
+    
+    return None
+
+
+def _kill_process_by_pid(pid: int) -> bool:
+    """
+    Kill a process by its PID.
+
+    Args:
+        pid: Process ID to kill
+
+    Returns:
+        True if successful, False otherwise
+    """
+    try:
+        if os.name == 'nt':  # Windows
+            result = subprocess.run(
+                ["taskkill", "/PID", str(pid), "/F"],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            return result.returncode == 0
+        else:  # Unix-like
+            result = subprocess.run(
+                ["kill", "-9", str(pid)],
+                capture_output=True,
+                text=True,
+                timeout=10
+            )
+            return result.returncode == 0
+    except Exception as e:
+        logger.warning(f"Failed to kill process {pid}: {e}")
+        return False
+
+
 class OllamaProcessManager:
     """Manages Ollama process lifecycle."""
 
     def __init__(self):
         """Initialize the Ollama process manager."""
         self.process: Optional[subprocess.Popen] = None
+        self.started_by_us: bool = False  # Track if we started Ollama
+        self.using_existing: bool = False  # Track if we're using an existing Ollama instance
         self.config = _load_shared_services_config("ollama")
         self.base_url = self.config.get("base_url", "http://localhost:11434")
         self.auto_start = self.config.get("auto_start", True)
@@ -128,7 +234,9 @@ class OllamaProcessManager:
         """
         # Check if already running
         if _is_ollama_running(self.base_url):
-            logger.info("Ollama service is already running")
+            logger.info("Ollama service is already running (using existing instance)")
+            self.using_existing = True  # Mark that we're using an existing instance
+            # Don't set started_by_us = True since we didn't start it
             return True
 
         # Check if auto_start is enabled
@@ -169,10 +277,12 @@ class OllamaProcessManager:
             for attempt in range(max_attempts):
                 if _is_ollama_running(self.base_url):
                     logger.info("Ollama service started successfully")
+                    self.started_by_us = True  # Mark that we started it
                     return True
                 time.sleep(1)
 
             logger.warning("Ollama process started but service not yet available")
+            self.started_by_us = True  # Mark that we started it
             return True  # Process is running, may just need more time
 
         except Exception as e:
@@ -180,10 +290,17 @@ class OllamaProcessManager:
             return False
 
     def stop(self) -> None:
-        """Stop the Ollama process."""
+        """
+        Stop the Ollama process.
+        
+        Ensures FastAPI and Ollama stay in sync by:
+        1. Stopping the process we started (if any)
+        2. Finding and stopping any Ollama process on the configured port (even if using existing instance)
+        """
+        # Step 1: Stop the process we started (if any)
         if self.process:
             try:
-                logger.info("Stopping Ollama service")
+                logger.info("Stopping Ollama service (process started by FastAPI)")
                 self.process.terminate()
                 try:
                     self.process.wait(timeout=5)
@@ -192,9 +309,42 @@ class OllamaProcessManager:
                     self.process.kill()
                     self.process.wait()
                 self.process = None
-                logger.info("Ollama service stopped")
+                logger.info("Ollama service stopped (process started by FastAPI)")
             except Exception as e:
                 logger.error(f"Error stopping Ollama service: {e}")
+        
+        # Step 2: Ensure Ollama is stopped on the configured port
+        # This is critical for sync - even if we used an existing instance, we must stop it
+        if _is_ollama_running(self.base_url):
+            if self.using_existing:
+                logger.info("Stopping existing Ollama instance to stay in sync with FastAPI shutdown")
+            else:
+                logger.info("Ollama service still running on configured port, stopping it to stay in sync with FastAPI")
+            
+            port = _get_port_from_url(self.base_url)
+            pid = _find_ollama_process_by_port(port)
+            
+            if pid:
+                logger.info(f"Found Ollama process {pid} on port {port}, stopping it")
+                if _kill_process_by_pid(pid):
+                    logger.info(f"Successfully stopped Ollama process {pid}")
+                    # Wait a moment and verify it's stopped
+                    time.sleep(1)
+                    if not _is_ollama_running(self.base_url):
+                        logger.info("Ollama service confirmed stopped - FastAPI and Ollama are now in sync")
+                    else:
+                        logger.warning("Ollama service may still be running after kill attempt")
+                else:
+                    logger.warning(f"Failed to stop Ollama process {pid}")
+            else:
+                logger.warning(f"Could not find Ollama process on port {port}")
+        else:
+            if self.using_existing or self.started_by_us:
+                logger.info("Ollama service already stopped - FastAPI and Ollama are in sync")
+        
+        # Reset tracking flags
+        self.started_by_us = False
+        self.using_existing = False
 
     def is_running(self) -> bool:
         """
