@@ -3,18 +3,18 @@
 Privacy & Security Rules Validator
 
 Validates code against privacy and security principles:
-- Rule 3: Protect people's privacy
-- Rule 11: Check your data
-- Rule 12: Keep AI safe
-- Rule 27: Be smart about data
-- Rule 36: Be extra careful with private data
+- Protect people's privacy
+- Check your data
+- Keep AI safe
+- Be smart about data
+- Be extra careful with private data
 """
 
 import ast
 import re
 from typing import List
-from ..models import Violation, Severity
-from ..base_validator import BaseRuleValidator
+from..models import Violation, Severity
+from..base_validator import BaseRuleValidator
 
 
 class PrivacyValidator(BaseRuleValidator):
@@ -32,7 +32,7 @@ class PrivacyValidator(BaseRuleValidator):
     
     def validate_protect_privacy(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for privacy violations (Rule 3).
+        Check for privacy violations.
         
         Args:
             tree: AST tree of the code
@@ -57,7 +57,6 @@ class PrivacyValidator(BaseRuleValidator):
             for match in re.finditer(pattern, content, re.IGNORECASE):
                 line_number = content[:match.start()].count('\n') + 1
                 violations.append(self.create_violation(
-                    rule_number=3,
                     rule_name="Protect people's privacy",
                     severity=Severity.ERROR,
                     message="Hardcoded credentials/API key detected - security risk",
@@ -81,7 +80,6 @@ class PrivacyValidator(BaseRuleValidator):
             for match in re.finditer(pattern, content, re.IGNORECASE):
                 line_number = content[:match.start()].count('\n') + 1
                 violations.append(self.create_violation(
-                    rule_number=3,
                     rule_name="Protect people's privacy",
                     severity=Severity.ERROR,
                     message="Personal data detected - ensure proper data classification",
@@ -96,7 +94,7 @@ class PrivacyValidator(BaseRuleValidator):
     
     def validate_check_data(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for data validation (Rule 11).
+        Check for data validation.
         
         Args:
             tree: AST tree of the code
@@ -119,7 +117,6 @@ class PrivacyValidator(BaseRuleValidator):
             
             if not has_validation:
                 violations.append(self.create_violation(
-                    rule_number=11,
                     rule_name="Check your data",
                     severity=Severity.WARNING,
                     message="Input detected without validation",
@@ -134,7 +131,7 @@ class PrivacyValidator(BaseRuleValidator):
     
     def validate_keep_ai_safe(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for AI safety (Rule 12).
+        Check for AI safety.
         
         Args:
             tree: AST tree of the code
@@ -157,7 +154,6 @@ class PrivacyValidator(BaseRuleValidator):
             
             if not has_safety:
                 violations.append(self.create_violation(
-                    rule_number=12,
                     rule_name="Keep AI safe",
                     severity=Severity.WARNING,
                     message="AI code detected without safety measures",
@@ -172,7 +168,7 @@ class PrivacyValidator(BaseRuleValidator):
     
     def validate_smart_data_handling(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for smart data handling (Rule 27).
+        Check for smart data handling.
         
         Args:
             tree: AST tree of the code
@@ -195,7 +191,6 @@ class PrivacyValidator(BaseRuleValidator):
             
             if not has_optimization:
                 violations.append(self.create_violation(
-                    rule_number=27,
                     rule_name="Be smart about data",
                     severity=Severity.INFO,
                     message="Data operations detected without optimization",
@@ -210,7 +205,7 @@ class PrivacyValidator(BaseRuleValidator):
     
     def validate_extra_careful_private_data(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for extra care with private data (Rule 36).
+        Check for extra care with private data.
         
         Args:
             tree: AST tree of the code
@@ -233,7 +228,6 @@ class PrivacyValidator(BaseRuleValidator):
             
             if not has_encryption:
                 violations.append(self.create_violation(
-                    rule_number=36,
                     rule_name="Be extra careful with private data",
                     severity=Severity.WARNING,
                     message="Private data detected without encryption",

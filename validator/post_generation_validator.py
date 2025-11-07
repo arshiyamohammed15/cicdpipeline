@@ -153,7 +153,6 @@ class PostGenerationValidator:
             violation = Violation(
                 rule_id="SYNTAX_ERROR",
                 rule_name="Syntax Error in Generated Code",
-                rule_number=0,
                 severity=Severity.ERROR,
                 message=f"Generated code has syntax error: {e.msg}",
                 file_path=file_path or "generated_code",
@@ -634,7 +633,6 @@ class PostGenerationValidator:
                         violations.append(Violation(
                             rule_id="TYPE_HINT_MISSING",
                             rule_name="Missing Type Hints",
-                            rule_number=0,
                             severity=Severity.WARNING,
                             message=f"Function {node.name} missing return type hint",
                             file_path=file_path,

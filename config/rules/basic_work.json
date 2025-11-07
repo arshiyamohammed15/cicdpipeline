@@ -2,5 +2,14 @@
   "category": "basic_work",
   "priority": "critical",
   "description": "Core principles for all development work",
-  "rules": [4, 5, 10, 13, 20]
+  "rules": [
+    "Only Use Information You're Given",
+    "Protect People's Privacy",
+    "Use Settings Files, Not Hardcoded Numbers",
+    "Keep Good Records",
+    "Keep Good Records + Keep Good Logs",
+    "Be Honest About AI Decisions",
+    "Learn from Mistakes",
+    "Be Fair to Everyone"
+  ]
 }

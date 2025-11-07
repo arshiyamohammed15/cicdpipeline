@@ -3,19 +3,15 @@
   "priority": "critical",
   "description": "Logging standards and troubleshooting",
   "rules": [
-    43,
-    63,
-    64,
-    65,
-    66,
-    67,
-    68,
-    69,
-    70,
-    71,
-    72,
-    73,
-    74,
-    75
+    "Logs are structured JSON with required fields and schema version",
+    "ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps",
+    "Include monotonic_hw_time_ms for ordering; UTF-8 encoding only",
+    "Use ISO-8601 UTC timestamps",
+    "App logs ≥ 14 days locally; receipts ≥ 90 days",
+    "Rotate at 100MB; keep last 10 files locally",
+    "Logging overhead < 5% CPU; sampling for chatty events",
+    "Test log generation and validation in unit tests",
+    "Document logging schema and field meanings",
+    "Ensure logs meet compliance requirements and audit standards"
   ]
 }

@@ -12,6 +12,11 @@ from typing import List, Dict, Any, Optional, Set
 from abc import ABC, abstractmethod
 
 from .models import Violation, Severity
+from .rule_registry import (
+    RuleMetadata,
+    get_rule_metadata,
+    slugify_rule_name,
+)
 
 
 class BaseRuleValidator(ABC):
@@ -60,16 +65,25 @@ class BaseRuleValidator(ABC):
         """
         pass
     
-    def create_violation(self, rule_number: int, rule_name: str, severity: Severity,
-                        message: str, file_path: str, line_number: int,
-                        column_number: int, code_snippet: str,
-                        fix_suggestion: str = None) -> Violation:
+    def create_violation(
+        self,
+        *,
+        rule: Optional[RuleMetadata] = None,
+        rule_name: Optional[str] = None,
+        severity: Severity,
+        message: str,
+        file_path: str,
+        line_number: int,
+        column_number: int,
+        code_snippet: str,
+        fix_suggestion: Optional[str] = None,
+    ) -> Violation:
         """
         Create a violation with consistent formatting.
         
         Args:
-            rule_number: Rule number
             rule_name: Rule name
+            rule: Constitution rule metadata (optional)
             severity: Violation severity
             message: Violation message
             file_path: File path
@@ -81,10 +95,24 @@ class BaseRuleValidator(ABC):
         Returns:
             Violation object
         """
+        metadata = rule or get_rule_metadata(rule_name or "")
+
+        if metadata:
+            resolved_name = metadata.title
+            resolved_rule_id = metadata.rule_id
+            resolved_number = metadata.number
+            resolved_category = metadata.category
+        else:
+            fallback_name = rule_name or "Unmapped Rule"
+            resolved_name = fallback_name
+            resolved_rule_id = f"rule:{slugify_rule_name(fallback_name)}"
+            resolved_number = None
+            resolved_category = self.category
+
         return Violation(
-            rule_id=f"rule_{rule_number:03d}",
-            rule_name=rule_name,
-            rule_number=rule_number,
+            rule_id=resolved_rule_id,
+            rule_name=resolved_name,
+            rule_number=resolved_number,
             severity=severity,
             message=message,
             file_path=file_path,
@@ -92,7 +120,7 @@ class BaseRuleValidator(ABC):
             column_number=column_number,
             code_snippet=code_snippet,
             fix_suggestion=fix_suggestion or "Review and fix the violation",
-            category=self.category
+            category=resolved_category
         )
     
     def find_regex_violations(self, content: str, file_path: str, 
@@ -116,15 +144,16 @@ class BaseRuleValidator(ABC):
         
         try:
             regex = re.compile(pattern_data["regex"])
-            rule_number = pattern_data.get("rule_number", self.rules[0] if self.rules else 0)
+            rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
+            rule_metadata = get_rule_metadata(rule_name)
             
             for match in regex.finditer(content):
                 line_number = content[:match.start()].count('\n') + 1
                 column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
                 
                 violation = self.create_violation(
-                    rule_number=rule_number,
-                    rule_name=pattern_data.get("message", f"{pattern_name} violation"),
+                    rule=rule_metadata,
+                    rule_name=rule_name,
                     severity=Severity(pattern_data.get("severity", "warning")),
                     message=pattern_data.get("message", f"{pattern_name} violation detected"),
                     file_path=file_path,
@@ -161,7 +190,8 @@ class BaseRuleValidator(ABC):
         
         try:
             keywords = pattern_data["keywords"]
-            rule_number = pattern_data.get("rule_number", self.rules[0] if self.rules else 0)
+            rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
+            rule_metadata = get_rule_metadata(rule_name)
             
             for keyword in keywords:
                 if keyword in content:
@@ -171,8 +201,8 @@ class BaseRuleValidator(ABC):
                     column_number = pos - content.rfind('\n', 0, pos) - 1
                     
                     violation = self.create_violation(
-                        rule_number=rule_number,
-                        rule_name=pattern_data.get("message", f"{pattern_name} violation"),
+                        rule=rule_metadata,
+                        rule_name=rule_name,
                         severity=Severity(pattern_data.get("severity", "warning")),
                         message=pattern_data.get("message", f"Keyword '{keyword}' detected"),
                         file_path=file_path,
@@ -211,13 +241,14 @@ class BaseRuleValidator(ABC):
         
         try:
             ast_pattern = pattern_data["ast_pattern"]
-            rule_number = pattern_data.get("rule_number", self.rules[0] if self.rules else 0)
+            rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
+            rule_metadata = get_rule_metadata(rule_name)
             
             for node in ast.walk(tree):
                 if self._matches_ast_pattern(node, ast_pattern):
                     violation = self.create_violation(
-                        rule_number=rule_number,
-                        rule_name=pattern_data.get("message", f"{pattern_name} violation"),
+                        rule=rule_metadata,
+                        rule_name=rule_name,
                         severity=Severity(pattern_data.get("severity", "warning")),
                         message=pattern_data.get("message", f"{pattern_name} violation detected"),
                         file_path=file_path,

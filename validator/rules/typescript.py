@@ -100,7 +100,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_no_any_in_committed_code(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 182: No `any` in committed code - use `unknown` and check it."""
+        """No `any` in committed code - use `unknown` and check it."""
         violations = []
         lines = content.split('\n')
         
@@ -120,7 +120,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_handle_null_undefined(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 183: Handle `null`/`undefined` - check optional fields before use."""
+        """Handle `null`/`undefined` - check optional fields before use."""
         violations = []
         lines = content.split('\n')
         
@@ -148,7 +148,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_small_clear_functions(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 184: Small, Clear Functions - keep functions focused and readable."""
+        """Small, Clear Functions - keep functions focused and readable."""
         violations = []
         lines = content.split('\n')
         
@@ -180,7 +180,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_consistent_naming(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 185: Consistent Naming - use clear, consistent naming conventions."""
+        """Consistent Naming - use clear, consistent naming conventions."""
         violations = []
         lines = content.split('\n')
         
@@ -208,7 +208,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_clear_shape_strategy(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 186: Clear Shape Strategy - define clear interfaces and types."""
+        """Clear Shape Strategy - define clear interfaces and types."""
         violations = []
         lines = content.split('\n')
         
@@ -234,7 +234,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_let_compiler_infer(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 187: Let the Compiler Infer - avoid redundant type annotations."""
+        """Let the Compiler Infer - avoid redundant type annotations."""
         violations = []
         lines = content.split('\n')
         
@@ -261,7 +261,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_keep_imports_clean(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 188: Keep Imports Clean - organize and minimize imports."""
+        """Keep Imports Clean - organize and minimize imports."""
         violations = []
         lines = content.split('\n')
         
@@ -294,7 +294,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_describe_the_shape(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 189: Describe the Shape - use interfaces for object shapes."""
+        """Describe the Shape - use interfaces for object shapes."""
         violations = []
         lines = content.split('\n')
         
@@ -312,7 +312,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_union_narrowing(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 190: Union & Narrowing - narrow union types before use."""
+        """Union & Narrowing - narrow union types before use."""
         violations = []
         lines = content.split('\n')
         
@@ -338,7 +338,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_readonly_by_default(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 191: Readonly by Default - make data immutable when possible."""
+        """Readonly by Default - make data immutable when possible."""
         violations = []
         lines = content.split('\n')
         
@@ -356,7 +356,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_discriminated_unions(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 192: Discriminated Unions - use discriminated unions for complex states."""
+        """Discriminated Unions - use discriminated unions for complex states."""
         violations = []
         lines = content.split('\n')
         
@@ -375,7 +375,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_utility_types_not_duplicates(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 193: Utility Types, Not Duplicates - use built-in utility types."""
+        """Utility Types, Not Duplicates - use built-in utility types."""
         violations = []
         lines = content.split('\n')
         
@@ -393,7 +393,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_generics_but_simple(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 194: Generics, But Simple - keep generics simple and readable."""
+        """Generics, But Simple - keep generics simple and readable."""
         violations = []
         lines = content.split('\n')
         
@@ -414,7 +414,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_no_unhandled_promises(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 195: No Unhandled Promises - handle all promises properly."""
+        """No Unhandled Promises - handle all promises properly."""
         violations = []
         lines = content.split('\n')
         
@@ -427,7 +427,7 @@ class TypeScriptValidator:
                     violations.append({
                         'rule_id': 'R195',
                         'severity': 'error',
-                        'message': 'Handle promise rejections with .catch() or try/catch',
+                        'message': 'Handle promise rejections with.catch() or try/catch',
                         'line': i,
                         'file': file_path
                     })
@@ -435,7 +435,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_timeouts_cancel(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 196: Timeouts & Cancel - add timeouts to I/O operations."""
+        """Timeouts & Cancel - add timeouts to I/O operations."""
         violations = []
         lines = content.split('\n')
         
@@ -454,7 +454,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_friendly_errors_at_edges(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 197: Friendly Errors at Edges - provide user-friendly error messages."""
+        """Friendly Errors at Edges - provide user-friendly error messages."""
         violations = []
         lines = content.split('\n')
         
@@ -472,7 +472,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_map_errors_to_codes(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 198: Map Errors to Codes - use canonical error codes."""
+        """Map Errors to Codes - use canonical error codes."""
         violations = []
         lines = content.split('\n')
         in_catch = False
@@ -509,7 +509,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_retries_are_limited(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 199: Retries Are Limited - limit retry attempts with backoff."""
+        """Retries Are Limited - limit retry attempts with backoff."""
         violations = []
         lines = content.split('\n')
         for i, raw_line in enumerate(lines, 1):
@@ -529,7 +529,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_one_source_of_truth(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 200: One Source of Truth - avoid duplicate type definitions."""
+        """One Source of Truth - avoid duplicate type definitions."""
         violations = []
         lines = content.split('\n')
         
@@ -552,7 +552,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_folder_layout(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 201: Folder Layout - organize files in logical folder structure."""
+        """Folder Layout - organize files in logical folder structure."""
         # This rule is more about project structure than file content
         violations = []
         
@@ -561,7 +561,7 @@ class TypeScriptValidator:
             violations.append({
                 'rule_id': 'R201',
                 'severity': 'info',
-                'message': 'Type definition files should have .d.ts extension',
+                'message': 'Type definition files should have.d.ts extension',
                 'line': 1,
                 'file': file_path
             })
@@ -569,7 +569,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_paths_aliases(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 202: Paths & Aliases - use path aliases for clean imports."""
+        """Paths & Aliases - use path aliases for clean imports."""
         violations = []
         lines = content.split('\n')
         
@@ -587,13 +587,13 @@ class TypeScriptValidator:
         return violations
     
     def _validate_modern_output_targets(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 203: Modern Output Targets - use modern compilation targets."""
+        """Modern Output Targets - use modern compilation targets."""
         # This rule is about tsconfig.json, not individual files
         violations = []
         return violations
     
     def _validate_lint_format(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 204: Lint & Format - ensure consistent code style."""
+        """Lint & Format - ensure consistent code style."""
         violations = []
         lines = content.split('\n')
         
@@ -613,13 +613,13 @@ class TypeScriptValidator:
         return violations
     
     def _validate_type_check_in_ci(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 205: Type Check in CI - ensure type checking in continuous integration."""
+        """Type Check in CI - ensure type checking in continuous integration."""
         # This rule is about CI configuration, not individual files
         violations = []
         return violations
     
     def _validate_tests_for_new_behavior(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 206: Tests for New Behavior - write tests for new functionality."""
+        """Tests for New Behavior - write tests for new functionality."""
         violations = []
         
         # Check if this is a real test file (ignore only proper spec files or test directories)
@@ -644,7 +644,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_comments_in_simple_english(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 207: Comments in Simple English - write clear, simple comments."""
+        """Comments in Simple English - write clear, simple comments."""
         violations = []
         lines = content.split('\n')
         
@@ -662,7 +662,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_no_secrets_in_code_or_logs(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 208: No Secrets in Code or Logs - never commit secrets."""
+        """No Secrets in Code or Logs - never commit secrets."""
         violations = []
         lines = content.split('\n')
         
@@ -680,7 +680,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_validate_untrusted_inputs_at_runtime(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 209: Validate Untrusted Inputs at Runtime - validate external data."""
+        """Validate Untrusted Inputs at Runtime - validate external data."""
         violations = []
         lines = content.split('\n')
         
@@ -698,7 +698,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_keep_ui_responsive(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 210: Keep the UI Responsive - avoid blocking operations."""
+        """Keep the UI Responsive - avoid blocking operations."""
         violations = []
         lines = content.split('\n')
         
@@ -716,7 +716,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_review_ai_code_thoroughly(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 211: Review AI Code Thoroughly - always review AI-generated code."""
+        """Review AI Code Thoroughly - always review AI-generated code."""
         violations = []
         lines = content.split('\n')
         
@@ -734,7 +734,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_monitor_bundle_impact(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 212: Monitor Bundle Impact - watch for bundle size increases."""
+        """Monitor Bundle Impact - watch for bundle size increases."""
         violations = []
         lines = content.split('\n')
         
@@ -752,7 +752,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_quality_dependencies(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 213: Quality Dependencies - use well-typed dependencies."""
+        """Quality Dependencies - use well-typed dependencies."""
         violations = []
         lines = content.split('\n')
         
@@ -771,7 +771,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_test_type_boundaries(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 214: Test Type Boundaries - test complex type interactions."""
+        """Test Type Boundaries - test complex type interactions."""
         violations = []
         
         # Check if this is a test file
@@ -796,7 +796,7 @@ class TypeScriptValidator:
         return violations
     
     def _validate_gradual_migration_strategy(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Rule 215: Gradual Migration Strategy - migrate JavaScript to TypeScript gradually."""
+        """Gradual Migration Strategy - migrate JavaScript to TypeScript gradually."""
         violations = []
         
         # Check for JavaScript files that should be migrated

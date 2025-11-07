@@ -2,15 +2,15 @@
 Problem-solving rule validator.
 
 This module implements validation for problem-solving rules:
-- Rule 33: Solve Real Developer Problems
-- Rule 35: Prevent Problems Before They Happen
-- Rule 39: Detection Engine - Be Accurate
+- Solve Real Developer Problems
+- Prevent Problems Before They Happen
+- Detection Engine - Be Accurate
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class ProblemSolvingValidator:
@@ -34,7 +34,7 @@ class ProblemSolvingValidator:
         
     def validate_real_problems(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for real problem solving (Rule 33).
+        Check for real problem solving.
         
         Args:
             tree: AST tree of the code
@@ -57,8 +57,6 @@ class ProblemSolvingValidator:
         
         if over_engineering_detected:
             violations.append(Violation(
-                rule_id="rule_33",
-                rule_number=33,
                 rule_name="Solve Real Developer Problems",
                 severity=Severity.WARNING,
                 message=f"Potential over-engineering detected: {[f[0] for f in over_engineering_detected]}",
@@ -89,8 +87,6 @@ class ProblemSolvingValidator:
         
         if complex_functions:
             violations.append(Violation(
-                rule_id="rule_33",
-                rule_number=33,
                 rule_name="Solve Real Developer Problems",
                 severity=Severity.WARNING,
                 message=f"High complexity functions detected: {[f[0] for f in complex_functions]}",
@@ -107,8 +103,6 @@ class ProblemSolvingValidator:
         
         if not has_utility:
             violations.append(Violation(
-                rule_id="rule_33",
-                rule_number=33,
                 rule_name="Solve Real Developer Problems",
                 severity=Severity.INFO,
                 message="No clear utility functions detected - ensure code solves practical problems",
@@ -123,7 +117,7 @@ class ProblemSolvingValidator:
     
     def validate_proactive_prevention(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for proactive problem prevention (Rule 35).
+        Check for proactive problem prevention.
         
         Args:
             tree: AST tree of the code
@@ -141,8 +135,6 @@ class ProblemSolvingValidator:
         
         if not has_validation:
             violations.append(Violation(
-                rule_id="rule_35",
-                rule_number=35,
                 rule_name="Prevent Problems Before They Happen",
                 severity=Severity.WARNING,
                 message="No proactive validation detected - add precondition checks",
@@ -170,8 +162,6 @@ class ProblemSolvingValidator:
         
         if functions_without_validation:
             violations.append(Violation(
-                rule_id="rule_35",
-                rule_number=35,
                 rule_name="Prevent Problems Before They Happen",
                 severity=Severity.WARNING,
                 message=f"Functions without precondition checks: {functions_without_validation}",
@@ -188,8 +178,6 @@ class ProblemSolvingValidator:
         
         if not has_defensive:
             violations.append(Violation(
-                rule_id="rule_35",
-                rule_number=35,
                 rule_name="Prevent Problems Before They Happen",
                 severity=Severity.INFO,
                 message="No defensive programming patterns detected",
@@ -204,7 +192,7 @@ class ProblemSolvingValidator:
     
     def validate_accuracy_confidence(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for accuracy and confidence reporting (Rule 39).
+        Check for accuracy and confidence reporting.
         
         Args:
             tree: AST tree of the code
@@ -222,8 +210,6 @@ class ProblemSolvingValidator:
         
         if not has_confidence:
             violations.append(Violation(
-                rule_id="rule_39",
-                rule_number=39,
                 rule_name="Detection Engine - Be Accurate",
                 severity=Severity.INFO,
                 message="No confidence level reporting detected",
@@ -240,8 +226,6 @@ class ProblemSolvingValidator:
         
         if not has_accuracy_metrics:
             violations.append(Violation(
-                rule_id="rule_39",
-                rule_number=39,
                 rule_name="Detection Engine - Be Accurate",
                 severity=Severity.INFO,
                 message="No accuracy metrics detected",
@@ -258,8 +242,6 @@ class ProblemSolvingValidator:
         
         if not has_uncertainty:
             violations.append(Violation(
-                rule_id="rule_39",
-                rule_number=39,
                 rule_name="Detection Engine - Be Accurate",
                 severity=Severity.INFO,
                 message="No uncertainty handling detected",
@@ -276,8 +258,6 @@ class ProblemSolvingValidator:
         
         if not has_learning:
             violations.append(Violation(
-                rule_id="rule_39",
-                rule_number=39,
                 rule_name="Detection Engine - Be Accurate",
                 severity=Severity.INFO,
                 message="No learning from corrections detected",
@@ -292,7 +272,7 @@ class ProblemSolvingValidator:
     
     def validate_help_people_work_better(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for Mirror/Mentor/Multiplier patterns (Rule 34).
+        Check for Mirror/Mentor/Multiplier patterns.
         
         Args:
             tree: AST tree of the code
@@ -310,8 +290,6 @@ class ProblemSolvingValidator:
         
         if not has_mirror:
             violations.append(Violation(
-                rule_id="rule_34",
-                rule_number=34,
                 rule_name="Help People Work Better",
                 severity=Severity.INFO,
                 message="No Mirror patterns detected - show people what they're doing now",
@@ -328,8 +306,6 @@ class ProblemSolvingValidator:
         
         if not has_mentor:
             violations.append(Violation(
-                rule_id="rule_34",
-                rule_number=34,
                 rule_name="Help People Work Better",
                 severity=Severity.INFO,
                 message="No Mentor patterns detected - guide people to better ways",
@@ -346,8 +322,6 @@ class ProblemSolvingValidator:
         
         if not has_multiplier:
             violations.append(Violation(
-                rule_id="rule_34",
-                rule_number=34,
                 rule_name="Help People Work Better",
                 severity=Severity.INFO,
                 message="No Multiplier patterns detected - help people do more of what works",
@@ -362,7 +336,7 @@ class ProblemSolvingValidator:
     
     def validate_cognitive_load(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for cognitive load and complexity (Rule 37).
+        Check for cognitive load and complexity.
         
         Args:
             tree: AST tree of the code
@@ -380,8 +354,6 @@ class ProblemSolvingValidator:
         
         if not has_one_click:
             violations.append(Violation(
-                rule_id="rule_37",
-                rule_number=37,
                 rule_name="Don't Make People Think Too Hard",
                 severity=Severity.INFO,
                 message="No one-click solutions detected",
@@ -398,8 +370,6 @@ class ProblemSolvingValidator:
         
         if has_cognitive_load:
             violations.append(Violation(
-                rule_id="rule_37",
-                rule_number=37,
                 rule_name="Don't Make People Think Too Hard",
                 severity=Severity.WARNING,
                 message="High cognitive load patterns detected",
@@ -416,8 +386,6 @@ class ProblemSolvingValidator:
         
         if not has_automation:
             violations.append(Violation(
-                rule_id="rule_37",
-                rule_number=37,
                 rule_name="Don't Make People Think Too Hard",
                 severity=Severity.INFO,
                 message="No automation patterns detected",
@@ -434,8 +402,6 @@ class ProblemSolvingValidator:
         
         if not has_teaching:
             violations.append(Violation(
-                rule_id="rule_37",
-                rule_number=37,
                 rule_name="Don't Make People Think Too Hard",
                 severity=Severity.INFO,
                 message="No teaching patterns detected",
@@ -450,7 +416,7 @@ class ProblemSolvingValidator:
     
     def validate_behavior_change_engine(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for MMM Engine - Change Behavior patterns (Rule 38).
+        Check for MMM Engine - Change Behavior patterns.
         
         Args:
             tree: AST tree of the code
@@ -468,8 +434,6 @@ class ProblemSolvingValidator:
         
         if not has_behavior_change:
             violations.append(Violation(
-                rule_id="rule_38",
-                rule_number=38,
                 rule_name="MMM Engine - Change Behavior",
                 severity=Severity.INFO,
                 message="No behavior change patterns detected",
@@ -486,8 +450,6 @@ class ProblemSolvingValidator:
         
         if not has_mirror:
             violations.append(Violation(
-                rule_id="rule_38",
-                rule_number=38,
                 rule_name="MMM Engine - Change Behavior",
                 severity=Severity.INFO,
                 message="No Mirror patterns detected - show current behavior state",
@@ -504,8 +466,6 @@ class ProblemSolvingValidator:
         
         if not has_mentor:
             violations.append(Violation(
-                rule_id="rule_38",
-                rule_number=38,
                 rule_name="MMM Engine - Change Behavior",
                 severity=Severity.INFO,
                 message="No Mentor patterns detected - guide behavior changes",
@@ -522,8 +482,6 @@ class ProblemSolvingValidator:
         
         if not has_multiplier:
             violations.append(Violation(
-                rule_id="rule_38",
-                rule_number=38,
                 rule_name="MMM Engine - Change Behavior",
                 severity=Severity.INFO,
                 message="No Multiplier patterns detected - amplify good behaviors",
@@ -538,7 +496,7 @@ class ProblemSolvingValidator:
     
     def validate_success_dashboards(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for Success Dashboards - Show Business Value patterns (Rule 41).
+        Check for Success Dashboards - Show Business Value patterns.
         
         Args:
             tree: AST tree of the code
@@ -556,8 +514,6 @@ class ProblemSolvingValidator:
         
         if not has_dashboard:
             violations.append(Violation(
-                rule_id="rule_41",
-                rule_number=41,
                 rule_name="Success Dashboards - Show Business Value",
                 severity=Severity.INFO,
                 message="No dashboard patterns detected",
@@ -574,8 +530,6 @@ class ProblemSolvingValidator:
         
         if not has_business_value:
             violations.append(Violation(
-                rule_id="rule_41",
-                rule_number=41,
                 rule_name="Success Dashboards - Show Business Value",
                 severity=Severity.INFO,
                 message="No business value patterns detected",
@@ -592,8 +546,6 @@ class ProblemSolvingValidator:
         
         if not has_success_metrics:
             violations.append(Violation(
-                rule_id="rule_41",
-                rule_number=41,
                 rule_name="Success Dashboards - Show Business Value",
                 severity=Severity.INFO,
                 message="No success metrics detected",
@@ -610,8 +562,6 @@ class ProblemSolvingValidator:
         
         if not has_visualization:
             violations.append(Violation(
-                rule_id="rule_41",
-                rule_number=41,
                 rule_name="Success Dashboards - Show Business Value",
                 severity=Severity.INFO,
                 message="No visualization patterns detected",
@@ -628,8 +578,6 @@ class ProblemSolvingValidator:
         
         if not has_realtime:
             violations.append(Violation(
-                rule_id="rule_41",
-                rule_number=41,
                 rule_name="Success Dashboards - Show Business Value",
                 severity=Severity.INFO,
                 message="No real-time patterns detected",

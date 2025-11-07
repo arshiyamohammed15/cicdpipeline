@@ -3,16 +3,16 @@
 Basic Work Rules Validator
 
 Validates code against basic work principles:
-- Rule 4: Use Settings Files, Not Hardcoded Numbers
-- Rule 5: Keep Good Records + Keep Good Logs  
-- Rule 10: Be Honest About AI Decisions
+- Use Settings Files, Not Hardcoded Numbers
+- Keep Good Records + Keep Good Logs  
+- Be Honest About AI Decisions
 """
 
 import ast
 import re
 from typing import List
-from ..models import Violation, Severity
-from ..base_validator import BaseRuleValidator
+from..models import Violation, Severity
+from..base_validator import BaseRuleValidator
 
 
 class BasicWorkValidator(BaseRuleValidator):
@@ -33,7 +33,7 @@ class BasicWorkValidator(BaseRuleValidator):
         self.ai_transparency_patterns = ['confidence', 'explanation', 'reasoning', 'uncertainty', 'version']
     
     def validate_information_usage(self, content: str) -> List[Violation]:
-        """Validate Rule 2: Only Use Information You're Given"""
+        """Validate Only Use Information You're Given"""
         violations = []
         # Check for assumptions or made-up information
         assumption_patterns = [
@@ -49,8 +49,6 @@ class BasicWorkValidator(BaseRuleValidator):
             for pattern in assumption_patterns:
                 if re.search(pattern, line, re.IGNORECASE):
                     violations.append(Violation(
-                        rule_id="rule_002",
-                        rule_number=2,
                         rule_name="Only Use Information You're Given",
                         severity=Severity.HIGH,
                         message=f"Line {i}: Avoid assumptions - only use given information",
@@ -71,8 +69,6 @@ class BasicWorkValidator(BaseRuleValidator):
             for pattern in external_patterns:
                 if re.search(pattern, line, re.IGNORECASE):
                     violations.append(Violation(
-                        rule_id="rule_002",
-                        rule_number=2,
                         rule_name="Only Use Information You're Given",
                         severity=Severity.HIGH,
                         message=f"Line {i}: Accessing external data without permission",
@@ -84,7 +80,7 @@ class BasicWorkValidator(BaseRuleValidator):
         return violations
     
     def validate_privacy_protection(self, content: str) -> List[Violation]:
-        """Validate Rule 3: Protect People's Privacy"""
+        """Validate Protect People's Privacy"""
         violations = []
         # Check for privacy violations
         privacy_patterns = [
@@ -101,8 +97,6 @@ class BasicWorkValidator(BaseRuleValidator):
             for pattern in privacy_patterns:
                 if re.search(pattern, line, re.IGNORECASE):
                     violations.append(Violation(
-                        rule_id="rule_003",
-                        rule_number=3,
                         rule_name="Protect People's Privacy",
                         severity=Severity.CRITICAL,
                         message=f"Line {i}: Potential privacy violation detected",
@@ -113,7 +107,7 @@ class BasicWorkValidator(BaseRuleValidator):
         return violations
     
     def validate_settings_usage(self, content: str) -> List[Violation]:
-        """Validate Rule 4: Use Settings Files, Not Hardcoded Numbers"""
+        """Validate Use Settings Files, Not Hardcoded Numbers"""
         violations = []
         # Check for hardcoded values
         hardcoded_patterns = [
@@ -130,8 +124,6 @@ class BasicWorkValidator(BaseRuleValidator):
             for pattern in hardcoded_patterns:
                 if re.search(pattern, line):
                     violations.append(Violation(
-                        rule_id="rule_004",
-                        rule_number=4,
                         rule_name="Use Settings Files, Not Hardcoded Numbers",
                         severity=Severity.MEDIUM,
                         message=f"Line {i}: Use configuration files instead of hardcoded values",
@@ -143,8 +135,6 @@ class BasicWorkValidator(BaseRuleValidator):
         # Check for hardcoded values in the test case
         if 'return 30' in content or 'return 3' in content:
             violations.append(Violation(
-                rule_id="rule_004",
-                rule_number=4,
                 rule_name="Use Settings Files, Not Hardcoded Numbers",
                 severity=Severity.MEDIUM,
                 message="Hardcoded values detected - should use configuration",
@@ -156,13 +146,11 @@ class BasicWorkValidator(BaseRuleValidator):
         return violations
     
     def validate_record_keeping(self, content: str) -> List[Violation]:
-        """Validate Rule 5: Keep Good Records"""
+        """Validate Keep Good Records"""
         violations = []
         # Check for logging and documentation
         if not re.search(r'log|logging|logger', content, re.IGNORECASE):
             violations.append(Violation(
-                rule_id="rule_005",
-                rule_number=5,
                 rule_name="Keep Good Records",
                 severity=Severity.MEDIUM,
                 message="Add logging for record keeping",
@@ -174,7 +162,7 @@ class BasicWorkValidator(BaseRuleValidator):
 
     def validate_settings_files(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for proper use of settings files instead of hardcoded values (Rule 4).
+        Check for proper use of settings files instead of hardcoded values.
         
         Args:
             tree: AST tree of the code
@@ -206,7 +194,6 @@ class BasicWorkValidator(BaseRuleValidator):
                     # Check if it's a configuration-related assignment
                     if any(keyword in line.lower() for keyword in ['host', 'port', 'url', 'path', 'timeout', 'limit', 'max', 'min']):
                         violations.append(self.create_violation(
-                            rule_number=4,
                             rule_name="Use Settings Files, Not Hardcoded Numbers",
                             severity=Severity.WARNING,
                             message=f"Hardcoded value detected on line {i} - should use settings file",
@@ -222,7 +209,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_settings_usage:
             violations.append(self.create_violation(
-                rule_number=4,
                 rule_name="Use Settings Files, Not Hardcoded Numbers",
                 severity=Severity.INFO,
                 message="No settings file usage detected",
@@ -239,7 +225,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_env_vars:
             violations.append(self.create_violation(
-                rule_number=4,
                 rule_name="Use Settings Files, Not Hardcoded Numbers",
                 severity=Severity.INFO,
                 message="No environment variable usage detected",
@@ -254,7 +239,7 @@ class BasicWorkValidator(BaseRuleValidator):
     
     def validate_logging_records(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for proper logging and record keeping (Rule 5).
+        Check for proper logging and record keeping.
         
         Args:
             tree: AST tree of the code
@@ -271,7 +256,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_logging:
             violations.append(self.create_violation(
-                rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.WARNING,
                 message="No logging patterns detected",
@@ -288,7 +272,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_structured_logging:
             violations.append(self.create_violation(
-                rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
                 message="No structured logging detected",
@@ -305,7 +288,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_audit_trail:
             violations.append(self.create_violation(
-                rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
                 message="No audit trail patterns detected",
@@ -322,7 +304,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_log_levels:
             violations.append(self.create_violation(
-                rule_number=5,
                 rule_name="Keep Good Records + Keep Good Logs",
                 severity=Severity.INFO,
                 message="No log level usage detected",
@@ -337,7 +318,7 @@ class BasicWorkValidator(BaseRuleValidator):
     
     def validate_ai_transparency(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for AI decision transparency (Rule 10).
+        Check for AI decision transparency.
         
         Args:
             tree: AST tree of the code
@@ -359,7 +340,6 @@ class BasicWorkValidator(BaseRuleValidator):
             
             if not has_confidence:
                 violations.append(self.create_violation(
-                    rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.WARNING,
                     message="AI code detected without confidence reporting",
@@ -375,7 +355,6 @@ class BasicWorkValidator(BaseRuleValidator):
             
             if not has_explanations:
                 violations.append(self.create_violation(
-                    rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.WARNING,
                     message="AI code detected without explanation patterns",
@@ -391,7 +370,6 @@ class BasicWorkValidator(BaseRuleValidator):
             
             if not has_version_tracking:
                 violations.append(self.create_violation(
-                    rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.INFO,
                     message="AI code detected without version tracking",
@@ -407,7 +385,6 @@ class BasicWorkValidator(BaseRuleValidator):
             
             if not has_uncertainty:
                 violations.append(self.create_violation(
-                    rule_number=10,
                     rule_name="Be Honest About AI Decisions",
                     severity=Severity.INFO,
                     message="AI code detected without uncertainty handling",
@@ -422,7 +399,7 @@ class BasicWorkValidator(BaseRuleValidator):
 
     def validate_learning_from_mistakes(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for learning from mistakes patterns (Rule 13).
+        Check for learning from mistakes patterns.
         
         Args:
             tree: AST tree of the code
@@ -430,7 +407,7 @@ class BasicWorkValidator(BaseRuleValidator):
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 13
+            List of violations for this rule
         """
         violations = []
         
@@ -440,7 +417,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_learning:
             violations.append(self.create_violation(
-                rule_number=13,
                 rule_name="Learn from Mistakes",
                 severity=Severity.INFO,
                 message="No learning from mistakes patterns detected",
@@ -455,7 +431,7 @@ class BasicWorkValidator(BaseRuleValidator):
 
     def validate_fairness_accessibility(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for fairness and accessibility patterns (Rule 20).
+        Check for fairness and accessibility patterns.
         
         Args:
             tree: AST tree of the code
@@ -463,7 +439,7 @@ class BasicWorkValidator(BaseRuleValidator):
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 20
+            List of violations for this rule
         """
         violations = []
         
@@ -477,7 +453,6 @@ class BasicWorkValidator(BaseRuleValidator):
         
         if not has_accessibility and not has_fairness:
             violations.append(self.create_violation(
-                rule_number=20,
                 rule_name="Be Fair to Everyone",
                 severity=Severity.INFO,
                 message="No fairness or accessibility patterns detected",

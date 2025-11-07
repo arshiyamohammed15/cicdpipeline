@@ -2,5 +2,8 @@
   "category": "requirements",
   "priority": "critical",
   "description": "Requirements and specifications",
-  "rules": [1, 2]
+  "rules": [
+    "Do exactly what's asked",
+    "Only use information you're given"
+  ]
 }

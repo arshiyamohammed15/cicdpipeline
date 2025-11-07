@@ -2,16 +2,16 @@
 Architecture rule validator.
 
 This module implements validation for architecture rules:
-- Rule 19: Keep Different Parts Separate
-- Rule 21: Use the Hybrid System Design
-- Rule 23: Process Data Locally First
+- Keep Different Parts Separate
+- Use the Hybrid System Design
+- Process Data Locally First
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class ArchitectureValidator:
@@ -64,9 +64,7 @@ class ArchitectureValidator:
                     for keyword in self.business_logic_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                rule_id="rule_19",
-                rule_number=19,
-                                rule_name="Keep Different Parts Separate",
+                rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Business logic detected in UI file: {func_name}",
                                 file_path=file_path,
@@ -85,9 +83,7 @@ class ArchitectureValidator:
                     for keyword in self.data_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
-                rule_id="rule_19",
-                rule_number=19,
-                                rule_name="Keep Different Parts Separate",
+                rule_name="Keep Different Parts Separate",
                                 severity=Severity.ERROR,
                                 message=f"Data access detected in UI file: {func_name}",
                                 file_path=file_path,
@@ -124,9 +120,7 @@ class ArchitectureValidator:
                     # IDE Extension shouldn't process data
                     if any(keyword in func_name for keyword in ['process', 'analyze', 'compute']):
                         violations.append(Violation(
-                rule_id="rule_21",
-                rule_number=21,
-                            rule_name="Use the Hybrid System Design",
+                rule_name="Use the Hybrid System Design",
                             severity=Severity.ERROR,
                             message="IDE Extension should only display information, not process data",
                             file_path=file_path,
@@ -145,9 +139,7 @@ class ArchitectureValidator:
                     # Edge Agent shouldn't send data to cloud
                     if any(keyword in func_name for keyword in ['upload', 'send', 'post', 'put']):
                         violations.append(Violation(
-                rule_id="rule_21",
-                rule_number=21,
-                            rule_name="Use the Hybrid System Design",
+                rule_name="Use the Hybrid System Design",
                             severity=Severity.WARNING,
                             message="Edge Agent should process data locally, not send to cloud",
                             file_path=file_path,
@@ -177,8 +169,6 @@ class ArchitectureValidator:
             # If no AST, fallback: detect obvious network usage without offline hints
             if any(k in content.lower() for k in ['requests', 'http', 'socket']) and not any(h in content.lower() for h in ['offline', 'cache', 'fallback', 'local']):
                 violations.append(Violation(
-                    rule_id="rule_28",
-                    rule_number=28,
                     rule_name="Work Without Internet",
                     severity=Severity.WARNING,
                     message="Network dependencies detected without offline fallback",
@@ -200,9 +190,7 @@ class ArchitectureValidator:
                 # Avoid false positives for local pattern sharing helpers
                 if any(keyword in func_name for keyword in self.cloud_keywords) or (verb_with_context and 'anonymous' not in func_name and 'pattern' not in func_name):
                     violations.append(Violation(
-                rule_id="rule_23",
-                rule_number=23,
-                        rule_name="Process Data Locally First",
+                rule_name="Process Data Locally First",
                         severity=Severity.ERROR,
                         message="Source code or sensitive data should not leave the company",
                         file_path=file_path,
@@ -238,8 +226,6 @@ class ArchitectureValidator:
         
         if not has_try_catch and self._has_risky_operations(tree):
             violations.append(Violation(
-                rule_id="rule_30",
-                rule_number=30,
                 rule_name="Make All Modules Feel Like One Product",
                 severity=Severity.WARNING,
                 message="Inconsistent error handling - all modules should handle errors the same way",
@@ -281,9 +267,7 @@ class ArchitectureValidator:
                                     # For sensitive data, any external-sounding verb is enough
                                     if any(verb in func_name for verb in ['send', 'post', 'upload', 'push', 'publish']):
                                         violations.append(Violation(
-                rule_id="rule_23",
-                rule_number=23,
-                                            rule_name="Process Data Locally First",
+                rule_name="Process Data Locally First",
                                             severity=Severity.ERROR,
                                             message="Sensitive data being sent externally",
                                             file_path=file_path,
@@ -321,7 +305,7 @@ class ArchitectureValidator:
     
     def validate_zero_configuration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for zero-configuration patterns (Rule 24).
+        Check for zero-configuration patterns.
         
         Args:
             tree: AST tree of the code
@@ -350,9 +334,7 @@ class ArchitectureValidator:
                             has_config_requirement = any(name not in defaulted for name in positional)
                     if has_config_requirement and not has_default_values:
                         violations.append(Violation(
-                rule_id="rule_24",
-                rule_number=24,
-                            rule_name="Don't Make People Configure Before Using",
+                rule_name="Don't Make People Configure Before Using",
                             severity=Severity.WARNING,
                             message=f"Class '{node.name}' requires configuration before use",
                             file_path=file_path,
@@ -376,9 +358,7 @@ class ArchitectureValidator:
                 # Check if it's required vs optional
                 if 'required' in content.lower() or 'must' in content.lower():
                     violations.append(Violation(
-                rule_id="rule_24",
-                rule_number=24,
-                        rule_name="Don't Make People Configure Before Using",
+                rule_name="Don't Make People Configure Before Using",
                         severity=Severity.INFO,
                         message="Configuration file appears to be required before use",
                         file_path=file_path,
@@ -392,7 +372,7 @@ class ArchitectureValidator:
     
     def validate_offline_capability(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for offline capability (Rule 28).
+        Check for offline capability.
         
         Args:
             tree: AST tree of the code
@@ -464,8 +444,6 @@ class ArchitectureValidator:
         # WARNING when network calls occur inside a function and there is no offline fallback
         if has_network_imports and not has_offline_fallback and function_has_network_calls:
             violations.append(Violation(
-                rule_id="rule_28",
-                rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.WARNING,
                 message="Network dependencies detected without offline fallback",
@@ -490,8 +468,6 @@ class ArchitectureValidator:
         
         if has_network_imports and uses_network_calls and not has_caching:
             violations.append(Violation(
-                rule_id="rule_28",
-                rule_number=28,
                 rule_name="Work Without Internet",
                 severity=Severity.INFO,
                 message="Network operations without local caching detected",

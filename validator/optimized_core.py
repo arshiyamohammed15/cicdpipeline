@@ -172,7 +172,6 @@ class OptimizedConstitutionValidator:
             violation = Violation(
                 rule_id="syntax_error",
                 rule_name="Syntax Error",
-                rule_number=14,
                 severity=Severity.ERROR,
                 message=f"Syntax error in file: {e.msg}",
                 file_path=file_path,

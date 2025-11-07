@@ -232,23 +232,23 @@ class PromptValidator:
         # Common violation patterns
         violation_patterns = []
         
-        # Rule 1: Do Exactly What's Asked
+        # Do Exactly What's Asked
         if 'DO EXACTLY' in title or 'R-001' in rule_id:
             if any(word in prompt_lower for word in ['also add', 'also include', 'bonus', 'extra', 'additionally']):
                 return True
         
-        # Rule 2: Only Use Information Given
+        # Only Use Information Given
         if 'ONLY USE INFORMATION' in title or 'R-002' in rule_id:
             if any(word in prompt_lower for word in ['assume', 'guess', 'probably', 'maybe', 'perhaps']):
                 return True
         
-        # Rule 3: Protect Privacy
+        # Protect Privacy
         if 'PRIVACY' in title or 'PRIVACY' in category or 'R-003' in rule_id:
             privacy_risks = ['password', 'secret', 'api key', 'private key', 'ssn', 'credit card']
             if any(risk in prompt_lower for risk in privacy_risks):
                 return True
         
-        # Rule 4: Use Settings Files
+        # Use Settings Files
         if 'SETTINGS' in title or 'HARDCODED' in title or 'R-004' in rule_id:
             # Check for multiple hardcoded numbers without config mention
             numbers = re.findall(r'\b\d+\b', prompt_lower)

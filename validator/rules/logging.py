@@ -9,7 +9,7 @@ import re
 import json
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class LoggingValidator:
@@ -90,7 +90,6 @@ class LoggingValidator:
             # Check for JSON structure
             if 'json' not in content.lower() and 'structured' not in content.lower():
                 violations.append(Violation(
-                        rule_id='R043',
                         rule_name='Logs are structured JSON with required fields and schema version',
                         severity=Severity.ERROR,
                         message='Logs are structured JSON with required fields and schema version',
@@ -110,7 +109,6 @@ class LoggingValidator:
             
             if missing_fields:
                 violations.append(Violation(
-                    rule_id='R043',
                     rule_name=f'Missing required log fields: {", ".join(missing_fields)}',
                     severity=Severity.ERROR,
                     message=f'Missing required log fields: {", ".join(missing_fields)}',
@@ -133,7 +131,6 @@ class LoggingValidator:
             log_level = match.group(1).upper()
             if log_level not in self.valid_log_levels:
                 violations.append(Violation(
-                        rule_id='R044',
                         rule_name=f'Invalid log level "{log_level}" - use TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
                         severity=Severity.WARNING,
                         message=f'Invalid log level "{log_level}" - use TRACE|DEBUG|INFO|WARN|ERROR|FATAL',
@@ -169,7 +166,6 @@ class LoggingValidator:
                         log_content = content[log_start:log_end]
                         if not self._is_jsonl_format(log_content):
                             violations.append(Violation(
-                        rule_id='R063',
                         rule_name='ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps',
                         severity=Severity.ERROR,
                         message='ONE JSON object per line (JSONL) with ISO-8601 UTC timestamps',
@@ -190,7 +186,6 @@ class LoggingValidator:
         # Check for monotonic time
         if 'log' in content.lower() and 'monotonic_hw_time_ms' not in content.lower():
             violations.append(Violation(
-                        rule_id='R064',
                         rule_name='Include monotonic_hw_time_ms for ordering; UTF-8 encoding only',
                         severity=Severity.ERROR,
                         message='Include monotonic_hw_time_ms for ordering; UTF-8 encoding only',
@@ -205,7 +200,6 @@ class LoggingValidator:
         # Check for ISO-8601 timestamps
         if 'timestamp' in content.lower() and 'iso' not in content.lower():
             violations.append(Violation(
-                        rule_id='R064',
                         rule_name='Use ISO-8601 UTC timestamps',
                         severity=Severity.WARNING,
                         message='Use ISO-8601 UTC timestamps',
@@ -232,7 +226,6 @@ class LoggingValidator:
             
             if missing_trace_fields:
                 violations.append(Violation(
-                    rule_id='R065',
                     file_path=file_path,
                     line_number=1,
                     message=f'Include traceId, spanId, parentSpanId (W3C trace context) - missing: {", ".join(missing_trace_fields)}',
@@ -249,7 +242,6 @@ class LoggingValidator:
         # Check for retention configuration
         if 'log' in content.lower() and 'retention' not in content.lower():
             violations.append(Violation(
-                        rule_id='R066',
                         rule_name='App logs ≥ 14 days locally; receipts ≥ 90 days',
                         severity=Severity.WARNING,
                         message='App logs ≥ 14 days locally; receipts ≥ 90 days',
@@ -270,7 +262,6 @@ class LoggingValidator:
         # Check for rotation configuration
         if 'log' in content.lower() and 'rotation' not in content.lower():
             violations.append(Violation(
-                        rule_id='R067',
                         rule_name='Rotate at 100MB; keep last 10 files locally',
                         severity=Severity.WARNING,
                         message='Rotate at 100MB; keep last 10 files locally',
@@ -299,7 +290,6 @@ class LoggingValidator:
             
             if missing_fields:
                 violations.append(Violation(
-                    rule_id='R068',
                     file_path=file_path,
                     line_number=1,
                     message=f'Include service, version, env, host in all logs - missing: {", ".join(missing_fields)}',
@@ -320,7 +310,6 @@ class LoggingValidator:
             
             if not has_stable_events:
                 violations.append(Violation(
-                    rule_id='R069',
                     file_path=file_path,
                     line_number=1,
                     message='Use stable event names: request.start/end, db.query, external.call',
@@ -345,7 +334,6 @@ class LoggingValidator:
             
             if missing_fields:
                 violations.append(Violation(
-                    rule_id='R070',
                     file_path=file_path,
                     line_number=1,
                     message=f'Include event_id, caused_by, links[] for workflow correlation - missing: {", ".join(missing_fields)}',
@@ -370,7 +358,6 @@ class LoggingValidator:
             for pattern in pii_patterns:
                 if re.search(pattern, line):
                     violations.append(Violation(
-                        rule_id='R071',
                         file_path=file_path,
                         line_number=line_num,
                         message='Never log secrets/PII; redact tokens, passwords, keys',
@@ -388,7 +375,6 @@ class LoggingValidator:
         if 'log' in content.lower():
             if 'sampling' not in content.lower() and 'performance' not in content.lower():
                 violations.append(Violation(
-                        rule_id='R072',
                         rule_name='Logging overhead < 5% CPU; sampling for chatty events',
                         severity=Severity.WARNING,
                         message='Logging overhead < 5% CPU; sampling for chatty events',
@@ -409,7 +395,6 @@ class LoggingValidator:
         # Check for log testing
         if 'log' in content.lower() and 'test' not in content.lower():
             violations.append(Violation(
-                        rule_id='R073',
                         rule_name='Test log generation and validation in unit tests',
                         severity=Severity.WARNING,
                         message='Test log generation and validation in unit tests',
@@ -430,7 +415,6 @@ class LoggingValidator:
         # Check for log documentation
         if 'log' in content.lower() and 'schema' not in content.lower():
             violations.append(Violation(
-                        rule_id='R074',
                         rule_name='Document logging schema and field meanings',
                         severity=Severity.WARNING,
                         message='Document logging schema and field meanings',
@@ -455,7 +439,6 @@ class LoggingValidator:
             
             if not has_compliance:
                 violations.append(Violation(
-                        rule_id='R075',
                         rule_name='Ensure logs meet compliance requirements and audit standards',
                         severity=Severity.WARNING,
                         message='Ensure logs meet compliance requirements and audit standards',

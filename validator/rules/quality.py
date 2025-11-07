@@ -2,15 +2,15 @@
 Code quality rule validator.
 
 This module implements validation for code quality rules:
-- Rule 15: Write Good Instructions
-- Rule 18: Make Things Repeatable
-- Rule 68: Write Clean, Readable Code
+- Write Good Instructions
+- Make Things Repeatable
+- Write Clean, Readable Code
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class QualityValidator:
@@ -56,9 +56,7 @@ class QualityValidator:
                 
                 if line_count > self.function_length_threshold:
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function exceeds recommended length ({line_count} > {self.function_length_threshold} lines)",
                         file_path=file_path,
@@ -89,9 +87,7 @@ class QualityValidator:
                 
                 if line_count > self.class_length_threshold:
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Class exceeds recommended length ({line_count} > {self.class_length_threshold} lines)",
                         file_path=file_path,
@@ -122,9 +118,7 @@ class QualityValidator:
                 
                 if parameter_count > self.parameter_threshold:
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function has too many parameters ({parameter_count} > {self.parameter_threshold})",
                         file_path=file_path,
@@ -155,9 +149,7 @@ class QualityValidator:
                 
                 if complexity > self.complexity_threshold:
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function has high cyclomatic complexity ({complexity} > {self.complexity_threshold})",
                         file_path=file_path,
@@ -186,9 +178,7 @@ class QualityValidator:
             if isinstance(node, ast.FunctionDef):
                 if not re.match(self.naming_patterns['function'], node.name):
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Function name doesn't follow convention: {node.name}",
                         file_path=file_path,
@@ -201,9 +191,7 @@ class QualityValidator:
             elif isinstance(node, ast.ClassDef):
                 if not re.match(self.naming_patterns['class'], node.name):
                     violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                        rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=f"Class name doesn't follow convention: {node.name}",
                         file_path=file_path,
@@ -218,9 +206,7 @@ class QualityValidator:
                     if isinstance(target, ast.Name):
                         if not re.match(self.naming_patterns['variable'], target.id):
                             violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                                rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                                 severity=Severity.WARNING,
                                 message=f"Variable name doesn't follow convention: {target.id}",
                                 file_path=file_path,
@@ -248,8 +234,6 @@ class QualityValidator:
         # Check for module docstring
         if not ast.get_docstring(tree):
             violations.append(Violation(
-                rule_id="rule_15",
-                rule_number=15,
                 rule_name="Write Good Instructions",
                 severity=Severity.INFO,
                 message="Module missing docstring",
@@ -265,9 +249,7 @@ class QualityValidator:
             if isinstance(node, ast.FunctionDef):
                 if not ast.get_docstring(node):
                     violations.append(Violation(
-                rule_id="rule_15",
-                rule_number=15,
-                        rule_name="Write Good Instructions",
+                rule_name="Write Good Instructions",
                         severity=Severity.WARNING,
                         message=f"Function missing docstring: {node.name}",
                         file_path=file_path,
@@ -282,9 +264,7 @@ class QualityValidator:
             if isinstance(node, ast.ClassDef):
                 if not ast.get_docstring(node):
                     violations.append(Violation(
-                rule_id="rule_15",
-                rule_number=15,
-                        rule_name="Write Good Instructions",
+                rule_name="Write Good Instructions",
                         severity=Severity.WARNING,
                         message=f"Class missing docstring: {node.name}",
                         file_path=file_path,
@@ -322,9 +302,7 @@ class QualityValidator:
                             if isinstance(node.value, (ast.Str, ast.Constant)):
                                 value = node.value.s if hasattr(node.value, 's') else str(node.value.value)
                                 violations.append(Violation(
-                rule_id="rule_18",
-                rule_number=18,
-                                    rule_name="Make Things Repeatable",
+                rule_name="Make Things Repeatable",
                                     severity=Severity.WARNING,
                                     message=f"Hardcoded configuration value: {var_name} = {value}",
                                     file_path=file_path,
@@ -366,9 +344,7 @@ class QualityValidator:
             
             if first_other_line < last_import_line:
                 violations.append(Violation(
-                rule_id="rule_68",
-                rule_number=68,
-                    rule_name="Write Clean, Readable Code",
+                rule_name="Write Clean, Readable Code",
                     severity=Severity.INFO,
                     message="Imports should be at the top of the file",
                     file_path=file_path,

@@ -9,7 +9,7 @@ import re
 import ast
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class CommentsValidator:
@@ -72,7 +72,6 @@ class CommentsValidator:
             for banned_word in self.banned_words:
                 if banned_word.lower() in comment['text'].lower():
                     violations.append(Violation(
-                        rule_id='R008',
                         rule_name=f'Banned word "{banned_word}" in comment - use simple English',
                         severity=Severity.WARNING,
                         message=f'Banned word "{banned_word}" in comment - use simple English',
@@ -90,7 +89,6 @@ class CommentsValidator:
                 words = sentence.strip().split()
                 if len(words) > 15:
                     violations.append(Violation(
-                        rule_id='R008',
                         file_path=file_path,
                         line_number=comment['line'],
                         message=f'Sentence too long ({len(words)} words, max 15) - use simple English',
@@ -102,7 +100,6 @@ class CommentsValidator:
             complex_words = self._count_complex_words(comment['text'])
             if complex_words > 2:  # Simplified grade level check
                 violations.append(Violation(
-                        rule_id='R008',
                         rule_name='Comment too complex - use grade 8 level English',
                         severity=Severity.WARNING,
                         message='Comment too complex - use grade 8 level English',
@@ -140,7 +137,6 @@ class CommentsValidator:
                         # Check for docstring
                         if not ast.get_docstring(node):
                             violations.append(Violation(
-                        rule_id='R046',
                         rule_name=f'Public function \'{node.name}\' must have docstring with WHAT + WHY + Steps',
                         severity=Severity.WARNING,
                         message=f'Public function \'{node.name}\' must have docstring with WHAT + WHY + Steps',
@@ -156,7 +152,6 @@ class CommentsValidator:
                             docstring = ast.get_docstring(node)
                             if not self._is_quality_docstring(docstring):
                                 violations.append(Violation(
-                        rule_id='R046',
                         rule_name=f'Function \'{node.name}\' docstring should include WHAT + WHY + Steps',
                         severity=Severity.WARNING,
                         message=f'Function \'{node.name}\' docstring should include WHAT + WHY + Steps',
@@ -187,7 +182,6 @@ class CommentsValidator:
                 before_func = content[:func_start]
                 if '/**' not in before_func or '*/' not in before_func:
                     violations.append(Violation(
-                        rule_id='R046',
                         rule_name=f'Public function \'{func_name}\' must have JSDoc documentation',
                         severity=Severity.WARNING,
                         message=f'Public function \'{func_name}\' must have JSDoc documentation',
@@ -225,7 +219,6 @@ class CommentsValidator:
                         # Check for docstring
                         if not ast.get_docstring(node):
                             violations.append(Violation(
-                        rule_id='R047',
                         rule_name=f'Public class \'{node.name}\' must have docstring explaining purpose and usage',
                         severity=Severity.WARNING,
                         message=f'Public class \'{node.name}\' must have docstring explaining purpose and usage',
@@ -256,7 +249,6 @@ class CommentsValidator:
                 before_class = content[:class_start]
                 if '/**' not in before_class or '*/' not in before_class:
                     violations.append(Violation(
-                        rule_id='R047',
                         rule_name=f'Public class \'{class_name}\' must have JSDoc documentation',
                         severity=Severity.WARNING,
                         message=f'Public class \'{class_name}\' must have JSDoc documentation',
@@ -286,7 +278,6 @@ class CommentsValidator:
             
             if not has_module_docstring:
                 violations.append(Violation(
-                        rule_id='R048',
                         rule_name='Module must have docstring explaining purpose and exports',
                         severity=Severity.WARNING,
                         message='Module must have docstring explaining purpose and exports',
@@ -318,7 +309,6 @@ class CommentsValidator:
                 before_endpoint = content[:endpoint_start]
                 if '"""' not in before_endpoint and "'''" not in before_endpoint:
                     violations.append(Violation(
-                        rule_id='R049',
                         rule_name='API endpoints must have comprehensive documentation',
                         severity=Severity.WARNING,
                         message='API endpoints must have comprehensive documentation',
@@ -344,7 +334,6 @@ class CommentsValidator:
                 # Check if error handling is documented
                 if 'docstring' not in content.lower() and 'comment' not in content.lower():
                     violations.append(Violation(
-                        rule_id='R050',
                         rule_name='Error handling must be documented with possible exceptions',
                         severity=Severity.WARNING,
                         message='Error handling must be documented with possible exceptions',
@@ -371,7 +360,6 @@ class CommentsValidator:
             # Check if configuration is documented
             if 'docstring' not in content.lower() and 'comment' not in content.lower():
                 violations.append(Violation(
-                        rule_id='R051',
                         rule_name='Configuration options must be documented with defaults and ranges',
                         severity=Severity.WARNING,
                         message='Configuration options must be documented with defaults and ranges',
@@ -397,7 +385,6 @@ class CommentsValidator:
             # Check if security is documented
             if 'docstring' not in content.lower() and 'comment' not in content.lower():
                 violations.append(Violation(
-                        rule_id='R052',
                         rule_name='Security-related code must be documented with threat model',
                         severity=Severity.WARNING,
                         message='Security-related code must be documented with threat model',
@@ -423,7 +410,6 @@ class CommentsValidator:
             
             if not has_required_sections:
                 violations.append(Violation(
-                        rule_id='R053',
                         rule_name='Projects must have comprehensive README with setup and usage',
                         severity=Severity.WARNING,
                         message='Projects must have comprehensive README with setup and usage',
@@ -450,7 +436,6 @@ class CommentsValidator:
             # Check if TODO follows the required format: TODO(owner): description [ticket] [date]
             if not re.match(r'\([^)]+\):', todo_text):
                 violations.append(Violation(
-                        rule_id='R089',
                         rule_name='TODO(owner): description [ticket] [date] format required',
                         severity=Severity.WARNING,
                         message='TODO(owner): description [ticket] [date] format required',

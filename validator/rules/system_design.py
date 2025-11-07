@@ -2,16 +2,27 @@
 System design rule validator.
 
 This module implements validation for advanced system design rules:
-- Rule 22: Make All 18 Modules Look the Same
-- Rule 25: Show Information Gradually
-- Rule 29: Register Modules the Same Way
-- Rule 30: Make All Modules Feel Like One Product
+- Make All 20 Modules Look the Same
+- Show Information Gradually
+- Register Modules the Same Way
+- Make All Modules Feel Like One Product
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
-from ..models import Violation, Severity
+from..models import Violation, Severity
+from..rule_registry import fallback_rule_fields, rule_fields
+
+ARCHITECTURE_CONSISTENCY = rule_fields("Make All 20 Modules Look the Same")
+PROGRESSIVE_DISCLOSURE = rule_fields("Show Information Gradually")
+MODULE_REGISTRATION = rule_fields("Register Modules the Same Way")
+UNIFIED_PRODUCT = rule_fields("Make All Modules Feel Like One Product")
+ORGANIZE_FEATURES = rule_fields("Organize Features Clearly")
+QUICK_ADOPTION = rule_fields("Design for Quick Adoption")
+USER_EXPERIENCE = rule_fields("Test User Experience")
+DEPENDENCY_INJECTION_RULE = fallback_rule_fields("Dependency Injection")
+SEPARATION_OF_CONCERNS_RULE = rule_fields("Keep Different Parts Separate")
 
 
 class SystemDesignValidator:
@@ -35,14 +46,12 @@ class SystemDesignValidator:
         return violations
     
     def validate_architecture_consistency(self, content: str) -> List[Violation]:
-        """Validate Rule 22: Architecture Consistency"""
+        """Validate architecture consistency across modules."""
         violations = []
         # Check for consistent architecture patterns
         if not re.search(r'class\s+\w+', content):
             violations.append(Violation(
-                rule_id="rule_022",
-                rule_number=22,
-                rule_name="Architecture Consistency",
+                **ARCHITECTURE_CONSISTENCY,
                 severity=Severity.HIGH,
                 message="Ensure consistent class structure",
                 file_path="",
@@ -52,7 +61,7 @@ class SystemDesignValidator:
         return violations
     
     def validate_separation_of_concerns(self, content: str) -> List[Violation]:
-        """Validate Rule 25: Separation of Concerns"""
+        """Validate separation of concerns patterns."""
         violations = []
         # Check for mixed concerns
         mixed_patterns = [
@@ -66,17 +75,17 @@ class SystemDesignValidator:
             for pattern in mixed_patterns:
                 if re.search(pattern, line, re.IGNORECASE):
                     violations.append(Violation(
-                        rule_number=25,
-                        title="Separation of Concerns",
+                        **SEPARATION_OF_CONCERNS_RULE,
                         severity=Severity.MEDIUM,
                         message=f"Line {i}: Separate concerns into different modules",
+                        file_path="",
                         line_number=i,
                         column_number=1
                     ))
         return violations
     
     def validate_dependency_injection(self, content: str) -> List[Violation]:
-        """Validate Rule 26: Dependency Injection"""
+        """Validate dependency injection practices."""
         violations = []
         # Check for hardcoded dependencies
         hardcoded_patterns = [
@@ -90,10 +99,10 @@ class SystemDesignValidator:
             for pattern in hardcoded_patterns:
                 if re.search(pattern, line):
                     violations.append(Violation(
-                        rule_number=26,
-                        title="Dependency Injection",
+                        **DEPENDENCY_INJECTION_RULE,
                         severity=Severity.MEDIUM,
                         message=f"Line {i}: Use dependency injection instead of hardcoded dependencies",
+                        file_path="",
                         line_number=i,
                         column_number=1
                     ))
@@ -101,7 +110,7 @@ class SystemDesignValidator:
         
     def validate_consistent_modules(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for consistent module patterns (Rule 22).
+        Check for consistent module patterns.
         
         Args:
             tree: AST tree of the code
@@ -141,9 +150,7 @@ class SystemDesignValidator:
         used_patterns = sum(1 for count in naming_patterns.values() if count > 0)
         if used_patterns > 1:
             violations.append(Violation(
-                rule_id="rule_22",
-                rule_number=22,
-                rule_name="Make All 18 Modules Look the Same",
+                **ARCHITECTURE_CONSISTENCY,
                 severity=Severity.WARNING,
                 message="Inconsistent naming conventions detected across classes",
                 file_path=file_path,
@@ -166,9 +173,7 @@ class SystemDesignValidator:
         
         if non_standard_errors:
             violations.append(Violation(
-                rule_id="rule_22",
-                rule_number=22,
-                rule_name="Make All 18 Modules Look the Same",
+                **ARCHITECTURE_CONSISTENCY,
                 severity=Severity.INFO,
                 message=f"Non-standard error types detected: {non_standard_errors}",
                 file_path=file_path,
@@ -182,7 +187,7 @@ class SystemDesignValidator:
     
     def validate_progressive_disclosure(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for progressive disclosure patterns (Rule 25).
+        Check for progressive disclosure patterns.
         
         Args:
             tree: AST tree of the code
@@ -202,9 +207,7 @@ class SystemDesignValidator:
                 # Flag functions with more than 5 parameters
                 if param_count > 5:
                     violations.append(Violation(
-                rule_id="rule_25",
-                rule_number=25,
-                        rule_name="Show Information Gradually",
+                        **PROGRESSIVE_DISCLOSURE,
                         severity=Severity.WARNING,
                         message=f"Function '{node.name}' has {param_count} parameters - consider progressive disclosure",
                         file_path=file_path,
@@ -218,9 +221,7 @@ class SystemDesignValidator:
                 required_params = param_count - len(node.args.defaults)
                 if required_params > 3:
                     violations.append(Violation(
-                rule_id="rule_25",
-                rule_number=25,
-                        rule_name="Show Information Gradually",
+                        **PROGRESSIVE_DISCLOSURE,
                         severity=Severity.INFO,
                         message=f"Function '{node.name}' requires {required_params} parameters - consider defaults",
                         file_path=file_path,
@@ -245,9 +246,7 @@ class SystemDesignValidator:
         
         if complex_functions:
             violations.append(Violation(
-                rule_id="rule_25",
-                rule_number=25,
-                rule_name="Show Information Gradually",
+                **PROGRESSIVE_DISCLOSURE,
                 severity=Severity.WARNING,
                 message=f"Complex functions detected without abstraction layers: {[f[0] for f in complex_functions]}",
                 file_path=file_path,
@@ -261,7 +260,7 @@ class SystemDesignValidator:
     
     def validate_consistent_registration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for consistent module registration (Rule 29).
+        Check for consistent module registration.
         
         Args:
             tree: AST tree of the code
@@ -281,9 +280,7 @@ class SystemDesignValidator:
                 # Check for missing standard initialization
                 if '__init__' not in class_methods and len(class_methods) > 0:
                     violations.append(Violation(
-                rule_id="rule_29",
-                rule_number=29,
-                        rule_name="Register Modules the Same Way",
+                        **MODULE_REGISTRATION,
                         severity=Severity.WARNING,
                         message=f"Class '{node.name}' missing standard __init__ method",
                         file_path=file_path,
@@ -294,14 +291,14 @@ class SystemDesignValidator:
                     ))
                 
                 # Check for inconsistent setup patterns
-                setup_methods = [method for method in class_methods 
-                               if any(keyword in method.lower() for keyword in ['setup', 'configure', 'init'])]
+                setup_methods = [
+                    method for method in class_methods
+                    if any(keyword in method.lower() for keyword in ['setup', 'configure', 'init'])
+                ]
                 
                 if len(setup_methods) > 1:
                     violations.append(Violation(
-                rule_id="rule_29",
-                rule_number=29,
-                        rule_name="Register Modules the Same Way",
+                        **MODULE_REGISTRATION,
                         severity=Severity.INFO,
                         message=f"Class '{node.name}' has multiple setup methods: {setup_methods}",
                         file_path=file_path,
@@ -321,9 +318,7 @@ class SystemDesignValidator:
         
         if len(module_init_patterns) > 3:
             violations.append(Violation(
-                rule_id="rule_29",
-                rule_number=29,
-                rule_name="Register Modules the Same Way",
+                **MODULE_REGISTRATION,
                 severity=Severity.INFO,
                 message=f"Multiple initialization patterns detected: {module_init_patterns}",
                 file_path=file_path,
@@ -337,7 +332,7 @@ class SystemDesignValidator:
     
     def validate_unified_product(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for unified product experience (Rule 30).
+        Check for unified product experience.
         
         Args:
             tree: AST tree of the code
@@ -375,8 +370,6 @@ class SystemDesignValidator:
         used_patterns = sum(1 for count in command_patterns.values() if count > 0)
         if used_patterns > 0 and used_patterns < 3:
             violations.append(Violation(
-                rule_id="rule_30",
-                rule_number=30,
                 rule_name="Make All Modules Feel Like One Product",
                 severity=Severity.INFO,
                 message="Limited command pattern usage - consider standard CRUD operations",
@@ -418,9 +411,7 @@ class SystemDesignValidator:
             used_formats = sum(1 for count in formats.values() if count > 0)
             if used_formats > 1:
                 violations.append(Violation(
-                rule_id="rule_30",
-                rule_number=30,
-                    rule_name="Make All Modules Feel Like One Product",
+                rule_name="Make All Modules Feel Like One Product",
                     severity=Severity.INFO,
                     message="Inconsistent error message formats detected",
                     file_path=file_path,
@@ -434,7 +425,7 @@ class SystemDesignValidator:
     
     def validate_feature_organization(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for clear feature organization (Rule 26).
+        Check for clear feature organization.
         
         Args:
             tree: AST tree of the code
@@ -470,8 +461,6 @@ class SystemDesignValidator:
         # Check for missing organization patterns
         if module_structure['imports'] == 0:
             violations.append(Violation(
-                rule_id="rule_26",
-                rule_number=26,
                 rule_name="Organize Features Clearly",
                 severity=Severity.INFO,
                 message="No imports detected - ensure proper module organization",
@@ -512,9 +501,7 @@ class SystemDesignValidator:
             used_patterns = sum(1 for count in patterns.values() if count > 0)
             if used_patterns == 0:
                 violations.append(Violation(
-                rule_id="rule_26",
-                rule_number=26,
-                    rule_name="Organize Features Clearly",
+                rule_name="Organize Features Clearly",
                     severity=Severity.INFO,
                     message="No clear feature hierarchy detected in class names",
                     file_path=file_path,
@@ -528,7 +515,7 @@ class SystemDesignValidator:
     
     def validate_quick_adoption(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for quick adoption patterns (Rule 31).
+        Check for quick adoption patterns.
         
         Args:
             tree: AST tree of the code
@@ -546,8 +533,6 @@ class SystemDesignValidator:
         
         if not has_quick_start:
             violations.append(Violation(
-                rule_id="rule_31",
-                rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
                 message="No quick-start patterns detected",
@@ -564,8 +549,6 @@ class SystemDesignValidator:
         
         if not has_onboarding:
             violations.append(Violation(
-                rule_id="rule_31",
-                rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
                 message="No onboarding mechanisms detected",
@@ -582,8 +565,6 @@ class SystemDesignValidator:
         
         if has_barriers:
             violations.append(Violation(
-                rule_id="rule_31",
-                rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.WARNING,
                 message="Potential adoption barriers detected",
@@ -600,8 +581,6 @@ class SystemDesignValidator:
         
         if not has_immediate_value:
             violations.append(Violation(
-                rule_id="rule_31",
-                rule_number=31,
                 rule_name="Design for Quick Adoption",
                 severity=Severity.INFO,
                 message="No immediate value patterns detected",
@@ -616,7 +595,7 @@ class SystemDesignValidator:
     
     def validate_user_experience_testing(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for user experience testing patterns (Rule 32).
+        Check for user experience testing patterns.
         
         Args:
             tree: AST tree of the code
@@ -634,8 +613,6 @@ class SystemDesignValidator:
         
         if not has_ux_testing:
             violations.append(Violation(
-                rule_id="rule_32",
-                rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
                 message="No user experience testing patterns detected",
@@ -652,8 +629,6 @@ class SystemDesignValidator:
         
         if not has_usability:
             violations.append(Violation(
-                rule_id="rule_32",
-                rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
                 message="No usability patterns detected",
@@ -670,8 +645,6 @@ class SystemDesignValidator:
         
         if not has_feedback:
             violations.append(Violation(
-                rule_id="rule_32",
-                rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
                 message="No user feedback patterns detected",
@@ -688,8 +661,6 @@ class SystemDesignValidator:
         
         if not has_ab_testing:
             violations.append(Violation(
-                rule_id="rule_32",
-                rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
                 message="No A/B testing patterns detected",
@@ -706,8 +677,6 @@ class SystemDesignValidator:
         
         if not has_journey:
             violations.append(Violation(
-                rule_id="rule_32",
-                rule_number=32,
                 rule_name="Test User Experience",
                 severity=Severity.INFO,
                 message="No user journey patterns detected",

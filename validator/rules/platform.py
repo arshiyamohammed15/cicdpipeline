@@ -2,14 +2,14 @@
 Platform rule validator.
 
 This module implements validation for platform rules:
-- Rule 42: Use All Platform Features
-- Rule 43: Process Data Quickly
+- Use All Platform Features
+- Process Data Quickly
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class PlatformValidator:
@@ -38,7 +38,7 @@ class PlatformValidator:
         
     def validate_platform_features(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for platform feature usage (Rule 42).
+        Check for platform feature usage.
         
         Args:
             tree: AST tree of the code
@@ -54,8 +54,6 @@ class PlatformValidator:
         has_logging = any(pattern in content.lower() for pattern in ['logging', 'logger', 'log'])
         if not has_logging:
             violations.append(Violation(
-                rule_id="rule_42",
-                rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.WARNING,
                 message="No logging detected - use platform logging features",
@@ -70,8 +68,6 @@ class PlatformValidator:
         has_monitoring = any(pattern in content.lower() for pattern in ['monitor', 'telemetry', 'metrics', 'stats'])
         if not has_monitoring:
             violations.append(Violation(
-                rule_id="rule_42",
-                rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
                 message="No monitoring/telemetry detected",
@@ -86,8 +82,6 @@ class PlatformValidator:
         has_config = any(pattern in content.lower() for pattern in ['config', 'configuration', 'settings'])
         if not has_config:
             violations.append(Violation(
-                rule_id="rule_42",
-                rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
                 message="No configuration management detected",
@@ -102,8 +96,6 @@ class PlatformValidator:
         has_error_tracking = any(pattern in content.lower() for pattern in ['error', 'exception', 'traceback', 'stack'])
         if not has_error_tracking:
             violations.append(Violation(
-                rule_id="rule_42",
-                rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.WARNING,
                 message="No error tracking detected",
@@ -118,8 +110,6 @@ class PlatformValidator:
         has_health = any(pattern in content.lower() for pattern in ['health', 'status', 'ping', 'heartbeat'])
         if not has_health:
             violations.append(Violation(
-                rule_id="rule_42",
-                rule_number=42,
                 rule_name="Use All Platform Features",
                 severity=Severity.INFO,
                 message="No health/status reporting detected",
@@ -134,7 +124,7 @@ class PlatformValidator:
     
     def validate_data_processing_speed(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for data processing performance (Rule 43).
+        Check for data processing performance.
         
         Args:
             tree: AST tree of the code
@@ -157,8 +147,6 @@ class PlatformValidator:
         
         if blocking_operations_found:
             violations.append(Violation(
-                rule_id="rule_43",
-                rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.WARNING,
                 message=f"Blocking operations detected: {blocking_operations_found}",
@@ -189,8 +177,6 @@ class PlatformValidator:
         
         if inefficient_patterns:
             violations.append(Violation(
-                rule_id="rule_43",
-                rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.WARNING,
                 message=f"Inefficient data processing patterns: {inefficient_patterns}",
@@ -205,8 +191,6 @@ class PlatformValidator:
         has_optimizations = any(pattern in content.lower() for pattern in self.performance_patterns)
         if not has_optimizations:
             violations.append(Violation(
-                rule_id="rule_43",
-                rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.INFO,
                 message="No performance optimization patterns detected",
@@ -221,8 +205,6 @@ class PlatformValidator:
         has_quality_checks = any(pattern in content.lower() for pattern in ['validate', 'check', 'verify', 'sanitize'])
         if not has_quality_checks:
             violations.append(Violation(
-                rule_id="rule_43",
-                rule_number=43,
                 rule_name="Process Data Quickly",
                 severity=Severity.INFO,
                 message="No data quality checks during processing",
@@ -237,7 +219,7 @@ class PlatformValidator:
     
     def validate_context_aware_help(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for context-aware assistance (Rule 44).
+        Check for context-aware assistance.
         
         Args:
             tree: AST tree of the code
@@ -255,8 +237,6 @@ class PlatformValidator:
         
         if not has_context:
             violations.append(Violation(
-                rule_id="rule_44",
-                rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.INFO,
                 message="No context-aware assistance patterns detected",
@@ -273,8 +253,6 @@ class PlatformValidator:
         
         if not has_progressive:
             violations.append(Violation(
-                rule_id="rule_44",
-                rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.INFO,
                 message="No progressive help patterns detected",
@@ -291,8 +269,6 @@ class PlatformValidator:
         
         if has_intrusive:
             violations.append(Violation(
-                rule_id="rule_44",
-                rule_number=44,
                 rule_name="Help Without Interrupting",
                 severity=Severity.WARNING,
                 message="Intrusive help patterns detected",
@@ -307,7 +283,7 @@ class PlatformValidator:
     
     def validate_emergency_handling(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for emergency handling patterns (Rule 45).
+        Check for emergency handling patterns.
         
         Args:
             tree: AST tree of the code
@@ -325,8 +301,6 @@ class PlatformValidator:
         
         if not has_emergency:
             violations.append(Violation(
-                rule_id="rule_45",
-                rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.WARNING,
                 message="No emergency handling patterns detected",
@@ -343,8 +317,6 @@ class PlatformValidator:
         
         if not has_one_click_emergency:
             violations.append(Violation(
-                rule_id="rule_45",
-                rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.INFO,
                 message="No one-click emergency solutions detected",
@@ -361,8 +333,6 @@ class PlatformValidator:
         
         if not has_recovery:
             violations.append(Violation(
-                rule_id="rule_45",
-                rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.WARNING,
                 message="No recovery options detected",
@@ -379,8 +349,6 @@ class PlatformValidator:
         
         if not has_progress:
             violations.append(Violation(
-                rule_id="rule_45",
-                rule_number=45,
                 rule_name="Handle Emergencies Well",
                 severity=Severity.INFO,
                 message="No progress update patterns detected",
@@ -395,7 +363,7 @@ class PlatformValidator:
     
     def validate_scalability(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for scalability patterns (Rule 51).
+        Check for scalability patterns.
         
         Args:
             tree: AST tree of the code
@@ -413,8 +381,6 @@ class PlatformValidator:
         
         if not has_scalability:
             violations.append(Violation(
-                rule_id="rule_51",
-                rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
                 message="No scalability patterns detected",
@@ -431,8 +397,6 @@ class PlatformValidator:
         
         if has_hardcoded_limits:
             violations.append(Violation(
-                rule_id="rule_51",
-                rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.WARNING,
                 message="Hard-coded limits detected - may not scale",
@@ -449,8 +413,6 @@ class PlatformValidator:
         
         if not has_performance:
             violations.append(Violation(
-                rule_id="rule_51",
-                rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
                 message="No performance optimization patterns detected",
@@ -467,8 +429,6 @@ class PlatformValidator:
         
         if not has_config:
             violations.append(Violation(
-                rule_id="rule_51",
-                rule_number=51,
                 rule_name="Scale from Small to Huge",
                 severity=Severity.INFO,
                 message="No configuration patterns detected",
@@ -483,7 +443,7 @@ class PlatformValidator:
     
     def validate_developer_happiness(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for developer happiness patterns (Rule 46).
+        Check for developer happiness patterns.
         
         Args:
             tree: AST tree of the code
@@ -501,8 +461,6 @@ class PlatformValidator:
         
         if not has_dev_experience:
             violations.append(Violation(
-                rule_id="rule_46",
-                rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
                 message="No developer experience patterns detected",
@@ -519,8 +477,6 @@ class PlatformValidator:
         
         if not has_productivity:
             violations.append(Violation(
-                rule_id="rule_46",
-                rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
                 message="No productivity patterns detected",
@@ -537,8 +493,6 @@ class PlatformValidator:
         
         if not has_tooling:
             violations.append(Violation(
-                rule_id="rule_46",
-                rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
                 message="No tooling patterns detected",
@@ -555,8 +509,6 @@ class PlatformValidator:
         
         if not has_feedback:
             violations.append(Violation(
-                rule_id="rule_46",
-                rule_number=46,
                 rule_name="Make Developers Happier",
                 severity=Severity.INFO,
                 message="No feedback patterns detected",
@@ -571,7 +523,7 @@ class PlatformValidator:
     
     def validate_problem_prevention_tracking(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for problem prevention tracking patterns (Rule 47).
+        Check for problem prevention tracking patterns.
         
         Args:
             tree: AST tree of the code
@@ -589,8 +541,6 @@ class PlatformValidator:
         
         if not has_prevention:
             violations.append(Violation(
-                rule_id="rule_47",
-                rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
                 message="No problem prevention patterns detected",
@@ -607,8 +557,6 @@ class PlatformValidator:
         
         if not has_tracking:
             violations.append(Violation(
-                rule_id="rule_47",
-                rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
                 message="No tracking patterns detected",
@@ -625,8 +573,6 @@ class PlatformValidator:
         
         if not has_metrics:
             violations.append(Violation(
-                rule_id="rule_47",
-                rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
                 message="No metrics patterns detected",
@@ -643,8 +589,6 @@ class PlatformValidator:
         
         if not has_reporting:
             violations.append(Violation(
-                rule_id="rule_47",
-                rule_number=47,
                 rule_name="Track Problems You Prevent",
                 severity=Severity.INFO,
                 message="No reporting patterns detected",
@@ -659,7 +603,7 @@ class PlatformValidator:
     
     def validate_compliance_workflow(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for compliance workflow patterns (Rule 48).
+        Check for compliance workflow patterns.
         
         Args:
             tree: AST tree of the code
@@ -677,8 +621,6 @@ class PlatformValidator:
         
         if not has_compliance:
             violations.append(Violation(
-                rule_id="rule_48",
-                rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
                 message="No compliance patterns detected",
@@ -695,8 +637,6 @@ class PlatformValidator:
         
         if not has_workflow:
             violations.append(Violation(
-                rule_id="rule_48",
-                rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
                 message="No workflow patterns detected",
@@ -713,8 +653,6 @@ class PlatformValidator:
         
         if not has_automation:
             violations.append(Violation(
-                rule_id="rule_48",
-                rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
                 message="No automation patterns detected",
@@ -731,8 +669,6 @@ class PlatformValidator:
         
         if not has_validation:
             violations.append(Violation(
-                rule_id="rule_48",
-                rule_number=48,
                 rule_name="Build Compliance into Workflow",
                 severity=Severity.INFO,
                 message="No validation patterns detected",
@@ -747,7 +683,7 @@ class PlatformValidator:
     
     def validate_security_usability(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for security usability patterns (Rule 49).
+        Check for security usability patterns.
         
         Args:
             tree: AST tree of the code
@@ -770,9 +706,7 @@ class PlatformValidator:
             
             if not has_usability:
                 violations.append(Violation(
-                rule_id="rule_49",
-                rule_number=49,
-                    rule_name="Security Should Help, Not Block",
+                rule_name="Security Should Help, Not Block",
                     severity=Severity.WARNING,
                     message="Security features detected without usability considerations",
                     file_path=file_path,
@@ -788,9 +722,7 @@ class PlatformValidator:
             
             if has_blocking:
                 violations.append(Violation(
-                rule_id="rule_49",
-                rule_number=49,
-                    rule_name="Security Should Help, Not Block",
+                rule_name="Security Should Help, Not Block",
                     severity=Severity.WARNING,
                     message="Blocking security patterns detected - should be helpful instead",
                     file_path=file_path,
@@ -806,9 +738,7 @@ class PlatformValidator:
             
             if not has_helpful:
                 violations.append(Violation(
-                rule_id="rule_49",
-                rule_number=49,
-                    rule_name="Security Should Help, Not Block",
+                rule_name="Security Should Help, Not Block",
                     severity=Severity.INFO,
                     message="No helpful security patterns detected",
                     file_path=file_path,
@@ -824,9 +754,7 @@ class PlatformValidator:
             
             if not has_transparency:
                 violations.append(Violation(
-                rule_id="rule_49",
-                rule_number=49,
-                    rule_name="Security Should Help, Not Block",
+                rule_name="Security Should Help, Not Block",
                     severity=Severity.INFO,
                     message="No security transparency patterns detected",
                     file_path=file_path,
@@ -849,7 +777,7 @@ class PlatformValidator:
 
     def validate_gradual_adoption(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for gradual adoption patterns (Rule 50).
+        Check for gradual adoption patterns.
         
         Args:
             tree: AST tree of the code
@@ -857,7 +785,7 @@ class PlatformValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 50
+            List of violations for this rule
         """
         violations = []
         
@@ -875,8 +803,6 @@ class PlatformValidator:
         
         if not has_adoption:
             violations.append(Violation(
-                rule_id="rule_50",
-                rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
                 message="No gradual adoption patterns detected",
@@ -889,8 +815,6 @@ class PlatformValidator:
         
         if not has_independence:
             violations.append(Violation(
-                rule_id="rule_50",
-                rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
                 message="No module independence patterns detected",
@@ -903,8 +827,6 @@ class PlatformValidator:
         
         if not has_value:
             violations.append(Violation(
-                rule_id="rule_50",
-                rule_number=50,
                 rule_name="Support Gradual Adoption",
                 severity=Severity.INFO,
                 message="No clear value demonstration patterns detected",

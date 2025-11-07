@@ -3,10 +3,11 @@
   "priority": "critical",
   "description": "Architecture and system design",
   "rules": [
-    19,
-    21,
-    23,
-    24,
-    28
+    "Keep Different Parts Separate",
+    "Use the Hybrid System Design",
+    "Work Without Internet",
+    "Process Data Locally First",
+    "Make All Modules Feel Like One Product",
+    "Don't Make People Configure Before Using"
   ]
 }

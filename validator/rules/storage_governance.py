@@ -9,7 +9,7 @@ import re
 import json
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class StorageGovernanceValidator:
@@ -87,7 +87,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_name_casing(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 216: Validate kebab-case naming convention (only [a-z0-9-])."""
+        """Validate kebab-case naming convention (only [a-z0-9-])."""
         violations = []
         
         # Check for folder/path references in code
@@ -111,9 +111,7 @@ class StorageGovernanceValidator:
                         # Check if it violates kebab-case (contains uppercase or underscore)
                         if re.search(r'[A-Z_]', part):
                             violations.append(Violation(
-                                rule_id='R216',
                                 rule_name='Name casing & charset: kebab-case [a-z0-9-] only',
-                                rule_number=216,
                                 severity=Severity.ERROR,
                                 message=f'Folder name "{part}" violates kebab-case rule. Use only lowercase letters, numbers, and hyphens.',
                                 file_path=file_path,
@@ -127,7 +125,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_no_code_pii(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 217: Validate no source code or PII in storage paths."""
+        """Validate no source code or PII in storage paths."""
         violations = []
         
         # Check if file appears to be storing code in data paths
@@ -146,9 +144,7 @@ class StorageGovernanceValidator:
                 for pattern in code_patterns:
                     for match in re.finditer(pattern, content, re.IGNORECASE):
                         violations.append(Violation(
-                            rule_id='R217',
                             rule_name='No source code/PII in stores',
-                            rule_number=217,
                             severity=Severity.ERROR,
                             message='Source code detected in storage operation. Storage must not contain code or PII.',
                             file_path=file_path,
@@ -163,9 +159,7 @@ class StorageGovernanceValidator:
                 for pattern in self.pii_patterns:
                     for match in re.finditer(pattern, content, re.IGNORECASE):
                         violations.append(Violation(
-                            rule_id='R217',
                             rule_name='No source code/PII in stores',
-                            rule_number=217,
                             severity=Severity.ERROR,
                             message='PII detected in storage operation. Storage must not contain personally identifiable information.',
                             file_path=file_path,
@@ -179,16 +173,14 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_no_secrets(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 218: Validate no secrets or private keys on disk."""
+        """Validate no secrets or private keys on disk."""
         violations = []
         
         # Check for hardcoded secrets
         for pattern in self.secret_patterns:
             for match in re.finditer(pattern, content, re.IGNORECASE):
                 violations.append(Violation(
-                    rule_id='R218',
                     rule_name='No secrets/private keys on disk',
-                    rule_number=218,
                     severity=Severity.ERROR,
                     message='Hardcoded secret detected. Never store secrets or private keys on disk.',
                     file_path=file_path,
@@ -214,9 +206,7 @@ class StorageGovernanceValidator:
                 context = content[max(0, match.start()-50):match.end()+50]
                 if any(op in context.lower() for op in ['write', 'save', 'store', 'open(']):
                     violations.append(Violation(
-                        rule_id='R218',
                         rule_name='No secrets/private keys on disk',
-                        rule_number=218,
                         severity=Severity.ERROR,
                         message='Private key file operation detected. Private keys should not be stored on disk.',
                         file_path=file_path,
@@ -230,7 +220,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_jsonl_receipts(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 219: Validate JSONL receipts format (newline-delimited, signed, append-only)."""
+        """Validate JSONL receipts format (newline-delimited, signed, append-only)."""
         violations = []
         
         # Check for receipt handling
@@ -248,9 +238,7 @@ class StorageGovernanceValidator:
                         context = content[match.start():min(match.end()+100, len(content))]
                         if 'receipt' in context.lower():
                             violations.append(Violation(
-                                rule_id='R219',
                                 rule_name='JSONL receipts (newline-delimited, signed, append-only)',
-                                rule_number=219,
                                 severity=Severity.WARNING,
                                 message=message,
                                 file_path=file_path,
@@ -273,9 +261,7 @@ class StorageGovernanceValidator:
                     context = content[max(0, match.start()-100):min(match.end()+100, len(content))]
                     if 'receipt' in context.lower():
                         violations.append(Violation(
-                            rule_id='R219',
                             rule_name='JSONL receipts (newline-delimited, signed, append-only)',
-                            rule_number=219,
                             severity=Severity.ERROR,
                             message=message,
                             file_path=file_path,
@@ -289,9 +275,7 @@ class StorageGovernanceValidator:
             # Detect explicit write("w") to receipt files
             for match in re.finditer(r"open\([^)]*receipt[^)]*,\s*['\"]w['\"]\)", content, re.IGNORECASE):
                 violations.append(Violation(
-                    rule_id='R219',
                     rule_name='JSONL receipts must be append-only',
-                    rule_number=219,
                     severity=Severity.ERROR,
                     message='Receipts must be append-only. Use mode "a", not "w".',
                     file_path=file_path,
@@ -304,7 +288,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_time_partitions(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 220: Validate UTC time partitions (dt=YYYY-MM-DD format)."""
+        """Validate UTC time partitions (dt=YYYY-MM-DD format)."""
         violations = []
         
         # Look for partition creation or references
@@ -320,9 +304,7 @@ class StorageGovernanceValidator:
             partition = match.group(0)
             if not self.date_partition_pattern.match(partition):
                 violations.append(Violation(
-                    rule_id='R220',
                     rule_name='Time partitions use UTC (dt=YYYY-MM-DD)',
-                    rule_number=220,
                     severity=Severity.ERROR,
                     message=f'Invalid time partition format: {partition}. Must use dt=YYYY-MM-DD in UTC.',
                     file_path=file_path,
@@ -336,9 +318,7 @@ class StorageGovernanceValidator:
         # Check for date= instead of dt=
         for match in re.finditer(r'date=\d{4}-\d{2}-\d{2}', content):
             violations.append(Violation(
-                rule_id='R220',
                 rule_name='Time partitions use UTC (dt=YYYY-MM-DD)',
-                rule_number=220,
                 severity=Severity.WARNING,
                 message='Use "dt=" prefix for time partitions, not "date="',
                 file_path=file_path,
@@ -352,7 +332,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_policy_signatures(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 221: Validate policy snapshots are signed."""
+        """Validate policy snapshots are signed."""
         violations = []
         
         # Check for policy operations
@@ -373,10 +353,8 @@ class StorageGovernanceValidator:
                 
                 if not has_signature:
                         violations.append(Violation(
-                            rule_id='R221',
                             rule_name='Policy snapshots must be signed',
-                            rule_number=221,
-                        severity=Severity.ERROR,
+                            severity=Severity.ERROR,
                         message='Policy snapshot operation without signature detected. All policy snapshots must be signed.',
                         file_path=file_path,
                         line_number=content[:match.start()].count('\n') + 1,
@@ -389,7 +367,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_dual_storage(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 222: Validate dual storage compliance (JSONL authority, DB mirrors)."""
+        """Validate dual storage compliance (JSONL authority, DB mirrors)."""
         violations = []
         
         # Check for storage operations that should follow dual storage pattern
@@ -412,9 +390,7 @@ class StorageGovernanceValidator:
                         match = re.search(pattern, content)
                         if match:
                             violations.append(Violation(
-                                rule_id='R222',
                                 rule_name='Dual storage compliance (JSONL authority, DB mirrors)',
-                                rule_number=222,
                                 severity=Severity.WARNING,
                                 message=f'Database operation for {keyword} without JSONL authority. JSONL is the source of truth, DB mirrors for queries.',
                                 file_path=file_path,
@@ -429,7 +405,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_path_resolution(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 223: Validate path resolution via ZU_ROOT environment variable."""
+        """Validate path resolution via ZU_ROOT environment variable."""
         violations = []
         
         # Check for hardcoded storage paths
@@ -445,9 +421,7 @@ class StorageGovernanceValidator:
                 context = content[max(0, match.start()-100):min(match.end()+100, len(content))]
                 if 'ZU_ROOT' not in context and 'os.environ' not in context:
                     violations.append(Violation(
-                        rule_id='R223',
                         rule_name='Path resolution via ZU_ROOT environment variable',
-                        rule_number=223,
                         severity=Severity.ERROR,
                         message='Hardcoded storage path detected. All paths must be resolved via ZU_ROOT environment variable.',
                         file_path=file_path,
@@ -461,7 +435,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_receipts_validation(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 224: Validate receipts (signed, append-only, no code/PII)."""
+        """Validate receipts (signed, append-only, no code/PII)."""
         violations = []
         
         # This combines checks from rules 217, 218, 219 specifically for receipts
@@ -476,9 +450,7 @@ class StorageGovernanceValidator:
                     # Check for signature verification
                     if not any(term in context.lower() for term in ['verify', 'signature', 'check', 'validate']):
                         violations.append(Violation(
-                            rule_id='R224',
                             rule_name='Receipts validation (signed, append-only, no code/PII)',
-                            rule_number=224,
                             severity=Severity.WARNING,
                             message='Receipt read operation without signature verification. All receipts must be verified.',
                             file_path=file_path,
@@ -492,7 +464,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_evidence_watermarks(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 225: Validate evidence watermarks per-consumer structure."""
+        """Validate evidence watermarks per-consumer structure."""
         violations = []
         
         # Check for watermark operations
@@ -518,11 +490,9 @@ class StorageGovernanceValidator:
                         has_consumer = True
                 if not has_consumer:
                         violations.append(Violation(
-                            rule_id='R225',
-                        rule_name='Evidence watermarks per-consumer structure',
-                            rule_number=225,
-                        severity=Severity.WARNING,
-                        message='Watermark path should include consumer-id: .../watermarks/{consumer-id}/',
+                            rule_name='Evidence watermarks per-consumer structure',
+                            severity=Severity.WARNING,
+                        message='Watermark path should include consumer-id:.../watermarks/{consumer-id}/',
                         file_path=file_path,
                         line_number=content[:match.start()].count('\n') + 1,
                         column_number=match.start() - content.rfind('\n', 0, match.start()) - 1,
@@ -534,7 +504,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_rfc_fallback(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 226: Validate RFC fallback pattern (UNCLASSIFIED__slug, 24h resolution)."""
+        """Validate RFC fallback pattern (UNCLASSIFIED__slug, 24h resolution)."""
         violations = []
         
         # Check for unclassified/fallback handling
@@ -549,9 +519,7 @@ class StorageGovernanceValidator:
                 # Should match UNCLASSIFIED__slug pattern
                 if 'UNCLASSIFIED' in context and not self.rfc_pattern.search(context):
                     violations.append(Violation(
-                        rule_id='R229',
                         rule_name='RFC fallback pattern (UNCLASSIFIED__slug, 24h resolution)',
-                        rule_number=229,
                         severity=Severity.WARNING,
                         message='Use RFC fallback pattern: UNCLASSIFIED__<slug> (kebab-case slug)',
                         file_path=file_path,
@@ -565,9 +533,7 @@ class StorageGovernanceValidator:
                 # Check for 24h resolution mention
                 if 'hour' not in context.lower() and 'day' not in context.lower() and '24' not in context:
                     violations.append(Violation(
-                        rule_id='R229',
                         rule_name='RFC fallback pattern (UNCLASSIFIED__slug, 24h resolution)',
-                        rule_number=229,
                         severity=Severity.INFO,
                         message='Unclassified data must be resolved within 24 hours via RFC process.',
                         file_path=file_path,
@@ -581,7 +547,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_observability_partitions(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 227: Validate Observability/Adapters use dt= partitions."""
+        """Validate Observability/Adapters use dt= partitions."""
         violations = []
         
         # Check for observability and adapter paths
@@ -599,10 +565,8 @@ class StorageGovernanceValidator:
                         # Check if dt= partition is present
                         if 'dt=' not in full_path:
                             violations.append(Violation(
-                            rule_id='R227',
-                                rule_name='Observability/Adapters use dt= partitions',
-                            rule_number=227,
-                                severity=Severity.WARNING,
+                            rule_name='Observability/Adapters use dt= partitions',
+                            severity=Severity.WARNING,
                                 message=f'{path_type.strip("/")} path should include dt= partition for time-series data.',
                                 file_path=file_path,
                                 line_number=content[:match.start()].count('\n') + 1,
@@ -615,7 +579,7 @@ class StorageGovernanceValidator:
         return violations
     
     def _validate_laptop_receipts_partitioning(self, content: str, file_path: str) -> List[Violation]:
-        """Rule 228: Validate laptop receipts use YYYY/MM partitioning."""
+        """Validate laptop receipts use YYYY/MM partitioning."""
         violations = []
         
         # Check for IDE/laptop receipt paths
@@ -630,9 +594,7 @@ class StorageGovernanceValidator:
                     # Check if it has YYYY/MM partition
                     if not self.yyyy_mm_pattern.search(path):
                         violations.append(Violation(
-                            rule_id='R228',
                             rule_name='Laptop receipts use YYYY/MM partitioning',
-                            rule_number=228,
                             severity=Severity.WARNING,
                             message='Laptop receipts should use month partitioning: receipts/{repo-id}/{YYYY}/{MM}/',
                             file_path=file_path,

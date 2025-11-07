@@ -10,7 +10,7 @@ import ast
 import json
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class ExceptionHandlingValidator:
@@ -115,7 +115,6 @@ class ExceptionHandlingValidator:
         
         except Exception as e:
                 violations.append(Violation(
-                    rule_id="R150",
                     rule_name="ExceptionHandling parse error",
                     severity=Severity.ERROR,
                     message=f"Failed to parse file for exception handling validation: {str(e)}",
@@ -145,7 +144,6 @@ class ExceptionHandlingValidator:
                 
                 if not has_validation and len(node.args.args) > 0:
                     violations.append(Violation(
-                        rule_id="R150",
                         file_path=file_path,
                         line_number=node.lineno,
                         message="Function should validate inputs early (required, type, range, size)",
@@ -165,7 +163,6 @@ class ExceptionHandlingValidator:
         for match in matches:
             if match not in self.canonical_codes:
                 violations.append(Violation(
-                    rule_id="R151",
                     file_path=file_path,
                     line_number=1,
                     message=f"Non-canonical error code '{match}' should use canonical codes: {list(self.canonical_codes.keys())}",
@@ -190,7 +187,6 @@ class ExceptionHandlingValidator:
                 elif isinstance(node.exc, ast.Name):
                     # Raising a variable - check if it's wrapped
                     violations.append(Violation(
-                        rule_id="R152",
                         file_path=file_path,
                         line_number=node.lineno,
                         message="Raised exception should be wrapped with context and friendly message",
@@ -212,7 +208,6 @@ class ExceptionHandlingValidator:
                 try_blocks = [n for n in ast.walk(node) if isinstance(n, ast.Try)]
                 if len(try_blocks) > 1:
                     violations.append(Violation(
-                        rule_id="R153",
                         file_path=file_path,
                         line_number=node.lineno,
                         message="Function should use central error handler instead of multiple try blocks",
@@ -234,7 +229,6 @@ class ExceptionHandlingValidator:
         for pattern in technical_patterns:
             if re.search(pattern, content, re.IGNORECASE):
                 violations.append(Violation(
-                    rule_id="R154",
                     file_path=file_path,
                     line_number=1,
                     message="Error messages should be user-friendly, not technical",
@@ -257,7 +251,6 @@ class ExceptionHandlingValidator:
                 if (len(node.body) == 0 or 
                     (len(node.body) == 1 and isinstance(node.body[0], ast.Pass))):
                     violations.append(Violation(
-                        rule_id="R155",
                         file_path=file_path,
                         line_number=node.lineno,
                         message="Silent catch detected - should fix, retry, or wrap & bubble error",
@@ -281,7 +274,6 @@ class ExceptionHandlingValidator:
                 error_msg = match.group(0)
                 if not any(keyword in error_msg.lower() for keyword in ['operation', 'id', 'step', 'context']):
                     violations.append(Violation(
-                        rule_id="R156",
                         file_path=file_path,
                         line_number=1,
                         message="Error wrapping should include context (operation name, ids, step)",
@@ -309,7 +301,6 @@ class ExceptionHandlingValidator:
                 
                 if not has_cleanup:
                     violations.append(Violation(
-                        rule_id="R157",
                         file_path=file_path,
                         line_number=1,
                         message="Resource usage detected without cleanup - use 'with' statements or finally blocks",
@@ -330,7 +321,6 @@ class ExceptionHandlingValidator:
             
             if not has_recovery:
                 violations.append(Violation(
-                    rule_id="R158",
                     file_path=file_path,
                     line_number=1,
                     message="Error handling should include recovery guidance",
@@ -353,7 +343,6 @@ class ExceptionHandlingValidator:
         
         if not has_examples and 'error' in content.lower():
             violations.append(Violation(
-                rule_id="R160",
                 file_path=file_path,
                 line_number=1,
                 message="Error handling code should include examples or templates for onboarding",
@@ -377,7 +366,6 @@ class ExceptionHandlingValidator:
                 # Check for timeout parameter
                 if 'timeout' not in content.lower():
                     violations.append(Violation(
-                        rule_id="R161",
                         file_path=file_path,
                         line_number=1,
                         message="I/O operations should include timeout parameter",
@@ -402,7 +390,6 @@ class ExceptionHandlingValidator:
             # Check for exponential backoff
             if 'backoff' not in content.lower() and 'jitter' not in content.lower():
                 violations.append(Violation(
-                    rule_id="R162",
                     file_path=file_path,
                     line_number=1,
                     message="Retry logic should use exponential backoff with jitter",
@@ -423,7 +410,6 @@ class ExceptionHandlingValidator:
         for pattern in non_retriable_patterns:
             if re.search(pattern, content, re.IGNORECASE):
                 violations.append(Violation(
-                    rule_id="R163",
                     file_path=file_path,
                     line_number=1,
                     message="Should not retry validation errors, 401/403, 404, or business rule failures",
@@ -450,7 +436,6 @@ class ExceptionHandlingValidator:
             
             if not has_idempotency:
                 violations.append(Violation(
-                    rule_id="R164",
                     file_path=file_path,
                     line_number=1,
                     message="Write operations should be designed for idempotency",
@@ -476,7 +461,6 @@ class ExceptionHandlingValidator:
                 status_code = int(match.group(1))
                 if status_code not in [200, 201, 400, 401, 403, 404, 409, 422, 429, 500, 502, 503, 504]:
                     violations.append(Violation(
-                        rule_id="R165",
                         file_path=file_path,
                         line_number=1,
                         message=f"HTTP status code {status_code} should follow standard mapping",
@@ -499,7 +483,6 @@ class ExceptionHandlingValidator:
             l = literal.lower()
             if 'error' in l or 'failed' in l or 'invalid' in l:
                 violations.append(Violation(
-                    rule_id="R166",
                     file_path=file_path,
                     line_number=1,
                     message="Error messages should come from a centralized message catalog",
@@ -522,7 +505,6 @@ class ExceptionHandlingValidator:
             for pattern in ui_patterns:
                 if re.search(pattern, content, re.IGNORECASE):
                     violations.append(Violation(
-                        rule_id="R167",
                         file_path=file_path,
                         line_number=1,
                         message="UI should show actionable options (Retry/Cancel/Open Logs) instead of generic loading",
@@ -547,7 +529,6 @@ class ExceptionHandlingValidator:
             # Check for JSON structure
             if 'json' not in content.lower() and 'structured' not in content.lower():
                 violations.append(Violation(
-                    rule_id="R168",
                     file_path=file_path,
                     line_number=1,
                     message="Logging should use structured JSON format",
@@ -569,7 +550,6 @@ class ExceptionHandlingValidator:
         
         if not has_correlation and ('http' in content.lower() or 'api' in content.lower()):
             violations.append(Violation(
-                rule_id="R169",
                 file_path=file_path,
                 line_number=1,
                 message="HTTP/API calls should propagate trace/request IDs",
@@ -595,7 +575,6 @@ class ExceptionHandlingValidator:
                 
                 if not has_redaction:
                     violations.append(Violation(
-                        rule_id="R170",
                         file_path=file_path,
                         line_number=1,
                         message="Secrets/PII should be redacted in logs",
@@ -619,7 +598,6 @@ class ExceptionHandlingValidator:
             
             if not has_failure_tests and 'error' in content.lower():
                 violations.append(Violation(
-                    rule_id="R171",
                     file_path=file_path,
                     line_number=1,
                     message="Tests should cover failure paths (timeouts, 5xx, 4xx, cleanup)",
@@ -642,7 +620,6 @@ class ExceptionHandlingValidator:
             
             if not has_docs:
                 violations.append(Violation(
-                    rule_id="R172",
                     file_path=file_path,
                     line_number=1,
                     message="API contracts should document error envelope, codes, HTTP mapping, and examples",
@@ -672,7 +649,6 @@ class ExceptionHandlingValidator:
             
             if not has_consistent:
                 violations.append(Violation(
-                    rule_id="R173",
                     file_path=file_path,
                     line_number=1,
                     message="Error handling should use consistent patterns instead of one-off fixes",
@@ -693,7 +669,6 @@ class ExceptionHandlingValidator:
         for pattern in hardcoded_patterns:
             if re.search(pattern, content):
                 violations.append(Violation(
-                    rule_id="R174",
                     file_path=file_path,
                     line_number=1,
                     message="Timeouts, retry caps, and limits should be configurable, not hardcoded",
@@ -720,7 +695,6 @@ class ExceptionHandlingValidator:
             
             if not has_transparency:
                 violations.append(Violation(
-                    rule_id="R175",
                     file_path=file_path,
                     line_number=1,
                     message="AI decisions should include confidence level, reasoning, and version",
@@ -742,7 +716,6 @@ class ExceptionHandlingValidator:
         
         if has_ai_execution and any(keyword in content.lower() for keyword in ['ai', 'llm', 'model']):
             violations.append(Violation(
-                rule_id="R176",
                 file_path=file_path,
                 line_number=1,
                 message="AI should not execute code directly - use sandbox/playground",
@@ -762,7 +735,6 @@ class ExceptionHandlingValidator:
             
             if not has_learning:
                 violations.append(Violation(
-                    rule_id="R177",
                     file_path=file_path,
                     line_number=1,
                     message="AI systems should include learning from mistakes",
@@ -788,7 +760,6 @@ class ExceptionHandlingValidator:
             
             if not has_thresholds:
                 violations.append(Violation(
-                    rule_id="R178",
                     file_path=file_path,
                     line_number=1,
                     message="AI confidence should have thresholds: >90% automatic, 70-90% suggest, <70% ask approval",
@@ -807,7 +778,6 @@ class ExceptionHandlingValidator:
         
         if not has_degradation and 'dependency' in content.lower():
             violations.append(Violation(
-                rule_id="R179",
                 file_path=file_path,
                 line_number=1,
                 message="Dependency failures should provide graceful degradation, not complete failure",
@@ -826,7 +796,6 @@ class ExceptionHandlingValidator:
         
         if not has_recovery and ('crash' in content.lower() or 'failure' in content.lower()):
             violations.append(Violation(
-                rule_id="R180",
                 file_path=file_path,
                 line_number=1,
                 message="Systems should have state recovery mechanisms for crashes/failures",
@@ -848,7 +817,6 @@ class ExceptionHandlingValidator:
         
         if not has_flags and ('risky' in content.lower()):
             violations.append(Violation(
-                rule_id="R181",
                 file_path=file_path,
                 line_number=1,
                 message="Risky changes should use feature flags with automatic rollback",

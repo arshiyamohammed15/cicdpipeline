@@ -3,15 +3,13 @@
   "priority": "important",
   "description": "Documentation and comment standards",
   "rules": [
-    8,
-    46,
-    47,
-    48,
-    49,
-    50,
-    51,
-    52,
-    53,
-    89
+    "Comment too complex - use grade 8 level English",
+    "Module must have docstring explaining purpose and exports",
+    "API endpoints must have comprehensive documentation",
+    "Error handling must be documented with possible exceptions",
+    "Configuration options must be documented with defaults and ranges",
+    "Security-related code must be documented with threat model",
+    "Projects must have comprehensive README with setup and usage",
+    "TODO(owner): description [ticket] [date] format required"
   ]
 }

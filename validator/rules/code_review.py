@@ -8,7 +8,7 @@ Covers PR requirements, review process, testing, and governance.
 import re
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class CodeReviewValidator:
@@ -68,7 +68,6 @@ class CodeReviewValidator:
             # Check for LOC_OVERRIDE
             if 'LOC_OVERRIDE' not in content:
                 violations.append(Violation(
-                    rule_id='R001',
                     file_path=file_path,
                     line_number=1,
                     message=f'AI code-gen task limit ≤ 50 LOC (found {len(non_empty_lines)}), unless LOC_OVERRIDE specified',
@@ -87,7 +86,6 @@ class CodeReviewValidator:
         lines = content.split('\n')
         if len(lines) > 300:
             violations.append(Violation(
-                rule_id='R002',
                 file_path=file_path,
                 line_number=1,
                 message='PR size ≤ 300 LOC changed (tests excluded), include Rollout Plan if larger',
@@ -110,7 +108,6 @@ class CodeReviewValidator:
             codeowners_path = Path(file_path).parent / 'CODEOWNERS'
             if not codeowners_path.exists():
                 violations.append(Violation(
-                        rule_id='R003',
                         rule_name='Sensitive areas require CODEOWNERS approval and may need two reviewers',
                         severity=Severity.ERROR,
                         message='Sensitive areas require CODEOWNERS approval and may need two reviewers',
@@ -132,7 +129,6 @@ class CodeReviewValidator:
         # But we can check for review-related comments
         if 'review' in content.lower() and 'urgent' in content.lower():
             violations.append(Violation(
-                        rule_id='R004',
                         rule_name='Reviews should start within 2 business days',
                         severity=Severity.WARNING,
                         message='Reviews should start within 2 business days',
@@ -153,7 +149,6 @@ class CodeReviewValidator:
         # Check for PR description patterns
         if 'what' in content.lower() and 'why' not in content.lower():
             violations.append(Violation(
-                rule_id='R005',
                 file_path=file_path,
                 line_number=1,
                 message='PR must state What changed and Why we did it (problem, constraints, trade-offs)',
@@ -173,7 +168,6 @@ class CodeReviewValidator:
         
         if has_risky_changes and 'feature-flag' not in content.lower():
             violations.append(Violation(
-                        rule_id='R006',
                         rule_name='One intent per PR; feature-flags for risky changes',
                         severity=Severity.WARNING,
                         message='One intent per PR; feature-flags for risky changes',
@@ -194,7 +188,6 @@ class CodeReviewValidator:
         # Check if this is a source file without corresponding tests
         if self._is_source_file(file_path) and not self._has_corresponding_tests(file_path):
             violations.append(Violation(
-                        rule_id='R007',
                         rule_name='No code change without tests that fail before and pass after the change',
                         severity=Severity.ERROR,
                         message='No code change without tests that fail before and pass after the change',
@@ -224,7 +217,6 @@ class CodeReviewValidator:
             for pattern in secret_patterns:
                 if re.search(pattern, line):
                     violations.append(Violation(
-                        rule_id='R009',
                         rule_name='No secrets/PII in code, comments, logs, tests, or fixtures',
                         severity=Severity.ERROR,
                         message='No secrets/PII in code, comments, logs, tests, or fixtures',
@@ -245,7 +237,6 @@ class CodeReviewValidator:
             for pattern in pii_patterns:
                 if re.search(pattern, line):
                     violations.append(Violation(
-                        rule_id='R009',
                         rule_name='No secrets/PII in code, comments, logs, tests, or fixtures',
                         severity=Severity.ERROR,
                         message='No secrets/PII in code, comments, logs, tests, or fixtures',
@@ -272,7 +263,6 @@ class CodeReviewValidator:
             
             if not has_rollback_plan:
                 violations.append(Violation(
-                        rule_id='R010',
                         rule_name='Include a rollback/disable plan for non-trivial changes',
                         severity=Severity.WARNING,
                         message='Include a rollback/disable plan for non-trivial changes',
@@ -296,7 +286,6 @@ class CodeReviewValidator:
         
         if not has_change_management and self._is_significant_change(content):
             violations.append(Violation(
-                        rule_id='R011',
                         rule_name='Include change management and impact assessment',
                         severity=Severity.WARNING,
                         message='Include change management and impact assessment',
@@ -320,7 +309,6 @@ class CodeReviewValidator:
         
         if not has_compliance and self._is_significant_change(content):
             violations.append(Violation(
-                        rule_id='R012',
                         rule_name='Ensure compliance with all applicable constitutions',
                         severity=Severity.ERROR,
                         message='Ensure compliance with all applicable constitutions',
@@ -344,7 +332,6 @@ class CodeReviewValidator:
         
         if not has_change_control and self._is_significant_change(content):
             violations.append(Violation(
-                        rule_id='R076',
                         rule_name='All changes must go through proper change control process',
                         severity=Severity.ERROR,
                         message='All changes must go through proper change control process',
@@ -365,7 +352,6 @@ class CodeReviewValidator:
         # Check if this is a source file without corresponding tests
         if self._is_source_file(file_path) and not self._has_corresponding_tests(file_path):
             violations.append(Violation(
-                        rule_id='R077',
                         rule_name='All code changes must include appropriate tests',
                         severity=Severity.ERROR,
                         message='All code changes must include appropriate tests',
@@ -388,7 +374,6 @@ class CodeReviewValidator:
             # Check for license information
             if 'license' not in content.lower():
                 violations.append(Violation(
-                        rule_id='R081',
                         rule_name='New dependencies must pass license allowlist and CVE threshold',
                         severity=Severity.ERROR,
                         message='New dependencies must pass license allowlist and CVE threshold',

@@ -3,20 +3,16 @@
   "priority": "critical",
   "description": "Code review standards and PR requirements",
   "rules": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    76,
-    77,
-    81
+    "Sensitive areas require CODEOWNERS approval and may need two reviewers",
+    "Reviews should start within 2 business days",
+    "One intent per PR; feature-flags for risky changes",
+    "No code change without tests that fail before and pass after the change",
+    "No secrets/PII in code, comments, logs, tests, or fixtures",
+    "Include a rollback/disable plan for non-trivial changes",
+    "Include change management and impact assessment",
+    "Ensure compliance with all applicable constitutions",
+    "All changes must go through proper change control process",
+    "All code changes must include appropriate tests",
+    "New dependencies must pass license allowlist and CVE threshold"
   ]
 }

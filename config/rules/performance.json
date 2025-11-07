@@ -3,7 +3,7 @@
   "priority": "important",
   "description": "Performance optimization",
   "rules": [
-    8,
-    67
+    "Make Things Fast",
+    "Respect People's Time"
   ]
 }

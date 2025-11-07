@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any
 from functools import lru_cache
 
+from .rule_registry import get_rule_metadata
+
 class EnhancedConfigManager:
     """
     Enhanced configuration manager with modular loading and caching.
@@ -128,7 +130,18 @@ class EnhancedConfigManager:
             List of rule numbers
         """
         rule_config = self.get_rule_config(category)
-        return rule_config.get("rules", [])
+        raw_rules = rule_config.get("rules", [])
+
+        resolved_rules: List[int] = []
+        for entry in raw_rules:
+            if isinstance(entry, int):
+                resolved_rules.append(entry)
+            elif isinstance(entry, str):
+                metadata = get_rule_metadata(entry)
+                if metadata:
+                    resolved_rules.append(metadata.number)
+
+        return resolved_rules
     
     def get_category_priority(self, category: str) -> str:
         """

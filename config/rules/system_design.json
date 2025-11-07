@@ -3,12 +3,14 @@
   "priority": "critical",
   "description": "Architecture and system design principles",
   "rules": [
-    22,
-    25,
-    26,
-    29,
-    30,
-    31,
-    32
+    "Make All 20 Modules Look the Same",
+    "Show Information Gradually",
+    "Register Modules the Same Way",
+    "Make All Modules Feel Like One Product",
+    "Organize Features Clearly",
+    "Design for Quick Adoption",
+    "Test User Experience",
+    "Dependency Injection",
+    "Keep Different Parts Separate"
   ]
 }

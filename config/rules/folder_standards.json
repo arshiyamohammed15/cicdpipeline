@@ -3,15 +3,14 @@
   "priority": "critical",
   "description": "Project structure and folder organization",
   "rules": [
-    54,
-    55,
-    56,
-    57,
-    58,
-    59,
-    60,
-    61,
-    62,
-    82
+    "Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths",
+    "Only write under allowlisted subfolders: servers/*/ and storage/*/",
+    "Persistence MUST go via <server>/data/ junction to paired storage",
+    "Respect module boundaries and avoid circular dependencies",
+    "Use pip-tools lock with hashes; no unpinned dependencies",
+    "Configuration files must be in designated config directories",
+    "Tests must be organized in designated test directories",
+    "Documentation must be organized in designated docs directories",
+    "Database vs files choice follows Storage Constitution (≤256KB in DB)"
   ]
 }

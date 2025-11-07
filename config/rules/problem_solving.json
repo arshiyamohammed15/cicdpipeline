@@ -3,12 +3,12 @@
   "priority": "important",
   "description": "Feature development and problem-solving approach",
   "rules": [
-    33,
-    34,
-    35,
-    37,
-    38,
-    39,
-    41
+    "Solve Real Developer Problems",
+    "Prevent Problems Before They Happen",
+    "Detection Engine - Be Accurate",
+    "Help People Work Better",
+    "Don't Make People Think Too Hard",
+    "MMM Engine - Change Behavior",
+    "Success Dashboards - Show Business Value"
   ]
 }

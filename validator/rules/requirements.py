@@ -3,15 +3,15 @@
 Requirements Rules Validator
 
 Validates code against requirements principles:
-- Rule 1: Do exactly what's asked
-- Rule 2: Only use information you're given
+- Do exactly what's asked
+- Only use information you're given
 """
 
 import ast
 import re
 from typing import List
-from ..models import Violation, Severity
-from ..base_validator import BaseRuleValidator
+from..models import Violation, Severity
+from..base_validator import BaseRuleValidator
 
 
 class RequirementsValidator(BaseRuleValidator):
@@ -29,7 +29,7 @@ class RequirementsValidator(BaseRuleValidator):
     
     def validate_do_exactly_what_asked(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for incomplete implementations (Rule 1).
+        Check for incomplete implementations.
         
         Args:
             tree: AST tree of the code
@@ -46,7 +46,6 @@ class RequirementsValidator(BaseRuleValidator):
         for match in re.finditer(todo_pattern, content, re.IGNORECASE):
             line_number = content[:match.start()].count('\n') + 1
             violations.append(self.create_violation(
-                rule_number=1,
                 rule_name="Do exactly what's asked",
                 severity=Severity.WARNING,
                 message="Incomplete implementation detected - TODO/FIXME comment found",
@@ -64,7 +63,6 @@ class RequirementsValidator(BaseRuleValidator):
                 if (len(node.body) == 1 and 
                     isinstance(node.body[0], ast.Pass)):
                     violations.append(self.create_violation(
-                        rule_number=1,
                         rule_name="Do exactly what's asked",
                         severity=Severity.WARNING,
                         message=f"Function '{node.name}' is incomplete (only contains 'pass')",
@@ -79,7 +77,7 @@ class RequirementsValidator(BaseRuleValidator):
     
     def validate_only_use_given_information(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for assumptions and magic values (Rule 2).
+        Check for assumptions and magic values.
         
         Args:
             tree: AST tree of the code
@@ -96,7 +94,6 @@ class RequirementsValidator(BaseRuleValidator):
         for match in re.finditer(magic_number_pattern, content):
             line_number = content[:match.start()].count('\n') + 1
             violations.append(self.create_violation(
-                rule_number=2,
                 rule_name="Only use information you're given",
                 severity=Severity.WARNING,
                 message="Magic number detected - use named constants",
@@ -117,7 +114,6 @@ class RequirementsValidator(BaseRuleValidator):
             for match in re.finditer(pattern, content, re.IGNORECASE):
                 line_number = content[:match.start()].count('\n') + 1
                 violations.append(self.create_violation(
-                    rule_number=2,
                     rule_name="Only use information you're given",
                     severity=Severity.INFO,
                     message="Assumption detected in code or comments",

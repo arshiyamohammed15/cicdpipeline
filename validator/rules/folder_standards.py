@@ -9,7 +9,7 @@ import re
 import json
 from typing import List, Dict, Any, Optional
 from pathlib import Path
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class FolderStandardsValidator:
@@ -84,8 +84,8 @@ class FolderStandardsValidator:
         # Check for hardcoded paths
         hardcoded_path_patterns = [
             r'["\']/[^"\']*["\']',  # Absolute paths
-            r'["\']\.\./[^"\']*["\']',  # Relative paths with ..
-            r'["\']\./[^"\']*["\']',  # Relative paths with .
+            r'["\']\.\./[^"\']*["\']',  # Relative paths with..
+            r'["\']\./[^"\']*["\']',  # Relative paths with.
         ]
         
         lines = content.split('\n')
@@ -95,7 +95,6 @@ class FolderStandardsValidator:
                     # Check if it's using ZEROUI_ROOT
                     if 'ZEROUI_ROOT' not in line and 'config/paths.json' not in line:
                         violations.append(Violation(
-                        rule_id='R054',
                         rule_name='Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
                         severity=Severity.ERROR,
                         message='Resolve all paths via ZEROUI_ROOT + config/paths.json; never hardcode paths',
@@ -131,7 +130,6 @@ class FolderStandardsValidator:
         # Check if file is outside allowlisted folders
         if not in_allowed_folder and len(path_parts) > 1:
             violations.append(Violation(
-                        rule_id='R055',
                         rule_name='Only write under allowlisted subfolders: servers/*/ and storage/*/',
                         severity=Severity.ERROR,
                         message='Only write under allowlisted subfolders: servers/*/ and storage/*/',
@@ -157,7 +155,6 @@ class FolderStandardsValidator:
                 class_name = match.group(1)
                 if class_name not in self.allowed_names and not class_name.startswith('_'):
                     violations.append(Violation(
-                        rule_id='R056',
                         rule_name=f'Never create new top-level names besides the eight allowed server/storage names',
                         severity=Severity.ERROR,
                         message=f'Never create new top-level names besides the eight allowed server/storage names',
@@ -188,7 +185,6 @@ class FolderStandardsValidator:
                     import_name = match.group(1)
                     if 'storage' in import_name.lower() and 'data/' not in import_name:
                         violations.append(Violation(
-                        rule_id='R057',
                         rule_name='Persistence MUST go via <server>/data/ junction to paired storage',
                         severity=Severity.ERROR,
                         message='Persistence MUST go via <server>/data/ junction to paired storage',
@@ -220,7 +216,6 @@ class FolderStandardsValidator:
                     # Check for potential circular imports
                     if 'circular' in import_name.lower() or 'loop' in import_name.lower():
                         violations.append(Violation(
-                        rule_id='R058',
                         rule_name='Respect module boundaries and avoid circular dependencies',
                         severity=Severity.WARNING,
                         message='Respect module boundaries and avoid circular dependencies',
@@ -244,7 +239,6 @@ class FolderStandardsValidator:
             if 'requirements.txt' in file_path:
                 if 'pip-tools' not in content.lower() and 'lock' not in content.lower():
                     violations.append(Violation(
-                        rule_id='R059',
                         rule_name='Use pip-tools lock with hashes; no unpinned dependencies',
                         severity=Severity.ERROR,
                         message='Use pip-tools lock with hashes; no unpinned dependencies',
@@ -259,7 +253,6 @@ class FolderStandardsValidator:
             # Check for unpinned dependencies
             if '==' not in content and '~=' not in content and '>=' not in content:
                 violations.append(Violation(
-                        rule_id='R059',
                         rule_name='Use pip-tools lock with hashes; no unpinned dependencies',
                         severity=Severity.ERROR,
                         message='Use pip-tools lock with hashes; no unpinned dependencies',
@@ -282,7 +275,6 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'config/' not in file_path and 'configuration/' not in file_path:
                 violations.append(Violation(
-                        rule_id='R060',
                         rule_name='Configuration files must be in designated config directories',
                         severity=Severity.WARNING,
                         message='Configuration files must be in designated config directories',
@@ -305,7 +297,6 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'test/' not in file_path and 'tests/' not in file_path and 'spec/' not in file_path:
                 violations.append(Violation(
-                        rule_id='R061',
                         rule_name='Tests must be organized in designated test directories',
                         severity=Severity.WARNING,
                         message='Tests must be organized in designated test directories',
@@ -328,7 +319,6 @@ class FolderStandardsValidator:
             # Check if it's in the right location
             if 'docs/' not in file_path and 'documentation/' not in file_path:
                 violations.append(Violation(
-                        rule_id='R062',
                         rule_name='Documentation must be organized in designated docs directories',
                         severity=Severity.WARNING,
                         message='Documentation must be organized in designated docs directories',
@@ -375,7 +365,6 @@ class FolderStandardsValidator:
                     # Check if size exceeds 256KB
                     if size_bytes > 256000:  # 256KB in bytes
                         violations.append(Violation(
-                        rule_id='R082',
                         rule_name='Database vs files choice follows Storage Constitution (≤256KB in DB)',
                         severity=Severity.ERROR,
                         message='Database vs files choice follows Storage Constitution (≤256KB in DB)',

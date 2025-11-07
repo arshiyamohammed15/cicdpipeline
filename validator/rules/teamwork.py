@@ -2,13 +2,13 @@
 Teamwork rule validator.
 
 This module implements validation for teamwork rules:
-- Rule 58: Catch Issues Early
+- Catch Issues Early
 """
 
 import ast
 import re
 from typing import List, Dict, Any, Tuple
-from ..models import Violation, Severity
+from..models import Violation, Severity
 
 
 class TeamworkValidator:
@@ -36,13 +36,11 @@ class TeamworkValidator:
         return violations
     
     def validate_collaboration_standards(self, content: str) -> List[Violation]:
-        """Validate Rule 52: Collaboration Standards"""
+        """Validate Collaboration Standards"""
         violations = []
         # Check for collaboration patterns
         if not re.search(r'def\s+\w+', content):
             violations.append(Violation(
-                rule_id="rule_52",
-                rule_number=52,
                 rule_name="Collaboration Standards",
                 severity=Severity.MEDIUM,
                 message="Ensure proper function definitions for collaboration",
@@ -53,7 +51,7 @@ class TeamworkValidator:
         return violations
     
     def validate_code_review_readiness(self, content: str) -> List[Violation]:
-        """Validate Rule 53: Code Review Readiness"""
+        """Validate Code Review Readiness"""
         violations = []
         # Check for code review readiness - look for docstrings or comments
         has_docstring = re.search(r'""".*"""', content, re.DOTALL)
@@ -61,8 +59,6 @@ class TeamworkValidator:
         
         if not has_docstring and not has_comments:
             violations.append(Violation(
-                rule_id="rule_53",
-                rule_number=53,
                 rule_name="Code Review Readiness",
                 severity=Severity.LOW,
                 message="Add comments or docstrings for code review readiness",
@@ -74,7 +70,7 @@ class TeamworkValidator:
         
     def validate_early_issue_detection(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for early issue detection patterns (Rule 58).
+        Check for early issue detection patterns.
         
         Args:
             tree: AST tree of the code
@@ -90,8 +86,6 @@ class TeamworkValidator:
         has_early_validation = any(pattern in content.lower() for pattern in self.early_warning_patterns)
         if not has_early_validation:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.WARNING,
                 message="No early validation patterns detected",
@@ -128,8 +122,6 @@ class TeamworkValidator:
         
         if functions_without_validation:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.WARNING,
                 message=f"Functions without early input validation: {functions_without_validation}",
@@ -144,8 +136,6 @@ class TeamworkValidator:
         has_fail_fast = any(pattern in content.lower() for pattern in self.fail_fast_patterns)
         if not has_fail_fast:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
                 message="No fail-fast patterns detected",
@@ -160,8 +150,6 @@ class TeamworkValidator:
         has_preconditions = any(pattern in content.lower() for pattern in ['precondition', 'prerequisite', 'require'])
         if not has_preconditions:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
                 message="No explicit precondition checks detected",
@@ -176,8 +164,6 @@ class TeamworkValidator:
         has_warnings = any(pattern in content.lower() for pattern in ['warn', 'warning', 'alert', 'notice'])
         if not has_warnings:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
                 message="No warning patterns detected",
@@ -192,8 +178,6 @@ class TeamworkValidator:
         has_boundary_checks = any(pattern in content.lower() for pattern in ['boundary', 'limit', 'range', 'min', 'max'])
         if not has_boundary_checks:
             violations.append(Violation(
-                rule_id="rule_58",
-                rule_number=58,
                 rule_name="Catch Issues Early",
                 severity=Severity.INFO,
                 message="No boundary condition validation detected",
@@ -208,7 +192,7 @@ class TeamworkValidator:
     
     def validate_real_team_work(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for real team work patterns (Rule 52).
+        Check for real team work patterns.
         
         Args:
             tree: AST tree of the code
@@ -226,8 +210,6 @@ class TeamworkValidator:
         
         if not has_collaboration:
             violations.append(Violation(
-                rule_id="rule_52",
-                rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
                 message="No collaboration features detected",
@@ -244,8 +226,6 @@ class TeamworkValidator:
         
         if not has_knowledge_sharing:
             violations.append(Violation(
-                rule_id="rule_52",
-                rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
                 message="No knowledge sharing patterns detected",
@@ -262,8 +242,6 @@ class TeamworkValidator:
         
         if has_friction:
             violations.append(Violation(
-                rule_id="rule_52",
-                rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.WARNING,
                 message="Team friction points detected",
@@ -280,8 +258,6 @@ class TeamworkValidator:
         
         if not has_communication:
             violations.append(Violation(
-                rule_id="rule_52",
-                rule_number=52,
                 rule_name="Build for Real Team Work",
                 severity=Severity.INFO,
                 message="No communication patterns detected",
@@ -296,7 +272,7 @@ class TeamworkValidator:
     
     def validate_reduce_frustration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for frustration reduction patterns (Rule 54).
+        Check for frustration reduction patterns.
         
         Args:
             tree: AST tree of the code
@@ -314,8 +290,6 @@ class TeamworkValidator:
         
         if not has_automation:
             violations.append(Violation(
-                rule_id="rule_54",
-                rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
                 message="No automation of repetitive tasks detected",
@@ -332,8 +306,6 @@ class TeamworkValidator:
         
         if not has_workflow:
             violations.append(Violation(
-                rule_id="rule_54",
-                rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
                 message="No smooth workflow patterns detected",
@@ -350,8 +322,6 @@ class TeamworkValidator:
         
         if has_friction:
             violations.append(Violation(
-                rule_id="rule_54",
-                rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.WARNING,
                 message="Friction points detected",
@@ -368,8 +338,6 @@ class TeamworkValidator:
         
         if not has_quick_wins:
             violations.append(Violation(
-                rule_id="rule_54",
-                rule_number=54,
                 rule_name="Reduce Frustration Daily",
                 severity=Severity.INFO,
                 message="No quick win patterns detected",
@@ -384,7 +352,7 @@ class TeamworkValidator:
     
     def validate_automate_wisely(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for wise automation patterns (Rule 60).
+        Check for wise automation patterns.
         
         Args:
             tree: AST tree of the code
@@ -402,8 +370,6 @@ class TeamworkValidator:
         
         if not has_automation:
             violations.append(Violation(
-                rule_id="rule_60",
-                rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
                 message="No automation patterns detected",
@@ -420,8 +386,6 @@ class TeamworkValidator:
         
         if not has_oversight:
             violations.append(Violation(
-                rule_id="rule_60",
-                rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
                 message="No human oversight patterns detected",
@@ -438,8 +402,6 @@ class TeamworkValidator:
         
         if has_over_automation:
             violations.append(Violation(
-                rule_id="rule_60",
-                rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.WARNING,
                 message="Over-automation patterns detected",
@@ -456,8 +418,6 @@ class TeamworkValidator:
         
         if not has_boundaries:
             violations.append(Violation(
-                rule_id="rule_60",
-                rule_number=60,
                 rule_name="Automate Wisely",
                 severity=Severity.INFO,
                 message="No automation boundaries detected",
@@ -472,7 +432,7 @@ class TeamworkValidator:
     
     def validate_knowledge_silos_prevention(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for knowledge silos prevention patterns (Rule 53).
+        Check for knowledge silos prevention patterns.
         
         Args:
             tree: AST tree of the code
@@ -490,8 +450,6 @@ class TeamworkValidator:
         
         if not has_knowledge_sharing:
             violations.append(Violation(
-                rule_id="rule_53",
-                rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
                 message="No knowledge sharing patterns detected",
@@ -508,8 +466,6 @@ class TeamworkValidator:
         
         if not has_collaboration:
             violations.append(Violation(
-                rule_id="rule_53",
-                rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
                 message="No collaboration patterns detected",
@@ -526,8 +482,6 @@ class TeamworkValidator:
         
         if not has_communication:
             violations.append(Violation(
-                rule_id="rule_53",
-                rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
                 message="No communication patterns detected",
@@ -544,8 +498,6 @@ class TeamworkValidator:
         
         if not has_transparency:
             violations.append(Violation(
-                rule_id="rule_53",
-                rule_number=53,
                 rule_name="Prevent Knowledge Silos",
                 severity=Severity.INFO,
                 message="No transparency patterns detected",
@@ -560,7 +512,7 @@ class TeamworkValidator:
     
     def validate_confidence_building(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for confidence building patterns (Rule 55).
+        Check for confidence building patterns.
         
         Args:
             tree: AST tree of the code
@@ -578,8 +530,6 @@ class TeamworkValidator:
         
         if not has_confidence:
             violations.append(Violation(
-                rule_id="rule_55",
-                rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
                 message="No confidence building patterns detected",
@@ -596,8 +546,6 @@ class TeamworkValidator:
         
         if has_fear:
             violations.append(Violation(
-                rule_id="rule_55",
-                rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.WARNING,
                 message="Fear-based patterns detected - should build confidence instead",
@@ -614,8 +562,6 @@ class TeamworkValidator:
         
         if not has_positive:
             violations.append(Violation(
-                rule_id="rule_55",
-                rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
                 message="No positive reinforcement patterns detected",
@@ -632,8 +578,6 @@ class TeamworkValidator:
         
         if not has_support:
             violations.append(Violation(
-                rule_id="rule_55",
-                rule_number=55,
                 rule_name="Build Confidence, Not Fear",
                 severity=Severity.INFO,
                 message="No support patterns detected",
@@ -648,7 +592,7 @@ class TeamworkValidator:
     
     def validate_learning_adaptation(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for learning and adaptation patterns (Rule 56).
+        Check for learning and adaptation patterns.
         
         Args:
             tree: AST tree of the code
@@ -666,8 +610,6 @@ class TeamworkValidator:
         
         if not has_learning:
             violations.append(Violation(
-                rule_id="rule_56",
-                rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
                 message="No learning patterns detected",
@@ -684,8 +626,6 @@ class TeamworkValidator:
         
         if not has_feedback:
             violations.append(Violation(
-                rule_id="rule_56",
-                rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
                 message="No feedback patterns detected",
@@ -702,8 +642,6 @@ class TeamworkValidator:
         
         if not has_iteration:
             violations.append(Violation(
-                rule_id="rule_56",
-                rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
                 message="No iteration patterns detected",
@@ -720,8 +658,6 @@ class TeamworkValidator:
         
         if not has_change:
             violations.append(Violation(
-                rule_id="rule_56",
-                rule_number=56,
                 rule_name="Learn and Adapt Constantly",
                 severity=Severity.INFO,
                 message="No change patterns detected",
@@ -736,7 +672,7 @@ class TeamworkValidator:
     
     def validate_measurement(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for measurement patterns (Rule 57).
+        Check for measurement patterns.
         
         Args:
             tree: AST tree of the code
@@ -754,8 +690,6 @@ class TeamworkValidator:
         
         if not has_measurement:
             violations.append(Violation(
-                rule_id="rule_57",
-                rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
                 message="No measurement patterns detected",
@@ -772,8 +706,6 @@ class TeamworkValidator:
         
         if not has_analytics:
             violations.append(Violation(
-                rule_id="rule_57",
-                rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
                 message="No analytics patterns detected",
@@ -790,8 +722,6 @@ class TeamworkValidator:
         
         if not has_reporting:
             violations.append(Violation(
-                rule_id="rule_57",
-                rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
                 message="No reporting patterns detected",
@@ -808,8 +738,6 @@ class TeamworkValidator:
         
         if not has_goals:
             violations.append(Violation(
-                rule_id="rule_57",
-                rule_number=57,
                 rule_name="Measure What Matters",
                 severity=Severity.INFO,
                 message="No goal patterns detected",
@@ -853,7 +781,7 @@ class TeamworkValidator:
 
     def validate_learn_from_experts(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for learning from experts patterns (Rule 61).
+        Check for learning from experts patterns.
         
         Args:
             tree: AST tree of the code
@@ -861,7 +789,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 61
+            List of violations for this rule
         """
         violations = []
         
@@ -871,8 +799,6 @@ class TeamworkValidator:
         
         if not has_expert_patterns:
             violations.append(Violation(
-                rule_id="rule_61",
-                rule_number=61,
                 rule_name="Learn from Experts",
                 severity=Severity.INFO,
                 message="No expert pattern recognition detected",
@@ -887,7 +813,7 @@ class TeamworkValidator:
 
     def validate_right_information_timing(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for right information at right time patterns (Rule 62).
+        Check for right information at right time patterns.
         
         Args:
             tree: AST tree of the code
@@ -895,7 +821,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 62
+            List of violations for this rule
         """
         violations = []
         
@@ -905,8 +831,6 @@ class TeamworkValidator:
         
         if not has_timing:
             violations.append(Violation(
-                rule_id="rule_62",
-                rule_number=62,
                 rule_name="Show the Right Information at the Right Time",
                 severity=Severity.INFO,
                 message="No contextual information timing patterns detected",
@@ -921,7 +845,7 @@ class TeamworkValidator:
 
     def validate_dependencies_visible(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for dependency visibility patterns (Rule 63).
+        Check for dependency visibility patterns.
         
         Args:
             tree: AST tree of the code
@@ -929,7 +853,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 63
+            List of violations for this rule
         """
         violations = []
         
@@ -939,8 +863,6 @@ class TeamworkValidator:
         
         if not has_dependencies:
             violations.append(Violation(
-                rule_id="rule_63",
-                rule_number=63,
                 rule_name="Make Dependencies Visible",
                 severity=Severity.INFO,
                 message="No dependency visibility patterns detected",
@@ -955,7 +877,7 @@ class TeamworkValidator:
 
     def validate_predictability_consistency(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for predictability and consistency patterns (Rule 64).
+        Check for predictability and consistency patterns.
         
         Args:
             tree: AST tree of the code
@@ -963,7 +885,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 64
+            List of violations for this rule
         """
         violations = []
         
@@ -973,8 +895,6 @@ class TeamworkValidator:
         
         if not has_consistency:
             violations.append(Violation(
-                rule_id="rule_64",
-                rule_number=64,
                 rule_name="Be Predictable and Consistent",
                 severity=Severity.INFO,
                 message="No predictability and consistency patterns detected",
@@ -989,7 +909,7 @@ class TeamworkValidator:
 
     def validate_work_preservation(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for work preservation patterns (Rule 65).
+        Check for work preservation patterns.
         
         Args:
             tree: AST tree of the code
@@ -997,7 +917,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 65
+            List of violations for this rule
         """
         violations = []
         
@@ -1007,8 +927,6 @@ class TeamworkValidator:
         
         if not has_preservation:
             violations.append(Violation(
-                rule_id="rule_65",
-                rule_number=65,
                 rule_name="Never Lose People's Work",
                 severity=Severity.INFO,
                 message="No work preservation patterns detected",
@@ -1023,7 +941,7 @@ class TeamworkValidator:
 
     def validate_beauty_pleasantness(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for beauty and pleasantness patterns (Rule 66).
+        Check for beauty and pleasantness patterns.
         
         Args:
             tree: AST tree of the code
@@ -1031,7 +949,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 66
+            List of violations for this rule
         """
         violations = []
         
@@ -1041,8 +959,6 @@ class TeamworkValidator:
         
         if not has_design:
             violations.append(Violation(
-                rule_id="rule_66",
-                rule_number=66,
                 rule_name="Make it Beautiful and Pleasant",
                 severity=Severity.INFO,
                 message="No design quality patterns detected",
@@ -1057,7 +973,7 @@ class TeamworkValidator:
 
     def validate_encourage_better_practices(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for encouraging better practices patterns (Rule 70).
+        Check for encouraging better practices patterns.
         
         Args:
             tree: AST tree of the code
@@ -1065,7 +981,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 70
+            List of violations for this rule
         """
         violations = []
         
@@ -1075,8 +991,6 @@ class TeamworkValidator:
         
         if not has_improvement:
             violations.append(Violation(
-                rule_id="rule_70",
-                rule_number=70,
                 rule_name="Encourage Better Ways of Working",
                 severity=Severity.INFO,
                 message="No improvement encouragement patterns detected",
@@ -1091,7 +1005,7 @@ class TeamworkValidator:
 
     def validate_skill_level_adaptation(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for skill level adaptation patterns (Rule 71).
+        Check for skill level adaptation patterns.
         
         Args:
             tree: AST tree of the code
@@ -1099,7 +1013,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 71
+            List of violations for this rule
         """
         violations = []
         
@@ -1109,8 +1023,6 @@ class TeamworkValidator:
         
         if not has_skill_adaptation:
             violations.append(Violation(
-                rule_id="rule_71",
-                rule_number=71,
                 rule_name="Adapt to Different Skill Levels",
                 severity=Severity.INFO,
                 message="No skill level adaptation patterns detected",
@@ -1125,7 +1037,7 @@ class TeamworkValidator:
 
     def validate_helpfulness_balance(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for helpfulness balance patterns (Rule 72).
+        Check for helpfulness balance patterns.
         
         Args:
             tree: AST tree of the code
@@ -1133,7 +1045,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 72
+            List of violations for this rule
         """
         violations = []
         
@@ -1143,8 +1055,6 @@ class TeamworkValidator:
         
         if not has_helpful:
             violations.append(Violation(
-                rule_id="rule_72",
-                rule_number=72,
                 rule_name="Be Helpful, Not Annoying",
                 severity=Severity.INFO,
                 message="No helpfulness balance patterns detected",
@@ -1159,7 +1069,7 @@ class TeamworkValidator:
 
     def validate_clear_value_demonstration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for clear value demonstration patterns (Rule 74).
+        Check for clear value demonstration patterns.
         
         Args:
             tree: AST tree of the code
@@ -1167,7 +1077,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 74
+            List of violations for this rule
         """
         violations = []
         
@@ -1177,8 +1087,6 @@ class TeamworkValidator:
         
         if not has_value:
             violations.append(Violation(
-                rule_id="rule_74",
-                rule_number=74,
                 rule_name="Demonstrate Clear Value",
                 severity=Severity.INFO,
                 message="No clear value demonstration patterns detected",
@@ -1193,7 +1101,7 @@ class TeamworkValidator:
 
     def validate_customer_growth(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for customer growth patterns (Rule 75).
+        Check for customer growth patterns.
         
         Args:
             tree: AST tree of the code
@@ -1201,7 +1109,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 75
+            List of violations for this rule
         """
         violations = []
         
@@ -1211,8 +1119,6 @@ class TeamworkValidator:
         
         if not has_growth:
             violations.append(Violation(
-                rule_id="rule_75",
-                rule_number=75,
                 rule_name="Grow with the Customer",
                 severity=Severity.INFO,
                 message="No customer growth patterns detected",
@@ -1227,7 +1133,7 @@ class TeamworkValidator:
 
     def validate_magic_moments(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for magic moments patterns (Rule 76).
+        Check for magic moments patterns.
         
         Args:
             tree: AST tree of the code
@@ -1235,7 +1141,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 76
+            List of violations for this rule
         """
         violations = []
         
@@ -1245,8 +1151,6 @@ class TeamworkValidator:
         
         if not has_magic:
             violations.append(Violation(
-                rule_id="rule_76",
-                rule_number=76,
                 rule_name="Create Magic Moments",
                 severity=Severity.INFO,
                 message="No magic moments patterns detected",
@@ -1261,7 +1165,7 @@ class TeamworkValidator:
 
     def validate_friction_removal(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
-        Check for friction removal patterns (Rule 77).
+        Check for friction removal patterns.
         
         Args:
             tree: AST tree of the code
@@ -1269,7 +1173,7 @@ class TeamworkValidator:
             file_path: Path to the file
             
         Returns:
-            List of violations for Rule 77
+            List of violations for this rule
         """
         violations = []
         
@@ -1279,8 +1183,6 @@ class TeamworkValidator:
         
         if not has_friction_removal:
             violations.append(Violation(
-                rule_id="rule_77",
-                rule_number=77,
                 rule_name="Remove Friction Everywhere",
                 severity=Severity.INFO,
                 message="No friction removal patterns detected",

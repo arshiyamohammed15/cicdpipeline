@@ -132,7 +132,7 @@ class ConstitutionValidator:
             violation = Violation(
                 rule_id="syntax_error",
                 rule_name="Syntax Error",
-                rule_number=14,  # Test Everything
+                # Test Everything
                 severity=Severity.ERROR,
                 message=f"Syntax error in file: {e.msg}",
                 file_path=file_path,
@@ -252,9 +252,7 @@ class ConstitutionValidator:
         wildcard_pattern = patterns["large_imports"]["regex"]
         for match in re.finditer(wildcard_pattern, content):
             violations.append(Violation(
-                rule_id="rule_008",
                 rule_name="Make Things Fast",
-                rule_number=8,
                 severity=Severity.WARNING,
                 message=patterns["large_imports"]["message"],
                 file_path=file_path,
@@ -269,9 +267,7 @@ class ConstitutionValidator:
             if keyword in content:
                 line_num = content.find(keyword)
                 violations.append(Violation(
-                    rule_id="rule_067",
                     rule_name="Respect People's Time",
-                    rule_number=67,
                     severity=Severity.WARNING,
                     message=patterns["blocking_operations"]["message"],
                     file_path=file_path,
@@ -313,9 +309,7 @@ class ConstitutionValidator:
         has_try_catch = any(keyword in content for keyword in patterns["error_handling"]["keywords"])
         if not has_try_catch and self._has_risky_operations(content):
             violations.append(Violation(
-                rule_id="rule_069",
                 rule_name="Handle Edge Cases Gracefully",
-                rule_number=69,
                 severity=Severity.WARNING,
                 message=patterns["missing_error_handling"]["message"],
                 file_path=file_path,
@@ -352,8 +346,6 @@ class ConstitutionValidator:
                 func_lines = node.end_lineno - node.lineno if hasattr(node, 'end_lineno') else 10
                 if func_lines > patterns["function_length"]["threshold"]:
                     violations.append(Violation(
-                        rule_id="rule_068",
-                        rule_number=68,
                         rule_name="Write Clean, Readable Code",
                         severity=Severity.WARNING,
                         message=patterns["function_length"]["message"],
@@ -368,8 +360,6 @@ class ConstitutionValidator:
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef) and not ast.get_docstring(node):
                 violations.append(Violation(
-                    rule_id="rule_015",
-                    rule_number=15,
                     rule_name="Write Good Instructions",
                     severity=Severity.WARNING,
                     message=patterns["missing_docstring"]["message"],

@@ -2,6 +2,20 @@
   "category": "storage_governance",
   "priority": "critical",
   "description": "Storage architecture and data governance rules from 4-plane constitution (ZeroUI storage-scripts v1.1)",
-  "rules": [219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231]
+  "rules": [
+    "Name casing & charset: kebab-case [a-z0-9-] only",
+    "No source code/PII in stores",
+    "No secrets/private keys on disk",
+    "JSONL receipts (newline-delimited, signed, append-only)",
+    "JSONL receipts must be append-only",
+    "Time partitions use UTC (dt=YYYY-MM-DD)",
+    "Policy snapshots must be signed",
+    "Dual storage compliance (JSONL authority, DB mirrors)",
+    "Path resolution via ZU_ROOT environment variable",
+    "Receipts validation (signed, append-only, no code/PII)",
+    "Evidence watermarks per-consumer structure",
+    "RFC fallback pattern (UNCLASSIFIED__slug, 24h resolution)",
+    "Observability/Adapters use dt= partitions",
+    "Laptop receipts use YYYY/MM partitioning"
+  ]
 }
-
