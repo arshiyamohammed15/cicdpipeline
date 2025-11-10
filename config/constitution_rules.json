@@ -3,11 +3,11 @@
   "database": "constitution_rules",
   "last_updated": "2025-11-06T14:26:15.161850",
   "statistics": {
-    "total_rules": 415,
-    "enabled_rules": 415,
+    "total_rules": 416,
+    "enabled_rules": 416,
     "disabled_rules": 0,
     "categories": {
-      "process_control": 7,
+      "process_control": 8,
       "documentation": 11,
       "readability": 8,
       "observability": 43,
@@ -57,7 +57,7 @@
       "name": "process_control",
       "description": "Rules for process_control",
       "priority": "critical",
-      "rule_count": 7
+      "rule_count": 8
     },
     "documentation": {
       "name": "documentation",
@@ -9441,6 +9441,28 @@
         "usage_count": 0,
         "last_used": null,
         "source": "json_rebuild"
+      }
+    },
+    "416": {
+      "rule_number": 416,
+      "title": "Triple-Check Pre-Commit Workspace Cleanup",
+      "category": "process_control",
+      "priority": "critical",
+      "content": "Before committing, perform a triple-check of workspace-only directories (`node_modules/`, `src/vscode-extension/node_modules/`, `src/vscode-extension/out/`) and delete them to keep the repository clean.\n\n\nRequirements:\n- Step 1: Confirm each directory exists and is excluded via `git check-ignore`.\n- Step 2: Verify reinstall/rebuild commands are documented (`npm install`, `npm run compile`).\n- Step 3: Delete the directory, then run `git status` to ensure a clean diff.",
+      "enabled": true,
+      "config": {
+        "default_enabled": true,
+        "notes": "",
+        "disabled_reason": null,
+        "disabled_at": null,
+        "maintenance_complete": true
+      },
+      "metadata": {
+        "created_at": "2025-11-10T01:24:27.409334",
+        "updated_at": "2025-11-10T01:24:27.409334",
+        "usage_count": 0,
+        "last_used": null,
+        "source": "manual_update"
       }
     }
   }

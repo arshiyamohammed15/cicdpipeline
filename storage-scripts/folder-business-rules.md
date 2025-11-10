@@ -14,6 +14,10 @@
 
 ---
 
+## Constitution Rule FN-001 — Folder Naming
+- All new folders created in any ZeroUI repository **MUST** use kebab-case (`[a-z0-9-]+`).
+- CI, scaffolds, and peer reviews must reject or rename any folder that violates this rule before merge.
+
 ## 1) Global invariants (apply everywhere)
 1. **Name casing & charset**: All folder names are **kebab‑case**: `[a-z0-9-]` only.
 2. **Placeholders**: `{tenant-id}`, `{org-id}`, `{region}`, `{env∈dev|stg|prod}`, `{repo-id}`, `{source}`, `{version}`, `{family}`, `{name}`, `{snapshot-id}`, `{yyyy}`, `{mm}`, `{dd}`, `{consumer-id}`.
