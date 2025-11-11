@@ -61,6 +61,6 @@ class LegacySystemsSafetyTreeDataProvider implements vscode.TreeDataProvider<any
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

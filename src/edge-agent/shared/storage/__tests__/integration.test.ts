@@ -11,10 +11,19 @@ import { ReceiptGenerator } from '../ReceiptGenerator';
 import { DecisionReceipt } from '../../receipt-types';
 import * as fs from 'fs';
 import * as os from 'os';
+import * as crypto from 'crypto';
+
+const keyId = 'integration-test-kid';
+let privatePem: string;
 
 describe('Storage Integration Tests', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-integration-test-' + Date.now();
     const testRepoId = 'integration-test-repo';
+
+    beforeAll(() => {
+        const { privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+    });
 
     beforeEach(() => {
         if (!fs.existsSync(testZuRoot)) {
@@ -32,7 +41,7 @@ describe('Storage Integration Tests', () => {
     describe('Receipt Flow: Generate -> Store -> Read', () => {
         it('should complete full receipt flow', async () => {
             // Generate receipt
-            const generator = new ReceiptGenerator();
+            const generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
             const receipt = generator.generateDecisionReceipt(
                 'test-gate',
                 ['policy-v1'],
@@ -66,7 +75,7 @@ describe('Storage Integration Tests', () => {
         });
 
         it('should handle multiple receipts in same month', async () => {
-            const generator = new ReceiptGenerator();
+            const generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
             const storageService = new ReceiptStorageService(testZuRoot);
 
             // Generate and store multiple receipts
@@ -91,7 +100,7 @@ describe('Storage Integration Tests', () => {
         });
 
         it('should handle receipts across different months', async () => {
-            const generator = new ReceiptGenerator();
+            const generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
             const storageService = new ReceiptStorageService(testZuRoot);
 
             // Create receipts for different months
@@ -125,7 +134,10 @@ describe('Storage Integration Tests', () => {
 
     describe('Edge Agent Integration', () => {
         it('should integrate with EdgeAgent storage services', async () => {
-            const agent = new EdgeAgent(testZuRoot);
+            const agent = new EdgeAgent(testZuRoot, {
+                signingKey: privatePem,
+                signingKeyId: keyId
+            });
 
             // Verify storage services are initialized
             const receiptStorage = agent.getReceiptStorage();
@@ -138,7 +150,10 @@ describe('Storage Integration Tests', () => {
         });
 
         it('should process task and generate receipt', async () => {
-            const agent = new EdgeAgent(testZuRoot);
+            const agent = new EdgeAgent(testZuRoot, {
+                signingKey: privatePem,
+                signingKeyId: keyId
+            });
 
             const task = {
                 id: 'test-task-001',
@@ -158,7 +173,7 @@ describe('Storage Integration Tests', () => {
     describe('Cross-Tier Integration', () => {
         it('should store receipt in Edge Agent and read in VS Code Extension', async () => {
             // Edge Agent: Generate and store
-            const generator = new ReceiptGenerator();
+            const generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
             const storageService = new ReceiptStorageService(testZuRoot);
 
             const receipt = generator.generateDecisionReceipt(
@@ -183,7 +198,7 @@ describe('Storage Integration Tests', () => {
         });
 
         it('should maintain receipt integrity across tiers', async () => {
-            const generator = new ReceiptGenerator();
+            const generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
             const storageService = new ReceiptStorageService(testZuRoot);
 
             const originalReceipt = generator.generateDecisionReceipt(

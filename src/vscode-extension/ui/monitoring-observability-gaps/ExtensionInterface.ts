@@ -61,6 +61,6 @@ class MonitoringObservabilityGapsTreeDataProvider implements vscode.TreeDataProv
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

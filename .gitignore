@@ -93,3 +93,7 @@ desktop.ini
 
 # Requirements lock
 requirements.lock
+.zeroui/
+.zeroui/**
+**/pscl/**/FileEnvelope.json
+**/pscl/**/BuildPlan.json

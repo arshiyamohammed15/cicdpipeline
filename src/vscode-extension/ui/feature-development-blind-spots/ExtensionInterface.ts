@@ -61,6 +61,6 @@ class FeatureDevelopmentBlindSpotsTreeDataProvider implements vscode.TreeDataPro
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

@@ -1,12 +1,16 @@
 import * as vscode from 'vscode';
+import * as path from 'path';
 import axios from 'axios';
 import { StatusBarManager } from './ui/status-bar/StatusBarManager';
 import { ProblemsPanelManager } from './ui/problems-panel/ProblemsPanelManager';
-import { DecisionCardManager } from './ui/decision-card/DecisionCardManager';
+import { DecisionCardManager, DecisionCardData } from './ui/decision-card/DecisionCardManager';
 import { EvidenceDrawerManager } from './ui/evidence-drawer/EvidenceDrawerManager';
 import { ToastManager } from './ui/toast/ToastManager';
 import { ReceiptViewerManager } from './ui/receipt-viewer/ReceiptViewerManager';
-import { ReceiptParser } from './shared/receipt-parser/ReceiptParser';
+import { PSCLArtifactWriter } from './shared/storage/PSCLArtifactWriter';
+import { PreCommitValidationPipeline } from './shared/validation/PreCommitValidationPipeline';
+import { PreCommitDecisionService, PreCommitDecisionSnapshot } from './shared/storage/PreCommitDecisionService';
+import { ReceiptStorageReader } from './shared/storage/ReceiptStorageReader';
 
 // Constitution Validation Service
 class ConstitutionValidator {
@@ -129,7 +133,70 @@ export function activate(context: vscode.ExtensionContext) {
     const evidenceDrawerManager = new EvidenceDrawerManager();
     const toastManager = new ToastManager();
     const receiptViewerManager = new ReceiptViewerManager();
-    const receiptParser = new ReceiptParser();
+    const preCommitOutput = vscode.window.createOutputChannel('ZeroUI Pre-commit');
+    context.subscriptions.push(preCommitOutput);
+    let lastDecisionSnapshot: PreCommitDecisionSnapshot | undefined;
+
+    const getWorkspaceRoot = () =>
+        vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
+
+    const resolveZuRoot = (): string | undefined => {
+        const configured = vscode.workspace.getConfiguration('zeroui').get<string>('zuRoot')?.trim();
+        if (configured && configured.length > 0) {
+            return configured;
+        }
+        return process.env.ZU_ROOT || undefined;
+    };
+
+    const toDecisionCardData = (snapshot?: PreCommitDecisionSnapshot): DecisionCardData | undefined => {
+        if (!snapshot?.receipt) {
+            return undefined;
+        }
+        return {
+            status: snapshot.status,
+            policySnapshotId: snapshot.policySnapshotId,
+            artifactId: snapshot.artifactId,
+            rationale: snapshot.receipt.decision?.rationale,
+            mismatches: snapshot.mismatches ?? [],
+            labels: snapshot.labels,
+            timestampUtc: snapshot.receipt.timestamp_utc
+        };
+    };
+
+    const fileExists = async (uri: vscode.Uri): Promise<boolean> => {
+        try {
+            await vscode.workspace.fs.stat(uri);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const openDiffForFirstMismatch = async (snapshot?: PreCommitDecisionSnapshot) => {
+        if (!snapshot?.diffCandidate) {
+            void vscode.window.showInformationMessage('No mismatched files to diff.');
+            return;
+        }
+
+        const candidate = snapshot.diffCandidate;
+        if (!(await fileExists(candidate))) {
+            void vscode.window.showWarningMessage(`Mismatch file not found: ${candidate.fsPath}`);
+            return;
+        }
+
+        try {
+            await vscode.commands.executeCommand('git.openChange', candidate);
+        } catch (error) {
+            console.warn('git.openChange failed, falling back to vscode.open', error);
+            try {
+                await vscode.commands.executeCommand('vscode.open', candidate);
+            } catch (innerError) {
+                console.error('Failed to open mismatch file', innerError);
+            }
+        }
+    };
+
+    let refreshPreCommit: () => Promise<PreCommitDecisionSnapshot | undefined>;
     
     // Initialize UI Module Extension Interfaces
     const mmmEngineInterface = new MMMEngineExtensionInterface();
@@ -154,8 +221,20 @@ export function activate(context: vscode.ExtensionContext) {
     const qaTestingDeficienciesInterface = new QATestingDeficienciesExtensionInterface();
     
     // Register core commands
-    const showDecisionCard = vscode.commands.registerCommand('zeroui.showDecisionCard', () => {
-        decisionCardManager.showDecisionCard();
+    const showDecisionCard = vscode.commands.registerCommand('zeroui.showDecisionCard', async () => {
+        const snapshot = await refreshPreCommit();
+        decisionCardManager.showDecisionCard(toDecisionCardData(snapshot), {
+            onShowEvidence: () => evidenceDrawerManager.showEvidenceDrawer(),
+            onShowReceipt: () => {
+                void receiptViewerManager.showReceiptViewer(snapshot?.receipt);
+            },
+            onRerunPlan: () => {
+                void vscode.commands.executeCommand('zeroui.pscl.preparePlan');
+            },
+            onOpenDiff: () => {
+                void openDiffForFirstMismatch(snapshot);
+            }
+        });
     });
     
     const showEvidenceDrawer = vscode.commands.registerCommand('zeroui.showEvidenceDrawer', () => {
@@ -227,6 +306,143 @@ export function activate(context: vscode.ExtensionContext) {
             }
         }
     });
+
+    const sanitizeRepoId = (value: string) =>
+        value
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'default';
+
+    const isPsclEnabled = (): boolean =>
+        vscode.workspace.getConfiguration('zeroui').get<boolean>('pscl.enabled', false);
+
+    const getRepoId = (): string => {
+        const configuredRepoId = (vscode.workspace.getConfiguration('zeroui').get<string>('repoId') ?? '').trim();
+        const fallbackRepoId = vscode.workspace.name || path.basename(getWorkspaceRoot());
+        const baseRepoId = configuredRepoId.length > 0 ? configuredRepoId : fallbackRepoId;
+        return sanitizeRepoId(baseRepoId);
+    };
+
+    refreshPreCommit = async (): Promise<PreCommitDecisionSnapshot | undefined> => {
+        if (!isPsclEnabled()) {
+            statusBarManager.setPreCommitStatus('unknown', 'PSCL disabled');
+            return undefined;
+        }
+
+        const repoId = getRepoId();
+        if (!repoId) {
+            statusBarManager.setPreCommitStatus('unknown');
+            return undefined;
+        }
+
+        const service = new PreCommitDecisionService(
+            new ReceiptStorageReader(resolveZuRoot()),
+            preCommitOutput,
+            getWorkspaceRoot()
+        );
+
+        const snapshot = await service.loadLatest(repoId);
+        lastDecisionSnapshot = snapshot;
+
+        const tooltipSegments: string[] = [];
+        if (snapshot.artifactId) {
+            tooltipSegments.push(`Artifact ${snapshot.artifactId}`);
+        }
+        if (snapshot.policySnapshotId) {
+            tooltipSegments.push(`Policy ${snapshot.policySnapshotId}`);
+        }
+        const tooltip = tooltipSegments.length > 0 ? tooltipSegments.join(' · ') : undefined;
+
+        statusBarManager.setPreCommitStatus(snapshot.status, tooltip);
+        return snapshot;
+    };
+
+    const psclPreparePlan = vscode.commands.registerCommand('zeroui.pscl.preparePlan', async () => {
+        if (!isPsclEnabled()) {
+            void vscode.window.showInformationMessage(
+                'PSCL is disabled. Enable zeroui.pscl.enabled to prepare plans.'
+            );
+            return undefined;
+        }
+
+        const workspaceRoot = getWorkspaceRoot();
+        const config = vscode.workspace.getConfiguration('zeroui');
+        const configuredRepoId = (config.get<string>('repoId') ?? '').trim();
+        const baseRepoId = configuredRepoId.length > 0 ? configuredRepoId : path.basename(workspaceRoot);
+        const repoId = sanitizeRepoId(baseRepoId);
+
+        try {
+            const writer = new PSCLArtifactWriter({
+                repoId,
+                workspaceRoot
+            });
+            const result = writer.write();
+            const outputDir = path.dirname(result.envelopePath);
+            void vscode.window.showInformationMessage(`PSCL artifacts prepared in ${outputDir}`);
+            return result;
+        } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            void vscode.window.showErrorMessage(`Failed to prepare PSCL artifacts: ${message}`);
+            return undefined;
+        }
+    });
+
+    const runPreCommitValidation = vscode.commands.registerCommand('zeroui.preCommit.validate', async () => {
+        if (!isPsclEnabled()) {
+            void vscode.window.showInformationMessage(
+                'PSCL pre-commit validation is disabled. Enable zeroui.pscl.enabled to run checks.'
+            );
+            statusBarManager.setPreCommitStatus('unknown', 'PSCL disabled');
+            return {
+                status: 'pass' as const,
+                stages: []
+            };
+        }
+
+        const workspaceRoot = getWorkspaceRoot();
+        const repoId = getRepoId();
+        const zuRoot = resolveZuRoot();
+        const config = vscode.workspace.getConfiguration('zeroui');
+        const pipeline = new PreCommitValidationPipeline({
+            repoId,
+            workspaceRoot,
+            zuRoot,
+            policyReaderOptions: {
+                policyId: repoId
+            }
+        });
+
+        const result = await pipeline.run();
+        await refreshPreCommit();
+
+        const psclStage = result.stages.find(stage => stage.stage === 'pscl');
+        const issueSummary = psclStage?.issues && psclStage.issues.length > 0
+            ? psclStage.issues.join('; ')
+            : undefined;
+
+        if (result.status === 'hard_block') {
+            void vscode.window.showErrorMessage(
+                issueSummary
+                    ? `Pre-commit validation blocked by PSCL: ${issueSummary}`
+                    : 'Pre-commit validation blocked by PSCL issues.',
+                { modal: true }
+            );
+            return result;
+        }
+
+        if (result.status === 'warn' || result.status === 'soft_block') {
+            void vscode.window.showWarningMessage(
+                issueSummary
+                    ? `Pre-commit validation completed with findings: ${issueSummary}`
+                    : 'Pre-commit validation produced warnings.',
+                { modal: false }
+            );
+            return result;
+        }
+
+        void vscode.window.showInformationMessage('Pre-commit validation completed successfully.');
+        return result;
+    });
     
     // Register UI Module commands and views
     mmmEngineInterface.registerCommands(context);
@@ -278,6 +494,8 @@ export function activate(context: vscode.ExtensionContext) {
         refresh,
         validatePrompt,
         generateWithValidation,
+        psclPreparePlan,
+        runPreCommitValidation,
         statusBarManager,
         problemsPanelManager,
         decisionCardManager,
@@ -309,6 +527,7 @@ export function activate(context: vscode.ExtensionContext) {
     // Initialize core UI components
     statusBarManager.initialize();
     problemsPanelManager.initialize();
+    void refreshPreCommit();
     
     console.log('ZeroUI 2.0 Extension initialized - All UI components ready');
 }

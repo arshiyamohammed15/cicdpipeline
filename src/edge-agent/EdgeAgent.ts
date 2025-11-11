@@ -8,9 +8,15 @@ import { LocalInference } from './modules/local-inference/LocalInference';
 import { ModelManager } from './modules/model-manager/ModelManager';
 import { ResourceOptimizer } from './modules/resource-optimizer/ResourceOptimizer';
 import { ReceiptStorageService } from './shared/storage/ReceiptStorageService';
-import { ReceiptGenerator } from './shared/storage/ReceiptGenerator';
+import { ReceiptGenerator, ReceiptGeneratorOptions } from './shared/storage/ReceiptGenerator';
 import { PolicyStorageService } from './shared/storage/PolicyStorageService';
 import { DelegationTask, DelegationResult } from './interfaces/core/DelegationInterface';
+
+export interface EdgeAgentOptions {
+    signingKey?: string | Buffer;
+    signingKeyPath?: string;
+    signingKeyId?: string;
+}
 
 export class EdgeAgent {
     private orchestrator: AgentOrchestrator;
@@ -26,10 +32,20 @@ export class EdgeAgent {
     private receiptGenerator: ReceiptGenerator;
     private policyStorage: PolicyStorageService;
 
-    constructor(zuRoot?: string) {
+    constructor(zuRoot?: string, options: EdgeAgentOptions = {}) {
         // Initialize storage services
         this.receiptStorage = new ReceiptStorageService(zuRoot);
-        this.receiptGenerator = new ReceiptGenerator();
+        const generatorOptions: ReceiptGeneratorOptions = {};
+        if (options.signingKey !== undefined) {
+            generatorOptions.privateKey = options.signingKey;
+        }
+        if (options.signingKeyPath) {
+            generatorOptions.privateKeyPath = options.signingKeyPath;
+        }
+        if (options.signingKeyId) {
+            generatorOptions.keyId = options.signingKeyId;
+        }
+        this.receiptGenerator = new ReceiptGenerator(generatorOptions);
         this.policyStorage = new PolicyStorageService(zuRoot);
 
         this.initializeModules();

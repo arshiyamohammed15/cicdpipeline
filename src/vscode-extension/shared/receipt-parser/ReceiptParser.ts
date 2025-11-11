@@ -5,6 +5,7 @@ export interface DecisionReceipt {
     snapshot_hash: string;
     timestamp_utc: string;
     timestamp_monotonic_ms: number;
+    evaluation_point: 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy';
     inputs: Record<string, any>;
     decision: {
         status: 'pass' | 'warn' | 'soft_block' | 'hard_block';
@@ -70,6 +71,8 @@ export class ReceiptParser {
             typeof receipt.snapshot_hash === 'string' &&
             typeof receipt.timestamp_utc === 'string' &&
             typeof receipt.timestamp_monotonic_ms === 'number' &&
+            typeof receipt.evaluation_point === 'string' &&
+            ['pre-commit', 'pre-merge', 'pre-deploy', 'post-deploy'].includes(receipt.evaluation_point) &&
             typeof receipt.inputs === 'object' &&
             typeof receipt.decision === 'object' &&
             typeof receipt.decision.status === 'string' &&

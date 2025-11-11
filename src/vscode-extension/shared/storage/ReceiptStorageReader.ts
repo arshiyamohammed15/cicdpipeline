@@ -12,9 +12,9 @@
  */
 
 import * as fs from 'fs';
-import * as path from 'path';
 import { StoragePathResolver } from './StoragePathResolver';
 import { ReceiptParser, DecisionReceipt, FeedbackReceipt } from '../receipt-parser/ReceiptParser';
+import { extractKidFromSignature, resolvePublicKeyByKid, verifyReceiptSignature } from './ReceiptVerifier';
 
 /**
  * Receipt storage reader for VS Code Extension
@@ -197,39 +197,24 @@ export class ReceiptStorageReader {
      * @returns boolean True if signature is valid
      */
     private validateReceiptSignature(receipt: DecisionReceipt | FeedbackReceipt): boolean {
-        // Check signature exists (Rule 224: receipts must be signed)
         if (!receipt.signature || receipt.signature.length === 0) {
             console.warn('Receipt missing signature (Rule 224 violation)');
             return false;
         }
 
-        // Check signature format (should start with 'sig-' followed by 64 hex chars, or be base64/hex)
-        if (receipt.signature.startsWith('sig-')) {
-            // Format: sig-{64_hex_chars}
-            const hashPart = receipt.signature.substring(4);
-            if (!/^[0-9a-f]{64}$/i.test(hashPart)) {
-                console.warn(`Receipt signature format invalid: ${receipt.signature} (expected sig-{64_hex_chars})`);
-                return false;
-            }
-            return true;
-        }
-        
-        // Check if it's base64 or hex format
-        if (!/^[A-Za-z0-9+/=]+$/.test(receipt.signature) && 
-            !/^[0-9a-fA-F]+$/.test(receipt.signature)) {
-            console.warn('Receipt signature has invalid format');
+        const kid = extractKidFromSignature(receipt.signature);
+        if (!kid) {
+            console.warn('Receipt signature missing key identifier (kid)');
             return false;
         }
 
-        // TODO: Implement cryptographic signature verification
-        // Steps:
-        // 1. Extract canonical JSON from receipt (without signature field)
-        // 2. Load public key from trust/pubkeys/ based on receipt's policy_version_ids
-        // 3. Verify signature against canonical JSON using public key
-        // 4. Return verification result
-
-        // For now, return true if signature exists and has valid format (basic check)
-        return receipt.signature.length > 0;
+        try {
+            const { key } = resolvePublicKeyByKid(kid);
+            return verifyReceiptSignature(receipt, key);
+        } catch (error) {
+            console.warn(`Failed to verify receipt using kid "${kid}": ${(error as Error).message}`);
+            return false;
+        }
     }
 }
 

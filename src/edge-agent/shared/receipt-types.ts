@@ -16,6 +16,7 @@ export interface DecisionReceipt {
     snapshot_hash: string;
     timestamp_utc: string;
     timestamp_monotonic_ms: number;
+    evaluation_point: 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy';
     inputs: Record<string, any>;
     decision: {
         status: 'pass' | 'warn' | 'soft_block' | 'hard_block';

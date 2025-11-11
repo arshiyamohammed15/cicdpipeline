@@ -1,7 +1,9 @@
 import * as vscode from 'vscode';
 
+type PreCommitStatus = 'pass' | 'warn' | 'soft_block' | 'hard_block' | 'unknown';
+
 export class StatusBarManager implements vscode.Disposable {
-    private statusBarItem: vscode.StatusBarItem;
+    private readonly statusBarItem: vscode.StatusBarItem;
     private readonly commandId = 'zeroui.showDecisionCard';
 
     constructor() {
@@ -15,24 +17,30 @@ export class StatusBarManager implements vscode.Disposable {
         this.statusBarItem.show();
     }
 
-    public updateStatus(hasReceipts: boolean, severity?: 'info' | 'warning' | 'error'): void {
-        if (hasReceipts) {
-            switch (severity) {
-                case 'error':
-                    this.statusBarItem.text = "$(error) ZeroUI Issues";
-                    this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
-                    break;
-                case 'warning':
-                    this.statusBarItem.text = "$(warning) ZeroUI Warnings";
-                    this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
-                    break;
-                default:
-                    this.statusBarItem.text = "$(info) ZeroUI Active";
-                    this.statusBarItem.backgroundColor = undefined;
-            }
+    public setPreCommitStatus(status: PreCommitStatus, tooltip?: string): void {
+        switch (status) {
+            case 'pass':
+                this.statusBarItem.text = '$(check) Pre-commit: PASS';
+                this.statusBarItem.backgroundColor = undefined;
+                break;
+            case 'warn':
+                this.statusBarItem.text = '$(warning) Pre-commit: WARN';
+                this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.warningBackground');
+                break;
+            case 'soft_block':
+            case 'hard_block':
+                this.statusBarItem.text = '$(error) Pre-commit: BLOCK';
+                this.statusBarItem.backgroundColor = new vscode.ThemeColor('statusBarItem.errorBackground');
+                break;
+            default:
+                this.statusBarItem.text = "$(check) ZeroUI Ready";
+                this.statusBarItem.backgroundColor = undefined;
+        }
+
+        if (tooltip) {
+            this.statusBarItem.tooltip = tooltip;
         } else {
-            this.statusBarItem.text = "$(check) ZeroUI Ready";
-            this.statusBarItem.backgroundColor = undefined;
+            this.statusBarItem.tooltip = "ZeroUI 2.0 - Click to show decision card";
         }
     }
 

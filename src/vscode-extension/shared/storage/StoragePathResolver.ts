@@ -7,6 +7,8 @@
  * @module storage
  */
 
+import * as fs from 'fs';
+import * as path from 'path';
 import * as vscode from 'vscode';
 
 /**
@@ -61,9 +63,7 @@ export class StoragePathResolver {
      */
     public resolveReceiptPath(repoId: string, year: number, month: number): string {
         // Validate kebab-case repo-id (Rule 216)
-        if (!this.isKebabCase(repoId)) {
-            throw new Error(`Invalid repo-id: ${repoId}. Must be kebab-case [a-z0-9-] only`);
-        }
+        this.assertKebabCase(repoId, 'repo-id');
 
         // Validate year
         if (year < 2000 || year > 9999) {
@@ -83,20 +83,48 @@ export class StoragePathResolver {
     }
 
     /**
+     * Resolve the PSCL temporary directory under the IDE plane.
+     * Creates the directory if it does not exist. Falls back to
+     * a workspace-local .zeroui/pscl/{repoId} directory if the IDE
+     * plane location cannot be created.
+     */
+    public getPsclTempDir(
+        repoId: string,
+        options?: { workspaceRoot?: string }
+    ): string {
+        const normalizedRepoId = repoId.trim();
+        this.assertKebabCase(normalizedRepoId, 'repo-id');
+
+        const psclIdePath = this.resolveIdePath(`pscl/${normalizedRepoId}/`);
+        try {
+            this.ensureDirectory(psclIdePath);
+            return psclIdePath;
+        } catch (error) {
+            const workspaceRoot = options?.workspaceRoot
+                ? path.resolve(options.workspaceRoot)
+                : path.resolve('.');
+            const fallbackDir = path.resolve(
+                workspaceRoot,
+                '.zeroui',
+                'pscl',
+                normalizedRepoId
+            );
+            this.ensureDirectory(fallbackDir);
+            return this.normalizePath(fallbackDir);
+        }
+    }
+
+    /**
      * Resolve path for a specific storage plane
      */
     private resolvePlanePath(plane: StoragePlane, relativePath: string): string {
         // Validate plane name (kebab-case only per Rule 216)
-        if (!this.isKebabCase(plane)) {
-            throw new Error(`Invalid plane name: ${plane}. Must be kebab-case [a-z0-9-] only`);
-        }
+        this.assertKebabCase(plane, 'plane name');
 
         // Validate relative path components
         const pathParts = relativePath.split('/').filter(p => p.length > 0);
         for (const part of pathParts) {
-            if (!this.isKebabCase(part)) {
-                throw new Error(`Invalid path component: ${part}. Must be kebab-case [a-z0-9-] only`);
-            }
+            this.assertKebabCase(part, 'path component');
         }
 
         // Construct full path
@@ -106,12 +134,31 @@ export class StoragePathResolver {
         return this.normalizePath(fullPath);
     }
 
+    public resolvePolicyPath(plane: 'ide' | 'product', subPath: string = ''): string {
+        if (plane === 'ide') {
+            const relativePath = subPath ? `policy/${subPath}` : 'policy/';
+            return this.resolveIdePath(relativePath);
+        }
+        const relativePath = subPath ? `policy/registry/${subPath}` : 'policy/registry/';
+        return this.resolvePlanePath('product', relativePath);
+    }
+
     /**
      * Validate kebab-case naming (Rule 216)
      */
     private isKebabCase(value: string): boolean {
         const kebabCasePattern = /^[a-z0-9-]+$/;
         return kebabCasePattern.test(value);
+    }
+
+    private assertKebabCase(value: string, label: string): void {
+        if (!this.isKebabCase(value)) {
+            throw new Error(`Invalid ${label}: ${value}. Must be kebab-case [a-z0-9-] only`);
+        }
+    }
+
+    private ensureDirectory(dirPath: string): void {
+        fs.mkdirSync(dirPath, { recursive: true });
     }
 
     /**

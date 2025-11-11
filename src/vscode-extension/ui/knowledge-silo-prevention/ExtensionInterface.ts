@@ -61,6 +61,6 @@ class KnowledgeSiloPreventionTreeDataProvider implements vscode.TreeDataProvider
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

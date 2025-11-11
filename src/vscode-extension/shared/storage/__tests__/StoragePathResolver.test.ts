@@ -6,7 +6,9 @@
  */
 
 import { StoragePathResolver } from '../StoragePathResolver';
+import * as fs from 'fs';
 import * as os from 'os';
+import * as path from 'path';
 
 // Mock vscode module - create manual mock
 const mockGet = jest.fn();
@@ -115,6 +117,43 @@ describe('StoragePathResolver (VS Code Extension)', () => {
         it('should validate month range', () => {
             expect(() => resolver.resolveReceiptPath('my-repo', 2025, 0)).toThrow('Invalid month');
             expect(() => resolver.resolveReceiptPath('my-repo', 2025, 13)).toThrow('Invalid month');
+        });
+    });
+
+    describe('PSCL Temporary Directory Resolution', () => {
+        let tempRoot: string | undefined;
+
+        afterEach(() => {
+            if (tempRoot && fs.existsSync(tempRoot)) {
+                fs.rmSync(tempRoot, { recursive: true, force: true });
+            }
+            tempRoot = undefined;
+        });
+
+        it('should create PSCL directory under the IDE plane', () => {
+            tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pscl-ide-'));
+            process.env.ZU_ROOT = tempRoot;
+            const resolver = new StoragePathResolver(tempRoot);
+
+            const repoId = 'sample-repo';
+            const dir = resolver.getPsclTempDir(repoId);
+
+            expect(dir).toBe(resolver.resolveIdePath(`pscl/${repoId}/`));
+            expect(fs.existsSync(dir)).toBe(true);
+            expect(fs.statSync(dir).isDirectory()).toBe(true);
+        });
+
+        it('should be idempotent across repeated calls', () => {
+            tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'pscl-idempotent-'));
+            process.env.ZU_ROOT = tempRoot;
+            const resolver = new StoragePathResolver(tempRoot);
+
+            const repoId = 'repeat-repo';
+            const first = resolver.getPsclTempDir(repoId);
+            const second = resolver.getPsclTempDir(repoId);
+
+            expect(first).toBe(second);
+            expect(fs.existsSync(first)).toBe(true);
         });
     });
 

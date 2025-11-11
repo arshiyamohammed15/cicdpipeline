@@ -1,535 +1,197 @@
-/**
- * ReceiptGenerator Signature Test Suite
- * 
- * Comprehensive unit tests for receipt signing implementation
- * Tests canonical JSON generation, deterministic signatures, and SHA-256 verification
- * 
- * Coverage:
- * - Canonical JSON key sorting
- * - Deterministic signature verification
- * - SHA-256 hash verification
- * - Signature excludes signature field
- */
-
 import { ReceiptGenerator } from '../ReceiptGenerator';
-import { DecisionReceipt, FeedbackReceipt } from '../../receipt-types';
 import * as crypto from 'crypto';
 
+const toCanonicalJson = (obj: unknown): string => {
+    if (obj === null || typeof obj !== 'object') {
+        return JSON.stringify(obj);
+    }
+    if (Array.isArray(obj)) {
+        return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+    }
+    const entries = Object.keys(obj as Record<string, unknown>)
+        .sort()
+        .map(key => `${JSON.stringify(key)}:${toCanonicalJson((obj as Record<string, unknown>)[key])}`);
+    return '{' + entries.join(',') + '}';
+};
+
 describe('ReceiptGenerator Signature Implementation', () => {
+    const keyId = 'unit-test-kid';
+    let privatePem: string;
+    let publicKey: crypto.KeyObject;
     let generator: ReceiptGenerator;
 
+    beforeAll(() => {
+        const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicKey = pub;
+    });
+
     beforeEach(() => {
-        generator = new ReceiptGenerator();
+        generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
     });
 
-    describe('Canonical JSON Key Sorting', () => {
-        it('should sort keys alphabetically for decision receipt', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate-id',
-                ['policy-v1'],
-                'snapshot-hash',
-                { z_field: 'z_value', a_field: 'a_value', m_field: 'm_value' },
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    const expectValidSignature = (payload: unknown, signature: string) => {
+        const record = payload as Record<string, unknown>;
+        const parts = signature.split(':');
+        expect(parts).toHaveLength(3);
+        expect(parts[0]).toBe('sig-ed25519');
+        expect(parts[1]).toBe(keyId);
+        const signatureBuffer = Buffer.from(parts[2], 'base64');
+        const canonical = toCanonicalJson(record);
+        const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), publicKey, signatureBuffer);
+        expect(ok).toBe(true);
+    };
 
-            // Extract signature to verify canonical form
-            // Note: signReceipt receives receipt WITHOUT signature, but WITH all other fields
-            const { signature, ...receiptWithoutSig } = receipt;
-            
-            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
-            const toCanonicalJson = (obj: any): string => {
-                if (obj === null || typeof obj !== 'object') {
-                    return JSON.stringify(obj);
-                }
-                if (Array.isArray(obj)) {
-                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
-                }
-                const sortedKeys = Object.keys(obj).sort();
-                const entries = sortedKeys.map(key => {
-                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
-                });
-                return '{' + entries.join(',') + '}';
-            };
-            const canonicalJson = toCanonicalJson(receiptWithoutSig);
-            
-            // Verify signature is computed from canonical JSON
-            const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-            expect(signature).toBe(`sig-${expectedHash}`);
-        });
+    test('signs decision receipts with Ed25519', () => {
+        const receipt = generator.generateDecisionReceipt(
+            'gate-id',
+            ['policy-v1'],
+            'snapshot-hash',
+            { z_field: 'z_value', a_field: 'a_value' },
+            { status: 'pass', rationale: 'ok', badges: ['pscl'] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-        it('should sort keys alphabetically for feedback receipt', () => {
-            const receipt = generator.generateFeedbackReceipt(
-                'decision-receipt-id',
-                'FB-01',
-                'worked',
-                ['tag1', 'tag2'],
-                { repo_id: 'repo' }
-            );
-
-            const { signature, ...receiptWithoutSig } = receipt;
-            
-            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
-            const toCanonicalJson = (obj: any): string => {
-                if (obj === null || typeof obj !== 'object') {
-                    return JSON.stringify(obj);
-                }
-                if (Array.isArray(obj)) {
-                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
-                }
-                const sortedKeys = Object.keys(obj).sort();
-                const entries = sortedKeys.map(key => {
-                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
-                });
-                return '{' + entries.join(',') + '}';
-            };
-            const canonicalJson = toCanonicalJson(receiptWithoutSig);
-            
-            // Verify signature is computed from canonical JSON
-            const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-            expect(signature).toBe(`sig-${expectedHash}`);
-        });
-
-        it('should produce same signature for same content regardless of key order in inputs', () => {
-            // Create receipts with same data but different input key order
-            const receipt1 = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                { a: 'value1', b: 'value2', c: 'value3' },
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            // Wait to ensure different timestamp/receipt_id
-            return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
-                const receipt2 = generator.generateDecisionReceipt(
-                    'gate',
-                    ['policy-v1'],
-                    'hash',
-                    { c: 'value3', a: 'value1', b: 'value2' }, // Different key order
-                    { status: 'pass', rationale: 'test', badges: [] },
-                    [],
-                    { repo_id: 'repo' },
-                    false
-                );
-
-                // Receipts will have different IDs and timestamps, so signatures will differ
-                // But the canonical form of the inputs should be the same
-                // We verify by checking that if we manually create canonical JSON, it matches
-                const { signature: sig1, receipt_id: id1, timestamp_utc: ts1, timestamp_monotonic_ms: tm1, ...rest1 } = receipt1;
-                const { signature: sig2, receipt_id: id2, timestamp_utc: ts2, timestamp_monotonic_ms: tm2, ...rest2 } = receipt2;
-
-                // Create canonical JSON manually
-                const sortedKeys1 = Object.keys(rest1).sort();
-                const sortedKeys2 = Object.keys(rest2).sort();
-                const canonical1 = JSON.stringify(rest1, sortedKeys1);
-                const canonical2 = JSON.stringify(rest2, sortedKeys2);
-
-                // The canonical forms should be identical (excluding ID/timestamp)
-                expect(canonical1).toBe(canonical2);
-            });
-        });
+        const { signature, ...payload } = receipt;
+        expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
+        expectValidSignature(payload, signature);
     });
 
-    describe('Deterministic Signature Verification', () => {
-        it('should produce same signature for identical receipt content (excluding ID/timestamp)', () => {
-            // Create two receipts with manually set identical IDs and timestamps
-            // We'll verify the signature logic by manually creating the canonical form
-            const gateId = 'test-gate';
-            const policyIds: string[] = ['policy-v1'];
-            const hash = 'test-hash';
-            const inputs = { key: 'value' };
-            const decision = { status: 'pass' as const, rationale: 'test', badges: [] };
-            const evidenceHandles: any[] = [];
-            const actor = { repo_id: 'test-repo' };
-            const degraded = false;
+    test('signs feedback receipts with Ed25519', () => {
+        const decision = generator.generateDecisionReceipt(
+            'gate',
+            [],
+            'hash',
+            {},
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-            const receipt1 = generator.generateDecisionReceipt(
-                gateId, policyIds, hash, inputs, decision, evidenceHandles, actor, degraded
-            );
+        const feedback = generator.generateFeedbackReceipt(
+            decision.receipt_id,
+            'FB-01',
+            'worked',
+            ['tag1'],
+            { repo_id: 'repo' }
+        );
 
-            // Wait to ensure different timestamp
-            return new Promise(resolve => setTimeout(resolve, 10)).then(() => {
-                const receipt2 = generator.generateDecisionReceipt(
-                    gateId, policyIds, hash, inputs, decision, evidenceHandles, actor, degraded
-                );
-
-                // Extract receipt data without signature, ID, and timestamps
-                const { signature: sig1, receipt_id: id1, timestamp_utc: ts1, timestamp_monotonic_ms: tm1, ...data1 } = receipt1;
-                const { signature: sig2, receipt_id: id2, timestamp_utc: ts2, timestamp_monotonic_ms: tm2, ...data2 } = receipt2;
-
-                // Create canonical JSON for both (sorted keys)
-                const sortedKeys = Object.keys(data1).sort();
-                const canonical1 = JSON.stringify(data1, sortedKeys);
-                const canonical2 = JSON.stringify(data2, sortedKeys);
-
-                // Canonical forms should be identical (excluding ID/timestamp)
-                expect(canonical1).toBe(canonical2);
-
-                // Verify signatures are computed from canonical form
-                // Note: Signatures will be different because receipt_id and timestamps differ
-                // But the canonical forms (excluding ID/timestamp) should be identical
-                const hash1 = crypto.createHash('sha256').update(canonical1).digest('hex');
-                const hash2 = crypto.createHash('sha256').update(canonical2).digest('hex');
-                expect(hash1).toBe(hash2);
-                
-                // However, actual signatures will differ because they include ID/timestamp
-                // This is expected - we're verifying the canonical form logic, not signature equality
-                expect(sig1).toBeDefined();
-                expect(sig2).toBeDefined();
-            });
-        });
-
-        it('should produce different signatures for different receipt content', () => {
-            const receipt1 = generator.generateDecisionReceipt(
-                'gate1',
-                ['policy-v1'],
-                'hash1',
-                { input1: 'value1' },
-                { status: 'pass', rationale: 'test1', badges: [] },
-                [],
-                { repo_id: 'repo1' },
-                false
-            );
-
-            const receipt2 = generator.generateDecisionReceipt(
-                'gate2',
-                ['policy-v2'],
-                'hash2',
-                { input2: 'value2' },
-                { status: 'warn', rationale: 'test2', badges: [] },
-                [],
-                { repo_id: 'repo2' },
-                true
-            );
-
-            expect(receipt1.signature).not.toBe(receipt2.signature);
-        });
-
-        it('should produce deterministic signature (same input = same output)', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                { key: 'value' },
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            // Extract data without signature (but WITH ID and timestamps - those are part of signed data)
-            const { signature: actualSig, ...receiptWithoutSig } = receipt;
-
-            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
-            const toCanonicalJson = (obj: any): string => {
-                if (obj === null || typeof obj !== 'object') {
-                    return JSON.stringify(obj);
-                }
-                if (Array.isArray(obj)) {
-                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
-                }
-                const sortedKeys = Object.keys(obj).sort();
-                const entries = sortedKeys.map(key => {
-                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
-                });
-                return '{' + entries.join(',') + '}';
-            };
-            const canonicalJson = toCanonicalJson(receiptWithoutSig);
-
-            // Compute expected signature (this is what signReceipt does internally)
-            const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-            const expectedSignature = `sig-${expectedHash}`;
-
-            // Verify signature matches expected
-            // The signature is computed from the receipt WITHOUT signature field,
-            // but WITH receipt_id and timestamps (those are part of the signed data)
-            expect(actualSig).toBe(expectedSignature);
-            
-            // Verify the signature format and that it's a valid SHA-256 hash
-            const hashPart = actualSig.substring(4);
-            expect(hashPart.length).toBe(64);
-            expect(/^[0-9a-f]{64}$/.test(hashPart)).toBe(true);
-        });
+        const { signature, ...payload } = feedback;
+        expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
+        expectValidSignature(payload, signature);
     });
 
-    describe('SHA-256 Hash Verification', () => {
-        it('should use SHA-256 algorithm for signature generation', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                {},
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    test('canonical JSON sorts keys recursively', () => {
+        const receipt = generator.generateDecisionReceipt(
+            'gate',
+            ['policy-v1'],
+            'hash',
+            { z_field: 'z', a_field: { nested: ['c', 'b', 'a'] }, m_field: 'm' },
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-            // Extract signature hash (remove 'sig-' prefix)
-            const hashPart = receipt.signature.substring(4); // Remove 'sig-'
-            
-            // Verify it's a valid hex string (64 chars for SHA-256)
-            expect(hashPart).toMatch(/^[0-9a-f]{64}$/);
-            expect(hashPart.length).toBe(64);
-        });
+        const { signature, ...payload } = receipt;
+        expectValidSignature(payload, signature);
 
-        it('should compute hash over canonical JSON (sorted keys)', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                { z: 'z_val', a: 'a_val' },
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            // Extract receipt data without signature (but WITH ID and timestamps - those are signed)
-            const { signature, ...receiptWithoutSig } = receipt;
-
-            // Create canonical JSON manually using same method as ReceiptGenerator.toCanonicalJson
-            const toCanonicalJson = (obj: any): string => {
-                if (obj === null || typeof obj !== 'object') {
-                    return JSON.stringify(obj);
-                }
-                if (Array.isArray(obj)) {
-                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
-                }
-                const sortedKeys = Object.keys(obj).sort();
-                const entries = sortedKeys.map(key => {
-                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
-                });
-                return '{' + entries.join(',') + '}';
-            };
-            const canonicalJson = toCanonicalJson(receiptWithoutSig);
-
-            // Compute expected hash
-            const expectedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-            const expectedSignature = `sig-${expectedHash}`;
-
-            // Verify signature matches
-            expect(signature).toBe(expectedSignature);
-        });
-
-        it('should produce 64-character hex hash (SHA-256 output)', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            const hashPart = receipt.signature.substring(4);
-            expect(hashPart.length).toBe(64);
-            expect(/^[0-9a-f]{64}$/.test(hashPart)).toBe(true);
-        });
+        const canonical = toCanonicalJson(payload);
+        expect(canonical.indexOf('"a_field"')).toBeLessThan(canonical.indexOf('"m_field"'));
+        expect(canonical.indexOf('"m_field"')).toBeLessThan(canonical.indexOf('"z_field"'));
     });
 
-    describe('Signature Field Exclusion', () => {
-        it('should not include signature field in canonical JSON for decision receipt', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                {},
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    test('tampering invalidates signatures', () => {
+        const receipt = generator.generateDecisionReceipt(
+            'gate',
+            ['policy'],
+            'hash',
+            { key: 'value' },
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-            // Extract data without signature
-            const { signature, ...receiptWithoutSig } = receipt;
+        const { signature, ...payload } = receipt;
+        expectValidSignature(payload, signature);
 
-            // Verify signature field is not in the receipt data
-            expect(receiptWithoutSig).not.toHaveProperty('signature');
-
-            // Verify canonical JSON doesn't include signature
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
-            
-            expect(canonicalJson).not.toContain('signature');
-            expect(canonicalJson).not.toContain(signature);
-        });
-
-        it('should not include signature field in canonical JSON for feedback receipt', () => {
-            const receipt = generator.generateFeedbackReceipt(
-                'decision-receipt-id',
-                'FB-01',
-                'worked',
-                ['tag1'],
-                { repo_id: 'repo' }
-            );
-
-            const { signature, ...receiptWithoutSig } = receipt;
-
-            expect(receiptWithoutSig).not.toHaveProperty('signature');
-
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
-            
-            expect(canonicalJson).not.toContain('signature');
-            expect(canonicalJson).not.toContain(signature);
-        });
-
-        it('should compute signature from receipt without signature field', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                ['policy-v1'],
-                'hash',
-                { input: 'value' },
-                { status: 'pass', rationale: 'test', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            // Extract data without signature (but WITH ID and timestamps - those are part of signed data)
-            const { signature: actualSig, ...receiptWithoutSig } = receipt;
-
-            // Manually compute signature from data (without signature field)
-            // This matches the signReceipt implementation using toCanonicalJson
-            const toCanonicalJson = (obj: any): string => {
-                if (obj === null || typeof obj !== 'object') {
-                    return JSON.stringify(obj);
-                }
-                if (Array.isArray(obj)) {
-                    return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
-                }
-                const sortedKeys = Object.keys(obj).sort();
-                const entries = sortedKeys.map(key => {
-                    return JSON.stringify(key) + ':' + toCanonicalJson(obj[key]);
-                });
-                return '{' + entries.join(',') + '}';
-            };
-            const canonicalJson = toCanonicalJson(receiptWithoutSig);
-            const computedHash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-            const computedSignature = `sig-${computedHash}`;
-
-            // Verify signature matches computed value
-            expect(actualSig).toBe(computedSignature);
-        });
+        const tampered = { ...payload, decision: { ...payload.decision, status: 'hard_block' } };
+        const parts = signature.split(':');
+        const signatureBuffer = Buffer.from(parts[2], 'base64');
+        const canonical = toCanonicalJson(tampered);
+        const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), publicKey, signatureBuffer);
+        expect(ok).toBe(false);
     });
 
-    describe('Signature Format Validation', () => {
-        it('should produce signature in format sig-{64_hex_chars}', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    test('different receipts yield different signatures', () => {
+        const receiptA = generator.generateDecisionReceipt(
+            'gate-a',
+            ['policy-a'],
+            'hash-a',
+            { input: 'a' },
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
+        const receiptB = generator.generateDecisionReceipt(
+            'gate-b',
+            ['policy-b'],
+            'hash-b',
+            { input: 'b' },
+            { status: 'warn', rationale: 'warn', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            true
+        );
 
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
+        const { signature: sigA, ...payloadA } = receiptA;
+        const { signature: sigB, ...payloadB } = receiptB;
 
-        it('should produce signature with lowercase hex characters', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            const hashPart = receipt.signature.substring(4);
-            expect(hashPart).toBe(hashPart.toLowerCase());
-        });
+        expect(sigA).not.toBe(sigB);
+        expectValidSignature(payloadA, sigA);
+        expectValidSignature(payloadB, sigB);
     });
 
-    describe('Edge Cases', () => {
-        it('should handle empty inputs object', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    test('signature encodes key id and base64 payload', () => {
+        const receipt = generator.generateDecisionReceipt(
+            'gate',
+            [],
+            'hash',
+            {},
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
+        const parts = receipt.signature.split(':');
+        expect(parts).toHaveLength(3);
+        expect(parts[0]).toBe('sig-ed25519');
+        expect(parts[1]).toBe(keyId);
+        expect(() => Buffer.from(parts[2], 'base64')).not.toThrow();
+    });
 
-        it('should handle nested objects in inputs', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                { nested: { key: 'value', another: { deep: 'nested' } } },
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
+    test('signature excludes signature field from canonical payload', () => {
+        const receipt = generator.generateDecisionReceipt(
+            'gate',
+            ['policy-v1'],
+            'hash',
+            {},
+            { status: 'pass', rationale: 'ok', badges: [] },
+            [],
+            { repo_id: 'repo' },
+            false
+        );
 
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
-
-        it('should handle arrays in inputs', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                { array: [1, 2, 3], nested: [{ a: 1 }, { b: 2 }] },
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
-
-        it('should handle special characters in string values', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                { special: 'value with "quotes" and \'apostrophes\' and\nnewlines' },
-                { status: 'pass', rationale: 'test with "quotes"', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
-
-        it('should handle unicode characters in values', () => {
-            const receipt = generator.generateDecisionReceipt(
-                'gate',
-                [],
-                '',
-                { unicode: '测试 🚀 émoji' },
-                { status: 'pass', rationale: 'Unicode test: 测试', badges: [] },
-                [],
-                { repo_id: 'repo' },
-                false
-            );
-
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-        });
+        const { signature, ...payload } = receipt;
+        const canonical = toCanonicalJson(payload);
+        expect(canonical).not.toContain('signature');
+        expectValidSignature(payload, signature);
     });
 });
 

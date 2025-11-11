@@ -29,9 +29,14 @@ Stores receipts in IDE Plane (Rule 219: JSONL, append-only, signed).
 ```typescript
 import { ReceiptStorageService } from './shared/storage/ReceiptStorageService';
 import { ReceiptGenerator } from './shared/storage/ReceiptGenerator';
+import * as fs from 'fs';
 
 const storage = new ReceiptStorageService();
-const generator = new ReceiptGenerator();
+const privateKeyPem = fs.readFileSync('path/to/ide/trust/private/edge-agent.pem', 'utf-8');
+const generator = new ReceiptGenerator({
+    privateKey: privateKeyPem,
+    keyId: 'edge-agent'
+});
 
 // Generate receipt
 const receipt = generator.generateDecisionReceipt(...);

@@ -9,11 +9,45 @@ import { ReceiptGenerator } from '../ReceiptGenerator';
 import { DecisionReceipt, FeedbackReceipt } from '../../receipt-types';
 import * as crypto from 'crypto';
 
+const keyId = 'unit-test-kid';
+let privatePem: string;
+let publicKey: crypto.KeyObject;
+
+const expectValidSignature = (payload: unknown, signature: string) => {
+    const parts = signature.split(':');
+    expect(parts).toHaveLength(3);
+    expect(parts[0]).toBe('sig-ed25519');
+    expect(parts[1]).toBe(keyId);
+    const signatureBuffer = Buffer.from(parts[2], 'base64');
+    const canonical = toCanonicalJson(payload);
+    const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), publicKey, signatureBuffer);
+    expect(ok).toBe(true);
+};
+
+const toCanonicalJson = (obj: unknown): string => {
+    if (obj === null || typeof obj !== 'object') {
+        return JSON.stringify(obj);
+    }
+    if (Array.isArray(obj)) {
+        return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+    }
+    const entries = Object.keys(obj as Record<string, unknown>)
+        .sort()
+        .map(key => `${JSON.stringify(key)}:${toCanonicalJson((obj as Record<string, unknown>)[key])}`);
+    return '{' + entries.join(',') + '}';
+};
+
 describe('ReceiptGenerator', () => {
     let generator: ReceiptGenerator;
 
+    beforeAll(() => {
+        const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicKey = pub;
+    });
+
     beforeEach(() => {
-        generator = new ReceiptGenerator();
+        generator = new ReceiptGenerator({ privateKey: privatePem, keyId });
     });
 
     describe('Generate Decision Receipt', () => {
@@ -46,6 +80,7 @@ describe('ReceiptGenerator', () => {
             expect(receipt.gate_id).toBe('test-gate');
             expect(receipt.policy_version_ids).toEqual(['policy-v1', 'policy-v2']);
             expect(receipt.snapshot_hash).toBe('snapshot-hash-123');
+            expect(receipt.evaluation_point).toBe('pre-commit');
             expect(receipt.inputs).toEqual({ input1: 'value1', input2: 'value2' });
             expect(receipt.decision.status).toBe('pass');
             expect(receipt.decision.rationale).toBe('All checks passed');
@@ -56,6 +91,22 @@ describe('ReceiptGenerator', () => {
             expect(receipt.degraded).toBe(false);
             expect(receipt.signature).toBeDefined();
             expect(receipt.signature.length).toBeGreaterThan(0);
+        });
+
+        it('should allow overriding evaluation point', () => {
+            const receipt = generator.generateDecisionReceipt(
+                'gate',
+                [],
+                'snapshot',
+                {},
+                { status: 'pass', rationale: '', badges: [] },
+                [],
+                { repo_id: 'repo' },
+                false,
+                'post-deploy'
+            );
+
+            expect(receipt.evaluation_point).toBe('post-deploy');
         });
 
         it('should generate unique receipt IDs', () => {
@@ -208,8 +259,9 @@ describe('ReceiptGenerator', () => {
                 [], { repo_id: 'repo' }, false
             );
 
-            expect(receipt.signature).toBeDefined();
-            expect(receipt.signature).toMatch(/^sig-[a-f0-9]{64}$/);
+            const { signature, ...payload } = receipt;
+            expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
+            expectValidSignature(payload, signature);
         });
 
         it('should generate signature for feedback receipt', () => {
@@ -217,8 +269,9 @@ describe('ReceiptGenerator', () => {
                 'receipt-123', 'FB-01', 'worked', [], { repo_id: 'repo' }
             );
 
-            expect(receipt.signature).toBeDefined();
-            expect(receipt.signature).toMatch(/^sig-[a-f0-9]{64}$/);
+            const { signature, ...payload } = receipt;
+            expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
+            expectValidSignature(payload, signature);
         });
 
         it('should generate different signatures for different receipts', () => {
@@ -231,7 +284,11 @@ describe('ReceiptGenerator', () => {
                 [], { repo_id: 'repo' }, false
             );
 
-            expect(receipt1.signature).not.toBe(receipt2.signature);
+            const { signature: sig1, ...payload1 } = receipt1;
+            const { signature: sig2, ...payload2 } = receipt2;
+            expect(sig1).not.toBe(sig2);
+            expectValidSignature(payload1, sig1);
+            expectValidSignature(payload2, sig2);
         });
 
         it('should generate same signature for identical receipts (canonical form)', () => {
@@ -256,10 +313,10 @@ describe('ReceiptGenerator', () => {
                     gateId, policyIds, hash, inputs, decision, evidenceHandles, actor, degraded
                 );
 
-                // Signatures will be different because receipt_id and timestamps differ
-                // This is expected behavior - each receipt is unique
-                expect(receipt1.signature).toBeDefined();
-                expect(receipt2.signature).toBeDefined();
+                const { signature: sig1, ...payload1 } = receipt1;
+                const { signature: sig2, ...payload2 } = receipt2;
+                expectValidSignature(payload1, sig1);
+                expectValidSignature(payload2, sig2);
             });
         });
 
@@ -275,17 +332,9 @@ describe('ReceiptGenerator', () => {
                 false
             );
 
-            // Extract receipt without signature, ID, and timestamps for canonical form
-            const { signature, receipt_id, timestamp_utc, timestamp_monotonic_ms, ...data } = receipt;
-            
-            // The ReceiptGenerator.toCanonicalJson() method sorts keys recursively
-            // We verify that the signature is generated from canonical JSON with sorted keys
-            // by checking that the signature is deterministic and matches expected format
-            expect(receipt.signature).toBeDefined();
-            expect(receipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
-            
-            // Verify that generating the same receipt again produces the same signature
-            // (this confirms canonical JSON sorting is working)
+            const { signature, ...payload } = receipt;
+            expectValidSignature(payload, signature);
+
             const receipt2 = generator.generateDecisionReceipt(
                 'gate',
                 ['policy-v1'],
@@ -296,11 +345,9 @@ describe('ReceiptGenerator', () => {
                 { repo_id: 'repo' },
                 false
             );
-            
-            // Signatures will differ because receipt_id and timestamps are different
-            // But the canonical form (excluding these fields) should be the same
-            // We verify the signature format is correct
-            expect(receipt2.signature).toMatch(/^sig-[0-9a-f]{64}$/);
+
+            const { signature: sig2, ...payload2 } = receipt2;
+            expectValidSignature(payload2, sig2);
         });
 
         it('should produce deterministic signature from canonical JSON', () => {
@@ -340,19 +387,22 @@ describe('ReceiptGenerator', () => {
             );
 
             // Extract data without signature, ID, and timestamps for comparison
-            const { signature: sig1, receipt_id: id1, timestamp_utc: ts1_utc, timestamp_monotonic_ms: ts1_ms, ...data1 } = receipt1;
-            const { signature: sig2, receipt_id: id2, timestamp_utc: ts2_utc, timestamp_monotonic_ms: ts2_ms, ...data2 } = receipt2;
+            const { signature: sig1, ...payload1 } = receipt1;
+            const { signature: sig2, ...payload2 } = receipt2;
 
-            // Data content (excluding variable fields) should be the same
-            expect(data1).toEqual(data2);
+            const comparable1 = { ...payload1 };
+            const comparable2 = { ...payload2 };
+            delete (comparable1 as Record<string, unknown>).receipt_id;
+            delete (comparable1 as Record<string, unknown>).timestamp_utc;
+            delete (comparable1 as Record<string, unknown>).timestamp_monotonic_ms;
+            delete (comparable2 as Record<string, unknown>).receipt_id;
+            delete (comparable2 as Record<string, unknown>).timestamp_utc;
+            delete (comparable2 as Record<string, unknown>).timestamp_monotonic_ms;
 
-            // Signatures will differ because receipt_id and timestamps are different
-            // But both should be valid signature format
-            expect(sig1).toMatch(/^sig-[0-9a-f]{64}$/);
-            expect(sig2).toMatch(/^sig-[0-9a-f]{64}$/);
-            
-            // Verify signatures are different (due to different IDs/timestamps)
-            expect(sig1).not.toBe(sig2);
+            expect(comparable1).toEqual(comparable2);
+
+            expectValidSignature(payload1, sig1);
+            expectValidSignature(payload2, sig2);
         });
 
         it('should exclude signature field from canonical JSON', () => {
@@ -372,13 +422,7 @@ describe('ReceiptGenerator', () => {
 
             // Verify signature field is not in the receipt data
             expect(receiptWithoutSig).not.toHaveProperty('signature');
-
-            // Verify canonical JSON doesn't include signature
-            const sortedKeys = Object.keys(receiptWithoutSig).sort();
-            const canonicalJson = JSON.stringify(receiptWithoutSig, sortedKeys);
-            
-            expect(canonicalJson).not.toContain('signature');
-            expect(canonicalJson).not.toContain(signature);
+            expectValidSignature(receiptWithoutSig, signature);
         });
     });
 

@@ -8,53 +8,87 @@
 import { ReceiptStorageReader } from '../ReceiptStorageReader';
 import { ReceiptParser } from '../../receipt-parser/ReceiptParser';
 import { DecisionReceipt, FeedbackReceipt } from '../../receipt-parser/ReceiptParser';
-import { ReceiptGenerator } from '../ReceiptGenerator';
+import { Ed25519ReceiptSigner } from '../ReceiptSigner';
+import * as crypto from 'crypto';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
 
+/**
+ * DISCOVERY replacement:
+ * - Previously fs.writeFileSync(... 'receipts.jsonl', ...) truncated files during test setup.
+ * - Now uses append-only writes with fdatasync to mirror production guarantees.
+ */
+const appendReceiptsJsonl = (filePath: string, payload: string): void => {
+    const fd = fs.openSync(filePath, fs.constants.O_CREAT | fs.constants.O_APPEND | fs.constants.O_WRONLY);
+    try {
+        fs.writeSync(fd, payload, undefined, 'utf8');
+        fs.fdatasyncSync(fd);
+    } finally {
+        fs.closeSync(fd);
+    }
+};
+
 describe('ReceiptStorageReader', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-test-' + Date.now();
     let reader: ReceiptStorageReader;
-    let receiptGenerator: ReceiptGenerator;
     const testRepoId = 'test-repo-id';
+    const signingKeyId = 'test-signing-key';
+    let signer: Ed25519ReceiptSigner;
+    const signDecisionReceipt = (base: Omit<DecisionReceipt, 'signature'>): DecisionReceipt => ({
+        ...base,
+        signature: signer.signReceipt(base as unknown as Record<string, unknown>)
+    });
 
     beforeEach(() => {
         if (!fs.existsSync(testZuRoot)) {
             fs.mkdirSync(testZuRoot, { recursive: true });
         }
         process.env.ZU_ROOT = testZuRoot;
+        const { publicKey, privateKey } = crypto.generateKeyPairSync('ed25519');
+        const privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        const publicPem = publicKey.export({ format: 'pem', type: 'spki' }).toString();
+        signer = new Ed25519ReceiptSigner({
+            privateKey: privatePem,
+            keyId: signingKeyId
+        });
+        const trustDir = path.join(testZuRoot, 'tenant', 'policy', 'trust', 'pubkeys');
+        fs.mkdirSync(trustDir, { recursive: true });
+        fs.writeFileSync(path.join(trustDir, `${signingKeyId}.pem`), publicPem);
         reader = new ReceiptStorageReader(testZuRoot);
-        receiptGenerator = new ReceiptGenerator();
     });
 
     afterEach(() => {
         if (fs.existsSync(testZuRoot)) {
             fs.rmSync(testZuRoot, { recursive: true, force: true });
         }
+        delete process.env.ZU_ROOT;
     });
 
     describe('Read Receipts', () => {
-        const createTestReceipt = (receiptId: string, timestamp: string): DecisionReceipt => ({
-            receipt_id: receiptId,
-            gate_id: 'test-gate',
-            policy_version_ids: [],
-            snapshot_hash: 'hash',
-            timestamp_utc: timestamp,
-            timestamp_monotonic_ms: Date.now(),
-            inputs: {},
-            decision: {
-                status: 'pass',
-                rationale: 'Test',
-                badges: []
-            },
-            evidence_handles: [],
-            actor: {
-                repo_id: testRepoId
-            },
-            degraded: false,
-            signature: 'sig-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' // 64 hex chars after sig-
-        });
+        const createTestReceipt = (receiptId: string, timestamp: string): DecisionReceipt => {
+            const base: Omit<DecisionReceipt, 'signature'> = {
+                receipt_id: receiptId,
+                gate_id: 'test-gate',
+                policy_version_ids: [],
+                snapshot_hash: 'hash',
+                timestamp_utc: timestamp,
+                timestamp_monotonic_ms: Date.now(),
+                evaluation_point: 'pre-commit',
+                inputs: {},
+                decision: {
+                    status: 'pass',
+                    rationale: 'Test',
+                    badges: []
+                },
+                evidence_handles: [],
+                actor: {
+                    repo_id: testRepoId
+                },
+                degraded: false
+            };
+            return signDecisionReceipt(base);
+        };
 
         it('should return empty array if file does not exist', async () => {
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
@@ -71,7 +105,7 @@ describe('ReceiptStorageReader', () => {
             const receiptFile = `${receiptDir}/receipts.jsonl`;
 
             // Write receipts in JSONL format (with signature - Rule 219: signed JSONL receipts)
-            fs.writeFileSync(receiptFile, JSON.stringify(receipt1) + '\n' + JSON.stringify(receipt2) + '\n');
+            appendReceiptsJsonl(receiptFile, JSON.stringify(receipt1) + '\n' + JSON.stringify(receipt2) + '\n');
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 
@@ -83,6 +117,9 @@ describe('ReceiptStorageReader', () => {
             const receipt2Id = 'receipt_id' in readReceipt2 ? readReceipt2.receipt_id : readReceipt2.feedback_id;
             expect(receipt1Id).toBe('receipt-1');
             expect(receipt2Id).toBe('receipt-2');
+            if ('evaluation_point' in readReceipt1) {
+                expect(readReceipt1.evaluation_point).toBe('pre-commit');
+            }
         });
 
         it('should handle invalid receipt lines gracefully', async () => {
@@ -92,7 +129,7 @@ describe('ReceiptStorageReader', () => {
 
             // Write valid and invalid lines
             const validReceipt = createTestReceipt('receipt-1', '2025-01-15T10:00:00.000Z');
-            fs.writeFileSync(receiptFile, JSON.stringify(validReceipt) + '\n' + 'invalid json line\n');
+            appendReceiptsJsonl(receiptFile, JSON.stringify(validReceipt) + '\n' + 'invalid json line\n');
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 
@@ -111,7 +148,7 @@ describe('ReceiptStorageReader', () => {
             const receiptWithoutSig = createTestReceipt('receipt-2', '2025-01-16T10:00:00.000Z');
             delete (receiptWithoutSig as any).signature;
 
-            fs.writeFileSync(receiptFile, JSON.stringify(receiptWithSig) + '\n' + JSON.stringify(receiptWithoutSig) + '\n');
+            appendReceiptsJsonl(receiptFile, JSON.stringify(receiptWithSig) + '\n' + JSON.stringify(receiptWithoutSig) + '\n');
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 
@@ -126,7 +163,7 @@ describe('ReceiptStorageReader', () => {
             const receiptDir = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
             fs.mkdirSync(receiptDir, { recursive: true });
             const receiptFile = path.join(receiptDir, 'receipts.jsonl');
-            fs.writeFileSync(receiptFile, 'test');
+            appendReceiptsJsonl(receiptFile, 'test');
 
             // Use jest.spyOn to mock fs.readFileSync
             const readFileSyncSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {
@@ -145,32 +182,21 @@ describe('ReceiptStorageReader', () => {
 
     describe('Read Receipts In Range', () => {
         const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
-            // Create receipt with ReceiptGenerator for valid signature format
-            const receipt = receiptGenerator.generateDecisionReceipt(
-                'gate',
-                [],
-                'hash',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: testRepoId },
-                false
-            );
-            // Return receipt with test values but keep valid signature format
-            return {
+            const base: Omit<DecisionReceipt, 'signature'> = {
                 receipt_id: receiptId,
                 gate_id: 'gate',
                 policy_version_ids: [],
                 snapshot_hash: 'hash',
                 timestamp_utc: date.toISOString(),
                 timestamp_monotonic_ms: date.getTime(),
+                evaluation_point: 'pre-commit',
                 inputs: {},
                 decision: { status: 'pass', rationale: '', badges: [] },
                 evidence_handles: [],
                 actor: { repo_id: testRepoId },
-                degraded: false,
-                signature: receipt.signature // Use valid format signature from generator
+                degraded: false
             };
+            return signDecisionReceipt(base);
         };
 
         it('should read receipts within date range', async () => {
@@ -185,7 +211,7 @@ describe('ReceiptStorageReader', () => {
             // Write to January
             const receiptDir1 = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
             fs.mkdirSync(receiptDir1, { recursive: true });
-            fs.writeFileSync(
+            appendReceiptsJsonl(
                 path.join(receiptDir1, 'receipts.jsonl'),
                 JSON.stringify(receipt1) + '\n' + JSON.stringify(receipt2) + '\n' + JSON.stringify(receipt3) + '\n'
             );
@@ -204,34 +230,21 @@ describe('ReceiptStorageReader', () => {
             const endDate = new Date(Date.UTC(2025, 1, 5)); // Feb 5, 2025 UTC
 
             const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
-                // Create receipt with ReceiptGenerator for valid signature format
-                // Then create receipt with test values - signature validation only checks format
-                const receipt = receiptGenerator.generateDecisionReceipt(
-                    'gate',
-                    [],
-                    'hash',
-                    {},
-                    { status: 'pass', rationale: '', badges: [] },
-                    [],
-                    { repo_id: testRepoId },
-                    false
-                );
-                // Return receipt with test values but keep valid signature format
-                // Note: Signature won't match content, but validation only checks format
-                return {
+            const base: Omit<DecisionReceipt, 'signature'> = {
                     receipt_id: receiptId,
                     gate_id: 'gate',
                     policy_version_ids: [],
                     snapshot_hash: 'hash',
                     timestamp_utc: date.toISOString(),
                     timestamp_monotonic_ms: date.getTime(),
-                    inputs: {},
+                evaluation_point: 'pre-commit',
+                inputs: { evaluation_point: 'pre-commit' },
                     decision: { status: 'pass', rationale: '', badges: [] },
                     evidence_handles: [],
                     actor: { repo_id: testRepoId },
-                    degraded: false,
-                    signature: receipt.signature // Use valid format signature from generator
+                    degraded: false
                 };
+                return signDecisionReceipt(base);
             };
 
             const receipt1 = createReceiptForDate('receipt-1', new Date(Date.UTC(2025, 0, 30))); // Jan 30, 2025 UTC
@@ -242,8 +255,8 @@ describe('ReceiptStorageReader', () => {
             const receiptDir2 = `${testZuRoot}/ide/receipts/${testRepoId}/2025/02`;
             fs.mkdirSync(receiptDir1, { recursive: true });
             fs.mkdirSync(receiptDir2, { recursive: true });
-            fs.writeFileSync(`${receiptDir1}/receipts.jsonl`, JSON.stringify(receipt1) + '\n');
-            fs.writeFileSync(`${receiptDir2}/receipts.jsonl`, JSON.stringify(receipt2) + '\n');
+            appendReceiptsJsonl(`${receiptDir1}/receipts.jsonl`, JSON.stringify(receipt1) + '\n');
+            appendReceiptsJsonl(`${receiptDir2}/receipts.jsonl`, JSON.stringify(receipt2) + '\n');
 
             const receipts = await reader.readReceiptsInRange(testRepoId, startDate, endDate);
 
@@ -258,32 +271,21 @@ describe('ReceiptStorageReader', () => {
         };
 
         const createReceiptForDate = (receiptId: string, date: Date): DecisionReceipt => {
-            // Create receipt with ReceiptGenerator for valid signature format
-            const receipt = receiptGenerator.generateDecisionReceipt(
-                'gate',
-                [],
-                'hash',
-                {},
-                { status: 'pass', rationale: '', badges: [] },
-                [],
-                { repo_id: testRepoId },
-                false
-            );
-            // Return receipt with test values but keep valid signature format
-            return {
+            const base: Omit<DecisionReceipt, 'signature'> = {
                 receipt_id: receiptId,
                 gate_id: 'gate',
                 policy_version_ids: [],
                 snapshot_hash: 'hash',
                 timestamp_utc: date.toISOString(),
                 timestamp_monotonic_ms: date.getTime(),
+                evaluation_point: 'pre-commit',
                 inputs: {},
                 decision: { status: 'pass', rationale: '', badges: [] },
                 evidence_handles: [],
                 actor: { repo_id: testRepoId },
-                degraded: false,
-                signature: receipt.signature // Use valid format signature from generator
+                degraded: false
             };
+            return signDecisionReceipt(base);
         };
 
         it('should return latest receipts sorted by timestamp', async () => {
@@ -296,7 +298,7 @@ describe('ReceiptStorageReader', () => {
             // Use forward slashes (consistent with StoragePathResolver)
             const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${nowUTC.getUTCFullYear()}/${(nowUTC.getUTCMonth() + 1).toString().padStart(2, '0')}`;
             fs.mkdirSync(receiptDir, { recursive: true });
-            fs.writeFileSync(
+            appendReceiptsJsonl(
                 `${receiptDir}/receipts.jsonl`,
                 JSON.stringify(receipt1) + '\n' + JSON.stringify(receipt2) + '\n' + JSON.stringify(receipt3) + '\n'
             );
@@ -321,7 +323,7 @@ describe('ReceiptStorageReader', () => {
             // Use forward slashes (consistent with StoragePathResolver)
             const receiptDir = `${testZuRoot}/ide/receipts/${testRepoId}/${nowUTC.getUTCFullYear()}/${(nowUTC.getUTCMonth() + 1).toString().padStart(2, '0')}`;
             fs.mkdirSync(receiptDir, { recursive: true });
-            fs.writeFileSync(
+            appendReceiptsJsonl(
                 `${receiptDir}/receipts.jsonl`,
                 receipts.map(r => JSON.stringify(r)).join('\n') + '\n'
             );
@@ -339,24 +341,25 @@ describe('ReceiptStorageReader', () => {
 
     describe('Signature Validation (Rule 224)', () => {
         it('should accept receipts with valid signature format', async () => {
-            const receipt: DecisionReceipt = {
+            const base: Omit<DecisionReceipt, 'signature'> = {
                 receipt_id: 'receipt-1',
                 gate_id: 'gate',
                 policy_version_ids: [],
                 snapshot_hash: 'hash',
                 timestamp_utc: '2025-01-15T10:00:00.000Z',
                 timestamp_monotonic_ms: Date.now(),
+                evaluation_point: 'pre-commit',
                 inputs: {},
                 decision: { status: 'pass', rationale: '', badges: [] },
                 evidence_handles: [],
                 actor: { repo_id: testRepoId },
-                degraded: false,
-                signature: 'sig-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef' // Valid format (64 hex chars)
+                degraded: false
             };
+            const receipt = signDecisionReceipt(base);
 
             const receiptDir = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
             fs.mkdirSync(receiptDir, { recursive: true });
-            fs.writeFileSync(path.join(receiptDir, 'receipts.jsonl'), JSON.stringify(receipt) + '\n');
+            appendReceiptsJsonl(path.join(receiptDir, 'receipts.jsonl'), JSON.stringify(receipt) + '\n');
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 
@@ -371,6 +374,7 @@ describe('ReceiptStorageReader', () => {
                 snapshot_hash: 'hash',
                 timestamp_utc: '2025-01-15T10:00:00.000Z',
                 timestamp_monotonic_ms: Date.now(),
+                evaluation_point: 'pre-commit',
                 inputs: {},
                 decision: { status: 'pass', rationale: '', badges: [] },
                 evidence_handles: [],
@@ -381,7 +385,7 @@ describe('ReceiptStorageReader', () => {
 
             const receiptDir = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
             fs.mkdirSync(receiptDir, { recursive: true });
-            fs.writeFileSync(path.join(receiptDir, 'receipts.jsonl'), JSON.stringify(receipt) + '\n');
+            appendReceiptsJsonl(path.join(receiptDir, 'receipts.jsonl'), JSON.stringify(receipt) + '\n');
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 

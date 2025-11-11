@@ -146,21 +146,28 @@ export class ReceiptStorageService {
     /**
      * Append receipt to JSONL file (Rule 219: append-only, newline-delimited)
      */
+    /**
+     * Previously: fs.createWriteStream(filePath, { flags: 'a' }) — replaced with fs.promises.open('a') + fsync.
+     */
     private async appendToJsonl(filePath: string, jsonContent: string): Promise<void> {
-        return new Promise((resolve, reject) => {
-            // Append mode (Rule 219: append-only)
-            const stream = fs.createWriteStream(filePath, { flags: 'a' });
-            
-            stream.write(jsonContent + '\n', (err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve();
-                }
-            });
+        try {
+            const createHandle = await fs.promises.open(filePath, 'ax');
+            await createHandle.close();
+        } catch (error) {
+            const err = error as NodeJS.ErrnoException;
+            if (err.code !== 'EEXIST') {
+                throw err;
+            }
+        }
 
-            stream.end();
-        });
+        const line = `${jsonContent}\n`;
+        const handle = await fs.promises.open(filePath, 'a');
+        try {
+            await handle.write(line);
+            await handle.sync();
+        } finally {
+            await handle.close();
+        }
     }
 
     /**

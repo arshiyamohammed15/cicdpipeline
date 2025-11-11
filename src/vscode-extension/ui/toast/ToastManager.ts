@@ -8,18 +8,14 @@ export class ToastManager implements vscode.Disposable {
     }
 
     public showToast(message: string, type: 'info' | 'warning' | 'error' | 'success' = 'info', actions?: string[]): void {
-        const toast = vscode.window.showInformationMessage(message, ...(actions || []));
-        this.activeToasts.push(toast);
+        void vscode.window.showInformationMessage(message, ...(actions || []));
     }
 
     public showFeedbackToast(decisionId: string): void {
         const message = 'How did this decision work for you?';
         const actions = ['Worked', 'Partly', "Didn't Work"];
         
-        const toast = vscode.window.showInformationMessage(message, ...actions);
-        this.activeToasts.push(toast);
-        
-        toast.then(selection => {
+        void vscode.window.showInformationMessage(message, ...actions).then(selection => {
             if (selection) {
                 this.handleFeedback(decisionId, selection);
             }
@@ -40,10 +36,7 @@ export class ToastManager implements vscode.Disposable {
         const message = `Please select tags for "${feedback}" feedback:`;
         const actions = ['Too Noisy', 'Not Relevant', 'Incorrect', 'Other'];
         
-        const toast = vscode.window.showInformationMessage(message, ...actions);
-        this.activeToasts.push(toast);
-        
-        toast.then(selection => {
+        void vscode.window.showInformationMessage(message, ...actions).then(selection => {
             if (selection) {
                 console.log(`Tags for decision ${decisionId}: ${selection}`);
             }

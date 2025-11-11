@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import { DecisionReceipt, FeedbackReceipt } from '../receipt-parser/ReceiptParser';
+import { ReceiptSigner } from './ReceiptSigner';
 
 /**
  * Lightweight receipt generator for the VS Code extension tests.
@@ -8,6 +9,8 @@ import { DecisionReceipt, FeedbackReceipt } from '../receipt-parser/ReceiptParse
  * sources outside the extension workspace.
  */
 export class ReceiptGenerator {
+    constructor(private readonly signer?: ReceiptSigner) {}
+
     public generateDecisionReceipt(
         gateId: string,
         policyVersionIds: string[],
@@ -28,7 +31,8 @@ export class ReceiptGenerator {
             repo_id: string;
             machine_fingerprint?: string;
         },
-        degraded: boolean = false
+        degraded: boolean = false,
+        evaluationPoint: DecisionReceipt['evaluation_point'] = 'pre-commit'
     ): DecisionReceipt {
         const receipt: Omit<DecisionReceipt, 'signature'> = {
             receipt_id: this.generateReceiptId(),
@@ -37,6 +41,7 @@ export class ReceiptGenerator {
             snapshot_hash: snapshotHash,
             timestamp_utc: new Date().toISOString(),
             timestamp_monotonic_ms: Date.now(),
+            evaluation_point: evaluationPoint,
             inputs,
             decision,
             evidence_handles: evidenceHandles,
@@ -83,25 +88,13 @@ export class ReceiptGenerator {
     }
 
     private signReceipt(receipt: unknown): string {
-        const canonicalJson = this.toCanonicalJson(receipt);
-        const hash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-        return `sig-${hash}`;
-    }
-
-    private toCanonicalJson(value: unknown): string {
-        if (value === null || typeof value !== 'object') {
-            return JSON.stringify(value);
+        if (!this.signer) {
+            throw new Error('ReceiptGenerator requires an Ed25519 ReceiptSigner instance.');
         }
-
-        if (Array.isArray(value)) {
-            return `[${value.map(item => this.toCanonicalJson(item)).join(',')}]`;
+        if (typeof receipt !== 'object' || receipt === null || Array.isArray(receipt)) {
+            throw new TypeError('Receipt must be an object when signing with ReceiptSigner');
         }
-
-        const entries = Object.keys(value as Record<string, unknown>)
-            .sort()
-            .map(key => `${JSON.stringify(key)}:${this.toCanonicalJson((value as Record<string, unknown>)[key])}`);
-
-        return `{${entries.join(',')}}`;
+        return this.signer.signReceipt(receipt as Record<string, unknown>);
     }
 }
 

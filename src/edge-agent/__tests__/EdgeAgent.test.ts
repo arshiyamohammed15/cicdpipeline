@@ -19,6 +19,35 @@ import { DecisionReceipt } from '../shared/receipt-types';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import * as crypto from 'crypto';
+
+const keyId = 'edge-agent-unit-test-kid';
+let privatePem: string;
+let publicKey: crypto.KeyObject;
+
+const toCanonicalJson = (obj: unknown): string => {
+    if (obj === null || typeof obj !== 'object') {
+        return JSON.stringify(obj);
+    }
+    if (Array.isArray(obj)) {
+        return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+    }
+    const entries = Object.keys(obj as Record<string, unknown>)
+        .sort()
+        .map(key => `${JSON.stringify(key)}:${toCanonicalJson((obj as Record<string, unknown>)[key])}`);
+    return '{' + entries.join(',') + '}';
+};
+
+const expectValidSignature = (payload: unknown, signature: string) => {
+    const parts = signature.split(':');
+    expect(parts).toHaveLength(3);
+    expect(parts[0]).toBe('sig-ed25519');
+    expect(parts[1]).toBe(keyId);
+    const signatureBuffer = Buffer.from(parts[2], 'base64');
+    const canonical = toCanonicalJson(payload);
+    const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), publicKey, signatureBuffer);
+    expect(ok).toBe(true);
+};
 
 describe('EdgeAgent', () => {
     let testZuRoot: string;
@@ -27,13 +56,22 @@ describe('EdgeAgent', () => {
     let receiptGenerator: ReceiptGenerator;
     let policyStorage: PolicyStorageService;
 
+    beforeAll(() => {
+        const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicKey = crypto.createPublicKey(pub);
+    });
+
     beforeEach(() => {
         testZuRoot = path.join(os.tmpdir(), `zeroui-test-${Date.now()}-${Math.random().toString(36).substring(7)}`);
         if (!fs.existsSync(testZuRoot)) {
             fs.mkdirSync(testZuRoot, { recursive: true });
         }
         process.env.ZU_ROOT = testZuRoot;
-        edgeAgent = new EdgeAgent(testZuRoot);
+        edgeAgent = new EdgeAgent(testZuRoot, {
+            signingKey: privatePem,
+            signingKeyId: keyId
+        });
         // Access services via getter methods
         receiptStorage = edgeAgent.getReceiptStorage();
         receiptGenerator = edgeAgent.getReceiptGenerator();
@@ -143,7 +181,9 @@ describe('EdgeAgent', () => {
             const lastReceipt = JSON.parse(receiptLines[receiptLines.length - 1]) as DecisionReceipt;
 
             expect(lastReceipt.signature).toBeDefined();
-            expect(lastReceipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
+            const { signature, ...payload } = lastReceipt;
+            expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
+            expectValidSignature(payload, signature);
         });
     });
 

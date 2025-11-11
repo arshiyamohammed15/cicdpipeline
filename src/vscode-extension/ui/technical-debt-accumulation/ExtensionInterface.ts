@@ -61,6 +61,6 @@ class TechnicalDebtAccumulationTreeDataProvider implements vscode.TreeDataProvid
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

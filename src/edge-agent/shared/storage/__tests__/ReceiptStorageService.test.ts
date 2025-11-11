@@ -13,11 +13,19 @@ import * as path from 'path';
 import * as os from 'os';
 import * as crypto from 'crypto';
 
+const keyId = 'unit-test-kid';
+let privatePem: string;
+
 describe('ReceiptStorageService', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-test-' + Date.now();
     let storageService: ReceiptStorageService;
     let receiptGenerator: ReceiptGenerator;
     const testRepoId = 'test-repo-id';
+
+    beforeAll(() => {
+        const { privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+    });
 
     beforeEach(() => {
         // Create test directory
@@ -26,7 +34,7 @@ describe('ReceiptStorageService', () => {
         }
         process.env.ZU_ROOT = testZuRoot;
         storageService = new ReceiptStorageService(testZuRoot);
-        receiptGenerator = new ReceiptGenerator();
+        receiptGenerator = new ReceiptGenerator({ privateKey: privatePem, keyId });
     });
 
     afterEach(() => {
@@ -100,6 +108,53 @@ describe('ReceiptStorageService', () => {
             const receiptPath = await storageService.storeDecisionReceipt(receipt, testRepoId);
 
             expect(receiptPath).toContain('/2025/01/');
+        });
+
+        it('creates a new monthly file without touching previous months', async () => {
+            const january = receiptGenerator.generateDecisionReceipt(
+                'gate-jan', [], 'hash-jan', {}, { status: 'pass', rationale: '', badges: [] },
+                [], { repo_id: testRepoId }, false
+            );
+            january.timestamp_utc = '2025-01-31T23:59:59.000Z';
+
+            const januaryPath = await storageService.storeDecisionReceipt(january, testRepoId);
+            const januaryContentBefore = fs.readFileSync(januaryPath, 'utf-8');
+            const januarySize = januaryContentBefore.length;
+            const januaryHash = crypto.createHash('sha256').update(januaryContentBefore).digest('hex');
+
+            const februaryA = receiptGenerator.generateDecisionReceipt(
+                'gate-feb-a', [], 'hash-feb-a', {}, { status: 'pass', rationale: '', badges: [] },
+                [], { repo_id: testRepoId }, false
+            );
+            februaryA.timestamp_utc = '2025-02-01T00:00:01.000Z';
+
+            const februaryPath = await storageService.storeDecisionReceipt(februaryA, testRepoId);
+            expect(fs.existsSync(februaryPath)).toBe(true);
+
+            const januaryContentAfterFirstFeb = fs.readFileSync(januaryPath, 'utf-8');
+            expect(januaryContentAfterFirstFeb.length).toBe(januarySize);
+            expect(crypto.createHash('sha256').update(januaryContentAfterFirstFeb).digest('hex')).toBe(januaryHash);
+
+            const februaryContentBefore = fs.readFileSync(februaryPath, 'utf-8');
+            const februarySize = februaryContentBefore.length;
+            const februaryHash = crypto.createHash('sha256').update(februaryContentBefore).digest('hex');
+
+            const februaryB = receiptGenerator.generateDecisionReceipt(
+                'gate-feb-b', [], 'hash-feb-b', {}, { status: 'pass', rationale: '', badges: [] },
+                [], { repo_id: testRepoId }, false
+            );
+            februaryB.timestamp_utc = '2025-02-02T00:00:01.000Z';
+
+            await storageService.storeDecisionReceipt(februaryB, testRepoId);
+
+            const februaryContentAfter = fs.readFileSync(februaryPath, 'utf-8');
+            expect(februaryContentAfter.length).toBeGreaterThan(februarySize);
+            expect(februaryContentAfter.slice(0, februarySize)).toBe(februaryContentBefore);
+            expect(crypto.createHash('sha256').update(februaryContentBefore).digest('hex')).toBe(februaryHash);
+
+            const januaryFinal = fs.readFileSync(januaryPath, 'utf-8');
+            expect(januaryFinal.length).toBe(januarySize);
+            expect(crypto.createHash('sha256').update(januaryFinal).digest('hex')).toBe(januaryHash);
         });
     });
 

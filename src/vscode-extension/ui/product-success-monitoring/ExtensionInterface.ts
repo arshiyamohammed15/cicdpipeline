@@ -61,6 +61,6 @@ class ProductSuccessMonitoringTreeDataProvider implements vscode.TreeDataProvide
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

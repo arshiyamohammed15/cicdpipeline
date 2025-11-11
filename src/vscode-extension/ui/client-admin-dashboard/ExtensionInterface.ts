@@ -61,6 +61,6 @@ class ClientAdminDashboardTreeDataProvider implements vscode.TreeDataProvider<an
     }
 
     refresh(): void {
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(undefined);
     }
 }

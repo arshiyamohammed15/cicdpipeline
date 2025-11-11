@@ -12,23 +12,41 @@
 
 import { DecisionReceipt, FeedbackReceipt } from '../receipt-types';
 import * as crypto from 'crypto';
+import * as fs from 'fs';
+import * as path from 'path';
+
+export interface ReceiptGeneratorOptions {
+    privateKey?: string | Buffer;
+    privateKeyPath?: string;
+    keyId?: string;
+}
 
 /**
  * Receipt generator for Edge Agent
  * Creates and signs receipts before storage
  */
 export class ReceiptGenerator {
-    private privateKey?: crypto.KeyObject;
+    private readonly privateKey: crypto.KeyObject;
+    private readonly keyId: string;
 
-    constructor(privateKeyPath?: string) {
-        // Note: Private key loading from secure storage (per Rule 218: No secrets on disk)
-        // In production, this should use secrets manager/HSM/KMS
-        // For development/testing, private key can be provided via environment variable or secure config
-        // This implementation uses deterministic signing for development (can be upgraded to cryptographic signing)
-        if (privateKeyPath) {
-            // Future: Load private key from secure location (secrets manager)
-            // this.privateKey = await secretsManager.getPrivateKey(privateKeyPath);
+    constructor(options: ReceiptGeneratorOptions = {}) {
+        const material =
+            options.privateKey ??
+            (options.privateKeyPath ? this.loadKeyFromPath(options.privateKeyPath) : undefined) ??
+            this.loadKeyFromEnv();
+
+        if (!material) {
+            throw new Error(
+                'ReceiptGenerator requires an Ed25519 private key. Provide via options or set EDGE_AGENT_SIGNING_KEY or EDGE_AGENT_SIGNING_KEY_PATH.'
+            );
         }
+
+        this.privateKey = crypto.createPrivateKey(material);
+        this.keyId =
+            options.keyId ??
+            this.inferKeyId(options.privateKeyPath) ??
+            process.env.EDGE_AGENT_SIGNING_KEY_ID ??
+            'edge-agent';
     }
 
     /**
@@ -64,7 +82,8 @@ export class ReceiptGenerator {
             repo_id: string;
             machine_fingerprint?: string;
         },
-        degraded: boolean = false
+        degraded: boolean = false,
+        evaluationPoint: DecisionReceipt['evaluation_point'] = 'pre-commit'
     ): DecisionReceipt {
         const now = new Date();
         const receiptId = this.generateReceiptId();
@@ -77,6 +96,7 @@ export class ReceiptGenerator {
             snapshot_hash: snapshotHash,
             timestamp_utc: now.toISOString(),
             timestamp_monotonic_ms: Date.now(),
+            evaluation_point: evaluationPoint,
             inputs: inputs,
             decision: decision,
             evidence_handles: evidenceHandles,
@@ -84,12 +104,9 @@ export class ReceiptGenerator {
             degraded: degraded
         };
 
-        // Sign receipt
-        const signature = this.signReceipt(receipt);
-
         return {
             ...receipt,
-            signature: signature
+            signature: this.signReceipt(receipt)
         };
     }
 
@@ -127,12 +144,9 @@ export class ReceiptGenerator {
             timestamp_utc: now.toISOString()
         };
 
-        // Sign receipt
-        const signature = this.signReceipt(receipt);
-
         return {
             ...receipt,
-            signature: signature
+            signature: this.signReceipt(receipt)
         };
     }
 
@@ -190,17 +204,40 @@ export class ReceiptGenerator {
         return '{' + entries.join(',') + '}';
     }
 
-    private signReceipt(receipt: any): string {
-        // Create canonical JSON (sorted keys for deterministic output)
-        // Note: Receipt is already without signature field (passed from generateDecisionReceipt/generateFeedbackReceipt)
-        // Sort keys recursively for consistent canonical form (matches ReceiptStorageService.toCanonicalJson())
+    private signReceipt(receipt: Record<string, unknown>): string {
         const canonicalJson = this.toCanonicalJson(receipt);
+        const buffer = Buffer.from(canonicalJson, 'utf-8');
+        const signature = crypto.sign(null, buffer, this.privateKey);
+        return `sig-ed25519:${this.keyId}:${signature.toString('base64')}`;
+    }
 
-        // Generate deterministic signature using SHA-256 hash
-        // This provides integrity verification and deterministic signing
-        // In production, replace with cryptographic signing (Ed25519) using private key
-        const hash = crypto.createHash('sha256').update(canonicalJson).digest('hex');
-        return `sig-${hash}`;
+    private loadKeyFromPath(filePath: string): string {
+        return fs.readFileSync(filePath, 'utf-8');
+    }
+
+    private loadKeyFromEnv(): string | Buffer | undefined {
+        const inline = process.env.EDGE_AGENT_SIGNING_KEY;
+        if (inline && inline.trim().length > 0) {
+            return inline;
+        }
+
+        const keyPath = process.env.EDGE_AGENT_SIGNING_KEY_PATH;
+        if (keyPath) {
+            try {
+                return fs.readFileSync(keyPath, 'utf-8');
+            } catch (error) {
+                throw new Error(`Failed to read EDGE_AGENT_SIGNING_KEY_PATH (${keyPath}): ${(error as Error).message}`);
+            }
+        }
+
+        return undefined;
+    }
+
+    private inferKeyId(privateKeyPath?: string): string | undefined {
+        if (!privateKeyPath) {
+            return undefined;
+        }
+        return path.parse(privateKeyPath).name;
     }
 }
 

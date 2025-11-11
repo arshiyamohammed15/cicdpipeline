@@ -80,6 +80,16 @@
         "command": "zeroui.generateCode",
         "title": "Generate Code with Constitution Validation",
         "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.pscl.preparePlan",
+        "title": "Prepare PSCL Build Plan",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.preCommit.validate",
+        "title": "Run Pre-commit Validation",
+        "category": "ZeroUI"
       }
     ],
     "views": {
@@ -135,6 +145,11 @@
           ],
           "default": "openai",
           "description": "Preferred AI service for code generation"
+        },
+        "zeroui.pscl.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable PSCL plan preparation and pre-commit validation for local workspaces"
         },
         "zeroui.zuRoot": {
           "type": "string",

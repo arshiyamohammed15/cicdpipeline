@@ -20,6 +20,35 @@ import { ReceiptParser } from '../../../vscode-extension/shared/receipt-parser/R
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import * as crypto from 'crypto';
+
+const keyId = 'edge-agent-integration-kid';
+let privatePem: string;
+let publicKey: crypto.KeyObject;
+
+const toCanonicalJson = (obj: unknown): string => {
+    if (obj === null || typeof obj !== 'object') {
+        return JSON.stringify(obj);
+    }
+    if (Array.isArray(obj)) {
+        return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+    }
+    const entries = Object.keys(obj as Record<string, unknown>)
+        .sort()
+        .map(key => `${JSON.stringify(key)}:${toCanonicalJson((obj as Record<string, unknown>)[key])}`);
+    return '{' + entries.join(',') + '}';
+};
+
+const expectValidSignature = (payload: unknown, signature: string) => {
+    const parts = signature.split(':');
+    expect(parts).toHaveLength(3);
+    expect(parts[0]).toBe('sig-ed25519');
+    expect(parts[1]).toBe(keyId);
+    const signatureBuffer = Buffer.from(parts[2], 'base64');
+    const canonical = toCanonicalJson(payload);
+    const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), publicKey, signatureBuffer);
+    expect(ok).toBe(true);
+};
 
 describe('Receipt Flow Integration Test', () => {
     let edgeAgent: EdgeAgent;
@@ -33,6 +62,10 @@ describe('Receipt Flow Integration Test', () => {
         // Create temporary ZU_ROOT for testing
         testZuRoot = path.join(os.tmpdir(), `zeroui-test-${Date.now()}`);
         testRepoId = 'test-repo';
+
+        const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicKey = crypto.createPublicKey(pub);
 
         // Ensure test directory exists
         fs.mkdirSync(testZuRoot, { recursive: true });
@@ -51,7 +84,10 @@ describe('Receipt Flow Integration Test', () => {
 
     beforeEach(() => {
         // Initialize Edge Agent with test ZU_ROOT
-        edgeAgent = new EdgeAgent(testZuRoot);
+        edgeAgent = new EdgeAgent(testZuRoot, {
+            signingKey: privatePem,
+            signingKeyId: keyId
+        });
         receiptStorage = edgeAgent.getReceiptStorage();
         policyStorage = edgeAgent.getPolicyStorage();
         receiptParser = new ReceiptParser();
@@ -113,7 +149,10 @@ describe('Receipt Flow Integration Test', () => {
         expect(['pass', 'warn', 'soft_block', 'hard_block']).toContain(receipt?.decision.status);
 
         // Step 6: Verify receipt signature format
-        expect(receipt?.signature).toMatch(/^sig-[0-9a-f]{64}$/);
+        if (receipt) {
+            const { signature, ...payload } = receipt;
+            expectValidSignature(payload, signature);
+        }
 
         // Step 7: Verify receipt can be read by Extension (ReceiptStorageReader)
         // This validates the receipt is in the correct format for Extension consumption
@@ -137,8 +176,8 @@ describe('Receipt Flow Integration Test', () => {
             expect(feedbackReceipt.decision_receipt_id).toBe(receiptId);
             expect(feedbackReceipt.pattern_id).toBe('FB-01');
             expect(feedbackReceipt.choice).toBe('worked');
-            expect(feedbackReceipt.signature).toBeDefined();
-            expect(feedbackReceipt.signature).toMatch(/^sig-[0-9a-f]{64}$/);
+            const { signature: feedbackSignature, ...feedbackPayload } = feedbackReceipt;
+            expectValidSignature(feedbackPayload, feedbackSignature);
 
             // Parse feedback receipt
             const feedbackReceiptJson = JSON.stringify(feedbackReceipt);
