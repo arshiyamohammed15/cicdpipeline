@@ -2,6 +2,17 @@
 
 A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution for enterprise-grade product development with comprehensive, modular rule configuration management. The total rule count is derived from the single source of truth at build/test time.
 
+## Repository Layout
+
+- `docs/root-notes/`: PSCL discovery, verification reports, and recovery playbooks formerly kept in the repo root (see `docs/root-notes/README.md`).
+- `config/`: Constitution configuration (JSON, DB, logs, patterns, history) consumed by the validator and tooling.
+- `contracts/`: JSON/YAML contract specifications grouped by domain (analytics, API, integration, release, and more).
+- `src/`: Application sources (`cloud-services`, `edge-agent`, `vscode-extension`) spanning Python and TypeScript.
+- `product/`, `tenant/`, `shared/`, `storage-scripts/`: Storage governance planes, evidence scaffolds, and PowerShell tooling.
+- `gsmd/`: Generated gold-standard metadata (JSON schemas plus PowerShell utilities).
+- `tests/`, `tools/`, `validator/`, `scripts/`, `db/`: Validator test suites, CLI helpers, rule engines, automation scripts, and database artifacts.
+- `node_modules/`: Checked-in JavaScript dependencies needed by the VS Code extension workspace.
+
 ## Features
 
 - **Rules from Single Source of Truth**: Unified in `ZeroUI2.0_Master_Constitution.md` (including Exception Handling and TypeScript rules). The exact total is validated during CI.

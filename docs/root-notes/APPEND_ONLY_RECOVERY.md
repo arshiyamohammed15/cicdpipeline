@@ -58,8 +58,8 @@ Use `Show-ReceiptState '<tag>'` immediately **before and after** each numbered s
 - Harness script: `node .\.zeroui\verify\verify_pscl_check.mjs --repo zeroui2-0 --scenario green --zu-root D:\Projects\ZeroUI2.0\.zeroui\pscl-runtime`
 - Capture pre/post state with `Show-ReceiptState '06-before-harness'` and `'06-after-harness'`.
 - Review outputs:
-  - Machine report: `.zeroui\verify\verification_results.json`
-  - Human report: `VERIFICATION_PSCL_REPORT.md`
+- Machine report: `.zeroui\verify\verification_results.json`
+- Human report: `docs/root-notes/VERIFICATION_PSCL_REPORT.md`
 
 ---
 
