@@ -1,5 +1,25 @@
 # ZeroUI — Folder Business Rules (Authoritative, Windows‑first)
 
+# Folder Business Rules — ZeroUI 2.0 (DB/Storage)
+
+## 0) Scope & Goal
+**Goal:** The repository contains only **code & docs**.  
+**Forbidden in repo:** any **storage/data artifacts** (SQLite/DB files, WAL/SHM, logs, evidence packs/ZIPs, generated CSVs, etc.).
+
+## 1) Non-Negotiable Rules
+1. **Storage lives outside the repo**:
+   - Edge SQLite DB → `D:\ZeroUI\edge.db`
+   - Evidence packs → `E:\ZeroUI\Evidence\...`
+   - Retention logs → `E:\zeroui_logs\...`
+2. Repo holds only:
+   - `/db/**` SQL (DDL/perf/checks/retention/signing glue)
+   - `/scripts/**` PS1 automation (orchestration/runbooks)
+   - `/docs/**` Markdown + CSV sign-offs
+3. **Prohibited under repo** (tracked or untracked):
+   `*.db`, `*.sqlite`, `*.sqlite3`, `*.wal`, `*.shm`, `*.log`, `*.zip`,
+   any `edge.db`, any folder named `evidence`, `Evidence`, or `zeroui_logs`.
+4. Scripts **must write** only to the external paths above (never inside the repo tree).
+
 **Version:** 2.0 • **Date:** 2025-11-05 (UTC)  
 **Scope:** Authoritative placement rules for the **4 planes** (IDE Plane, Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v2.0 simplifies the structure with lazy creation (parent folders only), consolidation (unified telemetry pattern), and flattening (reduced nesting depth from 5 to 3 levels).
 
