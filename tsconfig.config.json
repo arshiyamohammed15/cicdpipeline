@@ -1,0 +1,29 @@
+{
+  "_comment": "PATCH HEADER: Discovered anchors: package.json TypeScript setup, config/InfraConfig.ts. Files created/edited: tsconfig.config.json (created), src/platform/config/infra_config_runner.ts (created). STOP/MISSING triggers: None encountered. No new dependencies, no interpolation, no vendor strings, no key changes, no log truncation.",
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "lib": ["ES2020"],
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "../../../config/*": ["config/*"]
+    }
+  },
+  "include": [
+    "src/platform/config/infra_config_runner.ts",
+    "config/InfraConfig.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
+

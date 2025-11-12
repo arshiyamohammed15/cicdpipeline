@@ -5,9 +5,40 @@
     "repo": "zero-ui",
     "shards": 0
   },
+  "infra": {
+    "compute": {
+      "min_baseline": 0,
+      "allow_spot": false
+    },
+    "routing": {
+      "default": "serverless",
+      "cost_profiles": ["light", "ai-inference", "batch"]
+    },
+    "storage": {
+      "object_root": "{zu_root_pattern}/objects",
+      "backups_root": "{zu_root_pattern}/backups",
+      "encryption_at_rest": true
+    },
+    "network": {
+      "tls_required": true
+    },
+    "observability": {
+      "enable_metrics": true,
+      "enable_cost": true
+    },
+    "dr": {
+      "cross_zone": true,
+      "backup_interval_min": 60
+    },
+    "feature_flags": {
+      "infra_enabled": true,
+      "local_adapters_enabled": true
+    }
+  },
   "environments": {
     "development": {
       "description": "Developer laptop local storage",
+      "infra": {},
       "deployment_types": {
         "local": {
           "backend": "filesystem",
@@ -27,6 +58,7 @@
     },
     "integration": {
       "description": "Integration testing environment",
+      "infra": {},
       "deployment_types": {
         "onprem": {
           "backend": "filesystem",
@@ -60,6 +92,7 @@
     },
     "staging": {
       "description": "Pre-production staging environment",
+      "infra": {},
       "deployment_types": {
         "onprem": {
           "backend": "filesystem",
@@ -93,6 +126,7 @@
     },
     "production": {
       "description": "Production environment",
+      "infra": {},
       "deployment_types": {
         "onprem": {
           "backend": "filesystem",

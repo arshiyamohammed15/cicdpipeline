@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "infra.config.schema.json",
+  "title": "Infrastructure Configuration Schema",
+  "description": "Vendor-neutral infrastructure configuration schema",
+  "type": "object",
+  "properties": {
+    "compute": {
+      "type": "object",
+      "description": "Compute resource configuration",
+      "properties": {
+        "min_baseline": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum baseline compute resources"
+        },
+        "allow_spot": {
+          "type": "boolean",
+          "description": "Allow spot/preemptible instances"
+        }
+      },
+      "required": ["min_baseline", "allow_spot"],
+      "additionalProperties": false
+    },
+    "routing": {
+      "type": "object",
+      "description": "Request routing configuration",
+      "properties": {
+        "default": {
+          "type": "string",
+          "enum": ["serverless", "gpu-queue", "batch"],
+          "description": "Default routing strategy"
+        },
+        "cost_profiles": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["light", "ai-inference", "batch"]
+          },
+          "description": "Available cost profiles"
+        }
+      },
+      "required": ["default", "cost_profiles"],
+      "additionalProperties": false
+    },
+    "storage": {
+      "type": "object",
+      "description": "Storage configuration",
+      "properties": {
+        "object_root": {
+          "type": "string",
+          "description": "Root path for object storage"
+        },
+        "backups_root": {
+          "type": "string",
+          "description": "Root path for backup storage"
+        },
+        "encryption_at_rest": {
+          "type": "boolean",
+          "description": "Enable encryption at rest"
+        }
+      },
+      "required": ["object_root", "backups_root", "encryption_at_rest"],
+      "additionalProperties": false
+    },
+    "network": {
+      "type": "object",
+      "description": "Network configuration",
+      "properties": {
+        "tls_required": {
+          "type": "boolean",
+          "description": "Require TLS for network connections"
+        }
+      },
+      "required": ["tls_required"],
+      "additionalProperties": false
+    },
+    "observability": {
+      "type": "object",
+      "description": "Observability configuration",
+      "properties": {
+        "enable_metrics": {
+          "type": "boolean",
+          "description": "Enable metrics collection"
+        },
+        "enable_cost": {
+          "type": "boolean",
+          "description": "Enable cost tracking"
+        }
+      },
+      "required": ["enable_metrics", "enable_cost"],
+      "additionalProperties": false
+    },
+    "dr": {
+      "type": "object",
+      "description": "Disaster recovery configuration",
+      "properties": {
+        "cross_zone": {
+          "type": "boolean",
+          "description": "Enable cross-zone replication"
+        },
+        "backup_interval_min": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Backup interval in minutes"
+        }
+      },
+      "required": ["cross_zone", "backup_interval_min"],
+      "additionalProperties": false
+    },
+    "feature_flags": {
+      "type": "object",
+      "description": "Feature flags configuration",
+      "properties": {
+        "infra_enabled": {
+          "type": "boolean",
+          "description": "Enable infrastructure features"
+        },
+        "local_adapters_enabled": {
+          "type": "boolean",
+          "description": "Enable local adapters"
+        }
+      },
+      "required": ["infra_enabled", "local_adapters_enabled"],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "compute",
+    "routing",
+    "storage",
+    "network",
+    "observability",
+    "dr",
+    "feature_flags"
+  ],
+  "additionalProperties": false
+}
+
