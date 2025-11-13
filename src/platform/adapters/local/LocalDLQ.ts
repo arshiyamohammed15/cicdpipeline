@@ -1,6 +1,6 @@
 /**
  * LocalDLQ
- * 
+ *
  * Local file-based implementation of DLQPort using NDJSON files.
  */
 
@@ -241,4 +241,3 @@ export class LocalDLQ implements DLQPort {
     return Date.now();
   }
 }
-

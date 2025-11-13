@@ -51,13 +51,13 @@ export class ReceiptViewerManager implements vscode.Disposable {
     private async loadLatestReceipt(): Promise<DecisionReceipt | FeedbackReceipt | undefined> {
         try {
             // Get repo ID from workspace or configuration
-            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') || 
-                          vscode.workspace.name || 
+            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') ||
+                          vscode.workspace.name ||
                           'default-repo';
 
             // Read latest receipts
             const receipts = await this.receiptReader.readLatestReceipts(repoId, 1);
-            
+
             if (receipts.length > 0) {
                 return receipts[0];
             }
@@ -74,8 +74,8 @@ export class ReceiptViewerManager implements vscode.Disposable {
      */
     public async loadReceiptsInRange(startDate: Date, endDate: Date): Promise<Array<DecisionReceipt | FeedbackReceipt>> {
         try {
-            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') || 
-                          vscode.workspace.name || 
+            const repoId = vscode.workspace.getConfiguration('zeroui').get<string>('repoId') ||
+                          vscode.workspace.name ||
                           'default-repo';
 
             return await this.receiptReader.readReceiptsInRange(repoId, startDate, endDate);

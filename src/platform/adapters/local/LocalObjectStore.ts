@@ -1,6 +1,6 @@
 /**
  * LocalObjectStore
- * 
+ *
  * Local file-based implementation of ObjectStorePort.
  * Stores objects as files under configured root with metadata sidecar .meta.json.
  */
@@ -216,4 +216,3 @@ export class LocalObjectStore implements ObjectStorePort {
     return Math.abs(hash).toString(16);
   }
 }
-

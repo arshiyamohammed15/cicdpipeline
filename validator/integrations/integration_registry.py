@@ -125,7 +125,7 @@ class IntegrationRegistry:
         from validator.pre_implementation_hooks import PreImplementationHookManager
         hook_manager = PreImplementationHookManager()
         total_rules = hook_manager.total_rules
-        
+
         return {
             'total_integrations': len(self.integrations),
             'integration_status': status,

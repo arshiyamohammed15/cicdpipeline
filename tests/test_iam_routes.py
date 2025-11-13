@@ -23,13 +23,13 @@ except ImportError:
 def create_test_client(app_instance):
     """
     Create TestClient with version compatibility handling.
-    
+
     Args:
         app_instance: FastAPI app instance
-        
+
     Returns:
         TestClient instance
-        
+
     Raises:
         RuntimeError: If TestClient cannot be initialized due to version incompatibility
     """
@@ -120,12 +120,12 @@ app = main_module.app
 
 class TestVerifyEndpoint(unittest.TestCase):
     """Test /iam/v1/verify endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_verify_success(self):
         """Test verify endpoint with valid token."""
         # Mock jwt in sys.modules
@@ -142,13 +142,13 @@ class TestVerifyEndpoint(unittest.TestCase):
         }
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             response = self.client.post(
                 "/iam/v1/verify",
                 json={"token": "valid.token.here"}
             )
-            
+
             self.assertEqual(response.status_code, 200)
             data = response.json()
             self.assertEqual(data["sub"], "user-123")
@@ -157,7 +157,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         finally:
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
-    
+
     def test_verify_invalid_token(self):
         """Test verify endpoint with invalid token."""
         # Mock jwt in sys.modules
@@ -166,13 +166,13 @@ class TestVerifyEndpoint(unittest.TestCase):
         mock_jwt.decode.side_effect = Exception("Invalid token")
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             response = self.client.post(
                 "/iam/v1/verify",
                 json={"token": "invalid.token"}
             )
-            
+
             self.assertEqual(response.status_code, 401)
             data = response.json()
             # FastAPI wraps error in "detail" field
@@ -182,25 +182,25 @@ class TestVerifyEndpoint(unittest.TestCase):
         finally:
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
-    
+
     def test_verify_missing_token(self):
         """Test verify endpoint with missing token."""
         response = self.client.post(
             "/iam/v1/verify",
             json={}
         )
-        
+
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
 class TestDecisionEndpoint(unittest.TestCase):
     """Test /iam/v1/decision endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_decision_allow(self):
         """Test decision endpoint returns ALLOW."""
         response = self.client.post(
@@ -214,13 +214,13 @@ class TestDecisionEndpoint(unittest.TestCase):
                 "resource": "/api/resource"
             }
         )
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["decision"], "ALLOW")
         self.assertIn("reason", data)
         self.assertIn("receipt_id", data)
-    
+
     def test_decision_deny(self):
         """Test decision endpoint returns DENY."""
         response = self.client.post(
@@ -234,11 +234,11 @@ class TestDecisionEndpoint(unittest.TestCase):
                 "resource": "/api/admin"
             }
         )
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["decision"], "DENY")
-    
+
     def test_decision_elevation_required(self):
         """Test decision endpoint returns ELEVATION_REQUIRED."""
         response = self.client.post(
@@ -256,11 +256,11 @@ class TestDecisionEndpoint(unittest.TestCase):
                 }
             }
         )
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["decision"], "ELEVATION_REQUIRED")
-    
+
     def test_decision_invalid_request(self):
         """Test decision endpoint with invalid request."""
         response = self.client.post(
@@ -271,18 +271,18 @@ class TestDecisionEndpoint(unittest.TestCase):
                 }
             }
         )
-        
+
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
 class TestPoliciesEndpoint(unittest.TestCase):
     """Test /iam/v1/policies endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_policies_upsert_success(self):
         """Test policies endpoint upserts policy bundle."""
         response = self.client.put(
@@ -305,13 +305,13 @@ class TestPoliciesEndpoint(unittest.TestCase):
             },
             headers={"X-Idempotency-Key": "test-key-123"}
         )
-        
+
         self.assertEqual(response.status_code, 202)
         data = response.json()
         self.assertEqual(data["bundle_id"], "bundle-1")
         self.assertIn("snapshot_id", data)
         self.assertEqual(data["status"], "accepted")
-    
+
     def test_policies_missing_idempotency_key(self):
         """Test policies endpoint requires X-Idempotency-Key."""
         response = self.client.put(
@@ -322,7 +322,7 @@ class TestPoliciesEndpoint(unittest.TestCase):
                 "policies": []
             }
         )
-        
+
         self.assertEqual(response.status_code, 400)
         data = response.json()
         # JSONResponse returns error at root, not wrapped in detail
@@ -333,25 +333,25 @@ class TestPoliciesEndpoint(unittest.TestCase):
 
 class TestHealthEndpoint(unittest.TestCase):
     """Test /iam/v1/health endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_health_check(self):
         """Test health endpoint returns healthy status."""
         response = self.client.get("/iam/v1/health")
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["status"], "healthy")
         self.assertIn("timestamp", data)
-    
+
     def test_root_health_check(self):
         """Test root /health endpoint."""
         response = self.client.get("/health")
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["status"], "healthy")
@@ -359,16 +359,16 @@ class TestHealthEndpoint(unittest.TestCase):
 
 class TestMetricsEndpoint(unittest.TestCase):
     """Test /iam/v1/metrics endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_metrics_endpoint(self):
         """Test metrics endpoint returns service metrics."""
         response = self.client.get("/iam/v1/metrics")
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertIn("authentication_count", data)
@@ -382,16 +382,16 @@ class TestMetricsEndpoint(unittest.TestCase):
 
 class TestConfigEndpoint(unittest.TestCase):
     """Test /iam/v1/config endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_config_endpoint(self):
         """Test config endpoint returns module configuration."""
         response = self.client.get("/iam/v1/config")
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["module_id"], "M21")
@@ -403,19 +403,19 @@ class TestConfigEndpoint(unittest.TestCase):
 
 class TestErrorHandling(unittest.TestCase):
     """Test error handling across endpoints."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_error_envelope_structure(self):
         """Test error responses follow IPC protocol envelope."""
         response = self.client.post(
             "/iam/v1/verify",
             json={"token": "invalid"}
         )
-        
+
         if response.status_code >= 400:
             data = response.json()
             # FastAPI wraps error in "detail" field
@@ -426,11 +426,11 @@ class TestErrorHandling(unittest.TestCase):
             else:
                 # Some validation errors might have different structure
                 self.assertIsNotNone(data.get("detail"))
-    
+
     def test_correlation_headers(self):
         """Test responses include correlation headers."""
         response = self.client.get("/iam/v1/health")
-        
+
         self.assertIn("X-Trace-Id", response.headers)
         self.assertIn("X-Request-Id", response.headers)
         self.assertIn("X-Span-Id", response.headers)
@@ -438,12 +438,12 @@ class TestErrorHandling(unittest.TestCase):
 
 class TestBreakGlassEndpoint(unittest.TestCase):
     """Test /iam/v1/break-glass endpoint."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
-    
+
     def test_break_glass_success(self):
         """Test break-glass grants access when policy enabled."""
         # First, enable break-glass policy via /policies endpoint
@@ -467,9 +467,9 @@ class TestBreakGlassEndpoint(unittest.TestCase):
                 ]
             }
         )
-        
+
         self.assertEqual(response.status_code, 202)
-        
+
         # Now test break-glass endpoint
         response = self.client.post(
             "/iam/v1/break-glass",
@@ -483,14 +483,14 @@ class TestBreakGlassEndpoint(unittest.TestCase):
                 "approver_identity": "admin-456"
             }
         )
-        
+
         self.assertEqual(response.status_code, 200)
         data = response.json()
         self.assertEqual(data["decision"], "BREAK_GLASS_GRANTED")
         self.assertIsNotNone(data["expires_at"])
         self.assertIn("incident", data["reason"].lower())
         self.assertIn("24h", data["reason"].lower())
-    
+
     def test_break_glass_policy_not_enabled(self):
         """Test break-glass fails when policy not enabled."""
         response = self.client.post(
@@ -504,7 +504,7 @@ class TestBreakGlassEndpoint(unittest.TestCase):
                 "justification": "Critical production incident"
             }
         )
-        
+
         self.assertEqual(response.status_code, 403)
         data = response.json()
         self.assertIn("detail", data)
@@ -515,4 +515,3 @@ class TestBreakGlassEndpoint(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

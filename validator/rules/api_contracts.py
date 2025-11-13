@@ -15,7 +15,7 @@ from..models import Violation, Severity
 
 class APIContractsValidator:
     """Validates API contracts and OpenAPI specifications."""
-    
+
     def __init__(self):
         self.rules = {
             'R013': self._validate_openapi_compliance,
@@ -38,16 +38,16 @@ class APIContractsValidator:
             'R085': self._validate_sdk_naming,
             'R086': self._validate_receipt_signature
         }
-    
+
     def validate(self, file_path: str, content: str) -> List[Violation]:
         """Validate API contracts compliance for a file."""
         violations = []
-        
+
         # Check if this is an OpenAPI spec file
         is_spec = self._is_openapi_file(file_path)
         if is_spec:
             violations.extend(self._validate_openapi_spec(content, file_path))
-        
+
         # Check for API-related code patterns only for source files
         if not is_spec:
             violations.extend(self._validate_api_patterns(content, file_path))
@@ -60,18 +60,18 @@ class APIContractsValidator:
             violations.extend(self._validate_receipt_signature(content, file_path))
 
         # Skip rule-text validators here to avoid duplicate/noisy results; pattern/spec checks above suffice
-        
+
         return violations
-    
+
     def _is_openapi_file(self, file_path: str) -> bool:
         """Check if file is an OpenAPI specification."""
         openapi_patterns = ['openapi.yaml', 'swagger.yaml', 'api.yaml', 'openapi.yml', 'swagger.yml', 'openapi.json', 'swagger.json', 'api.json']
         return any(pattern in file_path.lower() for pattern in openapi_patterns)
-    
+
     def _validate_openapi_spec(self, content: str, file_path: str) -> List[Violation]:
         """Validate OpenAPI specification compliance."""
         violations = []
-        
+
         try:
             if file_path.endswith('.json'):
                 spec = json.loads(content)
@@ -79,7 +79,7 @@ class APIContractsValidator:
                 spec = yaml.safe_load(content)
             if isinstance(spec, (str, int, float)):
                 spec = {"openapi": str(spec)}
-            
+
             # Check OpenAPI version
             openapi_ver = str(spec.get('openapi', ''))
             if not openapi_ver.startswith('3.1'):
@@ -92,9 +92,9 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                
+
                     ))
-            
+
             # Check for versioning in paths
             paths = spec.get('paths', {})
             has_versioning = any('/v' in path for path in paths.keys())
@@ -106,22 +106,22 @@ class APIContractsValidator:
                     severity=Severity.ERROR,
                     category='api'
                 ))
-            
+
             # Check for idempotency headers
             violations.extend(self._check_idempotency_headers(spec, file_path))
-            
+
             # Check for error envelope
             violations.extend(self._check_error_envelope(spec, file_path))
-            
+
             # Check for authentication schemes
             violations.extend(self._check_authentication(spec, file_path))
-            
+
             # Check for rate limiting
             violations.extend(self._check_rate_limiting(spec, file_path))
-            
+
             # Check for examples
             violations.extend(self._check_examples(spec, file_path))
-            
+
         except (json.JSONDecodeError, yaml.YAMLError) as e:
             violations.append(Violation(
                         rule_name=f'Invalid OpenAPI specification: {str(e)}',
@@ -132,16 +132,16 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _check_idempotency_headers(self, spec: Dict, file_path: str) -> List[Violation]:
         """Check for idempotency headers in mutating operations."""
         violations = []
         paths = spec.get('paths', {})
-        
+
         for path, path_spec in paths.items():
             for method, operation in path_spec.items():
                 if method.upper() in ['POST', 'PUT', 'PATCH', 'DELETE']:
@@ -150,7 +150,7 @@ class APIContractsValidator:
                         param.get('name', '').lower() == 'idempotency-key'
                         for param in parameters
                     )
-                    
+
                     if not has_idempotency:
                         violations.append(Violation(
                         rule_name=f'Mutating route {method.upper()} {path} must accept Idempotency-Key',
@@ -161,20 +161,20 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                        
+
                     ))
-        
+
         return violations
-    
+
     def _check_error_envelope(self, spec: Dict, file_path: str) -> List[Violation]:
         """Check for stable error envelope with canonical codes."""
         violations = []
         components = spec.get('components', {})
         schemas = components.get('schemas', {})
-        
+
         # Look for error response schemas
         error_schemas = [name for name in schemas.keys() if 'error' in name.lower()]
-        
+
         if not error_schemas:
             violations.append(Violation(
                         rule_name='Stable error envelope with canonical codes required',
@@ -185,22 +185,22 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _check_authentication(self, spec: Dict, file_path: str) -> List[Violation]:
         """Check for JWT authentication with documented scopes."""
         violations = []
         components = spec.get('components', {})
         security_schemes = components.get('securitySchemes', {})
-        
+
         has_jwt = any(
             scheme.get('type') == 'http' and scheme.get('scheme') == 'bearer'
             for scheme in security_schemes.values()
         )
-        
+
         if not has_jwt:
             violations.append(Violation(
                         rule_name='JWT with documented scopes per route required',
@@ -211,16 +211,16 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _check_rate_limiting(self, spec: Dict, file_path: str) -> List[Violation]:
         """Check for rate limiting documentation."""
         violations = []
         paths = spec.get('paths', {})
-        
+
         # Check if rate limiting is documented in any operation
         has_ops = False
         has_rate_limiting = False
@@ -232,7 +232,7 @@ class APIContractsValidator:
                     if '429' in responses:
                         has_rate_limiting = True
                         break
-        
+
         if has_ops and not has_rate_limiting:
             violations.append(Violation(
                         rule_name='Rate limit headers and 429 responses required',
@@ -243,16 +243,16 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _check_examples(self, spec: Dict, file_path: str) -> List[Violation]:
         """Check for examples in responses."""
         violations = []
         paths = spec.get('paths', {})
-        
+
         for path, path_spec in paths.items():
             for method, operation in path_spec.items():
                 if isinstance(operation, dict):
@@ -271,16 +271,16 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                                    
+
                     ))
-        
+
         return violations
-    
+
     def _validate_api_patterns(self, content: str, file_path: str) -> List[Violation]:
         """Validate API-related code patterns."""
         violations = []
         lines = content.split('\n')
-        
+
         for line_num, line in enumerate(lines, 1):
             # Check for hardcoded API endpoints without versioning
             if re.search(r'["\']/api/[^"\']*["\']', line) and '/v' not in line:
@@ -294,7 +294,7 @@ class APIContractsValidator:
                     severity=Severity.WARNING,
                     category='api'
                 ))
-            
+
             # Check for missing error handling in API calls
             if re.search(r'(requests\.|urllib\.|http\.)', line) and 'try:' not in content:
                 violations.append(Violation(
@@ -306,9 +306,9 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                
+
                     ))
-            
+
             # Check for missing idempotency headers
             if re.search(r'(post|put|patch|delete)', line.lower()) and 'idempotency' not in line.lower():
                 violations.append(Violation(
@@ -320,15 +320,15 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_openapi_compliance(self, content: str, file_path: str) -> List[Violation]:
         """Validate OpenAPI 3.1 compliance."""
         return self._validate_openapi_spec(content, file_path)
-    
+
     def _validate_api_versioning(self, content: str, file_path: str) -> List[Violation]:
         """Validate API versioning compliance."""
         violations = []
@@ -341,7 +341,7 @@ class APIContractsValidator:
                 category='api'
             ))
         return violations
-    
+
     def _validate_idempotency(self, content: str, file_path: str) -> List[Violation]:
         """Validate idempotency implementation."""
         violations = []
@@ -355,10 +355,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_error_handling(self, content: str, file_path: str) -> List[Violation]:
         """Validate error handling implementation."""
         violations = []
@@ -372,10 +372,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_request_validation(self, content: str, file_path: str) -> List[Violation]:
         """Validate request validation implementation."""
         violations = []
@@ -389,10 +389,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_response_validation(self, content: str, file_path: str) -> List[Violation]:
         """Validate response validation implementation."""
         violations = []
@@ -406,10 +406,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_authentication(self, content: str, file_path: str) -> List[Violation]:
         """Validate authentication implementation."""
         violations = []
@@ -423,10 +423,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_authorization(self, content: str, file_path: str) -> List[Violation]:
         """Validate authorization implementation."""
         violations = []
@@ -440,10 +440,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_rate_limiting(self, content: str, file_path: str) -> List[Violation]:
         """Validate rate limiting implementation."""
         violations = []
@@ -457,10 +457,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_caching(self, content: str, file_path: str) -> List[Violation]:
         """Validate caching implementation."""
         violations = []
@@ -475,10 +475,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-                
+
                     ))
         return violations
-    
+
     def _validate_documentation(self, content: str, file_path: str) -> List[Violation]:
         """Validate documentation implementation."""
         violations = []
@@ -492,10 +492,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_testing(self, content: str, file_path: str) -> List[Violation]:
         """Validate testing implementation."""
         violations = []
@@ -509,10 +509,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_monitoring(self, content: str, file_path: str) -> List[Violation]:
         """Validate monitoring implementation."""
         violations = []
@@ -526,10 +526,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_deprecation(self, content: str, file_path: str) -> List[Violation]:
         """Validate deprecation implementation."""
         violations = []
@@ -542,7 +542,7 @@ class APIContractsValidator:
                 category='api'
             ))
         return violations
-    
+
     def _validate_api_receipts(self, content: str, file_path: str) -> List[Violation]:
         """Validate API receipts implementation."""
         violations = []
@@ -555,7 +555,7 @@ class APIContractsValidator:
                 category='api'
             ))
         return violations
-    
+
     def _validate_status_lifecycle(self, content: str, file_path: str) -> List[Violation]:
         """Validate status lifecycle implementation."""
         violations = []
@@ -569,10 +569,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_idempotency_retention(self, content: str, file_path: str) -> List[Violation]:
         """Validate idempotency retention implementation."""
         violations = []
@@ -586,10 +586,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_sdk_naming(self, content: str, file_path: str) -> List[Violation]:
         """Validate SDK naming implementation."""
         violations = []
@@ -603,10 +603,10 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations
-    
+
     def _validate_receipt_signature(self, content: str, file_path: str) -> List[Violation]:
         """Validate receipt signature implementation."""
         violations = []
@@ -620,6 +620,6 @@ class APIContractsValidator:
                         column_number=0,
                         code_snippet="",
                         category='api'
-            
+
                     ))
         return violations

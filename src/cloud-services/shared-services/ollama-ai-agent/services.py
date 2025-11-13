@@ -30,7 +30,7 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
     try:
         # Get ZU_ROOT from environment variable (per folder-business-rules.md)
         zu_root = os.getenv("ZU_ROOT")
-        
+
         if zu_root:
             # Use ZU_ROOT for shared services plane
             config_path = Path(zu_root) / "shared" / "llm" / config_type / "config.json"
@@ -39,13 +39,13 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
             current_file = Path(__file__)
             project_root = current_file.parent.parent.parent.parent.parent.parent
             config_path = project_root / "shared" / "llm" / config_type / "config.json"
-        
+
         if config_path.exists():
             with open(config_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
     except Exception:
         pass
-    
+
     return {}
 
 
@@ -62,28 +62,28 @@ class OllamaAIService:
         # Load configuration from shared services plane
         ollama_config = _load_shared_services_config("ollama")
         tinyllama_config = _load_shared_services_config("tinyllama")
-        
+
         # Use shared services config, fallback to environment, then default
         self.base_url = (
-            base_url or 
-            os.getenv("OLLAMA_BASE_URL") or 
+            base_url or
+            os.getenv("OLLAMA_BASE_URL") or
             ollama_config.get("base_url", "http://localhost:11434")
         )
-        
+
         # Get API endpoints from config
         api_endpoints = ollama_config.get("api_endpoints", {})
         generate_path = api_endpoints.get("generate", "/api/generate")
         self.generate_endpoint = f"{self.base_url}{generate_path}"
-        
+
         # Get timeout from config
         self.timeout = int(
-            os.getenv("OLLAMA_TIMEOUT") or 
+            os.getenv("OLLAMA_TIMEOUT") or
             ollama_config.get("timeout", "120")
         )
-        
+
         # Store Tinyllama config for default model
         self.tinyllama_config = tinyllama_config
-        
+
         # Get configurable names from config
         self.llm_name = ollama_config.get("llm_name", "Ollama")
         self.model_name = tinyllama_config.get("model_name", "Tinyllama") if tinyllama_config else "Tinyllama"
@@ -101,7 +101,7 @@ class OllamaAIService:
             api_endpoints = ollama_config.get("api_endpoints", {})
             tags_path = api_endpoints.get("tags", "/api/tags")
             tags_endpoint = f"{self.base_url}{tags_path}"
-            
+
             response = requests.get(tags_endpoint, timeout=5)
             return response.status_code == 200
         except Exception:
@@ -124,12 +124,12 @@ class OllamaAIService:
         default_model = "tinyllama"
         if self.tinyllama_config:
             default_model = self.tinyllama_config.get("model_id", "tinyllama:latest")
-        
+
         # Merge default options from Tinyllama config
         model_options = {}
         if self.tinyllama_config and not request.options:
             model_options = self.tinyllama_config.get("default_options", {}).copy()
-        
+
         payload: Dict[str, Any] = {
             "model": request.model or default_model,
             "prompt": request.prompt,
@@ -158,7 +158,7 @@ class OllamaAIService:
             default_model = "tinyllama"
             if self.tinyllama_config:
                 default_model = self.tinyllama_config.get("model_id", "tinyllama:latest")
-            
+
             return PromptResponse(
                 success=True,
                 response=response_text,

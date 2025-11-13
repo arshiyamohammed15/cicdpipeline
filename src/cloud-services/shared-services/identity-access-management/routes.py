@@ -62,7 +62,7 @@ def verify_identity(
     except ValueError as exc:
         error_code = "AUTH_FAILED"
         error_message = str(exc)
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -76,7 +76,7 @@ def verify_identity(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail={
@@ -90,7 +90,7 @@ def verify_identity(
     except Exception as exc:
         error_code = "SERVER_ERROR"
         error_message = f"Token verification failed: {str(exc)}"
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -104,7 +104,7 @@ def verify_identity(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -141,7 +141,7 @@ def access_decision(
     except ValueError as exc:
         error_code = "BAD_REQUEST"
         error_message = str(exc)
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -155,7 +155,7 @@ def access_decision(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={
@@ -169,7 +169,7 @@ def access_decision(
     except Exception as exc:
         error_code = "SERVER_ERROR"
         error_message = f"Decision evaluation failed: {str(exc)}"
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -183,7 +183,7 @@ def access_decision(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -220,7 +220,7 @@ def trigger_break_glass(
     except ValueError as exc:
         error_code = "FORBIDDEN"
         error_message = str(exc)
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -234,7 +234,7 @@ def trigger_break_glass(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail={
@@ -248,7 +248,7 @@ def trigger_break_glass(
     except Exception as exc:
         error_code = "SERVER_ERROR"
         error_message = f"Break-glass failed: {str(exc)}"
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -262,7 +262,7 @@ def trigger_break_glass(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -304,7 +304,7 @@ def upsert_policies(
     except ValueError as exc:
         error_code = "BAD_REQUEST"
         error_message = str(exc)
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -318,7 +318,7 @@ def upsert_policies(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={
@@ -332,7 +332,7 @@ def upsert_policies(
     except Exception as exc:
         error_code = "SERVER_ERROR"
         error_message = f"Policy upsert failed: {str(exc)}"
-        
+
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
             "level": "ERROR",
@@ -346,7 +346,7 @@ def upsert_policies(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail={
@@ -431,4 +431,3 @@ def get_config() -> ConfigResponse:
         },
         timestamp=datetime.utcnow()
     )
-

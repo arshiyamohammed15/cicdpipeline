@@ -1,9 +1,9 @@
 /**
  * PolicyStorageService.getActivePolicyInfo() Test Suite
- * 
+ *
  * Comprehensive unit tests for getActivePolicyInfo() method
  * Tests all positive, negative, and edge cases
- * 
+ *
  * Coverage:
  * - Single policy case
  * - Multiple policies case
@@ -52,7 +52,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
     describe('Single Policy Case', () => {
         it('should return policy info for single existing policy', async () => {
             const snapshot = createPolicySnapshot('policy-1', '1.0.0', 'sha256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890');
-            
+
             await policyService.cachePolicy(snapshot);
             await policyService.setCurrentPolicyVersion('policy-1', '1.0.0');
 
@@ -66,7 +66,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
 
         it('should format policy version ID correctly (policy_id-version)', async () => {
             const snapshot = createPolicySnapshot('test-policy', '2.5.3');
-            
+
             await policyService.cachePolicy(snapshot);
             await policyService.setCurrentPolicyVersion('test-policy', '2.5.3');
 
@@ -78,7 +78,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
         it('should return snapshot hash in correct format (sha256:hex)', async () => {
             const snapshotHash = 'sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef';
             const snapshot = createPolicySnapshot('policy-1', '1.0.0', snapshotHash);
-            
+
             await policyService.cachePolicy(snapshot);
             await policyService.setCurrentPolicyVersion('policy-1', '1.0.0');
 
@@ -87,7 +87,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             // Note: getActivePolicyInfo always hashes the combined hash, even for single policies
             // So we verify the format and that it's a hash of the original hash
             expect(result.snapshot_hash).toMatch(/^sha256:[0-9a-f]{64}$/);
-            
+
             // Verify it's a hash of the original snapshot hash
             const sortedHashes = [snapshotHash].sort();
             const combinedHash = sortedHashes.join('|');
@@ -101,7 +101,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             const snapshot1 = createPolicySnapshot('policy-1', '1.0.0', 'sha256:1111111111111111111111111111111111111111111111111111111111111111');
             const snapshot2 = createPolicySnapshot('policy-2', '2.0.0', 'sha256:2222222222222222222222222222222222222222222222222222222222222222');
             const snapshot3 = createPolicySnapshot('policy-3', '3.0.0', 'sha256:3333333333333333333333333333333333333333333333333333333333333333');
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.cachePolicy(snapshot3);
@@ -122,11 +122,11 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             const hash1 = 'sha256:1111111111111111111111111111111111111111111111111111111111111111';
             const hash2 = 'sha256:2222222222222222222222222222222222222222222222222222222222222222';
             const hash3 = 'sha256:3333333333333333333333333333333333333333333333333333333333333333';
-            
+
             const snapshot1 = createPolicySnapshot('policy-a', '1.0.0', hash1);
             const snapshot2 = createPolicySnapshot('policy-b', '2.0.0', hash2);
             const snapshot3 = createPolicySnapshot('policy-c', '3.0.0', hash3);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.cachePolicy(snapshot3);
@@ -145,10 +145,10 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
         it('should produce same hash regardless of policy order (sorted hashes)', async () => {
             const hash1 = 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
             const hash2 = 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
-            
+
             const snapshot1 = createPolicySnapshot('policy-x', '1.0.0', hash1);
             const snapshot2 = createPolicySnapshot('policy-y', '2.0.0', hash2);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.setCurrentPolicyVersion('policy-x', '1.0.0');
@@ -165,10 +165,10 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
         it('should correctly combine multiple snapshot hashes using SHA-256', async () => {
             const hash1 = 'sha256:1111111111111111111111111111111111111111111111111111111111111111';
             const hash2 = 'sha256:2222222222222222222222222222222222222222222222222222222222222222';
-            
+
             const snapshot1 = createPolicySnapshot('policy-1', '1.0.0', hash1);
             const snapshot2 = createPolicySnapshot('policy-2', '2.0.0', hash2);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.setCurrentPolicyVersion('policy-1', '1.0.0');
@@ -180,7 +180,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             const sortedHashes = [hash1, hash2].sort();
             const combinedHash = sortedHashes.join('|');
             const expectedHash = crypto.createHash('sha256').update(combinedHash).digest('hex');
-            
+
             expect(result.snapshot_hash).toBe(`sha256:${expectedHash}`);
         });
     });
@@ -289,7 +289,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             // Note: getActivePolicyInfo always hashes the combined hash, even for single policies
             // So we verify the format and that it's a hash of the original hash
             expect(result.snapshot_hash).toMatch(/^sha256:[0-9a-f]{64}$/);
-            
+
             // Verify it's a hash of the original snapshot hash
             const sortedHashes = [longHash].sort();
             const combinedHash = sortedHashes.join('|');
@@ -311,7 +311,7 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             const sameHash = 'sha256:1111111111111111111111111111111111111111111111111111111111111111';
             const snapshot1 = createPolicySnapshot('policy-1', '1.0.0', sameHash);
             const snapshot2 = createPolicySnapshot('policy-2', '2.0.0', sameHash);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.setCurrentPolicyVersion('policy-1', '1.0.0');
@@ -354,10 +354,10 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
         it('should produce identical hash for identical policy sets', async () => {
             const hash1 = 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
             const hash2 = 'sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
-            
+
             const snapshot1 = createPolicySnapshot('policy-1', '1.0.0', hash1);
             const snapshot2 = createPolicySnapshot('policy-2', '2.0.0', hash2);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.setCurrentPolicyVersion('policy-1', '1.0.0');
@@ -376,11 +376,11 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
             const hash1 = 'sha256:1111111111111111111111111111111111111111111111111111111111111111';
             const hash2 = 'sha256:2222222222222222222222222222222222222222222222222222222222222222';
             const hash3 = 'sha256:3333333333333333333333333333333333333333333333333333333333333333';
-            
+
             const snapshot1 = createPolicySnapshot('policy-1', '1.0.0', hash1);
             const snapshot2 = createPolicySnapshot('policy-2', '2.0.0', hash2);
             const snapshot3 = createPolicySnapshot('policy-3', '3.0.0', hash3);
-            
+
             await policyService.cachePolicy(snapshot1);
             await policyService.cachePolicy(snapshot2);
             await policyService.cachePolicy(snapshot3);
@@ -398,4 +398,3 @@ describe('PolicyStorageService.getActivePolicyInfo()', () => {
         });
     });
 });
-

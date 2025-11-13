@@ -212,10 +212,10 @@ export class PlanExecutionAgent {
                 const routerBaseDir = path.join(this.zuRoot, 'ide', 'router');
                 const router = new WorkloadRouter(routerBaseDir, 'development');
                 const routingDecision = router.decide(buildPlan);
-                
+
                 // Generate decision ID (deterministic based on timestamp and routing)
                 const decisionId = `infra-${Date.now()}-${routingDecision.route}-${routingDecision.adapter}`;
-                
+
                 // Extend existing labels object (labels already exists from above)
                 labels.infra_route = routingDecision.route;
                 labels.infra_cost_profile = costProfile || (typeof buildPlan.cost_profile === 'string' ? buildPlan.cost_profile : 'default');
@@ -291,4 +291,3 @@ export class PlanExecutionAgent {
         };
     }
 }
-

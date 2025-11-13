@@ -43,7 +43,7 @@ class TestGateTables:
             reader = csv.DictReader(f)
             rows = list(reader)
             assert len(rows) > 0, "CSV should have at least one data row"
-            
+
             # Check required columns
             required_columns = {'condition', 'threshold', 'decision', 'reason_code', 'priority'}
             assert set(reader.fieldnames) == required_columns, \
@@ -53,7 +53,7 @@ class TestGateTables:
         """Positive: All decisions are valid values."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
         valid_decisions = {'pass', 'warn', 'soft_block', 'hard_block'}
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -63,7 +63,7 @@ class TestGateTables:
     def test_gate_pr_size_csv_valid_priorities(self):
         """Positive: All priorities are valid (1-5)."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -74,7 +74,7 @@ class TestGateTables:
     def test_gate_pr_size_csv_numeric_thresholds(self):
         """Positive: Thresholds are numeric where applicable."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -87,7 +87,7 @@ class TestGateTables:
     def test_gate_pr_size_csv_no_empty_rows(self):
         """Negative: CSV has no empty rows."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for i, row in enumerate(reader, start=2):
@@ -98,7 +98,7 @@ class TestGateTables:
         """Edge: No duplicate condition+threshold combinations."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
         seen = set()
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -177,7 +177,7 @@ class TestTrustDocumentation:
         content = signing_process.read_text(encoding='utf-8')
         assert 'sign' in content.lower() or 'signature' in content.lower(), \
             "signing_process.md should contain signing information"
-        
+
         verify_path = Path("docs/architecture/trust/verify_path.md")
         content = verify_path.read_text(encoding='utf-8')
         assert 'verify' in content.lower() or 'verification' in content.lower(), \
@@ -248,13 +248,13 @@ class TestPolicyArtifacts:
         """Positive: Policy snapshot has required fields."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         required_fields = [
             'snapshot_id', 'module_id', 'slug', 'version', 'schema_version',
             'policy_version_ids', 'snapshot_hash', 'signature', 'kid',
             'effective_from', 'evaluation_points'
         ]
-        
+
         for field in required_fields:
             assert field in data, f"Policy snapshot should have field: {field}"
 
@@ -262,7 +262,7 @@ class TestPolicyArtifacts:
         """Positive: Version field has correct format."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         assert 'version' in data, "Policy snapshot should have version field"
         assert isinstance(data['version'], dict), "Version should be an object"
         assert 'major' in data['version'], "Version should have major field"
@@ -272,7 +272,7 @@ class TestPolicyArtifacts:
         """Edge: Snapshot hash has correct format (sha256:hex)."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         if 'snapshot_hash' in data:
             hash_value = data['snapshot_hash']
             # Should be sha256: followed by 64 hex characters
@@ -321,9 +321,9 @@ class TestSampleArtifacts:
         """Positive: receipts_example.jsonl is valid JSONL."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         assert len(lines) >= 2, "JSONL should have at least 2 lines (as specified)"
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():  # Skip empty lines
                 try:
@@ -335,13 +335,13 @@ class TestSampleArtifacts:
         """Positive: Receipts have required fields."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         required_fields = [
             'receipt_id', 'gate_id', 'policy_version_ids', 'snapshot_hash',
             'timestamp_utc', 'timestamp_monotonic_ms', 'inputs', 'decision',
             'evidence_handles', 'actor', 'degraded', 'signature'
         ]
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():
                 receipt = json.loads(line)
@@ -353,9 +353,9 @@ class TestSampleArtifacts:
         """Positive: Receipts have valid decision statuses."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         valid_statuses = {'pass', 'warn', 'soft_block', 'hard_block'}
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():
                 receipt = json.loads(line)
@@ -390,9 +390,9 @@ class TestSampleArtifacts:
         """Positive: Evidence pack has required fields."""
         evidence = Path("docs/architecture/samples/evidence/evidence_pack_example.json")
         data = json.loads(evidence.read_text(encoding='utf-8'))
-        
+
         required_fields = ['evidence_pack_id', 'receipt_id', 'gate_id', 'created_at', 'evidence_items']
-        
+
         for field in required_fields:
             assert field in data, f"Evidence pack should have field: {field}"
 
@@ -416,13 +416,13 @@ class TestOperationalDocumentation:
         """Positive: Runbooks contain top 3 incident playbooks."""
         runbooks = Path("docs/architecture/ops/runbooks.md")
         content = runbooks.read_text(encoding='utf-8')
-        
+
         incidents = [
             'Receipt not written',
             'Gate blocks all PRs',
             'Policy fetch fails'
         ]
-        
+
         for incident in incidents:
             assert incident.lower() in content.lower(), \
                 f"Runbooks should contain playbook for: {incident}"
@@ -437,7 +437,7 @@ class TestOperationalDocumentation:
         """Positive: Branching doc contains branching model."""
         branching = Path("docs/architecture/ops/branching.md")
         content = branching.read_text(encoding='utf-8')
-        
+
         # Should mention trunk-based or branching model
         assert any(keyword in content.lower() for keyword in ['trunk', 'branch', 'model']), \
             "Branching doc should describe branching model"
@@ -468,7 +468,7 @@ class TestDevelopmentDocumentation:
         """Positive: Quickstart contains Windows-specific commands."""
         quickstart = Path("docs/architecture/dev/quickstart_windows.md")
         content = quickstart.read_text(encoding='utf-8')
-        
+
         # Should contain PowerShell or Windows-specific commands
         assert any(keyword in content.lower() for keyword in ['powershell', 'windows', 'cmd', '.ps1']), \
             "Quickstart should contain Windows-specific commands"
@@ -505,7 +505,7 @@ class TestSecurityDocumentation:
         """Positive: RBAC doc contains role definitions."""
         rbac = Path("docs/architecture/security/rbac.md")
         content = rbac.read_text(encoding='utf-8')
-        
+
         # Should mention roles
         assert 'role' in content.lower(), "RBAC doc should define roles"
 
@@ -513,7 +513,7 @@ class TestSecurityDocumentation:
         """Positive: Data classes doc contains classification levels."""
         data_classes = Path("docs/architecture/security/data_classes.md")
         content = data_classes.read_text(encoding='utf-8')
-        
+
         # Should mention classification levels
         assert any(keyword in content.lower() for keyword in ['classification', 'public', 'confidential', 'restricted']), \
             "Data classes doc should define classification levels"
@@ -544,7 +544,7 @@ class TestTestingInfrastructure:
         """Positive: Test plan contains test levels."""
         test_plan = Path("docs/architecture/tests/test_plan.md")
         content = test_plan.read_text(encoding='utf-8')
-        
+
         # Should mention test levels
         assert any(keyword in content.lower() for keyword in ['unit', 'integration', 'e2e', 'end-to-end']), \
             "Test plan should define test levels"
@@ -563,7 +563,7 @@ class TestCICDInfrastructure:
         """Positive: Jenkinsfile contains expected stages."""
         jenkinsfile = Path("Jenkinsfile")
         content = jenkinsfile.read_text(encoding='utf-8')
-        
+
         # Should contain pipeline stages
         assert 'pipeline' in content.lower(), "Jenkinsfile should define pipeline"
         assert any(keyword in content.lower() for keyword in ['stage', 'test', 'build']), \
@@ -578,10 +578,10 @@ class TestArchitectureContradictions:
         # Check that key documents mention modules/ directory
         hla = Path("docs/architecture/zeroui-hla.md")
         lla = Path("docs/architecture/zeroui-lla.md")
-        
+
         hla_content = hla.read_text(encoding='utf-8')
         lla_content = lla.read_text(encoding='utf-8')
-        
+
         # Both should mention modules/ directory
         assert 'modules/' in hla_content or 'modules' in hla_content.lower(), \
             "HLA should document modules/ directory"
@@ -593,7 +593,7 @@ class TestArchitectureContradictions:
         # Check that documents reference contracts/ not docs/architecture/openapi/
         arch_doc = Path("docs/architecture/ZeroUI_Architecture_V0_converted.md")
         content = arch_doc.read_text(encoding='utf-8')
-        
+
         # Should reference contracts/ directory
         assert 'contracts/' in content, \
             "Architecture doc should reference contracts/ directory for OpenAPI/Schemas"
@@ -613,7 +613,7 @@ class TestEdgeCases:
         # Optional fields should not cause validation failure
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         for line in lines:
             if line.strip():
                 receipt = json.loads(line)
@@ -624,7 +624,7 @@ class TestEdgeCases:
         """Edge: Policy snapshot with empty arrays should be valid."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         # Empty arrays should be valid
         if 'evaluation_points' in data:
             assert isinstance(data['evaluation_points'], list), \
@@ -638,7 +638,7 @@ class TestEdgeCases:
             "docs/architecture/slo/slos.md",
             "docs/architecture/policy/policy_snapshot_v1.json",
         ]
-        
+
         for doc_path in docs_to_check:
             doc = Path(doc_path)
             if doc.exists():
@@ -652,4 +652,3 @@ class TestEdgeCases:
 
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
-

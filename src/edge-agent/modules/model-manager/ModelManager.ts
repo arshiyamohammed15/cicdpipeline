@@ -21,12 +21,12 @@ export class ModelManager implements DelegationInterface {
 
     public async delegate(task: DelegationTask): Promise<DelegationResult> {
         const startTime = Date.now();
-        
+
         try {
             console.log(`${this.constructor.name} processing task:`, task);
-            
+
             const result = await this.processTask(task);
-            
+
             const processingTime = Date.now() - startTime;
             this.tasksProcessed++;
             this.totalLatency += processingTime;
@@ -55,9 +55,9 @@ export class ModelManager implements DelegationInterface {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
-            
+
             console.error(`${this.constructor.name} failed task:`, error);
-            
+
             return {
                 taskId: task.id,
                 success: false,

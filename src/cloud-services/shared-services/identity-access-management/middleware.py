@@ -153,7 +153,7 @@ class RequestLoggingMiddleware(BaseHTTPMiddleware):
 class RateLimitingMiddleware(BaseHTTPMiddleware):
     """
     Rate limiting middleware per IAM spec section 6.
-    
+
     Default: 50 RPS/client, burst 200 for 10s.
     429 with Retry-After header.
     """
@@ -185,7 +185,7 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
 
         requests = self.client_requests[client_id]
         requests = [r for r in requests if now - r < 1.0]
-        
+
         if len(requests) >= RATE_LIMIT_RPS:
             retry_after = 1
             response = Response(
@@ -204,7 +204,7 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
 
         bursts = self.client_bursts[client_id]
         bursts = [b for b in bursts if now - b < RATE_LIMIT_BURST_WINDOW]
-        
+
         if len(bursts) >= RATE_LIMIT_BURST:
             retry_after = RATE_LIMIT_BURST_WINDOW
             response = Response(
@@ -232,7 +232,7 @@ class RateLimitingMiddleware(BaseHTTPMiddleware):
 class IdempotencyMiddleware(BaseHTTPMiddleware):
     """
     Idempotency middleware per IAM spec section 6.
-    
+
     Required for /policies endpoint via X-Idempotency-Key.
     Server ensures single application per key within 24h window.
     """
@@ -277,7 +277,7 @@ class IdempotencyMiddleware(BaseHTTPMiddleware):
 
         now = datetime.utcnow()
         key_data = self.idempotency_keys.get(idempotency_key)
-        
+
         if key_data:
             key_time = datetime.fromisoformat(key_data["timestamp"])
             if (now - key_time).total_seconds() < IDEMPOTENCY_WINDOW_HOURS * 3600:
@@ -289,20 +289,20 @@ class IdempotencyMiddleware(BaseHTTPMiddleware):
                     )
 
         response = await call_next(request)
-        
+
         if response.status_code < 400:
             response_body = None
             try:
                 response_body = json.loads(response.body.decode())
             except Exception:
                 pass
-            
+
             self.idempotency_keys[idempotency_key] = {
                 "timestamp": now.isoformat(),
                 "response": response_body,
                 "status_code": response.status_code
             }
-            
+
             cleanup_time = now - timedelta(hours=IDEMPOTENCY_WINDOW_HOURS)
             self.idempotency_keys = {
                 k: v for k, v in self.idempotency_keys.items()
@@ -310,4 +310,3 @@ class IdempotencyMiddleware(BaseHTTPMiddleware):
             }
 
         return response
-

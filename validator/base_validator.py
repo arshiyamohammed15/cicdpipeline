@@ -22,15 +22,15 @@ from .rule_registry import (
 class BaseRuleValidator(ABC):
     """
     Base class for all rule validators.
-    
+
     This class provides common functionality and patterns that all
     rule validators can use, reducing code duplication.
     """
-    
+
     def __init__(self, rule_config: Dict[str, Any]):
         """
         Initialize the base validator.
-        
+
         Args:
             rule_config: Configuration for the rules this validator handles
         """
@@ -39,32 +39,32 @@ class BaseRuleValidator(ABC):
         self.category = rule_config.get("category", "unknown")
         self.priority = rule_config.get("priority", "unknown")
         self.description = rule_config.get("description", "")
-        
+
         # Compile patterns for performance
         self._compiled_patterns = self._compile_patterns()
-    
+
     def _compile_patterns(self) -> Dict[str, Any]:
         """Compile patterns for better performance."""
         compiled = {}
-        
+
         # This would be overridden by subclasses with specific patterns
         return compiled
-    
+
     @abstractmethod
     def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Validate all rules for this category.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of violations found
         """
         pass
-    
+
     def create_violation(
         self,
         *,
@@ -80,7 +80,7 @@ class BaseRuleValidator(ABC):
     ) -> Violation:
         """
         Create a violation with consistent formatting.
-        
+
         Args:
             rule_name: Rule name
             rule: Constitution rule metadata (optional)
@@ -91,7 +91,7 @@ class BaseRuleValidator(ABC):
             column_number: Column number
             code_snippet: Code snippet
             fix_suggestion: Fix suggestion
-            
+
         Returns:
             Violation object
         """
@@ -122,35 +122,35 @@ class BaseRuleValidator(ABC):
             fix_suggestion=fix_suggestion or "Review and fix the violation",
             category=resolved_category
         )
-    
-    def find_regex_violations(self, content: str, file_path: str, 
+
+    def find_regex_violations(self, content: str, file_path: str,
                              pattern_name: str, pattern_data: Dict[str, Any]) -> List[Violation]:
         """
         Find violations using regex patterns.
-        
+
         Args:
             content: File content
             file_path: File path
             pattern_name: Name of the pattern
             pattern_data: Pattern configuration
-            
+
         Returns:
             List of violations
         """
         violations = []
-        
+
         if "regex" not in pattern_data:
             return violations
-        
+
         try:
             regex = re.compile(pattern_data["regex"])
             rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
             rule_metadata = get_rule_metadata(rule_name)
-            
+
             for match in regex.finditer(content):
                 line_number = content[:match.start()].count('\n') + 1
                 column_number = match.start() - content.rfind('\n', 0, match.start()) - 1
-                
+
                 violation = self.create_violation(
                     rule=rule_metadata,
                     rule_name=rule_name,
@@ -163,43 +163,43 @@ class BaseRuleValidator(ABC):
                     fix_suggestion=pattern_data.get("fix_suggestion", f"Fix {pattern_name} violation")
                 )
                 violations.append(violation)
-        
+
         except Exception as e:
             print(f"Error processing regex pattern {pattern_name}: {e}")
-        
+
         return violations
-    
+
     def find_keyword_violations(self, content: str, file_path: str,
                                pattern_name: str, pattern_data: Dict[str, Any]) -> List[Violation]:
         """
         Find violations using keyword patterns.
-        
+
         Args:
             content: File content
             file_path: File path
             pattern_name: Name of the pattern
             pattern_data: Pattern configuration
-            
+
         Returns:
             List of violations
         """
         violations = []
-        
+
         if "keywords" not in pattern_data:
             return violations
-        
+
         try:
             keywords = pattern_data["keywords"]
             rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
             rule_metadata = get_rule_metadata(rule_name)
-            
+
             for keyword in keywords:
                 if keyword in content:
                     # Find first occurrence
                     pos = content.find(keyword)
                     line_number = content[:pos].count('\n') + 1
                     column_number = pos - content.rfind('\n', 0, pos) - 1
-                    
+
                     violation = self.create_violation(
                         rule=rule_metadata,
                         rule_name=rule_name,
@@ -213,37 +213,37 @@ class BaseRuleValidator(ABC):
                     )
                     violations.append(violation)
                     break  # Only report first occurrence
-        
+
         except Exception as e:
             print(f"Error processing keyword pattern {pattern_name}: {e}")
-        
+
         return violations
-    
+
     def find_ast_violations(self, tree: ast.AST, content: str, file_path: str,
                            pattern_name: str, pattern_data: Dict[str, Any]) -> List[Violation]:
         """
         Find violations using AST patterns.
-        
+
         Args:
             tree: AST tree
             content: File content
             file_path: File path
             pattern_name: Name of the pattern
             pattern_data: Pattern configuration
-            
+
         Returns:
             List of violations
         """
         violations = []
-        
+
         if "ast_pattern" not in pattern_data:
             return violations
-        
+
         try:
             ast_pattern = pattern_data["ast_pattern"]
             rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
             rule_metadata = get_rule_metadata(rule_name)
-            
+
             for node in ast.walk(tree):
                 if self._matches_ast_pattern(node, ast_pattern):
                     violation = self.create_violation(
@@ -258,20 +258,20 @@ class BaseRuleValidator(ABC):
                         fix_suggestion=pattern_data.get("fix_suggestion", f"Fix {pattern_name} violation")
                     )
                     violations.append(violation)
-        
+
         except Exception as e:
             print(f"Error processing AST pattern {pattern_name}: {e}")
-        
+
         return violations
-    
+
     def _matches_ast_pattern(self, node: ast.AST, pattern: str) -> bool:
         """
         Check if an AST node matches a pattern.
-        
+
         Args:
             node: AST node
             pattern: Pattern to match
-            
+
         Returns:
             True if node matches pattern
         """
@@ -280,39 +280,39 @@ class BaseRuleValidator(ABC):
                 line_count = node.end_lineno - node.lineno + 1
                 return line_count > 50  # Threshold for long functions
             return False
-        
+
         elif pattern == "functions_without_docstrings" and isinstance(node, ast.FunctionDef):
             return not ast.get_docstring(node)
-        
+
         elif pattern == "nested_for_loops" and isinstance(node, (ast.For, ast.While)):
             return self._has_nested_loops(node)
-        
+
         elif pattern == "risky_operations_without_try_catch" and isinstance(node, ast.Call):
             return self._is_risky_operation(node) and not self._has_try_catch(node)
-        
+
         return False
-    
+
     def _has_nested_loops(self, node: ast.AST) -> bool:
         """Check if a node contains nested loops."""
         for child in ast.walk(node):
             if child != node and isinstance(child, (ast.For, ast.While)):
                 return True
         return False
-    
+
     def _is_risky_operation(self, node: ast.Call) -> bool:
         """Check if a function call is a risky operation."""
         func_name = self._get_function_name(node.func).lower()
         risky_functions = [
-            'open', 'file', 'read', 'write', 'requests', 'urllib', 
+            'open', 'file', 'read', 'write', 'requests', 'urllib',
             'socket', 'http', 'os.system', 'subprocess', 'exec', 'eval'
         ]
         return any(risky in func_name for risky in risky_functions)
-    
+
     def _has_try_catch(self, node: ast.AST) -> bool:
         """Check if a node is within a try-catch block."""
         # This is a simplified check - in practice, you'd need to track the AST context
         return False
-    
+
     def _get_function_name(self, func_node: ast.AST) -> str:
         """Extract function name from AST node."""
         if isinstance(func_node, ast.Name):
@@ -321,7 +321,7 @@ class BaseRuleValidator(ABC):
             return f"{self._get_function_name(func_node.value)}.{func_node.attr}"
         else:
             return str(func_node)
-    
+
     def _get_node_snippet(self, node: ast.AST) -> str:
         """Get a code snippet for an AST node."""
         if isinstance(node, ast.FunctionDef):
@@ -332,7 +332,7 @@ class BaseRuleValidator(ABC):
             return self._get_function_name(node.func)
         else:
             return type(node).__name__
-    
+
     def get_rule_statistics(self) -> Dict[str, Any]:
         """Get statistics about this validator's rules."""
         return {

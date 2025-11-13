@@ -1,6 +1,6 @@
 /**
  * ReceiptStorageService Test Suite
- * 
+ *
  * Tests for receipt storage operations
  * Validates JSONL format, append-only behavior, signature validation, and code/PII detection
  */
@@ -77,7 +77,7 @@ describe('ReceiptStorageService', () => {
             );
             // Set timestamp to ensure same month
             receipt1.timestamp_utc = '2025-01-15T10:00:00.000Z';
-            
+
             const receipt2 = receiptGenerator.generateDecisionReceipt(
                 'gate2', [], 'hash2', {}, { status: 'pass', rationale: '', badges: [] },
                 [], { repo_id: testRepoId }, false
@@ -328,7 +328,7 @@ describe('ReceiptStorageService', () => {
                 [], { repo_id: testRepoId }, false
             );
             receipt1.timestamp_utc = '2025-01-15T10:00:00.000Z';
-            
+
             const receipt2 = receiptGenerator.generateDecisionReceipt(
                 'gate2', [], 'hash2', {}, { status: 'pass', rationale: '', badges: [] },
                 [], { repo_id: testRepoId }, false
@@ -355,7 +355,7 @@ describe('ReceiptStorageService', () => {
 
             const receipts = await storageService.readReceipts(testRepoId, 2025, 1);
             expect(receipts.length).toBeGreaterThan(0);
-            
+
             // Receipt should be stored with signature (Rule 219: signed JSONL receipts)
             const stored = JSON.parse(receipts[0]);
             expect(stored).toHaveProperty('signature');
@@ -378,4 +378,3 @@ describe('ReceiptStorageService', () => {
         });
     });
 });
-

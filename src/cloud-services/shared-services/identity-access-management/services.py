@@ -41,7 +41,7 @@ ORG_ROLE_MAPPING = {
 class TokenValidator:
     """
     JWT token validator per IAM spec section 4.
-    
+
     Tokens: JWT signed with RS256 (RSA-2048), 1h expiry, refresh at 55m.
     Claims: kid, iat, exp, aud, iss, sub, scope (no PII).
     Revocation: jti denylist with TTL=exp, propagate within 5s.
@@ -78,26 +78,26 @@ class TokenValidator:
                 token,
                 options={"verify_signature": False}
             )
-            
+
             jti = decoded.get("jti")
             if jti:
                 denylist = self.data_plane.cache_get(self.jti_denylist_key) or {}
                 if jti in denylist:
                     return False, None, "Token revoked (jti in denylist)"
-            
+
             exp = decoded.get("exp")
             if exp:
                 exp_time = datetime.fromtimestamp(exp)
                 if datetime.utcnow() > exp_time:
                     return False, None, "Token expired"
-            
+
             required_claims = ["kid", "iat", "exp", "aud", "iss", "sub", "scope"]
             missing_claims = [claim for claim in required_claims if claim not in decoded]
             if missing_claims:
                 return False, None, f"Missing required claims: {', '.join(missing_claims)}"
-            
+
             return True, decoded, None
-            
+
         except jwt.InvalidTokenError as exc:
             return False, None, f"Invalid token: {str(exc)}"
         except Exception as exc:
@@ -114,17 +114,17 @@ class TokenValidator:
         """
         denylist = self.data_plane.cache_get(self.jti_denylist_key) or {}
         denylist[jti] = True
-        
+
         exp_time = datetime.fromtimestamp(exp)
         ttl_seconds = int((exp_time - datetime.utcnow()).total_seconds()) + 86400
-        
+
         self.data_plane.cache_set(self.jti_denylist_key, denylist, ttl_seconds)
 
 
 class RBACEvaluator:
     """
     RBAC evaluator per IAM spec section 3.1.
-    
+
     RBAC base: role → base permissions.
     Canonical roles: admin, developer, viewer, ci_bot.
     """
@@ -166,18 +166,18 @@ class RBACEvaluator:
             canonical_role = self.map_org_role(role)
             if canonical_role not in CANONICAL_ROLES:
                 continue
-            
+
             permissions = self.role_permissions.get(canonical_role, [])
             if action in permissions or "admin" in permissions:
                 return True, f"RBAC: {canonical_role} role allows {action}"
-        
+
         return False, f"RBAC: No role allows {action}"
 
 
 class ABACEvaluator:
     """
     ABAC evaluator per IAM spec section 3.1.
-    
+
     ABAC constraints: time, device posture, location, risk score.
     """
 
@@ -203,27 +203,27 @@ class ABACEvaluator:
         """
         if not context:
             return True, "ABAC: No constraints specified"
-        
+
         if context.risk_score is not None:
             if context.risk_score > 0.8:
                 return False, f"ABAC: Risk score too high ({context.risk_score})"
-        
+
         if context.device_posture:
             if context.device_posture == "insecure":
                 return False, "ABAC: Device posture insecure"
-        
+
         if context.time:
             hour = context.time.hour
             if hour < 6 or hour > 22:
                 return False, f"ABAC: Outside allowed time window (06:00-22:00), current: {hour:02d}:00"
-        
+
         return True, "ABAC: All constraints satisfied"
 
 
 class PolicyStore:
     """
     Policy store per IAM spec section 8.
-    
+
     Versioning: Immutable releases with SHA-256 snapshot_id.
     Prior versions retained, deprecation requires explicit end-of-life date.
     """
@@ -249,15 +249,15 @@ class PolicyStore:
         """
         bundle_data = bundle.model_dump()
         bundle_data['effective_from'] = bundle.effective_from.isoformat() if bundle.effective_from else datetime.utcnow().isoformat()
-        
+
         snapshot_id = self.data_plane.store_policy(bundle.bundle_id, bundle_data)
-        
+
         for policy in bundle.policies:
             policy_data = policy.model_dump()
             policy_data['bundle_id'] = bundle.bundle_id
             policy_data['bundle_version'] = bundle.version
             self.data_plane.store_policy(policy.id, policy_data)
-        
+
         return snapshot_id
 
     def get_policy(self, policy_id: str, version: Optional[str] = None) -> Optional[Dict[str, Any]]:
@@ -286,7 +286,7 @@ class PolicyStore:
 class ReceiptGenerator:
     """
     Receipt generator per IAM spec section 7.
-    
+
     Receipts are Ed25519-signed, written to Evidence & Audit Ledger (M27).
     """
 
@@ -349,7 +349,7 @@ class ReceiptGenerator:
                 "kid": "key-2025q4"
             }
         }
-        
+
         # Add break-glass evidence if provided per IAM spec section 3.3
         if incident_id:
             receipt["evidence"]["incident_id"] = incident_id
@@ -357,19 +357,19 @@ class ReceiptGenerator:
             receipt["evidence"]["approver_identity"] = approver_identity
         if justification:
             receipt["evidence"]["justification"] = justification
-        
+
         signature = self.evidence_ledger.sign_receipt(receipt)
         receipt["sig"] = signature
-        
+
         self.evidence_ledger.store_receipt(receipt_id, receipt)
-        
+
         return receipt
 
 
 class IAMService:
     """
     Main IAM service implementing all business logic per IAM spec v1.1.0.
-    
+
     Implements: token verification, access decision, policy management, JIT elevation, break-glass.
     """
 
@@ -390,13 +390,13 @@ class IAMService:
         self.evidence_ledger = evidence_ledger or MockM27EvidenceLedger()
         self.data_plane = data_plane or MockM29DataPlane()
         self.trust_plane = trust_plane or MockM32TrustPlane()
-        
+
         self.token_validator = TokenValidator(self.data_plane)
         self.rbac_evaluator = RBACEvaluator()
         self.abac_evaluator = ABACEvaluator(self.trust_plane)
         self.policy_store = PolicyStore(self.data_plane)
         self.receipt_generator = ReceiptGenerator(self.evidence_ledger)
-        
+
         self.metrics = {
             "authentication_count": 0,
             "decision_count": 0,
@@ -420,21 +420,21 @@ class IAMService:
             ValueError: If token is invalid
         """
         start_time = time.perf_counter()
-        
+
         is_valid, claims, error = self.token_validator.verify_token(request.token)
-        
+
         if not is_valid:
             raise ValueError(error or "Token verification failed")
-        
+
         exp = claims.get("exp")
         valid_until = datetime.fromtimestamp(exp) if exp else datetime.utcnow() + timedelta(hours=1)
-        
+
         latency_ms = (time.perf_counter() - start_time) * 1000
         self.metrics["authentication_count"] += 1
         self.metrics["auth_latencies"].append(latency_ms)
         if len(self.metrics["auth_latencies"]) > 1000:
             self.metrics["auth_latencies"] = self.metrics["auth_latencies"][-1000:]
-        
+
         return VerifyResponse(
             sub=claims.get("sub", ""),
             scope=claims.get("scope", []),
@@ -452,9 +452,9 @@ class IAMService:
             Decision response with decision, reason, expires_at, receipt_id
         """
         start_time = time.perf_counter()
-        
+
         receipt_id = str(uuid.uuid4())
-        
+
         # Check for break-glass request per IAM spec section 3.3
         if request.context and request.context.crisis_mode is True:
             # Break-glass must be handled via explicit trigger_break_glass method
@@ -466,12 +466,12 @@ class IAMService:
                     reason="Break-glass policy (iam-break-glass) not enabled",
                     receipt_id=receipt_id
                 )
-        
+
         if request.elevation and request.elevation.request:
             return self._handle_jit_elevation(request, receipt_id)
-        
+
         policy = self.policy_store.get_policy(f"policy-{request.resource}")
-        
+
         if policy:
             deny_rules = [r for r in policy.get("rules", []) if r.get("rule_type") == "deny"]
             if deny_rules:
@@ -490,13 +490,13 @@ class IAMService:
                     reason="Deny override: explicit deny in policy",
                     receipt_id=receipt["receipt_id"]
                 )
-        
+
         rbac_allowed, rbac_reason = self.rbac_evaluator.evaluate(
             request.subject.roles,
             request.action,
             request.resource
         )
-        
+
         if not rbac_allowed:
             receipt = self.receipt_generator.generate_receipt(
                 "access_denied",
@@ -513,12 +513,12 @@ class IAMService:
                 reason=rbac_reason,
                 receipt_id=receipt["receipt_id"]
             )
-        
+
         abac_allowed, abac_reason = self.abac_evaluator.evaluate(
             request.context,
             request.subject
         )
-        
+
         if not abac_allowed:
             receipt = self.receipt_generator.generate_receipt(
                 "access_denied",
@@ -535,7 +535,7 @@ class IAMService:
                 reason=abac_reason,
                 receipt_id=receipt["receipt_id"]
             )
-        
+
         receipt = self.receipt_generator.generate_receipt(
             "access_granted",
             "ALLOW",
@@ -543,13 +543,13 @@ class IAMService:
             policy.get("id") if policy else None,
             request.context.risk_score if request.context else None
         )
-        
+
         latency_ms = (time.perf_counter() - start_time) * 1000
         self.metrics["decision_count"] += 1
         self.metrics["decision_latencies"].append(latency_ms)
         if len(self.metrics["decision_latencies"]) > 1000:
             self.metrics["decision_latencies"] = self.metrics["decision_latencies"][-1000:]
-        
+
         return DecisionResponse(
             decision="ALLOW",
             reason=f"{rbac_reason}; {abac_reason}",
@@ -574,19 +574,19 @@ class IAMService:
                 reason="JIT elevation not requested",
                 receipt_id=receipt_id
             )
-        
+
         scope = request.elevation.scope or []
         requires_dual_approval = "admin" in scope
-        
+
         if requires_dual_approval:
             return DecisionResponse(
                 decision="ELEVATION_REQUIRED",
                 reason="JIT elevation requires dual approval for admin scope",
                 receipt_id=receipt_id
             )
-        
+
         granted_until = datetime.utcnow() + timedelta(hours=4)
-        
+
         receipt = self.receipt_generator.generate_receipt(
             "privilege_escalation",
             "ELEVATION_GRANTED",
@@ -594,7 +594,7 @@ class IAMService:
             None,
             request.context.risk_score if request.context else None
         )
-        
+
         return DecisionResponse(
             decision="ELEVATION_GRANTED",
             reason="JIT elevation granted",
@@ -613,21 +613,21 @@ class IAMService:
             SHA-256 snapshot_id
         """
         start_time = time.perf_counter()
-        
+
         snapshot_id = self.policy_store.upsert_policy_bundle(bundle)
-        
+
         self.metrics["policy_count"] = len(self.policy_store.list_policies())
         latency_ms = (time.perf_counter() - start_time) * 1000
         self.metrics["policy_latencies"].append(latency_ms)
         if len(self.metrics["policy_latencies"]) > 1000:
             self.metrics["policy_latencies"] = self.metrics["policy_latencies"][-1000:]
-        
+
         return snapshot_id
 
     def trigger_break_glass(self, request: BreakGlassRequest) -> DecisionResponse:
         """
         Trigger break-glass access per IAM spec section 3.3.
-        
+
         Break-glass is triggered by crisis_mode=true AND policy iam-break-glass enabled.
         Grants minimal time-boxed admin (default 4h).
         Evidence: Incident ID, requester/approver identity, justification text (non-PII).
@@ -643,21 +643,21 @@ class IAMService:
             ValueError: If break-glass policy not enabled or crisis_mode not true
         """
         start_time = time.perf_counter()
-        
+
         # Check if break-glass policy is enabled per IAM spec section 3.3
         break_glass_policy = self.policy_store.get_policy("iam-break-glass")
         if not break_glass_policy:
             raise ValueError("Break-glass policy (iam-break-glass) not enabled")
-        
+
         # Verify policy status is released
         if break_glass_policy.get("status") != "released":
             raise ValueError(f"Break-glass policy status is {break_glass_policy.get('status')}, must be 'released'")
-        
+
         receipt_id = str(uuid.uuid4())
-        
+
         # Grant minimal time-boxed admin (default 4h) per IAM spec section 3.3
         granted_until = datetime.utcnow() + timedelta(hours=4)
-        
+
         # Generate receipt with break-glass evidence per IAM spec section 3.3
         receipt = self.receipt_generator.generate_receipt(
             event="privilege_escalation",
@@ -670,13 +670,13 @@ class IAMService:
             approver_identity=request.approver_identity,
             justification=request.justification
         )
-        
+
         latency_ms = (time.perf_counter() - start_time) * 1000
         self.metrics["decision_count"] += 1
         self.metrics["decision_latencies"].append(latency_ms)
         if len(self.metrics["decision_latencies"]) > 1000:
             self.metrics["decision_latencies"] = self.metrics["decision_latencies"][-1000:]
-        
+
         return DecisionResponse(
             decision="BREAK_GLASS_GRANTED",
             reason=f"Break-glass access granted for incident {request.incident_id}. Post-facto review required within 24h.",
@@ -694,7 +694,7 @@ class IAMService:
         auth_latencies = self.metrics["auth_latencies"]
         decision_latencies = self.metrics["decision_latencies"]
         policy_latencies = self.metrics["policy_latencies"]
-        
+
         return {
             "authentication_count": self.metrics["authentication_count"],
             "decision_count": self.metrics["decision_count"],
@@ -703,4 +703,3 @@ class IAMService:
             "average_decision_latency_ms": sum(decision_latencies) / len(decision_latencies) if decision_latencies else 0.0,
             "average_policy_latency_ms": sum(policy_latencies) / len(policy_latencies) if policy_latencies else 0.0
         }
-

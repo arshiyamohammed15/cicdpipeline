@@ -1,8 +1,8 @@
 /**
  * Receipt Types (Edge Agent)
- * 
+ *
  * Type definitions for receipts, matching VS Code Extension receipt types.
- * 
+ *
  * @module receipt-types
  */
 
@@ -58,4 +58,3 @@ export interface EvidenceHandle {
     description: string;
     expires_at?: string;
 }
-

@@ -1,15 +1,15 @@
 /**
  * ObjectStorePort
- * 
+ *
  * Cloud-agnostic interface for object storage operations.
  * Implemented by local adapters for blob/object storage.
- * 
+ *
  * @interface ObjectStorePort
  */
 export interface ObjectStorePort {
   /**
    * Upload an object to storage.
-   * 
+   *
    * @param bucket - Bucket/container name
    * @param key - Object key/path
    * @param data - Object data
@@ -25,7 +25,7 @@ export interface ObjectStorePort {
 
   /**
    * Download an object from storage.
-   * 
+   *
    * @param bucket - Bucket/container name
    * @param key - Object key/path
    * @returns Promise resolving to object data
@@ -34,7 +34,7 @@ export interface ObjectStorePort {
 
   /**
    * Delete an object from storage.
-   * 
+   *
    * @param bucket - Bucket/container name
    * @param key - Object key/path
    * @returns Promise resolving when object is deleted
@@ -43,7 +43,7 @@ export interface ObjectStorePort {
 
   /**
    * List objects in a bucket/container.
-   * 
+   *
    * @param bucket - Bucket/container name
    * @param prefix - Optional key prefix filter
    * @param options - Optional list options (max keys, continuation token, etc.)
@@ -57,7 +57,7 @@ export interface ObjectStorePort {
 
   /**
    * Check if an object exists.
-   * 
+   *
    * @param bucket - Bucket/container name
    * @param key - Object key/path
    * @returns Promise resolving to true if object exists
@@ -136,4 +136,3 @@ export interface ObjectStoreListResult {
   /** Whether more results are available */
   isTruncated: boolean;
 }
-

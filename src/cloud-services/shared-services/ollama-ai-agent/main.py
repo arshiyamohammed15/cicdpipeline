@@ -42,7 +42,7 @@ ollama_manager: OllamaProcessManager = OllamaProcessManager()
 async def lifespan(app: FastAPI):
     """
     Lifespan context manager for FastAPI startup/shutdown events.
-    
+
     Starts Ollama service on startup and stops it on shutdown.
     """
     # Startup: Start Ollama service
@@ -55,9 +55,9 @@ async def lifespan(app: FastAPI):
             logger.info("Ollama service started successfully by FastAPI")
     else:
         logger.warning("Ollama service could not be started automatically. It may already be running.")
-    
+
     yield
-    
+
     # Shutdown: Stop Ollama service
     logger.info("Shutting down Ollama AI Agent service...")
     ollama_manager.stop()
@@ -98,7 +98,7 @@ def health_check() -> HealthResponse:
     from .services import OllamaAIService
     service = OllamaAIService()
     ollama_available = service.check_ollama_available()
-    
+
     return HealthResponse(
         status="healthy" if ollama_available else "degraded",
         timestamp=datetime.utcnow(),

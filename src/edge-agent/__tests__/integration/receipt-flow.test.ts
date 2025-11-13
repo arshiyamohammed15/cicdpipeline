@@ -1,12 +1,12 @@
 /**
  * Integration Test: Receipt Flow (Agent → Receipt → Extension)
- * 
+ *
  * Tests the complete vertical slice:
  * 1. Edge Agent processes task
  * 2. Receipt is generated with policy information
  * 3. Receipt is stored in IDE Plane
  * 4. VS Code Extension can read and parse receipt
- * 
+ *
  * Compliance:
  * - Rule 219: JSONL receipts (signed, append-only)
  * - Rule 224: Receipts validation (signed)
@@ -251,4 +251,3 @@ describe('Receipt Flow Integration Test', () => {
         expect(lastReceipt?.snapshot_hash).toMatch(/^sha256:[0-9a-f]{64}$/);
     });
 });
-

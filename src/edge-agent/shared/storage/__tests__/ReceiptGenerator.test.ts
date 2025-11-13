@@ -1,6 +1,6 @@
 /**
  * ReceiptGenerator Test Suite
- * 
+ *
  * Tests for receipt generation and signing
  * Validates receipt structure, ID generation, and signature creation
  */
@@ -449,4 +449,3 @@ describe('ReceiptGenerator', () => {
         });
     });
 });
-

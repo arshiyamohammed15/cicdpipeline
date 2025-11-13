@@ -33,8 +33,8 @@ interface ValidationRule {
 
 ### Rule: `security`
 
-**Category**: `security`  
-**Severity**: `critical`  
+**Category**: `security`
+**Severity**: `critical`
 **Description**: Validates that the delegation result has passed security validation checks.
 
 **Validation Logic**:
@@ -42,13 +42,13 @@ interface ValidationRule {
 result.metadata.securityValidated === true
 ```
 
-**Pass Criteria**: 
+**Pass Criteria**:
 - `securityValidated` field in result metadata must be `true`
 
 **Fail Criteria**:
 - `securityValidated` is `false` or `undefined`
 
-**Impact**: 
+**Impact**:
 - Critical failure blocks task completion
 - Security validation is mandatory for all delegation results
 
@@ -61,8 +61,8 @@ result.metadata.securityValidated === true
 
 ### Rule: `integrity`
 
-**Category**: `data-integrity`  
-**Severity**: `high`  
+**Category**: `data-integrity`
+**Severity**: `high`
 **Description**: Validates that data integrity checks have passed for the delegation result.
 
 **Validation Logic**:
@@ -89,13 +89,13 @@ result.metadata.dataIntegrity === true
 
 ### Rule: `performance`
 
-**Category**: `performance`  
-**Severity**: `medium`  
+**Category**: `performance`
+**Severity**: `medium`
 **Description**: Validates that task processing completed within acceptable performance thresholds.
 
 **Validation Logic**:
 ```typescript
-result.metadata.performanceMetrics && 
+result.metadata.performanceMetrics &&
 result.metadata.performanceMetrics.latency < 1000
 ```
 
@@ -121,13 +121,13 @@ result.metadata.performanceMetrics.latency < 1000
 
 ### Rule: `compliance`
 
-**Category**: `compliance`  
-**Severity**: `high`  
+**Category**: `compliance`
+**Severity**: `high`
 **Description**: Validates that the delegation result meets compliance requirements by ensuring both security and data integrity validations have passed.
 
 **Validation Logic**:
 ```typescript
-result.metadata.securityValidated === true && 
+result.metadata.securityValidated === true &&
 result.metadata.dataIntegrity === true
 ```
 
@@ -307,4 +307,3 @@ If a validation rule throws an error:
 - **ValidationInterface**: `src/edge-agent/interfaces/core/ValidationInterface.ts`
 - **DelegationResult**: `src/edge-agent/interfaces/core/DelegationInterface.ts`
 - **Edge Agent Architecture**: `docs/architecture/edge-agent-architecture.md`
-

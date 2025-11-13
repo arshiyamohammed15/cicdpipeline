@@ -25,29 +25,28 @@ for snapshot_file in snapshot_files:
     file_path = gsmd_dir / snapshot_file
     if not file_path.exists():
         continue
-    
+
     # Read JSON
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    
+
     # Remove hash and signature for calculation
     original_hash = data.get('snapshot_hash', '')
     original_sig = data.get('signature', '')
     data['snapshot_hash'] = ''
     data['signature'] = ''
-    
+
     # Calculate hash from canonical JSON
     canonical_json = json.dumps(data, sort_keys=True, separators=(',', ':'))
     hash_value = hashlib.sha256(canonical_json.encode('utf-8')).hexdigest()
-    
+
     # Restore and update
     data['snapshot_hash'] = f"sha256:{hash_value}"
     data['signature'] = original_sig  # Keep PLACEHOLDER for now
-    
+
     # Write back
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
         f.write('\n')
-    
-    print(f"Updated {snapshot_file}: sha256:{hash_value}")
 
+    print(f"Updated {snapshot_file}: sha256:{hash_value}")

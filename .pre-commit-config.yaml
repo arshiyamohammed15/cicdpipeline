@@ -1,0 +1,47 @@
+# Pre-commit hooks configuration for ZeroUI 2.0
+# Install: pip install pre-commit && pre-commit install
+
+repos:
+  # Local hooks
+  - repo: local
+    hooks:
+      # EOL Validation Hook
+      - id: eol-validator
+        name: Validate EOL (End of Line) characters
+        entry: python scripts/ci/validate_eol.py
+        language: system
+        types: [text]
+        pass_filenames: false
+        always_run: true
+        description: Validates that all staged files have correct line endings (LF for most files, CRLF for Windows scripts)
+
+      # Constitution Rules Validator
+      - id: constitution-validator
+        name: ZeroUI Constitution Validator
+        entry: python scripts/ci/run_constitution_validator.py
+        language: system
+        files: \.(py|ts|tsx|js|jsx)$
+        pass_filenames: false
+        description: Validates code against all 415 constitution rules
+
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        description: Trims trailing whitespace
+      - id: end-of-file-fixer
+        description: Ensures files end with newline
+      - id: check-yaml
+        description: Validates YAML files
+      - id: check-json
+        description: Validates JSON files
+      - id: check-added-large-files
+        description: Prevents committing large files
+      - id: check-merge-conflict
+        description: Detects merge conflict markers
+      - id: check-case-conflict
+        description: Detects case conflicts in filenames
+      - id: mixed-line-ending
+        description: Detects mixed line endings (LF/CRLF)
+        args: ['--fix=lf']  # Auto-fix to LF

@@ -13,7 +13,7 @@ from validator.models import Violation, Severity
 
 class SimpleCodeReadabilityValidator:
     """Validator for simple code readability rules (253-280)."""
-    
+
     def __init__(self):
         """Initialize the validator."""
         self.rules = {
@@ -46,11 +46,11 @@ class SimpleCodeReadabilityValidator:
             'R279': self._validate_no_advanced_libraries,
             'R280': self._validate_enforce_simple_level
         }
-    
+
     def validate(self, content: str, file_path: str) -> List[Violation]:
         """Validate content against all simple code readability rules."""
         violations = []
-        
+
         for rule_id, rule_func in self.rules.items():
             try:
                 rule_violations = rule_func(content, file_path)
@@ -64,19 +64,19 @@ class SimpleCodeReadabilityValidator:
                     file_path=file_path,
                     line_number=1
                 ))
-        
+
         return violations
-    
+
     def _validate_plain_english_names(self, content: str, file_path: str) -> List[Violation]:
         """Plain English variable names."""
         violations = []
-        
+
         # Common abbreviations to flag
         abbreviations = [
             r'\busr\b|usr_', r'\bctx\b|ctx_', r'\bmgr\b|mgr_', r'\bcalc\b|calc_', r'\bcfg\b|cfg_',
             r'\bconn\b|conn_', r'\bpool\b|pool_', r'\bproc\b|proc_', r'\btemp\b|temp_', r'\bvar\b|var_'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for abbrev_pattern in abbreviations:
@@ -88,13 +88,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_self_documenting_code(self, content: str, file_path: str) -> List[Violation]:
         """Self-documenting code."""
         violations = []
-        
+
         # Patterns for cryptic code
         cryptic_patterns = [
             (r'\b[a-z]\b.*=.*[a-z]\b', "Single letter variables"),
@@ -102,7 +102,7 @@ class SimpleCodeReadabilityValidator:
             (r'\bproc\b', "Cryptic function name 'proc'"),
             (r'if\s+[a-z]\s*[><=]', "Cryptic variable in condition")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, message in cryptic_patterns:
@@ -113,13 +113,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_one_concept_per_function(self, content: str, file_path: str) -> List[Violation]:
         """One concept per function."""
         violations = []
-        
+
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
@@ -133,7 +133,7 @@ class SimpleCodeReadabilityValidator:
                             file_path=file_path,
                             line_number=node.lineno
                         ))
-                    
+
                     # Check for multiple concepts (simplified heuristic)
                     if len(node.body) > 5:  # More than 5 statements suggests multiple concepts
                         violations.append(Violation(
@@ -144,13 +144,13 @@ class SimpleCodeReadabilityValidator:
                         ))
         except SyntaxError:
             pass  # Skip parsing errors
-        
+
         return violations
-    
+
     def _validate_comment_why_not_what(self, content: str, file_path: str) -> List[Violation]:
         """Explain the 'why', not just the 'what'."""
         violations = []
-        
+
         # Comments that only explain what
         what_only_patterns = [
             r'#\s*Increment\s+counter',
@@ -158,7 +158,7 @@ class SimpleCodeReadabilityValidator:
             r'#\s*Set\s+variable',
             r'#\s*Return\s+value'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in what_only_patterns:
@@ -169,17 +169,17 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_avoid_mental_gymnastics(self, content: str, file_path: str) -> List[Violation]:
         """Avoid mental gymnastics."""
         violations = []
-        
+
         # Nested ternary patterns
         nested_ternary = r'\?.*\?.*\?'
         complex_oneliner = r'return.*\?.*\?'
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             if re.search(nested_ternary, line):
@@ -189,7 +189,7 @@ class SimpleCodeReadabilityValidator:
                     file_path=file_path,
                     line_number=line_num
                 ))
-            
+
             if re.search(complex_oneliner, line):
                 violations.append(Violation(
                     severity=Severity.ERROR,
@@ -197,13 +197,13 @@ class SimpleCodeReadabilityValidator:
                     file_path=file_path,
                     line_number=line_num
                 ))
-        
+
         return violations
-    
+
     def _validate_real_world_analogies(self, content: str, file_path: str) -> List[Violation]:
         """Use real-world analogies."""
         violations = []
-        
+
         # Technical jargon without analogies
         technical_jargon = [
             r'database\s+connection\s+pooling',
@@ -211,7 +211,7 @@ class SimpleCodeReadabilityValidator:
             r'object\s+instantiation',
             r'memory\s+allocation'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for jargon in technical_jargon:
@@ -222,13 +222,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_progressive_complexity(self, content: str, file_path: str) -> List[Violation]:
         """Progressive complexity."""
         violations = []
-        
+
         # Look for very long functions (monolithic)
         try:
             tree = ast.parse(content)
@@ -244,25 +244,25 @@ class SimpleCodeReadabilityValidator:
                         ))
         except SyntaxError:
             pass
-        
+
         return violations
-    
+
     def _validate_visual_layout(self, content: str, file_path: str) -> List[Violation]:
         """Visual code layout."""
         violations = []
-        
+
         lines = content.split('\n')
         consecutive_code_lines = 0
-        
+
         for line_num, line in enumerate(lines, 1):
             stripped = line.strip()
-            
+
             # Count consecutive non-empty, non-comment lines
             if stripped and not stripped.startswith('#'):
                 consecutive_code_lines += 1
             else:
                 consecutive_code_lines = 0
-            
+
             # Flag if too many consecutive lines without whitespace
             if consecutive_code_lines > 10:
                 violations.append(Violation(
@@ -271,13 +271,13 @@ class SimpleCodeReadabilityValidator:
                     file_path=file_path,
                     line_number=line_num
                 ))
-        
+
         return violations
-    
+
     def _validate_helpful_error_messages(self, content: str, file_path: str) -> List[Violation]:
         """Error messages that help."""
         violations = []
-        
+
         # Cryptic error messages
         cryptic_errors = [
             r'Error\s+\d+',
@@ -285,7 +285,7 @@ class SimpleCodeReadabilityValidator:
             r'Null\s+pointer\s+exception',
             r'Validation\s+failed'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in cryptic_errors:
@@ -296,13 +296,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_consistent_naming(self, content: str, file_path: str) -> List[Violation]:
         """Consistent naming patterns."""
         violations = []
-        
+
         # Mixed terms for same concept
         mixed_terms = [
             (r'\buser\b', r'\busr\b', "user/usr"),
@@ -310,7 +310,7 @@ class SimpleCodeReadabilityValidator:
             (r'\bget\b', r'\bfetch\b', "get/fetch"),
             (r'\bget\b', r'\bretrieve\b', "get/retrieve")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for term1, term2, description in mixed_terms:
@@ -321,19 +321,19 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_avoid_abbreviations(self, content: str, file_path: str) -> List[Violation]:
         """Avoid abbreviations."""
         violations = []
-        
+
         # Common abbreviations to avoid (excluding allowed ones)
         banned_abbreviations = [
             r'\bcalc\b', r'\bmgr\b', r'\bctx\b', r'\bproc\b', r'\btemp\b',
             r'\bvar\b', r'\bconn\b', r'\bpool\b'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for abbrev in banned_abbreviations:
@@ -344,13 +344,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_business_language(self, content: str, file_path: str) -> List[Violation]:
         """Business language over technical language."""
         violations = []
-        
+
         # Technical language patterns
         technical_patterns = [
             r'execute\s+database\s+transaction',
@@ -358,7 +358,7 @@ class SimpleCodeReadabilityValidator:
             r'instantiate\s+class',
             r'allocate\s+memory'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in technical_patterns:
@@ -369,20 +369,20 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_show_work(self, content: str, file_path: str) -> List[Violation]:
         """Show your work."""
         violations = []
-        
+
         # Complex expressions without intermediate steps
         complex_expressions = [
             r'return\s+\([^)]*\)\s*\+\s*\([^)]*\)\s*-\s*\([^)]*\)',
             r'return\s+[^=]*\*[^=]*\*[^=]*\*[^=]*',
             r'return\s+[^=]*\+[^=]*\+[^=]*\+[^=]*'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in complex_expressions:
@@ -393,13 +393,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_fail_gracefully(self, content: str, file_path: str) -> List[Violation]:
         """Fail gracefully with helpful messages."""
         violations = []
-        
+
         # Cryptic error messages
         cryptic_errors = [
             r'Validation\s+failed',
@@ -407,7 +407,7 @@ class SimpleCodeReadabilityValidator:
             r'Invalid\s+input',
             r'Operation\s+failed'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in cryptic_errors:
@@ -418,13 +418,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_code_as_documentation(self, content: str, file_path: str) -> List[Violation]:
         """Code as documentation."""
         violations = []
-        
+
         # Excessive comments explaining what code does
         what_comments = [
             r'#\s*Multiply\s+.*\s+by\s+.*\s+to\s+get',
@@ -432,7 +432,7 @@ class SimpleCodeReadabilityValidator:
             r'#\s*Return\s+the\s+result',
             r'#\s*Set\s+.*\s+to\s+.*'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in what_comments:
@@ -443,13 +443,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_test_names(self, content: str, file_path: str) -> List[Violation]:
         """Test names that tell a story."""
         violations = []
-        
+
         # Generic test names
         generic_test_names = [
             r'def\s+test_user\(\)',
@@ -457,7 +457,7 @@ class SimpleCodeReadabilityValidator:
             r'def\s+test_function\(\)',
             r'def\s+test_data\(\)'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in generic_test_names:
@@ -468,13 +468,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_constants_explain(self, content: str, file_path: str) -> List[Violation]:
         """Constants that explain themselves."""
         violations = []
-        
+
         # Magic numbers without explanation
         magic_numbers = [
             r'if\s+.*\s*>\s*18\b',
@@ -482,7 +482,7 @@ class SimpleCodeReadabilityValidator:
             r'max_size\s*=\s*1048576\b',
             r'default_timeout\s*=\s*30\b'
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in magic_numbers:
@@ -493,13 +493,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_concepts(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced programming concepts."""
         violations = []
-        
+
         # Advanced concepts to ban
         advanced_concepts = [
             (r'lambda\s+', "Lambda functions"),
@@ -509,7 +509,7 @@ class SimpleCodeReadabilityValidator:
             (r'yield\s+', "Yield expressions"),
             (r'generator\s+', "Generators")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, concept in advanced_concepts:
@@ -520,13 +520,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_complex_data_structures(self, content: str, file_path: str) -> List[Violation]:
         """NO complex data structures."""
         violations = []
-        
+
         # Complex data structure patterns
         complex_patterns = [
             (r'\{[^}]*\{[^}]*\{', "Nested dictionaries"),
@@ -534,7 +534,7 @@ class SimpleCodeReadabilityValidator:
             (r'hashmap|hash_map', "Hash maps"),
             (r'linked_list|linkedlist', "Linked lists")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, structure in complex_patterns:
@@ -545,13 +545,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_string_manipulation(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced string manipulation."""
         violations = []
-        
+
         # Advanced string operations
         advanced_string_ops = [
             (r'import\s+re', "Regular expressions"),
@@ -560,7 +560,7 @@ class SimpleCodeReadabilityValidator:
             (r'\.format\(', "String formatting"),
             (r'base64|encoding|decoding', "Encoding/decoding")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, operation in advanced_string_ops:
@@ -571,13 +571,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_complex_error_handling(self, content: str, file_path: str) -> List[Violation]:
         """NO complex error handling."""
         violations = []
-        
+
         # Complex error handling patterns
         complex_error_patterns = [
             (r'try\s*:', "Try-catch blocks"),
@@ -586,7 +586,7 @@ class SimpleCodeReadabilityValidator:
             (r'class\s+\w+Exception', "Custom exceptions"),
             (r'finally\s*:', "Finally blocks")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, handling in complex_error_patterns:
@@ -597,13 +597,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_control_flow(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced control flow."""
         violations = []
-        
+
         # Advanced control flow patterns
         advanced_control_flow = [
             (r'switch\s*\(|case\s+', "Switch statements"),
@@ -611,7 +611,7 @@ class SimpleCodeReadabilityValidator:
             (r'break\s*;|continue\s*;', "Break/continue statements"),
             (r'def\s+\w+\([^)]*\):\s*.*\n\s*return\s+\w+\([^)]*\)', "Recursion")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, flow in advanced_control_flow:
@@ -622,20 +622,20 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_functions(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced functions."""
         violations = []
-        
+
         # Advanced function patterns
         advanced_functions = [
             (r'def\s+\w+\([^)]*=\s*[^,)]+', "Default parameters"),
             (r'\*\w+|\*\*\w+', "Variable arguments"),
             (r'def\s+\w+\([^)]*\):\s*.*\n\s*return\s+\w+\(', "Higher-order functions")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, function_type in advanced_functions:
@@ -646,13 +646,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_array_operations(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced array operations."""
         violations = []
-        
+
         # Advanced array operations
         advanced_array_ops = [
             (r'\.map\s*\(', "Map function"),
@@ -661,7 +661,7 @@ class SimpleCodeReadabilityValidator:
             (r'\[.*for.*in.*\]', "List comprehensions"),
             (r'\.forEach\s*\(', "ForEach function")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, operation in advanced_array_ops:
@@ -672,20 +672,20 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_logic(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced logic."""
         violations = []
-        
+
         # Advanced logic patterns
         advanced_logic = [
             (r'[&|^~]', "Bitwise operations"),
             (r'\([^)]*and[^)]*\)\s*or\s*\([^)]*and[^)]*\)', "Complex boolean algebra"),
             (r'not\s+.*and\s+.*or\s+', "Complex boolean logic")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, logic_type in advanced_logic:
@@ -696,13 +696,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_language_features(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced language features."""
         violations = []
-        
+
         # Advanced language features
         advanced_features = [
             (r'from\s+typing\s+import', "Type hints/generics"),
@@ -710,7 +710,7 @@ class SimpleCodeReadabilityValidator:
             (r'__\w+__', "Magic methods"),
             (r'property\s*\(', "Property decorators")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, feature in advanced_features:
@@ -721,13 +721,13 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_no_advanced_libraries(self, content: str, file_path: str) -> List[Violation]:
         """NO advanced libraries."""
         violations = []
-        
+
         # Advanced libraries to ban
         advanced_libraries = [
             (r'import\s+pandas', "Pandas library"),
@@ -737,7 +737,7 @@ class SimpleCodeReadabilityValidator:
             (r'from\s+flask', "Flask framework"),
             (r'import\s+fastapi', "FastAPI framework")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, library in advanced_libraries:
@@ -748,20 +748,20 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations
-    
+
     def _validate_enforce_simple_level(self, content: str, file_path: str) -> List[Violation]:
         """ENFORCE simple level."""
         violations = []
-        
+
         # Check for complex code that 8th grader can't understand
         complex_patterns = [
             (r'\([^)]*\)\s*\+\s*\([^)]*\)\s*-\s*\([^)]*\)\s*/\s*\([^)]*\)', "Complex mathematical expressions"),
             (r'\([^)]*and[^)]*\)\s*or\s*\([^)]*and[^)]*\)\s*and\s*\([^)]*or[^)]*\)', "Complex boolean logic"),
             (r'entity_aggregation|instantiation|allocation', "Technical jargon without explanation")
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern, issue in complex_patterns:
@@ -772,5 +772,5 @@ class SimpleCodeReadabilityValidator:
                         file_path=file_path,
                         line_number=line_num
                     ))
-        
+
         return violations

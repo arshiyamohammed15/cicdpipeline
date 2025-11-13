@@ -83,7 +83,7 @@ export class EdgeAgent {
 
     public async start(): Promise<void> {
         console.log('Edge Agent starting - Delegation and validation mode');
-        
+
         // Initialize all modules
         await this.orchestrator.initialize();
         await this.delegationManager.initialize();
@@ -94,7 +94,7 @@ export class EdgeAgent {
 
     public async stop(): Promise<void> {
         console.log('Edge Agent stopping...');
-        
+
         await this.orchestrator.shutdown();
         await this.delegationManager.shutdown();
         await this.validationCoordinator.shutdown();
@@ -117,7 +117,7 @@ export class EdgeAgent {
 
     /**
      * Process task and generate receipt
-     * 
+     *
      * @param task Task to process
      * @param repoId Repository identifier
      * @returns Promise<{result: DelegationResult, receiptPath: string}> Processing result and receipt storage path

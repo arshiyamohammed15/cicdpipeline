@@ -56,20 +56,20 @@ def should_exclude_file(file_path: Path) -> bool:
     for part in file_path.parts:
         if part in EXCLUDE_DIRS:
             return True
-    
+
     # Check pattern exclusions
     file_str = str(file_path)
     for pattern in EXCLUDE_PATTERNS:
         if re.search(pattern, file_str, re.IGNORECASE):
             return True
-    
+
     return False
 
 
 def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
     """Scan a file for hardcoded rule counts."""
     violations = []
-    
+
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             for line_num, line in enumerate(f, 1):
@@ -84,7 +84,7 @@ def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
                             # Only flag if it's not a dynamic check
                             if 'total_rules' not in line and 'hook_manager' not in line:
                                 continue
-                        
+
                         violations.append((
                             line_num,
                             match.group(),
@@ -92,58 +92,58 @@ def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
                         ))
     except Exception as e:
         print(f"Warning: Could not scan {file_path}: {e}", file=sys.stderr)
-    
+
     return violations
 
 
 def scan_directory(root_dir: Path) -> List[Tuple[Path, int, str, str]]:
     """Scan directory recursively for violations."""
     all_violations = []
-    
+
     for file_path in root_dir.rglob('*'):
         if not file_path.is_file():
             continue
-        
+
         if should_exclude_file(file_path):
             continue
-        
+
         # Only scan Python files
         if file_path.suffix not in ['.py', '.ts', '.tsx', '.js', '.jsx']:
             continue
-        
+
         violations = scan_file(file_path)
         for line_num, match, context in violations:
             all_violations.append((file_path, line_num, match, context))
-    
+
     return all_violations
 
 
 def main():
     """Main entry point."""
     root_dir = Path(__file__).parent.parent.parent
-    
+
     print("=" * 80)
     print("HARDCODED RULE COUNT DETECTION")
     print("=" * 80)
     print(f"Scanning: {root_dir}")
     print()
-    
+
     violations = scan_directory(root_dir)
-    
+
     if violations:
         print(f"[FAIL] FOUND {len(violations)} POTENTIAL VIOLATIONS")
         print()
         print("Hardcoded rule counts violate single source of truth principle.")
         print("All rule counts must come from JSON files via PreImplementationHookManager.")
         print()
-        
+
         for file_path, line_num, match, context in violations:
             rel_path = file_path.relative_to(root_dir)
             print(f"  {rel_path}:{line_num}")
             print(f"    Pattern: {match}")
             print(f"    Context: {context[:100]}")
             print()
-        
+
         print("=" * 80)
         print("FAILED: Hardcoded rule counts detected")
         print("=" * 80)
@@ -156,4 +156,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

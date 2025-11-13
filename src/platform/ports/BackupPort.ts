@@ -1,15 +1,15 @@
 /**
  * BackupPort
- * 
+ *
  * Cloud-agnostic interface for backup operations.
  * Implemented by local adapters for data backup and restore.
- * 
+ *
  * @interface BackupPort
  */
 export interface BackupPort {
   /**
    * Create a backup.
-   * 
+   *
    * @param request - Backup creation request
    * @returns Promise resolving to backup information
    */
@@ -17,7 +17,7 @@ export interface BackupPort {
 
   /**
    * Restore from a backup.
-   * 
+   *
    * @param backupId - Backup ID to restore from
    * @param options - Optional restore options
    * @returns Promise resolving to restore result
@@ -26,7 +26,7 @@ export interface BackupPort {
 
   /**
    * Delete a backup.
-   * 
+   *
    * @param backupId - Backup ID to delete
    * @returns Promise resolving when backup is deleted
    */
@@ -34,7 +34,7 @@ export interface BackupPort {
 
   /**
    * Get backup information.
-   * 
+   *
    * @param backupId - Backup ID
    * @returns Promise resolving to backup information
    */
@@ -42,7 +42,7 @@ export interface BackupPort {
 
   /**
    * List backups.
-   * 
+   *
    * @param options - Optional filter options
    * @returns Promise resolving to list of backups
    */
@@ -50,7 +50,7 @@ export interface BackupPort {
 
   /**
    * Verify backup integrity.
-   * 
+   *
    * @param backupId - Backup ID to verify
    * @returns Promise resolving to verification result
    */
@@ -158,4 +158,3 @@ export interface BackupVerificationResult {
   /** Error message if verification failed */
   error?: string;
 }
-

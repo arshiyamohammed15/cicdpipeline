@@ -82,7 +82,7 @@ zeroui.m09.runSecurityScan
 zeroui.m01.mmm.refresh
 ```
 
-**Context keys:** `zeroui.module` (string), `zeroui.degraded` (boolean), `zeroui.hasReceipt` (boolean).  
+**Context keys:** `zeroui.module` (string), `zeroui.degraded` (boolean), `zeroui.hasReceipt` (boolean).
 Use them in `when` clauses, e.g. for Module 3 menu items:
 ```
 "when": "zeroui.module == 'm03' && !zeroui.degraded"
@@ -348,10 +348,10 @@ export async function loadAllModules(context, deps) {
 ## 14. Change Management
 
 - Adding a Module requires:
-  1) create `src/modules/<slug>/` with `module.manifest.json` and `index.ts`;  
-  2) add a static import in `module-loader.ts`;  
-  3) re-run generator and commit `package.json` changes;  
-  4) add tests;  
+  1) create `src/modules/<slug>/` with `module.manifest.json` and `index.ts`;
+  2) add a static import in `module-loader.ts`;
+  3) re-run generator and commit `package.json` changes;
+  4) add tests;
   5) pass CI gates.
 
 - Removing a Module requires the inverse steps; generator removes contributions.

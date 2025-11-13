@@ -1,9 +1,9 @@
 /**
  * Storage Path Resolver
- * 
+ *
  * Resolves storage paths according to 4-Plane Storage Architecture rules.
  * Ensures compliance with Rule 223: Path resolution via ZU_ROOT environment variable.
- * 
+ *
  * @module storage
  */
 
@@ -22,7 +22,7 @@ export class StoragePathResolver {
     constructor(zuRoot?: string) {
         // Get ZU_ROOT from environment variable if not provided
         this.zuRoot = zuRoot || process.env.ZU_ROOT || '';
-        
+
         if (!this.zuRoot) {
             throw new Error('ZU_ROOT environment variable is required for storage operations');
         }
@@ -92,14 +92,14 @@ export class StoragePathResolver {
         // Construct full path: {ZU_ROOT}/{plane}/{relativePath}
         const normalizedRelative = relativePath.replace(/^\/+|\/+$/g, ''); // Remove leading/trailing slashes
         const fullPath = `${this.zuRoot}/${plane}/${normalizedRelative}`;
-        
+
         return this.normalizePath(fullPath);
     }
 
     /**
      * Resolve receipt storage path (IDE Plane)
      * Pattern: ide/receipts/{repo-id}/{yyyy}/{mm}/ (Rule 228: YYYY/MM month partitioning)
-     * 
+     *
      * @param repoId Repository identifier (kebab-case)
      * @param year 4-digit year (YYYY)
      * @param month 2-digit month (MM)
@@ -123,14 +123,14 @@ export class StoragePathResolver {
         // Format: receipts/{repo-id}/{yyyy}/{mm}/
         const monthStr = month.toString().padStart(2, '0');
         const relativePath = `receipts/${repoId}/${year}/${monthStr}/`;
-        
+
         return this.resolveIdePath(relativePath);
     }
 
     /**
      * Resolve policy storage path (IDE Plane for cache, Product Plane for registry)
      * Pattern: ide/policy/ or product/policy/registry/
-     * 
+     *
      * @param plane Storage plane (ide for cache, product for registry)
      * @param subPath Sub-path within policy directory
      */
@@ -161,4 +161,3 @@ export class StoragePathResolver {
         return path.replace(/\\/g, '/').replace(/\/+/g, '/');
     }
 }
-

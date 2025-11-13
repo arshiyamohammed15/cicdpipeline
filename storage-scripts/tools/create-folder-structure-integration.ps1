@@ -48,7 +48,7 @@ function New-FolderStructure {
         [string]$Path,
         [string]$Description = ""
     )
-    
+
     if(-not (Test-Path $Path)) {
         try {
             New-Item -ItemType Directory -Path $Path -Force | Out-Null
@@ -73,41 +73,41 @@ function New-TenantFolderStructure {
         [switch]$CompatAliases,
         [ref]$Errors
     )
-    
+
     $tenantBase = Join-Path $BasePath "tenant"
     $Errors.Value += if(-not (New-FolderStructure -Path $tenantBase)) { "tenant" }
-    
+
     # evidence/ - Merged receipts, manifests, checksums
     $evidencePath = Join-Path $tenantBase "evidence"
     $Errors.Value += if(-not (New-FolderStructure -Path $evidencePath)) { "tenant/evidence" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $evidencePath "data") -Description "Merged receipts, manifests, checksums")) { "tenant/evidence/data" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $evidencePath "dlq") -Description "Dead letter queue")) { "tenant/evidence/dlq" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $evidencePath "watermarks") -Description "Per-consumer watermarks")) { "tenant/evidence/watermarks" }
-    
+
     # ingest/ - RFC fallback
     $ingestPath = Join-Path $tenantBase "ingest"
     $Errors.Value += if(-not (New-FolderStructure -Path $ingestPath)) { "tenant/ingest" }
-    
+
     # telemetry/ - Unified observability pattern
     $telemetryPath = Join-Path $tenantBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $telemetryPath -Description "Unified observability pattern")) { "tenant/telemetry" }
-    
+
     # adapters/ - Webhooks and gateway logs
     $adaptersPath = Join-Path $tenantBase "adapters"
     $Errors.Value += if(-not (New-FolderStructure -Path $adaptersPath -Description "Webhooks and gateway logs")) { "tenant/adapters" }
-    
+
     # reporting/ - Analytics marts
     $reportingPath = Join-Path $tenantBase "reporting"
     $Errors.Value += if(-not (New-FolderStructure -Path $reportingPath)) { "tenant/reporting" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $reportingPath "marts") -Description "Analytics marts")) { "tenant/reporting/marts" }
-    
+
     # policy/ - Signed snapshots and public keys
     $tenantPolicyPath = Join-Path $tenantBase "policy"
     $Errors.Value += if(-not (New-FolderStructure -Path $tenantPolicyPath)) { "tenant/policy" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $tenantPolicyPath "snapshots") -Description "Signed snapshots")) { "tenant/policy/snapshots" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $tenantPolicyPath "trust")) -or
                          -not (New-FolderStructure -Path (Join-Path (Join-Path $tenantPolicyPath "trust") "pubkeys") -Description "Public keys only")) { "tenant/policy/trust/pubkeys" }
-    
+
     # meta/schema/ - Deprecated alias (only with -CompatAliases)
     if($CompatAliases) {
         $metaPath = Join-Path $tenantBase "meta"
@@ -122,10 +122,10 @@ function New-ProductFolderStructure {
         [string]$BasePath,
         [ref]$Errors
     )
-    
+
     $productBase = Join-Path $BasePath "product"
     $Errors.Value += if(-not (New-FolderStructure -Path $productBase)) { "product" }
-    
+
     # policy/registry/ - Unified policy structure
     $productPolicyPath = Join-Path $productBase "policy"
     $Errors.Value += if(-not (New-FolderStructure -Path $productPolicyPath)) { "product/policy" }
@@ -134,25 +134,25 @@ function New-ProductFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "releases") -Description "Policy releases")) { "product/policy/registry/releases" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "templates") -Description "Policy templates")) { "product/policy/registry/templates" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "revocations") -Description "Policy revocations")) { "product/policy/registry/revocations" }
-    
+
     # evidence/watermarks/ - Per-consumer watermarks
     $productEvidencePath = Join-Path $productBase "evidence"
     $Errors.Value += if(-not (New-FolderStructure -Path $productEvidencePath)) { "product/evidence" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $productEvidencePath "watermarks") -Description "Per-consumer watermarks")) { "product/evidence/watermarks" }
-    
+
     # reporting/tenants/ - Tenant aggregates
     $productReportingPath = Join-Path $productBase "reporting"
     $Errors.Value += if(-not (New-FolderStructure -Path $productReportingPath)) { "product/reporting" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $productReportingPath "tenants") -Description "Tenant aggregates")) { "product/reporting/tenants" }
-    
+
     # adapters/gateway-logs/ - Gateway diagnostics
     $productAdaptersPath = Join-Path $productBase "adapters"
     $Errors.Value += if(-not (New-FolderStructure -Path $productAdaptersPath -Description "Gateway logs")) { "product/adapters" }
-    
+
     # telemetry/ - Unified observability pattern
     $productTelemetryPath = Join-Path $productBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $productTelemetryPath -Description "Unified observability pattern")) { "product/telemetry" }
-    
+
     # policy/trust/pubkeys/ - Public keys (merged with policy structure)
     $productPolicyTrustPath = Join-Path $productPolicyPath "trust"
     $Errors.Value += if(-not (New-FolderStructure -Path $productPolicyTrustPath)) { "product/policy/trust" }
@@ -165,35 +165,35 @@ function New-SharedFolderStructure {
         [string]$BasePath,
         [ref]$Errors
     )
-    
+
     $sharedBase = Join-Path $BasePath "shared"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedBase)) { "shared" }
-    
+
     # pki/ - All PKI files (public only)
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedBase "pki") -Description "All PKI files (public only)")) { "shared/pki" }
-    
+
     # telemetry/ - Unified observability pattern
     $sharedTelemetryPath = Join-Path $sharedBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedTelemetryPath -Description "Unified observability pattern")) { "shared/telemetry" }
-    
+
     # siem/ - Flattened SIEM structure
     $siemPath = Join-Path $sharedBase "siem"
     $Errors.Value += if(-not (New-FolderStructure -Path $siemPath -Description "Flattened SIEM structure")) { "shared/siem" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $siemPath "detections") -Description "SIEM detections")) { "shared/siem/detections" }
-    
+
     # bi-lake/curated/zero-ui/ - BI lake
     $biLakePath = Join-Path $sharedBase "bi-lake"
     $Errors.Value += if(-not (New-FolderStructure -Path $biLakePath)) { "shared/bi-lake" }
     $curatedPath = Join-Path $biLakePath "curated"
     $Errors.Value += if(-not (New-FolderStructure -Path $curatedPath)) { "shared/bi-lake/curated" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $curatedPath "zero-ui") -Description "BI lake curated data")) { "shared/bi-lake/curated/zero-ui" }
-    
+
     # governance/ - Flattened governance structure
     $governancePath = Join-Path $sharedBase "governance"
     $Errors.Value += if(-not (New-FolderStructure -Path $governancePath -Description "Flattened governance structure")) { "shared/governance" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "controls") -Description "Governance controls")) { "shared/governance/controls" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "attestations") -Description "Governance attestations")) { "shared/governance/attestations" }
-    
+
     # llm/ - Flattened governance structure
     $sharedLlmPath = Join-Path $sharedBase "llm"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedLlmPath -Description "LLM guardrails, routing, tools")) { "shared/llm" }
@@ -265,4 +265,3 @@ if($errorCount -eq 0) {
     $errors | Where-Object { $_ -ne $null } | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
     exit 1
 }
-

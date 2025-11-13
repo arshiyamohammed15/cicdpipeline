@@ -1,6 +1,6 @@
 /**
  * LocalObservability
- * 
+ *
  * Local file-based implementation of ObservabilityPort.
  * Writes metrics/events to logs/observability.ndjson with monotonic timestamps.
  */
@@ -105,7 +105,7 @@ export class LocalObservability implements ObservabilityPort {
     for (const line of lines) {
       try {
         const record: MetricRecord = JSON.parse(line);
-        
+
         // Filter by metric name
         if (record.name !== query.metricName) {
           continue;
@@ -171,7 +171,7 @@ export class LocalObservability implements ObservabilityPort {
 
       try {
         const record: LogRecord = JSON.parse(line);
-        
+
         // Check if it's a log entry (has level and message)
         if (!record.level || !record.message) {
           continue;
@@ -286,4 +286,3 @@ export class LocalObservability implements ObservabilityPort {
     return Date.now();
   }
 }
-

@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+"""
+Pre-commit hook to validate EOL (End of Line) characters.
+
+This hook prevents commits with incorrect line endings.
+It validates all staged files against .gitattributes rules.
+
+Installation:
+    cp scripts/git-hooks/pre-commit-eol .git/hooks/pre-commit
+    chmod +x .git/hooks/pre-commit
+
+Or use as part of pre-commit framework:
+    See .pre-commit-config.yaml
+"""
+
+import sys
+import subprocess
+from pathlib import Path
+
+# Add project root to path
+project_root = Path(__file__).parent.parent.parent
+sys.path.insert(0, str(project_root))
+
+from scripts.ci.validate_eol import validate_file_eol, get_staged_files
+
+def main():
+    """Run EOL validation on staged files."""
+    print("Validating EOL (End of Line) characters...")
+
+    staged_files = get_staged_files()
+
+    if not staged_files:
+        print("No staged files to validate")
+        return 0
+
+    errors = []
+    for file_path in staged_files:
+        is_valid, error_msg = validate_file_eol(file_path, fix=False)
+
+        if not is_valid and error_msg:
+            errors.append(error_msg)
+
+    if errors:
+        print("\nEOL Validation Failed:")
+        for error in errors:
+            print(f"  {error}")
+        print("\nTo fix automatically, run:")
+        print("  python scripts/ci/validate_eol.py --fix")
+        print("\nCommit blocked. Fix EOL issues and try again.")
+        return 1
+
+    print(f"EOL validation passed: {len(staged_files)} files checked")
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main())

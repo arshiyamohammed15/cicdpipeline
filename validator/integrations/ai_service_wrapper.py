@@ -52,26 +52,26 @@ class AIServiceIntegration(ABC):
 
         try:
             ai_result = self._call_ai_service(prompt, context)
-            
+
             # Step 4: Post-generation validation - validate generated code
             from validator.post_generation_validator import PostGenerationValidator
             post_validator = PostGenerationValidator()
-            
+
             file_type = context.get('file_type', 'python')
             file_path = context.get('file_path', 'generated_code')
-            
+
             post_validation_result = post_validator.validate_generated_code(
                 ai_result,
                 file_type=file_type,
                 file_path=file_path
             )
-            
+
             # Step 5: Block if violations found in generated code
             if not post_validation_result['valid']:
                 self.logger.error(
                     f"Generated code violations detected: {post_validation_result['total_violations']}"
                 )
-                
+
                 return {
                     'success': False,
                     'error': 'GENERATED_CODE_VIOLATION',
@@ -83,12 +83,12 @@ class AIServiceIntegration(ABC):
                     'service': self.service_name,
                     'generated_code': ai_result  # Include code for review
                 }
-            
+
             # Step 6: Return successful generation with validation info
             self.logger.info(
                 f"Generated code validated: {post_validation_result['total_violations']} violations found"
             )
-            
+
             return {
                 'success': True,
                 'generated_code': ai_result,

@@ -23,10 +23,10 @@ class TestCrossArtifactConsistency:
         """Positive: Policy snapshot receipt schema matches sample receipts."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
-        
+
         snapshot_data = json.loads(snapshot.read_text(encoding='utf-8'))
         receipt_schema = snapshot_data.get('receipts', {}).get('required', [])
-        
+
         # Check that sample receipts have required fields
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
         for line in lines:
@@ -49,14 +49,14 @@ class TestCrossArtifactConsistency:
         """Positive: Gate table decisions match receipt decision statuses."""
         gate_table = Path("docs/architecture/gate_tables/gate_pr_size.csv")
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
-        
+
         # Get valid decisions from gate table
         valid_decisions = set()
         with open(gate_table, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 valid_decisions.add(row['decision'])
-        
+
         # Check that receipt decisions match
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
         for line in lines:
@@ -83,7 +83,7 @@ class TestDataIntegrity:
         """Positive: Receipt IDs in sample are unique."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         receipt_ids = set()
         for line in lines:
             if line.strip():
@@ -98,14 +98,14 @@ class TestDataIntegrity:
         """Positive: Evidence pack receipt_id matches sample receipt."""
         evidence = Path("docs/architecture/samples/evidence/evidence_pack_example.json")
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
-        
+
         evidence_data = json.loads(evidence.read_text(encoding='utf-8'))
         evidence_receipt_id = evidence_data.get('receipt_id')
-        
+
         # Check that receipt exists in samples
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
         receipt_ids = [json.loads(line).get('receipt_id') for line in lines if line.strip()]
-        
+
         assert evidence_receipt_id in receipt_ids, \
             f"Evidence pack receipt_id '{evidence_receipt_id}' should match a sample receipt"
 
@@ -113,7 +113,7 @@ class TestDataIntegrity:
         """Edge: Policy snapshot hash follows sha256:hex format."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         if 'snapshot_hash' in data:
             hash_value = data['snapshot_hash']
             # Should match sha256: followed by 64 hex characters
@@ -141,7 +141,7 @@ class TestFormatValidation:
             "docs/architecture/policy/policy_snapshot_v1.json",
             "docs/architecture/samples/evidence/evidence_pack_example.json"
         ]
-        
+
         for json_file in json_files:
             file_path = Path(json_file)
             if file_path.exists():
@@ -155,7 +155,7 @@ class TestFormatValidation:
         """Positive: JSONL file has one JSON object per line."""
         jsonl_file = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = jsonl_file.read_text(encoding='utf-8').strip().split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():  # Skip empty lines
                 try:
@@ -172,7 +172,7 @@ class TestBoundaryConditions:
     def test_gate_table_threshold_boundaries(self):
         """Edge: Gate table thresholds are within reasonable bounds."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -189,10 +189,10 @@ class TestBoundaryConditions:
         """Edge: Receipt timestamps are in ISO 8601 format."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         # ISO 8601 pattern: YYYY-MM-DDTHH:MM:SSZ or with timezone
         iso_pattern = r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(Z|[+-]\d{2}:\d{2})$'
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():
                 receipt = json.loads(line)
@@ -205,7 +205,7 @@ class TestBoundaryConditions:
         """Edge: Receipt monotonic timestamps are positive numbers."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             if line.strip():
                 receipt = json.loads(line)
@@ -226,9 +226,9 @@ class TestNegativeCases:
         # Validation should catch missing required fields
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         required_fields = ['receipt_id', 'gate_id', 'decision']
-        
+
         for line in lines:
             if line.strip():
                 receipt = json.loads(line)
@@ -241,10 +241,10 @@ class TestNegativeCases:
         # This test documents expected behavior
         # Invalid statuses should be caught by validation
         valid_statuses = {'pass', 'warn', 'soft_block', 'hard_block'}
-        
+
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         for line in lines:
             if line.strip():
                 receipt = json.loads(line)
@@ -256,7 +256,7 @@ class TestNegativeCases:
     def test_invalid_priority_range(self):
         """Negative: Priority outside 1-5 range should be rejected."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         with open(csv_file, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -272,7 +272,7 @@ class TestSpecialScenarios:
         """Edge: Receipt with all optional fields should be valid."""
         receipts = Path("docs/architecture/samples/receipts/receipts_example.jsonl")
         lines = receipts.read_text(encoding='utf-8').strip().split('\n')
-        
+
         # At least one receipt should demonstrate optional fields
         found_optional = False
         for line in lines:
@@ -282,7 +282,7 @@ class TestSpecialScenarios:
                 if 'evidence_handles' in receipt and receipt['evidence_handles']:
                     found_optional = True
                     break
-        
+
         # This is informational - optional fields are optional
         # Just verify receipts parse correctly
         assert len(lines) > 0, "Should have at least one receipt"
@@ -291,7 +291,7 @@ class TestSpecialScenarios:
         """Edge: Policy snapshot with empty arrays should be valid."""
         snapshot = Path("docs/architecture/policy/policy_snapshot_v1.json")
         data = json.loads(snapshot.read_text(encoding='utf-8'))
-        
+
         # Empty arrays should be valid
         array_fields = ['evaluation_points', 'policy_version_ids', 'deprecates']
         for field in array_fields:
@@ -302,7 +302,7 @@ class TestSpecialScenarios:
     def test_gate_table_with_multiple_conditions(self):
         """Edge: Gate table with multiple conditions for same decision should be valid."""
         csv_file = Path("docs/architecture/gate_tables/gate_pr_size.csv")
-        
+
         # Group by condition
         conditions = {}
         with open(csv_file, 'r', encoding='utf-8') as f:
@@ -312,7 +312,7 @@ class TestSpecialScenarios:
                 if condition not in conditions:
                     conditions[condition] = []
                 conditions[condition].append(row)
-        
+
         # Multiple thresholds for same condition should be valid
         for condition, rows in conditions.items():
             assert len(rows) > 0, f"Condition '{condition}' should have at least one row"
@@ -320,4 +320,3 @@ class TestSpecialScenarios:
 
 if __name__ == '__main__':
     pytest.main([__file__, '-v'])
-

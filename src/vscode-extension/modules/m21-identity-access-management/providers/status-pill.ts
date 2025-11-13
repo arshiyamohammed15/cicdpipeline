@@ -4,9 +4,8 @@ import * as vscode from 'vscode';
 
 export class IAMStatusPillProvider implements vscode.StatusBarItem {
   constructor() {}
-  
+
   show(): void {}
   hide(): void {}
   dispose(): void {}
 }
-

@@ -1,6 +1,6 @@
 /**
  * Unit tests for WorkloadRouter
- * 
+ *
  * Tests three BuildPlan samples mapping to correct paths and ObservabilityPort emits events.
  */
 
@@ -208,7 +208,7 @@ describe('WorkloadRouter', () => {
       // Create router with disabled adapters (by using a non-existent env or mocking)
       // For this test, we'll check the registry state
       const registry = router.getRegistry();
-      
+
       // If adapters are disabled, route should throw
       // Note: In real scenario, this would be controlled by feature flags in environments.json
       // For this test, we verify the error handling path
@@ -262,7 +262,7 @@ describe('WorkloadRouter', () => {
       if (fs.existsSync(observabilityFile)) {
         const content = fs.readFileSync(observabilityFile, 'utf-8');
         const lines = content.split('\n').filter((line) => line.trim());
-        
+
         // Should have metrics for all three routes
         const decisionMetrics = lines.filter((line) => {
           try {
@@ -281,4 +281,3 @@ describe('WorkloadRouter', () => {
     });
   });
 });
-

@@ -1,6 +1,6 @@
 /**
  * StoragePathResolver Test Suite
- * 
+ *
  * Tests for Edge Agent StoragePathResolver
  * Validates ZU_ROOT path resolution, kebab-case validation, and storage plane paths
  */
@@ -226,4 +226,3 @@ describe('StoragePathResolver (Edge Agent)', () => {
         });
     });
 });
-

@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 class MockM27EvidenceLedger:
     """
     Mock Evidence & Audit Ledger (M27) for receipt signing and verification.
-    
+
     Per IAM spec: Receipts are Ed25519-signed, verification public keys distributed via trust store.
     """
 
@@ -50,7 +50,7 @@ class MockM27EvidenceLedger:
         """
         if not self.private_key:
             return "mock_signature_" + hashlib.sha256(json.dumps(receipt_data, sort_keys=True, default=str).encode()).hexdigest()[:32]
-        
+
         receipt_json = json.dumps(receipt_data, sort_keys=True, default=str)
         receipt_bytes = receipt_json.encode('utf-8')
         signature = self.private_key.sign(receipt_bytes)
@@ -69,7 +69,7 @@ class MockM27EvidenceLedger:
         """
         if not self.public_key:
             return signature.startswith("mock_signature_")
-        
+
         try:
             receipt_json = json.dumps(receipt_data, sort_keys=True, default=str)
             receipt_bytes = receipt_json.encode('utf-8')
@@ -120,7 +120,7 @@ class MockM27EvidenceLedger:
 class MockM29DataPlane:
     """
     Mock Data & Memory Plane (M29) for policy storage and caches.
-    
+
     Per IAM spec: Policy store with versioning, immutable releases, SHA-256 snapshot_id.
     """
 
@@ -143,16 +143,16 @@ class MockM29DataPlane:
         """
         policy_json = json.dumps(policy_data, sort_keys=True, default=str)
         snapshot_id = hashlib.sha256(policy_json.encode('utf-8')).hexdigest()
-        
+
         policy_data['snapshot_id'] = f"sha256:{snapshot_id}"
         policy_data['created_at'] = datetime.utcnow().isoformat()
-        
+
         self.policies[policy_id] = policy_data
-        
+
         if policy_id not in self.policy_versions:
             self.policy_versions[policy_id] = []
         self.policy_versions[policy_id].append(policy_data)
-        
+
         return snapshot_id
 
     def get_policy(self, policy_id: str, version: Optional[str] = None) -> Optional[Dict[str, Any]]:
@@ -211,20 +211,20 @@ class MockM29DataPlane:
         entry = self.cache.get(key)
         if not entry:
             return None
-        
+
         if entry.get('expires_at'):
             expires_at = datetime.fromisoformat(entry['expires_at'])
             if datetime.utcnow() > expires_at:
                 del self.cache[key]
                 return None
-        
+
         return entry.get('value')
 
 
 class MockM32TrustPlane:
     """
     Mock Identity & Trust Plane (M32) for device/service identities and mTLS.
-    
+
     Per IAM spec: mTLS between internal services, device/service identities.
     """
 
@@ -279,4 +279,3 @@ class MockM32TrustPlane:
         if posture not in ["secure", "unknown", "insecure"]:
             raise ValueError(f"Invalid device posture: {posture}")
         self.device_postures[device_id] = posture
-

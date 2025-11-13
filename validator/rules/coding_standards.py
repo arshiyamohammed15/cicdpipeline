@@ -14,7 +14,7 @@ from..models import Violation, Severity
 
 class CodingStandardsValidator:
     """Validates coding standards and best practices."""
-    
+
     def __init__(self):
         self.rules = {
             'R027': self._validate_python_standards,
@@ -37,17 +37,17 @@ class CodingStandardsValidator:
             'R087': self._validate_async_handlers,
             'R088': self._validate_packaging_policy
         }
-    
+
     def validate_information_usage(self, content: str) -> List[Violation]:
         """Validate information usage patterns for coding standards."""
         violations = []
         # Basic validation - return empty list for now
         return violations
-    
+
     def validate_naming_conventions(self, content: str) -> List[Violation]:
         """Validate naming conventions"""
         violations = []
-        
+
         # Check for bad naming patterns
         lines = content.split('\n')
         for i, line in enumerate(lines, 1):
@@ -61,7 +61,7 @@ class CodingStandardsValidator:
                     line_number=i,
                     column_number=1
                 ))
-            
+
             # Check for class names that should be PascalCase
             if re.search(r'class\s+[a-z]', line):
                 violations.append(Violation(
@@ -72,19 +72,19 @@ class CodingStandardsValidator:
                     line_number=i,
                     column_number=1
                 ))
-        
+
         return violations
-    
+
     def validate_function_length(self, content: str) -> List[Violation]:
         """Validate function length"""
         violations = []
-        
+
         # Simple check for functions with more than 10 lines
         lines = content.split('\n')
         function_lines = 0
         in_function = False
         function_start = 0
-        
+
         for i, line in enumerate(lines, 1):
             if re.search(r'def\s+\w+', line):
                 if in_function and function_lines > 10:  # Check previous function
@@ -114,7 +114,7 @@ class CodingStandardsValidator:
                     function_lines = 0
                 else:
                     function_lines += 1
-        
+
         # Check last function if file ends
         if in_function and function_lines > 10:
             violations.append(Violation(
@@ -125,19 +125,19 @@ class CodingStandardsValidator:
                 line_number=function_start,
                 column_number=1
             ))
-        
+
         return violations
-    
+
     def validate(self, file_path: str, content: str) -> List[Violation]:
         """Validate coding standards compliance for a file."""
         violations = []
-        
+
         # Check file type and apply appropriate standards
         if file_path.endswith('.py'):
             violations.extend(self._validate_python_standards(content, file_path))
         elif file_path.endswith(('.ts', '.js')):
             violations.extend(self._validate_typescript_standards(content, file_path))
-        
+
         # Apply common standards
         violations.extend(self._validate_code_formatting(content, file_path))
         violations.extend(self._validate_naming_conventions(content, file_path))
@@ -147,13 +147,13 @@ class CodingStandardsValidator:
         violations.extend(self._validate_error_handling(content, file_path))
         violations.extend(self._validate_security_practices(content, file_path))
         violations.extend(self._validate_performance_standards(content, file_path))
-        
+
         return violations
-    
+
     def _validate_python_standards(self, content: str, file_path: str) -> List[Violation]:
         """Validate Python coding standards."""
         violations = []
-        
+
         # Check for ruff, black, mypy usage
         if 'import' in content and 'ruff' not in content.lower():
             violations.append(Violation(
@@ -165,24 +165,24 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-            
+
                     ))
-        
+
         # Check for type hints
         violations.extend(self._validate_type_hints(content, file_path))
-        
+
         # Check for proper error handling
         violations.extend(self._validate_error_handling(content, file_path))
-        
+
         # Check for resource management
         violations.extend(self._validate_resource_management(content, file_path))
-        
+
         return violations
-    
+
     def _validate_typescript_standards(self, content: str, file_path: str) -> List[Violation]:
         """Validate TypeScript coding standards."""
         violations = []
-        
+
         # Check for eslint, prettier usage
         if 'function' in content and 'eslint' not in content.lower():
             violations.append(Violation(
@@ -192,7 +192,7 @@ class CodingStandardsValidator:
                 severity=Severity.ERROR,
                 category='code_quality'
             ))
-        
+
         # Check for 'any' usage
         if 'any' in content:
             violations.append(Violation(
@@ -204,15 +204,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_code_formatting(self, content: str, file_path: str) -> List[Violation]:
         """Validate code formatting standards."""
         violations = []
-        
+
         # Check for consistent formatting
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
@@ -227,9 +227,9 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-            
+
             # Check for inconsistent indentation
             if line.startswith(' ') and line.startswith('\t'):
                 violations.append(Violation(
@@ -241,26 +241,26 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_naming_conventions(self, content: str, file_path: str) -> List[Violation]:
         """Validate naming conventions."""
         violations = []
-        
+
         if file_path.endswith('.py'):
             violations.extend(self._validate_python_naming(content, file_path))
         elif file_path.endswith(('.ts', '.js')):
             violations.extend(self._validate_typescript_naming(content, file_path))
-        
+
         return violations
-    
+
     def _validate_python_naming(self, content: str, file_path: str) -> List[Violation]:
         """Validate Python naming conventions."""
         violations = []
-        
+
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
@@ -276,9 +276,9 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                        
+
                     ))
-                
+
                 elif isinstance(node, ast.ClassDef):
                     # Class names should be PascalCase
                     if not re.match(r'^[A-Z][a-zA-Z0-9]*$', node.name):
@@ -291,9 +291,9 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                        
+
                     ))
-                
+
                 elif isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
                     # Variable names should be snake_case
                     if not re.match(r'^[a-z_][a-z0-9_]*$', node.id):
@@ -306,19 +306,19 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                        
+
                     ))
-        
+
         except SyntaxError:
             # Skip files with syntax errors
             pass
-        
+
         return violations
-    
+
     def _validate_typescript_naming(self, content: str, file_path: str) -> List[Violation]:
         """Validate TypeScript naming conventions."""
         violations = []
-        
+
         # Check for camelCase function names
         function_pattern = r'function\s+([a-zA-Z_][a-zA-Z0-9_]*)'
         for match in re.finditer(function_pattern, content):
@@ -333,9 +333,9 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         # Check for PascalCase class names
         class_pattern = r'class\s+([a-zA-Z_][a-zA-Z0-9_]*)'
         for match in re.finditer(class_pattern, content):
@@ -350,26 +350,26 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_function_length(self, content: str, file_path: str) -> List[Violation]:
         """Validate function length."""
         violations = []
-        
+
         if file_path.endswith('.py'):
             violations.extend(self._validate_python_function_length(content, file_path))
         elif file_path.endswith(('.ts', '.js')):
             violations.extend(self._validate_typescript_function_length(content, file_path))
-        
+
         return violations
-    
+
     def _validate_python_function_length(self, content: str, file_path: str) -> List[Violation]:
         """Validate Python function length."""
         violations = []
-        
+
         try:
             tree = ast.parse(content)
             for node in ast.walk(tree):
@@ -386,25 +386,25 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                        
+
                     ))
-        
+
         except SyntaxError:
             # Skip files with syntax errors
             pass
-        
+
         return violations
-    
+
     def _validate_typescript_function_length(self, content: str, file_path: str) -> List[Violation]:
         """Validate TypeScript function length."""
         violations = []
-        
+
         # Simple line count for functions (this could be more sophisticated)
         lines = content.split('\n')
         in_function = False
         function_start = 0
         brace_count = 0
-        
+
         for line_num, line in enumerate(lines, 1):
             if re.search(r'function\s+\w+', line) or re.search(r'\w+\s*\([^)]*\)\s*{', line):
                 in_function = True
@@ -425,20 +425,20 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                        
+
                     ))
                     in_function = False
-        
+
         return violations
-    
+
     def _validate_complexity(self, content: str, file_path: str) -> List[Violation]:
         """Validate cyclomatic complexity."""
         violations = []
-        
+
         # Simple complexity check - count control flow statements
         complexity_indicators = ['if', 'elif', 'else', 'for', 'while', 'try', 'except', 'case', 'switch']
         lines = content.split('\n')
-        
+
         for line_num, line in enumerate(lines, 1):
             complexity_count = sum(1 for indicator in complexity_indicators if indicator in line)
             if complexity_count > 3:
@@ -451,15 +451,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_dependencies(self, content: str, file_path: str) -> List[Violation]:
         """Validate dependency management."""
         violations = []
-        
+
         if self._is_dependency_file(file_path):
             # Check for license information
             if 'license' not in content.lower():
@@ -470,13 +470,13 @@ class CodingStandardsValidator:
                     severity=Severity.ERROR,
                     category='security'
                 ))
-        
+
         return violations
-    
+
     def _validate_imports(self, content: str, file_path: str) -> List[Violation]:
         """Validate import organization."""
         violations = []
-        
+
         # Check for wildcard imports
         if re.search(r'import\s+\*', content):
             violations.append(Violation(
@@ -488,19 +488,19 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-            
+
                     ))
-        
+
         # Check import organization (simplified)
         lines = content.split('\n')
         import_lines = [line for line in lines if line.strip().startswith('import')]
-        
+
         if len(import_lines) > 1:
             # Check if imports are grouped properly
             stdlib_imports = []
             third_party_imports = []
             local_imports = []
-            
+
             for line in import_lines:
                 if any(stdlib in line for stdlib in ['os', 'sys', 'json', 're', 'pathlib']):
                     stdlib_imports.append(line)
@@ -508,7 +508,7 @@ class CodingStandardsValidator:
                     third_party_imports.append(line)
                 else:
                     local_imports.append(line)
-            
+
             # Check order
             if third_party_imports and stdlib_imports:
                 if import_lines.index(third_party_imports[0]) < import_lines.index(stdlib_imports[0]):
@@ -519,13 +519,13 @@ class CodingStandardsValidator:
                         severity=Severity.WARNING,
                         category='code_quality'
                     ))
-        
+
         return violations
-    
+
     def _validate_type_hints(self, content: str, file_path: str) -> List[Violation]:
         """Validate type hints usage."""
         violations = []
-        
+
         if file_path.endswith('.py'):
             try:
                 tree = ast.parse(content)
@@ -542,21 +542,21 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                            
+
                     ))
             except SyntaxError:
                 pass
-        
+
         return violations
-    
+
     def _validate_error_handling(self, content: str, file_path: str) -> List[Violation]:
         """Validate error handling."""
         violations = []
-        
+
         # Check for risky operations without error handling
         risky_operations = ['open(', 'requests.', 'urllib.', 'subprocess.', 'os.system']
         lines = content.split('\n')
-        
+
         for line_num, line in enumerate(lines, 1):
             for operation in risky_operations:
                 if operation in line and 'try:' not in content:
@@ -569,16 +569,16 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                    
+
                     ))
                     break
-        
+
         return violations
-    
+
     def _validate_resource_management(self, content: str, file_path: str) -> List[Violation]:
         """Validate resource management."""
         violations = []
-        
+
         if file_path.endswith('.py'):
             # Check for file operations without context managers
             if 'open(' in content and 'with ' not in content:
@@ -591,21 +591,21 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_security_practices(self, content: str, file_path: str) -> List[Violation]:
         """Validate security practices."""
         violations = []
-        
+
         # Check for hardcoded secrets
         secret_patterns = [
             r'(?i)(password|secret|key|token)\s*=\s*["\'][^"\']+["\']',
             r'(?i)(password|secret|key|token)\s*:\s*["\'][^"\']+["\']',
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in secret_patterns:
@@ -619,15 +619,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='security'
-                    
+
                     ))
-        
+
         return violations
-    
+
     def _validate_authentication_security(self, content: str, file_path: str) -> List[Violation]:
         """Validate authentication security."""
         violations = []
-        
+
         if 'auth' in content.lower() and 'password' in content.lower():
             if 'hash' not in content.lower() and 'bcrypt' not in content.lower():
                 violations.append(Violation(
@@ -639,15 +639,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='security'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_data_protection(self, content: str, file_path: str) -> List[Violation]:
         """Validate data protection."""
         violations = []
-        
+
         if 'data' in content.lower() and 'encrypt' not in content.lower():
             violations.append(Violation(
                         rule_name='Protect sensitive data with encryption and access controls',
@@ -658,15 +658,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='security'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_input_validation(self, content: str, file_path: str) -> List[Violation]:
         """Validate input validation."""
         violations = []
-        
+
         if 'input' in content.lower() and 'validate' not in content.lower():
             violations.append(Violation(
                         rule_name='Validate and sanitize all user inputs',
@@ -677,15 +677,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='security'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_output_sanitization(self, content: str, file_path: str) -> List[Violation]:
         """Validate output sanitization."""
         violations = []
-        
+
         if 'output' in content.lower() and 'sanitize' not in content.lower():
             violations.append(Violation(
                         rule_name='Sanitize outputs to prevent injection attacks',
@@ -696,19 +696,19 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='security'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_performance_standards(self, content: str, file_path: str) -> List[Violation]:
         """Validate performance standards."""
         violations = []
-        
+
         # Check for performance-related keywords
         performance_keywords = ['SLO', 'timeout', 'retry', 'backpressure', 'performance']
         has_performance = any(keyword in content.lower() for keyword in performance_keywords)
-        
+
         if not has_performance and 'api' in content.lower():
             violations.append(Violation(
                 file_path=file_path,
@@ -717,13 +717,13 @@ class CodingStandardsValidator:
                 severity=Severity.WARNING,
                 category='code_quality'
             ))
-        
+
         return violations
-    
+
     def _validate_async_handlers(self, content: str, file_path: str) -> List[Violation]:
         """Validate async handler usage."""
         violations = []
-        
+
         if 'handler' in content.lower() and 'async' not in content.lower():
             violations.append(Violation(
                         rule_name='Async only for handlers; avoid blocking calls; httpx for async tests',
@@ -734,15 +734,15 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_packaging_policy(self, content: str, file_path: str) -> List[Violation]:
         """Validate packaging policy."""
         violations = []
-        
+
         if self._is_dependency_file(file_path):
             if 'pip-tools' not in content.lower() and 'lock' not in content.lower():
                 violations.append(Violation(
@@ -754,11 +754,11 @@ class CodingStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='code_quality'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _is_dependency_file(self, file_path: str) -> bool:
         """Check if file is a dependency management file."""
         dependency_files = ['requirements.txt', 'package.json', 'Pipfile', 'poetry.lock', 'yarn.lock']

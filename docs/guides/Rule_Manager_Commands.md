@@ -308,7 +308,7 @@ python tools/rule_manager.py --sync-all
    ```bash
    # Check status
    python tools/rule_manager.py --status
-   
+
    # Fix inconsistencies
    python tools/rule_manager.py --sync-all
    ```
@@ -317,7 +317,7 @@ python tools/rule_manager.py --sync-all
    ```bash
    # Check if rule exists
    python tools/rule_manager.py --status-rule 150
-   
+
    # List all rules
    python tools/rule_manager.py --status
    ```
@@ -326,13 +326,13 @@ python tools/rule_manager.py --sync-all
    ```bash
    # ❌ Wrong (PowerShell strips quotes from JSON)
    python tools/rule_manager.py --enable-rule 150 --config-data '{"priority": "high"}'
-   
+
    # ✅ Correct (PowerShell - use escaped quotes for JSON)
    python tools/rule_manager.py --enable-rule 150 --config-data '{\"priority\": \"high\"}'
-   
+
    # ✅ Simple strings work fine (no escaping needed)
    python tools/rule_manager.py --disable-rule 150 --reason "System maintenance"
-   
+
    # Example with multiple JSON properties
    python tools/rule_manager.py --enable-all --config-data '{\"maintenance_complete\": true, \"version\": \"2.1\"}'
    ```

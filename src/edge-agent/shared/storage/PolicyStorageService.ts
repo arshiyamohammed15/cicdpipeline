@@ -1,17 +1,17 @@
 /**
  * Policy Storage Service
- * 
+ *
  * Handles policy storage according to 4-Plane Storage Architecture rules.
- * 
+ *
  * Compliance:
  * - Rule 221: Policy Signatures (all policies must be signed)
  * - Rule 223: Path resolution via ZU_ROOT
  * - Rule 217: No code/PII in stores
- * 
+ *
  * Storage locations:
  * - IDE Plane: ide/policy/ (cache, signed snapshots)
  * - Product Plane: product/policy/registry/ (authoritative releases, templates, revocations)
- * 
+ *
  * @module storage
  */
 
@@ -51,7 +51,7 @@ export class PolicyStorageService {
     /**
      * Cache policy snapshot in IDE Plane
      * Pattern: ide/policy/
-     * 
+     *
      * @param snapshot Policy snapshot to cache
      * @returns Promise<string> Path where policy was cached
      */
@@ -81,7 +81,7 @@ export class PolicyStorageService {
 
     /**
      * Read cached policy from IDE Plane
-     * 
+     *
      * @param policyId Policy identifier
      * @param version Policy version
      * @returns Promise<PolicySnapshot | null> Policy snapshot or null if not found
@@ -109,7 +109,7 @@ export class PolicyStorageService {
     /**
      * Read current policy pointer
      * Pattern: ide/policy/current
-     * 
+     *
      * @param policyId Policy identifier
      * @returns Promise<string | null> Current version or null if not set
      */
@@ -130,7 +130,7 @@ export class PolicyStorageService {
 
     /**
      * Set current policy pointer
-     * 
+     *
      * @param policyId Policy identifier
      * @param version Policy version to set as current
      */
@@ -153,7 +153,7 @@ export class PolicyStorageService {
     /**
      * Get active policy information for receipt generation
      * Returns policy version IDs and snapshot hash from current cached policies
-     * 
+     *
      * @param policyIds List of policy identifiers to get active versions for
      * @returns Promise<{policy_version_ids: string[], snapshot_hash: string}>
      */
@@ -234,4 +234,3 @@ export class PolicyStorageService {
         });
     }
 }
-

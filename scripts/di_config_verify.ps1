@@ -1,16 +1,16 @@
 # PATCH HEADER
-# 
+#
 # Discovered anchors:
 #   - storage-scripts/config/environments.json: environments structure
 #   - dist/src/platform/config/infra_config_runner.js: compiled Node.js runner
 #   - config/InfraConfig.ts: loadInfraConfig() function
-# 
+#
 # Files created/edited:
 #   - scripts/di_config_verify.ps1 (created)
 #   - src/platform/config/infra_config_runner.ts (created)
 #   - docs/DI_Config_README.md (created)
 #   - tsconfig.config.json (created)
-# 
+#
 # STOP/MISSING triggers:
 #   - None encountered
 #   - No new dependencies added (uses existing Node.js, no ts-node)
@@ -18,9 +18,9 @@
 #   - No vendor strings in neutral infra (validation code only)
 #   - No environments.json keys renamed/removed
 #   - No log truncation behavior introduced
-# 
+#
 # DI Config Verification Script
-# 
+#
 # Validates infrastructure configuration for all environments in environments.json
 # Uses compiled JavaScript runner (no ts-node dependency)
 
@@ -84,7 +84,7 @@ Push-Location $RepoRoot
 try {
     foreach ($EnvName in $EnvNames) {
         Write-Host -NoNewline "  $EnvName ... "
-        
+
         # Run the Node.js runner
         $ProcessInfo = New-Object System.Diagnostics.ProcessStartInfo
         $ProcessInfo.FileName = "node"
@@ -94,39 +94,39 @@ try {
         $ProcessInfo.RedirectStandardError = $true
         $ProcessInfo.CreateNoWindow = $true
         $ProcessInfo.WorkingDirectory = $RepoRoot
-        
+
         $Process = New-Object System.Diagnostics.Process
         $Process.StartInfo = $ProcessInfo
-        
+
         # Capture output
         $OutputBuilder = New-Object System.Text.StringBuilder
         $ErrorBuilder = New-Object System.Text.StringBuilder
-        
+
         $OutputEvent = Register-ObjectEvent -InputObject $Process -EventName OutputDataReceived -Action {
             if ($EventArgs.Data) {
                 [void]$Event.MessageData.AppendLine($EventArgs.Data)
             }
         } -MessageData $OutputBuilder
-        
+
         $ErrorEvent = Register-ObjectEvent -InputObject $Process -EventName ErrorDataReceived -Action {
             if ($EventArgs.Data) {
                 [void]$Event.MessageData.AppendLine($EventArgs.Data)
             }
         } -MessageData $ErrorBuilder
-        
+
         $Process.Start() | Out-Null
         $Process.BeginOutputReadLine()
         $Process.BeginErrorReadLine()
         $Process.WaitForExit()
-        
+
         $ExitCode = $Process.ExitCode
         $Output = $OutputBuilder.ToString()
         $ErrorOutput = $ErrorBuilder.ToString()
-        
+
         # Cleanup events
         Unregister-Event -SourceIdentifier $OutputEvent.Name
         Unregister-Event -SourceIdentifier $ErrorEvent.Name
-        
+
         # Parse JSON output (last line should be JSON)
         $OutputLines = $Output -split "`n" | Where-Object { $_.Trim() -ne "" }
         $JsonOutput = $null
@@ -137,7 +137,7 @@ try {
                 # If JSON parsing fails, use error output
             }
         }
-        
+
         if ($ExitCode -eq 0) {
             Write-Host "PASS" -ForegroundColor Green
             $Results += [PSCustomObject]@{
@@ -200,4 +200,3 @@ if ($HasFailures) {
     Write-Host "PASS: All environments validated successfully" -ForegroundColor Green
     exit 0
 }
-

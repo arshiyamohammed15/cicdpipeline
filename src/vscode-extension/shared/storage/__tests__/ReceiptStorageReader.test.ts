@@ -1,6 +1,6 @@
 /**
  * ReceiptStorageReader Test Suite
- * 
+ *
  * Tests for receipt reading operations in VS Code Extension
  * Validates receipt parsing, signature validation, and date range queries
  */
@@ -393,4 +393,3 @@ describe('ReceiptStorageReader', () => {
         });
     });
 });
-

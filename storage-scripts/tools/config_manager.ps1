@@ -34,7 +34,7 @@ param(
     [Parameter(Mandatory=$true)]
     [ValidateSet('list', 'validate', 'generate', 'show')]
     [string]$Action,
-    
+
     [string]$Env,
     [string]$DeploymentType,
     [string]$ConfigFile,
@@ -43,7 +43,7 @@ param(
 
 function Show-EnvironmentList {
     param([object]$Config)
-    
+
     Write-Host "Available Environments:" -ForegroundColor Cyan
     foreach($envName in $Config.environments.PSObject.Properties.Name) {
         $env = $Config.environments.$envName
@@ -60,9 +60,9 @@ function Validate-EnvironmentConfig {
         [string]$DeploymentType,
         [object]$Config
     )
-    
+
     $errors = @()
-    
+
     if(-not $Config.environments.$Env) {
         $errors += "Environment '$Env' not found"
     } else {
@@ -71,19 +71,19 @@ function Validate-EnvironmentConfig {
         } else {
             $deployConfig = $Config.environments.$Env.deployment_types.$DeploymentType
             $backend = $deployConfig.backend
-            
+
             if(-not $Config.storage_backends.$backend) {
                 $errors += "Backend '$backend' referenced but not defined in storage_backends"
             }
         }
     }
-    
+
     if($errors) {
         Write-Host "Validation Errors:" -ForegroundColor Red
         $errors | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
         return $false
     }
-    
+
     Write-Host "Configuration valid" -ForegroundColor Green
     return $true
 }
@@ -95,10 +95,10 @@ function Generate-ZuRoot {
         [object]$Config,
         [string]$ZuRoot
     )
-    
+
     $envConfig = $Config.environments.$Env.deployment_types.$DeploymentType
     $pattern = $envConfig.zu_root_pattern
-    
+
     # Replace placeholders
     if($pattern -match '\{base_path\}') {
         if(-not $ZuRoot) {
@@ -120,7 +120,7 @@ function Generate-ZuRoot {
     } else {
         $zuRootGenerated = $pattern
     }
-    
+
     return $zuRootGenerated
 }
 
@@ -196,4 +196,3 @@ switch($Action) {
         $config.environments.$Env | ConvertTo-Json -Depth 10
     }
 }
-

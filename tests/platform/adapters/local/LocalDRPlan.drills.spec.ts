@@ -1,6 +1,6 @@
 /**
  * Programmatic tests for DR drills
- * 
+ *
  * Tests backup-verify and queue-drain drills return PASS deterministically.
  */
 
@@ -20,7 +20,7 @@ describe('LocalDRPlan Drills', () => {
 
   beforeEach(() => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'dr-drills-'));
-    
+
     // Setup test resource
     const resourceDir = path.join(tempDir, 'resources', 'test-type', 'test-resource');
     fs.mkdirSync(resourceDir, { recursive: true });
@@ -196,11 +196,11 @@ describe('LocalDRPlan Drills', () => {
     it('should drain all messages regardless of count', async () => {
       // Add varying number of messages
       const messageCounts = [0, 1, 5, 10, 15];
-      
+
       for (const count of messageCounts) {
         // Create new queue for each test
         const queueName = `test-queue-${count}`;
-        
+
         // Add messages
         for (let i = 0; i < count; i++) {
           await queue.send(queueName, `message-${i}`);
@@ -340,4 +340,3 @@ describe('LocalDRPlan Drills', () => {
     });
   });
 });
-

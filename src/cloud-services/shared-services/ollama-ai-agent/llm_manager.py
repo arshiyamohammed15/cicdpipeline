@@ -34,7 +34,7 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
     try:
         # Get ZU_ROOT from environment variable (per folder-business-rules.md)
         zu_root = os.getenv("ZU_ROOT")
-        
+
         if zu_root:
             # Use ZU_ROOT for shared services plane
             config_path = Path(zu_root) / "shared" / "llm" / config_type / "config.json"
@@ -43,7 +43,7 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
             current_file = Path(__file__)
             project_root = current_file.parent.parent.parent.parent.parent.parent
             config_path = project_root / "shared" / "llm" / config_type / "config.json"
-        
+
         if config_path.exists():
             with open(config_path, 'r', encoding='utf-8') as f:
                 config = json.load(f)
@@ -56,7 +56,7 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
                 return config
     except Exception as e:
         logger.warning(f"Failed to load config for {config_type}: {e}")
-    
+
     return {}
 
 
@@ -69,35 +69,35 @@ def _get_ollama_executable_path() -> Optional[str]:
     """
     config = _load_shared_services_config("ollama")
     executable_path = config.get("executable_path", "")
-    
+
     # Replace {ZU_ROOT} placeholder if present
     zu_root = os.getenv("ZU_ROOT", "")
     if zu_root and "{ZU_ROOT}" in executable_path:
         executable_path = executable_path.replace("{ZU_ROOT}", zu_root)
-    
+
     if executable_path and Path(executable_path).exists():
         return executable_path
-    
+
     # Try default location with ZU_ROOT if set
     if zu_root:
         default_path = Path(zu_root) / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
         if default_path.exists():
             return str(default_path)
-    
+
     # Try default ZU_ROOT location even if environment variable not set
     # Default ZU_ROOT is typically D:\ZeroUI\development (per project configuration)
     default_zu_root = "D:\\ZeroUI\\development"
     default_path = Path(default_zu_root) / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
     if default_path.exists():
         return str(default_path)
-    
+
     # Fallback: try project root (for development/testing)
     current_file = Path(__file__)
     project_root = current_file.parent.parent.parent.parent.parent.parent
     fallback_path = project_root / "shared" / "llm" / "ollama" / "bin" / "ollama.exe"
     if fallback_path.exists():
         return str(fallback_path)
-    
+
     return None
 
 
@@ -116,7 +116,7 @@ def _is_ollama_running(base_url: str = "http://localhost:11434") -> bool:
         api_endpoints = config.get("api_endpoints", {})
         tags_path = api_endpoints.get("tags", "/api/tags")
         tags_endpoint = f"{base_url}{tags_path}"
-        
+
         response = requests.get(tags_endpoint, timeout=2)
         return response.status_code == 200
     except Exception:
@@ -161,7 +161,7 @@ def _find_ollama_process_by_port(port: int) -> Optional[int]:
             text=True,
             timeout=5
         )
-        
+
         if result.returncode == 0:
             # Parse netstat output to find LISTENING on the port
             for line in result.stdout.split('\n'):
@@ -176,7 +176,7 @@ def _find_ollama_process_by_port(port: int) -> Optional[int]:
                             continue
     except Exception as e:
         logger.warning(f"Failed to find Ollama process on port {port}: {e}")
-    
+
     return None
 
 
@@ -255,7 +255,7 @@ class OllamaProcessManager:
 
         try:
             logger.info(f"Starting Ollama service from: {self.executable_path}")
-            
+
             # Start Ollama in background
             self.process = subprocess.Popen(
                 [self.executable_path, "serve"],
@@ -292,7 +292,7 @@ class OllamaProcessManager:
     def stop(self) -> None:
         """
         Stop the Ollama process.
-        
+
         Ensures FastAPI and Ollama stay in sync by:
         1. Stopping the process we started (if any)
         2. Finding and stopping any Ollama process on the configured port (even if using existing instance)
@@ -312,7 +312,7 @@ class OllamaProcessManager:
                 logger.info("Ollama service stopped (process started by FastAPI)")
             except Exception as e:
                 logger.error(f"Error stopping Ollama service: {e}")
-        
+
         # Step 2: Ensure Ollama is stopped on the configured port
         # This is critical for sync - even if we used an existing instance, we must stop it
         if _is_ollama_running(self.base_url):
@@ -320,10 +320,10 @@ class OllamaProcessManager:
                 logger.info("Stopping existing Ollama instance to stay in sync with FastAPI shutdown")
             else:
                 logger.info("Ollama service still running on configured port, stopping it to stay in sync with FastAPI")
-            
+
             port = _get_port_from_url(self.base_url)
             pid = _find_ollama_process_by_port(port)
-            
+
             if pid:
                 logger.info(f"Found Ollama process {pid} on port {port}, stopping it")
                 if _kill_process_by_pid(pid):
@@ -341,7 +341,7 @@ class OllamaProcessManager:
         else:
             if self.using_existing or self.started_by_us:
                 logger.info("Ollama service already stopped - FastAPI and Ollama are in sync")
-        
+
         # Reset tracking flags
         self.started_by_us = False
         self.using_existing = False
@@ -356,4 +356,3 @@ class OllamaProcessManager:
         if self.process:
             return self.process.poll() is None
         return _is_ollama_running(self.base_url)
-

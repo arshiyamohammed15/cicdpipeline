@@ -1,10 +1,10 @@
 /**
  * InfraConfig.ts
- * 
+ *
  * Infrastructure configuration loader with strict precedence and vendor-neutral validation.
- * 
+ *
  * Precedence: defaults (top-level infra) → per-env "infra" override → optional policy overlay
- * 
+ *
  * Constraints:
  * - No JSON-Schema engine (internal type-guards only)
  * - No placeholder interpolation
@@ -455,4 +455,3 @@ export function loadInfraConfig(
     isEnabled: frozenConfig.feature_flags.infra_enabled,
   };
 }
-

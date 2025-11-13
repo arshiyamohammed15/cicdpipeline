@@ -1,6 +1,6 @@
 /**
  * PolicyStorageService Test Suite
- * 
+ *
  * Tests for policy storage operations
  * Validates policy caching, version management, and signature validation
  */
@@ -221,4 +221,3 @@ describe('PolicyStorageService', () => {
         });
     });
 });
-

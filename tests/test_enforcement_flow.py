@@ -100,16 +100,16 @@ def test_configuration_enforcement():
 
     import json
     from pathlib import Path
-    
+
     # Get the project root directory (parent of tests directory)
     project_root = Path(__file__).parent.parent
     config_path = project_root / 'config' / 'hook_config.json'
-    
+
     if not config_path.exists():
         # Skip test if config file doesn't exist
         import pytest
         pytest.skip(f"Config file not found: {config_path}")
-    
+
     with open(config_path, 'r', encoding='utf-8') as f:
         config = json.load(f)
 

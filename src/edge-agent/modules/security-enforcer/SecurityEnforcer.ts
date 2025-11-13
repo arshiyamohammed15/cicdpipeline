@@ -21,13 +21,13 @@ export class SecurityEnforcer implements DelegationInterface {
 
     public async delegate(task: DelegationTask): Promise<DelegationResult> {
         const startTime = Date.now();
-        
+
         try {
             console.log(`Security Enforcer processing task: ${task.id}`);
-            
+
             // Enforce security policies
             const securityResult = await this.enforceSecurityPolicies(task);
-            
+
             const processingTime = Date.now() - startTime;
             this.tasksProcessed++;
             this.totalLatency += processingTime;
@@ -56,9 +56,9 @@ export class SecurityEnforcer implements DelegationInterface {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
-            
+
             console.error(`Security Enforcer failed task: ${task.id}`, error);
-            
+
             return {
                 taskId: task.id,
                 success: false,
@@ -80,7 +80,7 @@ export class SecurityEnforcer implements DelegationInterface {
     }
 
     public canHandle(task: DelegationTask): boolean {
-        return task.type === 'security' || 
+        return task.type === 'security' ||
                task.requirements?.security === true ||
                task.priority === 'critical';
     }
@@ -112,7 +112,7 @@ export class SecurityEnforcer implements DelegationInterface {
     private async enforceSecurityPolicies(task: DelegationTask): Promise<any> {
         // Simulate security policy enforcement
         await new Promise(resolve => setTimeout(resolve, 100));
-        
+
         return {
             securityValidated: true,
             policiesApplied: [

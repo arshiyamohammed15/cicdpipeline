@@ -141,7 +141,7 @@ Example: checking if a deployment was successful
 
 5. Integrated End-to-End Flow
 
-Module-Registry → Event-Router → Signal-Pipeline → Policy-Engine 
+Module-Registry → Event-Router → Signal-Pipeline → Policy-Engine
 
 → Decision-Service → Action-Dispatcher → Receipt-Store → Learning-Loop
 
@@ -195,7 +195,7 @@ json
 
   "policy_version": "sha256:<id>",
 
-  
+
 
   "help_type": {
 

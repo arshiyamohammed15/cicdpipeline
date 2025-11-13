@@ -1,15 +1,15 @@
 /**
  * Receipt Storage Service
- * 
+ *
  * Handles receipt storage according to 4-Plane Storage Architecture rules.
- * 
+ *
  * Compliance:
  * - Rule 219: JSONL receipts (append-only, newline-delimited, signed)
  * - Rule 223: Path resolution via ZU_ROOT
  * - Rule 224: Receipts validation (signed, append-only)
  * - Rule 228: Laptop receipts use YYYY/MM month partitioning
  * - Rule 217: No code/PII in stores
- * 
+ *
  * @module storage
  */
 
@@ -31,7 +31,7 @@ export class ReceiptStorageService {
 
     /**
      * Store a decision receipt (append-only JSONL format)
-     * 
+     *
      * @param receipt Decision receipt to store
      * @param repoId Repository identifier (kebab-case)
      * @returns Promise<string> Path where receipt was stored
@@ -73,7 +73,7 @@ export class ReceiptStorageService {
 
     /**
      * Store a feedback receipt (append-only JSONL format)
-     * 
+     *
      * @param receipt Feedback receipt to store
      * @param repoId Repository identifier (kebab-case)
      * @returns Promise<string> Path where receipt was stored
@@ -114,7 +114,7 @@ export class ReceiptStorageService {
 
     /**
      * Read receipts from storage (for validation/testing)
-     * 
+     *
      * @param repoId Repository identifier
      * @param year 4-digit year
      * @param month 2-digit month (1-12)
@@ -172,7 +172,7 @@ export class ReceiptStorageService {
 
     /**
      * Convert receipt to canonical JSON (for consistent signature validation)
-     * 
+     *
      * Note: This matches the canonical form used in ReceiptGenerator.signReceipt()
      * Signature is removed before sorting keys to ensure consistent canonical form.
      */
@@ -236,4 +236,3 @@ export class ReceiptStorageService {
         });
     }
 }
-

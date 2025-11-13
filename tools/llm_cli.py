@@ -25,10 +25,10 @@ import requests
 def convert_to_ist(timestamp_str: str) -> str:
     """
     Convert UTC timestamp string to IST (Indian Standard Time, UTC+5:30).
-    
+
     Args:
         timestamp_str: ISO format timestamp string (e.g., "2025-11-07T01:03:53.997166")
-    
+
     Returns:
         Timestamp string in IST format
     """
@@ -40,12 +40,12 @@ def convert_to_ist(timestamp_str: str) -> str:
         else:
             # No timezone info, assume UTC
             dt = datetime.fromisoformat(timestamp_str).replace(tzinfo=timezone.utc)
-        
+
         # Convert to IST (UTC+5:30)
         ist_offset = timedelta(hours=5, minutes=30)
         ist_timezone = timezone(ist_offset)
         ist_dt = dt.astimezone(ist_timezone)
-        
+
         # Format as readable string
         return ist_dt.strftime("%Y-%m-%d %H:%M:%S IST")
     except Exception:
@@ -56,22 +56,22 @@ def convert_to_ist(timestamp_str: str) -> str:
 def format_duration(nanoseconds: int) -> str:
     """
     Convert nanoseconds to human-readable duration format (HH:MM:SS.mmm or equivalent).
-    
+
     Args:
         nanoseconds: Duration in nanoseconds
-    
+
     Returns:
         Formatted duration string (e.g., "00:00:09.066", "00:00:00.045", "01:23:45.123")
     """
     try:
         # Convert nanoseconds to seconds (with milliseconds precision)
         total_seconds = nanoseconds / 1_000_000_000.0
-        
+
         # Calculate hours, minutes, seconds
         hours = int(total_seconds // 3600)
         minutes = int((total_seconds % 3600) // 60)
         seconds = total_seconds % 60
-        
+
         # Format with milliseconds (3 decimal places)
         if hours > 0:
             return f"{hours:02d}:{minutes:02d}:{seconds:06.3f}"
@@ -310,19 +310,19 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
     """
     try:
         project_root = Path(__file__).parent.parent
-        
+
         # Check if port is already in use
         if is_port_in_use(host, port):
             print(f"Error: Port {port} is already in use", file=sys.stderr)
             print(f"", file=sys.stderr)
-            
+
             # Check if it's our service
             base_url = f"http://localhost:{port}"
             if check_service_running(base_url):
                 print(f"💡 The LLM service appears to be already running at {base_url}", file=sys.stderr)
                 print(f"   You can check its health with: python {Path(__file__).name} --health", file=sys.stderr)
                 print(f"", file=sys.stderr)
-            
+
             # Try to find an available port
             available_port = find_available_port(host, start_port=port + 1)
             if available_port:
@@ -336,9 +336,9 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
                 print(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port", file=sys.stderr)
                 print(f"  2. Stop the service running on port {port}", file=sys.stderr)
                 print(f"  3. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
-            
+
             return 1
-        
+
         print("=" * 60)
         print("STARTING LLM SERVICE (Ollama AI Agent)")
         print("=" * 60)
@@ -352,32 +352,32 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
         # Paths
         service_dir = project_root / "src" / "cloud-services" / "shared-services" / "ollama-ai-agent"
         main_module_path = service_dir / "main.py"
-        
+
         if not main_module_path.exists():
             print(f"Error: Service module not found at {main_module_path}", file=sys.stderr)
             return 1
-        
+
         # Change to the service directory for proper relative imports
         original_cwd = os.getcwd()
         parent_dir = service_dir.parent
-        
+
         try:
             # Set up Python path - add parent directory so relative imports work
             # The relative imports in main.py expect to be in a package
             os.chdir(parent_dir)
-            
+
             # Add parent to path for imports
             if str(parent_dir) not in sys.path:
                 sys.path.insert(0, str(parent_dir))
-            
+
             # Use importlib to load the module with proper package context
             import importlib.util
             import importlib.machinery
-            
+
             # Create package module first (needed for relative imports)
             package_name = "ollama_ai_agent"
             init_path = service_dir / "__init__.py"
-            
+
             # Load or create package module
             if package_name not in sys.modules:
                 if init_path.exists():
@@ -401,7 +401,7 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
                     package_module.__path__ = [str(service_dir)]
                     package_module.__file__ = str(init_path)
                     sys.modules[package_name] = package_module
-            
+
             # Now load main module
             loader = importlib.machinery.SourceFileLoader(
                 f"{package_name}.main",
@@ -412,26 +412,26 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
                 loader,
                 origin=str(main_module_path)
             )
-            
+
             if spec is None or spec.loader is None:
                 raise ImportError(f"Could not create spec for {main_module_path}")
-            
+
             main_module = importlib.util.module_from_spec(spec)
             main_module.__package__ = package_name
             main_module.__file__ = str(main_module_path)
-            
+
             # Store in sys.modules before executing
             sys.modules[f"{package_name}.main"] = main_module
-            
+
             # Execute the module
             spec.loader.exec_module(main_module)
-            
+
             # Get the app
             if not hasattr(main_module, 'app'):
                 raise ImportError(f"Module {main_module_path} does not have an 'app' attribute")
-            
+
             app = main_module.app
-            
+
             # Run uvicorn
             import uvicorn
             uvicorn.run(
@@ -460,7 +460,7 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
             print(f"Options:", file=sys.stderr)
             print(f"  1. Stop the service running on port {port}", file=sys.stderr)
             print(f"  2. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
-            
+
             # Check if it's our service
             base_url = f"http://localhost:{port}"
             if check_service_running(base_url):
@@ -639,7 +639,7 @@ Examples:
                 print(f"Service is already running at {args.base_url}", file=sys.stderr)
                 print("Use --base-url to specify a different URL or stop the existing service", file=sys.stderr)
                 return 1
-            
+
             # Handle auto-port selection
             actual_port = args.port
             if args.auto_port and is_port_in_use(args.host, args.port):
@@ -650,7 +650,7 @@ Examples:
                 else:
                     print(f"Error: Could not find an available port starting from {args.port}", file=sys.stderr)
                     return 1
-            
+
             return start_service(port=actual_port, host=args.host)
 
         elif args.health:
@@ -687,4 +687,3 @@ Examples:
 
 if __name__ == "__main__":
     sys.exit(main())
-

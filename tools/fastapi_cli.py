@@ -38,7 +38,7 @@ def find_process_by_port(port: int) -> Optional[int]:
             text=True,
             timeout=5
         )
-        
+
         if result.returncode == 0:
             # Parse netstat output to find LISTENING on the port
             for line in result.stdout.split('\n'):
@@ -53,7 +53,7 @@ def find_process_by_port(port: int) -> Optional[int]:
                             continue
     except Exception:
         pass
-    
+
     return None
 
 
@@ -120,15 +120,15 @@ def stop_service(port: int = 8000) -> int:
     if not is_port_in_use(port):
         print(f"FastAPI service is not running on port {port}")
         return 0
-    
+
     pid = find_process_by_port(port)
-    
+
     if not pid:
         print(f"Could not find process using port {port}")
         return 1
-    
+
     print(f"Stopping FastAPI service (PID: {pid})...")
-    
+
     if kill_process(pid):
         # Wait a moment and verify
         time.sleep(1)
@@ -162,7 +162,7 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
             print(f"  Process using port: PID {pid}", file=sys.stderr)
             print(f"  Stop it first with: python {Path(__file__).name} stop", file=sys.stderr)
         return 1
-    
+
     print("=" * 60)
     print("STARTING FASTAPI SERVICE (Ollama AI Agent)")
     print("=" * 60)
@@ -172,38 +172,38 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
     print(f"  - API: http://localhost:{port}/api/v1/*")
     print("Press Ctrl+C to stop")
     print("=" * 60)
-    
+
     # Get project root
     project_root = Path(__file__).parent.parent
-    
+
     # Service directory
     service_dir = project_root / "src" / "cloud-services" / "shared-services" / "ollama-ai-agent"
     main_module_path = service_dir / "main.py"
-    
+
     if not main_module_path.exists():
         print(f"Error: Service module not found at {main_module_path}", file=sys.stderr)
         return 1
-    
+
     # Change to the service directory for proper relative imports
     original_cwd = os.getcwd()
     parent_dir = service_dir.parent
-    
+
     try:
         # Set up Python path - add parent directory so relative imports work
         os.chdir(parent_dir)
-        
+
         # Add parent to path for imports
         if str(parent_dir) not in sys.path:
             sys.path.insert(0, str(parent_dir))
-        
+
         # Use importlib to load the module with proper package context
         import importlib.util
         import importlib.machinery
-        
+
         # Create package module first (needed for relative imports)
         package_name = "ollama_ai_agent"
         init_path = service_dir / "__init__.py"
-        
+
         # Load or create package module
         if package_name not in sys.modules:
             if init_path.exists():
@@ -227,7 +227,7 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
                 package_module.__path__ = [str(service_dir)]
                 package_module.__file__ = str(init_path)
                 sys.modules[package_name] = package_module
-        
+
         # Now load main module
         loader = importlib.machinery.SourceFileLoader(
             f"{package_name}.main",
@@ -238,26 +238,26 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
             loader,
             origin=str(main_module_path)
         )
-        
+
         if spec is None or spec.loader is None:
             raise ImportError(f"Could not create spec for {main_module_path}")
-        
+
         main_module = importlib.util.module_from_spec(spec)
         main_module.__package__ = package_name
         main_module.__file__ = str(main_module_path)
-        
+
         # Store in sys.modules before executing
         sys.modules[f"{package_name}.main"] = main_module
-        
+
         # Execute the module
         spec.loader.exec_module(main_module)
-        
+
         # Get the app
         if not hasattr(main_module, 'app'):
             raise ImportError(f"Module {main_module_path} does not have an 'app' attribute")
-        
+
         app = main_module.app
-        
+
         # Run uvicorn
         import uvicorn
         uvicorn.run(
@@ -304,16 +304,16 @@ def restart_service(port: int = 8000, host: str = "0.0.0.0") -> int:
         Exit code (0 for success, 1 for error)
     """
     print("Restarting FastAPI service...")
-    
+
     # Stop the service
     stop_result = stop_service(port)
-    
+
     if stop_result != 0 and is_port_in_use(port):
         print("Warning: Could not stop existing service, attempting to start anyway...", file=sys.stderr)
-    
+
     # Wait a moment for port to be released
     time.sleep(2)
-    
+
     # Start the service
     return start_service(port, host)
 
@@ -352,21 +352,21 @@ def check_health(port: int = 8000) -> int:
         Exit code (0 if healthy, 1 if unhealthy or not running)
     """
     import requests
-    
+
     url = f"http://localhost:{port}/health"
-    
+
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         health_data = response.json()
-        
+
         print(f"FastAPI service health check (port {port}):")
         print(f"  Status: {health_data.get('status', 'unknown')}")
         print(f"  Ollama Available: {health_data.get('ollama_available', False)}")
         print(f"  LLM Name: {health_data.get('llm_name', 'unknown')}")
         print(f"  Model Name: {health_data.get('model_name', 'unknown')}")
         print(f"  Timestamp: {health_data.get('timestamp', 'unknown')}")
-        
+
         if health_data.get('status') == 'healthy':
             return 0
         else:
@@ -393,14 +393,14 @@ def check_ollama_status(ollama_port: int = 11434) -> Tuple[bool, Optional[int]]:
         Tuple of (is_running, pid) where pid is None if not found
     """
     import requests
-    
+
     # Check if port is in use
     if not is_port_in_use(ollama_port):
         return (False, None)
-    
+
     # Try to find process
     pid = find_process_by_port(ollama_port)
-    
+
     # Verify it's actually Ollama by checking the API
     try:
         url = f"http://localhost:{ollama_port}/api/tags"
@@ -409,7 +409,7 @@ def check_ollama_status(ollama_port: int = 11434) -> Tuple[bool, Optional[int]]:
             return (True, pid)
     except Exception:
         pass
-    
+
     # Port is in use but might not be Ollama
     return (False, pid)
 
@@ -423,10 +423,10 @@ def check_ollama_windows_service() -> Tuple[bool, Optional[str]]:
     """
     if os.name != 'nt':
         return (False, None)
-    
+
     # Try multiple possible service names
     possible_names = ["Ollama", "ollama", "OLLAMA"]
-    
+
     for service_name in possible_names:
         try:
             result = subprocess.run(
@@ -435,7 +435,7 @@ def check_ollama_windows_service() -> Tuple[bool, Optional[str]]:
                 text=True,
                 timeout=5
             )
-            
+
             if result.returncode == 0:
                 # Service exists, check if running
                 if "RUNNING" in result.stdout:
@@ -444,7 +444,7 @@ def check_ollama_windows_service() -> Tuple[bool, Optional[str]]:
                     return (False, service_name)
         except Exception:
             continue
-    
+
     # Also try PowerShell to find services with "ollama" in name
     try:
         ps_cmd = "Get-Service | Where-Object {$_.Name -like '*ollama*' -or $_.DisplayName -like '*ollama*'} | Select-Object -First 1 -ExpandProperty Name"
@@ -468,7 +468,7 @@ def check_ollama_windows_service() -> Tuple[bool, Optional[str]]:
                 return (True, service_name)
     except Exception:
         pass
-    
+
     return (False, None)
 
 
@@ -484,7 +484,7 @@ def stop_ollama_windows_service(service_name: str = "Ollama") -> bool:
     """
     if os.name != 'nt':
         return False
-    
+
     try:
         result = subprocess.run(
             ["sc", "stop", service_name],
@@ -508,14 +508,14 @@ def stop_ollama(ollama_port: int = 11434) -> int:
         Exit code (0 for success, 1 for error)
     """
     import requests
-    
+
     # Check if Ollama is actually running (by API, not just port)
     ollama_running, pid = check_ollama_status(ollama_port)
-    
+
     if not ollama_running:
         print(f"Ollama service is not running on port {ollama_port}")
         return 0
-    
+
     if not pid:
         print(f"Could not find Ollama process using port {ollama_port}")
         # Try to find any process on the port
@@ -523,10 +523,10 @@ def stop_ollama(ollama_port: int = 11434) -> int:
         if not pid:
             print(f"Could not identify process to stop")
             return 1
-    
+
     # Check if Ollama is running as Windows service
     is_service, service_name = check_ollama_windows_service()
-    
+
     if is_service:
         print(f"Ollama is running as Windows service '{service_name}'")
         print(f"Stopping Windows service...")
@@ -543,11 +543,11 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                 # Fall through to process kill attempt
         else:
             print(f"[WARN] Could not stop Windows service, attempting process kill...")
-    
+
     # Find all Ollama processes and their parent processes
     all_ollama_pids = [pid]
     parent_pids = set()
-    
+
     try:
         if os.name == 'nt':  # Windows
             # Get all ollama.exe processes and their parent PIDs
@@ -566,7 +566,7 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                             parent_pids.add(parent_pid)
                         except ValueError:
                             continue
-            
+
             # Get all ollama.exe PIDs
             result = subprocess.run(
                 ["tasklist", "/FI", "IMAGENAME eq ollama.exe", "/FO", "CSV"],
@@ -589,9 +589,9 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                             continue
     except Exception:
         pass
-    
+
     print(f"Stopping Ollama service (found {len(all_ollama_pids)} process(es))...")
-    
+
     # If parent processes found, stop them first to prevent restart
     if parent_pids:
         print(f"Found {len(parent_pids)} parent process(es) that may restart Ollama")
@@ -607,13 +607,13 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                 )
                 parent_name = result.stdout.strip() if result.returncode == 0 else "unknown"
                 print(f"  Stopping parent process {parent_pid} ({parent_name})...")
-                
+
                 if kill_process(parent_pid):
                     print(f"  Stopped parent process {parent_pid}")
                     time.sleep(1)
             except Exception as e:
                 print(f"  Could not stop parent process {parent_pid}: {e}")
-    
+
     # First try: Kill all ollama.exe processes at once using taskkill
     if os.name == 'nt' and len(all_ollama_pids) > 0:
         try:
@@ -636,17 +636,17 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                     print(f"  Ollama restarted, continuing with individual process kill...")
         except Exception as e:
             print(f"  Could not kill all processes at once: {e}")
-    
+
     # Fallback: Kill individual processes
     killed_any = False
     for process_pid in all_ollama_pids:
         if kill_process(process_pid):
             killed_any = True
             print(f"  Stopped process {process_pid}")
-    
+
     if not killed_any and len(all_ollama_pids) > 0:
         print(f"[WARN] Could not stop Ollama processes individually")
-    
+
     # Wait and verify Ollama is actually stopped by checking API
     max_attempts = 15
     for attempt in range(max_attempts):
@@ -663,7 +663,7 @@ def stop_ollama(ollama_port: int = 11434) -> int:
             # Connection refused or timeout means Ollama is stopped
             print(f"Ollama service stopped successfully")
             return 0
-    
+
     # Final verification - check if port is still in use and if it's Ollama
     time.sleep(2)
     ollama_still_running, new_pid = check_ollama_status(ollama_port)
@@ -674,25 +674,25 @@ def stop_ollama(ollama_port: int = 11434) -> int:
         if new_pid and new_pid not in all_ollama_pids:
             print(f"[WARN] Ollama process restarted (new PID: {new_pid})")
             print(f"Attempting persistent stop (Ollama has auto-restart enabled)...")
-            
+
             # Persistent retry - keep trying until stopped or max attempts
             max_persistent_attempts = 10
             current_pid = new_pid
             stopped_pids = set(all_ollama_pids)
-            
+
             for persistent_retry in range(max_persistent_attempts):
                 print(f"  Attempt {persistent_retry + 1}/{max_persistent_attempts}: Stopping PID {current_pid}...")
-                
+
                 if kill_process(current_pid):
                     stopped_pids.add(current_pid)
                     time.sleep(2)
-                    
+
                     # Check if stopped
                     ollama_check, check_pid = check_ollama_status(ollama_port)
                     if not ollama_check:
                         print(f"Ollama service stopped successfully after {persistent_retry + 1} attempts")
                         return 0
-                    
+
                     # If restarted with new PID, continue
                     if check_pid and check_pid not in stopped_pids:
                         current_pid = check_pid
@@ -702,9 +702,9 @@ def stop_ollama(ollama_port: int = 11434) -> int:
                         # Same PID still running, wait longer
                         time.sleep(2)
                         continue
-                
+
                 time.sleep(1)
-            
+
             # Final check
             ollama_final_check, _ = check_ollama_status(ollama_port)
             if ollama_final_check:
@@ -726,39 +726,39 @@ def stop_ollama(ollama_port: int = 11434) -> int:
 def sync_services(port: int = 8000, ollama_port: int = 11434) -> int:
     """
     Ensure FastAPI and Ollama are in sync.
-    
+
     Rules:
     - If FastAPI is not running, Ollama should also not be running
     - If FastAPI is running, Ollama should be running (or will be started by FastAPI)
-    
+
     Args:
         port: FastAPI port
         ollama_port: Ollama port
-        
+
     Returns:
         Exit code (0 if in sync, 1 if sync failed)
     """
     print("=" * 60)
     print("SYNCING FASTAPI AND OLLAMA SERVICES")
     print("=" * 60)
-    
+
     fastapi_running = is_port_in_use(port)
     ollama_running, ollama_pid = check_ollama_status(ollama_port)
-    
+
     print(f"\nCurrent Status:")
     print(f"  FastAPI: {'Running' if fastapi_running else 'Not Running'}")
     print(f"  Ollama: {'Running' if ollama_running else 'Not Running'}")
-    
+
     # Sync rule: If FastAPI is not running, Ollama should also not be running
     if not fastapi_running and ollama_running:
         print(f"\n[SYNC ISSUE] FastAPI is not running but Ollama is running")
         print(f"Fixing: Stopping Ollama to match FastAPI state...")
-        
+
         stop_result = stop_ollama(ollama_port)
-        
+
         # Re-verify Ollama status after stop attempt
         ollama_running_after, _ = check_ollama_status(ollama_port)
-        
+
         if stop_result == 0 and not ollama_running_after:
             print(f"\n[OK] Sync complete: Ollama stopped to match FastAPI state")
             print(f"Status: Both services are now stopped (in sync)")
@@ -798,16 +798,16 @@ def check_detailed_status(port: int = 8000) -> int:
         Exit code (0 if running and healthy, 1 otherwise)
     """
     import requests
-    
+
     print("=" * 60)
     print("FASTAPI SERVICE STATUS")
     print("=" * 60)
-    
+
     # Check FastAPI process status
     print("\n1. FastAPI Process Status:")
     process_running = False
     pid = None
-    
+
     if is_port_in_use(port):
         pid = find_process_by_port(port)
         if pid:
@@ -818,11 +818,11 @@ def check_detailed_status(port: int = 8000) -> int:
             print(f"   [WARN] Port {port} is in use but could not identify process")
     else:
         print(f"   [FAIL] Service is not running on port {port}")
-    
+
     # Check Ollama (LLM) status
     print("\n2. Ollama (LLM) Status:")
     ollama_running, ollama_pid = check_ollama_status(11434)
-    
+
     if ollama_running:
         if ollama_pid:
             print(f"   [OK] Ollama is running on port 11434")
@@ -832,7 +832,7 @@ def check_detailed_status(port: int = 8000) -> int:
             print(f"   [WARN] Could not identify process ID")
     else:
         print(f"   [FAIL] Ollama is not running on port 11434")
-    
+
     # Check sync status
     if not process_running and ollama_running:
         print("\n" + "=" * 60)
@@ -841,15 +841,15 @@ def check_detailed_status(port: int = 8000) -> int:
         print("  They are not in sync!")
         print("=" * 60)
         print("\nFixing sync issue: Stopping Ollama to match FastAPI state...")
-        
+
         stop_result = stop_ollama(11434)
-        
+
         # Re-verify Ollama status after stop attempt
         ollama_running_after, _ = check_ollama_status(11434)
-        
+
         print("\n" + "=" * 60)
         print("Overall Status: [FAIL] FASTAPI NOT RUNNING")
-        
+
         if stop_result == 0 and not ollama_running_after:
             print("Status: [OK] Services are now in sync (both stopped)")
             return 1
@@ -861,29 +861,29 @@ def check_detailed_status(port: int = 8000) -> int:
             else:
                 print("Status: [WARN] Sync fix attempted but verification uncertain")
             return 1
-    
+
     if not process_running:
         print("\n" + "=" * 60)
         print("Overall Status: [FAIL] FASTAPI NOT RUNNING")
         return 1
-    
+
     # Check health endpoint
     print("\n3. FastAPI Health Endpoint:")
     url = f"http://localhost:{port}/health"
     health_ok = False
-    
+
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()
         health_data = response.json()
-        
+
         print(f"   [OK] Health endpoint accessible")
         print(f"   Status: {health_data.get('status', 'unknown')}")
         print(f"   Ollama Available: {health_data.get('ollama_available', False)}")
         print(f"   LLM Name: {health_data.get('llm_name', 'unknown')}")
         print(f"   Model Name: {health_data.get('model_name', 'unknown')}")
         print(f"   Timestamp: {health_data.get('timestamp', 'unknown')}")
-        
+
         if health_data.get('status') == 'healthy':
             health_ok = True
         else:
@@ -894,9 +894,9 @@ def check_detailed_status(port: int = 8000) -> int:
         print(f"   [FAIL] Health endpoint timed out")
     except Exception as e:
         print(f"   [FAIL] Error checking health: {e}")
-    
+
     print("\n" + "=" * 60)
-    
+
     # Determine overall status
     if process_running and health_ok and ollama_running:
         print("Overall Status: [OK] FASTAPI RUNNING AND HEALTHY, OLLAMA RUNNING")
@@ -980,4 +980,3 @@ Examples:
 
 if __name__ == "__main__":
     sys.exit(main())
-

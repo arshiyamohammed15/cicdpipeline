@@ -1,6 +1,6 @@
 /**
  * Storage Integration Test Suite
- * 
+ *
  * End-to-end tests for storage integration
  * Tests receipt generation, storage, and reading flow
  */
@@ -228,4 +228,3 @@ describe('Storage Integration Tests', () => {
         });
     });
 });
-

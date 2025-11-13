@@ -37,14 +37,14 @@ export class DelegationManager {
 
         // Determine appropriate module for delegation
         const targetModule = this.determineTargetModule(task);
-        
+
         if (!targetModule) {
             throw new Error(`No suitable module found for task: ${task.type}`);
         }
 
         // Delegate to appropriate module
         const result = await this.executeDelegation(targetModule, task);
-        
+
         // Update delegation history
         this.updateDelegationHistory(task, result);
 
@@ -75,7 +75,7 @@ export class DelegationManager {
 
     private async executeDelegation(moduleName: string, task: DelegationTask): Promise<DelegationResult> {
         const module = this.orchestrator?.getModule(moduleName);
-        
+
         if (!module) {
             throw new Error(`Module ${moduleName} not found`);
         }

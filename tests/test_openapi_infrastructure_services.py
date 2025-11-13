@@ -21,7 +21,7 @@ class TestPolicyServiceOpenAPI:
         """Load OpenAPI spec."""
         spec_path = Path("docs/architecture/openapi/policy-service.openapi.yaml")
         assert spec_path.exists(), f"OpenAPI spec not found: {spec_path}"
-        
+
         # Read and parse YAML (simple parser for basic structure)
         content = spec_path.read_text(encoding='utf-8')
         self.spec_content = content
@@ -50,7 +50,7 @@ class TestPolicyServiceOpenAPI:
             "/api/v1/trust/crl/revoke",
             "/health"
         ]
-        
+
         for path in required_paths:
             assert path in self.spec_content, \
                 f"Required path {path} must be defined"
@@ -93,7 +93,7 @@ class TestPolicyServiceOpenAPI:
         """Test: PolicySnapshotResponse schema matches TypeScript interface."""
         assert "PolicySnapshotResponse" in self.spec_content, \
             "PolicySnapshotResponse schema must be defined"
-        
+
         # Check required fields from TypeScript interface
         required_fields = [
             "snapshot_id",
@@ -104,7 +104,7 @@ class TestPolicyServiceOpenAPI:
             "timestamp_utc",
             "signature"
         ]
-        
+
         for field in required_fields:
             assert field in self.spec_content, \
                 f"PolicySnapshotResponse must include field: {field}"
@@ -171,7 +171,7 @@ class TestEvidenceServiceOpenAPI:
         """Load OpenAPI spec."""
         spec_path = Path("docs/architecture/openapi/evidence-service.openapi.yaml")
         assert spec_path.exists(), f"OpenAPI spec not found: {spec_path}"
-        
+
         content = spec_path.read_text(encoding='utf-8')
         self.spec_content = content
         self.spec_path = spec_path
@@ -198,7 +198,7 @@ class TestEvidenceServiceOpenAPI:
             "/api/v1/evidence/batch",
             "/health"
         ]
-        
+
         for path in required_paths:
             assert path in self.spec_content, \
                 f"Required path {path} must be defined"
@@ -243,14 +243,14 @@ class TestEvidenceServiceOpenAPI:
         """Test: EvidenceHandleResponse schema matches TypeScript EvidenceHandle interface."""
         assert "EvidenceHandleResponse" in self.spec_content, \
             "EvidenceHandleResponse schema must be defined"
-        
+
         # Check required fields from TypeScript EvidenceHandle interface
         required_fields = [
             "url",
             "type",
             "description"
         ]
-        
+
         for field in required_fields:
             assert field in self.spec_content, \
                 f"EvidenceHandleResponse must include field: {field}"
@@ -309,7 +309,7 @@ class TestOpenAPICrossService:
         """Test: Both OpenAPI specs exist."""
         policy_spec = Path("docs/architecture/openapi/policy-service.openapi.yaml")
         evidence_spec = Path("docs/architecture/openapi/evidence-service.openapi.yaml")
-        
+
         assert policy_spec.exists(), \
             f"Policy service OpenAPI spec must exist: {policy_spec}"
         assert evidence_spec.exists(), \
@@ -319,13 +319,13 @@ class TestOpenAPICrossService:
         """Test: Both services use consistent error response format."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')
         evidence_content = Path("docs/architecture/openapi/evidence-service.openapi.yaml").read_text(encoding='utf-8')
-        
+
         # Both should have ErrorResponse with code and message
         assert "ErrorResponse" in policy_content, \
             "Policy service must define ErrorResponse"
         assert "ErrorResponse" in evidence_content, \
             "Evidence service must define ErrorResponse"
-        
+
         # Both should have error.code and error.message
         assert "code" in policy_content and "message" in policy_content, \
             "Policy service ErrorResponse must have code and message"
@@ -336,13 +336,13 @@ class TestOpenAPICrossService:
         """Test: Both services use consistent health response format."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')
         evidence_content = Path("docs/architecture/openapi/evidence-service.openapi.yaml").read_text(encoding='utf-8')
-        
+
         # Both should have HealthResponse
         assert "HealthResponse" in policy_content, \
             "Policy service must define HealthResponse"
         assert "HealthResponse" in evidence_content, \
             "Evidence service must define HealthResponse"
-        
+
         # Both should have status field
         assert "status" in policy_content, \
             "Policy service HealthResponse must have status field"
@@ -353,10 +353,9 @@ class TestOpenAPICrossService:
         """Test: Both specs use same OpenAPI version."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')
         evidence_content = Path("docs/architecture/openapi/evidence-service.openapi.yaml").read_text(encoding='utf-8')
-        
+
         # Both should specify OpenAPI 3.1.0
         assert "3.1.0" in policy_content, \
             "Policy service must use OpenAPI 3.1.0"
         assert "3.1.0" in evidence_content, \
             "Evidence service must use OpenAPI 3.1.0"
-

@@ -1,6 +1,6 @@
 /**
  * CostTracker
- * 
+ *
  * Emits metrics/events and tracks costs based on duration * tier multiplier.
  * Writes to metrics.ndjson (append-only, deterministic).
  */
@@ -57,7 +57,7 @@ export class CostTracker {
    */
   async trackServerlessInvoke(durationMs: number, tier: string = 'light'): Promise<void> {
     const cost = this.calculateCost(durationMs, tier);
-    
+
     await this.emitCounter('serverless.invoke', {
       operation: 'invoke',
       tier,
@@ -78,7 +78,7 @@ export class CostTracker {
    */
   async trackGpuSubmit(durationMs: number, tier: string = 'ai-inference'): Promise<void> {
     const cost = this.calculateCost(durationMs, tier);
-    
+
     await this.emitCounter('gpu.submit', {
       operation: 'submit',
       tier,
@@ -149,7 +149,7 @@ export class CostTracker {
    */
   async trackBackupSnapshot(durationMs: number, sizeBytes: number): Promise<void> {
     const cost = this.calculateCost(durationMs, 'batch');
-    
+
     await this.emitCounter('backup.snapshot', {
       operation: 'snapshot',
       duration_ms: durationMs,
@@ -173,7 +173,7 @@ export class CostTracker {
    */
   async trackBackupVerify(durationMs: number): Promise<void> {
     const cost = this.calculateCost(durationMs, 'batch');
-    
+
     await this.emitCounter('backup.verify', {
       operation: 'verify',
       duration_ms: durationMs,
@@ -292,4 +292,3 @@ export class CostTracker {
     return Date.now();
   }
 }
-

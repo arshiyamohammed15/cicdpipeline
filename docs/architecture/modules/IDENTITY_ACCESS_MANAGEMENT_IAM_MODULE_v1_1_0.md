@@ -1,6 +1,6 @@
 # IDENTITY & ACCESS MANAGEMENT (IAM) MODULE — COMPLETE SPECIFICATION (v1.1.0)
 
-**Status:** Implementation-ready • **Updated:** 2025-11-13 06:21:08   
+**Status:** Implementation-ready • **Updated:** 2025-11-13 06:21:08
 **Reason for new version:** Resolve contradictions, add missing contracts, and make the module fully build/test ready.
 
 ---
@@ -60,7 +60,7 @@
 ---
 
 ## 2) Role Taxonomy (Unified) & Mapping
-**Canonical RBAC roles:** `admin`, `developer`, `viewer`, `ci_bot`  
+**Canonical RBAC roles:** `admin`, `developer`, `viewer`, `ci_bot`
 **Organizational roles (examples):** `executive`, `lead`, `individual_contributor`, `ai_agent`
 
 **Mapping (normative example; adjust via policy):**
@@ -77,40 +77,40 @@ Notes: Mapping is evaluated **before** authorization; final permissions are dete
 
 ## 3) AuthN/AuthZ Semantics (Precedence & Flows)
 ### 3.1 Precedence
-1. **Deny overrides** (explicit deny anywhere → deny).  
-2. **RBAC base** (role → base permissions).  
-3. **ABAC constraints** (time, device posture, location, risk score).  
-4. **Policy caps** (tenant/org caps, SoD checks).  
+1. **Deny overrides** (explicit deny anywhere → deny).
+2. **RBAC base** (role → base permissions).
+3. **ABAC constraints** (time, device posture, location, risk score).
+4. **Policy caps** (tenant/org caps, SoD checks).
 5. **Break‑glass** (last resort; post‑facto review).
 
 ### 3.2 JIT Elevation Workflow
-- **Request:** Subject → `POST /iam/v1/decision` with `action=request_elevation`, desired scope, duration.  
-- **Approval:** Approver(s) listed in policy; **dual‑approval** if scope == admin.  
-- **Issued:** Temporary grant with `granted_until` (ISO 8601) and **auto‑revocation** on expiry.  
-- **Receipt:** Signed decision receipt (Ed25519) written to Evidence & Audit Ledger.  
+- **Request:** Subject → `POST /iam/v1/decision` with `action=request_elevation`, desired scope, duration.
+- **Approval:** Approver(s) listed in policy; **dual‑approval** if scope == admin.
+- **Issued:** Temporary grant with `granted_until` (ISO 8601) and **auto‑revocation** on expiry.
+- **Receipt:** Signed decision receipt (Ed25519) written to Evidence & Audit Ledger.
 - **Renewal:** Explicit re‑approval only; no silent renewal.
 
 ### 3.3 Break‑Glass
-- **Trigger:** `crisis_mode=true` **and** policy `iam-break-glass` enabled.  
-- **Grant:** Minimal time‑boxed admin (default 4h).  
-- **Evidence:** Incident ID, requester/approver identity, justification text (non‑PII).  
-- **Review:** Mandatory post‑facto review within 24h; auto‑revoke if not approved.  
+- **Trigger:** `crisis_mode=true` **and** policy `iam-break-glass` enabled.
+- **Grant:** Minimal time‑boxed admin (default 4h).
+- **Evidence:** Incident ID, requester/approver identity, justification text (non‑PII).
+- **Review:** Mandatory post‑facto review within 24h; auto‑revoke if not approved.
 
 ---
 
 ## 4) Tokens, Sessions, & Fallback
-- **Tokens:** JWT **signed** with **RS256 (RSA‑2048)**; 1h expiry; refresh at 55m. **No JWE** by default.  
-- **Claims:** Only minimal IDs and scopes; **no PII**; include `kid`, `iat`, `exp`, `aud`, `iss`, `sub`, `scope`.  
-- **Session topology:** Stateless JWT for APIs; optional server session index for revocation lists.  
-- **Revocation:** Maintain `jti` denylist with **TTL=exp**; propagate within 5s.  
+- **Tokens:** JWT **signed** with **RS256 (RSA‑2048)**; 1h expiry; refresh at 55m. **No JWE** by default.
+- **Claims:** Only minimal IDs and scopes; **no PII**; include `kid`, `iat`, `exp`, `aud`, `iss`, `sub`, `scope`.
+- **Session topology:** Stateless JWT for APIs; optional server session index for revocation lists.
+- **Revocation:** Maintain `jti` denylist with **TTL=exp**; propagate within 5s.
 - **Cached‑credentials fallback (IdP outage):** limited scope token (read‑only) with `max_ttl=15m`; banner `degraded=true`; all writes require re‑auth on recovery.
 
 ---
 
 ## 5) Transport & Key Management
-- **Transport Security Profile:** TLS 1.3 only; ciphersuites: AES‑256‑GCM‑SHA384 or CHACHA20‑POLY1305‑SHA256; min ECDHE P‑256.  
-- **mTLS** between internal services; **HSTS** on public edge.  
-- **Key Management:** All signing keys have **KID**; rotation every **90 days** or on suspicion; previous key retained in verify set for token lifetime + 24h; **no private keys in containers** (use OS/TPM/HSM).  
+- **Transport Security Profile:** TLS 1.3 only; ciphersuites: AES‑256‑GCM‑SHA384 or CHACHA20‑POLY1305‑SHA256; min ECDHE P‑256.
+- **mTLS** between internal services; **HSTS** on public edge.
+- **Key Management:** All signing keys have **KID**; rotation every **90 days** or on suspicion; previous key retained in verify set for token lifetime + 24h; **no private keys in containers** (use OS/TPM/HSM).
 - **Secrets handling:** Store in secure secret manager; rotate quarterly; access via short‑lived service identities.
 
 ---
@@ -293,8 +293,8 @@ components:
               rules: { type: array, items: { type: object } }
               status: { type: string, enum: [draft, released, deprecated] }
 ```
-**Error Model:** All responses include `X-Request-ID` header; clients must echo `X-Idempotency-Key` for write‑like operations.  
-**Rate limits:** Default **50 RPS/client**, burst **200** for 10s; 429 with `Retry-After`. Tenant/global limits configurable per policy.  
+**Error Model:** All responses include `X-Request-ID` header; clients must echo `X-Idempotency-Key` for write‑like operations.
+**Rate limits:** Default **50 RPS/client**, burst **200** for 10s; 429 with `Retry-After`. Tenant/global limits configurable per policy.
 **Idempotency:** Required for `/policies` via `X-Idempotency-Key`; server ensures single application per key within 24h window.
 
 ---
@@ -323,7 +323,7 @@ components:
   "sig": "eddsa-ed25519-base64"
 }
 ```
-- **Risk score domain:** `[0.0, 1.0]`; calibrated on false‑positive budget < 1%.  
+- **Risk score domain:** `[0.0, 1.0]`; calibrated on false‑positive budget < 1%.
 - **Signing:** Receipts are **Ed25519‑signed**; verification public keys distributed via Evidence & Audit Ledger trust store.
 
 ---
@@ -349,37 +349,37 @@ components:
 ---
 
 ## 9) Performance, Tests & Overload Behavior
-**Throughput:** Auth 500/s; Policy 1000/s; Token 2000/s.  
-**Traffic mix for tests:** 70% verify, 25% decision, 5% policies.  
-**Load:** 2× expected peak; **Stress:** 5×; **Endurance:** 72h.  
+**Throughput:** Auth 500/s; Policy 1000/s; Token 2000/s.
+**Traffic mix for tests:** 70% verify, 25% decision, 5% policies.
+**Load:** 2× expected peak; **Stress:** 5×; **Endurance:** 72h.
 **Overload:** Prefer **shed new elevation / policy writes** first; preserve verify/decision read‑paths. Return `503` with `Retry-After` and emit `OVERLOAD` event.
 
 ---
 
 ## 10) Operations & Runbooks
-- **Key rotation:** rotate signing keys (RS256) every 90d; publish new KID; stage dual‑sign verify window.  
-- **Revocation drill:** monthly test of jti denylist propagation.  
-- **Break‑glass drill:** quarterly, with evidence review.  
-- **Backup/restore:** policy store hourly incremental + daily full; RPO 15m; RTO 1h (unchanged).  
+- **Key rotation:** rotate signing keys (RS256) every 90d; publish new KID; stage dual‑sign verify window.
+- **Revocation drill:** monthly test of jti denylist propagation.
+- **Break‑glass drill:** quarterly, with evidence review.
+- **Backup/restore:** policy store hourly incremental + daily full; RPO 15m; RTO 1h (unchanged).
 - **Multi‑tenant model:** tenant‑scoped keys, rate limits, quotas (users 50k, policies 5k, concurrent sessions 10k).
 
 ---
 
 ## 11) Dependencies (unchanged, clarified)
-- **M32 Identity & Trust Plane** (device/service identities, mTLS).  
-- **M27 Evidence & Audit Ledger** (receipt store/signing trust).  
+- **M32 Identity & Trust Plane** (device/service identities, mTLS).
+- **M27 Evidence & Audit Ledger** (receipt store/signing trust).
 - **M29 Data & Memory Plane** (policy/index storage, caches).
 
 ---
 
 ## 12) Compliance Mapping (evidence hooks)
-- **SOC 2** CC6.x: decision receipts, access reviews, SoD checks, jti denylist evidence.  
-- **GDPR 25/32:** data minimization (no PII in tokens), transport profile, key rotation logs.  
+- **SOC 2** CC6.x: decision receipts, access reviews, SoD checks, jti denylist evidence.
+- **GDPR 25/32:** data minimization (no PII in tokens), transport profile, key rotation logs.
 - **HIPAA:** access control events + immutable audit with rapid retrieval.
 
 ---
 
 ## 13) MMM Framework Integration
-- **Mirror:** expose per‑actor access history metrics.  
-- **Mentor:** guided JIT elevation with reason templates.  
+- **Mirror:** expose per‑actor access history metrics.
+- **Mentor:** guided JIT elevation with reason templates.
 - **Multiplier:** org roll‑ups of policy hygiene and SoD adherence.

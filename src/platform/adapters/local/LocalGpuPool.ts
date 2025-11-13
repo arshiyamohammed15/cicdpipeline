@@ -1,6 +1,6 @@
 /**
  * LocalGpuPool
- * 
+ *
  * Local simulation implementation of GpuPoolPort.
  * Simulates queue/capacity with metrics for pending/running.
  * Uses Promise-based completion delay.
@@ -185,4 +185,3 @@ export class LocalGpuPool implements GpuPoolPort {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
-

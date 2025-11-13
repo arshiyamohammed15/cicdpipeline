@@ -23,13 +23,13 @@ def health_check():
     try:
         from ..health import get_health_endpoint
         health_status = get_health_endpoint()
-        
+
         integrations = integration_registry.list_integrations()
-        
+
         # Add integration info to health status
         health_status['integrations'] = integrations
         health_status['integration_status'] = integration_registry.get_integration_status()
-        
+
         status_code = 200 if health_status['status'] == 'healthy' else 503
         return jsonify(health_status), status_code
     except Exception as e:
@@ -46,7 +46,7 @@ def healthz():
         from ..health import HealthChecker
         checker = HealthChecker()
         rule_check = checker.check_rule_count_consistency()
-        
+
         if rule_check['healthy']:
             return jsonify({'status': 'ok'}), 200
         else:

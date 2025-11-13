@@ -11,7 +11,7 @@
 - Inspected subtree: `ZeroUI2.0/gsmd`
 - File count (recursive): **176**
 - Total bytes: **385,206**
-- Tree fingerprint (SHA-256 over `relative-path:size`):  
+- Tree fingerprint (SHA-256 over `relative-path:size`):
   `d0ec1b4e0da4e60a52c67011aff3c794462d2eba6ed352810774e37e56fdc67e`
 
 Re-running the same scan over the same archive yields the same values.
@@ -20,7 +20,7 @@ Re-running the same scan over the same archive yields the same values.
 
 ## 2) Canonical module mapping (codes → names → folders)
 
-**Single extension artifact** with per-module folders under `src/modules/` (from the architecture file).  
+**Single extension artifact** with per-module folders under `src/modules/` (from the architecture file).
 **GSMD module snapshots** live under `gsmd/gsmd/modules/` (from the archive layout).
 
 | Code | Module name | VS Code folder (authoritative slug) | GSMD folder |
@@ -52,29 +52,29 @@ Re-running the same scan over the same archive yields the same values.
 
 ## 3) GSMD — verified facts (strict)
 
-- **Modules present:** 20 (`M01`…`M20`).  
-- **Snapshot files:** 170 total (`.../v1/snapshot.json` across modules/categories).  
-- **Schema/version fields (across all snapshots):**  
-  - `schema_version` = `"1.0.0"`  
-  - `version.major` = `1`  
-  - `policy_version_ids` length = `1`  
-  - `kid` contains `"ed25519"` in all snapshots  
+- **Modules present:** 20 (`M01`…`M20`).
+- **Snapshot files:** 170 total (`.../v1/snapshot.json` across modules/categories).
+- **Schema/version fields (across all snapshots):**
+  - `schema_version` = `"1.0.0"`
+  - `version.major` = `1`
+  - `policy_version_ids` length = `1`
+  - `kid` contains `"ed25519"` in all snapshots
   - `evaluation_points` is a **list** in all snapshots
 
-- **Uniform sections (present in 20/20 modules):**  
-  - `messages/v1/snapshot.json` contains a `messages` object with keys: `problems`, `status_pill`, `cards`.  
+- **Uniform sections (present in 20/20 modules):**
+  - `messages/v1/snapshot.json` contains a `messages` object with keys: `problems`, `status_pill`, `cards`.
   - `receipts_schema/v1/snapshot.json` contains a `receipts` object with keys: `required`, `optional`.
 
 - **Category coverage (number of modules providing the category):**
-  - High-frequency (≥13 modules):  
-    - `messages` (20), `receipts_schema` (20), `evidence_map` (15),  
-      `checklist` (14), `gate_rules` (14), `observability` (14), `overrides` (14),  
+  - High-frequency (≥13 modules):
+    - `messages` (20), `receipts_schema` (20), `evidence_map` (15),
+      `checklist` (14), `gate_rules` (14), `observability` (14), `overrides` (14),
       `risk_model` (14), `rollout` (14), `triggers` (13).
-  - Unique to one module (exactly 1):  
-    - `alignment_rules (M17)`, `conflict_predictors (M08)`, `coverage_packs (M13)`, `cross_module_policies (M20)`,  
-      `gs_catalog (M17)`, `knowledge_signals (M18)`, `legacy_triggers (M06)`, `merge_gates (M08)`,  
-      `metrics_definitions (M15)`, `nudge_rules (M18)`, `release_gates (M03)`, `release_triggers (M03)`,  
-      `reporting_policies (M14)`, `roi_views (M19)`, `rollback_requirements (M03)`, `slo_safety (M20)`,  
+  - Unique to one module (exactly 1):
+    - `alignment_rules (M17)`, `conflict_predictors (M08)`, `coverage_packs (M13)`, `cross_module_policies (M20)`,
+      `gs_catalog (M17)`, `knowledge_signals (M18)`, `legacy_triggers (M06)`, `merge_gates (M08)`,
+      `metrics_definitions (M15)`, `nudge_rules (M18)`, `release_gates (M03)`, `release_triggers (M03)`,
+      `reporting_policies (M14)`, `roi_views (M19)`, `rollback_requirements (M03)`, `slo_safety (M20)`,
       `trend_rules (M15)`, `verification_rules (M13)`.
 
 ---
@@ -95,26 +95,26 @@ Every `.../v1/snapshot.json` inspected includes the following **top-level fields
 These rules keep the **extension mapping** and **GSMD** content aligned and valid.
 
 ### 5.1 Mapping & structure
-- For each code `MXX`, the extension folder **MUST** exist at: `src/modules/mXX-<slug>/` (slugs as in §2).  
+- For each code `MXX`, the extension folder **MUST** exist at: `src/modules/mXX-<slug>/` (slugs as in §2).
 - For each code `MXX`, the GSMD folder **MUST** exist at: `gsmd/gsmd/modules/MXX/`.
 
 ### 5.2 GSMD snapshot invariants
-- Each GSMD module **MUST** contain `messages/v1/snapshot.json` with `messages.problems`, `messages.status_pill`, `messages.cards`.  
-- Each GSMD module **MUST** contain `receipts_schema/v1/snapshot.json` with `receipts.required`, `receipts.optional`.  
-- Every `.../v1/snapshot.json` **MUST** include all fields listed in §4.  
-- `schema_version` **MUST** equal `"1.0.0"`.  
-- `version.major` **MUST** equal `1`.  
-- `policy_version_ids` **MUST** be an array of length **1**.  
-- `kid` **MUST** contain the string `"ed25519"`.  
+- Each GSMD module **MUST** contain `messages/v1/snapshot.json` with `messages.problems`, `messages.status_pill`, `messages.cards`.
+- Each GSMD module **MUST** contain `receipts_schema/v1/snapshot.json` with `receipts.required`, `receipts.optional`.
+- Every `.../v1/snapshot.json` **MUST** include all fields listed in §4.
+- `schema_version` **MUST** equal `"1.0.0"`.
+- `version.major` **MUST** equal `1`.
+- `policy_version_ids` **MUST** be an array of length **1**.
+- `kid` **MUST** contain the string `"ed25519"`.
 - `evaluation_points` **MUST** be a list.
 
 ### 5.3 CI checks (deterministic)
-1. **Folder mapping check:** verify the existence of folders in §2 for all M01…M20.  
-2. **Snapshot schema check:** validate required fields in §4 for all `.../v1/snapshot.json`.  
-3. **Messages check:** ensure `problems`, `status_pill`, `cards` keys exist for all `messages/v1/snapshot.json`.  
-4. **Receipts schema check:** ensure `required` and `optional` keys exist for all `receipts_schema/v1/snapshot.json`.  
-5. **Versioning check:** assert `schema_version == "1.0.0"` and `version.major == 1` for all snapshots.  
-6. **Key format check:** assert `kid` contains `"ed25519"` for all snapshots.  
+1. **Folder mapping check:** verify the existence of folders in §2 for all M01…M20.
+2. **Snapshot schema check:** validate required fields in §4 for all `.../v1/snapshot.json`.
+3. **Messages check:** ensure `problems`, `status_pill`, `cards` keys exist for all `messages/v1/snapshot.json`.
+4. **Receipts schema check:** ensure `required` and `optional` keys exist for all `receipts_schema/v1/snapshot.json`.
+5. **Versioning check:** assert `schema_version == "1.0.0"` and `version.major == 1` for all snapshots.
+6. **Key format check:** assert `kid` contains `"ed25519"` for all snapshots.
 7. **Evaluation list check:** assert `evaluation_points` is a list for all snapshots.
 
 > All checks above are exact matches to what the current repository already satisfies, based on inspection.
@@ -123,7 +123,7 @@ These rules keep the **extension mapping** and **GSMD** content aligned and vali
 
 ## 6) Notes on category coverage (for navigation)
 
-This section is **descriptive** only (no requirements implied). Categories seen across modules:  
+This section is **descriptive** only (no requirements implied). Categories seen across modules:
 `alignment_rules, checklist, conflict_predictors, coverage_packs, cross_module_policies, evidence_map, gate_rules, gs_catalog, knowledge_signals, legacy_triggers, merge_gates, messages, metrics_definitions, nudge_rules, observability, overrides, receipts_schema, release_gates, release_triggers, reporting_policies, risk_model, roi_views, rollback_requirements, rollout, slo_safety, trend_rules, triggers, verification_rules`
 
 Use this as a directory guide when navigating `gsmd/gsmd/modules/MXX/*/v1/snapshot.json`.
@@ -132,7 +132,7 @@ Use this as a directory guide when navigating `gsmd/gsmd/modules/MXX/*/v1/snapsh
 
 ## 7) Change management (deterministic)
 
-- **Adding a module:** create both folders per §2, add `messages` and `receipts_schema` snapshots with required keys, add other category snapshots as needed, and pass CI checks in §5.3.  
+- **Adding a module:** create both folders per §2, add `messages` and `receipts_schema` snapshots with required keys, add other category snapshots as needed, and pass CI checks in §5.3.
 - **Removing a module:** remove both folders per §2 and update any mapping references that enumerate all modules.
 
 ---
