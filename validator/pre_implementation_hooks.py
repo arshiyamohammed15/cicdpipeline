@@ -215,112 +215,383 @@ class PromptValidator:
     
     def _get_violation_indicators(self, rule: Dict[str, Any], prompt_lower: str) -> bool:
         """
-        Detect violation indicators based on rule content.
+        Detect violation indicators based on rule content from single source of truth.
+        
+        This method dynamically validates ALL rules by parsing their actual content
+        (description, requirements, title) rather than using hardcoded patterns.
         
         Args:
-            rule: The rule to check
-            prompt_lower: Lowercase prompt
+            rule: The rule to check (from docs/constitution/*.json)
+            prompt_lower: Lowercase prompt text
             
         Returns:
-            True if violation detected
+            True if violation detected, False otherwise
         """
         rule_id = rule.get('rule_id', '').upper()
         title = rule.get('title', '').upper()
         description = rule.get('description', '').lower()
+        requirements = rule.get('requirements', [])
         category = rule.get('category', '').upper()
+        error_condition = rule.get('error_condition', '')
         
-        # Common violation patterns
-        violation_patterns = []
+        # Combine all rule text for comprehensive analysis
+        all_rule_text = ' '.join([
+            title.lower(),
+            description,
+            ' '.join([str(r).lower() for r in requirements if r]),
+            error_condition.lower() if error_condition else ''
+        ])
         
-        # Do Exactly What's Asked
-        if 'DO EXACTLY' in title or 'R-001' in rule_id:
+        # Extract prohibited terms and patterns from rule content
+        prohibited_terms = self._extract_prohibited_terms_from_rule(rule, all_rule_text)
+        
+        # Extract required terms that must be present
+        required_terms = self._extract_required_terms_from_rule(rule, all_rule_text)
+        
+        # Check for prohibited terms in prompt
+        if prohibited_terms:
+            for term in prohibited_terms:
+                if term in prompt_lower:
+                    return True
+        
+        # Check for missing required terms (if rule mandates them)
+        if required_terms and self._is_requirement_mandatory(all_rule_text):
+            # Check if prompt context matches rule context
+            if self._is_prompt_relevant_to_rule(rule, prompt_lower, all_rule_text):
+                # If relevant but missing required terms, it's a violation
+                if not any(term in prompt_lower for term in required_terms):
+                    return True
+        
+        # Check for explicit violation patterns in rule description
+        violation_patterns = self._extract_violation_patterns(all_rule_text)
+        for pattern in violation_patterns:
+            if pattern in prompt_lower:
+                return True
+        
+        # Check for category-specific violations
+        if self._check_category_specific_violations(rule, prompt_lower, category, all_rule_text):
+            return True
+        
+        # Check for rule-specific patterns based on rule_id prefixes
+        if self._check_rule_id_specific_violations(rule_id, rule, prompt_lower, all_rule_text):
+            return True
+        
+        return False
+    
+    def _extract_prohibited_terms_from_rule(self, rule: Dict[str, Any], all_rule_text: str) -> List[str]:
+        """
+        Extract prohibited terms from rule content (description, requirements, title).
+        
+        Args:
+            rule: The rule dictionary
+            all_rule_text: Combined text from title, description, requirements
+            
+        Returns:
+            List of prohibited terms/phrases to check in prompts
+        """
+        prohibited = []
+        rule_text_lower = all_rule_text.lower()
+        
+        # Extract explicit prohibitions
+        prohibition_keywords = [
+            'must not', 'prohibited', 'forbidden', 'disallow', 'never',
+            'do not', "don't", 'avoid', 'prevent', 'ban', 'restrict'
+        ]
+        
+        # Find sentences/phrases with prohibition keywords
+        sentences = re.split(r'[.!?;]\s+', rule_text_lower)
+        for sentence in sentences:
+            for keyword in prohibition_keywords:
+                if keyword in sentence:
+                    # Extract the prohibited item from the sentence
+                    # Look for common patterns: "must not [verb] [noun]", "prohibited [noun]", etc.
+                    prohibited_items = self._extract_prohibited_items_from_sentence(sentence, keyword)
+                    prohibited.extend(prohibited_items)
+        
+        # Extract common prohibited patterns from rule content
+        if 'hardcoded' in rule_text_lower:
+            prohibited.extend(['hardcoded password', 'hardcoded secret', 'hardcoded key', 
+                             'hardcoded token', 'hardcoded api key', 'hardcoded credential'])
+        
+        if 'cache' in rule_text_lower and ('disable' in rule_text_lower or 'purge' in rule_text_lower):
+            prohibited.extend(['cache', 'caching', 'test cache', 'framework cache'])
+        
+        if 'any type' in rule_text_lower or "'any'" in rule_text_lower or 'any:' in rule_text_lower:
+            prohibited.extend([': any', 'any[]', 'any>', '<any'])
+        
+        if 'privacy' in rule_text_lower or 'personal information' in rule_text_lower:
+            prohibited.extend(['password', 'secret', 'api key', 'private key', 'ssn', 
+                             'credit card', 'ssn', 'social security', 'personal data'])
+        
+        if 'assume' in rule_text_lower or 'guess' in rule_text_lower:
+            prohibited.extend(['assume', 'guess', 'probably', 'maybe', 'perhaps', 'likely'])
+        
+        if 'network' in rule_text_lower and 'not access' in rule_text_lower:
+            prohibited.extend(['network', 'http', 'fetch', 'request', 'api call'])
+        
+        if 'system clock' in rule_text_lower and 'not access' in rule_text_lower:
+            prohibited.extend(['datetime.now', 'time.now', 'date.now', 'system time'])
+        
+        if 'global state' in rule_text_lower and 'not access' in rule_text_lower:
+            prohibited.extend(['global', 'singleton', 'static variable'])
+        
+        # Remove duplicates and empty strings
+        prohibited = list(dict.fromkeys([p.strip() for p in prohibited if p.strip()]))
+        
+        return prohibited
+    
+    def _extract_prohibited_items_from_sentence(self, sentence: str, keyword: str) -> List[str]:
+        """Extract what is prohibited from a sentence containing a prohibition keyword."""
+        items = []
+        
+        # Pattern: "must not [verb] [noun]" or "prohibited [noun]"
+        patterns = [
+            r'must not\s+(\w+(?:\s+\w+){0,3})',
+            r'prohibited\s+(\w+(?:\s+\w+){0,3})',
+            r'forbidden\s+(\w+(?:\s+\w+){0,3})',
+            r'never\s+(\w+(?:\s+\w+){0,3})',
+            r'do not\s+(\w+(?:\s+\w+){0,3})',
+            r"don't\s+(\w+(?:\s+\w+){0,3})",
+            r'avoid\s+(\w+(?:\s+\w+){0,3})',
+        ]
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, sentence, re.IGNORECASE)
+            items.extend(matches)
+        
+        return items
+    
+    def _extract_required_terms_from_rule(self, rule: Dict[str, Any], all_rule_text: str) -> List[str]:
+        """
+        Extract required terms that must be present when rule is applicable.
+        
+        Args:
+            rule: The rule dictionary
+            all_rule_text: Combined text from title, description, requirements
+            
+        Returns:
+            List of required terms/phrases
+        """
+        required = []
+        rule_text_lower = all_rule_text.lower()
+        
+        # Extract explicit requirements
+        requirement_keywords = ['must', 'required', 'shall', 'need', 'mandatory', 'enforce']
+        
+        # Find sentences with requirement keywords
+        sentences = re.split(r'[.!?;]\s+', rule_text_lower)
+        for sentence in sentences:
+            for keyword in requirement_keywords:
+                if keyword in sentence:
+                    # Extract the required item
+                    required_items = self._extract_required_items_from_sentence(sentence, keyword)
+                    required.extend(required_items)
+        
+        # Extract common required patterns
+        if 'structured' in rule_text_lower or 'json' in rule_text_lower:
+            if 'log' in rule_text_lower:
+                required.extend(['structured log', 'json log', 'jsonl'])
+        
+        if 'schema version' in rule_text_lower:
+            required.append('schema_version')
+        
+        if 'iso-8601' in rule_text_lower or 'timestamp' in rule_text_lower:
+            required.extend(['iso-8601', 'timestamp', 'utc'])
+        
+        if 'deterministic' in rule_text_lower and 'test' in rule_text_lower:
+            required.append('deterministic')
+        
+        if 'disable cache' in rule_text_lower or 'purge cache' in rule_text_lower:
+            required.extend(['disable cache', 'no cache', 'purge cache'])
+        
+        # Remove duplicates and empty strings
+        required = list(dict.fromkeys([r.strip() for r in required if r.strip()]))
+        
+        return required
+    
+    def _extract_required_items_from_sentence(self, sentence: str, keyword: str) -> List[str]:
+        """Extract what is required from a sentence containing a requirement keyword."""
+        items = []
+        
+        # Pattern: "must [verb] [noun]" or "required [noun]"
+        patterns = [
+            r'must\s+(\w+(?:\s+\w+){0,3})',
+            r'required\s+(\w+(?:\s+\w+){0,3})',
+            r'shall\s+(\w+(?:\s+\w+){0,3})',
+            r'need\s+(\w+(?:\s+\w+){0,3})',
+            r'mandatory\s+(\w+(?:\s+\w+){0,3})',
+        ]
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, sentence, re.IGNORECASE)
+            items.extend(matches)
+        
+        return items
+    
+    def _is_requirement_mandatory(self, all_rule_text: str) -> bool:
+        """Check if the rule has mandatory requirements (not just recommendations)."""
+        mandatory_keywords = ['must', 'required', 'shall', 'mandatory', 'enforce', 'prohibit']
+        return any(keyword in all_rule_text.lower() for keyword in mandatory_keywords)
+    
+    def _is_prompt_relevant_to_rule(self, rule: Dict[str, Any], prompt_lower: str, all_rule_text: str) -> bool:
+        """Check if prompt is relevant to this rule's context."""
+        # Extract context keywords from rule
+        context_keywords = []
+        
+        # Get keywords from category
+        category = rule.get('category', '').lower()
+        if category:
+            context_keywords.extend(category.split())
+        
+        # Get keywords from title
+        title = rule.get('title', '').lower()
+        if title:
+            # Extract meaningful words (skip common words)
+            stop_words = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by'}
+            title_words = [w for w in title.split() if w not in stop_words and len(w) > 2]
+            context_keywords.extend(title_words)
+        
+        # Get keywords from description (first sentence)
+        description = rule.get('description', '').lower()
+        if description:
+            first_sentence = description.split('.')[0]
+            desc_words = [w for w in first_sentence.split() if w not in stop_words and len(w) > 3]
+            context_keywords.extend(desc_words[:5])  # Limit to first 5 meaningful words
+        
+        # Check if prompt contains any context keywords
+        if context_keywords:
+            return any(keyword in prompt_lower for keyword in context_keywords if len(keyword) > 3)
+        
+        return True  # If no context keywords, assume relevant
+    
+    def _extract_violation_patterns(self, all_rule_text: str) -> List[str]:
+        """Extract specific violation patterns from rule text."""
+        patterns = []
+        rule_text_lower = all_rule_text.lower()
+        
+        # Common violation indicators
+        if 'error:' in rule_text_lower:
+            # Extract error codes mentioned in rules
+            error_matches = re.findall(r'error:(\w+)', rule_text_lower)
+            patterns.extend([f'error:{code}' for code in error_matches])
+        
+        # Extract specific violation phrases
+        violation_phrases = [
+            'scope violation', 'size violation', 'diff complexity',
+            'comment drift', 'schema violation', 'unstructured log'
+        ]
+        
+        for phrase in violation_phrases:
+            if phrase in rule_text_lower:
+                patterns.append(phrase)
+        
+        return patterns
+    
+    def _check_category_specific_violations(self, rule: Dict[str, Any], prompt_lower: str, 
+                                           category: str, all_rule_text: str) -> bool:
+        """Check for category-specific violation patterns."""
+        category_lower = category.lower()
+        
+        # Security/Privacy category
+        if 'security' in category_lower or 'privacy' in category_lower:
+            security_risks = ['hardcoded password', 'secret in code', 'api key in code',
+                            'private key', 'credential', 'token in code']
+            if any(risk in prompt_lower for risk in security_risks):
+                return True
+        
+        # Testing category
+        if 'testing' in category_lower or 'test' in category_lower:
+            # Check for test-related violations
+            if 'test' in prompt_lower:
+                # Check for cache-related violations
+                if 'cache' in prompt_lower and 'disable' not in prompt_lower and 'purge' not in prompt_lower:
+                    if 'disable cache' in all_rule_text or 'purge cache' in all_rule_text:
+                        return True
+                
+                # Check for deterministic requirement
+                if 'deterministic' in all_rule_text and 'deterministic' not in prompt_lower:
+                    return True
+                
+                # Check for network/system access violations
+                if 'not access network' in all_rule_text or 'no network' in all_rule_text:
+                    if any(term in prompt_lower for term in ['http', 'fetch', 'request', 'api call']):
+                        return True
+        
+        # Logging/Observability category
+        if 'logging' in category_lower or 'observability' in category_lower or 'log' in category_lower:
+            if 'log' in prompt_lower:
+                # Check for structured logging requirement
+                if 'structured' in all_rule_text or 'json' in all_rule_text:
+                    if 'structured' not in prompt_lower and 'json' not in prompt_lower and 'jsonl' not in prompt_lower:
+                        return True
+                
+                # Check for schema version requirement
+                if 'schema version' in all_rule_text or 'schema_version' in all_rule_text:
+                    if 'schema_version' not in prompt_lower and 'schema version' not in prompt_lower:
+                        return True
+        
+        # Comments/Documentation category
+        if 'comment' in category_lower or 'documentation' in category_lower:
+            # Check if code generation requires documentation
+            if 'function' in prompt_lower or 'class' in prompt_lower or 'method' in prompt_lower:
+                if 'synchronize comments' in all_rule_text or 'update comments' in all_rule_text:
+                    if 'comment' not in prompt_lower and 'document' not in prompt_lower:
+                        return True
+        
+        # TypeScript category
+        if 'typescript' in category_lower:
+            if 'typescript' in prompt_lower or 'ts' in prompt_lower:
+                # Check for 'any' type prohibition
+                if 'any type' in all_rule_text or "'any'" in all_rule_text:
+                    if 'any' in prompt_lower and 'strict' not in prompt_lower:
+                        return True
+        
+        return False
+    
+    def _check_rule_id_specific_violations(self, rule_id: str, rule: Dict[str, Any], 
+                                          prompt_lower: str, all_rule_text: str) -> bool:
+        """Check for rule ID prefix-specific violations."""
+        # R-001: Do Exactly What's Asked
+        if rule_id.startswith('R-001') or 'do exactly' in all_rule_text:
             if any(word in prompt_lower for word in ['also add', 'also include', 'bonus', 'extra', 'additionally']):
                 return True
         
-        # Only Use Information Given
-        if 'ONLY USE INFORMATION' in title or 'R-002' in rule_id:
+        # R-002: Only Use Information Given
+        if rule_id.startswith('R-002') or 'only use information' in all_rule_text:
             if any(word in prompt_lower for word in ['assume', 'guess', 'probably', 'maybe', 'perhaps']):
                 return True
         
-        # Protect Privacy
-        if 'PRIVACY' in title or 'PRIVACY' in category or 'R-003' in rule_id:
-            privacy_risks = ['password', 'secret', 'api key', 'private key', 'ssn', 'credit card']
-            if any(risk in prompt_lower for risk in privacy_risks):
-                return True
-        
-        # Use Settings Files
-        if 'SETTINGS' in title or 'HARDCODED' in title or 'R-004' in rule_id:
-            # Check for multiple hardcoded numbers without config mention
+        # R-004: Use Settings Files, Not Hardcoded Numbers
+        if rule_id.startswith('R-004') or ('settings' in all_rule_text and 'hardcoded' in all_rule_text):
             numbers = re.findall(r'\b\d+\b', prompt_lower)
             if len(numbers) > 3 and 'config' not in prompt_lower and 'setting' not in prompt_lower:
                 return True
         
-        # Security rules
-        if 'SECURITY' in category or 'SECURITY' in title:
-            security_risks = ['hardcoded password', 'secret in code', 'api key in code']
-            if any(risk in prompt_lower for risk in security_risks):
-                return True
-        
-        # Testing rules
-        if 'TESTING' in category or 'TST' in rule_id or 'FTP' in rule_id:
-            if 'test' in prompt_lower and 'deterministic' not in prompt_lower:
-                # Check for test-related violations
-                if 'cache' in prompt_lower and 'disable' not in prompt_lower:
+        # TST-* or FTP-*: Testing rules
+        if rule_id.startswith(('TST-', 'FTP-')):
+            if 'test' in prompt_lower:
+                # Check specific testing rule violations
+                if 'deterministic' in all_rule_text and 'deterministic' not in prompt_lower:
                     return True
+                if 'disable cache' in all_rule_text or 'purge cache' in all_rule_text:
+                    if 'cache' in prompt_lower and 'disable' not in prompt_lower and 'purge' not in prompt_lower:
+                        return True
         
-        # TypeScript rules
-        if 'TYPESCRIPT' in category or 'TS-' in rule_id:
-            if 'typescript' in prompt_lower or 'ts' in prompt_lower:
-                if 'any' in prompt_lower and 'strict' not in prompt_lower:
-                    return True
+        # DOC-*: Documentation/Comments rules
+        if rule_id.startswith('DOC-'):
+            if 'synchronize comments' in all_rule_text or 'update comments' in all_rule_text:
+                if any(word in prompt_lower for word in ['function', 'class', 'method']):
+                    if 'comment' not in prompt_lower and 'document' not in prompt_lower:
+                        return True
         
-        # Comments/Documentation rules
-        if 'COMMENTS' in category or 'DOC-' in rule_id:
-            if 'function' in prompt_lower or 'class' in prompt_lower:
-                if 'document' not in prompt_lower and 'comment' not in prompt_lower:
-                    # Only flag if explicitly required by rule
-                    pass
-        
-        # Logging rules
-        if 'LOGGING' in category or 'LOG' in title:
+        # OBS-*: Observability/Logging rules
+        if rule_id.startswith('OBS-'):
             if 'log' in prompt_lower:
-                if 'structured' not in prompt_lower and 'json' not in prompt_lower:
-                    return True
-        
-        # Default: Check description and requirements for key terms
-        description_lower = description.lower()
-        if any(keyword in description_lower for keyword in ['must', 'required', 'shall', 'prohibited', 'forbidden']):
-            # Check if prompt violates the requirement
-            if 'must not' in description_lower or 'prohibited' in description_lower:
-                # Extract what is prohibited
-                prohibited_terms = self._extract_prohibited_terms(description)
-                if any(term in prompt_lower for term in prohibited_terms):
-                    return True
+                if 'structured' in all_rule_text or 'json' in all_rule_text:
+                    if 'structured' not in prompt_lower and 'json' not in prompt_lower:
+                        return True
         
         return False
-    
-    def _extract_prohibited_terms(self, description: str) -> List[str]:
-        """
-        Extract prohibited terms from rule description.
-        
-        Args:
-            description: Rule description text
-            
-        Returns:
-            List of prohibited terms
-        """
-        prohibited = []
-        description_lower = description.lower()
-        
-        # Common prohibited patterns
-        if 'hardcoded' in description_lower:
-            prohibited.extend(['password', 'secret', 'key', 'token'])
-        if 'cache' in description_lower and 'disable' in description_lower:
-            prohibited.append('cache')
-        if 'any type' in description_lower or "'any'" in description_lower:
-            prohibited.append('any')
-        
-        return prohibited
     
     def _generate_fix_suggestion(self, rule: Dict[str, Any], requirements: List[str]) -> str:
         """
