@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Feedback Receipt (v1 minimal)",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "feedback_id": {
+      "type": "string",
+      "description": "Unique identifier for the feedback receipt"
+    },
+    "decision_receipt_id": {
+      "type": "string",
+      "description": "ID of the decision receipt this feedback relates to"
+    },
+    "pattern_id": {
+      "type": "string",
+      "enum": ["FB-01", "FB-02", "FB-03", "FB-04"],
+      "description": "Feedback pattern identifier"
+    },
+    "choice": {
+      "type": "string",
+      "enum": ["worked", "partly", "didnt"],
+      "description": "User choice indicating feedback outcome"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional tags for categorizing feedback"
+    },
+    "actor": {
+      "type": "object",
+      "properties": {
+        "repo_id": {
+          "type": "string",
+          "description": "Repository identifier (kebab-case)"
+        },
+        "machine_fingerprint": {
+          "type": "string",
+          "description": "Optional machine fingerprint for actor identification"
+        }
+      },
+      "required": ["repo_id"],
+      "additionalProperties": false
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when feedback was generated (ISO 8601)"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Cryptographic signature of the receipt (canonical JSON form)"
+    }
+  },
+  "required": [
+    "feedback_id",
+    "decision_receipt_id",
+    "pattern_id",
+    "choice",
+    "tags",
+    "actor",
+    "timestamp_utc",
+    "signature"
+  ]
+}
+

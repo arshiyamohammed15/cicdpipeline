@@ -1,0 +1,110 @@
+{
+  "snapshot_id": "SNAP.M21.gate_rules.v1",
+  "module_id": "M21",
+  "slug": "gate_rules",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:PLACEHOLDER",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-13T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "iam.gate.violation",
+      "iam.breakglass.triggered"
+    ],
+    "status_pill": {
+      "pass": "iam.gate.pass",
+      "warn": "iam.gate.warn",
+      "soft_block": "iam.gate.soft",
+      "hard_block": "iam.gate.hard"
+    },
+    "cards": [
+      "iam.gate.policy"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT4H",
+    "authoriser_roles": [
+      "admin"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:iam",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.iam.gate.enforced",
+      "zero_ui.iam.gate.breakglass"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "user_id",
+      "token",
+      "email"
+    ]
+  },
+  "gate_rules": {
+    "deny_overrides": true,
+    "jit_elevation": {
+      "dual_approval_scope": [
+        "admin"
+      ],
+      "default_duration": "PT4H"
+    },
+    "break_glass": {
+      "enabled": true,
+      "default_duration": "PT4H",
+      "post_review_within": "PT24H"
+    }
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "deny-on-explicit-rule",
+        "input": {},
+        "expect": {
+          "decision": "DENY"
+        }
+      },
+      {
+        "name": "requires-dual-approval",
+        "input": {},
+        "expect": {
+          "decision": "ELEVATION_REQUIRED"
+        }
+      }
+    ]
+  }
+}
+

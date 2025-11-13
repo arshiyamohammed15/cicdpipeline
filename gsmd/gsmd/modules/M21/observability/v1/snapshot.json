@@ -1,0 +1,103 @@
+{
+  "snapshot_id": "SNAP.M21.observability.v1",
+  "module_id": "M21",
+  "slug": "observability",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:PLACEHOLDER",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-13T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "iam.observability.data_gap"
+    ],
+    "status_pill": {
+      "pass": "iam.observability.pass",
+      "warn": "iam.observability.warn",
+      "soft_block": "iam.observability.soft",
+      "hard_block": "iam.observability.hard"
+    },
+    "cards": [
+      "iam.metrics.dashboard"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT4H",
+    "authoriser_roles": [
+      "admin"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:iam",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.iam.authentication.count",
+      "zero_ui.iam.decision.count",
+      "zero_ui.iam.policy.updates",
+      "zero_ui.iam.decision.latency_ms",
+      "zero_ui.iam.token.validation_ms"
+    ],
+    "logs": [
+      "service:identity-access-management"
+    ],
+    "traces": [
+      "trace:iam"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "user_id",
+      "token",
+      "email"
+    ]
+  },
+  "thresholds": {
+    "authentication_latency_ms": 200,
+    "decision_latency_ms": 100,
+    "policy_latency_ms": 50,
+    "token_validation_ms": 10
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "meets-latency-targets",
+        "input": {},
+        "expect": {
+          "status": "pass"
+        }
+      }
+    ]
+  }
+}
+

@@ -1,0 +1,75 @@
+{
+  "module_name": "Identity & Access Management",
+  "module_slug": "identity_access_management",
+  "module_id": "M21",
+  "version": "1.1.0",
+  "generated_utc": "2025-01-13T00:00:00Z",
+  "entries": [
+    {
+      "path": "contracts/identity_access_management/README.md",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/PLACEMENT_REPORT.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/openapi/openapi_identity_access_management.yaml",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/schemas/decision_response.schema.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/schemas/envelope.schema.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/schemas/evidence_link.schema.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/schemas/feedback_receipt.schema.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/schemas/receipt.schema.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/examples/decision_response_error.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/examples/decision_response_ok.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/examples/evidence_link_valid.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/examples/feedback_receipt_valid.json",
+      "size": 0,
+      "sha256": ""
+    },
+    {
+      "path": "contracts/identity_access_management/examples/receipt_valid.json",
+      "size": 0,
+      "sha256": ""
+    }
+  ]
+}
+

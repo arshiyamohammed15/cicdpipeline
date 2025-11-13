@@ -1,0 +1,14 @@
+{
+  "feedback_id": "550e8400-e29b-41d4-a716-446655440003",
+  "decision_receipt_id": "550e8400-e29b-41d4-a716-446655440000",
+  "pattern_id": "FB-01",
+  "choice": "worked",
+  "tags": ["iam", "access_decision", "rbac"],
+  "actor": {
+    "repo_id": "zeroui-core",
+    "machine_fingerprint": "abc123def456"
+  },
+  "timestamp_utc": "2025-11-13T00:05:00Z",
+  "signature": "eddsa-ed25519-base64-signature-here"
+}
+

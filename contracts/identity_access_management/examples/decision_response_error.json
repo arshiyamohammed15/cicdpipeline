@@ -1,0 +1,13 @@
+{
+  "error": {
+    "code": "FORBIDDEN",
+    "message": "RBAC: No role allows admin",
+    "details": {
+      "subject": "user-123",
+      "roles": ["viewer"],
+      "action": "admin",
+      "resource": "/api/admin/users"
+    }
+  }
+}
+

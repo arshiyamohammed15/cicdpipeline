@@ -1,0 +1,133 @@
+{
+  "snapshot_id": "SNAP.M21.messages.v1",
+  "module_id": "M21",
+  "slug": "messages",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:PLACEHOLDER",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-13T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "iam.token.invalid",
+      "iam.token.expired",
+      "iam.token.revoked",
+      "iam.access.denied",
+      "iam.elevation.required",
+      "iam.policy.violation"
+    ],
+    "status_pill": {
+      "pass": "iam.ok",
+      "warn": "iam.warn",
+      "soft_block": "iam.soft",
+      "hard_block": "iam.hard"
+    },
+    "cards": [
+      "iam.access.decision",
+      "iam.elevation.request",
+      "iam.policy.view"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT4H",
+    "authoriser_roles": [
+      "admin"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:iam",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.iam.authentication",
+      "zero_ui.iam.decision",
+      "zero_ui.iam.policy"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "user_id",
+      "email",
+      "token"
+    ]
+  },
+  "evidence": {
+    "map": [
+      {
+        "kind": "receipt",
+        "selector": "module:IAM"
+      },
+      {
+        "kind": "log",
+        "selector": "otel:service/identity-access-management"
+      }
+    ]
+  },
+  "receipts": {
+    "required": [
+      "receipt_id",
+      "ts",
+      "module",
+      "event",
+      "iam_context",
+      "decision",
+      "policy_id",
+      "evaluator",
+      "evidence",
+      "sig"
+    ],
+    "optional": [
+      "iam_context.risk_score",
+      "iam_context.permissions_granted[]"
+    ]
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "gold-path",
+        "input": {},
+        "expect": {
+          "decision": "ALLOW"
+        }
+      },
+      {
+        "name": "deny-path",
+        "input": {},
+        "expect": {
+          "decision": "DENY"
+        }
+      }
+    ]
+  }
+}
+

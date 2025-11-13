@@ -1,0 +1,113 @@
+{
+  "snapshot_id": "SNAP.M21.risk_model.v1",
+  "module_id": "M21",
+  "slug": "risk_model",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:PLACEHOLDER",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-13T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "iam.risk.threshold.exceeded"
+    ],
+    "status_pill": {
+      "pass": "iam.risk.pass",
+      "warn": "iam.risk.warn",
+      "soft_block": "iam.risk.soft",
+      "hard_block": "iam.risk.hard"
+    },
+    "cards": [
+      "iam.risk.summary"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT4H",
+    "authoriser_roles": [
+      "admin"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:iam",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.iam.risk.score",
+      "zero_ui.iam.risk.breakglass",
+      "zero_ui.iam.risk.elevations"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "user_id",
+      "token",
+      "email"
+    ]
+  },
+  "risk_model": {
+    "inputs": [
+      "risk_score",
+      "device_posture",
+      "location",
+      "mfa_state"
+    ],
+    "thresholds": {
+      "deny": 0.8,
+      "warn": 0.6,
+      "allow": 0.4
+    },
+    "break_glass_trigger": {
+      "requires_crisis_mode": true,
+      "max_duration": "PT4H"
+    }
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "high-risk-deny",
+        "input": {},
+        "expect": {
+          "decision": "DENY"
+        }
+      },
+      {
+        "name": "low-risk-allow",
+        "input": {},
+        "expect": {
+          "decision": "ALLOW"
+        }
+      }
+    ]
+  }
+}
+

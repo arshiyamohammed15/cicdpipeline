@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IAM Receipt",
+  "type": "object",
+  "description": "IAM receipt schema per IAM spec section 7",
+  "additionalProperties": false,
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Receipt identifier (UUID)"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp (ISO 8601 with Z suffix)"
+    },
+    "module": {
+      "type": "string",
+      "enum": ["IAM"],
+      "description": "Module identifier"
+    },
+    "event": {
+      "type": "string",
+      "enum": ["authentication_attempt", "access_granted", "access_denied", "privilege_escalation", "role_change", "policy_violation"],
+      "description": "Event name per IAM spec section 7"
+    },
+    "iam_context": {
+      "type": "object",
+      "description": "IAM-specific context",
+      "additionalProperties": false,
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "User identifier"
+        },
+        "auth_method": {
+          "type": "string",
+          "enum": ["sso", "mfa", "api_key", "break_glass"],
+          "description": "Authentication method"
+        },
+        "access_level": {
+          "type": "string",
+          "enum": ["admin", "developer", "viewer", "ci_bot"],
+          "description": "Access level (canonical role)"
+        },
+        "permissions_granted": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of granted permissions"
+        },
+        "risk_score": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Risk score [0.0, 1.0] per IAM spec section 7"
+        }
+      },
+      "required": ["user_id", "auth_method", "access_level", "permissions_granted", "risk_score"]
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "DENY", "ELEVATION_REQUIRED", "ELEVATION_GRANTED"],
+      "description": "Access decision"
+    },
+    "policy_id": {
+      "type": "string",
+      "description": "Policy identifier"
+    },
+    "evaluator": {
+      "type": "string",
+      "enum": ["rbac_abac_v1"],
+      "description": "Evaluator identifier"
+    },
+    "evidence": {
+      "type": "object",
+      "description": "Evidence data",
+      "additionalProperties": false,
+      "properties": {
+        "jti": {
+          "type": "string",
+          "format": "uuid",
+          "description": "JWT ID claim"
+        },
+        "kid": {
+          "type": "string",
+          "description": "Key identifier",
+          "pattern": "^key-.*$"
+        }
+      },
+      "required": ["jti", "kid"]
+    },
+    "sig": {
+      "type": "string",
+      "description": "Ed25519 signature (hex-encoded) per IAM spec section 7"
+    }
+  },
+  "required": [
+    "receipt_id",
+    "ts",
+    "module",
+    "event",
+    "iam_context",
+    "decision",
+    "policy_id",
+    "evaluator",
+    "evidence",
+    "sig"
+  ]
+}
+

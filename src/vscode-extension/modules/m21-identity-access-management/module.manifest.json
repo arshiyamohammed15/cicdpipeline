@@ -1,0 +1,35 @@
+{
+  "id": "m21",
+  "title": "Identity & Access Management",
+  "commands": [
+    {
+      "id": "zeroui.m21.showDashboard",
+      "title": "Show IAM Dashboard"
+    },
+    {
+      "id": "zeroui.m21.viewAccessLog",
+      "title": "View Access Log"
+    },
+    {
+      "id": "zeroui.m21.requestElevation",
+      "title": "Request JIT Elevation"
+    }
+  ],
+  "menus": {
+    "commandPalette": [
+      {
+        "command": "zeroui.m21.showDashboard"
+      },
+      {
+        "command": "zeroui.m21.viewAccessLog"
+      },
+      {
+        "command": "zeroui.m21.requestElevation"
+      }
+    ]
+  },
+  "views": [],
+  "keybindings": [],
+  "configuration": []
+}
+

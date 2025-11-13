@@ -90,6 +90,21 @@
         "command": "zeroui.preCommit.validate",
         "title": "Run Pre-commit Validation",
         "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.m21.showDashboard",
+        "title": "Show IAM Dashboard",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.m21.viewAccessLog",
+        "title": "View Access Log",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.m21.requestElevation",
+        "title": "Request JIT Elevation",
+        "category": "ZeroUI"
       }
     ],
     "views": {

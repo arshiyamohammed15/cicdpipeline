@@ -1,0 +1,404 @@
+openapi: 3.0.3
+info:
+  title: ZeroUI IAM Core
+  version: 1.1.0
+  description: Identity & Access Management API for ZeroUI ecosystem (Module M21)
+servers:
+  - url: https://{tenant}.api.zeroui/iam/v1
+    description: Production server
+    variables:
+      tenant:
+        default: acme
+paths:
+  /verify:
+    post:
+      operationId: verifyIdentity
+      summary: Verify identity/token
+      description: Verify JWT token per IAM spec section 4. Returns subject, scope, and expiration.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [token]
+              properties:
+                token:
+                  type: string
+                  description: JWT token to verify
+      responses:
+        '200':
+          description: Token valid
+          headers:
+            X-Request-ID:
+              schema:
+                type: string
+              description: Request identifier for correlation
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [sub, scope, valid_until]
+                properties:
+                  sub:
+                    type: string
+                    description: Subject identifier
+                  scope:
+                    type: array
+                    items:
+                      type: string
+                    description: List of granted scopes
+                  valid_until:
+                    type: string
+                    format: date-time
+                    description: Token expiration time (ISO 8601)
+        '401':
+          $ref: '#/components/responses/AuthFailed'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+  /decision:
+    post:
+      operationId: accessDecision
+      summary: Evaluate an access decision or JIT elevation
+      description: Evaluate access decision per IAM spec section 3.1 (precedence order) or handle JIT elevation per section 3.2.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionRequest'
+      responses:
+        '200':
+          description: Decision rendered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/AuthFailed'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
+  /policies:
+    put:
+      operationId: upsertPolicies
+      summary: Upsert policy bundle (versioned)
+      description: Upsert policy bundle with versioning per IAM spec section 8. Requires X-Idempotency-Key header.
+      parameters:
+        - name: X-Idempotency-Key
+          in: header
+          required: true
+          schema:
+            type: string
+          description: Idempotency key for duplicate request prevention (24h window)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PolicyBundle'
+      responses:
+        '202':
+          description: Accepted; policy release queued
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  bundle_id:
+                    type: string
+                  version:
+                    type: string
+                  snapshot_id:
+                    type: string
+                    pattern: '^sha256:[0-9a-f]{64}$'
+                  status:
+                    type: string
+                    enum: [accepted]
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/AuthFailed'
+        '409':
+          $ref: '#/components/responses/Conflict'
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Health check endpoint
+      description: Returns service health status
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, timestamp]
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  timestamp:
+                    type: string
+                    format: date-time
+  /metrics:
+    get:
+      operationId: getMetrics
+      summary: Metrics endpoint
+      description: Returns service metrics (authentication count, decision count, latencies)
+      responses:
+        '200':
+          description: Metrics retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+  /config:
+    get:
+      operationId: getConfig
+      summary: Configuration endpoint
+      description: Returns module identity and performance requirements per IAM spec section 1
+      responses:
+        '200':
+          description: Configuration retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigResponse'
+components:
+  responses:
+    BadRequest:
+      description: Invalid input
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AuthFailed:
+      description: Authentication failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Insufficient privileges
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Conflict:
+      description: Resource state conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit exceeded
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            format: int32
+          description: Seconds to wait before retrying
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum: [BAD_REQUEST, AUTH_FAILED, FORBIDDEN, CONFLICT, RATE_LIMITED, SERVER_ERROR]
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+    DecisionRequest:
+      type: object
+      required: [subject, action, resource]
+      properties:
+        subject:
+          type: object
+          required: [sub, roles]
+          properties:
+            sub:
+              type: string
+              description: Subject identifier
+            roles:
+              type: array
+              items:
+                type: string
+                enum: [admin, developer, viewer, ci_bot]
+              description: List of roles
+            attributes:
+              type: object
+              additionalProperties: true
+              description: Additional subject attributes
+        action:
+          type: string
+          description: Action to perform
+        resource:
+          type: string
+          description: Resource to access
+        context:
+          type: object
+          properties:
+            time:
+              type: string
+              format: date-time
+              description: Request time (ISO 8601)
+            device_posture:
+              type: string
+              enum: [secure, unknown, insecure]
+              description: Device posture
+            location:
+              type: string
+              description: Request location
+            risk_score:
+              type: number
+              minimum: 0.0
+              maximum: 1.0
+              description: Risk score [0.0, 1.0]
+        elevation:
+          type: object
+          properties:
+            request:
+              type: boolean
+              description: Whether elevation is requested
+            scope:
+              type: array
+              items:
+                type: string
+              description: Desired elevation scope
+            duration:
+              type: string
+              description: Desired elevation duration
+    DecisionResponse:
+      type: object
+      required: [decision, reason, receipt_id]
+      properties:
+        decision:
+          type: string
+          enum: [ALLOW, DENY, ELEVATION_REQUIRED, ELEVATION_GRANTED]
+          description: Access decision
+        reason:
+          type: string
+          description: Decision reason
+        expires_at:
+          type: string
+          format: date-time
+          description: Decision expiration time (ISO 8601)
+        receipt_id:
+          type: string
+          format: uuid
+          description: Receipt identifier (UUID)
+    PolicyBundle:
+      type: object
+      required: [bundle_id, version, policies]
+      properties:
+        bundle_id:
+          type: string
+          description: Bundle identifier
+        version:
+          type: string
+          description: Bundle version
+        effective_from:
+          type: string
+          format: date-time
+          description: Effective from time (ISO 8601)
+        policies:
+          type: array
+          items:
+            type: object
+            required: [id, rules]
+            properties:
+              id:
+                type: string
+                description: Policy identifier
+              rules:
+                type: array
+                items:
+                  type: object
+                description: Policy rules
+              status:
+                type: string
+                enum: [draft, released, deprecated]
+                description: Policy status
+    MetricsResponse:
+      type: object
+      required: [authentication_count, decision_count, policy_count, average_auth_latency_ms, average_decision_latency_ms, average_policy_latency_ms, timestamp]
+      properties:
+        authentication_count:
+          type: integer
+          minimum: 0
+          description: Total authentication attempts
+        decision_count:
+          type: integer
+          minimum: 0
+          description: Total access decisions
+        policy_count:
+          type: integer
+          minimum: 0
+          description: Total policies
+        average_auth_latency_ms:
+          type: number
+          minimum: 0.0
+          description: Average auth latency (ms)
+        average_decision_latency_ms:
+          type: number
+          minimum: 0.0
+          description: Average decision latency (ms)
+        average_policy_latency_ms:
+          type: number
+          minimum: 0.0
+          description: Average policy evaluation latency (ms)
+        timestamp:
+          type: string
+          format: date-time
+          description: Metrics timestamp (ISO 8601)
+    ConfigResponse:
+      type: object
+      required: [module_id, version, api_endpoints, performance_requirements, timestamp]
+      properties:
+        module_id:
+          type: string
+          description: Module identifier
+        version:
+          type: string
+          description: Module version
+        api_endpoints:
+          type: object
+          additionalProperties:
+            type: string
+          description: API endpoints
+        performance_requirements:
+          type: object
+          additionalProperties: true
+          description: Performance requirements
+        timestamp:
+          type: string
+          format: date-time
+          description: Config timestamp (ISO 8601)
+

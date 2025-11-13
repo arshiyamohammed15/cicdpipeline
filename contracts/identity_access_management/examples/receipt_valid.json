@@ -1,0 +1,22 @@
+{
+  "receipt_id": "550e8400-e29b-41d4-a716-446655440000",
+  "ts": "2025-11-13T00:00:00Z",
+  "module": "IAM",
+  "event": "access_granted",
+  "iam_context": {
+    "user_id": "550e8400-e29b-41d4-a716-446655440001",
+    "auth_method": "mfa",
+    "access_level": "developer",
+    "permissions_granted": ["read", "write"],
+    "risk_score": 0.62
+  },
+  "decision": "ALLOW",
+  "policy_id": "iam-dev-access",
+  "evaluator": "rbac_abac_v1",
+  "evidence": {
+    "jti": "550e8400-e29b-41d4-a716-446655440002",
+    "kid": "key-2025q4"
+  },
+  "sig": "eddsa-ed25519-base64-signature-here"
+}
+

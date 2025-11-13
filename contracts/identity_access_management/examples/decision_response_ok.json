@@ -1,0 +1,7 @@
+{
+  "decision": "ALLOW",
+  "reason": "RBAC: developer role allows write; ABAC: All constraints satisfied",
+  "expires_at": "2025-11-13T01:00:00Z",
+  "receipt_id": "550e8400-e29b-41d4-a716-446655440000"
+}
+

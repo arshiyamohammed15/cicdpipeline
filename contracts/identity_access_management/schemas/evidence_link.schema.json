@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Link",
+  "type": "object",
+  "description": "Evidence link schema for IAM receipts",
+  "additionalProperties": false,
+  "properties": {
+    "jti": {
+      "type": "string",
+      "format": "uuid",
+      "description": "JWT ID claim (token identifier)"
+    },
+    "kid": {
+      "type": "string",
+      "description": "Key identifier for signing key",
+      "pattern": "^key-.*$"
+    },
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Receipt identifier"
+    },
+    "evidence_type": {
+      "type": "string",
+      "enum": ["authentication_attempt", "access_granted", "access_denied", "privilege_escalation", "role_change", "policy_violation"],
+      "description": "Evidence type per IAM spec section 7"
+    }
+  },
+  "required": ["jti", "kid"]
+}
+

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Decision Response",
+  "type": "object",
+  "description": "Access decision response per IAM spec section 6",
+  "additionalProperties": false,
+  "properties": {
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "DENY", "ELEVATION_REQUIRED", "ELEVATION_GRANTED"],
+      "description": "Access decision"
+    },
+    "reason": {
+      "type": "string",
+      "description": "Decision reason",
+      "minLength": 1
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Decision expiration time (ISO 8601)"
+    },
+    "receipt_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Receipt identifier (UUID)"
+    }
+  },
+  "required": ["decision", "reason", "receipt_id"]
+}
+

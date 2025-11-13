@@ -1,0 +1,125 @@
+{
+  "snapshot_id": "SNAP.M21.receipts_schema.v1",
+  "module_id": "M21",
+  "slug": "receipts_schema",
+  "version": {
+    "major": 1
+  },
+  "schema_version": "1.0.0",
+  "policy_version_ids": [
+    "POL-INIT"
+  ],
+  "snapshot_hash": "sha256:PLACEHOLDER",
+  "signature": "base64:PLACEHOLDER",
+  "kid": "KID:zero-ui-product:ed25519:2025-01",
+  "effective_from": "2025-01-13T00:00:00Z",
+  "deprecates": [],
+  "evaluation_points": [
+    "pre-commit",
+    "pre-merge",
+    "pre-deploy",
+    "post-deploy"
+  ],
+  "messages": {
+    "problems": [
+      "iam.receipt.invalid",
+      "iam.receipt.signature.invalid"
+    ],
+    "status_pill": {
+      "pass": "iam.receipt.valid",
+      "warn": "iam.receipt.warn",
+      "soft_block": "iam.receipt.soft",
+      "hard_block": "iam.receipt.hard"
+    },
+    "cards": [
+      "iam.receipt.view"
+    ]
+  },
+  "overrides": {
+    "mode": [
+      "off",
+      "warn",
+      "soft",
+      "hard"
+    ],
+    "dual_channel": true,
+    "expiry": "PT4H",
+    "authoriser_roles": [
+      "admin"
+    ]
+  },
+  "rollout": {
+    "default_mode": "warn",
+    "cohorts": [
+      "service:iam",
+      "env:staging"
+    ],
+    "ladder": [
+      "warn",
+      "soft",
+      "hard"
+    ]
+  },
+  "observability": {
+    "metrics": [
+      "zero_ui.iam.receipt.verification"
+    ],
+    "exemplars": true
+  },
+  "privacy": {
+    "redactions": [
+      "user_id",
+      "email",
+      "token"
+    ]
+  },
+  "evidence": {
+    "map": [
+      {
+        "kind": "receipt",
+        "selector": "module:IAM"
+      }
+    ]
+  },
+  "receipts": {
+    "required": [
+      "receipt_id",
+      "ts",
+      "module",
+      "event",
+      "iam_context.user_id",
+      "iam_context.auth_method",
+      "iam_context.access_level",
+      "iam_context.permissions_granted",
+      "iam_context.risk_score",
+      "decision",
+      "policy_id",
+      "evaluator",
+      "evidence.jti",
+      "evidence.kid",
+      "sig"
+    ],
+    "optional": [
+      "iam_context.attributes"
+    ]
+  },
+  "tests": {
+    "fixtures": [
+      {
+        "name": "gold-path",
+        "input": {},
+        "expect": {
+          "decision": "ALLOW"
+        }
+      },
+      {
+        "name": "deny-path",
+        "input": {},
+        "expect": {
+          "decision": "DENY"
+        }
+      }
+    ]
+  }
+}
+
