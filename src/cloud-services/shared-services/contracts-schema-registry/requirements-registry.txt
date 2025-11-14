@@ -1,0 +1,24 @@
+# Additional dependencies for Contracts & Schema Registry Module (M34)
+# Per PRD v1.2.0
+
+# Database
+sqlalchemy>=2.0.0
+alembic>=1.12.0
+psycopg2-binary>=2.9.0
+
+# Validation
+jsonschema>=4.19.0
+fastavro>=1.9.0
+protobuf>=4.24.0
+
+# Custom validator
+py-mini-racer>=0.6.0
+
+# Caching (optional)
+redis>=5.0.0
+
+# Version parsing
+semantic-version>=2.10.0
+
+# Cryptography for signing
+cryptography>=41.0.0

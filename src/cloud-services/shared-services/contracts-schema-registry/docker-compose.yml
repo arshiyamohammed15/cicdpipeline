@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: contracts-schema-registry-db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-zeroui}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-zeroui_password}
+      POSTGRES_DB: ${POSTGRES_DB:-contracts_schema_registry}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-zeroui} -d ${POSTGRES_DB:-contracts_schema_registry}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - contracts-registry-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  contracts-registry-network:
+    driver: bridge
