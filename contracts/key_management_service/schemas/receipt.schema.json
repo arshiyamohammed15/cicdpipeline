@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CryptographicOperationReceipt",
+  "description": "Cryptographic operation receipt schema per KMS spec Data Schemas section",
+  "type": "object",
+  "required": [
+    "receipt_id",
+    "ts",
+    "tenant_id",
+    "environment",
+    "plane",
+    "module",
+    "operation",
+    "kms_context",
+    "requesting_module"
+  ],
+  "properties": {
+    "receipt_id": {
+      "type": "string",
+      "description": "Receipt identifier (UUID)"
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp (ISO 8601)"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant identifier"
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["dev", "staging", "prod"]
+    },
+    "plane": {
+      "type": "string",
+      "enum": ["laptop", "tenant", "product", "shared"]
+    },
+    "module": {
+      "type": "string",
+      "default": "KMS",
+      "description": "Module identifier"
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "key_generated",
+        "key_rotated",
+        "signature_created",
+        "signature_verified",
+        "encrypt",
+        "decrypt"
+      ]
+    },
+    "kms_context": {
+      "type": "object",
+      "required": [
+        "key_id",
+        "operation_type",
+        "algorithm",
+        "key_size_bits",
+        "success"
+      ],
+      "properties": {
+        "key_id": {
+          "type": "string",
+          "description": "Key identifier"
+        },
+        "operation_type": {
+          "type": "string",
+          "enum": ["generate", "sign", "verify", "encrypt", "decrypt"]
+        },
+        "algorithm": {
+          "type": "string",
+          "description": "Algorithm used"
+        },
+        "key_size_bits": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Key size in bits"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Whether operation succeeded"
+        },
+        "error_code": {
+          "type": ["string", "null"],
+          "description": "Error code if operation failed"
+        }
+      }
+    },
+    "requesting_module": {
+      "type": "string",
+      "description": "Requesting module ID"
+    },
+    "signature": {
+      "type": ["string", "null"],
+      "description": "Ed25519 signature"
+    }
+  }
+}

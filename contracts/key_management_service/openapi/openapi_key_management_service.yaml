@@ -1,0 +1,428 @@
+openapi: 3.0.3
+info:
+  title: ZeroUI Key Management Service
+  version: 0.1.0
+  description: Cryptographic foundation and trust anchor for ZeroUI ecosystem (KMS Module M33)
+servers:
+  - url: https://{tenant}.api.zeroui/kms/v1
+    description: Production server
+    variables:
+      tenant:
+        default: acme
+paths:
+  /keys:
+    post:
+      operationId: generateKey
+      summary: Generate a new cryptographic key
+      description: Generate a FIPS 140-3 compliant cryptographic key per KMS spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, environment, plane, key_type, key_usage]
+              properties:
+                tenant_id:
+                  type: string
+                  description: Tenant identifier
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                plane:
+                  type: string
+                  enum: [laptop, tenant, product, shared]
+                key_type:
+                  type: string
+                  enum: [RSA-2048, Ed25519, AES-256]
+                key_usage:
+                  type: array
+                  items:
+                    type: string
+                    enum: [sign, verify, encrypt, decrypt]
+                key_alias:
+                  type: string
+                  description: Optional human-readable alias
+      responses:
+        '201':
+          description: Key generated
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [key_id, public_key]
+                properties:
+                  key_id:
+                    type: string
+                  public_key:
+                    type: string
+        '4XX':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Server or dependency error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /sign:
+    post:
+      operationId: signData
+      summary: Create a digital signature over data
+      description: Create a digital signature using a managed key per KMS spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, environment, plane, key_id, data]
+              properties:
+                tenant_id:
+                  type: string
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                plane:
+                  type: string
+                  enum: [laptop, tenant, product, shared]
+                key_id:
+                  type: string
+                data:
+                  type: string
+                  description: Base64-encoded payload to sign
+                algorithm:
+                  type: string
+                  enum: [RS256, EdDSA]
+                  description: Optional; defaults based on key_type
+      responses:
+        '200':
+          description: Signature created
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [signature, key_id]
+                properties:
+                  signature:
+                    type: string
+                  key_id:
+                    type: string
+        '4XX':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Server or dependency error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /verify:
+    post:
+      operationId: verifySignature
+      summary: Verify a digital signature
+      description: Verify a digital signature using a managed key per KMS spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, environment, plane, key_id, data, signature]
+              properties:
+                tenant_id:
+                  type: string
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                plane:
+                  type: string
+                  enum: [laptop, tenant, product, shared]
+                key_id:
+                  type: string
+                data:
+                  type: string
+                  description: Base64-encoded payload that was signed
+                signature:
+                  type: string
+                  description: Base64-encoded signature
+                algorithm:
+                  type: string
+                  enum: [RS256, EdDSA]
+                  description: Optional; defaults based on key_type
+      responses:
+        '200':
+          description: Signature verification result
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [valid, key_id]
+                properties:
+                  valid:
+                    type: boolean
+                  key_id:
+                    type: string
+                  algorithm:
+                    type: string
+                    description: Algorithm used during verification
+        '4XX':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Server or dependency error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /encrypt:
+    post:
+      operationId: encryptData
+      summary: Encrypt plaintext using a managed key
+      description: Encrypt plaintext using a managed key per KMS spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, environment, plane, key_id, plaintext]
+              properties:
+                tenant_id:
+                  type: string
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                plane:
+                  type: string
+                  enum: [laptop, tenant, product, shared]
+                key_id:
+                  type: string
+                plaintext:
+                  type: string
+                  description: Base64-encoded plaintext
+                algorithm:
+                  type: string
+                  enum: [AES-256-GCM, CHACHA20-POLY1305]
+                  description: Optional; defaults based on key_type
+                aad:
+                  type: string
+                  description: Optional Base64-encoded additional authenticated data
+      responses:
+        '200':
+          description: Encryption successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [ciphertext, key_id, algorithm, iv]
+                properties:
+                  ciphertext:
+                    type: string
+                  key_id:
+                    type: string
+                  algorithm:
+                    type: string
+                  iv:
+                    type: string
+                    description: Initialization vector / nonce
+        '4XX':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Server or dependency error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /decrypt:
+    post:
+      operationId: decryptData
+      summary: Decrypt ciphertext using a managed key
+      description: Decrypt ciphertext using a managed key per KMS spec
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tenant_id, environment, plane, key_id, ciphertext, iv]
+              properties:
+                tenant_id:
+                  type: string
+                environment:
+                  type: string
+                  enum: [dev, staging, prod]
+                plane:
+                  type: string
+                  enum: [laptop, tenant, product, shared]
+                key_id:
+                  type: string
+                ciphertext:
+                  type: string
+                iv:
+                  type: string
+                  description: Initialization vector / nonce used at encryption time
+                algorithm:
+                  type: string
+                  enum: [AES-256-GCM, CHACHA20-POLY1305]
+                aad:
+                  type: string
+                  description: Optional Base64-encoded additional authenticated data
+      responses:
+        '200':
+          description: Decryption successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [plaintext, key_id]
+                properties:
+                  plaintext:
+                    type: string
+                  key_id:
+                    type: string
+        '4XX':
+          description: Client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '5XX':
+          description: Server or dependency error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /health:
+    get:
+      operationId: getHealth
+      summary: Health status of KMS and its critical dependencies
+      description: Returns health status of KMS service and dependencies per KMS spec
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, checks]
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, unhealthy]
+                  checks:
+                    type: array
+                    items:
+                      type: object
+                      required: [name, status]
+                      properties:
+                        name:
+                          type: string
+                        status:
+                          type: string
+                          enum: [pass, fail, warn]
+                        detail:
+                          type: string
+                          description: Optional human-readable detail
+        '5XX':
+          description: Server unable to compute health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /metrics:
+    get:
+      operationId: getMetrics
+      summary: Exposes service-level metrics
+      description: Returns service-level metrics in Prometheus text format per KMS spec
+      responses:
+        '200':
+          description: Metrics in line-based text format
+          content:
+            text/plain:
+              schema:
+                type: string
+                description: |
+                  Line-based metrics (e.g. "kms_requests_total 1234")
+        '5XX':
+          description: Metrics retrieval failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /config:
+    get:
+      operationId: getEffectiveConfig
+      summary: Returns effective, read-only KMS configuration
+      description: Returns effective KMS configuration per KMS spec
+      responses:
+        '200':
+          description: Effective configuration
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  key_rotation_schedule:
+                    type: string
+                    description: ISO-8601 duration (e.g. "P90D")
+                  rotation_grace_period:
+                    type: string
+                    description: ISO-8601 duration (e.g. "P7D")
+                  allowed_algorithms:
+                    type: array
+                    items: { type: string }
+                  max_usage_per_day_default:
+                    type: integer
+                  dual_authorization_required_operations:
+                    type: array
+                    items: { type: string }
+        '5XX':
+          description: Configuration retrieval failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [code, message]
+      properties:
+        error:
+          type: object
+          required: [code, message, retryable]
+          properties:
+            code:
+              type: string
+              enum:
+                - INVALID_REQUEST
+                - UNAUTHENTICATED
+                - UNAUTHORIZED
+                - KEY_NOT_FOUND
+                - KEY_REVOKED
+                - KEY_INACTIVE
+                - POLICY_VIOLATION
+                - RATE_LIMITED
+                - DEPENDENCY_UNAVAILABLE
+                - INTERNAL_ERROR
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+            retryable:
+              type: boolean

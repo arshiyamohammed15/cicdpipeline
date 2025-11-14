@@ -1,0 +1,8 @@
+{
+  "tenant_id": "550e8400-e29b-41d4-a716-446655440000",
+  "environment": "dev",
+  "plane": "laptop",
+  "key_type": "Ed25519",
+  "key_usage": ["sign", "verify"],
+  "key_alias": "receipt-signing-key"
+}

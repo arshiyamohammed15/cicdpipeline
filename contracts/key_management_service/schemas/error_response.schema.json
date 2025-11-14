@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ErrorResponse",
+  "description": "Error response schema per KMS spec Error Model section",
+  "type": "object",
+  "required": ["error"],
+  "properties": {
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "retryable"],
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": [
+            "INVALID_REQUEST",
+            "UNAUTHENTICATED",
+            "UNAUTHORIZED",
+            "KEY_NOT_FOUND",
+            "KEY_REVOKED",
+            "KEY_INACTIVE",
+            "POLICY_VIOLATION",
+            "RATE_LIMITED",
+            "DEPENDENCY_UNAVAILABLE",
+            "INTERNAL_ERROR"
+          ]
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "details": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Additional error details"
+        },
+        "retryable": {
+          "type": "boolean",
+          "description": "Whether the error is retryable"
+        }
+      }
+    }
+  }
+}
