@@ -1,0 +1,63 @@
+{
+  "module_id": "M23",
+  "name": "Configuration & Policy Management",
+  "version": "1.1.0",
+  "description": "Enterprise-grade policy lifecycle management, configuration enforcement, and gold standards compliance",
+  "service_category": "shared-services",
+  "commands": [
+    {
+      "command": "zeroui.configuration-policy-management.showDashboard",
+      "title": "Show Configuration & Policy Management Dashboard"
+    },
+    {
+      "command": "zeroui.configuration-policy-management.showPolicyManagement",
+      "title": "Show Policy Management"
+    },
+    {
+      "command": "zeroui.configuration-policy-management.showConfigurationManagement",
+      "title": "Show Configuration Management"
+    },
+    {
+      "command": "zeroui.configuration-policy-management.showComplianceReporting",
+      "title": "Show Compliance Reporting"
+    }
+  ],
+  "views": {
+    "zerouiConfigurationPolicyManagement": {
+      "id": "zerouiConfigurationPolicyManagement",
+      "name": "Configuration & Policy Management",
+      "when": "true"
+    }
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "zeroui.configuration-policy-management.showDashboard",
+        "title": "Show Dashboard",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.configuration-policy-management.showPolicyManagement",
+        "title": "Show Policy Management",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.configuration-policy-management.showConfigurationManagement",
+        "title": "Show Configuration Management",
+        "category": "ZeroUI"
+      },
+      {
+        "command": "zeroui.configuration-policy-management.showComplianceReporting",
+        "title": "Show Compliance Reporting",
+        "category": "ZeroUI"
+      }
+    ],
+    "views": {
+      "zerouiConfigurationPolicyManagement": {
+        "id": "zerouiConfigurationPolicyManagement",
+        "name": "Configuration & Policy Management",
+        "when": "true"
+      }
+    }
+  }
+}

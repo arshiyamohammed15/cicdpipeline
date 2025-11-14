@@ -118,6 +118,7 @@ import { GoldStandardsExtensionInterface } from './ui/gold-standards/ExtensionIn
 import { KnowledgeIntegrityDiscoveryExtensionInterface } from './ui/knowledge-integrity-discovery/ExtensionInterface';
 import { ReportingExtensionInterface } from './ui/reporting/ExtensionInterface';
 import { QATestingDeficienciesExtensionInterface } from './ui/qa-testing-deficiencies/ExtensionInterface';
+import { ConfigurationPolicyManagementExtensionInterface } from './ui/configuration-policy-management/ExtensionInterface';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('ZeroUI 2.0 Extension activated with Constitution Validation');
@@ -197,7 +198,7 @@ export function activate(context: vscode.ExtensionContext) {
     };
 
     let refreshPreCommit: () => Promise<PreCommitDecisionSnapshot | undefined>;
-    
+
     // Initialize UI Module Extension Interfaces
     const mmmEngineInterface = new MMMEngineExtensionInterface();
     const crossCuttingConcernsInterface = new CrossCuttingConcernsExtensionInterface();
@@ -219,7 +220,8 @@ export function activate(context: vscode.ExtensionContext) {
     const knowledgeIntegrityDiscoveryInterface = new KnowledgeIntegrityDiscoveryExtensionInterface();
     const reportingInterface = new ReportingExtensionInterface();
     const qaTestingDeficienciesInterface = new QATestingDeficienciesExtensionInterface();
-    
+    const configurationPolicyManagementInterface = new ConfigurationPolicyManagementExtensionInterface();
+
     // Register core commands
     const showDecisionCard = vscode.commands.registerCommand('zeroui.showDecisionCard', async () => {
         const snapshot = await refreshPreCommit();
@@ -236,15 +238,15 @@ export function activate(context: vscode.ExtensionContext) {
             }
         });
     });
-    
+
     const showEvidenceDrawer = vscode.commands.registerCommand('zeroui.showEvidenceDrawer', () => {
         evidenceDrawerManager.showEvidenceDrawer();
     });
-    
+
     const showReceiptViewer = vscode.commands.registerCommand('zeroui.showReceiptViewer', () => {
         receiptViewerManager.showReceiptViewer();
     });
-    
+
     const refresh = vscode.commands.registerCommand('zeroui.refresh', () => {
         problemsPanelManager.refresh();
     });
@@ -443,7 +445,7 @@ export function activate(context: vscode.ExtensionContext) {
         void vscode.window.showInformationMessage('Pre-commit validation completed successfully.');
         return result;
     });
-    
+
     // Register UI Module commands and views
     mmmEngineInterface.registerCommands(context);
     mmmEngineInterface.registerViews(context);
@@ -485,7 +487,9 @@ export function activate(context: vscode.ExtensionContext) {
     reportingInterface.registerViews(context);
     qaTestingDeficienciesInterface.registerCommands(context);
     qaTestingDeficienciesInterface.registerViews(context);
-    
+    configurationPolicyManagementInterface.registerCommands(context);
+    configurationPolicyManagementInterface.registerViews(context);
+
     // Register core disposables
     context.subscriptions.push(
         showDecisionCard,
@@ -521,14 +525,15 @@ export function activate(context: vscode.ExtensionContext) {
         goldStandardsInterface,
         knowledgeIntegrityDiscoveryInterface,
         reportingInterface,
-        qaTestingDeficienciesInterface
+        qaTestingDeficienciesInterface,
+        configurationPolicyManagementInterface
     );
-    
+
     // Initialize core UI components
     statusBarManager.initialize();
     problemsPanelManager.initialize();
     void refreshPreCommit();
-    
+
     console.log('ZeroUI 2.0 Extension initialized - All UI components ready');
 }
 
