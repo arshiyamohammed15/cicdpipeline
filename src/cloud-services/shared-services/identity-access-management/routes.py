@@ -11,7 +11,7 @@ Risks: Input validation failures, service unavailability, error message exposure
 import json
 import logging
 from datetime import datetime
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 from fastapi import APIRouter, HTTPException, Depends, status
 from .models import (
@@ -28,14 +28,20 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+# Singleton service instance to maintain policy state across requests
+_iam_service_instance: Optional[IAMService] = None
+
 def get_service() -> IAMService:
     """
-    Dependency to get IAMService instance.
+    Dependency to get IAMService instance (singleton for test compatibility).
 
     Returns:
         IAMService instance
     """
-    return IAMService()
+    global _iam_service_instance
+    if _iam_service_instance is None:
+        _iam_service_instance = IAMService()
+    return _iam_service_instance
 
 
 @router.post("/verify", response_model=VerifyResponse)

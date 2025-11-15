@@ -1,0 +1,38 @@
+{
+  "version": "2.0",
+  "last_updated": "2025-01-XX",
+  "description": "Configurable mapping between EPC-IDs and section numbers in Module Implementation Prioritization document",
+  "completed_modules": {
+    "1.1": {
+      "epc_id": "EPC-1",
+      "m_number": "M21",
+      "name": "Identity & Access Management",
+      "implementation_location": "src/cloud-services/shared-services/identity-access-management/"
+    },
+    "1.2": {
+      "epc_id": "EPC-3",
+      "m_number": "M23",
+      "name": "Configuration & Policy Management (+ Gold Standards)",
+      "implementation_location": "src/cloud-services/shared-services/configuration-policy-management/"
+    },
+    "1.3": {
+      "epc_id": "EPC-11",
+      "m_number": "M33",
+      "name": "Key & Trust Management (KMS & Trust Stores)",
+      "implementation_location": "src/cloud-services/shared-services/key-management-service/"
+    },
+    "1.4": {
+      "epc_id": "EPC-12",
+      "m_number": "M34",
+      "name": "Contracts & Schema Registry",
+      "implementation_location": "src/cloud-services/shared-services/contracts-schema-registry/"
+    }
+  },
+  "numbering_scheme": "EPC-ID order",
+  "ordering": [
+    "EPC-1",
+    "EPC-3",
+    "EPC-11",
+    "EPC-12"
+  ]
+}

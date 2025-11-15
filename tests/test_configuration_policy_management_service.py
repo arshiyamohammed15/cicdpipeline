@@ -20,9 +20,14 @@ import sys
 import unittest
 import json
 import uuid
+import os
 from pathlib import Path
 from unittest.mock import patch, MagicMock, Mock
 from datetime import datetime
+from sqlalchemy import create_engine, String
+from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
+from sqlalchemy.types import TypeDecorator
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
@@ -91,6 +96,47 @@ from configuration_policy_management.dependencies import (
 TEST_RANDOM_SEED = 42
 
 
+# Create a UUID type that converts to string for SQLite
+class UUIDString(TypeDecorator):
+    """UUID type decorator that converts UUID to string for SQLite compatibility."""
+    impl = String
+    cache_ok = True
+
+    def process_bind_param(self, value, dialect):
+        """Convert UUID to string when binding to database."""
+        if value is None:
+            return value
+        if isinstance(value, uuid.UUID):
+            return str(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        """Convert string back to UUID when reading from database."""
+        if value is None:
+            return value
+        return uuid.UUID(value) if isinstance(value, str) else value
+
+
+def adapt_models_for_sqlite(engine):
+    """
+    Adapt database models for SQLite by replacing UUID and JSONB columns.
+
+    Args:
+        engine: SQLAlchemy engine instance
+    """
+    from configuration_policy_management.database.models import Base
+
+    # Only adapt if using SQLite
+    if engine.dialect.name == 'sqlite':
+        # Replace UUID columns with UUIDString and JSONB with SQLiteJSON
+        for table in Base.metadata.tables.values():
+            for column in table.columns:
+                if isinstance(column.type, UUID):
+                    column.type = UUIDString(36)
+                elif isinstance(column.type, JSONB):
+                    column.type = SQLiteJSON()
+
+
 class TestPolicyEvaluationEngine(unittest.TestCase):
     """Test PolicyEvaluationEngine class with 100% coverage per PRD algorithm (lines 1619-1692)."""
 
@@ -100,6 +146,24 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         self.evidence_ledger = MockM27EvidenceLedger()
         self.key_management = MockM33KeyManagement()
         self.engine = PolicyEvaluationEngine(self.data_plane, self.evidence_ledger, self.key_management)
+
+        # Create database tables for tests (using SQLite-compatible types)
+        from configuration_policy_management.database.connection import reset_connection_state
+        from configuration_policy_management.database.models import Base
+        # Reset connection to ensure clean state
+        reset_connection_state()
+        # Set environment to use SQLite
+        original_db_url = os.environ.get("DATABASE_URL")
+        os.environ.pop("DATABASE_URL", None)
+        # Create SQLite engine directly for tests
+        engine = create_engine("sqlite:///:memory:", echo=False, connect_args={"check_same_thread": False})
+        # Adapt models for SQLite (replace UUID with String, JSONB with JSON)
+        adapt_models_for_sqlite(engine)
+        # Create tables
+        Base.metadata.create_all(bind=engine)
+        # Restore original DATABASE_URL if it existed
+        if original_db_url:
+            os.environ["DATABASE_URL"] = original_db_url
 
     def test_evaluate_policy_allow_decision(self):
         """Test EvaluatePolicy with allow decision."""
@@ -482,6 +546,24 @@ class TestPolicyService(unittest.TestCase):
         self.schema_registry = MockM34SchemaRegistry()
         self.service = PolicyService(self.evidence_ledger, self.key_management, self.schema_registry)
 
+        # Create database tables for tests (using SQLite-compatible types)
+        from configuration_policy_management.database.connection import reset_connection_state
+        from configuration_policy_management.database.models import Base
+        # Reset connection to ensure clean state
+        reset_connection_state()
+        # Set environment to use SQLite
+        original_db_url = os.environ.get("DATABASE_URL")
+        os.environ.pop("DATABASE_URL", None)
+        # Create SQLite engine directly for tests
+        engine = create_engine("sqlite:///:memory:", echo=False, connect_args={"check_same_thread": False})
+        # Adapt models for SQLite (replace UUID with String, JSONB with JSON)
+        adapt_models_for_sqlite(engine)
+        # Create tables
+        Base.metadata.create_all(bind=engine)
+        # Restore original DATABASE_URL if it existed
+        if original_db_url:
+            os.environ["DATABASE_URL"] = original_db_url
+
     def test_create_policy(self):
         """Test create_policy with valid request."""
         request = CreatePolicyRequest(
@@ -517,6 +599,24 @@ class TestConfigurationService(unittest.TestCase):
         drift_detector = ConfigurationDriftDetector(self.evidence_ledger, self.key_management)
         self.service = ConfigurationService(self.evidence_ledger, self.key_management, self.schema_registry, drift_detector)
 
+        # Create database tables for tests (using SQLite-compatible types)
+        from configuration_policy_management.database.connection import reset_connection_state
+        from configuration_policy_management.database.models import Base
+        # Reset connection to ensure clean state
+        reset_connection_state()
+        # Set environment to use SQLite
+        original_db_url = os.environ.get("DATABASE_URL")
+        os.environ.pop("DATABASE_URL", None)
+        # Create SQLite engine directly for tests
+        engine = create_engine("sqlite:///:memory:", echo=False, connect_args={"check_same_thread": False})
+        # Adapt models for SQLite (replace UUID with String, JSONB with JSON)
+        adapt_models_for_sqlite(engine)
+        # Create tables
+        Base.metadata.create_all(bind=engine)
+        # Restore original DATABASE_URL if it existed
+        if original_db_url:
+            os.environ["DATABASE_URL"] = original_db_url
+
     def test_create_configuration(self):
         """Test create_configuration with valid request."""
         request = CreateConfigurationRequest(
@@ -545,6 +645,24 @@ class TestGoldStandardService(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         self.service = GoldStandardService()
+
+        # Create database tables for tests (using SQLite-compatible types)
+        from configuration_policy_management.database.connection import reset_connection_state
+        from configuration_policy_management.database.models import Base
+        # Reset connection to ensure clean state
+        reset_connection_state()
+        # Set environment to use SQLite
+        original_db_url = os.environ.get("DATABASE_URL")
+        os.environ.pop("DATABASE_URL", None)
+        # Create SQLite engine directly for tests
+        engine = create_engine("sqlite:///:memory:", echo=False, connect_args={"check_same_thread": False})
+        # Adapt models for SQLite (replace UUID with String, JSONB with JSON)
+        adapt_models_for_sqlite(engine)
+        # Create tables
+        Base.metadata.create_all(bind=engine)
+        # Restore original DATABASE_URL if it existed
+        if original_db_url:
+            os.environ["DATABASE_URL"] = original_db_url
 
     def test_list_gold_standards(self):
         """Test list_gold_standards."""

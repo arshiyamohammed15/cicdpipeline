@@ -641,7 +641,7 @@ class TestIAMService(unittest.TestCase):
         # Trigger break-glass
         from identity_access_management.models import BreakGlassRequest
         request = BreakGlassRequest(
-            subject=Subject(sub="user-123", roles=["developer"]),
+            subject={"sub": "user-123", "roles": ["developer"]},
             incident_id="INC-2025-001",
             justification="Critical production incident requiring emergency access",
             approver_identity="admin-456"
@@ -658,7 +658,7 @@ class TestIAMService(unittest.TestCase):
         """Test trigger_break_glass fails when policy not enabled."""
         from identity_access_management.models import BreakGlassRequest
         request = BreakGlassRequest(
-            subject=Subject(sub="user-123", roles=["developer"]),
+            subject={"sub": "user-123", "roles": ["developer"]},
             incident_id="INC-2025-001",
             justification="Critical production incident"
         )
@@ -687,7 +687,7 @@ class TestIAMService(unittest.TestCase):
 
         from identity_access_management.models import BreakGlassRequest
         request = BreakGlassRequest(
-            subject=Subject(sub="user-123", roles=["developer"]),
+            subject={"sub": "user-123", "roles": ["developer"]},
             incident_id="INC-2025-001",
             justification="Critical production incident"
         )
@@ -716,7 +716,7 @@ class TestIAMService(unittest.TestCase):
 
         from identity_access_management.models import BreakGlassRequest
         request = BreakGlassRequest(
-            subject=Subject(sub="user-123", roles=["developer"]),
+            subject={"sub": "user-123", "roles": ["developer"]},
             incident_id="INC-2025-001",
             justification="Critical production incident",
             approver_identity="admin-456"
@@ -756,7 +756,7 @@ class TestIAMService(unittest.TestCase):
         from identity_access_management.models import BreakGlassRequest
         from datetime import datetime, timedelta
         request = BreakGlassRequest(
-            subject=Subject(sub="user-123", roles=["developer"]),
+            subject={"sub": "user-123", "roles": ["developer"]},
             incident_id="INC-2025-001",
             justification="Critical production incident"
         )

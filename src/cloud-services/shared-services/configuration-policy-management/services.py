@@ -27,6 +27,7 @@ from .dependencies import (
     MockM21IAM, MockM27EvidenceLedger, MockM29DataPlane,
     MockM33KeyManagement, MockM34SchemaRegistry, MockM32TrustPlane
 )
+from sqlalchemy import func, cast, String, Text
 try:
     from .database.models import Policy, Configuration, GoldStandard
     from .database.connection import get_session
@@ -226,10 +227,44 @@ class PolicyEvaluationEngine:
 
             # Query user policies if principal provided
             if principal and principal.get("user_id"):
-                user_policies = session.query(Policy).filter(
-                    Policy.scope["users"].astext.contains(principal["user_id"]),
-                    Policy.status == "active"
-                ).all()
+                # Use database-agnostic JSON query (works for both PostgreSQL and SQLite)
+                try:
+                    # Try to detect database type from connection
+                    from .database.connection import is_mock_mode
+                    is_sqlite = is_mock_mode()
+                except (ImportError, AttributeError):
+                    # Fallback: check engine dialect
+                    engine = getattr(session, 'bind', None)
+                    is_sqlite = engine and engine.dialect.name == 'sqlite' if engine else False
+
+                if is_sqlite:
+                    # SQLite: Use json_extract and cast to text, or query all and filter
+                    # For SQLite, query all active policies and filter in Python
+                    all_policies = session.query(Policy).filter(
+                        Policy.status == "active"
+                    ).all()
+                    user_policies = [
+                        p for p in all_policies
+                        if p.scope and isinstance(p.scope, dict) and
+                        p.scope.get("users") and principal["user_id"] in p.scope.get("users", [])
+                    ]
+                else:
+                    # PostgreSQL: Use JSONB astext
+                    try:
+                        user_policies = session.query(Policy).filter(
+                            Policy.scope["users"].astext.contains(principal["user_id"]),
+                            Policy.status == "active"
+                        ).all()
+                    except AttributeError:
+                        # Fallback if astext not available
+                        all_policies = session.query(Policy).filter(
+                            Policy.status == "active"
+                        ).all()
+                        user_policies = [
+                            p for p in all_policies
+                            if p.scope and isinstance(p.scope, dict) and
+                            p.scope.get("users") and principal["user_id"] in p.scope.get("users", [])
+                        ]
                 for policy in user_policies:
                     policies.append(policy.to_dict())
 
