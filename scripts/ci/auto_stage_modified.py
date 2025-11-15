@@ -27,8 +27,8 @@ for line in result.stdout.strip().split('\n'):
         staged_status = line[0] if len(line) > 0 else ' '
         unstaged_status = line[1] if len(line) > 1 else ' '
 
-        # If unstaged is M (modified) and staged is not M, stage it
-        if unstaged_status == 'M' and staged_status != 'M':
+        # If unstaged is M (modified), stage it (handles both ' M' and 'MM' cases)
+        if unstaged_status == 'M':
             filename = line[3:].split(' -> ')[-1].strip()
             if filename:
                 unstaged_modified.append(filename)

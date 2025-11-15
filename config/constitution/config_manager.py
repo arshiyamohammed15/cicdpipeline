@@ -82,8 +82,9 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
     def _save_constitution_config(self):
         """Save constitution configuration to file."""
         self.constitution_config["last_updated"] = datetime.now().isoformat()
-        with open(self.constitution_config_file, 'w', encoding='utf-8') as f:
+        with open(self.constitution_config_file, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(self.constitution_config, f, indent=2, ensure_ascii=False)
+            f.write('\n')  # Ensure trailing newline
 
     def _derive_total_rules(self) -> int:
         """Derive total rule count from the single source of truth (docs/constitution JSON files).

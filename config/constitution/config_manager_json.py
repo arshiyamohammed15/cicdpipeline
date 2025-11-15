@@ -117,8 +117,9 @@ class ConstitutionRuleManagerJSON(BaseConstitutionManager):
         """Save constitution configuration to JSON file."""
         try:
             self._config_data["last_updated"] = datetime.now().isoformat()
-            with open(self.constitution_config_path, 'w', encoding='utf-8') as f:
+            with open(self.constitution_config_path, 'w', encoding='utf-8', newline='\n') as f:
                 json.dump(self._config_data, f, indent=2, ensure_ascii=False)
+                f.write('\n')  # Ensure trailing newline
         except Exception as e:
             logger.error(f"Failed to save constitution config: {e}")
 
