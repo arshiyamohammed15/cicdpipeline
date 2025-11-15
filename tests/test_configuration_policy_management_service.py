@@ -172,9 +172,42 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         principal = {"user_id": "user-123", "roles": ["developer"]}
         resource = {"type": "api", "project_id": "project-123"}
 
-        # Mock database session
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.query.return_value.filter.return_value.all.return_value = []
+        # Mock database session - patch both source and where it's used
+        # Create a fully isolated mock that prevents any real database access
+        mock_query_result = MagicMock()
+        mock_query_result.all.return_value = []
+        mock_filter = MagicMock()
+        mock_filter.all.return_value = []
+        mock_query = MagicMock()
+        mock_query.filter.return_value = mock_filter
+        mock_query.all.return_value = []
+
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        # Override query to return our fully mocked query - this MUST prevent real Query objects
+        def mock_query_func(model_class):
+            return mock_query
+        mock_session_obj.query = Mock(side_effect=mock_query_func)
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to return None to prevent real database access
+        # The code checks session.bind to detect SQLite, so we need to mock this properly
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             result = self.engine.evaluate_policy(
                 policy_id=policy_id,
@@ -192,9 +225,42 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         policy_id = str(uuid.uuid4())
         context = {"environment": "production"}
 
-        # Mock database session
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.query.return_value.filter.return_value.all.return_value = []
+        # Mock database session - patch both source and where it's used
+        # Create a fully isolated mock that prevents any real database access
+        mock_query_result = MagicMock()
+        mock_query_result.all.return_value = []
+        mock_filter = MagicMock()
+        mock_filter.all.return_value = []
+        mock_query = MagicMock()
+        mock_query.filter.return_value = mock_filter
+        mock_query.all.return_value = []
+
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        # Override query to return our fully mocked query - this MUST prevent real Query objects
+        def mock_query_func(model_class):
+            return mock_query
+        mock_session_obj.query = Mock(side_effect=mock_query_func)
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to return None to prevent real database access
+        # The code checks session.bind to detect SQLite, so we need to mock this properly
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             # First evaluation
             result1 = self.engine.evaluate_policy(
@@ -221,8 +287,42 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         principal = {"user_id": "user-123", "team_id": "team-123"}
         resource = {"type": "api", "project_id": "project-123"}
 
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.query.return_value.filter.return_value.all.return_value = []
+        # Mock database session - patch both source and where it's used
+        # Create a fully isolated mock that prevents any real database access
+        mock_query_result = MagicMock()
+        mock_query_result.all.return_value = []
+        mock_filter = MagicMock()
+        mock_filter.all.return_value = []
+        mock_query = MagicMock()
+        mock_query.filter.return_value = mock_filter
+        mock_query.all.return_value = []
+
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        # Override query to return our fully mocked query - this MUST prevent real Query objects
+        def mock_query_func(model_class):
+            return mock_query
+        mock_session_obj.query = Mock(side_effect=mock_query_func)
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to return None to prevent real database access
+        # The code checks session.bind to detect SQLite, so we need to mock this properly
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             policies = self.engine._resolve_policy_hierarchy(tenant_id, context, principal, resource)
 
@@ -304,7 +404,54 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         policy_id = str(uuid.uuid4())
         context = {"environment": "production"}
 
-        with patch('configuration_policy_management.services.get_session') as mock_session:
+        # Mock database session - patch both source and where it's used
+        # Create a fully isolated mock that prevents any real database access
+        mock_policies = [
+            {
+                "policy_id": str(uuid.uuid4()),
+                "policy_definition": {
+                    "rules": [{"id": "rule-1", "condition": "True", "action": "deny"}],
+                    "default_action": "allow"
+                },
+                "scope": {"users": ["*"]},
+                "status": "active",
+                "enforcement_level": "enforcement"
+            }
+        ]
+        mock_query_result = MagicMock()
+        mock_query_result.all.return_value = mock_policies
+        mock_filter = MagicMock()
+        mock_filter.all.return_value = mock_policies
+        mock_query = MagicMock()
+        mock_query.filter.return_value = mock_filter
+        mock_query.all.return_value = mock_policies
+
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        # Override query to return our fully mocked query - this MUST prevent real Query objects
+        def mock_query_func(model_class):
+            return mock_query
+        mock_session_obj.query = Mock(side_effect=mock_query_func)
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to return None to prevent real database access
+        # The code checks session.bind to detect SQLite, so we need to mock this properly
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
             # Mock policies with one deny
             mock_policies = [
                 {
@@ -318,7 +465,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
                     "enforcement_level": "enforcement"
                 }
             ]
-            mock_session.return_value.__enter__.return_value.query.return_value.filter.return_value.all.return_value = mock_policies
+            mock_session_obj.query.return_value.filter.return_value.all.return_value = mock_policies
 
             result = self.engine.evaluate_policy(
                 policy_id=policy_id,
@@ -576,10 +723,31 @@ class TestPolicyService(unittest.TestCase):
         tenant_id = str(uuid.uuid4())
         created_by = str(uuid.uuid4())
 
-        # Mock database session
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.add = Mock()
-            mock_session.return_value.__enter__.return_value.commit = Mock()
+        # Mock database session - patch both source and where it's used
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        mock_session_obj.add = Mock()
+        mock_session_obj.commit = Mock(side_effect=lambda: None)  # Prevent real commit
+        mock_session_obj.flush = Mock(side_effect=lambda: None)  # Prevent real flush
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to prevent real database access
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             result = self.service.create_policy(request, tenant_id, created_by)
 
@@ -627,10 +795,31 @@ class TestConfigurationService(unittest.TestCase):
         )
         tenant_id = str(uuid.uuid4())
 
-        # Mock database session
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.add = Mock()
-            mock_session.return_value.__enter__.return_value.commit = Mock()
+        # Mock database session - patch both source and where it's used
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        mock_session_obj.add = Mock()
+        mock_session_obj.commit = Mock(side_effect=lambda: None)  # Prevent real commit
+        mock_session_obj.flush = Mock(side_effect=lambda: None)  # Prevent real flush
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to prevent real database access
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             result = self.service.create_configuration(request, tenant_id)
 
@@ -669,9 +858,42 @@ class TestGoldStandardService(unittest.TestCase):
         framework = "soc2"
         tenant_id = str(uuid.uuid4())
 
-        # Mock database session
-        with patch('configuration_policy_management.services.get_session') as mock_session:
-            mock_session.return_value.__enter__.return_value.query.return_value.filter.return_value.all.return_value = []
+        # Mock database session - patch both source and where it's used
+        # Create a fully isolated mock that prevents any real database access
+        mock_query_result = MagicMock()
+        mock_query_result.all.return_value = []
+        mock_filter = MagicMock()
+        mock_filter.all.return_value = []
+        mock_query = MagicMock()
+        mock_query.filter.return_value = mock_filter
+        mock_query.all.return_value = []
+
+        # Create mock session that completely prevents database access
+        mock_session_obj = MagicMock()
+        # Override query to return our fully mocked query - this MUST prevent real Query objects
+        def mock_query_func(model_class):
+            return mock_query
+        mock_session_obj.query = Mock(side_effect=mock_query_func)
+        mock_session_obj.__enter__ = Mock(return_value=mock_session_obj)
+        mock_session_obj.__exit__ = Mock(return_value=None)
+        # Mock bind to return None to prevent real database access
+        # The code checks session.bind to detect SQLite, so we need to mock this properly
+        mock_engine_obj = MagicMock()
+        mock_engine_obj.dialect.name = 'postgresql'  # Not SQLite, so it won't use SQLite path
+        type(mock_session_obj).bind = property(lambda self: mock_engine_obj)
+        mock_session_obj.execute = Mock(return_value=MagicMock())
+        mock_session_obj.is_active = False
+
+        # Also patch is_mock_mode to return False so it doesn't use SQLite path
+        with patch('configuration_policy_management.database.connection.get_session') as mock_get_session_source, \
+             patch('configuration_policy_management.services.get_session') as mock_get_session_used, \
+             patch('configuration_policy_management.database.connection.get_engine') as mock_get_engine, \
+             patch('configuration_policy_management.database.connection.is_mock_mode', return_value=False):
+            # Ensure get_engine also returns a mock to prevent real engine creation
+            mock_engine = MagicMock()
+            mock_get_engine.return_value = mock_engine
+            mock_get_session_source.return_value = mock_session_obj
+            mock_get_session_used.return_value = mock_session_obj
 
             result = self.service.list_gold_standards(framework, tenant_id)
 
