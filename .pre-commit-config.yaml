@@ -48,3 +48,4 @@ repos:
       - id: mixed-line-ending
         description: Detects and fixes mixed line endings (auto-fix)
         args: ['--fix=lf']  # Auto-fix to LF
+        exclude: '\.(ps1|bat|cmd)$'  # Exclude Windows scripts (use CRLF per .gitattributes)
