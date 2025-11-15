@@ -69,7 +69,7 @@ psql $DATABASE_URL -f database/schema.sql
 
 ```bash
 # Install Python dependencies
-pip install -r requirements-registry.txt
+pip install -r requirements.txt
 
 # Or install from project root
 pip install -e .

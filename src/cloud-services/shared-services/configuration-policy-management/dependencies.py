@@ -166,6 +166,28 @@ class MockM27EvidenceLedger:
         """
         return self.receipts.get(receipt_id)
 
+    def get_receipts_by_tenant(self, tenant_id: str) -> List[Dict[str, Any]]:
+        """
+        Retrieve all receipts for a tenant.
+
+        Args:
+            tenant_id: Tenant identifier
+
+        Returns:
+            List of receipt data dictionaries
+        """
+        receipts = []
+        for receipt_id, receipt_data in self.receipts.items():
+            # Check if receipt belongs to tenant (check various possible fields)
+            receipt_tenant = (
+                receipt_data.get("tenant_id") or
+                receipt_data.get("context", {}).get("tenant_id") or
+                receipt_data.get("policy_context", {}).get("tenant_id")
+            )
+            if receipt_tenant == tenant_id or str(receipt_tenant) == str(tenant_id):
+                receipts.append(receipt_data)
+        return receipts
+
 
 class MockM29DataPlane:
     """

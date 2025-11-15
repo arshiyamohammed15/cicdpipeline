@@ -44,6 +44,92 @@ MAX_SCHEMA_VERSIONS = 100
 MAX_SCHEMAS_PER_TENANT = 10000
 
 
+class MetricsCollector:
+    """
+    Metrics collector for schema registry operations.
+
+    Tracks: validation counts, contract enforcement, compatibility checks, latencies, cache hit rates.
+    """
+
+    def __init__(self):
+        """Initialize metrics collector."""
+        self.schema_validation_count = 0
+        self.contract_enforcement_count = 0
+        self.compatibility_check_count = 0
+        self.schema_registration_count = 0
+        self.validation_latencies = []
+        self.contract_latencies = []
+        self.compatibility_latencies = []
+        self.cache_hits = 0
+        self.cache_misses = 0
+        self.errors = {}
+
+    def record_validation(self, latency_ms: float, cache_hit: bool = False):
+        """Record schema validation."""
+        self.schema_validation_count += 1
+        self.validation_latencies.append(latency_ms)
+        if len(self.validation_latencies) > 1000:
+            self.validation_latencies = self.validation_latencies[-1000:]
+        if cache_hit:
+            self.cache_hits += 1
+        else:
+            self.cache_misses += 1
+
+    def record_contract_enforcement(self, latency_ms: float):
+        """Record contract enforcement."""
+        self.contract_enforcement_count += 1
+        self.contract_latencies.append(latency_ms)
+        if len(self.contract_latencies) > 1000:
+            self.contract_latencies = self.contract_latencies[-1000:]
+
+    def record_compatibility_check(self, latency_ms: float, cache_hit: bool = False):
+        """Record compatibility check."""
+        self.compatibility_check_count += 1
+        self.compatibility_latencies.append(latency_ms)
+        if len(self.compatibility_latencies) > 1000:
+            self.compatibility_latencies = self.compatibility_latencies[-1000:]
+        if cache_hit:
+            self.cache_hits += 1
+        else:
+            self.cache_misses += 1
+
+    def record_schema_registration(self):
+        """Record schema registration."""
+        self.schema_registration_count += 1
+
+    def record_error(self, error_code: str):
+        """Record error."""
+        self.errors[error_code] = self.errors.get(error_code, 0) + 1
+
+    def get_metrics(self) -> Dict[str, Any]:
+        """Get current metrics snapshot."""
+        total_requests = self.schema_validation_count + self.contract_enforcement_count + self.compatibility_check_count
+        error_count = sum(self.errors.values())
+        error_rate = error_count / total_requests if total_requests > 0 else 0.0
+
+        cache_total = self.cache_hits + self.cache_misses
+        cache_hit_rate = self.cache_hits / cache_total if cache_total > 0 else 0.0
+
+        def avg_latency(latencies):
+            return sum(latencies) / len(latencies) if latencies else 0.0
+
+        return {
+            "schema_validation_count": self.schema_validation_count,
+            "contract_enforcement_count": self.contract_enforcement_count,
+            "compatibility_check_count": self.compatibility_check_count,
+            "schema_registration_count": self.schema_registration_count,
+            "average_validation_latency_ms": avg_latency(self.validation_latencies),
+            "average_contract_latency_ms": avg_latency(self.contract_latencies),
+            "average_compatibility_latency_ms": avg_latency(self.compatibility_latencies),
+            "cache_hit_rate": cache_hit_rate,
+            "error_rate": error_rate
+        }
+
+
+# Global metrics collector instance
+_metrics_collector = MetricsCollector()
+
+
 class SchemaService:
     """
     Schema management service.
@@ -669,6 +755,71 @@ class ContractService:
 
             is_valid = len(violations) == 0 or contract.enforcement_level != "strict"
             return is_valid, violations
+
+        finally:
+            db.close()
+
+    def list_contracts(
+        self,
+        tenant_id: str,
+        schema_id: Optional[str] = None,
+        contract_type: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0
+    ) -> Tuple[List[ContractDefinition], int]:
+        """
+        List contracts with filters.
+
+        Args:
+            tenant_id: Tenant identifier
+            schema_id: Optional schema identifier filter
+            contract_type: Optional contract type filter
+            limit: Result limit
+            offset: Result offset
+
+        Returns:
+            Tuple of (list of contracts, total count)
+        """
+        db = get_session()
+        try:
+            query = db.query(Contract).filter(Contract.tenant_id == uuid.UUID(tenant_id))
+
+            if schema_id:
+                query = query.filter(Contract.schema_id == uuid.UUID(schema_id))
+            if contract_type:
+                query = query.filter(Contract.type == contract_type)
+
+            total = query.count()
+            contracts = query.limit(limit).offset(offset).all()
+
+            return [ContractDefinition(**c.to_dict()) for c in contracts], total
+
+        finally:
+            db.close()
+
+    def get_contract(self, contract_id: str, tenant_id: str) -> Optional[ContractDefinition]:
+        """
+        Get contract by ID.
+
+        Args:
+            contract_id: Contract identifier
+            tenant_id: Tenant identifier
+
+        Returns:
+            ContractDefinition or None
+        """
+        db = get_session()
+        try:
+            contract = db.query(Contract).filter(
+                and_(
+                    Contract.contract_id == uuid.UUID(contract_id),
+                    Contract.tenant_id == uuid.UUID(tenant_id)
+                )
+            ).first()
+
+            if contract:
+                return ContractDefinition(**contract.to_dict())
+            return None
 
         finally:
             db.close()

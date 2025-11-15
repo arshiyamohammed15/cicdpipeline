@@ -33,6 +33,8 @@ from .services import (
 )
 from .errors import ErrorCode, create_error_response, get_http_status
 from .dependencies import MockM21IAM
+from .services import _metrics_collector
+from .templates.manager import TemplateManager
 
 logger = logging.getLogger(__name__)
 
@@ -141,17 +143,17 @@ async def readiness_probe():
 @router.get("/metrics", response_model=MetricsResponse)
 async def get_metrics():
     """Prometheus metrics endpoint."""
-    # TODO: Implement actual metrics collection
+    metrics = _metrics_collector.get_metrics()
     return MetricsResponse(
-        schema_validation_count=0,
-        contract_enforcement_count=0,
-        compatibility_check_count=0,
-        schema_registration_count=0,
-        average_validation_latency_ms=0.0,
-        average_contract_latency_ms=0.0,
-        average_compatibility_latency_ms=0.0,
-        cache_hit_rate=0.0,
-        error_rate=0.0,
+        schema_validation_count=metrics["schema_validation_count"],
+        contract_enforcement_count=metrics["contract_enforcement_count"],
+        compatibility_check_count=metrics["compatibility_check_count"],
+        schema_registration_count=metrics["schema_registration_count"],
+        average_validation_latency_ms=metrics["average_validation_latency_ms"],
+        average_contract_latency_ms=metrics["average_contract_latency_ms"],
+        average_compatibility_latency_ms=metrics["average_compatibility_latency_ms"],
+        cache_hit_rate=metrics["cache_hit_rate"],
+        error_rate=metrics["error_rate"],
         timestamp=datetime.utcnow().isoformat()
     )
 
@@ -359,13 +361,24 @@ async def list_contracts(
     type: Optional[str] = Query(None),
     limit: int = Query(100, ge=1, le=100),
     offset: int = Query(0, ge=0),
-    request: Request = None
+    request: Request = None,
+    service: ContractService = Depends(get_contract_service)
 ):
     """List contracts with filters."""
-    # TODO: Implement contract listing
+    context = get_tenant_context(request)
+    tenant_id = tenant_id or context["tenant_id"]
+
+    contracts, total = service.list_contracts(
+        tenant_id=tenant_id,
+        schema_id=schema_id,
+        contract_type=type,
+        limit=limit,
+        offset=offset
+    )
+
     return ContractListResponse(
-        contracts=[],
-        total=0,
+        contracts=contracts,
+        total=total,
         limit=limit,
         offset=offset
     )
@@ -400,14 +413,26 @@ async def create_contract(
 
 
 @router.get("/contracts/{contract_id}", response_model=ContractDefinition)
-async def get_contract(contract_id: str, request: Request = None):
+async def get_contract(
+    contract_id: str,
+    request: Request = None,
+    service: ContractService = Depends(get_contract_service)
+):
     """Get contract by ID."""
-    # TODO: Implement contract retrieval
-    error_response = create_error_response(ErrorCode.CONTRACT_NOT_FOUND)
-    raise HTTPException(
-        status_code=get_http_status(ErrorCode.CONTRACT_NOT_FOUND),
-        detail=error_response.model_dump()
-    )
+    context = get_tenant_context(request)
+
+    contract = service.get_contract(contract_id, context["tenant_id"])
+    if not contract:
+        error_response = create_error_response(
+            ErrorCode.CONTRACT_NOT_FOUND,
+            tenant_id=context["tenant_id"]
+        )
+        raise HTTPException(
+            status_code=get_http_status(ErrorCode.CONTRACT_NOT_FOUND),
+            detail=error_response.model_dump()
+        )
+
+    return contract
 
 
 # Validation Endpoint
@@ -510,8 +535,14 @@ async def list_templates(
     limit: int = Query(100, ge=1, le=100)
 ):
     """List available schema templates."""
-    # TODO: Implement template listing
-    return TemplateListResponse(templates=[])
+    template_manager = TemplateManager()
+    templates = template_manager.list_templates(pattern=pattern)
+
+    # Apply limit
+    if limit < len(templates):
+        templates = templates[:limit]
+
+    return TemplateListResponse(templates=templates)
 
 
 # Bulk Operations Endpoints
@@ -526,13 +557,31 @@ async def bulk_register_schemas(
     context = get_tenant_context(request)
     operation_id = str(uuid.uuid4())
 
-    # TODO: Implement async bulk processing
+    # Process schemas synchronously (in production, this would be async)
     succeeded = 0
     failed = 0
+    errors = []
+
+    for schema_data in request_data.schemas:
+        try:
+            if not request_data.validate_only:
+                service.register_schema(
+                    schema_data,
+                    context["tenant_id"],
+                    context["user_id"]
+                )
+            succeeded += 1
+        except Exception as e:
+            failed += 1
+            errors.append({
+                "schema": schema_data.get("name", "unknown"),
+                "error": str(e)
+            })
+            logger.error(f"Bulk schema registration failed: {e}")
 
     return BulkOperationResponse(
         operation_id=operation_id,
-        status="accepted",
+        status="completed" if failed == 0 else "partial",
         total_items=len(request_data.schemas),
         succeeded=succeeded,
         failed=failed
@@ -542,18 +591,39 @@ async def bulk_register_schemas(
 @router.post("/bulk/validate", response_model=BulkOperationResponse, status_code=202)
 async def bulk_validate(
     request_data: BulkValidateRequest,
-    request: Request = None
+    request: Request = None,
+    service: ValidationService = Depends(get_validation_service)
 ):
     """Bulk data validation."""
+    context = get_tenant_context(request)
     operation_id = str(uuid.uuid4())
 
-    # TODO: Implement async bulk validation
+    # Process validations synchronously (in production, this would be async)
+    succeeded = 0
+    failed = 0
+
+    for validation in request_data.validations:
+        try:
+            result = service.validate_data(
+                validation["schema_id"],
+                validation["data"],
+                context["tenant_id"],
+                validation.get("version")
+            )
+            if result.valid:
+                succeeded += 1
+            else:
+                failed += 1
+        except Exception as e:
+            failed += 1
+            logger.error(f"Bulk validation failed: {e}")
+
     return BulkOperationResponse(
         operation_id=operation_id,
-        status="accepted",
+        status="completed" if failed == 0 else "partial",
         total_items=len(request_data.validations),
-        succeeded=0,
-        failed=0
+        succeeded=succeeded,
+        failed=failed
     )
 
 
@@ -562,8 +632,59 @@ async def bulk_export(
     tenant_id: Optional[str] = Query(None),
     format: str = Query("jsonl", pattern="^(jsonl|json)$"),
     compression: str = Query("gzip", pattern="^(gzip|none)$"),
-    request: Request = None
+    request: Request = None,
+    service: SchemaService = Depends(get_schema_service)
 ):
     """Export schemas in bulk."""
-    # TODO: Implement export
-    return {"message": "Export not yet implemented"}
+    context = get_tenant_context(request)
+    tenant_id = tenant_id or context["tenant_id"]
+
+    # Get all schemas for tenant
+    schemas, total = service.list_schemas(
+        tenant_id=tenant_id,
+        limit=10000,  # Large limit for export
+        offset=0
+    )
+
+    # Convert to export format
+    export_data = []
+    for schema in schemas:
+        export_data.append(schema.model_dump())
+
+    # Format response based on requested format
+    if format == "jsonl":
+        # JSONL format: one JSON object per line
+        import json
+        lines = [json.dumps(schema) for schema in export_data]
+        content = "\n".join(lines)
+        media_type = "application/x-ndjson"
+    else:
+        # JSON format: array of objects
+        import json
+        content = json.dumps(export_data, indent=2)
+        media_type = "application/json"
+
+    # Apply compression if requested (simplified - in production would use actual compression)
+    if compression == "gzip":
+        import gzip
+        import io
+        buffer = io.BytesIO()
+        with gzip.GzipFile(fileobj=buffer, mode='wb') as f:
+            f.write(content.encode('utf-8'))
+        content_bytes = buffer.getvalue()
+        return Response(
+            content=content_bytes,
+            media_type=media_type,
+            headers={
+                "Content-Encoding": "gzip",
+                "Content-Disposition": f"attachment; filename=schemas_export.{format}.gz"
+            }
+        )
+    else:
+        return Response(
+            content=content,
+            media_type=media_type,
+            headers={
+                "Content-Disposition": f"attachment; filename=schemas_export.{format}"
+            }
+        )

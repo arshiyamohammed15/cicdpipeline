@@ -148,6 +148,7 @@ def get_module_config() -> ConfigResponse:
 def create_policy(
     request: CreatePolicyRequest,
     tenant_id: str = Query(..., description="Tenant identifier"),
+    http_request: Request = None,
     service: PolicyService = Depends(get_policy_service)
 ) -> PolicyResponse:
     """
@@ -165,8 +166,20 @@ def create_policy(
         HTTPException: If policy creation fails
     """
     try:
-        # Get user_id from context (in production, extract from JWT)
-        created_by = "system"  # TODO: Extract from JWT token
+        # Extract user_id from JWT token in Authorization header
+        created_by = "system"  # Default fallback
+        if http_request:
+            auth_header = http_request.headers.get("Authorization", "")
+            if auth_header and auth_header.startswith("Bearer "):
+                token = auth_header[7:]  # Remove "Bearer " prefix
+                try:
+                    # Decode JWT token to extract user_id (sub claim)
+                    import jwt
+                    decoded = jwt.decode(token, options={"verify_signature": False})
+                    created_by = decoded.get("sub", "system")
+                except Exception:
+                    # If token parsing fails, use default
+                    pass
 
         result = service.create_policy(request, tenant_id, created_by)
         return result
@@ -477,10 +490,40 @@ def get_audit_summary(
         HTTPException: If audit retrieval fails
     """
     try:
-        # TODO: Implement audit summary retrieval from M27
+        # Retrieve audit summary from M27 Evidence Ledger
+        receipts = _evidence_ledger.get_receipts_by_tenant(tenant_id)
+
+        # Aggregate summary data
+        summary = {
+            "total_receipts": len(receipts),
+            "receipts_by_type": {},
+            "receipts_by_status": {},
+            "recent_receipts": []
+        }
+
+        # Count receipts by type and status
+        for receipt in receipts:
+            receipt_type = receipt.get("operation", "unknown")
+            summary["receipts_by_type"][receipt_type] = summary["receipts_by_type"].get(receipt_type, 0) + 1
+
+            receipt_status = receipt.get("status", "unknown")
+            summary["receipts_by_status"][receipt_status] = summary["receipts_by_status"].get(receipt_status, 0) + 1
+
+        # Get recent receipts (last 10)
+        sorted_receipts = sorted(receipts, key=lambda r: r.get("ts", ""), reverse=True)
+        summary["recent_receipts"] = [
+            {
+                "receipt_id": r.get("receipt_id"),
+                "operation": r.get("operation"),
+                "timestamp": r.get("ts"),
+                "status": r.get("status", "unknown")
+            }
+            for r in sorted_receipts[:10]
+        ]
+
         return AuditSummaryResponse(
             tenant_id=tenant_id,
-            summary={},
+            summary=summary,
             timestamp=datetime.utcnow().isoformat()
         )
     except Exception as exc:

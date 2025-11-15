@@ -39,14 +39,14 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     """
     Lifespan context manager for FastAPI startup/shutdown events.
-    
+
     Per IAM spec section 10: Key rotation, policy store initialization.
     """
     logger.info("Starting Identity & Access Management service...")
     logger.info(f"Service: {SERVICE_NAME}, Version: {SERVICE_VERSION}")
-    
+
     yield
-    
+
     logger.info("Shutting down Identity & Access Management service...")
 
 
@@ -66,10 +66,22 @@ app.add_middleware(RateLimitingMiddleware)
 # Idempotency middleware per IAM spec section 6
 app.add_middleware(IdempotencyMiddleware)
 
-# CORS middleware
+# CORS middleware - configure via CORS_ORIGINS environment variable
+# Production validation: reject "*" in production
+cors_origins_env = os.getenv("CORS_ORIGINS", "*" if SERVICE_ENV == "development" else "")
+cors_origins = [origin.strip() for origin in cors_origins_env.split(",")] if cors_origins_env else []
+
+# Production CORS validation: reject wildcard in production
+if SERVICE_ENV == "production":
+    if "*" in cors_origins or not cors_origins:
+        logger.error("CORS_ORIGINS must be set to specific origins in production. Wildcard '*' is not allowed.")
+        raise ValueError("CORS_ORIGINS must be set to specific origins in production. Wildcard '*' is not allowed.")
+elif not cors_origins and SERVICE_ENV != "development":
+    logger.warning("CORS_ORIGINS not set in non-development environment - CORS disabled. Set CORS_ORIGINS environment variable.")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins if cors_origins else (["*"] if SERVICE_ENV == "development" else []),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -91,4 +103,3 @@ def health_check() -> HealthResponse:
         status="healthy",
         timestamp=datetime.utcnow()
     )
-

@@ -1,11 +1,11 @@
 """
-Main FastAPI application for Configuration & Policy Management (M23).
+Main application for Deployment & Infrastructure (EPC-8).
 
-What: FastAPI application entry point with middleware, routes, and health checks per PRD v1.1.0
-Why: Orchestrates service components, provides HTTP server for M23 operations
-Reads/Writes: Reads configuration, writes HTTP responses (no file I/O)
-Contracts: FastAPI application contract, CORS middleware, request logging middleware
-Risks: Service unavailability if dependencies fail, CORS misconfiguration, middleware errors
+What: Deployment automation and infrastructure management service
+Why: Provides standardized deployment processes and infrastructure management
+Reads/Writes: Reads configuration, writes deployment artifacts
+Contracts: Deployment API contract
+Risks: Deployment failures, infrastructure misconfiguration
 """
 
 import json
@@ -22,8 +22,8 @@ from .models import HealthResponse
 from .middleware import RequestLoggingMiddleware, RateLimitingMiddleware
 
 # Service metadata per Rule 62
-SERVICE_NAME = "configuration-policy-management"
-SERVICE_VERSION = "1.1.0"
+SERVICE_NAME = "deployment-infrastructure"
+SERVICE_VERSION = "1.0.0"
 SERVICE_ENV = os.getenv("ENVIRONMENT", "development")
 SERVICE_HOST = socket.gethostname()
 
@@ -40,32 +40,27 @@ async def lifespan(app: FastAPI):
     """
     Lifespan context manager for FastAPI startup/shutdown events.
 
-    Per PRD: Database connection initialization, service startup.
+    Per deployment API contract: Service initialization.
     """
-    logger.info("Starting Configuration & Policy Management service...")
+    logger.info("Starting Deployment & Infrastructure service...")
     logger.info(f"Service: {SERVICE_NAME}, Version: {SERVICE_VERSION}")
-
-    # Initialize database connection
-    from .database.connection import get_engine
-    engine = get_engine()
-    logger.info("Database connection initialized")
 
     yield
 
-    logger.info("Shutting down Configuration & Policy Management service...")
+    logger.info("Shutting down Deployment & Infrastructure service...")
 
 
 app = FastAPI(
-    title="ZeroUI Configuration & Policy Management Service",
-    version="1.1.0",
-    description="Enterprise-grade policy lifecycle management, configuration enforcement, and gold standards compliance (M23)",
+    title="ZeroUI Deployment & Infrastructure Service",
+    version="1.0.0",
+    description="Deployment automation and infrastructure management (EPC-8)",
     lifespan=lifespan
 )
 
 # Request logging middleware (must be first to log all requests per Rule 173)
 app.add_middleware(RequestLoggingMiddleware)
 
-# Rate limiting middleware per PRD
+# Rate limiting middleware per deployment API contract
 app.add_middleware(RateLimitingMiddleware)
 
 # CORS middleware - configure via CORS_ORIGINS environment variable
@@ -90,7 +85,7 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(router, prefix="/policy/v1", tags=["configuration-policy-management"])
+app.include_router(router, prefix="/deploy/v1", tags=["deployment-infrastructure"])
 
 
 @app.get("/health", response_model=HealthResponse)
@@ -103,6 +98,8 @@ def health_check() -> HealthResponse:
     """
     return HealthResponse(
         status="healthy",
+        service=SERVICE_NAME,
         version=SERVICE_VERSION,
-        timestamp=datetime.utcnow().isoformat()
+        environment=SERVICE_ENV,
+        timestamp=datetime.utcnow()
     )
