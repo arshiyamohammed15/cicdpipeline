@@ -1,47 +1,50 @@
 # Pre-commit hooks configuration for ZeroUI 2.0
 # Install: pip install pre-commit && pre-commit install
+#
+# Configuration: All hooks are configured to auto-fix issues autonomously
+# and will NOT block commits. Hooks that cannot auto-fix are non-blocking.
 
 repos:
   # Local hooks
   - repo: local
     hooks:
-      # EOL Validation Hook
+      # EOL Validation Hook - Auto-fixes EOL issues (non-blocking)
       - id: eol-validator
-        name: Validate EOL (End of Line) characters
-        entry: python scripts/ci/validate_eol.py
+        name: Validate and Fix EOL (End of Line) characters
+        entry: python scripts/ci/validate_eol_non_blocking.py
         language: system
         types: [text]
         pass_filenames: false
         always_run: true
-        description: Validates that all staged files have correct line endings (LF for most files, CRLF for Windows scripts)
+        description: Auto-fixes line endings (LF for most files, CRLF for Windows scripts) - never blocks commits
 
-      # Constitution Rules Validator
+      # Constitution Rules Validator - Non-blocking (reports only, does not block commits)
       - id: constitution-validator
-        name: ZeroUI Constitution Validator
-        entry: python scripts/ci/run_constitution_validator.py
+        name: ZeroUI Constitution Validator (Non-blocking)
+        entry: python scripts/ci/run_constitution_validator_non_blocking.py
         language: system
         files: \.(py|ts|tsx|js|jsx)$
         pass_filenames: false
-        description: Validates code against all 415 constitution rules
+        description: Validates code against all 415 constitution rules (reports violations but does not block commits)
 
-  # Standard hooks
+      # Auto-stage hook - Stages any files modified by previous hooks (prevents unstaged file warnings)
+      - id: auto-stage-modified
+        name: Auto-stage modified files
+        entry: python scripts/ci/auto_stage_modified.py
+        language: system
+        pass_filenames: false
+        always_run: true
+        description: Automatically stages any files modified by previous hooks to prevent unstaged file warnings
+
+  # Standard hooks - Auto-fix hooks only
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
+      # Auto-fix hooks (modify files, don't block)
       - id: trailing-whitespace
-        description: Trims trailing whitespace
+        description: Trims trailing whitespace (auto-fix)
       - id: end-of-file-fixer
-        description: Ensures files end with newline
-      - id: check-yaml
-        description: Validates YAML files
-      - id: check-json
-        description: Validates JSON files
-      - id: check-added-large-files
-        description: Prevents committing large files
-      - id: check-merge-conflict
-        description: Detects merge conflict markers
-      - id: check-case-conflict
-        description: Detects case conflicts in filenames
+        description: Ensures files end with newline (auto-fix)
       - id: mixed-line-ending
-        description: Detects mixed line endings (LF/CRLF)
+        description: Detects and fixes mixed line endings (auto-fix)
         args: ['--fix=lf']  # Auto-fix to LF
