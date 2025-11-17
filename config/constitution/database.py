@@ -22,6 +22,8 @@ from datetime import datetime
 import hashlib
 from contextlib import contextmanager
 
+from .path_utils import resolve_constitution_db_path
+
 class ConstitutionRulesDB:
     """
     SQLite database manager for storing and managing constitution rules.
@@ -33,14 +35,14 @@ class ConstitutionRulesDB:
     - Track rule usage and validation history
     """
 
-    def __init__(self, db_path: str = "config/constitution_rules.db"):
+    def __init__(self, db_path: Optional[str] = None):
         """
         Initialize the constitution rules database.
 
         Args:
             db_path: Path to SQLite database file
         """
-        self.db_path = Path(db_path)
+        self.db_path = resolve_constitution_db_path(db_path)
         self.connection = None
         # Use re-entrant lock to allow nested DB operations within the same thread
         self._connection_lock = threading.RLock()

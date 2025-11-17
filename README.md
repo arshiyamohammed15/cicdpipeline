@@ -8,10 +8,32 @@ A Python-based automated code review tool that validates code against the ZeroUI
 - `config/`: Constitution configuration (JSON, DB, logs, patterns, history) consumed by the validator and tooling.
 - `contracts/`: JSON/YAML contract specifications grouped by domain (analytics, API, integration, release, and more).
 - `src/`: Application sources (`cloud-services`, `edge-agent`, `vscode-extension`) spanning Python and TypeScript.
-- `product/`, `tenant/`, `shared/`, `storage-scripts/`: Storage governance planes, evidence scaffolds, and PowerShell tooling.
+- `storage-scripts/`: Authoritative automation for provisioning storage planes outside the repo. (All `product/`, `tenant/`, and `shared/` data now lives under `${ZU_ROOT}` and is never tracked here.)
 - `gsmd/`: Generated gold-standard metadata (JSON schemas plus PowerShell utilities).
 - `tests/`, `tools/`, `validator/`, `scripts/`, `db/`: Validator test suites, CLI helpers, rule engines, automation scripts, and database artifacts.
 - `node_modules/`: Checked-in JavaScript dependencies needed by the VS Code extension workspace.
+
+## Storage Provisioning Workflow
+
+ZeroUI now enforces a **code-and-docs-only** repository. Any storage-plane folders (`product/`, `tenant/`, `shared/`, IDE receipts, evidence, telemetry, logs, etc.) must be created under your external `${ZU_ROOT}` path before running tooling.
+
+1. **Pick/Set `ZU_ROOT`:**
+   ```powershell
+   $env:ZU_ROOT = "D:\ZeroUI"             # Laptop default
+   # or pass -ZuRoot explicitly to the scripts below
+   ```
+
+2. **Provision folders with the official scripts (one per environment):**
+   ```powershell
+   pwsh storage-scripts/tools/create-folder-structure-development.ps1 -ZuRoot $env:ZU_ROOT
+   pwsh storage-scripts/tools/create-folder-structure-integration.ps1 -ZuRoot $env:ZU_ROOT
+   pwsh storage-scripts/tools/create-folder-structure-production.ps1 -ZuRoot $env:ZU_ROOT
+   ```
+   These commands build `${ZU_ROOT}/{env}/{ide|tenant|product|shared}` and all required parents as defined in `storage-scripts/folder-business-rules.md`. The repository itself must stay free of those directories.
+
+3. **Point every tool at `${ZU_ROOT}`:** Any scripts, tests, or services that previously referenced `./product`, `./tenant`, or similar in-repo paths must read from `${env:ZU_ROOT}` (or the `-ZuRoot` you pass in). Update your custom configs before running ingestion, receipts, evidence generation, telemetry exports, etc.
+
+The folder-business rules file remains the single source of truth; regenerate scaffolds with the corresponding `create-folder-structure-*.ps1` whenever you switch environments or rotate disks.
 
 ## Features
 
@@ -306,13 +328,13 @@ git commit -m "Add new rule to constitution"
 
 ### Benefits
 
-✅ **Single Edit Point**: Change rules only in Markdown  
-✅ **No Sync Conflicts**: DB/JSON are regenerated, not synced  
-✅ **Version Control**: All changes tracked in Git (Markdown)  
-✅ **Easy Reviews**: PRs show Markdown diffs  
-✅ **Fast Runtime**: DB/JSON still available for performance  
-✅ **Separation of Concerns**: Content (Markdown) vs State (Config)  
-✅ **Can't Get Out of Sync**: Rebuild command ensures consistency  
+✅ **Single Edit Point**: Change rules only in Markdown
+✅ **No Sync Conflicts**: DB/JSON are regenerated, not synced
+✅ **Version Control**: All changes tracked in Git (Markdown)
+✅ **Easy Reviews**: PRs show Markdown diffs
+✅ **Fast Runtime**: DB/JSON still available for performance
+✅ **Separation of Concerns**: Content (Markdown) vs State (Config)
+✅ **Can't Get Out of Sync**: Rebuild command ensures consistency
 
 ### Cross-Source Consistency Validation
 
@@ -360,7 +382,7 @@ Key suites (invoked via `pytest validator/rules/tests -q`):
 
 **Expected Coverage:**
 - **Critical Rules**: Should achieve 100% coverage
-- **Important Rules**: Should achieve 80%+ coverage  
+- **Important Rules**: Should achieve 80%+ coverage
 - **Recommended Rules**: Should achieve 60%+ coverage
 - **Overall**: Should achieve 70%+ coverage
 
@@ -1175,7 +1197,7 @@ python config/constitution/tests/test_runner.py --category integration
 #### Test Coverage
 The system includes comprehensive test coverage:
 - **Database Tests**: SQLite backend functionality
-- **JSON Tests**: JSON backend functionality  
+- **JSON Tests**: JSON backend functionality
 - **Factory Tests**: Backend selection and factory logic
 - **Sync Tests**: Synchronization between backends
 - **Migration Tests**: Data migration and integrity
@@ -1225,7 +1247,7 @@ The system includes intelligent auto-fallback capabilities:
    ```bash
    # Check database health
    python enhanced_cli.py --health-check
-   
+
    # Repair database
    python enhanced_cli.py --repair-database
    ```
@@ -1234,7 +1256,7 @@ The system includes intelligent auto-fallback capabilities:
    ```bash
    # Verify sync status
    python enhanced_cli.py --verify-sync
-   
+
    # Force sync
    python enhanced_cli.py --sync-backends --force
    ```
@@ -1243,7 +1265,7 @@ The system includes intelligent auto-fallback capabilities:
    ```bash
    # Validate configuration
    python enhanced_cli.py --validate-config
-   
+
    # Reset to defaults
    python enhanced_cli.py --reset-config
    ```
@@ -1252,16 +1274,17 @@ The system includes intelligent auto-fallback capabilities:
    ```bash
    # Check migration history
    python enhanced_cli.py --migration-history
-   
+
    # Rollback migration
    python enhanced_cli.py --rollback-migration
    ```
 
 #### Log Files
-- **System Logs**: `config/logs/constitution_system.log`
-- **Sync Logs**: `config/logs/sync_history.log`
-- **Migration Logs**: `config/logs/migration_history.log`
-- **Error Logs**: `config/logs/error.log`
+All constitution logs are emitted to `${ZEROU_LOG_ROOT}/constitution` (recommended: `E:\zeroui_logs\constitution`). Set the `ZEROU_LOG_ROOT` (or `ZEROUI_LOG_ROOT`) environment variable to point to your external storage root; when unset, the tooling falls back to `%USERPROFILE%\ZeroUI\zeroui_logs\constitution`.
+
+- **Activity**: `${ZEROU_LOG_ROOT}/constitution/constitution_all.log`
+- **Errors**: `${ZEROU_LOG_ROOT}/constitution/constitution_errors.log`
+- **Performance**: `${ZEROU_LOG_ROOT}/constitution/constitution_performance.log`
 
 ### 🎯 Best Practices
 
@@ -2108,7 +2131,7 @@ class TestDynamicRules(unittest.TestCase):
         """Test Rule 182 without hardcoded number."""
         rule_id = rule_id_by_title("No `any` in committed code")
         self.assertEqual(rule_id, "R182")
-        
+
         # Test validator with dynamic rule ID
         violations = validator._validate_no_any_in_committed_code("test.ts", "const x:any=1;")
         self.assertTrue(any(v["rule_id"] == rule_id for v in violations))
@@ -2130,10 +2153,10 @@ from tests.helpers.rules import rules_in_category
 def test_typescript_rules_compile(rule_num):
     """Test that all TypeScript rules are properly implemented."""
     rule_id = f"R{rule_num}"
-    
+
     # Verify rule exists in validator
     assert hasattr(validator, f"_validate_rule_{rule_num}")
-    
+
     # Test basic functionality
     method = getattr(validator, f"_validate_rule_{rule_num}")
     result = method("test.ts", "// test content")
@@ -2151,11 +2174,11 @@ class TestTitleBasedRules(unittest.TestCase):
         # Test Rule 150: Prevent First
         rule_150 = rule_id_by_title("Prevent First")
         self.assertEqual(rule_150, "R150")
-        
+
         # Test Rule 151: Small, Stable Error Codes
         rule_151 = rule_id_by_title("Small, Stable Error Codes")
         self.assertEqual(rule_151, "R151")
-        
+
         # Test Rule 152: Wrap & Chain
         rule_152 = rule_id_by_title("Wrap & Chain")
         self.assertEqual(rule_152, "R152")
@@ -2165,7 +2188,7 @@ class TestTitleBasedRules(unittest.TestCase):
         # Test Rule 182: No any in committed code
         rule_182 = rule_id_by_title("No `any` in committed code")
         self.assertEqual(rule_182, "R182")
-        
+
         # Test Rule 183: Handle null/undefined
         rule_183 = rule_id_by_title("Handle `null`/`undefined`")
         self.assertEqual(rule_183, "R183")
@@ -2245,7 +2268,7 @@ For issues and questions:
 3. Use `--verbose` flag for detailed output
 4. Check configuration file format
 5. Use `--health-check` for system diagnostics
-6. Check log files in `config/logs/`
+6. Check log files under `${ZEROU_LOG_ROOT}/constitution`
 
 ---
 

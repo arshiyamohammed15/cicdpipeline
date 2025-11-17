@@ -97,7 +97,7 @@ The **StorageGovernanceValidator** has been integrated into the core validator:
 # validator/rules/storage_governance.py
 class StorageGovernanceValidator:
     """Validates storage governance and 4-plane architecture compliance."""
-    
+
     def validate(self, file_path: str, content: str) -> List[Violation]:
         """Validate storage governance compliance for a file."""
         # Checks all 13 rules (216-228)
@@ -403,14 +403,14 @@ See `storage-scripts/config/README.md` for detailed documentation on:
 
 ## Success Criteria
 
-✅ Scaffold creates all 4 planes correctly  
-✅ Rules 216-228 extracted and documented  
-✅ StorageGovernanceValidator implements all 13 rules  
-✅ Integration with core validator complete  
-✅ All tests pass (100% coverage for new rules)  
-✅ Documentation complete and accurate  
-✅ No breaking changes to existing system  
-✅ Consistency verification passes  
+✅ Scaffold creates all 4 planes correctly
+✅ Rules 216-228 extracted and documented
+✅ StorageGovernanceValidator implements all 13 rules
+✅ Integration with core validator complete
+✅ All tests pass (100% coverage for new rules)
+✅ Documentation complete and accurate
+✅ No breaking changes to existing system
+✅ Consistency verification passes
 
 ## Support
 
@@ -419,11 +419,10 @@ For issues or questions:
 2. Check `folder-business-rules.md` for specifications
 3. Run `python enhanced_cli.py --rule-stats` for rule status
 4. Use `--verbose` flag for detailed validation output
-5. Check logs in `config/logs/` for troubleshooting
+5. Check logs under `${ZEROU_LOG_ROOT}/constitution` (outside the repo) for troubleshooting
 
 ---
 
-**Last Updated**: 2025-11-05  
-**Version**: 2.0  
+**Last Updated**: 2025-11-05
+**Version**: 2.0
 **Status**: Production Ready (v2.0 Simplified Structure)
-

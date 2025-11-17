@@ -14,6 +14,7 @@ from datetime import datetime
 
 from .database import ConstitutionRulesDB
 from .rule_extractor import ConstitutionRuleExtractor
+from .path_utils import resolve_constitution_db_path
 try:
     from ..enhanced_config_manager import EnhancedConfigManager
 except ImportError:
@@ -32,7 +33,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
     enable/disable capabilities and database integration.
     """
 
-    def __init__(self, config_dir: str = "config", db_path: str = "config/constitution_rules.db"):
+    def __init__(self, config_dir: str = "config", db_path: Optional[str] = None):
         """
         Initialize the constitution rule manager.
 
@@ -41,7 +42,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             db_path: Path to SQLite database file
         """
         super().__init__(config_dir)
-        self.db_path = db_path
+        self.db_path = resolve_constitution_db_path(db_path)
         self.constitution_config_file = self.config_dir / "constitution_config.json"
         self._init_constitution_system()
 

@@ -47,6 +47,12 @@ tests/test_reports/*.json
 *.log
 logs/
 validation_service.log
+config/logs/
+
+# Storage plane scaffolds (must live under ZU_ROOT, never in repo)
+product/
+tenant/
+shared/
 
 # Archives
 *.zip
