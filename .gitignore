@@ -40,6 +40,9 @@ coverage.xml
 *.cover
 .hypothesis/
 
+# Test artifacts
+tests/test_reports/*.json
+
 # Logs
 *.log
 logs/
