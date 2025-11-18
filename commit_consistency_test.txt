@@ -1,0 +1,9 @@
+This is a test file to validate commit consistency across different methods:
+
+1. Cursor Agent commits
+2. Terminal CLI Git commands
+3. IDE Commit Feature
+
+All three methods should behave consistently with pre-commit hooks, staging, and validation.
+
+Test timestamp: 2025-11-18
