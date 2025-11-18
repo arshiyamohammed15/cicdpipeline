@@ -82,7 +82,19 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
 
     def _save_constitution_config(self):
         """Save constitution configuration to file."""
-        self.constitution_config["last_updated"] = datetime.now().isoformat()
+        # Skip timestamp update during pre-commit hooks to prevent IDE commit failures
+        is_pre_commit = (
+            os.environ.get('GIT_AUTHOR_NAME') or
+            os.environ.get('GIT_AUTHOR_EMAIL') or
+            os.environ.get('GIT_COMMITTER_NAME') or
+            os.environ.get('GIT_COMMITTER_EMAIL') or
+            'pre-commit' in os.environ.get('PWD', '').lower() or
+            any('git' in arg.lower() for arg in os.sys.argv if hasattr(os, 'sys') and hasattr(os.sys, 'argv'))
+        )
+
+        if not is_pre_commit:
+            self.constitution_config["last_updated"] = datetime.now().isoformat()
+
         with open(self.constitution_config_file, 'w', encoding='utf-8', newline='\n') as f:
             json.dump(self.constitution_config, f, indent=2, ensure_ascii=False)
             f.write('\n')  # Ensure trailing newline
