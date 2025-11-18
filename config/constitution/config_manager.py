@@ -15,6 +15,7 @@ from datetime import datetime
 from .database import ConstitutionRulesDB
 from .rule_extractor import ConstitutionRuleExtractor
 from .path_utils import resolve_constitution_db_path
+from .rule_count_loader import get_rule_count_loader
 try:
     from ..enhanced_config_manager import EnhancedConfigManager
 except ImportError:
@@ -29,7 +30,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
     """
     Constitution rule manager that extends EnhancedConfigManager.
 
-    Provides functionality to manage all 149 constitution rules with
+    Provides functionality to manage all constitution rules with
     enable/disable capabilities and database integration.
     """
 
@@ -100,15 +101,15 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             f.write('\n')  # Ensure trailing newline
 
     def _derive_total_rules(self) -> int:
-        """Derive total rule count from the single source of truth (docs/constitution JSON files).
-        Falls back to database count, then JSON export, else 0."""
+        """Get total rule count from the single source of truth."""
         try:
-            # SINGLE SOURCE OF TRUTH: Load from docs/constitution JSON files
-            from .rule_count_loader import get_rule_counts
-            counts = get_rule_counts()
-            return counts['total_rules']
+            loader = get_rule_count_loader()
+            return loader.get_total_rules()
         except Exception:
-            pass
+            return self._fallback_total_rules()
+
+    def _fallback_total_rules(self) -> int:
+        """Fallback sources for total rule count when loader is unavailable."""
         try:
             # Fallback: check database
             if hasattr(self, 'db_manager') and self.db_manager is not None:
@@ -491,6 +492,8 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
 
     def health_check(self) -> Dict[str, Any]:
         """Perform a health check on the database."""
+        expected_rules = self._derive_total_rules()
+        actual_rules = 0
         try:
             # Check database file existence and accessibility
             db_exists = Path(self.db_path).exists()
@@ -512,13 +515,12 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
             try:
                 with self.db_manager as db:
                     rules = db.get_all_rules()
-                    if len(rules) != 149:
+                    actual_rules = len(rules)
+                    if expected_rules > 0 and actual_rules != expected_rules:
                         data_valid = False
             except Exception:
                 data_valid = False
 
-            # Derive expected rule count dynamically
-            expected_rules = len(rules) if 'rules' in locals() else 0
             healthy = db_exists and db_readable and db_writable and data_valid and expected_rules > 0
 
             return {
@@ -528,7 +530,7 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
                 "database_writable": db_writable,
                 "data_valid": data_valid,
                 "expected_rules": expected_rules,
-                "actual_rules": len(rules) if 'rules' in locals() else 0,
+                "actual_rules": actual_rules,
                 "last_updated": self._get_last_updated()
             }
 

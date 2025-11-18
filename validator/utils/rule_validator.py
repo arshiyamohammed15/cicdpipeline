@@ -12,6 +12,7 @@ Root Cause Prevention:
 
 from typing import Optional, Dict, Any
 from config.constitution.constitution_rules_json import ConstitutionRulesJSON
+from config.constitution.rule_count_loader import get_rule_count_loader
 
 
 class RuleNumberValidator:
@@ -25,7 +26,26 @@ class RuleNumberValidator:
     def __init__(self):
         """Initialize rule number validator."""
         self.rule_loader = ConstitutionRulesJSON()
-        self.max_rule_number = 415  # From statistics in constitution_rules.json
+        self.max_rule_number = self._determine_max_rule_number()
+
+    def _determine_max_rule_number(self) -> int:
+        """Determine the maximum rule number from the single source of truth."""
+        try:
+            loader = get_rule_count_loader()
+            total_rules = loader.get_total_rules()
+            if total_rules > 0:
+                return total_rules
+        except Exception:
+            pass
+
+        try:
+            rules = self.rule_loader.get_all_rules()
+            if rules:
+                return max(rule.get('rule_number', 0) for rule in rules)
+        except Exception:
+            pass
+
+        return 0
 
     def validate_rule_number(self, rule_number: int) -> bool:
         """

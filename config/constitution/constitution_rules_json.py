@@ -17,6 +17,8 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 import logging
 
+from .rule_count_loader import get_rule_count_loader
+
 logger = logging.getLogger(__name__)
 
 class ConstitutionRulesJSON:
@@ -42,6 +44,17 @@ class ConstitutionRulesJSON:
         self.data = {}
         self._initialized = False
         self._lock_file = None
+
+    def _get_expected_rule_count(self) -> int:
+        """Get the expected rule count from the single source of truth."""
+        try:
+            loader = get_rule_count_loader()
+            return loader.get_total_rules()
+        except Exception:
+            rules = self.data.get("rules")
+            if isinstance(rules, dict):
+                return len(rules)
+            return 0
 
     def _init_database(self):
         """Initialize JSON database."""
@@ -124,8 +137,10 @@ class ConstitutionRulesJSON:
         if not isinstance(self.data["rules"], dict):
             raise ValueError("Rules must be a dictionary")
 
-        if len(self.data["rules"]) != 149:
-            raise ValueError(f"Expected 149 rules, found {len(self.data['rules'])}")
+        expected_rules = self._get_expected_rule_count()
+        actual_rules = len(self.data["rules"])
+        if expected_rules != actual_rules:
+            raise ValueError(f"Expected {expected_rules} rules, found {actual_rules}")
 
     def _validate_json_file(self, file_path: Path):
         """Validate JSON file after writing."""
@@ -192,7 +207,8 @@ class ConstitutionRulesJSON:
             if not isinstance(data["rules"], dict):
                 return False
 
-            if len(data["rules"]) != 149:
+            expected_rules = self._get_expected_rule_count()
+            if len(data["rules"]) != expected_rules:
                 return False
 
             return True
@@ -229,8 +245,10 @@ class ConstitutionRulesJSON:
                 return
 
         # Validate rules count
-        if len(self.data["rules"]) != 149:
-            logger.warning(f"Expected 149 rules, found {len(self.data['rules'])}, recreating...")
+        expected_rules = self._get_expected_rule_count()
+        actual_rules = len(self.data["rules"])
+        if actual_rules != expected_rules:
+            logger.warning(f"Expected {expected_rules} rules, found {actual_rules}, recreating...")
             self._create_database()
 
     def _backup_corrupted_file(self):
@@ -607,7 +625,7 @@ class ConstitutionRulesJSON:
                 data_valid = False
 
             # Check rule count
-            expected_rules = 149
+            expected_rules = self._get_expected_rule_count()
             actual_rules = len(self.data.get("rules", {}))
             rules_count_valid = actual_rules == expected_rules
 

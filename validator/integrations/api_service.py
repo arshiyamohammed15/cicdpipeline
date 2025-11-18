@@ -8,10 +8,12 @@ from .integration_registry import IntegrationRegistry
 import logging
 from typing import Dict, Any
 import traceback
+from validator.pre_implementation_hooks import PreImplementationHookManager
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for cross-origin requests
 integration_registry = IntegrationRegistry()
+hook_manager = PreImplementationHookManager()
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -172,9 +174,9 @@ def list_integrations():
 def get_stats():
     """Get service statistics."""
     try:
-        # This would need to be implemented in the registry
+        total_rules = hook_manager.total_rules
         return jsonify({
-            'total_rules': 293,
+            'total_rules': total_rules,
             'enforcement_active': True,
             'available_integrations': integration_registry.list_integrations()
         })
@@ -187,7 +189,10 @@ def get_stats():
 
 if __name__ == '__main__':
     logger.info("Starting Constitution Validation Service...")
-    logger.info("This service enforces all 293 ZeroUI constitution rules before AI code generation.")
+    logger.info(
+        "This service enforces all %s ZeroUI constitution rules before AI code generation.",
+        hook_manager.total_rules
+    )
     logger.info("Service will be available at http://localhost:5000")
     logger.info("Press Ctrl+C to stop")
 

@@ -9,22 +9,65 @@ the single source of truth principle. All rule counts must come from JSON files.
 import re
 import sys
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
-# Patterns that indicate hardcoded rule counts
-FORBIDDEN_PATTERNS = [
-    # Direct numeric counts
-    r'\b(424|414|425|423)\b',  # Common rule count values
-    r'total.*rules.*=.*\d+',
-    r'expected.*rules.*=.*\d+',
-    r'rule.*count.*=.*\d+',
-    # Hardcoded rule ID ranges
-    r'rule.*range.*\(.*\d+.*,.*\d+.*\)',
-    r'rule.*\d+.*to.*\d+',
-    # File count assumptions
-    r'8.*json.*files|8.*JSON.*files',
-    r'json.*files.*=.*8',
-]
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+STATIC_FORBIDDEN_NUMBERS = {'149', '293', '414', '423', '424', '425'}
+
+
+def get_canonical_rule_count() -> Optional[int]:
+    """Retrieve the canonical rule count from the single source of truth."""
+    try:
+        from config.constitution.rule_count_loader import get_rule_counts
+        counts = get_rule_counts()
+        total = counts.get('total_rules')
+        if isinstance(total, int):
+            return total
+    except Exception:
+        pass
+    return None
+
+
+def build_forbidden_patterns() -> List[str]:
+    """Build the forbidden regex patterns, including dynamic rule counts."""
+    number_pattern = build_number_pattern()
+
+    patterns = [
+        r'total.*rules.*=\s*\d+',
+        r'expected.*rules.*=\s*\d+',
+        r'rule.*count.*=\s*\d+',
+        r'rule.*range.*\(.*\d+.*,.*\d+.*\)',
+        r'rule.*\d+.*to.*\d+',
+        r'8.*json.*files|8.*JSON.*files',
+        r'json.*files.*=\s*8',
+    ]
+
+    if number_pattern:
+        patterns.insert(0, number_pattern)
+
+    return patterns
+
+
+def build_number_pattern() -> Optional[str]:
+    """Construct a regex for explicitly hardcoded rule counts."""
+    numbers = set(STATIC_FORBIDDEN_NUMBERS)
+    canonical = get_canonical_rule_count()
+    if canonical is not None:
+        numbers.add(str(canonical))
+
+    if not numbers:
+        return None
+
+    # Sort to avoid partial matches when numbers share prefixes
+    sorted_numbers = sorted(numbers, key=lambda x: (-len(x), x))
+    joined = '|'.join(sorted_numbers)
+    return rf'\b({joined})\b'
+
+
+FORBIDDEN_PATTERNS = build_forbidden_patterns()
 
 # Files to exclude from scanning
 EXCLUDE_PATTERNS = [
