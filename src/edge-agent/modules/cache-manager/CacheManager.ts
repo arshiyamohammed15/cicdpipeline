@@ -23,13 +23,13 @@ export class CacheManager implements DelegationInterface {
 
     public async delegate(task: DelegationTask): Promise<DelegationResult> {
         const startTime = Date.now();
-        
+
         try {
             console.log(`Cache Manager processing task: ${task.id}`);
-            
+
             // Handle cache operations
             const cacheResult = await this.handleCacheOperation(task);
-            
+
             const processingTime = Date.now() - startTime;
             this.tasksProcessed++;
             this.totalLatency += processingTime;
@@ -58,9 +58,9 @@ export class CacheManager implements DelegationInterface {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
-            
+
             console.error(`Cache Manager failed task: ${task.id}`, error);
-            
+
             return {
                 taskId: task.id,
                 success: false,
@@ -82,7 +82,7 @@ export class CacheManager implements DelegationInterface {
     }
 
     public canHandle(task: DelegationTask): boolean {
-        return task.type === 'cache' || 
+        return task.type === 'cache' ||
                task.data?.cacheKey !== undefined ||
                task.requirements?.performance === true;
     }

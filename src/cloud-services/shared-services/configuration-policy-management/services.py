@@ -16,6 +16,8 @@ import uuid
 from datetime import datetime
 from typing import Optional, Dict, Any, List, Tuple
 
+from sqlalchemy.exc import OperationalError
+
 from .models import (
     CreatePolicyRequest, PolicyResponse, EvaluatePolicyRequest, EvaluatePolicyResponse,
     CreateConfigurationRequest, ConfigurationResponse, ConfigurationDriftReport,
@@ -29,7 +31,7 @@ from .dependencies import (
 )
 from sqlalchemy import func, cast, String, Text
 try:
-    from .database.models import Policy, Configuration, GoldStandard
+    from .database.models import Base, Policy, Configuration, GoldStandard
     from .database.connection import get_session
 except (ImportError, ModuleNotFoundError):
     # Fallback for testing or when not installed as package
@@ -58,6 +60,8 @@ except (ImportError, ModuleNotFoundError):
         def get_session():
             from unittest.mock import MagicMock
             return MagicMock()
+        class Base:  # type: ignore
+            metadata = None
 
 logger = logging.getLogger(__name__)
 
@@ -1116,7 +1120,16 @@ class PolicyService:
 
         with get_session() as session:
             session.add(policy)
-            session.commit()
+            try:
+                session.commit()
+            except OperationalError as exc:
+                session.rollback()
+                if "no such table" in str(exc).lower():
+                    self._ensure_sqlite_schema(session)
+                    session.add(policy)
+                    session.commit()
+                else:
+                    raise
 
         # Generate receipt
         receipt = self._generate_policy_lifecycle_receipt(
@@ -1134,6 +1147,36 @@ class PolicyService:
             version="1.0.0",
             status="draft"
         )
+
+    def _ensure_sqlite_schema(self, session) -> None:
+        """
+        Ensure SQLite in-memory databases have the required tables during tests.
+        """
+        bind = getattr(session, "get_bind", lambda: None)()
+        if not bind:
+            return
+        dialect_name = getattr(getattr(bind, "dialect", None), "name", None)
+        if dialect_name != "sqlite":
+            return
+
+        # Prefer the test helper that adapts JSONB/UUID columns for SQLite
+        try:
+            import configuration_policy_management.database.connection as db_conn
+
+            ensure_tables = getattr(db_conn, "_ensure_tables", None)
+            if callable(ensure_tables):
+                try:
+                    ensure_tables()
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+        if getattr(Base, "metadata", None):
+            try:
+                Base.metadata.create_all(bind=bind)
+            except Exception:
+                pass
 
     def _generate_policy_lifecycle_receipt(
         self,

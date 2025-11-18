@@ -83,21 +83,21 @@ else:
 def validate_rule_number(rule_number: int) -> bool:
     """
     Validate that a rule number exists in the constitution rules.
-    
+
     Args:
         rule_number: Rule number to validate
-        
+
     Returns:
         True if rule exists, False otherwise
     """
     from config.constitution.constitution_rules_json import ConstitutionRulesJSON
-    
+
     rule_loader = ConstitutionRulesJSON()
     rule = rule_loader.get_rule_by_number(rule_number)
-    
+
     if not rule:
         raise ValueError(f"Rule {rule_number} does not exist. Valid range: 1-415")
-    
+
     return True
 
 # Usage
@@ -113,22 +113,22 @@ validate_rule_number(4083)  # Raises ValueError - rule doesn't exist
 def get_rule_number_by_title(title_keyword: str) -> Optional[int]:
     """
     Get rule number by searching for title keyword.
-    
+
     Args:
         title_keyword: Keyword in rule title (e.g., "Structured Logs")
-        
+
     Returns:
         Rule number if found, None otherwise
     """
     from config.constitution.constitution_rules_json import ConstitutionRulesJSON
-    
+
     rule_loader = ConstitutionRulesJSON()
     all_rules = rule_loader.get_all_rules()
-    
+
     for rule in all_rules:
         if title_keyword.lower() in rule.get('title', '').lower():
             return rule.get('rule_number')
-    
+
     return None
 
 # Usage
@@ -146,11 +146,11 @@ class PostGenerationValidator:
         self.code_validator = ConstitutionValidator()
         self.rule_loader = ConstitutionRulesJSON()
         self._validate_rule_references()
-    
+
     def _validate_rule_references(self):
         """Validate all rule numbers referenced in this class."""
         referenced_rules = [11, 149, 332, 172, 62, 61, 176, 63, 56]
-        
+
         for rule_num in referenced_rules:
             rule = self.rule_loader.get_rule_by_number(rule_num)
             if not rule:
@@ -179,14 +179,14 @@ def test_post_generation_validator_rule_numbers():
     """Test that all rule numbers in PostGenerationValidator are valid."""
     from validator.post_generation_validator import PostGenerationValidator
     from config.constitution.constitution_rules_json import ConstitutionRulesJSON
-    
+
     validator = PostGenerationValidator()
     rule_loader = ConstitutionRulesJSON()
-    
+
     # Extract rule numbers from validator source code
     # (Could be done via AST parsing or explicit list)
     referenced_rules = [11, 149, 332, 172, 62, 61, 176, 63, 56]
-    
+
     for rule_num in referenced_rules:
         rule = rule_loader.get_rule_by_number(rule_num)
         assert rule is not None, f"Rule {rule_num} does not exist"
@@ -244,22 +244,22 @@ from config.constitution.constitution_rules_json import ConstitutionRulesJSON
 
 class RuleNumberValidator:
     """Validates rule numbers and provides lookup utilities."""
-    
+
     def __init__(self):
         """Initialize rule number validator."""
         self.rule_loader = ConstitutionRulesJSON()
         self.max_rule_number = 415  # From statistics
-    
+
     def validate_rule_number(self, rule_number: int) -> bool:
         """
         Validate that a rule number exists.
-        
+
         Args:
             rule_number: Rule number to validate
-            
+
         Returns:
             True if valid, False otherwise
-            
+
         Raises:
             ValueError: If rule number is out of range or doesn't exist
         """
@@ -267,43 +267,43 @@ class RuleNumberValidator:
             raise ValueError(
                 f"Rule number {rule_number} is out of valid range (1-{self.max_rule_number})"
             )
-        
+
         rule = self.rule_loader.get_rule_by_number(rule_number)
         if not rule:
             raise ValueError(f"Rule {rule_number} does not exist in constitution rules")
-        
+
         return True
-    
+
     def get_rule_by_number(self, rule_number: int) -> Optional[Dict[str, Any]]:
         """
         Get rule by number with validation.
-        
+
         Args:
             rule_number: Rule number to look up
-            
+
         Returns:
             Rule dictionary or None if not found
         """
         self.validate_rule_number(rule_number)
         return self.rule_loader.get_rule_by_number(rule_number)
-    
+
     def get_rule_number_by_title(self, title_keyword: str) -> Optional[int]:
         """
         Get rule number by title keyword.
-        
+
         Args:
             title_keyword: Keyword in rule title
-            
+
         Returns:
             Rule number if found, None otherwise
         """
         all_rules = self.rule_loader.get_all_rules()
-        
+
         for rule in all_rules:
             title = rule.get('title', '')
             if title_keyword.lower() in title.lower():
                 return rule.get('rule_number')
-        
+
         return None
 ```
 
@@ -318,14 +318,14 @@ class PostGenerationValidator:
         """Initialize the post-generation validator."""
         self.code_validator = ConstitutionValidator()
         self.rule_validator = RuleNumberValidator()
-        
+
         # Validate all rule numbers at initialization
         self._validate_all_rule_references()
-    
+
     def _validate_all_rule_references(self):
         """Validate all rule numbers referenced in this class."""
         referenced_rules = [11, 149, 332, 172, 62, 61, 176, 63, 56]
-        
+
         for rule_num in referenced_rules:
             try:
                 self.rule_validator.validate_rule_number(rule_num)
@@ -352,14 +352,14 @@ from pathlib import Path
 def validate_rule_numbers_in_file(file_path: Path) -> bool:
     """Check for invalid rule numbers (> 415) in file."""
     content = file_path.read_text()
-    
+
     # Pattern: rule_number=XXXX or Rule XXXX
     patterns = [
         r'rule_number\s*=\s*(\d{4,})',  # rule_number=4083
         r'Rule\s+(\d{4,})',  # Rule 4083
         r'"rule_number":\s*(\d{4,})',  # "rule_number": 4083
     ]
-    
+
     for pattern in patterns:
         matches = re.findall(pattern, content)
         for match in matches:
@@ -368,7 +368,7 @@ def validate_rule_numbers_in_file(file_path: Path) -> bool:
                 print(f"ERROR: Invalid rule number {rule_num} in {file_path}")
                 print(f"  Rule numbers must be 1-415. Did you use a JSON line number?")
                 return False
-    
+
     return True
 
 if __name__ == '__main__':
@@ -398,4 +398,3 @@ if __name__ == '__main__':
 
 ### Critical Rule
 **NEVER hardcode rule numbers. ALWAYS look them up from the constitution rules database using the provided APIs.**
-

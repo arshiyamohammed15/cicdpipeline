@@ -8,6 +8,7 @@ Contracts: PRD database schema specification
 Risks: Model mismatch with PRD, constraint violations
 """
 
+import os
 import uuid
 from datetime import datetime
 from typing import Optional, Dict, Any
@@ -15,20 +16,53 @@ from sqlalchemy import (
     Column, String, Text, ForeignKey, CheckConstraint,
     UniqueConstraint, Index
 )
-from sqlalchemy.dialects.postgresql import UUID, JSONB
-from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
 from sqlalchemy import DateTime, TIMESTAMP
+from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.types import TypeDecorator, CHAR
+
+DATABASE_URL = os.getenv("DATABASE_URL", "").lower()
+USE_POSTGRES_TYPES = DATABASE_URL.startswith("postgresql://") or DATABASE_URL.startswith("postgres://")
+
+if USE_POSTGRES_TYPES:
+    from sqlalchemy.dialects.postgresql import UUID as PGUUID, JSONB as PGJSONB
+    JSON_TYPE = PGJSONB
+
+    def _uuid_type():
+        return PGUUID(as_uuid=True)
+
+else:
+    JSON_TYPE = SQLiteJSON
+
+    class GUIDType(TypeDecorator):
+        """Platform-independent UUID string representation for SQLite."""
+
+        impl = CHAR(36)
+        cache_ok = True
+
+        def process_bind_param(self, value, dialect):
+            if value is None:
+                return value
+            if isinstance(value, uuid.UUID):
+                return str(value)
+            return str(uuid.UUID(str(value)))
+
+        def process_result_value(self, value, dialect):
+            if value is None:
+                return value
+            return str(value)
+
+    def _uuid_type():
+        return GUIDType()
+
+
+def _uuid_column(**kwargs):
+    """
+    Helper to create UUID/GUID columns usable across PostgreSQL and SQLite.
+    """
+    return Column(_uuid_type(), **kwargs)
 
 Base = declarative_base()
-
-# Detect PostgreSQL vs SQLite
-try:
-    from sqlalchemy.dialects.postgresql import JSONB as PG_JSONB
-    HAS_POSTGRES = True
-except ImportError:
-    HAS_POSTGRES = False
-
 
 class Policy(Base):
     """
@@ -39,24 +73,24 @@ class Policy(Base):
     __tablename__ = "policies"
 
     # Primary key
-    policy_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) if HAS_POSTGRES else Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    policy_id = _uuid_column(primary_key=True, default=uuid.uuid4)
 
     # Required fields per PRD
     name = Column(String(255), nullable=False)
     description = Column(Text, nullable=True)
     policy_type = Column(String(50), nullable=False)
-    policy_definition = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
+    policy_definition = Column(JSON_TYPE, nullable=False)
     version = Column(String(50), nullable=False)
     status = Column(String(20), nullable=False)
-    scope = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
+    scope = Column(JSON_TYPE, nullable=False)
     enforcement_level = Column(String(20), nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow) if HAS_POSTGRES else Column(DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow) if HAS_POSTGRES else Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
-    created_by = Column(UUID(as_uuid=True), nullable=False) if HAS_POSTGRES else Column(String(36), nullable=False)
-    tenant_id = Column(UUID(as_uuid=True), nullable=False) if HAS_POSTGRES else Column(String(36), nullable=False)
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow) if USE_POSTGRES_TYPES else Column(DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = Column(TIMESTAMP(timezone=True), nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow) if USE_POSTGRES_TYPES else Column(DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    created_by = _uuid_column(nullable=False)
+    tenant_id = _uuid_column(nullable=False)
 
     # Optional metadata (renamed to avoid conflict with SQLAlchemy's metadata)
-    metadata_json = Column(JSONB, nullable=True) if HAS_POSTGRES else Column(SQLiteJSON, nullable=True)
+    metadata_json = Column(JSON_TYPE, nullable=True)
 
     # Constraints per PRD
     __table_args__ = (
@@ -77,7 +111,7 @@ class Policy(Base):
         # Performance indexes per PRD (lines 268)
         Index('idx_policies_type_status_tenant', 'policy_type', 'status', 'tenant_id'),
         # Search indexes per PRD (lines 184)
-        Index('idx_policies_definition_gin', 'policy_definition', postgresql_using='gin') if HAS_POSTGRES else None,
+        Index('idx_policies_definition_gin', 'policy_definition', postgresql_using='gin') if USE_POSTGRES_TYPES else None,
     )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -109,17 +143,17 @@ class Configuration(Base):
     __tablename__ = "configurations"
 
     # Primary key
-    config_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) if HAS_POSTGRES else Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    config_id = _uuid_column(primary_key=True, default=uuid.uuid4)
 
     # Required fields per PRD
     name = Column(String(255), nullable=False)
     config_type = Column(String(50), nullable=False)
-    config_definition = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
+    config_definition = Column(JSON_TYPE, nullable=False)
     version = Column(String(50), nullable=False)
     status = Column(String(20), nullable=False)
-    deployed_at = Column(TIMESTAMP(timezone=True), nullable=True) if HAS_POSTGRES else Column(DateTime, nullable=True)
-    deployed_by = Column(UUID(as_uuid=True), nullable=True) if HAS_POSTGRES else Column(String(36), nullable=True)
-    tenant_id = Column(UUID(as_uuid=True), nullable=False) if HAS_POSTGRES else Column(String(36), nullable=False)
+    deployed_at = Column(TIMESTAMP(timezone=True), nullable=True) if USE_POSTGRES_TYPES else Column(DateTime, nullable=True)
+    deployed_by = _uuid_column(nullable=True)
+    tenant_id = _uuid_column(nullable=False)
     environment = Column(String(50), nullable=False)
 
     # Constraints per PRD
@@ -141,7 +175,7 @@ class Configuration(Base):
         # Performance indexes per PRD (lines 269)
         Index('idx_configurations_type_status_env', 'config_type', 'status', 'environment'),
         # Search indexes per PRD (lines 185)
-        Index('idx_configurations_definition_gin', 'config_definition', postgresql_using='gin') if HAS_POSTGRES else None,
+        Index('idx_configurations_definition_gin', 'config_definition', postgresql_using='gin') if USE_POSTGRES_TYPES else None,
     )
 
     def to_dict(self) -> Dict[str, Any]:
@@ -169,16 +203,16 @@ class GoldStandard(Base):
     __tablename__ = "gold_standards"
 
     # Primary key
-    standard_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4) if HAS_POSTGRES else Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    standard_id = _uuid_column(primary_key=True, default=uuid.uuid4)
 
     # Required fields per PRD
     name = Column(String(255), nullable=False)
     framework = Column(String(50), nullable=False)
     version = Column(String(50), nullable=False)
-    control_definitions = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
-    compliance_rules = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
-    evidence_requirements = Column(JSONB, nullable=False) if HAS_POSTGRES else Column(SQLiteJSON, nullable=False)
-    tenant_id = Column(UUID(as_uuid=True), nullable=False) if HAS_POSTGRES else Column(String(36), nullable=False)
+    control_definitions = Column(JSON_TYPE, nullable=False)
+    compliance_rules = Column(JSON_TYPE, nullable=False)
+    evidence_requirements = Column(JSON_TYPE, nullable=False)
+    tenant_id = _uuid_column(nullable=False)
 
     # Constraints per PRD
     __table_args__ = (
@@ -191,7 +225,7 @@ class GoldStandard(Base):
         # Performance indexes per PRD (lines 270)
         Index('idx_gold_standards_framework_version_tenant', 'framework', 'version', 'tenant_id'),
         # Search indexes per PRD (lines 186)
-        Index('idx_gold_standards_control_definitions_gin', 'control_definitions', postgresql_using='gin') if HAS_POSTGRES else None,
+        Index('idx_gold_standards_control_definitions_gin', 'control_definitions', postgresql_using='gin') if USE_POSTGRES_TYPES else None,
     )
 
     def to_dict(self) -> Dict[str, Any]:

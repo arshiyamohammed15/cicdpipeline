@@ -116,4 +116,3 @@ describe('ReceiptStorageService WORM continuity', () => {
         expect(crypto.createHash('sha256').update(janFinal).digest('hex')).toBe(janHash);
     });
 });
-

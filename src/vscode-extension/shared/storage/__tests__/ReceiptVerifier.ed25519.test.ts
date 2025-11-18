@@ -55,4 +55,3 @@ describe('ReceiptVerifier Ed25519 interoperability', () => {
         expect(buffer.length).toBeGreaterThan(0);
     });
 });
-

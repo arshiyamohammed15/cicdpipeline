@@ -319,4 +319,3 @@ All tests pass when:
 - Integration wrapper: `validator/integrations/ai_service_wrapper.py`
 - API service: `validator/integrations/api_service.py`
 - Test suite: `tests/test_pre_implementation_hooks_comprehensive.py`
-

@@ -1,6 +1,6 @@
 /**
  * E2E Tests for Local Adapters
- * 
+ *
  * Minimal tests using temp directories to verify all adapters work offline.
  */
 
@@ -65,7 +65,7 @@ describe('Local Adapters E2E', () => {
       // Receive and nack until max retries exceeded
       let retries = 0;
       let movedToDLQ = false;
-      
+
       while (retries < 5 && !movedToDLQ) {
         const messages = await queue.receive('test-queue', 1, { waitTimeSeconds: 1 });
         if (messages.length === 0) {
@@ -73,7 +73,7 @@ describe('Local Adapters E2E', () => {
           await new Promise(resolve => setTimeout(resolve, 2000));
           continue;
         }
-        
+
         const msg = messages[0];
         if (msg.receiveCount && msg.receiveCount >= 2) {
           // This should move to DLQ
@@ -364,4 +364,3 @@ describe('Local Adapters E2E', () => {
     });
   });
 });
-

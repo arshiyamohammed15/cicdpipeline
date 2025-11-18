@@ -3,7 +3,7 @@
 # Folder Business Rules — ZeroUI 2.0 (DB/Storage)
 
 ## 0) Scope & Goal
-**Goal:** The repository contains only **code & docs**.  
+**Goal:** The repository contains only **code & docs**.
 **Forbidden in repo:** any **storage/data artifacts** (SQLite/DB files, WAL/SHM, logs, evidence packs/ZIPs, generated CSVs, etc.).
 
 ## 1) Non-Negotiable Rules
@@ -20,7 +20,7 @@
    any `edge.db`, any folder named `evidence`, `Evidence`, or `zeroui_logs`.
 4. Scripts **must write** only to the external paths above (never inside the repo tree).
 
-**Version:** 2.0 • **Date:** 2025-11-05 (UTC)  
+**Version:** 2.0 • **Date:** 2025-11-05 (UTC)
 **Scope:** Authoritative placement rules for the **4 planes** (IDE Plane, Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v2.0 simplifies the structure with lazy creation (parent folders only), consolidation (unified telemetry pattern), and flattening (reduced nesting depth from 5 to 3 levels).
 
 > **Principles**: JSONL receipts are the **legal truth**; policy snapshots are **signed**; privacy by default (**no code/PII** in stores); **no secrets/private keys** on disk; cloud buckets are represented locally under `ZU_ROOT` for development.
@@ -98,21 +98,21 @@ All four planes live under `ZU_ROOT`:
 ---
 
 ## 3) Decision tree (run in order)
-**Q1. Secret or private key?** → **STOP** (secrets manager/HSM/KMS).  
-**Q2. Executable code/tests/fixtures?** → Keep in **source repo**.  
-**Q3. Signed fact by Agent/user feedback?** → **Receipt**:  
-- IDE: `ide/receipts/{repo-id}/{yyyy}/{mm}/`  
+**Q1. Secret or private key?** → **STOP** (secrets manager/HSM/KMS).
+**Q2. Executable code/tests/fixtures?** → Keep in **source repo**.
+**Q3. Signed fact by Agent/user feedback?** → **Receipt**:
+- IDE: `ide/receipts/{repo-id}/{yyyy}/{mm}/`
 - Tenant/Product mirrors: `evidence/data/{repo-id}/dt={date}/[shard=…/]`
-**Q4. Derived from receipts (tables/aggregates/BI)?** → **Analytics**:  
-- Tenant: `reporting/marts/<table>/dt={date}/`  
-- Product: `reporting/tenants/{tenant-id}/{env}/aggregates/dt={date}/`  
+**Q4. Derived from receipts (tables/aggregates/BI)?** → **Analytics**:
+- Tenant: `reporting/marts/<table>/dt={date}/`
+- Product: `reporting/tenants/{tenant-id}/{env}/aggregates/dt={date}/`
 - Shared BI: `bi-lake/curated/zero-ui/{tenant-id}/{env}/dt={date}/`
-**Q5. Observability telemetry (OTel)?** → **Telemetry**:  
+**Q5. Observability telemetry (OTel)?** → **Telemetry**:
 - All planes: `{plane}/telemetry/(metrics|traces|logs)/dt={date}/`
-**Q6. Policy snapshot/template/public key?** → **Policy/Trust**.  
-**Q7. Adapter/webhook event or gateway diagnostic?** → **Adapters** (`adapters/webhooks/{source}/dt=…/`, `adapters/gateway-logs/dt=…/`).  
-**Q8. LLM prompt/tool/adapter/guardrail/cache?** → **LLM** trees (no secrets/weights/PII).  
-**Q9. Governance/consent/retention/legal‑hold/catalog/lineage?** → **Governance/Audit/Catalog**.  
+**Q6. Policy snapshot/template/public key?** → **Policy/Trust**.
+**Q7. Adapter/webhook event or gateway diagnostic?** → **Adapters** (`adapters/webhooks/{source}/dt=…/`, `adapters/gateway-logs/dt=…/`).
+**Q8. LLM prompt/tool/adapter/guardrail/cache?** → **LLM** trees (no secrets/weights/PII).
+**Q9. Governance/consent/retention/legal‑hold/catalog/lineage?** → **Governance/Audit/Catalog**.
 **Q10. Still ambiguous?** → Use **fallback** and open an **RFC** (§5).
 
 ---
@@ -120,68 +120,68 @@ All four planes live under `ZU_ROOT`:
 ## 4) Per‑plane, per‑folder rules (aligned with scaffold)
 
 ### 4.1 IDE (`{ZU_ROOT}/ide/…`)
-- `receipts/{repo-id}/{yyyy}/{mm}/` — **Append‑only signed JSONL**. No code/PII.  
-  Aux: `index/`, `quarantine/`, `checkpoints/` created on-demand under the same repo path.  
-- `policy/` — Signed snapshots + `current` pointer, cache, and `trust/pubkeys/` (public keys only).  
-- `config/` — Non‑secret consent snapshots and configuration.  
-- `queue/(pending|sent|failed)/` — Envelope refs only (created on-demand).  
-- `logs/`, `db/` (SQLite mirror, raw JSON).  
-- `llm/(prompts|tools|adapters|cache/token|cache/embedding|redaction|runs)/` — Sanitized; **no secrets/weights/PII** (created on-demand).  
-- `fingerprint/` — Non‑secret device fingerprint.  
-- `tmp/` — Temporary; also used by RFC stamping (`UNCLASSIFIED__<slug>`).  
+- `receipts/{repo-id}/{yyyy}/{mm}/` — **Append‑only signed JSONL**. No code/PII.
+  Aux: `index/`, `quarantine/`, `checkpoints/` created on-demand under the same repo path.
+- `policy/` — Signed snapshots + `current` pointer, cache, and `trust/pubkeys/` (public keys only).
+- `config/` — Non‑secret consent snapshots and configuration.
+- `queue/(pending|sent|failed)/` — Envelope refs only (created on-demand).
+- `logs/`, `db/` (SQLite mirror, raw JSON).
+- `llm/(prompts|tools|adapters|cache/token|cache/embedding|redaction|runs)/` — Sanitized; **no secrets/weights/PII** (created on-demand).
+- `fingerprint/` — Non‑secret device fingerprint.
+- `tmp/` — Temporary; also used by RFC stamping (`UNCLASSIFIED__<slug>`).
 **Lazy creation:** Scaffold creates only parent folders; subfolders (like `receipts/{repo}/index/`, `llm/prompts/`) are created on-demand when needed.
 
 ### 4.2 Tenant (`{ZU_ROOT}/tenant/…`)
-- `evidence/data/` — Merged receipts, manifests, checksums (created on-demand with dt= partitions).  
-- `evidence/dlq/` — Dead letter queue.  
-- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).  
-- `ingest/(staging|dlq)/` and `ingest/staging/unclassified/` — RFC fallback.  
-- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
-- `adapters/(webhooks|gateway-logs)/dt=…/` — Created on-demand.  
-- `reporting/marts/dt=…/` — Created on-demand.  
-- `policy/(snapshots|trust/pubkeys)/` — Signed; public keys only.  
+- `evidence/data/` — Merged receipts, manifests, checksums (created on-demand with dt= partitions).
+- `evidence/dlq/` — Dead letter queue.
+- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).
+- `ingest/(staging|dlq)/` and `ingest/staging/unclassified/` — RFC fallback.
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).
+- `adapters/(webhooks|gateway-logs)/dt=…/` — Created on-demand.
+- `reporting/marts/dt=…/` — Created on-demand.
+- `policy/(snapshots|trust/pubkeys)/` — Signed; public keys only.
 - `meta/schema/` — **Deprecated** legacy alias; created only with compatibility enabled.
 
 ### 4.3 Product (`{ZU_ROOT}/product/…`)
-- `policy/registry/(releases|templates|revocations)/` — Unified policy structure.  
-- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).  
-- `reporting/tenants/aggregates/dt=…/` — Created on-demand.  
-- `adapters/gateway-logs/dt=…/` — Created on-demand.  
-- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
+- `policy/registry/(releases|templates|revocations)/` — Unified policy structure.
+- `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).
+- `reporting/tenants/aggregates/dt=…/` — Created on-demand.
+- `adapters/gateway-logs/dt=…/` — Created on-demand.
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).
 - `policy/trust/pubkeys/` — Public keys (merged with policy structure).
 
 ### 4.4 Shared (`{ZU_ROOT}/shared/…`)
-- `pki/` — All PKI files (trust-anchors, intermediate, CRL, key-rotation) in one folder (public only).  
-- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).  
-- `siem/(detections|events/dt=…/)` — Flattened SIEM structure.  
-- `bi-lake/curated/zero-ui/`.  
+- `pki/` — All PKI files (trust-anchors, intermediate, CRL, key-rotation) in one folder (public only).
+- `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).
+- `siem/(detections|events/dt=…/)` — Flattened SIEM structure.
+- `bi-lake/curated/zero-ui/`.
 - `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools|ollama|tinyllama)/` — Flattened governance structure.
 
 ---
 
 ## 5) Fallbacks & RFC
-- **IDE**: `{ZU_ROOT}/ide/tmp/UNCLASSIFIED__{slug}`  
-- **Tenant/Product**: `.../ingest/staging/unclassified/{slug}`  
+- **IDE**: `{ZU_ROOT}/ide/tmp/UNCLASSIFIED__{slug}`
+- **Tenant/Product**: `.../ingest/staging/unclassified/{slug}`
 Resolve within **24h** with an RFC; move to canonical; add manifests/checksums for evidence.
 
 ---
 
 ## 6) Security & integrity, Dual storage, CI, Acceptance tests
-Unchanged from v1.0; refer to sections 9–12 of v1.0 with the following additions:  
-- Watermarks are **per consumer**; the scaffold supports `-Consumer` to create the leaf.  
+Unchanged from v1.0; refer to sections 9–12 of v1.0 with the following additions:
+- Watermarks are **per consumer**; the scaffold supports `-Consumer` to create the leaf.
 - Deprecated alias `meta/schema` is **off by default**; scaffold enables it only with `-CompatAliases`.
 
 ---
 
 ## 7) Path templates (cheat sheet, updated)
-- **IDE receipts**: `ide/receipts/{repo-id}/{yyyy}/{mm}/`  
-- **Telemetry (all planes)**: `{plane}/telemetry/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`  
-- **Tenant Evidence**: `tenant/evidence/data/{repo-id}/dt={yyyy}-{mm}-{dd}/`  
-- **Tenant Adapters**: `tenant/adapters/(webhooks/{source}|gateway-logs)/dt={yyyy}-{mm}-{dd}/`  
-- **Tenant Reporting**: `tenant/reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`  
-- **Product Policy**: `product/policy/registry/(releases|templates|revocations)/`  
-- **Product Reporting**: `product/reporting/tenants/{tenant-id}/{env}/aggregates/dt={yyyy}-{mm}-{dd}/`  
-- **Watermarks**: `*/evidence/watermarks/{consumer-id}/`  
+- **IDE receipts**: `ide/receipts/{repo-id}/{yyyy}/{mm}/`
+- **Telemetry (all planes)**: `{plane}/telemetry/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`
+- **Tenant Evidence**: `tenant/evidence/data/{repo-id}/dt={yyyy}-{mm}-{dd}/`
+- **Tenant Adapters**: `tenant/adapters/(webhooks/{source}|gateway-logs)/dt={yyyy}-{mm}-{dd}/`
+- **Tenant Reporting**: `tenant/reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`
+- **Product Policy**: `product/policy/registry/(releases|templates|revocations)/`
+- **Product Reporting**: `product/reporting/tenants/{tenant-id}/{env}/aggregates/dt={yyyy}-{mm}-{dd}/`
+- **Watermarks**: `*/evidence/watermarks/{consumer-id}/`
 - **Deprecated alias**: `tenant/.../meta/schema/` (opt‑in only)
 
 **End of file (v2.0).**

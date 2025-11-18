@@ -1,6 +1,6 @@
 /**
  * LocalIngress
- * 
+ *
  * Local file-based implementation of IngressPort.
  * Uses route table JSON and TLS config JSON persisted (no keys stored).
  */
@@ -285,4 +285,3 @@ export class LocalIngress implements IngressPort {
     return `ingress-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
   }
 }
-

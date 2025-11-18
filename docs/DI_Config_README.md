@@ -178,4 +178,3 @@ The loader throws descriptive errors for:
 - `scripts/di_config_verify.ps1`: PowerShell verification script
 - `storage-scripts/config/environments.json`: Configuration source
 - `config/infra.config.schema.json`: Schema reference
-

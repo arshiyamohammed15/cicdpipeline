@@ -123,11 +123,11 @@ src/
 ```typescript
 /**
  * Validates a receipt signature using Ed25519 public key.
- * 
+ *
  * @param receipt - The receipt to validate
  * @param publicKey - The Ed25519 public key (base64-encoded)
  * @returns True if signature is valid, false otherwise
- * 
+ *
  * @throws {Error} If public key format is invalid
  */
 public validateSignature(receipt: Receipt, publicKey: string): boolean {
@@ -274,4 +274,3 @@ const sanitizedId = receiptId.replace(/[^a-zA-Z0-9-]/g, '');
 - **Regular Reviews**: Review and update standards quarterly
 - **Team Feedback**: Incorporate team feedback
 - **Industry Best Practices**: Stay updated with industry standards
-

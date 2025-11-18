@@ -401,4 +401,3 @@ components:
           type: string
           format: date-time
           description: Config timestamp (ISO 8601)
-

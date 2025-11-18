@@ -10,7 +10,7 @@ This document provides a cross-reference for receipt schemas across the ZeroUI 2
 
 #### 1. TypeScript Type Definitions (Implementation Reference)
 
-**Location**: 
+**Location**:
 - `src/edge-agent/shared/receipt-types.ts`
 - `src/vscode-extension/shared/receipt-parser/ReceiptParser.ts`
 
@@ -299,4 +299,3 @@ To avoid schema drift:
 - [ ] Receipt parser validates against TypeScript interfaces
 - [ ] Receipt generator produces receipts matching interfaces
 - [ ] Field name mappings documented (GSMD vs TypeScript)
-

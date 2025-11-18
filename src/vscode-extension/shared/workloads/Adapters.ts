@@ -62,4 +62,3 @@ export interface BuildPlanRoutingDescriptor {
 export interface WorkloadRouter {
     selectPort(descriptor: BuildPlanRoutingDescriptor): Promise<number | string>;
 }
-

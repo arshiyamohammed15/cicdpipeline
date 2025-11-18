@@ -1,6 +1,6 @@
 /**
  * LocalQueue
- * 
+ *
  * Local file-based implementation of QueuePort using NDJSON files.
  * Implements ack/nack/retry/backoff and integrates with LocalDLQ.
  */
@@ -142,7 +142,7 @@ export class LocalQueue implements QueuePort {
       record.receiveCount = (record.receiveCount || 0) + 1;
 
       const bodyStr = typeof record.body === 'string' ? record.body : record.body.toString();
-      const body = bodyStr.startsWith('base64:') 
+      const body = bodyStr.startsWith('base64:')
         ? Buffer.from(bodyStr.substring(7), 'base64')
         : bodyStr;
 
@@ -363,4 +363,3 @@ export class LocalQueue implements QueuePort {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
-

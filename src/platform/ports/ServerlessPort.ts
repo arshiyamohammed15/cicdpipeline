@@ -1,15 +1,15 @@
 /**
  * ServerlessPort
- * 
+ *
  * Cloud-agnostic interface for serverless function execution.
  * Implemented by local adapters for on-demand compute execution.
- * 
+ *
  * @interface ServerlessPort
  */
 export interface ServerlessPort {
   /**
    * Invoke a serverless function synchronously.
-   * 
+   *
    * @param functionName - Name of the function to invoke
    * @param payload - Function input payload
    * @param options - Optional invocation options (timeout, memory, etc.)
@@ -23,7 +23,7 @@ export interface ServerlessPort {
 
   /**
    * Invoke a serverless function asynchronously (fire-and-forget).
-   * 
+   *
    * @param functionName - Name of the function to invoke
    * @param payload - Function input payload
    * @param options - Optional invocation options
@@ -37,7 +37,7 @@ export interface ServerlessPort {
 
   /**
    * Get function configuration and metadata.
-   * 
+   *
    * @param functionName - Name of the function
    * @returns Promise resolving to function configuration
    */
@@ -93,4 +93,3 @@ export interface ServerlessFunctionConfig {
   /** Function status */
   status?: 'active' | 'inactive' | 'error';
 }
-

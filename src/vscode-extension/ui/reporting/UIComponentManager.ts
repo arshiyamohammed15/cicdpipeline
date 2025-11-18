@@ -13,5 +13,3 @@ export class ReportingUIComponentManager extends PlaceholderUIComponentManager {
         this.updateData(payload);
     }
 }
-
-

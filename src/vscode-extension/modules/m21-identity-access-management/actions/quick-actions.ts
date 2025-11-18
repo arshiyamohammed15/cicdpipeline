@@ -3,4 +3,3 @@
 export function getQuickActions(): any[] {
   return [];
 }
-

@@ -1,6 +1,6 @@
 /**
  * Unit test for infra labels in DecisionReceipt
- * 
+ *
  * Tests that routed BuildPlan produces DecisionReceipt containing infra labels.
  */
 
@@ -41,7 +41,7 @@ describe('PlanExecutionAgent Infra Labels', () => {
     tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'plan-exec-infra-'));
     zuRoot = path.join(tempDir, 'zu-root');
     workspaceRoot = path.join(tempDir, 'workspace');
-    
+
     // Create directory structure
     fs.mkdirSync(path.join(workspaceRoot, '.pscl'), { recursive: true });
     fs.mkdirSync(path.join(zuRoot, 'ide', 'trust', 'private'), { recursive: true });
@@ -97,7 +97,7 @@ describe('PlanExecutionAgent Infra Labels', () => {
 
     // Setup BuildPlan and FileEnvelope using StoragePathResolver
     const psclDir = resolver.getPsclTempDir('test-repo', { workspaceRoot });
-    
+
     const sandbox = new BuildSandbox({
       workspaceRoot,
       buildInputs: ['src/**'],
@@ -139,12 +139,12 @@ describe('PlanExecutionAgent Infra Labels', () => {
     // Read the receipt directly from the stored path
     const receiptContent = fs.readFileSync(result.receiptPath, 'utf-8');
     const receipt = JSON.parse(receiptContent) as DecisionReceipt;
-    
+
     expect(receipt.inputs).toBeDefined();
     expect(receipt.inputs.labels).toBeDefined();
-    
+
     const labels = receipt.inputs.labels as Record<string, unknown>;
-    
+
     // Verify infra labels are present
     expect(labels.infra_route).toBe('serverless');
     expect(labels.infra_cost_profile).toBe('light');
@@ -376,4 +376,3 @@ describe('PlanExecutionAgent Infra Labels', () => {
     expect(labels.infra_decision_id).toBeDefined();
   });
 });
-

@@ -398,7 +398,7 @@ python tools/enhanced_cli.py --verify-consistency
    ```bash
    # Check backend status
    python tools/enhanced_cli.py --backend-status
-   
+
    # Repair sync issues
    python tools/enhanced_cli.py --repair-sync
    ```
@@ -407,7 +407,7 @@ python tools/enhanced_cli.py --verify-consistency
    ```bash
    # Check performance stats
    python tools/enhanced_cli.py --performance-stats
-   
+
    # Clear cache
    python tools/enhanced_cli.py --cache-clear
    ```
@@ -416,7 +416,7 @@ python tools/enhanced_cli.py --verify-consistency
    ```bash
    # Verify consistency
    python tools/enhanced_cli.py --verify-consistency
-   
+
    # Rebuild from markdown
    python tools/enhanced_cli.py --rebuild-from-markdown
    ```

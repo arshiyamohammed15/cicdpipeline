@@ -66,5 +66,3 @@ class QATestingDeficienciesTreeDataProvider implements vscode.TreeDataProvider<v
         this._onDidChangeTreeData.fire(undefined);
     }
 }
-
-

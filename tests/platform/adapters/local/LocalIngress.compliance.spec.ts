@@ -1,6 +1,6 @@
 /**
  * Unit tests for LocalIngress TLS compliance
- * 
+ *
  * Tests compliance transitions based on infra.network.tls_required and TLS enabled status.
  */
 
@@ -248,4 +248,3 @@ describe('LocalIngress TLS Compliance', () => {
     });
   });
 });
-

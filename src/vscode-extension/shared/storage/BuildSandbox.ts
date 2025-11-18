@@ -109,4 +109,3 @@ export class BuildSandbox {
         return crypto.createHash('sha256').update(fs.readFileSync(filePath)).digest('hex');
     }
 }
-

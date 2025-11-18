@@ -13,5 +13,3 @@ export class IntegrationAdaptersUIComponentManager extends PlaceholderUIComponen
         this.updateData(payload);
     }
 }
-
-

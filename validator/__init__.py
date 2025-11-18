@@ -19,7 +19,7 @@ from .models import Violation, ValidationResult, Severity
 
 __all__ = [
     "ConstitutionValidator",
-    "CodeAnalyzer", 
+    "CodeAnalyzer",
     "ReportGenerator",
     "Violation",
     "ValidationResult",

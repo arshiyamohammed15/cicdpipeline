@@ -13,4 +13,3 @@ export class DetectionEngineCoreUIComponentManager extends PlaceholderUIComponen
         this.updateData(payload);
     }
 }
-

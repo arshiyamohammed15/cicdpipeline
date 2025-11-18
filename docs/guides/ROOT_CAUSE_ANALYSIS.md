@@ -235,14 +235,14 @@ def test_post_generation_validator_rule_numbers():
     """Test that all rule numbers in PostGenerationValidator are valid."""
     from validator.post_generation_validator import PostGenerationValidator
     from validator.utils.rule_validator import RuleNumberValidator
-    
+
     # This will raise ValueError if any rule numbers are invalid
     validator = PostGenerationValidator()
-    
+
     # Verify all referenced rules exist
     rule_validator = RuleNumberValidator()
     referenced_rules = [11, 149, 332, 172, 62, 61, 176, 63, 56]
-    
+
     for rule_num in referenced_rules:
         rule = rule_validator.get_rule_by_number(rule_num)
         assert rule is not None, f"Rule {rule_num} does not exist"
@@ -257,4 +257,3 @@ def test_post_generation_validator_rule_numbers():
 2. **Linting rule** - Warn on hardcoded rule numbers > 415
 3. **Constants file** - Centralized, validated rule number constants
 4. **AST-based detection** - Automatically detect rule number references in code
-

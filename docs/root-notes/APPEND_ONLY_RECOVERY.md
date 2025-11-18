@@ -1,6 +1,6 @@
 ## Append-only Recovery Playbook (WORM Continuity)
 
-Repository: `D:\Projects\ZeroUI2.0`  
+Repository: `D:\Projects\ZeroUI2.0`
 Receipts file currently in scope: `D:\Projects\ZeroUI2.0\.zeroui\pscl-runtime\ide\receipts\zeroui2-0\2025\11\receipts.jsonl`
 
 ### 0. Prepare PowerShell logging helper
@@ -68,4 +68,3 @@ Use `Show-ReceiptState '<tag>'` immediately **before and after** each numbered s
 - All commands are Windows-first and deterministic; no source edits required.
 - `ZU_ROOT` must resolve to `D:\Projects\ZeroUI2.0\.zeroui\pscl-runtime` for the harness and plan execution agent to operate on the intended WORM directory.
 - The appended `pscl_receipt_log.txt` file preserves before/after telemetry for audit purposes.
-

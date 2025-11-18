@@ -152,4 +152,3 @@ describe('PSCLArtifactWriter', () => {
         expect(buildPlan.policy_snapshot_id).toBe('MISSING');
     });
 });
-

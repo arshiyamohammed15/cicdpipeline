@@ -183,11 +183,11 @@ python enhanced_cli.py --rule-stats
 
 ### Run Tests
 ```bash
-# Run the consolidated test suites (category, constitution, patterns, validators)
-pytest validator/rules/tests -q
+# Run the consolidated constitution and validator suites
+python -m pytest tests -k "constitution" -q
 
-# Run Exception Handling tests specifically
-python config/constitution/tests/test_exception_handling/test_rules_150_181_simple.py
+# Focus on exception-handling coverage only
+python -m pytest tests -k "exception_handling" -q
 ```
 
 ### Rule Manager (Enhanced)
@@ -366,7 +366,7 @@ Summary:
 
 The validator includes dynamic test cases that automatically discover all rules from the modular configuration under `config/rules/*.json`, making them resilient to rule renumbering and easy to maintain.
 
-Key suites (invoked via `pytest validator/rules/tests -q`):
+Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 - Category suites (e.g., `categories/test_*.py`)
 - Constitution-aligned suites (e.g., `test_by_constitution.py`)
 - Pattern-based suites (e.g., `test_by_patterns.py`)
@@ -1852,11 +1852,11 @@ powershell -File storage-scripts\tools\scaffold\zero_ui_scaffold.ps1 `
 - **Rule Extraction**: Automatic extraction from constitution file
 - **Configuration Management**: Enable/disable rules 216-228
 
-#### 5. **Test Suite** (`validator/rules/tests/test_storage_governance.py`)
-- **Comprehensive Tests**: 40+ test methods covering all 13 rules
+#### 5. **Test Suite** (`src/edge-agent/shared/storage/__tests__/*`)
+- **Comprehensive Tests**: 40+ Jest specs covering all 13 rules
 - **Rule-by-Rule Coverage**: Each rule (216-228) tested individually
 - **Positive/Negative Cases**: Both compliant and violation scenarios
-- **Integration Tests**: Full validator integration verification
+- **Integration Tests**: Full validator integration verification across Edge Agent and VS Code
 
 ### Commands to Run
 
@@ -1895,8 +1895,7 @@ python enhanced_cli.py --disable-rule 220 --disable-reason "Testing alternate pa
 ZeroUI2.0/
 ├── validator/rules/
 │   └── storage_governance.py              # Storage governance validator (13 rules)
-├── validator/rules/tests/
-│   └── test_storage_governance.py         # Test suite (40+ tests)
+├── src/edge-agent/shared/storage/__tests__/  # Jest + ts-jest suites (40+ tests)
 ├── config/rules/
 │   └── storage_governance.json            # Rule configuration
 ├── config/patterns/

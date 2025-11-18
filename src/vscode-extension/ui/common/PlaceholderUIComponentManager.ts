@@ -22,5 +22,3 @@ export class PlaceholderUIComponentManager {
         this.lastPayload = undefined;
     }
 }
-
-

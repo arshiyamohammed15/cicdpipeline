@@ -13,5 +13,3 @@ export class MergeConflictsDelaysUIComponentManager extends PlaceholderUICompone
         this.updateData(payload);
     }
 }
-
-

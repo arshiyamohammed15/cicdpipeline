@@ -13,5 +13,3 @@ export class KnowledgeIntegrityDiscoveryUIComponentManager extends PlaceholderUI
         this.updateData(payload);
     }
 }
-
-

@@ -64,21 +64,25 @@ class MockHSM(HSMInterface):
             # Mock implementation without cryptography library
             public_key_pem = f"-----BEGIN MOCK PUBLIC KEY-----\n{key_id}\n-----END MOCK PUBLIC KEY-----"
             private_key_handle = key_id.encode()
-            self.keys[key_id] = {
+            entry = {
                 "key_type": key_type,
                 "private_key": private_key_handle,
                 "metadata": metadata,
-                "created_at": datetime.utcnow().isoformat()
+                "created_at": datetime.utcnow().isoformat(),
             }
+            self.keys[key_id] = entry
             return public_key_pem, private_key_handle
 
         try:
+            private_key_obj = None
+
             if key_type == "RSA-2048":
                 private_key = rsa.generate_private_key(
                     public_exponent=65537,
                     key_size=2048,
                     backend=default_backend()
                 )
+                private_key_obj = private_key
                 public_key = private_key.public_key()
                 public_key_pem = public_key.public_bytes(
                     encoding=serialization.Encoding.PEM,
@@ -93,6 +97,7 @@ class MockHSM(HSMInterface):
 
             elif key_type == "Ed25519":
                 private_key = ed25519.Ed25519PrivateKey.generate()
+                private_key_obj = private_key
                 public_key = private_key.public_key()
                 public_key_pem = public_key.public_bytes(
                     encoding=serialization.Encoding.Raw,
@@ -116,12 +121,16 @@ class MockHSM(HSMInterface):
             else:
                 raise ValueError(f"Unsupported key type: {key_type}")
 
-            self.keys[key_id] = {
+            entry = {
                 "key_type": key_type,
                 "private_key": private_key_handle,
                 "metadata": metadata,
                 "created_at": datetime.utcnow().isoformat()
             }
+            if private_key_obj is not None:
+                entry["private_key_obj"] = private_key_obj
+
+            self.keys[key_id] = entry
 
             return public_key_pem, private_key_handle
 
@@ -156,9 +165,12 @@ class MockHSM(HSMInterface):
             "created_at": datetime.utcnow().isoformat()
         }
 
-        # Preserve key_type if it was set during generate_key
+        # Preserve key_type and cached objects if they were set during generate_key
         if key_type:
             self.keys[key_id]["key_type"] = key_type
+        cached_private_key = existing_key.get("private_key_obj")
+        if cached_private_key is not None:
+            self.keys[key_id]["private_key_obj"] = cached_private_key
 
         return True
 
@@ -204,19 +216,27 @@ class MockHSM(HSMInterface):
             return signature
 
         try:
+            key_type = key_data.get("key_type")
+            private_key = key_data.get("private_key_obj")
             private_key_handle = key_data.get("private_key")
-            if not private_key_handle:
+            if private_key is None and private_key_handle:
+                if key_type == "RSA-2048":
+                    private_key_der = base64.b64decode(private_key_handle)
+                    private_key = serialization.load_der_private_key(
+                        private_key_der,
+                        password=None,
+                        backend=default_backend()
+                    )
+                    key_data["private_key_obj"] = private_key
+                elif key_type == "Ed25519":
+                    private_key_raw = base64.b64decode(private_key_handle)
+                    private_key = ed25519.Ed25519PrivateKey.from_private_bytes(private_key_raw)
+                    key_data["private_key_obj"] = private_key
+
+            if private_key is None and not private_key_handle:
                 return None
 
-            key_type = key_data.get("key_type")
-
             if algorithm == "RS256" and key_type == "RSA-2048":
-                private_key_der = base64.b64decode(private_key_handle)
-                private_key = serialization.load_der_private_key(
-                    private_key_der,
-                    password=None,
-                    backend=default_backend()
-                )
                 signature = private_key.sign(
                     data,
                     padding=padding.PSS(
@@ -228,8 +248,6 @@ class MockHSM(HSMInterface):
                 return signature
 
             elif algorithm == "EdDSA" and key_type == "Ed25519":
-                private_key_raw = base64.b64decode(private_key_handle)
-                private_key = ed25519.Ed25519PrivateKey.from_private_bytes(private_key_raw)
                 signature = private_key.sign(data)
                 return signature
 

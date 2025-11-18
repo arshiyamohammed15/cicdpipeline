@@ -13,4 +13,3 @@ export class CrossCuttingConcernsUIComponentManager extends PlaceholderUICompone
         this.updateData(payload);
     }
 }
-

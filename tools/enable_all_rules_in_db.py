@@ -14,24 +14,23 @@ db = ConstitutionRulesDB()
 
 with db.get_connection() as conn:
     cursor = conn.cursor()
-    
+
     # Get all rules
     cursor.execute("SELECT rule_number FROM constitution_rules")
     rule_numbers = [row[0] for row in cursor.fetchall()]
-    
+
     # Enable all rules
     for rule_num in rule_numbers:
         cursor.execute("""
-            UPDATE rule_configuration 
-            SET enabled = 1, 
-                disabled_reason = NULL, 
+            UPDATE rule_configuration
+            SET enabled = 1,
+                disabled_reason = NULL,
                 disabled_at = NULL,
                 updated_at = CURRENT_TIMESTAMP
             WHERE rule_number = ?
         """, (rule_num,))
-    
+
     conn.commit()
     print(f"[OK] Enabled all {len(rule_numbers)} rules in SQLite database")
 
 db.close()
-

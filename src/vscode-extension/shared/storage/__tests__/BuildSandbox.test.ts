@@ -78,4 +78,3 @@ describe('BuildSandbox', () => {
         expect(result2.sbom_digest).not.toBe(result.sbom_digest);
     });
 });
-

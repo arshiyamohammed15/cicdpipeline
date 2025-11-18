@@ -1,9 +1,9 @@
 /**
  * Storage Path Resolver (VS Code Extension)
- * 
+ *
  * Resolves storage paths according to 4-Plane Storage Architecture rules.
  * Ensures compliance with Rule 223: Path resolution via ZU_ROOT environment variable.
- * 
+ *
  * @module storage
  */
 
@@ -25,9 +25,9 @@ export class StoragePathResolver {
 
     constructor(zuRoot?: string) {
         // Get ZU_ROOT from environment variable or VS Code configuration
-        this.zuRoot = zuRoot || 
-                     process.env.ZU_ROOT || 
-                     vscode.workspace.getConfiguration('zeroui').get<string>('zuRoot') || 
+        this.zuRoot = zuRoot ||
+                     process.env.ZU_ROOT ||
+                     vscode.workspace.getConfiguration('zeroui').get<string>('zuRoot') ||
                      '';
 
         if (!this.zuRoot) {
@@ -56,7 +56,7 @@ export class StoragePathResolver {
     /**
      * Resolve receipt storage path (IDE Plane)
      * Pattern: ide/receipts/{repo-id}/{yyyy}/{mm}/ (Rule 228: YYYY/MM month partitioning)
-     * 
+     *
      * @param repoId Repository identifier (kebab-case)
      * @param year 4-digit year (YYYY)
      * @param month 2-digit month (MM)
@@ -78,7 +78,7 @@ export class StoragePathResolver {
         // Format: receipts/{repo-id}/{yyyy}/{mm}/
         const monthStr = month.toString().padStart(2, '0');
         const relativePath = `receipts/${repoId}/${year}/${monthStr}/`;
-        
+
         return this.resolveIdePath(relativePath);
     }
 
@@ -130,7 +130,7 @@ export class StoragePathResolver {
         // Construct full path
         const normalizedRelative = relativePath.replace(/^\/+|\/+$/g, '');
         const fullPath = `${this.zuRoot}/${plane}/${normalizedRelative}`;
-        
+
         return this.normalizePath(fullPath);
     }
 
@@ -168,4 +168,3 @@ export class StoragePathResolver {
         return pathStr.replace(/\\/g, '/').replace(/\/+/g, '/');
     }
 }
-

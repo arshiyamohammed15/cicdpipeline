@@ -123,6 +123,15 @@ python_classes = [
 python_functions = [
     "test_*",
 ]
+norecursedirs = [
+    "node_modules",
+    "dist",
+    "out",
+    "build",
+    "src/cloud-services/shared-services/*/tests",
+    "src/edge-agent/*/__tests__",
+    "src/edge-agent/*/*/__tests__",
+]
 # Pytest can run unittest tests natively
 # No need to change existing unittest code
 markers = [

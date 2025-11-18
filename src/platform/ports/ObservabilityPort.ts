@@ -1,15 +1,15 @@
 /**
  * ObservabilityPort
- * 
+ *
  * Cloud-agnostic interface for observability operations (metrics, logs, traces).
  * Implemented by local adapters for monitoring and observability.
- * 
+ *
  * @interface ObservabilityPort
  */
 export interface ObservabilityPort {
   /**
    * Emit a metric.
-   * 
+   *
    * @param metric - Metric to emit
    * @returns Promise resolving when metric is emitted
    */
@@ -17,7 +17,7 @@ export interface ObservabilityPort {
 
   /**
    * Emit multiple metrics in batch.
-   * 
+   *
    * @param metrics - Array of metrics to emit
    * @returns Promise resolving when metrics are emitted
    */
@@ -25,7 +25,7 @@ export interface ObservabilityPort {
 
   /**
    * Write a log entry.
-   * 
+   *
    * @param logEntry - Log entry to write
    * @returns Promise resolving when log is written
    */
@@ -33,7 +33,7 @@ export interface ObservabilityPort {
 
   /**
    * Write multiple log entries in batch.
-   * 
+   *
    * @param logEntries - Array of log entries to write
    * @returns Promise resolving when logs are written
    */
@@ -41,7 +41,7 @@ export interface ObservabilityPort {
 
   /**
    * Emit a trace span.
-   * 
+   *
    * @param span - Trace span to emit
    * @returns Promise resolving when span is emitted
    */
@@ -49,7 +49,7 @@ export interface ObservabilityPort {
 
   /**
    * Query metrics.
-   * 
+   *
    * @param query - Metric query
    * @returns Promise resolving to query results
    */
@@ -57,7 +57,7 @@ export interface ObservabilityPort {
 
   /**
    * Query logs.
-   * 
+   *
    * @param query - Log query
    * @returns Promise resolving to query results
    */
@@ -191,4 +191,3 @@ export interface LogQueryResult {
   /** Whether more results are available */
   hasMore: boolean;
 }
-

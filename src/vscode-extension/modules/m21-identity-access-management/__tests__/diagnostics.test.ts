@@ -5,4 +5,3 @@ describe('IAM Diagnostics', () => {
     expect(true).toBe(true);
   });
 });
-

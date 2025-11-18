@@ -1,6 +1,6 @@
 /**
  * LocalBlockStore
- * 
+ *
  * Local file-based implementation of BlockStorePort.
  * Uses append-only storage with fsync for persistence.
  */
@@ -261,4 +261,3 @@ export class LocalBlockStore implements BlockStorePort {
     return `snap-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
   }
 }
-

@@ -13,4 +13,3 @@ export const window = {
     showWarningMessage: jest.fn(),
     showErrorMessage: jest.fn()
 };
-

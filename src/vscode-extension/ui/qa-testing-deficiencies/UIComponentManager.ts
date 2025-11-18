@@ -18,5 +18,3 @@ export class QATestingDeficienciesUIComponentManager {
         this.lastSnapshot = undefined;
     }
 }
-
-

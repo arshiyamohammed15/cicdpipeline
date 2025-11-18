@@ -48,4 +48,3 @@ Gate tables must:
 - Have valid decision values (pass, warn, soft_block, hard_block)
 - Have numeric thresholds where applicable
 - Have priority values between 1-5
-

@@ -23,7 +23,7 @@ This document contains runbooks for the top 3 most critical incidents in the Zer
    ```bash
    # Check if receipt storage service is running
    ps aux | grep ReceiptStorageService
-   
+
    # Check storage path exists and is writable
    ls -la {ZU_ROOT}/ide/receipts/
    ```
@@ -118,7 +118,7 @@ cat {ZU_ROOT}/ide/receipts/receipt_*.jsonl | tail -1
    ```bash
    # Verify gate tables are accessible
    ls -la docs/architecture/gate_tables/
-   
+
    # Check gate table CSV format
    head -5 docs/architecture/gate_tables/gate_pr_size.csv
    ```
@@ -127,7 +127,7 @@ cat {ZU_ROOT}/ide/receipts/receipt_*.jsonl | tail -1
    ```bash
    # Check current policy snapshot
    curl https://policy-registry.example.com/api/v1/policies/current
-   
+
    # Verify policy snapshot signature
    zeroui policy verify --snapshot-id SNAP.INIT.policy_snapshot.v1
    ```
@@ -219,7 +219,7 @@ zeroui gate enable --gate-id gate_pr_size
    ```bash
    # Check Policy Registry health
    curl https://policy-registry.example.com/health
-   
+
    # Check Policy Registry API
    curl https://policy-registry.example.com/api/v1/policies/current
    ```
@@ -228,7 +228,7 @@ zeroui gate enable --gate-id gate_pr_size
    ```bash
    # Test connectivity from Edge Agent
    ping policy-registry.example.com
-   
+
    # Test HTTPS connectivity
    curl -v https://policy-registry.example.com/api/v1/policies/current
    ```
@@ -237,7 +237,7 @@ zeroui gate enable --gate-id gate_pr_size
    ```bash
    # Check cached policy
    ls -la {ZU_ROOT}/ide/policy/
-   
+
    # Check cache age
    stat {ZU_ROOT}/ide/policy/policy_snapshot_v1.json
    ```
@@ -246,7 +246,7 @@ zeroui gate enable --gate-id gate_pr_size
    ```bash
    # Check authentication token
    cat {ZU_ROOT}/ide/config/auth_token
-   
+
    # Test authentication
    curl -H "Authorization: Bearer $(cat {ZU_ROOT}/ide/config/auth_token)" \
         https://policy-registry.example.com/api/v1/policies/current
@@ -326,4 +326,3 @@ zeroui policy verify --snapshot-id SNAP.INIT.policy_snapshot.v1
 - **MTTR**: Mean Time To Resolution
 - **Incident Frequency**: Number of incidents per month
 - **False Positive Rate**: Incidents that were false alarms
-

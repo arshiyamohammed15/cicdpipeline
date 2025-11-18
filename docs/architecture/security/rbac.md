@@ -102,8 +102,8 @@ This document defines roles and permissions for ZeroUI 2.0.
 | View All Receipts | ✅ | ✅ | ⚠️*** | ❌ | ❌ |
 | Submit Feedback | ✅ | ✅ | ✅ | ✅ | ❌ |
 
-*With approval  
-**Public policies only  
+*With approval
+**Public policies only
 ***Own actions only
 
 ## Access Control Implementation
@@ -231,4 +231,3 @@ In emergencies:
 - **Quarterly**: Review all role assignments
 - **Annually**: Full access control audit
 - **On-Demand**: Audit on security incident
-

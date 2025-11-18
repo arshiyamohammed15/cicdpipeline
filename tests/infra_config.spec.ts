@@ -1,6 +1,6 @@
 /**
  * InfraConfig Test Suite
- * 
+ *
  * Tests for infrastructure configuration loader:
  * - Precedence (defaults → per-env → policy overlay)
  * - Vendor-neutrality validation
@@ -349,7 +349,7 @@ describe('InfraConfig', () => {
 
     it('detects all vendor identifiers: aws, s3, azure, gcs, kms, arn', () => {
       const vendors = ['aws', 's3', 'azure', 'gcs', 'kms', 'arn'];
-      
+
       for (const vendor of vendors) {
         const environmentsData = {
           version: '1.0',
@@ -403,7 +403,7 @@ describe('InfraConfig', () => {
       // Verify placeholders are preserved exactly as-is
       expect(result.config.storage.object_root).toBe('{zu_root_pattern}/objects');
       expect(result.config.storage.backups_root).toBe('{zu_root_pattern}/backups');
-      
+
       // Verify placeholders contain the literal string
       expect(result.config.storage.object_root).toContain('{zu_root_pattern}');
       expect(result.config.storage.backups_root).toContain('{zu_root_pattern}');
@@ -549,4 +549,3 @@ describe('InfraConfig', () => {
     });
   });
 });
-

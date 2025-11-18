@@ -48,7 +48,7 @@ function New-FolderStructure {
         [string]$Path,
         [string]$Description = ""
     )
-    
+
     if(-not (Test-Path $Path)) {
         try {
             New-Item -ItemType Directory -Path $Path -Force | Out-Null
@@ -72,40 +72,40 @@ function New-IDEFolderStructure {
         [string]$BasePath,
         [ref]$Errors
     )
-    
+
     Write-Host "Creating IDE Plane folders..." -ForegroundColor Yellow
-    
+
     $ideBase = Join-Path $BasePath "ide"
     $Errors.Value += if(-not (New-FolderStructure -Path $ideBase)) { $ideBase }
-    
+
     # receipts/ - parent only; {repo-id}/{yyyy}/{mm}/ created on-demand
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "receipts") -Description "Append-only signed JSONL receipts")) { "ide/receipts" }
-    
+
     # policy/ - Signed snapshots + current pointer, cache, and trust/pubkeys/
     $policyPath = Join-Path $ideBase "policy"
     $Errors.Value += if(-not (New-FolderStructure -Path $policyPath -Description "Signed snapshots + current pointer, cache")) { "ide/policy" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $policyPath "trust")) -or
                          -not (New-FolderStructure -Path (Join-Path (Join-Path $policyPath "trust") "pubkeys") -Description "Public keys only")) { "ide/policy/trust/pubkeys" }
-    
+
     # config/ - Non-secret consent snapshots and configuration
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "config") -Description "Non-secret consent snapshots and configuration")) { "ide/config" }
-    
+
     # queue/ - Envelope refs only; pending/, sent/, failed/ created on-demand
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "queue") -Description "Envelope refs only")) { "ide/queue" }
-    
+
     # logs/ - Log files
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "logs") -Description "Log files")) { "ide/logs" }
-    
+
     # db/ - SQLite mirror, raw JSON
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "db") -Description "SQLite mirror, raw JSON")) { "ide/db" }
-    
+
     # llm/ - Sanitized; no secrets/weights/PII; subfolders created on-demand
     $llmPath = Join-Path $ideBase "llm"
     $Errors.Value += if(-not (New-FolderStructure -Path $llmPath -Description "LLM prompts, tools, adapters, cache")) { "ide/llm" }
-    
+
     # fingerprint/ - Non-secret device fingerprint
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "fingerprint") -Description "Non-secret device fingerprint")) { "ide/fingerprint" }
-    
+
     # tmp/ - Temporary; also used by RFC stamping
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $ideBase "tmp") -Description "Temporary; RFC stamping")) { "ide/tmp" }
 }
@@ -117,10 +117,10 @@ function New-TenantFolderStructure {
         [switch]$CompatAliases,
         [ref]$Errors
     )
-    
+
     $tenantBase = Join-Path $BasePath "tenant"
     $Errors.Value += if(-not (New-FolderStructure -Path $tenantBase)) { "tenant" }
-    
+
     # evidence/ - Merged receipts, manifests, checksums
     $evidencePath = Join-Path $tenantBase "evidence"
     $Errors.Value += if(-not (New-FolderStructure -Path $evidencePath)) { "tenant/evidence" }
@@ -128,34 +128,34 @@ function New-TenantFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $evidencePath "dlq") -Description "Dead letter queue")) { "tenant/evidence/dlq" }
     # watermarks/{consumer-id}/ created on-demand, but parent folder is created
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $evidencePath "watermarks") -Description "Per-consumer watermarks")) { "tenant/evidence/watermarks" }
-    
+
     # ingest/ - RFC fallback
     $ingestPath = Join-Path $tenantBase "ingest"
     $Errors.Value += if(-not (New-FolderStructure -Path $ingestPath)) { "tenant/ingest" }
     # staging/, dlq/, staging/unclassified/ created on-demand, but parent folder is created
-    
+
     # telemetry/ - Unified observability pattern
     $telemetryPath = Join-Path $tenantBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $telemetryPath -Description "Unified observability pattern")) { "tenant/telemetry" }
     # metrics/, traces/, logs/ created on-demand
-    
+
     # adapters/ - Webhooks and gateway logs
     $adaptersPath = Join-Path $tenantBase "adapters"
     $Errors.Value += if(-not (New-FolderStructure -Path $adaptersPath -Description "Webhooks and gateway logs")) { "tenant/adapters" }
     # webhooks/, gateway-logs/ created on-demand
-    
+
     # reporting/ - Analytics marts
     $reportingPath = Join-Path $tenantBase "reporting"
     $Errors.Value += if(-not (New-FolderStructure -Path $reportingPath)) { "tenant/reporting" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $reportingPath "marts") -Description "Analytics marts")) { "tenant/reporting/marts" }
-    
+
     # policy/ - Signed snapshots and public keys
     $tenantPolicyPath = Join-Path $tenantBase "policy"
     $Errors.Value += if(-not (New-FolderStructure -Path $tenantPolicyPath)) { "tenant/policy" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $tenantPolicyPath "snapshots") -Description "Signed snapshots")) { "tenant/policy/snapshots" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $tenantPolicyPath "trust")) -or
                          -not (New-FolderStructure -Path (Join-Path (Join-Path $tenantPolicyPath "trust") "pubkeys") -Description "Public keys only")) { "tenant/policy/trust/pubkeys" }
-    
+
     # meta/schema/ - Deprecated alias (only with -CompatAliases)
     if($CompatAliases) {
         $metaPath = Join-Path $tenantBase "meta"
@@ -170,10 +170,10 @@ function New-ProductFolderStructure {
         [string]$BasePath,
         [ref]$Errors
     )
-    
+
     $productBase = Join-Path $BasePath "product"
     $Errors.Value += if(-not (New-FolderStructure -Path $productBase)) { "product" }
-    
+
     # policy/registry/ - Unified policy structure
     $productPolicyPath = Join-Path $productBase "policy"
     $Errors.Value += if(-not (New-FolderStructure -Path $productPolicyPath)) { "product/policy" }
@@ -182,27 +182,27 @@ function New-ProductFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "releases") -Description "Policy releases")) { "product/policy/registry/releases" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "templates") -Description "Policy templates")) { "product/policy/registry/templates" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $registryPath "revocations") -Description "Policy revocations")) { "product/policy/registry/revocations" }
-    
+
     # evidence/watermarks/ - Per-consumer watermarks
     $productEvidencePath = Join-Path $productBase "evidence"
     $Errors.Value += if(-not (New-FolderStructure -Path $productEvidencePath)) { "product/evidence" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $productEvidencePath "watermarks") -Description "Per-consumer watermarks")) { "product/evidence/watermarks" }
-    
+
     # reporting/tenants/ - Tenant aggregates
     $productReportingPath = Join-Path $productBase "reporting"
     $Errors.Value += if(-not (New-FolderStructure -Path $productReportingPath)) { "product/reporting" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $productReportingPath "tenants") -Description "Tenant aggregates")) { "product/reporting/tenants" }
-    
+
     # adapters/gateway-logs/ - Gateway diagnostics
     $productAdaptersPath = Join-Path $productBase "adapters"
     $Errors.Value += if(-not (New-FolderStructure -Path $productAdaptersPath -Description "Gateway logs")) { "product/adapters" }
     # gateway-logs/ created on-demand
-    
+
     # telemetry/ - Unified observability pattern
     $productTelemetryPath = Join-Path $productBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $productTelemetryPath -Description "Unified observability pattern")) { "product/telemetry" }
     # metrics/, traces/, logs/ created on-demand
-    
+
     # policy/trust/pubkeys/ - Public keys (merged with policy structure)
     $productPolicyTrustPath = Join-Path $productPolicyPath "trust"
     $Errors.Value += if(-not (New-FolderStructure -Path $productPolicyTrustPath)) { "product/policy/trust" }
@@ -215,37 +215,37 @@ function New-SharedFolderStructure {
         [string]$BasePath,
         [ref]$Errors
     )
-    
+
     $sharedBase = Join-Path $BasePath "shared"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedBase)) { "shared" }
-    
+
     # pki/ - All PKI files (public only)
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedBase "pki") -Description "All PKI files (public only)")) { "shared/pki" }
-    
+
     # telemetry/ - Unified observability pattern
     $sharedTelemetryPath = Join-Path $sharedBase "telemetry"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedTelemetryPath -Description "Unified observability pattern")) { "shared/telemetry" }
     # metrics/, traces/, logs/ created on-demand
-    
+
     # siem/ - Flattened SIEM structure
     $siemPath = Join-Path $sharedBase "siem"
     $Errors.Value += if(-not (New-FolderStructure -Path $siemPath -Description "Flattened SIEM structure")) { "shared/siem" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $siemPath "detections") -Description "SIEM detections")) { "shared/siem/detections" }
     # events/dt=.../ created on-demand, but parent folder is created
-    
+
     # bi-lake/curated/zero-ui/ - BI lake
     $biLakePath = Join-Path $sharedBase "bi-lake"
     $Errors.Value += if(-not (New-FolderStructure -Path $biLakePath)) { "shared/bi-lake" }
     $curatedPath = Join-Path $biLakePath "curated"
     $Errors.Value += if(-not (New-FolderStructure -Path $curatedPath)) { "shared/bi-lake/curated" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $curatedPath "zero-ui") -Description "BI lake curated data")) { "shared/bi-lake/curated/zero-ui" }
-    
+
     # governance/ - Flattened governance structure
     $governancePath = Join-Path $sharedBase "governance"
     $Errors.Value += if(-not (New-FolderStructure -Path $governancePath -Description "Flattened governance structure")) { "shared/governance" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "controls") -Description "Governance controls")) { "shared/governance/controls" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "attestations") -Description "Governance attestations")) { "shared/governance/attestations" }
-    
+
     # llm/ - Flattened governance structure
     $sharedLlmPath = Join-Path $sharedBase "llm"
     $Errors.Value += if(-not (New-FolderStructure -Path $sharedLlmPath -Description "LLM guardrails, routing, tools")) { "shared/llm" }
@@ -322,4 +322,3 @@ if($errorCount -eq 0) {
     $errors | Where-Object { $_ -ne $null } | ForEach-Object { Write-Host "  $_" -ForegroundColor Red }
     exit 1
 }
-

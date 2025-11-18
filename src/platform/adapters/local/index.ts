@@ -1,6 +1,6 @@
 /**
  * Local Adapters
- * 
+ *
  * File-based implementations of platform ports for offline/local development.
  */
 
@@ -14,4 +14,3 @@ export { LocalIngress } from './LocalIngress';
 export { LocalObservability } from './LocalObservability';
 export { LocalBackup } from './LocalBackup';
 export { LocalDRPlan } from './LocalDRPlan';
-

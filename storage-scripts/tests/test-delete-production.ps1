@@ -55,4 +55,3 @@ if(Test-Path $TestRoot) {
 }
 
 Write-Host "`nTest completed." -ForegroundColor Cyan
-

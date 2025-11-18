@@ -13,5 +13,3 @@ export class ClientAdminDashboardUIComponentManager extends PlaceholderUICompone
         this.updateData(payload);
     }
 }
-
-

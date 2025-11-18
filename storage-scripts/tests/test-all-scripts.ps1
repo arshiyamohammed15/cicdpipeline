@@ -62,7 +62,7 @@ function Record-TestResult {
         [string]$Message = "",
         [string]$ErrorDetails = ""
     )
-    
+
     $script:totalTests++
     if($Passed) {
         $script:passedTests++
@@ -80,7 +80,7 @@ function Record-TestResult {
             Write-Host "      Error: $ErrorDetails" -ForegroundColor Red
         }
     }
-    
+
     $script:testResults += @{
         TestName = $TestName
         Passed = $Passed
@@ -97,30 +97,30 @@ function Test-EnvironmentStructure {
         [string]$Environment,
         [bool]$IncludeIDE = $false
     )
-    
+
     $envPath = Join-Path $BasePath $Environment
     if(-not (Test-Path $envPath)) {
         return $false
     }
-    
+
     # Test tenant plane
     $tenantPath = Join-Path $envPath "tenant"
     if(-not (Test-Path $tenantPath)) {
         return $false
     }
-    
+
     # Test product plane
     $productPath = Join-Path $envPath "product"
     if(-not (Test-Path $productPath)) {
         return $false
     }
-    
+
     # Test shared plane
     $sharedPath = Join-Path $envPath "shared"
     if(-not (Test-Path $sharedPath)) {
         return $false
     }
-    
+
     # Test IDE plane if required
     if($IncludeIDE) {
         $idePath = Join-Path $envPath "ide"
@@ -128,7 +128,7 @@ function Test-EnvironmentStructure {
             return $false
         }
     }
-    
+
     return $true
 }
 
@@ -138,7 +138,7 @@ function Test-EnvironmentDeleted {
         [string]$BasePath,
         [string]$Environment
     )
-    
+
     $envPath = Join-Path $BasePath $Environment
     return -not (Test-Path $envPath)
 }
@@ -150,7 +150,7 @@ function Invoke-TestScript {
         [hashtable]$Parameters = @{},
         [bool]$ExpectSuccess = $true
     )
-    
+
     try {
         # Build parameter hashtable for splatting
         $splatParams = @{}
@@ -167,15 +167,15 @@ function Invoke-TestScript {
                 $splatParams[$key] = $value
             }
         }
-        
+
         if($VerbosePreference -eq 'Continue') {
             $paramDisplay = ($splatParams.Keys | ForEach-Object { "-$_" + $(if($splatParams[$_] -is [string]) { " `"$($splatParams[$_])`"" } else { "" }) }) -join " "
             Write-Host "      Executing: & `"$ScriptPath`" $paramDisplay" -ForegroundColor Gray
         }
-        
+
         $output = & $ScriptPath @splatParams 2>&1
         $exitCode = $LASTEXITCODE
-        
+
         if($ExpectSuccess -and $exitCode -eq 0) {
             return @{Success = $true; Output = $output; ExitCode = $exitCode}
         } elseif(-not $ExpectSuccess -and $exitCode -ne 0) {
@@ -193,7 +193,7 @@ function Clear-TestDirectory {
     param(
         [string]$Path
     )
-    
+
     if(Test-Path $Path) {
         try {
             Remove-Item -Path $Path -Recurse -Force -ErrorAction Stop
@@ -225,7 +225,7 @@ if(Test-Path $scriptPath) {
     $result = Invoke-TestScript -ScriptPath $scriptPath -Parameters @{
         ZuRoot = $testPath
     }
-    
+
     if($result.Success) {
         $structureExists = Test-EnvironmentStructure -BasePath $testPath -Environment "development" -IncludeIDE $true
         Record-TestResult -TestName "Create Development Environment" -Passed $structureExists `
@@ -249,7 +249,7 @@ if(Test-Path $scriptPath) {
         ProductName = "TestProduct"
         ZuRoot = $testPath2
     }
-    
+
     if($result.Success) {
         $structureExists = Test-EnvironmentStructure -BasePath $testPath2 -Environment "development" -IncludeIDE $true
         Record-TestResult -TestName "Create Development with Parameters" -Passed $structureExists `
@@ -274,7 +274,7 @@ if(Test-Path $scriptPath) {
     $result = Invoke-TestScript -ScriptPath $scriptPath -Parameters @{
         ZuRoot = $testPath
     }
-    
+
     if($result.Success) {
         $structureExists = Test-EnvironmentStructure -BasePath $testPath -Environment "integration" -IncludeIDE $false
         Record-TestResult -TestName "Create Integration Environment" -Passed $structureExists `
@@ -302,7 +302,7 @@ if(Test-Path $scriptPath) {
     $result = Invoke-TestScript -ScriptPath $scriptPath -Parameters @{
         ZuRoot = $testPath
     }
-    
+
     if($result.Success) {
         $structureExists = Test-EnvironmentStructure -BasePath $testPath -Environment "staging" -IncludeIDE $false
         Record-TestResult -TestName "Create Staging Environment" -Passed $structureExists `
@@ -330,7 +330,7 @@ if(Test-Path $scriptPath) {
     $result = Invoke-TestScript -ScriptPath $scriptPath -Parameters @{
         ZuRoot = $testPath
     }
-    
+
     if($result.Success) {
         $structureExists = Test-EnvironmentStructure -BasePath $testPath -Environment "production" -IncludeIDE $false
         Record-TestResult -TestName "Create Production Environment" -Passed $structureExists `
@@ -357,7 +357,7 @@ Clear-TestDirectory -Path $testPath | Out-Null
 $createScript = Join-Path $scriptRoot "create-folder-structure-development.ps1"
 if(Test-Path $createScript) {
     Invoke-TestScript -ScriptPath $createScript -Parameters @{ZuRoot = $testPath} | Out-Null
-    
+
     # Now delete it
     $deleteScript = Join-Path $scriptRoot "delete-folder-structure-development.ps1"
     if(Test-Path $deleteScript) {
@@ -365,7 +365,7 @@ if(Test-Path $createScript) {
             ZuRoot = $testPath
             Force = $true
         }
-        
+
         if($result.Success) {
             $isDeleted = Test-EnvironmentDeleted -BasePath $testPath -Environment "development"
             Record-TestResult -TestName "Delete Development Environment" -Passed $isDeleted `
@@ -386,13 +386,13 @@ Clear-TestDirectory -Path $testPath2 | Out-Null
 
 if(Test-Path $createScript) {
     Invoke-TestScript -ScriptPath $createScript -Parameters @{ZuRoot = $testPath2} | Out-Null
-    
+
     if(Test-Path $deleteScript) {
         $result = Invoke-TestScript -ScriptPath $deleteScript -Parameters @{
             ZuRoot = $testPath2
             WhatIf = $true
         }
-        
+
         if($result.Success) {
             # Structure should still exist after WhatIf
             $stillExists = Test-EnvironmentStructure -BasePath $testPath2 -Environment "development" -IncludeIDE $true
@@ -417,14 +417,14 @@ Clear-TestDirectory -Path $testPath | Out-Null
 $createScript = Join-Path $scriptRoot "create-folder-structure-integration.ps1"
 if(Test-Path $createScript) {
     Invoke-TestScript -ScriptPath $createScript -Parameters @{ZuRoot = $testPath} | Out-Null
-    
+
     $deleteScript = Join-Path $scriptRoot "delete-folder-structure-integration.ps1"
     if(Test-Path $deleteScript) {
         $result = Invoke-TestScript -ScriptPath $deleteScript -Parameters @{
             ZuRoot = $testPath
             Force = $true
         }
-        
+
         if($result.Success) {
             $isDeleted = Test-EnvironmentDeleted -BasePath $testPath -Environment "integration"
             Record-TestResult -TestName "Delete Integration Environment" -Passed $isDeleted `
@@ -451,14 +451,14 @@ Clear-TestDirectory -Path $testPath | Out-Null
 $createScript = Join-Path $scriptRoot "create-folder-structure-staging.ps1"
 if(Test-Path $createScript) {
     Invoke-TestScript -ScriptPath $createScript -Parameters @{ZuRoot = $testPath} | Out-Null
-    
+
     $deleteScript = Join-Path $scriptRoot "delete-folder-structure-staging.ps1"
     if(Test-Path $deleteScript) {
         $result = Invoke-TestScript -ScriptPath $deleteScript -Parameters @{
             ZuRoot = $testPath
             Force = $true
         }
-        
+
         if($result.Success) {
             $isDeleted = Test-EnvironmentDeleted -BasePath $testPath -Environment "staging"
             Record-TestResult -TestName "Delete Staging Environment" -Passed $isDeleted `
@@ -485,14 +485,14 @@ Clear-TestDirectory -Path $testPath | Out-Null
 $createScript = Join-Path $scriptRoot "create-folder-structure-production.ps1"
 if(Test-Path $createScript) {
     Invoke-TestScript -ScriptPath $createScript -Parameters @{ZuRoot = $testPath} | Out-Null
-    
+
     $deleteScript = Join-Path $scriptRoot "delete-folder-structure-production.ps1"
     if(Test-Path $deleteScript) {
         $result = Invoke-TestScript -ScriptPath $deleteScript -Parameters @{
             ZuRoot = $testPath
             Force = $true
         }
-        
+
         if($result.Success) {
             $isDeleted = Test-EnvironmentDeleted -BasePath $testPath -Environment "production"
             Record-TestResult -TestName "Delete Production Environment" -Passed $isDeleted `
@@ -538,7 +538,7 @@ if(Test-Path $deleteScript) {
         ZuRoot = $testPath
         Force = $true
     }
-    
+
     if($result.Success) {
         $allDeleted = $true
         foreach($env in @("development", "integration", "staging", "production")) {
@@ -547,7 +547,7 @@ if(Test-Path $deleteScript) {
                 break
             }
         }
-        
+
         Record-TestResult -TestName "Delete All Environments (Main Script)" -Passed $allDeleted `
             -Message "Deleted all four environments using main delete script"
     } else {
@@ -576,7 +576,7 @@ if(Test-Path $scriptPath) {
         ProductName = "ParamTest"
         ZuRoot = $testPath
     }
-    
+
     Record-TestResult -TestName "Parameter Validation (Drive/ProductName)" -Passed $result.Success `
         -Message "Script accepts Drive and ProductName parameters"
 }
@@ -589,7 +589,7 @@ if(Test-Path $scriptPath) {
     $result = Invoke-TestScript -ScriptPath $scriptPath -Parameters @{
         ZuRoot = $testPath2
     }
-    
+
     Record-TestResult -TestName "Parameter Validation (ZuRoot)" -Passed $result.Success `
         -Message "Script accepts ZuRoot parameter"
 }
@@ -608,7 +608,7 @@ if(Test-Path $deleteScript) {
         ZuRoot = $nonExistentPath
         Force = $true
     } -ExpectSuccess $true  # Should handle gracefully
-    
+
     Record-TestResult -TestName "Error Handling (Non-existent Path)" -Passed $result.Success `
         -Message "Script handles non-existent path gracefully"
 }
@@ -650,4 +650,3 @@ if($failedTests -eq 0) {
     Write-Host "`nSome tests failed. Please review the output above." -ForegroundColor Red
     exit 1
 }
-

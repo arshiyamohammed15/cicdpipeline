@@ -134,4 +134,3 @@ SLOs are reviewed:
 - **Quarterly**: Review targets and error budgets
 - **After Incidents**: Adjust based on learnings
 - **On Scale Changes**: Re-evaluate when traffic patterns change
-

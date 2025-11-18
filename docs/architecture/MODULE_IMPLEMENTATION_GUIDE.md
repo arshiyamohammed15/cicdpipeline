@@ -1,7 +1,7 @@
 # ZeroUI 2.0 Module Implementation Guide
 
-**Purpose**: Step-by-step guide for implementing modules across the three-tier architecture  
-**Architecture**: Based on `zeroui-hla.md` and `zeroui-lla.md`  
+**Purpose**: Step-by-step guide for implementing modules across the three-tier architecture
+**Architecture**: Based on `zeroui-hla.md` and `zeroui-lla.md`
 **Status**: Actionable patterns from actual codebase
 
 ---
@@ -167,14 +167,14 @@ class {ModuleName}Service:
         """
         # Validate input data (if validation service exists)
         # await self.validation_service.validate(request)
-        
+
         # Process data (your business logic)
         result = {
             "processed": True,
             "module": "{module-name}",
             "data": request.data
         }
-        
+
         # Return processed result
         return result
 ```
@@ -264,13 +264,13 @@ export class {ModuleName} implements DelegationInterface {
 
     public async delegate(task: DelegationTask): Promise<DelegationResult> {
         const startTime = Date.now();
-        
+
         try {
             console.log(`{Module Name} processing task: ${task.id}`);
-            
+
             // Implement delegation logic here
             const result = await this.processTask(task);
-            
+
             const processingTime = Date.now() - startTime;
             this.tasksProcessed++;
             this.totalLatency += processingTime;
@@ -295,9 +295,9 @@ export class {ModuleName} implements DelegationInterface {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
-            
+
             console.error(`{Module Name} failed task: ${task.id}`, error);
-            
+
             return {
                 taskId: task.id,
                 success: false,
@@ -320,7 +320,7 @@ export class {ModuleName} implements DelegationInterface {
 
     public canHandle(task: DelegationTask): boolean {
         // Define when this module can handle a task
-        return task.type === '{module-type}' || 
+        return task.type === '{module-type}' ||
                task.requirements?.{requirement} === true;
     }
 
@@ -489,7 +489,7 @@ export class {ModuleName}UIComponentManager implements vscode.Disposable {
         );
 
         this.webviewPanel.webview.html = this.uiComponent.renderDashboard(data);
-        
+
         this.webviewPanel.onDidDispose(() => {
             this.webviewPanel = undefined;
         });
@@ -770,7 +770,6 @@ public renderDashboard(data?: {ModuleName}Data): string {
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: Current  
+**Document Version**: 1.0
+**Last Updated**: Current
 **Status**: Implementation Guide - Ready for Use
-

@@ -70,4 +70,3 @@ class ErrorResponse(BaseModel):
     """Error response envelope model per IPC protocol contract."""
 
     error: ErrorDetail = Field(..., description="Error information")
-

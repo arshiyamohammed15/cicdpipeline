@@ -1,6 +1,6 @@
 /**
  * LocalServerless
- * 
+ *
  * Local file-based implementation of ServerlessPort using JS function registry.
  * Functions are stored in a known folder and invoked with timeout.
  * Execution logs are appended to NDJSON.
@@ -212,7 +212,7 @@ export class LocalServerless implements ServerlessPort {
         // Execute function in isolated context
         // Note: This is a simplified execution - in production, use vm module or worker threads
         // Wrap function code to handle both arrow functions and regular functions
-        const wrappedCode = functionCode.trim().startsWith('(') 
+        const wrappedCode = functionCode.trim().startsWith('(')
           ? `(${functionCode})`
           : functionCode;
         const func = new Function('payload', `return (${wrappedCode})(payload);`);
@@ -282,4 +282,3 @@ export class LocalServerless implements ServerlessPort {
     return Date.now();
   }
 }
-

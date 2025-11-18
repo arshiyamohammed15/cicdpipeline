@@ -24,18 +24,18 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 class TestPostGenerationValidatorInitialization(unittest.TestCase):
     """Test that post-generation validator initializes correctly."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_validator_initializes(self):
         """Verify validator initializes without errors."""
         self.assertIsNotNone(self.validator)
         self.assertIsNotNone(self.validator.code_validator)
         self.assertIsNotNone(self.validator.rule_validator)
-    
+
     def test_rules_loaded_dynamically(self):
         """Verify rules are loaded dynamically from JSON files."""
         # Check that rule references are loaded (may be None if rules don't exist)
@@ -47,20 +47,20 @@ class TestPostGenerationValidatorInitialization(unittest.TestCase):
         self.assertTrue(hasattr(self.validator, 'rule_log_level_enum'))
         self.assertTrue(hasattr(self.validator, 'rule_error_envelope'))
         self.assertTrue(hasattr(self.validator, 'rule_trace_context'))
-    
+
     def test_rule_lookup_method(self):
         """Verify rule lookup by keywords works."""
         # Load rules from JSON files
         constitution_dir = Path("docs/constitution")
         json_files = list(constitution_dir.glob("*.json"))
         all_rules = []
-        
+
         for json_file in json_files:
             with open(json_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 rules = data.get('constitution_rules', [])
                 all_rules.extend(rules)
-        
+
         # Test finding a rule by keywords
         rule = self.validator._find_rule_by_keywords(all_rules, ['File Headers', 'Comprehensive'])
         # Rule may or may not exist, but method should work
@@ -71,25 +71,25 @@ class TestPostGenerationValidatorInitialization(unittest.TestCase):
 
 class TestFileHeaderValidation(unittest.TestCase):
     """Test file header validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_missing_file_header_detected(self):
         """Test detection of missing file header."""
         code_without_header = """def my_function():
     return 42"""
-        
+
         result = self.validator.validate_generated_code(code_without_header)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_file_header:
             # May or may not detect depending on code length
             self.assertIn('valid', result)
             self.assertIn('violations', result)
-    
+
     def test_comprehensive_header_passes(self):
         """Test that code with comprehensive header passes."""
         code_with_header = '''"""
@@ -102,9 +102,9 @@ Risks: None
 """
 def my_function():
     return 42'''
-        
+
         result = self.validator.validate_generated_code(code_with_header)
-        
+
         # Should pass or have fewer violations
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -112,34 +112,34 @@ def my_function():
 
 class TestAsyncAwaitValidation(unittest.TestCase):
     """Test async/await validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_async_function_detected(self):
         """Test detection of async function usage."""
         async_code = """async def my_function():
     await some_operation()
     return 42"""
-        
+
         result = self.validator.validate_generated_code(async_code)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_async_await:
             self.assertIn('valid', result)
             self.assertIn('violations', result)
             # May have violations for async usage
-    
+
     def test_framework_required_async_allowed(self):
         """Test that framework-required async is allowed."""
         middleware_code = """class MyMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request, call_next):
         return await call_next(request)"""
-        
+
         result = self.validator.validate_generated_code(middleware_code)
-        
+
         # Should allow framework-required async
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -147,33 +147,33 @@ class TestAsyncAwaitValidation(unittest.TestCase):
 
 class TestDecoratorValidation(unittest.TestCase):
     """Test decorator validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_custom_decorator_detected(self):
         """Test detection of custom decorator usage."""
         code_with_decorator = """@my_custom_decorator
 def my_function():
     return 42"""
-        
+
         result = self.validator.validate_generated_code(code_with_decorator)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_decorators:
             self.assertIn('valid', result)
             self.assertIn('violations', result)
-    
+
     def test_framework_decorator_allowed(self):
         """Test that framework-required decorators are allowed."""
         fastapi_code = """@router.post("/endpoint")
 def my_endpoint():
     return {"status": "ok"}"""
-        
+
         result = self.validator.validate_generated_code(fastapi_code)
-        
+
         # Should allow framework-required decorators
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -181,25 +181,25 @@ def my_endpoint():
 
 class TestLoggingValidation(unittest.TestCase):
     """Test logging format validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_unstructured_logging_detected(self):
         """Test detection of unstructured logging."""
         code_with_logging = """import logging
 logger = logging.getLogger(__name__)
 logger.info("This is a log message")"""
-        
+
         result = self.validator.validate_generated_code(code_with_logging)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_structured_logs:
             self.assertIn('valid', result)
             self.assertIn('violations', result)
-    
+
     def test_structured_logging_passes(self):
         """Test that structured JSON logging passes."""
         code_with_structured = """import json
@@ -212,9 +212,9 @@ log_data = json.dumps({
     "message": "This is a log message"
 })
 logger.info(log_data)"""
-        
+
         result = self.validator.validate_generated_code(code_with_structured)
-        
+
         # Should pass or have fewer violations
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -222,24 +222,24 @@ logger.info(log_data)"""
 
 class TestErrorEnvelopeValidation(unittest.TestCase):
     """Test error envelope validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_missing_error_envelope_detected(self):
         """Test detection of missing error envelope."""
         code_with_exception = """from fastapi import HTTPException
 raise HTTPException(status_code=400, detail="Error message")"""
-        
+
         result = self.validator.validate_generated_code(code_with_exception)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_error_envelope:
             self.assertIn('valid', result)
             self.assertIn('violations', result)
-    
+
     def test_error_envelope_passes(self):
         """Test that error envelope structure passes."""
         code_with_envelope = """error_response = {
@@ -249,9 +249,9 @@ raise HTTPException(status_code=400, detail="Error message")"""
         "details": {}
     }
 }"""
-        
+
         result = self.validator.validate_generated_code(code_with_envelope)
-        
+
         # Should pass
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -259,34 +259,34 @@ raise HTTPException(status_code=400, detail="Error message")"""
 
 class TestTraceContextValidation(unittest.TestCase):
     """Test trace context validation."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_missing_trace_context_detected(self):
         """Test detection of missing trace context."""
         code_with_logging = """request.start()
 # Process request
 request.end()"""
-        
+
         result = self.validator.validate_generated_code(code_with_logging)
-        
+
         # Should detect violation if rule exists
         if self.validator.rule_trace_context:
             self.assertIn('valid', result)
             self.assertIn('violations', result)
-    
+
     def test_trace_context_passes(self):
         """Test that trace context passes."""
         code_with_trace = """trace_id = "123456"
 span_id = "789012"
 parent_span_id = "345678"
 request.start(trace_id=trace_id, span_id=span_id, parent_span_id=parent_span_id)"""
-        
+
         result = self.validator.validate_generated_code(code_with_trace)
-        
+
         # Should pass
         self.assertIn('valid', result)
         self.assertIn('violations', result)
@@ -294,67 +294,67 @@ request.start(trace_id=trace_id, span_id=span_id, parent_span_id=parent_span_id)
 
 class TestEdgeCases(unittest.TestCase):
     """Test edge cases and error handling."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_empty_code(self):
         """Test handling of empty code."""
         result = self.validator.validate_generated_code("")
-        
+
         self.assertIn('valid', result)
         self.assertIn('violations', result)
-    
+
     def test_syntax_error_handling(self):
         """Test handling of syntax errors."""
         invalid_code = """def my_function(
     return 42  # Missing closing parenthesis"""
-        
+
         result = self.validator.validate_generated_code(invalid_code)
-        
+
         # Should handle syntax error gracefully
         self.assertIn('valid', result)
         self.assertIn('violations', result)
         # Should have syntax error violation
         if result['violations']:
             self.assertIsInstance(result['violations'], list)
-    
+
     def test_non_python_file_type(self):
         """Test handling of non-Python file types."""
         result = self.validator.validate_generated_code("code", file_type="typescript")
-        
+
         # Should return valid for unsupported types
         self.assertIn('valid', result)
         self.assertTrue(result['valid'])
         self.assertIn('message', result)
-    
+
     def test_very_long_code(self):
         """Test handling of very long code."""
         long_code = "def func():\n    pass\n" * 1000
         result = self.validator.validate_generated_code(long_code)
-        
+
         self.assertIn('valid', result)
         self.assertIn('violations', result)
 
 
 class TestViolationStructure(unittest.TestCase):
     """Test that violations have correct structure."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
-    
+
     def test_violation_structure(self):
         """Test that violations have correct structure."""
         code_with_issues = """async def my_function():
     logger.info("test")
     raise HTTPException(status_code=400)"""
-        
+
         result = self.validator.validate_generated_code(code_with_issues)
-        
+
         if result.get('violations'):
             violation = result['violations'][0]
             # Check required fields
@@ -362,14 +362,14 @@ class TestViolationStructure(unittest.TestCase):
             self.assertIn('severity', violation)
             self.assertIn('message', violation)
             self.assertIn('file_path', violation)
-    
+
     def test_violation_severity_counts(self):
         """Test that severity counts are calculated correctly."""
         code_with_issues = """async def my_function():
     logger.info("test")"""
-        
+
         result = self.validator.validate_generated_code(code_with_issues)
-        
+
         self.assertIn('violations_by_severity', result)
         self.assertIsInstance(result['violations_by_severity'], dict)
         if result.get('violations'):
@@ -380,7 +380,7 @@ def run_tests():
     """Run all tests and return results."""
     loader = unittest.TestLoader()
     suite = unittest.TestSuite()
-    
+
     # Add all test classes
     test_classes = [
         TestPostGenerationValidatorInitialization,
@@ -393,14 +393,14 @@ def run_tests():
         TestEdgeCases,
         TestViolationStructure
     ]
-    
+
     for test_class in test_classes:
         tests = loader.loadTestsFromTestCase(test_class)
         suite.addTests(tests)
-    
+
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
-    
+
     return result.wasSuccessful()
 
 
@@ -420,9 +420,9 @@ if __name__ == '__main__':
     print("  8. Edge cases")
     print("  9. Violation structure")
     print()
-    
+
     success = run_tests()
-    
+
     print()
     print("=" * 80)
     if success:
@@ -432,6 +432,5 @@ if __name__ == '__main__':
         print("FAILURE: Some tests failed!")
         print("Review test output above for details.")
     print("=" * 80)
-    
-    sys.exit(0 if success else 1)
 
+    sys.exit(0 if success else 1)

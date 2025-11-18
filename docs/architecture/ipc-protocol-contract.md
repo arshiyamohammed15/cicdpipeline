@@ -378,4 +378,3 @@ For simple tasks, only `id`, `type`, and `data` are required:
 - Task Interface: `src/edge-agent/interfaces/core/DelegationInterface.ts` - `DelegationTask` interface
 - Receipt Types: `src/edge-agent/shared/receipt-types.ts` - `DecisionReceipt` interface
 - Architecture: `docs/architecture/architecture-vscode-modular-extension.md` - IPC client reference
-

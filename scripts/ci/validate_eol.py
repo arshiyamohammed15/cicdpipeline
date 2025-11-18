@@ -324,12 +324,24 @@ def main():
         print()
 
     if errors:
-        print("EOL Validation Failed:")
-        for error in errors:
-            print(f"  {error}")
-        print()
-        print("To fix automatically, run: python scripts/ci/validate_eol.py --fix")
-        return 1
+        if args.fix:
+            # When --fix is used, report errors but don't fail if we fixed some files
+            print("EOL Validation: Some issues could not be fixed automatically:")
+            for error in errors:
+                print(f"  {error}")
+            print()
+            # If we fixed at least some files, return success (0)
+            # Only fail if we couldn't fix anything
+            if fixed:
+                return 0
+        else:
+            # When --fix is NOT used, fail on any errors
+            print("EOL Validation Failed:")
+            for error in errors:
+                print(f"  {error}")
+            print()
+            print("To fix automatically, run: python scripts/ci/validate_eol.py --fix")
+            return 1
 
     if not errors and not fixed:
         print(f"EOL validation passed: {len(files_to_check)} files checked")

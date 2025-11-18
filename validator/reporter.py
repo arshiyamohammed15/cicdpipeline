@@ -25,11 +25,11 @@ def set_use_color(use_color: bool):
 class ReportGenerator:
     """
     Generates validation reports in various formats.
-    
+
     This class provides multiple output formats for validation results,
     making it easy to integrate with different tools and workflows.
     """
-    
+
     def __init__(self):
         """Initialize the report generator."""
         self.use_color = _USE_COLOR
@@ -39,18 +39,18 @@ class ReportGenerator:
             Severity.INFO: "\033[94m",     # Blue
         }
         self.reset_color = "\033[0m"
-    
-    def generate_report(self, results: Dict[str, ValidationResult], 
-                       output_format: str = "console", 
+
+    def generate_report(self, results: Dict[str, ValidationResult],
+                       output_format: str = "console",
                        config: Dict[str, Any] = None) -> str:
         """
         Generate a validation report in the specified format.
-        
+
         Args:
             results: Dictionary of validation results
             output_format: Format of the report ("console", "json", "html", "markdown")
             config: Configuration dictionary
-            
+
         Returns:
             Generated report as string
         """
@@ -64,12 +64,12 @@ class ReportGenerator:
             return self._generate_markdown_report(results, config)
         else:
             raise ValueError(f"Unsupported output format: {output_format}")
-    
+
     def _generate_console_report(self, results: Dict[str, ValidationResult]) -> str:
         """Generate a console-friendly report."""
         if not results:
             return "No files to validate."
-        
+
         report_lines = []
         report_lines.append("=" * 80)
         report_lines.append("ZEROUI 2.0 CONSTITUTION VALIDATION REPORT")
@@ -77,18 +77,18 @@ class ReportGenerator:
         report_lines.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         report_lines.append(f"Files analyzed: {len(results)}")
         report_lines.append("")
-        
+
         # Summary statistics
         total_violations = sum(result.total_violations for result in results.values())
-        total_errors = sum(result.violations_by_severity.get(Severity.ERROR, 0) 
+        total_errors = sum(result.violations_by_severity.get(Severity.ERROR, 0)
                           for result in results.values())
-        total_warnings = sum(result.violations_by_severity.get(Severity.WARNING, 0) 
+        total_warnings = sum(result.violations_by_severity.get(Severity.WARNING, 0)
                             for result in results.values())
-        total_info = sum(result.violations_by_severity.get(Severity.INFO, 0) 
+        total_info = sum(result.violations_by_severity.get(Severity.INFO, 0)
                         for result in results.values())
-        
+
         avg_compliance = sum(result.compliance_score for result in results.values()) / len(results)
-        
+
         report_lines.append("SUMMARY:")
         report_lines.append(f"  Total violations: {total_violations}")
         report_lines.append(f"  Errors: {total_errors}")
@@ -96,7 +96,7 @@ class ReportGenerator:
         report_lines.append(f"  Info: {total_info}")
         report_lines.append(f"  Average compliance: {avg_compliance:.1f}%")
         report_lines.append("")
-        
+
         # File-by-file results
         for file_path, result in results.items():
             file_name = Path(file_path).name
@@ -104,13 +104,13 @@ class ReportGenerator:
             report_lines.append(f"  Compliance: {result.compliance_score}%")
             report_lines.append(f"  Violations: {result.total_violations}")
             report_lines.append(f"  Processing time: {result.processing_time:.3f}s")
-            
+
             if result.violations:
                 report_lines.append("  VIOLATIONS:")
                 for violation in result.violations:
                     color = self.severity_colors.get(violation.severity, "") if self.use_color else ""
                     reset = self.reset_color if self.use_color else ""
-                    
+
                     report_lines.append(f"    {color}[{violation.severity.value.upper()}]{reset} "
                                       f"Rule {violation.rule_number}: {violation.rule_name}")
                     report_lines.append(f"      Line {violation.line_number}: {violation.message}")
@@ -119,11 +119,11 @@ class ReportGenerator:
                     report_lines.append("")
             else:
                 report_lines.append("  [OK] No violations found")
-            
+
             report_lines.append("-" * 40)
-        
+
         return "\n".join(report_lines)
-    
+
     def _generate_json_report(self, results: Dict[str, ValidationResult]) -> str:
         """Generate a JSON report."""
         report_data = {
@@ -132,14 +132,14 @@ class ReportGenerator:
             "summary": self._calculate_summary(results),
             "files": {}
         }
-        
+
         for file_path, result in results.items():
             report_data["files"][file_path] = {
                 "compliance_score": result.compliance_score,
                 "total_violations": result.total_violations,
                 "processing_time": result.processing_time,
                 "violations_by_severity": {
-                    severity.value: count 
+                    severity.value: count
                     for severity, count in result.violations_by_severity.items()
                 },
                 "violations": [
@@ -156,10 +156,10 @@ class ReportGenerator:
                     for violation in result.violations
                 ]
             }
-        
+
         return json.dumps(report_data, indent=2)
-    
-    def _generate_html_report(self, results: Dict[str, ValidationResult], 
+
+    def _generate_html_report(self, results: Dict[str, ValidationResult],
                             config: Dict[str, Any] = None) -> str:
         """Generate an HTML report."""
         html_content = f"""
@@ -191,12 +191,12 @@ class ReportGenerator:
         <p>Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
     </div>
 """
-        
+
         # Summary section
         summary = self._calculate_summary(results)
         compliance_class = "compliance-good" if summary["avg_compliance"] >= 80 else \
                           "compliance-warning" if summary["avg_compliance"] >= 60 else "compliance-bad"
-        
+
         html_content += f"""
     <div class="summary">
         <h2>Summary</h2>
@@ -208,23 +208,23 @@ class ReportGenerator:
         <p><strong>Average compliance:</strong> <span class="{compliance_class}">{summary["avg_compliance"]:.1f}%</span></p>
     </div>
 """
-        
+
         # File sections
         for file_path, result in results.items():
             file_name = Path(file_path).name
             compliance_class = "compliance-good" if result.compliance_score >= 80 else \
                               "compliance-warning" if result.compliance_score >= 60 else "compliance-bad"
-            
+
             html_content += f"""
     <div class="file-section">
         <div class="file-header">
             {html.escape(file_name)} - <span class="{compliance_class}">{result.compliance_score}% compliance</span>
         </div>
         <div style="padding: 10px;">
-            <p><strong>Violations:</strong> {result.total_violations} | 
+            <p><strong>Violations:</strong> {result.total_violations} |
                <strong>Processing time:</strong> {result.processing_time:.3f}s</p>
 """
-            
+
             if result.violations:
                 for violation in result.violations:
                     severity_class = violation.severity.value
@@ -236,31 +236,31 @@ class ReportGenerator:
 """
                     if violation.fix_suggestion:
                         html_content += f"                <strong>Fix:</strong> {html.escape(violation.fix_suggestion)}<br>"
-                    
+
                     html_content += "            </div>"
             else:
                 html_content += "            <p>[OK] No violations found</p>"
-            
+
             html_content += "        </div>    </div>"
-        
+
         html_content += """
 </body>
 </html>
 """
         return html_content
-    
-    def _generate_markdown_report(self, results: Dict[str, ValidationResult], 
+
+    def _generate_markdown_report(self, results: Dict[str, ValidationResult],
                                 config: Dict[str, Any] = None) -> str:
         """Generate a Markdown report."""
         if not results:
             return "# ZEROUI 2.0 Constitution Validation Report\n\nNo files to validate."
-        
+
         report_lines = []
         report_lines.append("# ZEROUI 2.0 Constitution Validation Report")
         report_lines.append("")
         report_lines.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         report_lines.append("")
-        
+
         # Summary
         summary = self._calculate_summary(results)
         report_lines.append("## Summary")
@@ -272,47 +272,47 @@ class ReportGenerator:
         report_lines.append(f"- **Info:** {summary['total_info']}")
         report_lines.append(f"- **Average compliance:** {summary['avg_compliance']:.1f}%")
         report_lines.append("")
-        
+
         # File details
         report_lines.append("## File Details")
         report_lines.append("")
-        
+
         for file_path, result in results.items():
             file_name = Path(file_path).name
             compliance_emoji = "✅" if result.compliance_score >= 80 else "⚠️" if result.compliance_score >= 60 else "❌"
-            
+
             report_lines.append(f"### {compliance_emoji} {file_name}")
             report_lines.append("")
             report_lines.append(f"- **Compliance:** {result.compliance_score}%")
             report_lines.append(f"- **Violations:** {result.total_violations}")
             report_lines.append(f"- **Processing time:** {result.processing_time:.3f}s")
             report_lines.append("")
-            
+
             if result.violations:
                 report_lines.append("#### Violations")
                 report_lines.append("")
-                
+
                 for violation in result.violations:
                     severity_emoji = {
                         Severity.ERROR: "🔴",
-                        Severity.WARNING: "🟡", 
+                        Severity.WARNING: "🟡",
                         Severity.INFO: "🔵"
                     }.get(violation.severity, "⚪")
-                    
+
                     report_lines.append(f"**{severity_emoji} Rule {violation.rule_number}: {violation.rule_name}**")
                     report_lines.append(f"- **Line {violation.line_number}:** {violation.message}")
                     report_lines.append(f"- **Code:** `{violation.code_snippet}`")
-                    
+
                     if violation.fix_suggestion:
                         report_lines.append(f"- **Fix:** {violation.fix_suggestion}")
-                    
+
                     report_lines.append("")
             else:
                 report_lines.append("[OK] No violations found")
                 report_lines.append("")
-        
+
         return "\n".join(report_lines)
-    
+
     def _calculate_summary(self, results: Dict[str, ValidationResult]) -> Dict[str, Any]:
         """Calculate summary statistics for the report."""
         if not results:
@@ -324,16 +324,16 @@ class ReportGenerator:
                 "total_info": 0,
                 "avg_compliance": 0.0
             }
-        
+
         total_violations = sum(result.total_violations for result in results.values())
-        total_errors = sum(result.violations_by_severity.get(Severity.ERROR, 0) 
+        total_errors = sum(result.violations_by_severity.get(Severity.ERROR, 0)
                           for result in results.values())
-        total_warnings = sum(result.violations_by_severity.get(Severity.WARNING, 0) 
+        total_warnings = sum(result.violations_by_severity.get(Severity.WARNING, 0)
                             for result in results.values())
-        total_info = sum(result.violations_by_severity.get(Severity.INFO, 0) 
+        total_info = sum(result.violations_by_severity.get(Severity.INFO, 0)
                         for result in results.values())
         avg_compliance = sum(result.compliance_score for result in results.values()) / len(results)
-        
+
         return {
             "total_files": len(results),
             "total_violations": total_violations,

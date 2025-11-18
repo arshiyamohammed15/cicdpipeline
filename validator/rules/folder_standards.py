@@ -14,7 +14,7 @@ from..models import Violation, Severity
 
 class FolderStandardsValidator:
     """Validates folder structure and organization standards."""
-    
+
     def __init__(self):
         self.rules = {
             'R054': self._validate_path_resolution,
@@ -28,66 +28,66 @@ class FolderStandardsValidator:
             'R062': self._validate_documentation_organization,
             'R082': self._validate_storage_rule
         }
-        
+
         # Allowed server and storage names
         self.allowed_names = [
             'ZeroUIClientServer', 'ZeroUIProductServer', 'ZeroUILocalServer', 'ZeroUISharedServer',
             'ZeroUIClientStorage', 'ZeroUIProductStorage', 'ZeroUILocalStorage', 'ZeroUISharedStorage'
         ]
-        
+
         # Allowed subfolders
         # Note: These are logical allowlisted path prefixes that the validator
         # checks for in the code being validated. They do NOT require that
         # this repository itself contains corresponding top-level directories.
         self.allowed_subfolders = ['servers/', 'storage/']
-    
+
     def validate(self, file_path: str, content: str) -> List[Violation]:
         """Validate folder standards compliance for a file."""
         violations = []
-        
+
         # Check path resolution
         violations.extend(self._validate_path_resolution(content, file_path))
-        
+
         # Check directory structure
         violations.extend(self._validate_directory_structure(content, file_path))
-        
+
         # Check package structure
         violations.extend(self._validate_package_structure(content, file_path))
-        
+
         # Check import organization
         violations.extend(self._validate_import_organization(content, file_path))
-        
+
         # Check module boundaries
         violations.extend(self._validate_module_boundaries(content, file_path))
-        
+
         # Check dependency management
         violations.extend(self._validate_dependency_management(content, file_path))
-        
+
         # Check configuration management
         violations.extend(self._validate_configuration_management(content, file_path))
-        
+
         # Check test organization
         violations.extend(self._validate_test_organization(content, file_path))
-        
+
         # Check documentation organization
         violations.extend(self._validate_documentation_organization(content, file_path))
-        
+
         # Check storage rule
         violations.extend(self._validate_storage_rule(content, file_path))
-        
+
         return violations
-    
+
     def _validate_path_resolution(self, content: str, file_path: str) -> List[Violation]:
         """Validate path resolution via ZEROUI_ROOT."""
         violations = []
-        
+
         # Check for hardcoded paths
         hardcoded_path_patterns = [
             r'["\']/[^"\']*["\']',  # Absolute paths
             r'["\']\.\./[^"\']*["\']',  # Relative paths with..
             r'["\']\./[^"\']*["\']',  # Relative paths with.
         ]
-        
+
         lines = content.split('\n')
         for line_num, line in enumerate(lines, 1):
             for pattern in hardcoded_path_patterns:
@@ -103,30 +103,30 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                        
+
                     ))
-        
+
         return violations
-    
+
     def _validate_directory_structure(self, content: str, file_path: str) -> List[Violation]:
         """Validate directory structure compliance."""
         violations = []
-        
+
         # Check if file is in allowlisted subfolders
         file_path_obj = Path(file_path)
         path_parts = file_path_obj.parts
-        
+
         # Check if any part of the path contains allowed subfolders
         in_allowed_folder = any(
             any(allowed in str(part) for allowed in self.allowed_subfolders)
             for part in path_parts
         )
-        
+
         # Skip validation for certain files
         skip_files = ['README.md', 'LICENSE', '.gitignore', 'requirements.txt', 'package.json']
         if file_path_obj.name in skip_files:
             return violations
-        
+
         # Check if file is outside allowlisted folders
         if not in_allowed_folder and len(path_parts) > 1:
             violations.append(Violation(
@@ -138,15 +138,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-            
+
                     ))
-        
+
         return violations
-    
+
     def _validate_package_structure(self, content: str, file_path: str) -> List[Violation]:
         """Validate package structure compliance."""
         violations = []
-        
+
         # Check for new top-level names
         if file_path.endswith('.py'):
             # Look for class definitions
@@ -163,15 +163,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                    
+
                     ))
-        
+
         return violations
-    
+
     def _validate_import_organization(self, content: str, file_path: str) -> List[Violation]:
         """Validate import organization and junction usage."""
         violations = []
-        
+
         # Check for persistence via junction
         if 'import' in content and 'data' in content:
             # Look for imports that should go through junction
@@ -179,7 +179,7 @@ class FolderStandardsValidator:
                 r'from\s+([^\\s]+)\s+import',
                 r'import\s+([^\\s]+)'
             ]
-            
+
             for pattern in junction_patterns:
                 for match in re.finditer(pattern, content):
                     import_name = match.group(1)
@@ -193,15 +193,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                        
+
                     ))
-        
+
         return violations
-    
+
     def _validate_module_boundaries(self, content: str, file_path: str) -> List[Violation]:
         """Validate module boundaries and circular dependencies."""
         violations = []
-        
+
         # Check for circular import patterns
         if 'import' in content:
             # Look for imports that might create circular dependencies
@@ -209,7 +209,7 @@ class FolderStandardsValidator:
                 r'from\s+([^\\s]+)\s+import',
                 r'import\s+([^\\s]+)'
             ]
-            
+
             for pattern in import_patterns:
                 for match in re.finditer(pattern, content):
                     import_name = match.group(1)
@@ -224,15 +224,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                        
+
                     ))
-        
+
         return violations
-    
+
     def _validate_dependency_management(self, content: str, file_path: str) -> List[Violation]:
         """Validate dependency management compliance."""
         violations = []
-        
+
         # Check if this is a dependency file
         if self._is_dependency_file(file_path):
             # Check for pip-tools usage
@@ -247,9 +247,9 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                    
+
                     ))
-            
+
             # Check for unpinned dependencies
             if '==' not in content and '~=' not in content and '>=' not in content:
                 violations.append(Violation(
@@ -261,15 +261,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_configuration_management(self, content: str, file_path: str) -> List[Violation]:
         """Validate configuration management."""
         violations = []
-        
+
         # Check if this is a configuration file
         if self._is_config_file(file_path):
             # Check if it's in the right location
@@ -283,15 +283,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_test_organization(self, content: str, file_path: str) -> List[Violation]:
         """Validate test organization."""
         violations = []
-        
+
         # Check if this is a test file
         if self._is_test_file(file_path):
             # Check if it's in the right location
@@ -305,15 +305,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_documentation_organization(self, content: str, file_path: str) -> List[Violation]:
         """Validate documentation organization."""
         violations = []
-        
+
         # Check if this is a documentation file
         if self._is_documentation_file(file_path):
             # Check if it's in the right location
@@ -327,15 +327,15 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                
+
                     ))
-        
+
         return violations
-    
+
     def _validate_storage_rule(self, content: str, file_path: str) -> List[Violation]:
         """Validate storage rule (≤256KB in DB)."""
         violations = []
-        
+
         # Check for database operations
         if 'database' in content.lower() or 'db' in content.lower():
             # Look for file size indicators
@@ -346,12 +346,12 @@ class FolderStandardsValidator:
                 r'size\s*[=:]\s*(\d+)',
                 r'length\s*[=:]\s*(\d+)'
             ]
-            
+
             for pattern in size_patterns:
                 for match in re.finditer(pattern, content):
                     size_value = int(match.group(1))
                     size_unit = match.group(0).upper()
-                    
+
                     # Convert to bytes for comparison
                     if 'KB' in size_unit:
                         size_bytes = size_value * 1024
@@ -361,7 +361,7 @@ class FolderStandardsValidator:
                         size_bytes = size_value * 1024 * 1024 * 1024
                     else:
                         size_bytes = size_value
-                    
+
                     # Check if size exceeds 256KB
                     if size_bytes > 256000:  # 256KB in bytes
                         violations.append(Violation(
@@ -373,11 +373,11 @@ class FolderStandardsValidator:
                         column_number=0,
                         code_snippet="",
                         category='structure'
-                        
+
                     ))
-        
+
         return violations
-    
+
     def _is_dependency_file(self, file_path: str) -> bool:
         """Check if file is a dependency management file."""
         dependency_files = [
@@ -385,7 +385,7 @@ class FolderStandardsValidator:
             'poetry.lock', 'yarn.lock', 'package.json', 'package-lock.json'
         ]
         return any(file_path.endswith(f) for f in dependency_files)
-    
+
     def _is_config_file(self, file_path: str) -> bool:
         """Check if file is a configuration file."""
         config_files = [
@@ -393,12 +393,12 @@ class FolderStandardsValidator:
             'settings.py', 'settings.json', '.env', 'environment.yml'
         ]
         return any(file_path.endswith(f) for f in config_files)
-    
+
     def _is_test_file(self, file_path: str) -> bool:
         """Check if file is a test file."""
         test_patterns = ['test_', '_test', '.test.', '.spec.']
         return any(pattern in file_path.lower() for pattern in test_patterns)
-    
+
     def _is_documentation_file(self, file_path: str) -> bool:
         """Check if file is a documentation file."""
         doc_files = [

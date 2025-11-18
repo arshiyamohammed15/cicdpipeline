@@ -61,11 +61,11 @@ from identity_access_management.services import IAMService
 
 class TestTokenValidationPerformance(unittest.TestCase):
     """Test token validation meets ≤10ms latency requirement."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         self.service = IAMService()
-    
+
     def test_token_validation_latency(self):
         """Test token validation completes within 10ms."""
         # Mock jwt in sys.modules
@@ -81,22 +81,22 @@ class TestTokenValidationPerformance(unittest.TestCase):
         }
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             request = VerifyRequest(token="valid.token")
-            
+
             start_time = time.perf_counter()
             response = self.service.verify_token(request)
             end_time = time.perf_counter()
-            
+
             latency_ms = (end_time - start_time) * 1000
-            
+
             self.assertLess(latency_ms, 10.0, f"Token validation took {latency_ms:.2f}ms, expected <10ms")
             self.assertIsNotNone(response)
         finally:
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
-    
+
     def test_token_validation_throughput(self):
         """Test token validation can handle 2000/s throughput."""
         # Mock jwt in sys.modules
@@ -112,19 +112,19 @@ class TestTokenValidationPerformance(unittest.TestCase):
         }
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             request = VerifyRequest(token="valid.token")
             iterations = 100  # Test with 100 iterations (scaled down for test speed)
-            
+
             start_time = time.perf_counter()
             for _ in range(iterations):
                 self.service.verify_token(request)
             end_time = time.perf_counter()
-            
+
             total_time_seconds = end_time - start_time
             throughput = iterations / total_time_seconds
-            
+
             # Verify we can handle at least 1000/s (scaled down from 2000/s for test)
             self.assertGreater(throughput, 1000, f"Throughput {throughput:.2f}/s, expected >1000/s")
         finally:
@@ -134,15 +134,15 @@ class TestTokenValidationPerformance(unittest.TestCase):
 
 class TestPolicyEvaluationPerformance(unittest.TestCase):
     """Test policy evaluation meets ≤50ms latency requirement."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         self.service = IAMService()
-    
+
     def test_policy_evaluation_latency(self):
         """Test policy evaluation completes within 50ms."""
         from identity_access_management.models import PolicyBundle, Policy, PolicyRule
-        
+
         bundle = PolicyBundle(
             bundle_id="bundle-1",
             version="1.0.0",
@@ -154,24 +154,24 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
                 )
             ]
         )
-        
+
         start_time = time.perf_counter()
         snapshot_id = self.service.upsert_policies(bundle)
         end_time = time.perf_counter()
-        
+
         latency_ms = (end_time - start_time) * 1000
-        
+
         self.assertLess(latency_ms, 50.0, f"Policy evaluation took {latency_ms:.2f}ms, expected <50ms")
         self.assertIsNotNone(snapshot_id)
 
 
 class TestAccessDecisionPerformance(unittest.TestCase):
     """Test access decision meets ≤100ms latency requirement."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         self.service = IAMService()
-    
+
     def test_access_decision_latency(self):
         """Test access decision completes within 100ms."""
         request = DecisionRequest(
@@ -179,17 +179,17 @@ class TestAccessDecisionPerformance(unittest.TestCase):
             action="write",
             resource="/api/resource"
         )
-        
+
         start_time = time.perf_counter()
         response = self.service.evaluate_decision(request)
         end_time = time.perf_counter()
-        
+
         latency_ms = (end_time - start_time) * 1000
-        
+
         self.assertLess(latency_ms, 100.0, f"Access decision took {latency_ms:.2f}ms, expected <100ms")
         self.assertIsNotNone(response)
         self.assertIsNotNone(response.decision)
-    
+
     def test_access_decision_throughput(self):
         """Test access decision can handle 500/s throughput."""
         request = DecisionRequest(
@@ -197,28 +197,28 @@ class TestAccessDecisionPerformance(unittest.TestCase):
             action="read",
             resource="/api/resource"
         )
-        
+
         iterations = 50  # Test with 50 iterations (scaled down for test speed)
-        
+
         start_time = time.perf_counter()
         for _ in range(iterations):
             self.service.evaluate_decision(request)
         end_time = time.perf_counter()
-        
+
         total_time_seconds = end_time - start_time
         throughput = iterations / total_time_seconds
-        
+
         # Verify we can handle at least 250/s (scaled down from 500/s for test)
         self.assertGreater(throughput, 250, f"Throughput {throughput:.2f}/s, expected >250/s")
 
 
 class TestAuthenticationPerformance(unittest.TestCase):
     """Test authentication meets ≤200ms latency requirement."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         self.service = IAMService()
-    
+
     def test_authentication_latency(self):
         """Test authentication completes within 200ms."""
         # Mock jwt in sys.modules
@@ -234,16 +234,16 @@ class TestAuthenticationPerformance(unittest.TestCase):
         }
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             request = VerifyRequest(token="valid.token")
-            
+
             start_time = time.perf_counter()
             response = self.service.verify_token(request)
             end_time = time.perf_counter()
-            
+
             latency_ms = (end_time - start_time) * 1000
-            
+
             self.assertLess(latency_ms, 200.0, f"Authentication took {latency_ms:.2f}ms, expected <200ms")
             self.assertIsNotNone(response)
         finally:
@@ -253,11 +253,11 @@ class TestAuthenticationPerformance(unittest.TestCase):
 
 class TestTrafficMixPerformance(unittest.TestCase):
     """Test service handles traffic mix: 70% verify, 25% decision, 5% policies."""
-    
+
     def setUp(self):
         """Set up test fixtures."""
         self.service = IAMService()
-    
+
     def test_traffic_mix_simulation(self):
         """Test service handles realistic traffic mix."""
         # Mock jwt in sys.modules
@@ -273,14 +273,14 @@ class TestTrafficMixPerformance(unittest.TestCase):
         }
         mock_jwt.InvalidTokenError = Exception
         sys.modules['jwt'] = mock_jwt
-        
+
         try:
             # Simulate traffic mix: 70% verify, 25% decision, 5% policies
             total_requests = 100
             verify_count = int(total_requests * 0.70)
             decision_count = int(total_requests * 0.25)
             policy_count = int(total_requests * 0.05)
-            
+
             verify_request = VerifyRequest(token="valid.token")
             decision_request = DecisionRequest(
                 subject=Subject(sub="user-123", roles=["developer"]),
@@ -299,26 +299,26 @@ class TestTrafficMixPerformance(unittest.TestCase):
                     )
                 ]
             )
-            
+
             start_time = time.perf_counter()
-            
+
             # Execute verify requests
             for _ in range(verify_count):
                 self.service.verify_token(verify_request)
-            
+
             # Execute decision requests
             for _ in range(decision_count):
                 self.service.evaluate_decision(decision_request)
-            
+
             # Execute policy requests
             for _ in range(policy_count):
                 self.service.upsert_policies(policy_bundle)
-            
+
             end_time = time.perf_counter()
-            
+
             total_time_seconds = end_time - start_time
             total_throughput = total_requests / total_time_seconds
-            
+
             # Verify overall throughput is reasonable
             self.assertGreater(total_throughput, 100, f"Total throughput {total_throughput:.2f}/s, expected >100/s")
         finally:
@@ -328,4 +328,3 @@ class TestTrafficMixPerformance(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

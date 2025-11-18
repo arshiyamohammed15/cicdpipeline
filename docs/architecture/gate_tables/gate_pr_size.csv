@@ -15,4 +15,3 @@ pr_deletions,500,pass,PR_DELETIONS_SMALL,1
 pr_deletions,2000,warn,PR_DELETIONS_MEDIUM,2
 pr_deletions,5000,soft_block,PR_DELETIONS_LARGE,3
 pr_deletions,10000,hard_block,PR_DELETIONS_VERY_LARGE,5
-

@@ -302,4 +302,3 @@ If you encounter permission issues:
 takeown /F "path\to\directory" /R /D Y
 icacls "path\to\directory" /grant Administrators:F /T
 ```
-

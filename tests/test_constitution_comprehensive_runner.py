@@ -69,11 +69,11 @@ except ImportError:
 
 class ComprehensiveTestRunner:
     """Run all constitution tests and generate reports."""
-    
+
     def __init__(self, output_dir: Path = None):
         """
         Initialize test runner.
-        
+
         Args:
             output_dir: Directory for test reports (default: tests/test_reports)
         """
@@ -81,7 +81,7 @@ class ComprehensiveTestRunner:
             output_dir = Path(__file__).parent / 'test_reports'
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+
         # Test results
         self.results = {
             'start_time': None,
@@ -94,24 +94,24 @@ class ComprehensiveTestRunner:
             'skipped': 0,
             'test_details': []
         }
-    
+
     def run_all_tests(self, verbosity: int = 2) -> Dict[str, Any]:
         """
         Run all constitution test suites.
-        
+
         Args:
             verbosity: Test output verbosity (0, 1, or 2)
-            
+
         Returns:
             Dictionary with test results
         """
         self.results['start_time'] = datetime.now().isoformat()
         start_time = time.time()
-        
+
         # Create test loader
         loader = unittest.TestLoader()
         suite = unittest.TestSuite()
-        
+
         # Add all test classes
         test_classes = [
             ConstitutionStructureTests,
@@ -129,24 +129,24 @@ class ComprehensiveTestRunner:
             CursorTestingRulesPolicyLinkageTests,
             CursorTestingRulesConsistencyTests
         ]
-        
+
         for test_class in test_classes:
             tests = loader.loadTestsFromTestCase(test_class)
             suite.addTests(tests)
-        
+
         # Run tests
         runner = unittest.TextTestRunner(
             verbosity=verbosity,
             stream=sys.stdout,
             buffer=True
         )
-        
+
         result = runner.run(suite)
-        
+
         # Calculate duration
         end_time = time.time()
         duration = end_time - start_time
-        
+
         # Compile results
         self.results['end_time'] = datetime.now().isoformat()
         self.results['duration_seconds'] = round(duration, 3)
@@ -155,7 +155,7 @@ class ComprehensiveTestRunner:
         self.results['failed'] = len(result.failures)
         self.results['errors'] = len(result.errors)
         self.results['skipped'] = len(result.skipped)
-        
+
         # Add failure/error details
         for test, traceback in result.failures:
             self.results['test_details'].append({
@@ -163,37 +163,37 @@ class ComprehensiveTestRunner:
                 'status': 'FAILED',
                 'traceback': traceback
             })
-        
+
         for test, traceback in result.errors:
             self.results['test_details'].append({
                 'test': str(test),
                 'status': 'ERROR',
                 'traceback': traceback
             })
-        
+
         return self.results
-    
+
     def save_report(self, filename: str = None) -> Path:
         """
         Save test results to JSON file.
-        
+
         Args:
             filename: Output filename (default: auto-generated timestamp)
-            
+
         Returns:
             Path to saved report file
         """
         if filename is None:
             timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
             filename = f'constitution_test_report_{timestamp}.json'
-        
+
         report_path = self.output_dir / filename
-        
+
         with open(report_path, 'w', encoding='utf-8') as f:
             json.dump(self.results, f, indent=2, ensure_ascii=False)
-        
+
         return report_path
-    
+
     def print_summary(self):
         """Print test execution summary."""
         print("\n" + "=" * 70)
@@ -208,7 +208,7 @@ class ComprehensiveTestRunner:
         print(f"Start Time:       {self.results['start_time']}")
         print(f"End Time:         {self.results['end_time']}")
         print("=" * 70)
-        
+
         if self.results['failed'] > 0 or self.results['errors'] > 0:
             print("\nFAILURES AND ERRORS:")
             print("-" * 70)
@@ -219,7 +219,7 @@ class ComprehensiveTestRunner:
                     first_line = detail['traceback'].split('\n')[0]
                     print(f"  {first_line}")
             print("-" * 70)
-        
+
         # Coverage summary
         print("\nCOVERAGE SUMMARY:")
         print("-" * 70)
@@ -233,19 +233,19 @@ class ComprehensiveTestRunner:
         print("  - CURSOR TESTING RULES.json (22 rules)")
         print("Total Rules: 415")
         print("-" * 70)
-        
+
         # Success rate
         if self.results['total_tests'] > 0:
             success_rate = (self.results['passed'] / self.results['total_tests']) * 100
             print(f"\nSuccess Rate: {success_rate:.1f}%")
-        
+
         print("=" * 70)
 
 
 def main():
     """Main entry point for test runner."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description='Run comprehensive constitution rules test suite'
     )
@@ -267,20 +267,20 @@ def main():
         action='store_true',
         help='Skip saving report file'
     )
-    
+
     args = parser.parse_args()
-    
+
     output_dir = Path(args.output_dir) if args.output_dir else None
-    
+
     runner = ComprehensiveTestRunner(output_dir=output_dir)
     results = runner.run_all_tests(verbosity=args.verbosity)
-    
+
     if not args.no_report:
         report_path = runner.save_report()
         print(f"\nTest report saved to: {report_path}")
-    
+
     runner.print_summary()
-    
+
     # Exit with error code if tests failed
     if results['failed'] > 0 or results['errors'] > 0:
         sys.exit(1)
@@ -290,4 +290,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -13,5 +13,3 @@ export class SignalIngestionNormalizationUIComponentManager extends PlaceholderU
         this.updateData(payload);
     }
 }
-
-

@@ -1,6 +1,6 @@
 /**
  * Deterministic tests for CostTracker
- * 
+ *
  * Tests event counts and cost totals.
  */
 
@@ -190,7 +190,7 @@ describe('CostTracker', () => {
       }
 
       const summary = costReporter.generateSummary(100);
-      
+
       // Should only include last 100 entries
       expect(summary.totalOperations).toBe(100);
     });
@@ -265,4 +265,3 @@ describe('CostTracker', () => {
     });
   });
 });
-

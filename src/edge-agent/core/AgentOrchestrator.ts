@@ -16,7 +16,7 @@ export class AgentOrchestrator {
         }
 
         console.log('Initializing Edge Agent modules...');
-        
+
         // Initialize all registered modules
         for (const [name, module] of this.modules) {
             if (module.initialize && typeof module.initialize === 'function') {
@@ -31,7 +31,7 @@ export class AgentOrchestrator {
 
     public async shutdown(): Promise<void> {
         console.log('Shutting down Edge Agent modules...');
-        
+
         for (const [name, module] of this.modules) {
             if (module.shutdown && typeof module.shutdown === 'function') {
                 await module.shutdown();
@@ -49,17 +49,17 @@ export class AgentOrchestrator {
         }
 
         console.log('Processing data locally in Edge Agent');
-        
+
         // Delegate to appropriate modules based on data type
         const result = await this.delegateProcessing(data);
-        
+
         return result;
     }
 
     private async delegateProcessing(data: any): Promise<any> {
         // Determine which modules to use based on data characteristics
         const processingPipeline = this.determineProcessingPipeline(data);
-        
+
         let result = data;
         for (const moduleName of processingPipeline) {
             const module = this.modules.get(moduleName);

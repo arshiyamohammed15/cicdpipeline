@@ -14,7 +14,13 @@ import sys
 from typing import Optional
 from sqlalchemy import create_engine, Engine, event
 from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.pool import QueuePool
+from sqlalchemy.pool import QueuePool, StaticPool
+
+try:
+    # Local import allows us to create tables for SQLite test harnesses
+    from .models import Base  # type: ignore
+except Exception:  # pragma: no cover - fallback when models unavailable
+    Base = None  # type: ignore
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +73,8 @@ def create_database_engine() -> Engine:
         engine = create_engine(
             database_url,
             echo=False,
-            connect_args={"check_same_thread": False} if "sqlite" in database_url else {}
+            poolclass=StaticPool,
+            connect_args={"check_same_thread": False}
         )
     else:
         # PostgreSQL configuration per PRD
@@ -105,15 +112,7 @@ def get_engine() -> Engine:
     global _engine
     if _engine is None:
         _engine = create_database_engine()
-        # If ensure_tables function exists (set by tests), call it to create tables
-        module = sys.modules.get(__name__)
-        if module and hasattr(module, '_ensure_tables'):
-            _ensure_tables = getattr(module, '_ensure_tables', None)
-            if _ensure_tables and callable(_ensure_tables):
-                try:
-                    _ensure_tables()
-                except Exception:
-                    pass
+        _invoke_table_ensurer()
     return _engine
 
 
@@ -175,6 +174,38 @@ def reset_connection_state() -> None:
 
     # Reset mock flag
     _use_mock = False
+
+
+def _invoke_table_ensurer() -> None:
+    """
+    Invoke table creation helper when running in SQLite mock mode.
+    """
+    module = sys.modules.get(__name__)
+    ensure_tables = getattr(module, "_ensure_tables", None)
+    if callable(ensure_tables):
+        try:
+            ensure_tables()
+        except Exception:
+            logger.exception("Failed to run custom _ensure_tables hook")
+
+
+def _ensure_tables() -> None:
+    """
+    Default table creation logic for SQLite in-memory databases.
+
+    Tests can override this function by assigning a different callable to
+    configuration_policy_management.database.connection._ensure_tables.
+    """
+    if _engine is None:
+        return
+    if not _use_mock:
+        return
+    if Base is None or getattr(Base, "metadata", None) is None:
+        return
+    try:
+        Base.metadata.create_all(bind=_engine)
+    except Exception as exc:  # pragma: no cover - diagnostic only
+        logger.warning("SQLite table creation failed: %s", exc)
 
 
 def health_check() -> dict:

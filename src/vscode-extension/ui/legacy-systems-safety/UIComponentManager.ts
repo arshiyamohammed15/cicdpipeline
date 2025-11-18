@@ -13,5 +13,3 @@ export class LegacySystemsSafetyUIComponentManager extends PlaceholderUIComponen
         this.updateData(payload);
     }
 }
-
-

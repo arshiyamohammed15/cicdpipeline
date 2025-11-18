@@ -1,15 +1,15 @@
 /**
  * BlockStorePort
- * 
+ *
  * Cloud-agnostic interface for block storage operations.
  * Implemented by local adapters for persistent block/volume storage.
- * 
+ *
  * @interface BlockStorePort
  */
 export interface BlockStorePort {
   /**
    * Create a new block volume.
-   * 
+   *
    * @param request - Volume creation request
    * @returns Promise resolving to created volume
    */
@@ -17,7 +17,7 @@ export interface BlockStorePort {
 
   /**
    * Delete a block volume.
-   * 
+   *
    * @param volumeId - Volume ID to delete
    * @returns Promise resolving when volume is deleted
    */
@@ -25,7 +25,7 @@ export interface BlockStorePort {
 
   /**
    * Attach a volume to an instance.
-   * 
+   *
    * @param volumeId - Volume ID to attach
    * @param instanceId - Instance ID to attach to
    * @param deviceName - Device name/path for attachment
@@ -39,7 +39,7 @@ export interface BlockStorePort {
 
   /**
    * Detach a volume from an instance.
-   * 
+   *
    * @param volumeId - Volume ID to detach
    * @param instanceId - Instance ID to detach from
    * @returns Promise resolving when volume is detached
@@ -48,7 +48,7 @@ export interface BlockStorePort {
 
   /**
    * Get volume information.
-   * 
+   *
    * @param volumeId - Volume ID
    * @returns Promise resolving to volume information
    */
@@ -56,7 +56,7 @@ export interface BlockStorePort {
 
   /**
    * Create a snapshot of a volume.
-   * 
+   *
    * @param volumeId - Volume ID to snapshot
    * @param snapshotName - Optional snapshot name
    * @returns Promise resolving to snapshot
@@ -135,4 +135,3 @@ export interface BlockSnapshot {
   /** Snapshot name */
   name?: string;
 }
-

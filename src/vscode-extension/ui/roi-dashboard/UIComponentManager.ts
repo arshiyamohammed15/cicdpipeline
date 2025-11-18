@@ -13,5 +13,3 @@ export class RoiDashboardUIComponentManager extends PlaceholderUIComponentManage
         this.updateData(payload);
     }
 }
-
-

@@ -69,11 +69,11 @@ def check_artifacts() -> Tuple[bool, List[str], List[str]]:
     root_dir = Path(__file__).parent.parent.parent
     missing = []
     present = []
-    
+
     for category, artifacts in REQUIRED_ARTIFACTS.items():
         for artifact_path in artifacts:
             full_path = root_dir / artifact_path
-            
+
             # Check if it's a directory
             if artifact_path.endswith('/'):
                 if full_path.exists() and full_path.is_dir():
@@ -85,7 +85,7 @@ def check_artifacts() -> Tuple[bool, List[str], List[str]]:
                     present.append(artifact_path)
                 else:
                     missing.append(artifact_path)
-    
+
     # Special check: at least one gate table CSV
     gate_tables_dir = root_dir / 'docs/architecture/gate_tables'
     if gate_tables_dir.exists():
@@ -96,7 +96,7 @@ def check_artifacts() -> Tuple[bool, List[str], List[str]]:
             missing.append('docs/architecture/gate_tables/*.csv (at least one)')
     else:
         missing.append('docs/architecture/gate_tables/ (directory)')
-    
+
     all_present = len(missing) == 0
     return all_present, present, missing
 
@@ -107,9 +107,9 @@ def main():
     print("ARCHITECTURE ARTIFACTS VERIFICATION")
     print("=" * 80)
     print()
-    
+
     all_present, present, missing = check_artifacts()
-    
+
     if present:
         print(f"[OK] {len(present)} artifacts present")
         for artifact in present[:10]:  # Show first 10
@@ -117,13 +117,13 @@ def main():
         if len(present) > 10:
             print(f"  ... and {len(present) - 10} more")
         print()
-    
+
     if missing:
         print(f"[MISSING] {len(missing)} artifacts missing")
         for artifact in missing:
             print(f"  [X] {artifact}")
         print()
-    
+
     print("=" * 80)
     if all_present:
         print("[SUCCESS] All required architecture artifacts present")
@@ -136,4 +136,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

@@ -13,5 +13,3 @@ export class MonitoringObservabilityGapsUIComponentManager extends PlaceholderUI
         this.updateData(payload);
     }
 }
-
-

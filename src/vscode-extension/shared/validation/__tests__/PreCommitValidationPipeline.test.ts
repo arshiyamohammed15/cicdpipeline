@@ -116,4 +116,3 @@ describe('PreCommitValidationPipeline', () => {
         expect(result.stages[0].issues).toContain('Digest mismatch detected');
     });
 });
-

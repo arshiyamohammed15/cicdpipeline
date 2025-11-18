@@ -1,6 +1,6 @@
 /**
  * StoragePathResolver Test Suite (VS Code Extension)
- * 
+ *
  * Tests for VS Code Extension StoragePathResolver
  * Validates ZU_ROOT resolution from environment variable and VS Code configuration
  */
@@ -171,4 +171,3 @@ describe('StoragePathResolver (VS Code Extension)', () => {
         });
     });
 });
-

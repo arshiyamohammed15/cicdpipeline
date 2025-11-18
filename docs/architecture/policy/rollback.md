@@ -250,4 +250,3 @@ All rollbacks are logged in:
 3. **Monitor Metrics**: Monitor metrics after policy changes
 4. **Keep History**: Maintain policy snapshot history
 5. **Document Rollbacks**: Document all rollbacks with reasons
-

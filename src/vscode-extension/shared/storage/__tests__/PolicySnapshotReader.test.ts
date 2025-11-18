@@ -106,4 +106,3 @@ describe('PolicySnapshotReader (VS Code Extension)', () => {
         expect(result).toEqual({ found: false, policy_snapshot_id: 'MISSING' });
     });
 });
-

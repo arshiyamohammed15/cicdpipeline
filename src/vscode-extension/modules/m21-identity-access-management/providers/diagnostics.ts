@@ -7,4 +7,3 @@ export class IAMDiagnosticsProvider implements vscode.DiagnosticProvider {
     return [];
   }
 }
-

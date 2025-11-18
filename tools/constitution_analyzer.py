@@ -69,36 +69,36 @@ class ConstitutionAnalysis:
 
 class ConstitutionAnalyzer:
     """Deterministic analyzer for ZeroUI 2.0 Master Constitution"""
-    
+
     def __init__(self, constitution_path: str):
         self.constitution_path = Path(constitution_path)
         self.rules: List[Rule] = []
         self.analysis: Optional[ConstitutionAnalysis] = None
-        
+
     def extract_rules(self) -> List[Rule]:
         """Extract all rules from the constitution file using deterministic regex patterns"""
         if not self.constitution_path.exists():
             raise FileNotFoundError(f"Constitution file not found: {self.constitution_path}")
-        
+
         with open(self.constitution_path, 'r', encoding='utf-8') as f:
             content = f.read()
-        
+
         # Pattern to match rules: **Rule N: Title** Content
         rule_pattern = r'\*\*Rule (\d+): ([^*]+)\*\*([^*]*(?:\*(?!\*)[^*]*)*)'
-        
+
         rules = []
         lines = content.split('\n')
-        
+
         for line_num, line in enumerate(lines, 1):
             match = re.match(rule_pattern, line.strip())
             if match:
                 rule_num = int(match.group(1))
                 title = match.group(2).strip()
                 content = match.group(3).strip()
-                
+
                 # Get category and section from context
                 category, section = self._determine_category_and_section(line_num, lines)
-                
+
                 rule = Rule(
                     number=rule_num,
                     title=title,
@@ -108,19 +108,19 @@ class ConstitutionAnalyzer:
                     section=section
                 )
                 rules.append(rule)
-        
+
         self.rules = sorted(rules, key=lambda r: r.number)
         return self.rules
-    
+
     def _determine_category_and_section(self, line_num: int, lines: List[str]) -> Tuple[Optional[str], Optional[str]]:
         """Determine category and section for a rule based on context"""
         category = None
         section = None
-        
+
         # Look backwards for section headers
         for i in range(max(0, line_num - 20), line_num):
             line = lines[i].strip()
-            
+
             # Check for section headers
             if line.startswith('🎯') or line.startswith('🏗️') or line.startswith('🔧'):
                 section = line
@@ -152,20 +152,20 @@ class ConstitutionAnalyzer:
                 category = 'GSMD'
             elif 'SIMPLE CODE READABILITY' in line:
                 category = 'Code Readability'
-        
+
         return category, section
-    
+
     def analyze_constitution(self) -> ConstitutionAnalysis:
         """Perform complete analysis of the constitution"""
         if not self.rules:
             self.extract_rules()
-        
+
         # Basic statistics
         total_rules = len(self.rules)
         rule_numbers = [rule.number for rule in self.rules]
         highest_rule = max(rule_numbers) if rule_numbers else 0
         lowest_rule = min(rule_numbers) if rule_numbers else 0
-        
+
         # Find missing rule numbers
         if rule_numbers:
             expected_range = set(range(lowest_rule, highest_rule + 1))
@@ -173,7 +173,7 @@ class ConstitutionAnalyzer:
             missing_numbers = sorted(expected_range - actual_numbers)
         else:
             missing_numbers = []
-        
+
         # Group by categories
         categories = {}
         for rule in self.rules:
@@ -181,7 +181,7 @@ class ConstitutionAnalyzer:
                 if rule.category not in categories:
                     categories[rule.category] = []
                 categories[rule.category].append(rule)
-        
+
         # Group by sections
         sections = {}
         for rule in self.rules:
@@ -189,10 +189,10 @@ class ConstitutionAnalyzer:
                 if rule.section not in sections:
                     sections[rule.section] = []
                 sections[rule.section].append(rule)
-        
+
         # Perform Enable/Disable validation
         enable_disable_validation = self.validate_enable_disable_consistency()
-        
+
         self.analysis = ConstitutionAnalysis(
             total_rules=total_rules,
             rules=self.rules,
@@ -204,32 +204,32 @@ class ConstitutionAnalyzer:
             lowest_rule=lowest_rule,
             enable_disable_validation=enable_disable_validation
         )
-        
+
         return self.analysis
-    
+
     def get_rule_by_number(self, rule_number: int) -> Optional[Rule]:
         """Get a specific rule by number"""
         for rule in self.rules:
             if rule.number == rule_number:
                 return rule
         return None
-    
+
     def get_rules_by_category(self, category: str) -> List[Rule]:
         """Get all rules in a specific category"""
         return [rule for rule in self.rules if rule.category == category]
-    
+
     def search_rules(self, query: str) -> List[Rule]:
         """Search rules by title or content"""
         query_lower = query.lower()
         matching_rules = []
-        
+
         for rule in self.rules:
-            if (query_lower in rule.title.lower() or 
+            if (query_lower in rule.title.lower() or
                 query_lower in rule.content.lower()):
                 matching_rules.append(rule)
-        
+
         return matching_rules
-    
+
     def validate_enable_disable_consistency(self) -> EnableDisableValidation:
         """
         Validate Enable/Disable field consistency across all sources.
@@ -238,47 +238,47 @@ class ConstitutionAnalyzer:
         try:
             # Import sync manager to access consistency checking
             from config.constitution.sync_manager import get_sync_manager
-            
+
             sync_manager = get_sync_manager()
             consistency_result = sync_manager.verify_consistency_across_sources()
-            
+
             # Extract Enable/Disable specific information
             enabled_mismatches = 0
             disabled_mismatches = 0
             missing_enabled_fields = 0
             validation_details = []
-            
+
             if not consistency_result.get("consistent", True):
                 differences = consistency_result.get("differences", [])
-                
+
                 for diff in differences:
                     rule_number = diff.get("rule_number")
                     enabled_info = diff.get("enabled", {})
-                    
+
                     # Check for enabled mismatches
                     enabled_values = []
                     for source, value in enabled_info.items():
                         if value is not None:
                             enabled_values.append((source, value))
-                    
+
                     if len(enabled_values) >= 2:
                         unique_values = set(v for _, v in enabled_values)
                         if len(unique_values) > 1:
                             # Determine if it's an enabled or disabled mismatch
                             true_count = sum(1 for _, v in enabled_values if v is True)
                             false_count = sum(1 for _, v in enabled_values if v is False)
-                            
+
                             if true_count > false_count:
                                 enabled_mismatches += 1
                             else:
                                 disabled_mismatches += 1
-                            
+
                             validation_details.append({
                                 "rule_number": rule_number,
                                 "sources": dict(enabled_values),
                                 "mismatch_type": "enabled" if true_count > false_count else "disabled"
                             })
-                    
+
                     # Check for missing enabled fields
                     if not any(v is not None for v in enabled_info.values()):
                         missing_enabled_fields += 1
@@ -287,10 +287,10 @@ class ConstitutionAnalyzer:
                             "sources": dict(enabled_info),
                             "mismatch_type": "missing_enabled_field"
                         })
-            
+
             total_rules_checked = consistency_result.get("summary", {}).get("total_rules_observed", 0)
             consistent = enabled_mismatches == 0 and disabled_mismatches == 0 and missing_enabled_fields == 0
-            
+
             return EnableDisableValidation(
                 consistent=consistent,
                 total_rules_checked=total_rules_checked,
@@ -299,7 +299,7 @@ class ConstitutionAnalyzer:
                 missing_enabled_fields=missing_enabled_fields,
                 validation_details=validation_details
             )
-            
+
         except Exception as e:
             # Return error state if validation fails
             return EnableDisableValidation(
@@ -310,12 +310,12 @@ class ConstitutionAnalyzer:
                 missing_enabled_fields=0,
                 validation_details=[{"error": str(e)}]
             )
-    
+
     def export_analysis(self, output_path: str) -> None:
         """Export complete analysis to JSON file"""
         if not self.analysis:
             self.analyze_constitution()
-        
+
         # Convert to serializable format
         export_data = {
             'total_rules': self.analysis.total_rules,
@@ -334,15 +334,15 @@ class ConstitutionAnalyzer:
             'all_rules': [asdict(rule) for rule in self.analysis.rules],
             'enable_disable_validation': asdict(self.analysis.enable_disable_validation) if self.analysis.enable_disable_validation else None
         }
-        
+
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(export_data, f, indent=2, ensure_ascii=False)
-    
+
     def print_summary(self) -> None:
         """Print a summary of the constitution analysis"""
         if not self.analysis:
             self.analyze_constitution()
-        
+
         print("=" * 60)
         print("ZEROUI 2.0 MASTER CONSTITUTION ANALYSIS")
         print("=" * 60)
@@ -351,18 +351,18 @@ class ConstitutionAnalyzer:
         print(f"Missing Numbers: {len(self.analysis.missing_numbers)}")
         if self.analysis.missing_numbers:
             print(f"Missing: {self.analysis.missing_numbers[:10]}{'...' if len(self.analysis.missing_numbers) > 10 else ''}")
-        
+
         print("\nCategories:")
         for category, rules in self.analysis.categories.items():
             print(f"  {category}: {len(rules)} rules")
-        
+
         print("\nTop 10 Rules by Number:")
         for rule in self.analysis.rules[:10]:
             print(f"  Rule {rule.number}: {rule.title}")
-        
+
         if len(self.analysis.rules) > 10:
             print(f"  ... and {len(self.analysis.rules) - 10} more rules")
-        
+
         # Enable/Disable validation summary
         if self.analysis.enable_disable_validation:
             validation = self.analysis.enable_disable_validation
@@ -372,7 +372,7 @@ class ConstitutionAnalyzer:
             print(f"  Enabled Mismatches: {validation.enabled_mismatches}")
             print(f"  Disabled Mismatches: {validation.disabled_mismatches}")
             print(f"  Missing Enabled Fields: {validation.missing_enabled_fields}")
-            
+
             if validation.validation_details and len(validation.validation_details) > 0:
                 print(f"\nValidation Details (showing first 5):")
                 for detail in validation.validation_details[:5]:
@@ -383,10 +383,10 @@ class ConstitutionAnalyzer:
                         mismatch_type = detail.get("mismatch_type", "Unknown")
                         sources = detail.get("sources", {})
                         print(f"  Rule {rule_num}: {mismatch_type} - {sources}")
-                
+
                 if len(validation.validation_details) > 5:
                     print(f"  ... and {len(validation.validation_details) - 5} more issues")
-    
+
     def print_rule_details(self, rule: Rule) -> None:
         """Print detailed information about a specific rule"""
         print(f"\nRule {rule.number}: {rule.title}")
@@ -394,13 +394,13 @@ class ConstitutionAnalyzer:
         print(f"Category: {rule.category}")
         print(f"Section: {rule.section}")
         print(f"Line: {rule.line_number}")
-    
+
     def print_search_results(self, query: str, results: List[Rule]) -> None:
         """Print search results in a formatted way"""
         print(f"\nFound {len(results)} rules matching '{query}':")
         for rule in results:
             print(f"  Rule {rule.number}: {rule.title}")
-    
+
     def print_category_results(self, category: str, results: List[Rule]) -> None:
         """Print category results in a formatted way"""
         print(f"\nRules in category '{category}': {len(results)}")
@@ -422,7 +422,7 @@ Examples:
   python tools/constitution_analyzer.py docs/architecture/ZeroUI2.0_Master_Constitution.md --output analysis.json
         """
     )
-    
+
     parser.add_argument('constitution_file', help='Path to ZeroUI2.0_Master_Constitution.md')
     parser.add_argument('--output', '-o', help='Output JSON file for analysis')
     parser.add_argument('--summary', '-s', action='store_true', help='Print summary')
@@ -430,21 +430,21 @@ Examples:
     parser.add_argument('--search', help='Search rules by content')
     parser.add_argument('--category', help='Show rules by category')
     parser.add_argument('--validate-enable-disable', action='store_true', help='Validate Enable/Disable field consistency')
-    
+
     args = parser.parse_args()
-    
+
     # Create analyzer
     analyzer = ConstitutionAnalyzer(args.constitution_file)
-    
+
     try:
         # Extract rules
         print("Extracting rules...")
         rules = analyzer.extract_rules()
         print(f"Found {len(rules)} rules")
-        
+
         # Analyze constitution
         analysis = analyzer.analyze_constitution()
-        
+
         # Handle specific requests
         if args.rule:
             rule = analyzer.get_rule_by_number(args.rule)
@@ -452,15 +452,15 @@ Examples:
                 analyzer.print_rule_details(rule)
             else:
                 print(f"Rule {args.rule} not found")
-        
+
         elif args.search:
             matching_rules = analyzer.search_rules(args.search)
             analyzer.print_search_results(args.search, matching_rules)
-        
+
         elif args.category:
             category_rules = analyzer.get_rules_by_category(args.category)
             analyzer.print_category_results(args.category, category_rules)
-        
+
         elif args.validate_enable_disable:
             # Show Enable/Disable validation results
             validation = analyzer.validate_enable_disable_consistency()
@@ -472,7 +472,7 @@ Examples:
             print(f"Enabled Mismatches: {validation.enabled_mismatches}")
             print(f"Disabled Mismatches: {validation.disabled_mismatches}")
             print(f"Missing Enabled Fields: {validation.missing_enabled_fields}")
-            
+
             if validation.validation_details:
                 print(f"\nDetailed Validation Results:")
                 for detail in validation.validation_details:
@@ -485,20 +485,20 @@ Examples:
                         print(f"  Rule {rule_num}: {mismatch_type}")
                         for source, value in sources.items():
                             print(f"    {source}: {value}")
-        
+
         else:
             # Default: show summary
             analyzer.print_summary()
-        
+
         # Export if requested
         if args.output:
             analyzer.export_analysis(args.output)
             print(f"\nAnalysis exported to: {args.output}")
-    
+
     except Exception as e:
         print(f"Error: {e}")
         return 1
-    
+
     return 0
 
 

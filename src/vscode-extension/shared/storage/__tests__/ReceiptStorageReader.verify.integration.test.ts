@@ -82,4 +82,3 @@ describe('ReceiptStorageReader signature verification integration', () => {
         expect('receipt_id' in onlyReceipt ? onlyReceipt.receipt_id : '').toBe('receipt-valid');
     });
 });
-

@@ -50,24 +50,24 @@ async function fetchUserData(userId: string): Promise<UserData> {
     try {
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 5000);
-        
+
         const response = await fetch(`/api/users/${userId}`, {
             signal: controller.signal
         });
-        
+
         clearTimeout(timeoutId);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         // Map to canonical error code (Rule 198)
         if ((error as Error).name === 'AbortError') {
             throw new Error('TIMEOUT: Request timed out after 5 seconds');
         }
-        
+
         // Provide user-friendly message (Rule 197)
         throw new Error('DEPENDENCY_FAILED: Unable to fetch user data. Please try again.');
     }
@@ -95,26 +95,26 @@ describe('fetchUserData', () => {
             ok: true,
             json: () => Promise.resolve({ id: 1, name: 'Test User' })
         });
-        
+
         const result = await fetchUserData('1');
         expect(result).toEqual({ id: 1, name: 'Test User' });
     });
-    
+
     it('should handle timeout errors', async () => {
         // Mock timeout
-        global.fetch = jest.fn().mockImplementation(() => 
+        global.fetch = jest.fn().mockImplementation(() =>
             new Promise((_, reject) => {
                 setTimeout(() => reject(new Error('AbortError')), 100);
             })
         );
-        
+
         await expect(fetchUserData('1')).rejects.toThrow('TIMEOUT');
     });
-    
+
     it('should handle network errors', async () => {
         // Mock network error
         global.fetch = jest.fn().mockRejectedValue(new Error('Network error'));
-        
+
         await expect(fetchUserData('1')).rejects.toThrow('DEPENDENCY_FAILED');
     });
 });
@@ -167,9 +167,9 @@ function processUserData(userData: UserData): ProcessedUserData {
     if (!userData?.name) {
         throw new Error('VALIDATION_ERROR: User name is required');
     }
-    
+
     const result = userData.name.toUpperCase();
-    return { 
+    return {
         processed: result,
         originalId: userData.id
     };
@@ -265,23 +265,23 @@ async function retryOperation<T>(
     baseDelay: number = 1000
 ): Promise<T> {
     let lastError: Error;
-    
+
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
         try {
             return await operation();
         } catch (error) {
             lastError = error as Error;
-            
+
             if (attempt === maxRetries) {
                 break;
             }
-            
+
             // Exponential backoff with jitter
             const delay = baseDelay * Math.pow(2, attempt) + Math.random() * 100;
             await new Promise(resolve => setTimeout(resolve, delay));
         }
     }
-    
+
     throw new Error(`OPERATION_FAILED: Failed after ${maxRetries + 1} attempts: ${lastError.message}`, {
         cause: lastError
     });
@@ -315,13 +315,13 @@ async function idempotentOperation(id: string, data: any) {
     if (existing?.status === 'completed') {
         return existing.result;
     }
-    
+
     // Perform operation
     const result = await performOperation(data);
-    
+
     // Mark as completed
     await markOperationCompleted(id, result);
-    
+
     return result;
 }
 ```
@@ -335,7 +335,7 @@ async function getDataWithFallback() {
         return await fetchFromPrimarySource();
     } catch (error) {
         console.warn('Primary source failed, trying fallback:', error);
-        
+
         try {
             // Try fallback source
             return await fetchFromFallbackSource();
@@ -356,7 +356,7 @@ describe('Error Mapping', () => {
     it('should map database errors to canonical codes', () => {
         const dbError = new Error('Connection timeout');
         const mapped = mapErrorToCode(dbError);
-        
+
         expect(mapped.code).toBe('DB_CONNECTION_TIMEOUT');
         expect(mapped.userMessage).toBe('Database connection timed out. Please try again.');
     });
@@ -376,9 +376,9 @@ describe('Recovery Patterns', () => {
             }
             return 'success';
         });
-        
+
         const result = await retryOperation(operation, 3, 100);
-        
+
         expect(result).toBe('success');
         expect(attempts).toBe(3);
     });

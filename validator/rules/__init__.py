@@ -14,7 +14,7 @@ from.typescript import TypeScriptValidator
 
 __all__ = [
     "PrivacyValidator",
-    "PerformanceValidator", 
+    "PerformanceValidator",
     "ArchitectureValidator",
     "QualityValidator",
     "ExceptionHandlingValidator",

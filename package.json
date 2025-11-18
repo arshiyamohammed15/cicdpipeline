@@ -8,7 +8,7 @@
     "test:python:quick": "pytest -q -m \"not slow and (unit or smoke)\"",
     "test:python:full": "pytest -q",
     "test:python:coverage": "pytest --cov=validator --cov-report=html --cov-report=term-missing",
-    "test:validator": "pytest validator/rules/tests --cov=validator --cov-report=term-missing -v",
+    "test:validator": "python -m pytest tests -k \"constitution\" --cov=validator --cov-report=term-missing -v",
     "test:all": "python run_all_tests.py",
     "test:storage": "jest --config jest.config.js --testPathPattern=storage",
     "test:storage:watch": "jest --config jest.config.js --testPathPattern=storage --watch",

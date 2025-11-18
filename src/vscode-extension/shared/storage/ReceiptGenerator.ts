@@ -97,5 +97,3 @@ export class ReceiptGenerator {
         return this.signer.signReceipt(receipt as Record<string, unknown>);
     }
 }
-
-

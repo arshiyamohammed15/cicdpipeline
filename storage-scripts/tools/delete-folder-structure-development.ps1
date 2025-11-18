@@ -51,7 +51,7 @@ function Remove-FolderStructure {
         [string]$Path,
         [string]$Description = ""
     )
-    
+
     if(Test-Path $Path) {
         if($WhatIfPreference) {
             Write-Host "[WHATIF] Would delete: $Path" -ForegroundColor Yellow
@@ -60,7 +60,7 @@ function Remove-FolderStructure {
             }
             return $true
         }
-        
+
         try {
             if($PSCmdlet.ShouldProcess($Path, "Delete folder")) {
                 Remove-Item -Path $Path -Recurse -Force -ErrorAction Stop
@@ -87,38 +87,38 @@ function Remove-IDEFolderStructure {
         [ref]$Errors,
         [ref]$DeletedCount
     )
-    
+
     $ideBase = Join-Path $BasePath "ide"
-    
+
     # Delete ide/tmp
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "tmp") -Description "Temporary; RFC stamping")) { "ide/tmp" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/fingerprint
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "fingerprint") -Description "Non-secret device fingerprint")) { "ide/fingerprint" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/llm
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "llm") -Description "LLM prompts, tools, adapters, cache")) { "ide/llm" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/db
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "db") -Description "SQLite mirror, raw JSON")) { "ide/db" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/logs
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "logs") -Description "Log files")) { "ide/logs" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/queue
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "queue") -Description "Envelope refs only")) { "ide/queue" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/config
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "config") -Description "Non-secret consent snapshots and configuration")) { "ide/config" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/policy/trust/pubkeys
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $ideBase "policy") "trust") "pubkeys") -Description "Public keys only")) { "ide/policy/trust/pubkeys" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $ideBase "policy") "trust") -Description "Policy trust")) { "ide/policy/trust" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "policy") -Description "Signed snapshots + current pointer, cache")) { "ide/policy" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide/receipts
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $ideBase "receipts") -Description "Append-only signed JSONL receipts")) { "ide/receipts" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete ide base
     $Errors.Value += if(-not (Remove-FolderStructure -Path $ideBase -Description "IDE plane base")) { "ide" } else { $null; $DeletedCount.Value++ }
 }
@@ -130,38 +130,38 @@ function Remove-TenantFolderStructure {
         [ref]$Errors,
         [ref]$DeletedCount
     )
-    
+
     $tenantBase = Join-Path $BasePath "tenant"
-    
+
     # Delete tenant/meta/schema (deprecated alias, if exists)
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "meta") "schema") -Description "Deprecated legacy alias")) { "tenant/meta/schema" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "meta") -Description "Meta folder")) { "tenant/meta" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/policy/trust/pubkeys
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $tenantBase "policy") "trust") "pubkeys") -Description "Public keys only")) { "tenant/policy/trust/pubkeys" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "policy") "trust") -Description "Policy trust")) { "tenant/policy/trust" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "policy") "snapshots") -Description "Signed snapshots")) { "tenant/policy/snapshots" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "policy") -Description "Policy folder")) { "tenant/policy" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/reporting/marts
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "reporting") "marts") -Description "Analytics marts")) { "tenant/reporting/marts" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "reporting") -Description "Reporting folder")) { "tenant/reporting" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/adapters
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "adapters") -Description "Webhooks and gateway logs")) { "tenant/adapters" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/telemetry
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "telemetry") -Description "Unified observability pattern")) { "tenant/telemetry" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/ingest
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "ingest") -Description "RFC fallback")) { "tenant/ingest" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant/evidence
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "evidence") "watermarks") -Description "Per-consumer watermarks")) { "tenant/evidence/watermarks" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "evidence") "dlq") -Description "Dead letter queue")) { "tenant/evidence/dlq" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $tenantBase "evidence") "data") -Description "Merged receipts, manifests, checksums")) { "tenant/evidence/data" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $tenantBase "evidence") -Description "Evidence folder")) { "tenant/evidence" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete tenant base
     $Errors.Value += if(-not (Remove-FolderStructure -Path $tenantBase -Description "Tenant plane base")) { "tenant" } else { $null; $DeletedCount.Value++ }
 }
@@ -173,34 +173,34 @@ function Remove-ProductFolderStructure {
         [ref]$Errors,
         [ref]$DeletedCount
     )
-    
+
     $productBase = Join-Path $BasePath "product"
-    
+
     # Delete product/policy/trust/pubkeys
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $productBase "policy") "trust") "pubkeys") -Description "Public keys")) { "product/policy/trust/pubkeys" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $productBase "policy") "trust") -Description "Policy trust")) { "product/policy/trust" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product/telemetry
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $productBase "telemetry") -Description "Unified observability pattern")) { "product/telemetry" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product/adapters
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $productBase "adapters") -Description "Gateway logs")) { "product/adapters" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product/reporting/tenants
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $productBase "reporting") "tenants") -Description "Tenant aggregates")) { "product/reporting/tenants" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $productBase "reporting") -Description "Reporting folder")) { "product/reporting" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product/evidence/watermarks
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $productBase "evidence") "watermarks") -Description "Per-consumer watermarks")) { "product/evidence/watermarks" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $productBase "evidence") -Description "Evidence folder")) { "product/evidence" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product/policy/registry
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $productBase "policy") "registry") "revocations") -Description "Policy revocations")) { "product/policy/registry/revocations" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $productBase "policy") "registry") "templates") -Description "Policy templates")) { "product/policy/registry/templates" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $productBase "policy") "registry") "releases") -Description "Policy releases")) { "product/policy/registry/releases" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $productBase "policy") "registry") -Description "Policy registry")) { "product/policy/registry" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $productBase "policy") -Description "Policy folder")) { "product/policy" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete product base
     $Errors.Value += if(-not (Remove-FolderStructure -Path $productBase -Description "Product plane base")) { "product" } else { $null; $DeletedCount.Value++ }
 }
@@ -212,35 +212,35 @@ function Remove-SharedFolderStructure {
         [ref]$Errors,
         [ref]$DeletedCount
     )
-    
+
     $sharedBase = Join-Path $BasePath "shared"
-    
+
     # Delete shared/llm subfolders
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "llm") "tools") -Description "LLM tools")) { "shared/llm/tools" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "llm") "routing") -Description "LLM routing")) { "shared/llm/routing" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "llm") "guardrails") -Description "LLM guardrails")) { "shared/llm/guardrails" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "llm") -Description "LLM folder")) { "shared/llm" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared/governance subfolders
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "governance") "attestations") -Description "Governance attestations")) { "shared/governance/attestations" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "governance") "controls") -Description "Governance controls")) { "shared/governance/controls" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "governance") -Description "Governance folder")) { "shared/governance" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared/bi-lake
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path (Join-Path $sharedBase "bi-lake") "curated") "zero-ui") -Description "BI lake curated data")) { "shared/bi-lake/curated/zero-ui" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "bi-lake") "curated") -Description "BI lake curated")) { "shared/bi-lake/curated" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "bi-lake") -Description "BI lake")) { "shared/bi-lake" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared/siem
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path (Join-Path $sharedBase "siem") "detections") -Description "SIEM detections")) { "shared/siem/detections" } else { $null; $DeletedCount.Value++ }
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "siem") -Description "SIEM folder")) { "shared/siem" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared/telemetry
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "telemetry") -Description "Unified observability pattern")) { "shared/telemetry" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared/pki
     $Errors.Value += if(-not (Remove-FolderStructure -Path (Join-Path $sharedBase "pki") -Description "All PKI files")) { "shared/pki" } else { $null; $DeletedCount.Value++ }
-    
+
     # Delete shared base
     $Errors.Value += if(-not (Remove-FolderStructure -Path $sharedBase -Description "Shared plane base")) { "shared" } else { $null; $DeletedCount.Value++ }
 }
@@ -332,4 +332,3 @@ if($errorCount -eq 0) {
     }
     exit 1
 }
-

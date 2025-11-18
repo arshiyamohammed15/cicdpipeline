@@ -1,51 +1,24 @@
 # Pre-commit hooks configuration for ZeroUI 2.0
 # Install: pip install pre-commit && pre-commit install
 #
-# Configuration: All hooks are configured to auto-fix issues autonomously
-# and will NOT block commits. Hooks that cannot auto-fix are non-blocking.
+# SOLUTION: Single master hook that handles everything
+# This completely bypasses pre-commit framework stashing issues and implements
+# the desired behavior: auto-fix violations, ask confirmation, never block commits.
+#
+# The master hook:
+# 1. Stages all modified files upfront
+# 2. Runs all validations and auto-fixes
+# 3. Asks for confirmation before commit
+# 4. Never blocks commits (always allows them to proceed)
 
 repos:
-  # Local hooks
   - repo: local
     hooks:
-      # EOL Validation Hook - Auto-fixes EOL issues (non-blocking)
-      - id: eol-validator
-        name: Validate and Fix EOL (End of Line) characters
-        entry: python scripts/ci/validate_eol_non_blocking.py
-        language: system
-        types: [text]
-        pass_filenames: false
-        always_run: true
-        description: Auto-fixes line endings (LF for most files, CRLF for Windows scripts) - never blocks commits
-
-      # Constitution Rules Validator - Non-blocking (reports only, does not block commits)
-      - id: constitution-validator
-        name: ZeroUI Constitution Validator (Non-blocking)
-        entry: python scripts/ci/run_constitution_validator_non_blocking.py
-        language: system
-        files: \.(py|ts|tsx|js|jsx)$
-        pass_filenames: false
-        description: Validates code against all 415 constitution rules (reports violations but does not block commits)
-
-      # Auto-stage hook - Stages any files modified by previous hooks (prevents unstaged file warnings)
-      - id: auto-stage-modified
-        name: Auto-stage modified files
-        entry: python scripts/ci/auto_stage_modified.py
+      # Master Pre-Commit Hook - Complete solution (non-blocking)
+      - id: zeroui-master-pre-commit
+        name: ZeroUI Master Pre-Commit Hook
+        entry: python scripts/ci/master_pre_commit_hook.py
         language: system
         pass_filenames: false
         always_run: true
-        description: Automatically stages any files modified by previous hooks to prevent unstaged file warnings
-
-  # Standard hooks - Auto-fix hooks only
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
-      # Auto-fix hooks (modify files, don't block)
-      - id: trailing-whitespace
-        description: Trims trailing whitespace (auto-fix)
-      - id: end-of-file-fixer
-        description: Ensures files end with newline (auto-fix)
-      - id: mixed-line-ending
-        description: Detects and fixes mixed line endings (auto-fix)
-        args: ['--fix=lf']  # Auto-fix to LF
-        exclude: '\.(ps1|bat|cmd)$'  # Exclude Windows scripts (use CRLF per .gitattributes)
+        description: Complete pre-commit solution - auto-fixes violations, asks confirmation, never blocks commits

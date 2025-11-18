@@ -53,7 +53,7 @@ if($LASTEXITCODE -eq 0) {
     $tenantExists = Test-Path (Join-Path $testPath "development\tenant")
     $productExists = Test-Path (Join-Path $testPath "development\product")
     $sharedExists = Test-Path (Join-Path $testPath "development\shared")
-    
+
     if($ideExists -and $tenantExists -and $productExists -and $sharedExists) {
         Write-Host "[PASS] All folders created successfully" -ForegroundColor Green
     } else {
@@ -95,4 +95,3 @@ if(-not $SkipCleanup -and (Test-Path $TestRoot)) {
 }
 
 Write-Host "`nTest completed." -ForegroundColor Cyan
-

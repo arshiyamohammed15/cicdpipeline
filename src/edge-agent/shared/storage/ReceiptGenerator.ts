@@ -1,12 +1,12 @@
 /**
  * Receipt Generator
- * 
+ *
  * Generates signed receipts for Edge Agent operations.
- * 
+ *
  * Compliance:
  * - Rule 219: JSONL receipts (signed, append-only)
  * - Rule 224: Receipts validation (signed)
- * 
+ *
  * @module storage
  */
 
@@ -51,7 +51,7 @@ export class ReceiptGenerator {
 
     /**
      * Generate a decision receipt
-     * 
+     *
      * @param gateId Gate identifier
      * @param policyVersionIds Policy version IDs
      * @param snapshotHash Snapshot hash
@@ -112,7 +112,7 @@ export class ReceiptGenerator {
 
     /**
      * Generate a feedback receipt
-     * 
+     *
      * @param decisionReceiptId Decision receipt ID this feedback relates to
      * @param patternId Feedback pattern ID
      * @param choice User choice
@@ -152,7 +152,7 @@ export class ReceiptGenerator {
 
     /**
      * Generate unique receipt ID
-     * 
+     *
      * Format: receipt-{timestamp}-{random}
      * Uses 8 bytes (16 hex chars) for randomness to minimize collision risk
      */
@@ -164,16 +164,16 @@ export class ReceiptGenerator {
 
     /**
      * Sign receipt (Rule 224: receipts must be signed)
-     * 
+     *
      * Implementation: Deterministic signing using SHA-256 hash of canonical JSON
-     * 
+     *
      * Production Note: In production, this should use cryptographic signing (Ed25519) with private key
      * from secrets manager/HSM/KMS. The current implementation provides deterministic, verifiable
      * signatures suitable for development and testing. Upgrade path:
      * 1. Load private key from secrets manager (per Rule 218)
      * 2. Use Ed25519 or similar signing algorithm
      * 3. Include key ID (kid) in signature for verification
-     * 
+     *
      * @param receipt Receipt to sign (without signature field)
      * @returns string Signature string (format: sig-{sha256_hash})
      */
@@ -240,4 +240,3 @@ export class ReceiptGenerator {
         return path.parse(privateKeyPath).name;
     }
 }
-

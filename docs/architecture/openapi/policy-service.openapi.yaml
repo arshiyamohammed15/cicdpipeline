@@ -5,7 +5,7 @@ info:
   description: |
     Infrastructure service for policy snapshot management, distribution, and versioning.
     Provides signed policy snapshots to Edge Agents and client services.
-    
+
     **Service Type**: Infrastructure (Shared Services)
     **Implementation**: Python/FastAPI
 servers:
@@ -355,4 +355,3 @@ components:
             - message
       required:
         - error
-

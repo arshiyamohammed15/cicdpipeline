@@ -5,6 +5,11 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
+    globals: {
+        'ts-jest': {
+            tsconfig: 'tsconfig.jest.json'
+        }
+    },
     roots: ['<rootDir>/src', '<rootDir>/tests'],
     testMatch: [
         '**/__tests__/**/*.test.ts',
@@ -35,4 +40,3 @@ module.exports = {
     resetMocks: true,
     restoreMocks: true
 };
-

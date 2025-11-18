@@ -1,9 +1,9 @@
 /**
  * EdgeAgent Test Suite
- * 
+ *
  * Comprehensive unit tests for EdgeAgent class
  * Tests processTaskWithReceipt() method with all scenarios
- * 
+ *
  * Coverage:
  * - Happy path with policy integration
  * - Policy integration (with and without policies)
@@ -680,4 +680,3 @@ describe('EdgeAgent', () => {
         });
     });
 });
-

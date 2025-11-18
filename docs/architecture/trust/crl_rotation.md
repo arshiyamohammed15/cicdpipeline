@@ -130,4 +130,3 @@ Public keys are distributed via:
 - **Audit Trail**: All rotations and revocations logged
 - **Retention**: CRL history retained for 1 year
 - **Access Control**: Only authorized security team can rotate/revoke keys
-

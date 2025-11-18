@@ -91,4 +91,3 @@ IDE/Edge Agent (Verifies + Uses)
 - **Revocation**: Checked before every verification
 - **Offline Verification**: IDE/Edge Agent can verify without network (uses cached keys)
 - **Audit Trail**: All verification failures logged
-

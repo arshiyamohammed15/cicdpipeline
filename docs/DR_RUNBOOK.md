@@ -45,7 +45,7 @@ This runbook documents how to execute DR drills using the LocalDRPlan implementa
 - Checksum values
 - Any verification errors
 
-**Expected Outcome**: 
+**Expected Outcome**:
 - Backup created successfully
 - Verification status: `valid`
 - All files present with matching checksums
@@ -241,4 +241,3 @@ After drill execution, collect the following evidence:
 - Plan definitions: `{baseDir}/dr-plans.jsonl`
 - Backup manifests: `{baseDir}/backup-manifest.jsonl`
 - Queue files: `{baseDir}/queues/{queueName}.jsonl`
-

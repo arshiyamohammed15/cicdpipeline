@@ -155,4 +155,3 @@ The system automatically:
 ## Conclusion
 
 **Remember**: The JSON files in `docs/constitution/` are the ONLY source of truth. All rule counts are calculated dynamically. Never hardcode rule counts anywhere.
-

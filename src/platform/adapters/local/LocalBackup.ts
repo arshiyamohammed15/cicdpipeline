@@ -1,6 +1,6 @@
 /**
  * LocalBackup
- * 
+ *
  * Local file-based implementation of BackupPort.
  * Uses incremental snapshot manifest + checksums with verify routine.
  */
@@ -438,4 +438,3 @@ export class LocalBackup implements BackupPort {
     return `backup-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
   }
 }
-

@@ -13,4 +13,3 @@ export const toCanonicalJson = (value: unknown): string => {
 
     return `{${entries.join(',')}}`;
 };
-

@@ -69,4 +69,3 @@ The decision card summarises this information and exposes quick-fix actions:
 - PSCL remains **opt-in** (`zeroui.pscl.enabled` is `false` by default); when disabled all commands become harmless no-ops.
 - The plan collection relies on local file hashes and does not fetch remote policy data—ensure the local policy cache under `{ZU_ROOT}/ide/policy` is populated.
 - Build plans currently gather files based on Git status; staged files outside the repository or generated artifacts that are ignored by Git must be added manually if required.
-

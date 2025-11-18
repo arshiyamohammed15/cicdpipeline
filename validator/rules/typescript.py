@@ -15,7 +15,7 @@ from pathlib import Path
 class TypeScriptValidator:
     """
     Validator for TypeScript rules (R182-R215).
-    
+
     Validates TypeScript code against 34 specific rules covering:
     - Type safety and strict mode
     - Null/undefined handling
@@ -27,7 +27,7 @@ class TypeScriptValidator:
     - Security
     - AI-generated code review
     """
-    
+
     def __init__(self):
         """Initialize the TypeScript validator."""
         self.rules = {
@@ -66,24 +66,24 @@ class TypeScriptValidator:
             'R214': self._validate_test_type_boundaries,
             'R215': self._validate_gradual_migration_strategy
         }
-    
+
     def validate_file(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """
         Validate a TypeScript file against all TypeScript rules.
-        
+
         Args:
             file_path: Path to the TypeScript file
             content: File content as string
-            
+
         Returns:
             List of validation violations
         """
         violations = []
-        
+
         # Only validate TypeScript files
         if not file_path.endswith(('.ts', '.tsx')):
             return violations
-        
+
         for rule_id, validator_func in self.rules.items():
             try:
                 rule_violations = validator_func(file_path, content)
@@ -96,14 +96,14 @@ class TypeScriptValidator:
                     'line': 0,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_no_any_in_committed_code(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """No `any` in committed code - use `unknown` and check it."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for `any` type usage
             if re.search(r'\bany\b', line) and not re.search(r'//.*any', line):
@@ -116,14 +116,14 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_handle_null_undefined(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Handle `null`/`undefined` - check optional fields before use."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for potential null/undefined access without checks
             code_line = re.sub(r'//.*$', '', line)
@@ -135,7 +135,7 @@ class TypeScriptValidator:
                     if j < len(lines) and re.search(r'if\s*\(.*\?\.|if\s*\(.*!==\s*null|if\s*\(.*!==\s*undefined|if\s*\(.*&&.*\)', lines[j]):
                         has_null_check = True
                         break
-                
+
                 if not has_null_check and re.search(r'\.\w+', code_line):
                     violations.append({
                         'rule_id': 'R183',
@@ -144,26 +144,26 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_small_clear_functions(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Small, Clear Functions - keep functions focused and readable."""
         violations = []
         lines = content.split('\n')
-        
+
         function_start = None
         function_lines = 0
-        
+
         for i, line in enumerate(lines, 1):
             # Detect function start
             if re.search(r'function\s+\w+|const\s+\w+\s*=\s*\(|export\s+function', line):
                 function_start = i
                 function_lines = 0
-            
+
             if function_start:
                 function_lines += 1
-                
+
                 # Check for function end
                 if re.search(r'^}\s*$|^}\s*;?\s*$', line.strip()):
                     if function_lines > 20:  # More than 20 lines
@@ -176,14 +176,14 @@ class TypeScriptValidator:
                         })
                     function_start = None
                     function_lines = 0
-        
+
         return violations
-    
+
     def _validate_consistent_naming(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Consistent Naming - use clear, consistent naming conventions."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for inconsistent naming patterns
             if re.search(r'const\s+[a-z]+\w*[A-Z]', line):  # camelCase with capital
@@ -194,7 +194,7 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-            
+
             # Check for unclear abbreviations
             if re.search(r'\b[a-z]{1,2}[A-Z]', line):  # Very short abbreviations
                 violations.append({
@@ -204,23 +204,23 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_clear_shape_strategy(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Clear Shape Strategy - define clear interfaces and types."""
         violations = []
         lines = content.split('\n')
-        
+
         has_interfaces = False
         has_types = False
-        
+
         for i, line in enumerate(lines, 1):
             if re.search(r'interface\s+\w+', line):
                 has_interfaces = True
             if re.search(r'type\s+\w+\s*=', line):
                 has_types = True
-        
+
         # Check if file has proper type definitions
         if not has_interfaces and not has_types:
             violations.append({
@@ -230,14 +230,14 @@ class TypeScriptValidator:
                 'line': 1,
                 'file': file_path
             })
-        
+
         return violations
-    
+
     def _validate_let_compiler_infer(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Let the Compiler Infer - avoid redundant type annotations."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for redundant type annotations
             if re.search(r'const\s+\w+\s*:\s*string\s*=\s*["\']', line):
@@ -248,7 +248,7 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-            
+
             if re.search(r'const\s+\w+\s*:\s*number\s*=\s*\d+', line):
                 violations.append({
                     'rule_id': 'R187',
@@ -257,19 +257,19 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_keep_imports_clean(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Keep Imports Clean - organize and minimize imports."""
         violations = []
         lines = content.split('\n')
-        
+
         import_lines = []
         for i, line in enumerate(lines, 1):
             if re.search(r'^\s*import\s+', line):
                 import_lines.append(i)
-        
+
         # Check for too many imports
         if len(import_lines) > 15:
             violations.append({
@@ -279,7 +279,7 @@ class TypeScriptValidator:
                 'line': import_lines[0],
                 'file': file_path
             })
-        
+
         # Check for wildcard imports
         for i, line in enumerate(lines, 1):
             if re.search(r'import\s+\*\s+as', line):
@@ -290,14 +290,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_describe_the_shape(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Describe the Shape - use interfaces for object shapes."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for inline object types that should be interfaces
             if re.search(r':\s*\{[^}]{20,}\}', line):  # Long inline object types
@@ -308,14 +308,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_union_narrowing(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Union & Narrowing - narrow union types before use."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for union types that might need narrowing
             if re.search(r'\|\s*string|\|\s*number|\|\s*boolean', line):
@@ -325,7 +325,7 @@ class TypeScriptValidator:
                     if j < len(lines) and re.search(r'typeof\s+\w+|instanceof\s+\w+|in\s+\w+', lines[j]):
                         has_narrowing = True
                         break
-                
+
                 if not has_narrowing:
                     violations.append({
                         'rule_id': 'R190',
@@ -334,14 +334,14 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_readonly_by_default(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Readonly by Default - make data immutable when possible."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for mutable arrays/objects that could be readonly
             if re.search(r'const\s+\w+\s*:\s*Array<|const\s+\w+\s*:\s*\[\]', line):
@@ -352,14 +352,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_discriminated_unions(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Discriminated Unions - use discriminated unions for complex states."""
         violations = []
         lines = content.split('\n')
-        
+
         # This is a complex rule that would need more sophisticated analysis
         # For now, provide a basic check
         for i, line in enumerate(lines, 1):
@@ -371,14 +371,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_utility_types_not_duplicates(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Utility Types, Not Duplicates - use built-in utility types."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for manual implementations of utility types
             if re.search(r'type\s+\w+\s*=\s*\{[^}]*\?\s*:', line):
@@ -389,14 +389,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_generics_but_simple(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Generics, But Simple - keep generics simple and readable."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for overly complex generic constraints
             # Heuristics: long generic args, multiple constraints, or nested shapes
@@ -410,14 +410,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_no_unhandled_promises(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """No Unhandled Promises - handle all promises properly."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for unhandled promises
             if re.search(r'\.then\(|\.catch\(|await\s+', line):
@@ -431,14 +431,14 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_timeouts_cancel(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Timeouts & Cancel - add timeouts to I/O operations."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for I/O operations without timeouts
             code_line = re.sub(r'//.*$', '', line)
@@ -450,14 +450,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_friendly_errors_at_edges(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Friendly Errors at Edges - provide user-friendly error messages."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for technical error messages that should be user-friendly
             if re.search(r'throw\s+new\s+Error\([^)]{20,}\)', line):
@@ -468,9 +468,9 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_map_errors_to_codes(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Map Errors to Codes - use canonical error codes."""
         violations = []
@@ -505,9 +505,9 @@ class TypeScriptValidator:
                     in_catch = False
                     brace_depth = 0
                     block_lines = []
-        
+
         return violations
-    
+
     def _validate_retries_are_limited(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Retries Are Limited - limit retry attempts with backoff."""
         violations = []
@@ -525,14 +525,14 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_one_source_of_truth(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """One Source of Truth - avoid duplicate type definitions."""
         violations = []
         lines = content.split('\n')
-        
+
         # This would need more sophisticated analysis to detect duplicates
         # For now, provide a basic check
         type_definitions = []
@@ -548,14 +548,14 @@ class TypeScriptValidator:
                         'file': file_path
                     })
                 type_definitions.append(type_name)
-        
+
         return violations
-    
+
     def _validate_folder_layout(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Folder Layout - organize files in logical folder structure."""
         # This rule is more about project structure than file content
         violations = []
-        
+
         # Check if file is in appropriate folder
         if 'types' in file_path and not file_path.endswith('.d.ts'):
             violations.append({
@@ -565,14 +565,14 @@ class TypeScriptValidator:
                 'line': 1,
                 'file': file_path
             })
-        
+
         return violations
-    
+
     def _validate_paths_aliases(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Paths & Aliases - use path aliases for clean imports."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for relative imports that could use aliases
             if re.search(r'from\s+["\']\.\./\.\./\.\./', line):
@@ -583,20 +583,20 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_modern_output_targets(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Modern Output Targets - use modern compilation targets."""
         # This rule is about tsconfig.json, not individual files
         violations = []
         return violations
-    
+
     def _validate_lint_format(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Lint & Format - ensure consistent code style."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for inconsistent formatting
             if re.search(r';\s*$', line) and i < len(lines) - 1:
@@ -609,24 +609,24 @@ class TypeScriptValidator:
                         'line': i,
                         'file': file_path
                     })
-        
+
         return violations
-    
+
     def _validate_type_check_in_ci(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Type Check in CI - ensure type checking in continuous integration."""
         # This rule is about CI configuration, not individual files
         violations = []
         return violations
-    
+
     def _validate_tests_for_new_behavior(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Tests for New Behavior - write tests for new functionality."""
         violations = []
-        
+
         # Check if this is a real test file (ignore only proper spec files or test directories)
         normalized_path = file_path.replace('\\', '/').lower()
         if re.search(r'\.spec\.[tj]sx?$', normalized_path) or re.search(r'/(tests?|__tests__)/', normalized_path):
             return violations
-        
+
         # Look for new functions without corresponding tests
         lines = content.split('\n')
         for i, line in enumerate(lines, 1):
@@ -640,14 +640,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_comments_in_simple_english(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Comments in Simple English - write clear, simple comments."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Check for overly complex comments
             if re.search(r'//.*[A-Z]{5,}', line):  # Comments with many capital letters
@@ -658,14 +658,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_no_secrets_in_code_or_logs(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """No Secrets in Code or Logs - never commit secrets."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for potential secrets
             if re.search(r'password\s*=\s*["\'][^"\']+["\']|api[_-]?key\s*=\s*["\'][^"\']+["\']|secret\s*=\s*["\'][^"\']+["\']', line, re.IGNORECASE):
@@ -676,14 +676,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_validate_untrusted_inputs_at_runtime(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Validate Untrusted Inputs at Runtime - validate external data."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for external data usage without validation
             if re.search(r'req\.body|req\.query|req\.params', line) and not re.search(r'validate|schema|zod', line):
@@ -694,14 +694,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_keep_ui_responsive(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Keep the UI Responsive - avoid blocking operations."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for synchronous operations that could block UI
             if re.search(r'JSON\.parse\(|JSON\.stringify\(|\.forEach\(', line) and 'async' not in line:
@@ -712,14 +712,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_review_ai_code_thoroughly(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Review AI Code Thoroughly - always review AI-generated code."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for AI-generated code markers
             if re.search(r'//.*AI.*generated|//.*GPT|//.*Copilot', line, re.IGNORECASE):
@@ -730,14 +730,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_monitor_bundle_impact(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Monitor Bundle Impact - watch for bundle size increases."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for large imports that could impact bundle size
             if re.search(r'import\s+.*\*.*from\s+["\']lodash["\']|import\s+.*\*.*from\s+["\']moment["\']', line):
@@ -748,14 +748,14 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_quality_dependencies(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Quality Dependencies - use well-typed dependencies."""
         violations = []
         lines = content.split('\n')
-        
+
         for i, line in enumerate(lines, 1):
             # Look for untyped dependencies
             if re.search(r'import.*from\s+["\'][^"\']*["\']', line) and not re.search(r'@types/', line):
@@ -767,23 +767,23 @@ class TypeScriptValidator:
                     'line': i,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_test_type_boundaries(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Test Type Boundaries - test complex type interactions."""
         violations = []
-        
+
         # Check if this is a test file
         if 'test' in file_path or 'spec' in file_path:
             lines = content.split('\n')
             has_type_tests = False
-            
+
             for line in lines:
                 if re.search(r'\btype\b.*\btest\b|\binterface\b.*\btest\b|expect\s*<.*>|expectType|satisfies\s', line):
                     has_type_tests = True
                     break
-            
+
             if not has_type_tests:
                 violations.append({
                     'rule_id': 'R214',
@@ -792,13 +792,13 @@ class TypeScriptValidator:
                     'line': 1,
                     'file': file_path
                 })
-        
+
         return violations
-    
+
     def _validate_gradual_migration_strategy(self, file_path: str, content: str) -> List[Dict[str, Any]]:
         """Gradual Migration Strategy - migrate JavaScript to TypeScript gradually."""
         violations = []
-        
+
         # Check for JavaScript files that should be migrated
         if file_path.endswith('.js') and not file_path.endswith('.d.ts'):
             violations.append({
@@ -808,5 +808,5 @@ class TypeScriptValidator:
                 'line': 1,
                 'file': file_path
             })
-        
+
         return violations

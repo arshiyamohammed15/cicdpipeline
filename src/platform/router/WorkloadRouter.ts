@@ -1,6 +1,6 @@
 /**
  * WorkloadRouter
- * 
+ *
  * Routes workloads based on neutral infra configuration (routing.default, cost_profiles).
  * Maps BuildPlan.cost_profile to appropriate adapters.
  */
@@ -112,7 +112,7 @@ class AdapterRegistry {
 
 /**
  * WorkloadRouter
- * 
+ *
  * Routes workloads based on BuildPlan.cost_profile and InfraConfig.routing
  */
 export class WorkloadRouter {
@@ -313,4 +313,3 @@ export class WorkloadRouter {
     return this.registry;
   }
 }
-

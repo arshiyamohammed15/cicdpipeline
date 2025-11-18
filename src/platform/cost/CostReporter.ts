@@ -1,6 +1,6 @@
 /**
  * CostReporter
- * 
+ *
  * Aggregates last N entries from metrics.ndjson to produce a JSON cost summary.
  */
 
@@ -70,7 +70,7 @@ export class CostReporter {
 
     const content = fs.readFileSync(this.metricsFile, 'utf-8');
     const lines = content.split('\n').filter((line) => line.trim());
-    
+
     // Get last N entries
     const recentLines = lines.slice(-lastN);
     const records: CostMetricRecord[] = [];
@@ -181,4 +181,3 @@ export class CostReporter {
     return JSON.stringify(summary, null, 2);
   }
 }
-

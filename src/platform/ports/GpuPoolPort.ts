@@ -1,15 +1,15 @@
 /**
  * GpuPoolPort
- * 
+ *
  * Cloud-agnostic interface for GPU pool management and allocation.
  * Implemented by local adapters for GPU resource management.
- * 
+ *
  * @interface GpuPoolPort
  */
 export interface GpuPoolPort {
   /**
    * Request GPU allocation from the pool.
-   * 
+   *
    * @param request - GPU allocation request
    * @returns Promise resolving to allocated GPU instance
    */
@@ -17,7 +17,7 @@ export interface GpuPoolPort {
 
   /**
    * Release a GPU instance back to the pool.
-   * 
+   *
    * @param instanceId - GPU instance ID to release
    * @returns Promise resolving when GPU is released
    */
@@ -25,7 +25,7 @@ export interface GpuPoolPort {
 
   /**
    * Get status of a GPU instance.
-   * 
+   *
    * @param instanceId - GPU instance ID
    * @returns Promise resolving to GPU instance status
    */
@@ -33,7 +33,7 @@ export interface GpuPoolPort {
 
   /**
    * Get pool statistics and availability.
-   * 
+   *
    * @returns Promise resolving to pool statistics
    */
   getPoolStats(): Promise<GpuPoolStats>;
@@ -106,4 +106,3 @@ export interface GpuPoolStats {
   /** GPU types available */
   gpuTypes: string[];
 }
-

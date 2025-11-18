@@ -51,5 +51,3 @@ suite('Extension Smoke Test Suite', () => {
         }
     });
 });
-
-

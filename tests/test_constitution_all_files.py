@@ -22,65 +22,65 @@ random.seed(TEST_RANDOM_SEED)
 
 class ConstitutionRuleLoader:
     """Load and validate constitution rules from JSON files."""
-    
+
     def __init__(self, constitution_dir: Path):
         """
         Initialize loader with constitution directory.
-        
+
         Args:
             constitution_dir: Path to docs/constitution directory
         """
         self.constitution_dir = Path(constitution_dir)
         self._cache: Dict[str, Dict] = {}
-    
+
     def load_file(self, filename: str) -> Dict[str, Any]:
         """
         Load a constitution JSON file.
-        
+
         Args:
             filename: Name of the JSON file
-            
+
         Returns:
             Parsed JSON data
-            
+
         Raises:
             FileNotFoundError: If file doesn't exist
             json.JSONDecodeError: If file is invalid JSON
         """
         if filename in self._cache:
             return self._cache[filename]
-        
+
         file_path = self.constitution_dir / filename
         if not file_path.exists():
             raise FileNotFoundError(f"Constitution file not found: {file_path}")
-        
+
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
-        
+
         self._cache[filename] = data
         return data
-    
+
     def get_all_rules(self, filename: str) -> List[Dict[str, Any]]:
         """
         Get all rules from a constitution file.
-        
+
         Args:
             filename: Name of the JSON file
-            
+
         Returns:
             List of rule dictionaries
         """
         data = self.load_file(filename)
         return data.get('constitution_rules', [])
-    
+
     def get_rule_by_id(self, filename: str, rule_id: str) -> Optional[Dict[str, Any]]:
         """
         Get a specific rule by ID.
-        
+
         Args:
             filename: Name of the JSON file
             rule_id: Rule identifier (e.g., "R-001", "ARC-001")
-            
+
         Returns:
             Rule dictionary or None if not found
         """
@@ -93,7 +93,7 @@ class ConstitutionRuleLoader:
 
 class ConstitutionStructureTests(unittest.TestCase):
     """Test structure and integrity of constitution JSON files."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test class with constitution loader."""
@@ -107,7 +107,7 @@ class ConstitutionStructureTests(unittest.TestCase):
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
-    
+
     def test_all_files_exist(self):
         """Verify all 6 constitution files exist."""
         for filename in self.expected_files:
@@ -117,7 +117,7 @@ class ConstitutionStructureTests(unittest.TestCase):
                     file_path.exists(),
                     f"Constitution file missing: {filename}"
                 )
-    
+
     def test_all_files_valid_json(self):
         """Verify all files are valid JSON."""
         for filename in self.expected_files:
@@ -127,7 +127,7 @@ class ConstitutionStructureTests(unittest.TestCase):
                     self.assertIsInstance(data, dict, f"{filename} must be a JSON object")
                 except json.JSONDecodeError as e:
                     self.fail(f"{filename} is invalid JSON: {e}")
-    
+
     def test_all_files_have_constitution_rules(self):
         """Verify all files have constitution_rules array."""
         for filename in self.expected_files:
@@ -143,7 +143,7 @@ class ConstitutionStructureTests(unittest.TestCase):
                     list,
                     f"{filename} 'constitution_rules' must be an array"
                 )
-    
+
     def test_all_files_have_metadata(self):
         """Verify all files have metadata section."""
         for filename in self.expected_files:
@@ -158,7 +158,7 @@ class ConstitutionStructureTests(unittest.TestCase):
                 self.assertIsInstance(metadata, dict)
                 self.assertIn('total_rules', metadata)
                 self.assertIn('version', metadata)
-    
+
     def test_metadata_rule_count_matches_actual(self):
         """Verify metadata.total_rules matches actual rule count."""
         for filename in self.expected_files:
@@ -177,7 +177,7 @@ class ConstitutionStructureTests(unittest.TestCase):
 
 class ConstitutionRuleStructureTests(unittest.TestCase):
     """Test structure of individual rules."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test class with constitution loader."""
@@ -191,11 +191,11 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
-    
+
     def test_all_rules_have_required_fields(self):
         """Verify all rules have required fields."""
         required_fields = ['rule_id', 'title', 'category', 'enabled', 'severity_level', 'version']
-        
+
         for filename in self.expected_files:
             rules = self.loader.get_all_rules(filename)
             for rule in rules:
@@ -206,7 +206,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                             rule,
                             f"{filename} rule {rule.get('rule_id')} missing required field: {field}"
                         )
-    
+
     def test_rule_ids_are_strings(self):
         """Verify all rule_ids are strings."""
         for filename in self.expected_files:
@@ -224,7 +224,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         0,
                         f"{filename} rule_id cannot be empty"
                     )
-    
+
     def test_titles_are_strings(self):
         """Verify all titles are non-empty strings."""
         for filename in self.expected_files:
@@ -234,7 +234,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     title = rule.get('title')
                     self.assertIsInstance(title, str)
                     self.assertGreater(len(title.strip()), 0)
-    
+
     def test_categories_are_strings(self):
         """Verify all categories are non-empty strings."""
         for filename in self.expected_files:
@@ -244,7 +244,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     category = rule.get('category')
                     self.assertIsInstance(category, str)
                     self.assertGreater(len(category.strip()), 0)
-    
+
     def test_enabled_is_boolean(self):
         """Verify enabled field is boolean."""
         for filename in self.expected_files:
@@ -257,11 +257,11 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         bool,
                         f"{filename} rule {rule.get('rule_id')} enabled must be boolean"
                     )
-    
+
     def test_severity_levels_are_valid(self):
         """Verify severity_level values are valid."""
         valid_severities = ['Blocker', 'Critical', 'Major', 'Minor']
-        
+
         for filename in self.expected_files:
             rules = self.loader.get_all_rules(filename)
             for rule in rules:
@@ -272,7 +272,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         valid_severities,
                         f"{filename} rule {rule.get('rule_id')} has invalid severity: {severity}"
                     )
-    
+
     def test_versions_are_strings(self):
         """Verify version fields are strings."""
         for filename in self.expected_files:
@@ -282,7 +282,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     version = rule.get('version')
                     self.assertIsInstance(version, str)
                     self.assertGreater(len(version), 0)
-    
+
     def test_effective_dates_are_present(self):
         """Verify effective_date fields are present and valid."""
         for filename in self.expected_files:
@@ -294,7 +294,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     self.assertIsInstance(effective_date, str)
                     # Basic date format check (YYYY-MM-DD)
                     self.assertGreaterEqual(len(effective_date), 10)
-    
+
     def test_policy_linkage_structure(self):
         """Verify policy_linkage has correct structure."""
         for filename in self.expected_files:
@@ -309,7 +309,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                                 policy_linkage['policy_version_ids'],
                                 list
                             )
-    
+
     def test_descriptions_are_strings(self):
         """Verify descriptions are strings (may be empty)."""
         for filename in self.expected_files:
@@ -320,7 +320,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     # Description is optional but if present must be string
                     if description is not None:
                         self.assertIsInstance(description, str)
-    
+
     def test_requirements_are_lists(self):
         """Verify requirements are lists (if present)."""
         for filename in self.expected_files:
@@ -330,7 +330,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     requirements = rule.get('requirements')
                     if requirements is not None:
                         self.assertIsInstance(requirements, list)
-    
+
     def test_validation_fields_are_strings(self):
         """Verify validation fields are strings (if present)."""
         for filename in self.expected_files:
@@ -344,44 +344,44 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
 
 class ConstitutionRuleContentTests(unittest.TestCase):
     """Test content and semantics of constitution rules."""
-    
+
     @classmethod
     def setUpClass(cls):
         """Set up test class with constitution loader."""
         constitution_dir = Path(__file__).parent.parent / 'docs' / 'constitution'
         cls.loader = ConstitutionRuleLoader(constitution_dir)
-    
+
     def test_master_generic_rules_count(self):
         """Verify MASTER GENERIC RULES has exactly 301 rules."""
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
         self.assertEqual(len(rules), 301, "MASTER GENERIC RULES must have 301 rules")
-    
+
     def test_vscode_extension_rules_count(self):
         """Verify VSCODE EXTENSION RULES has exactly 10 rules."""
         rules = self.loader.get_all_rules('VSCODE EXTENSION RULES.json')
         self.assertEqual(len(rules), 10, "VSCODE EXTENSION RULES must have 10 rules")
-    
+
     def test_logging_rules_count(self):
         """Verify LOGGING & TROUBLESHOOTING RULES has exactly 11 rules."""
         rules = self.loader.get_all_rules('LOGGING & TROUBLESHOOTING RULES.json')
         self.assertEqual(len(rules), 11, "LOGGING & TROUBLESHOOTING RULES must have 11 rules")
-    
+
     def test_modules_gsmd_mapping_rules_count(self):
         """Verify MODULES AND GSMD MAPPING RULES has exactly 19 rules."""
         rules = self.loader.get_all_rules('MODULES AND GSMD MAPPING RULES.json')
         self.assertEqual(len(rules), 19, "MODULES AND GSMD MAPPING RULES must have 19 rules")
-    
-    
+
+
     def test_testing_rules_count(self):
         """Verify TESTING RULES has exactly 22 rules."""
         rules = self.loader.get_all_rules('TESTING RULES.json')
         self.assertEqual(len(rules), 22, "TESTING RULES must have 22 rules")
-    
+
     def test_comments_rules_count(self):
         """Verify COMMENTS RULES has exactly 30 rules."""
         rules = self.loader.get_all_rules('COMMENTS RULES.json')
         self.assertEqual(len(rules), 30, "COMMENTS RULES must have 30 rules")
-    
+
     def test_total_rules_count(self):
         """Verify total rule count across all files is 393."""
         total = 0
@@ -396,7 +396,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         for filename in files:
             total += len(self.loader.get_all_rules(filename))
         self.assertEqual(total, 393, "Total rules across all files must be 393")
-    
+
     def test_no_duplicate_rule_ids_within_file(self):
         """Verify no duplicate rule IDs within each file."""
         files = [
@@ -407,7 +407,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             'TESTING RULES.json',
             'COMMENTS RULES.json'
         ]
-        
+
         for filename in files:
             with self.subTest(filename=filename):
                 rules = self.loader.get_all_rules(filename)
@@ -418,12 +418,12 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     0,
                     f"{filename} has duplicate rule_ids: {set(duplicates)}"
                 )
-    
+
     def test_master_rules_sequential_numbering(self):
         """Verify MASTER GENERIC RULES have sequential numbering for R- prefixed rules."""
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
         rule_ids = [rule.get('rule_id') for rule in rules]
-        
+
         # Extract numbers from R-001 format dynamically
         numbers = []
         for rule_id in rule_ids:
@@ -433,10 +433,10 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     numbers.append(num)
                 except ValueError:
                     pass
-        
+
         # Ensure at least one R- prefixed rule exists
         self.assertGreater(len(numbers), 0, "Should have at least one R- prefixed rule")
-        
+
         # Check that numbers are sequential (no gaps)
         if numbers:
             sorted_numbers = sorted(numbers)
@@ -444,17 +444,17 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             max_num = sorted_numbers[-1]
             expected_range = set(range(min_num, max_num + 1))
             actual_numbers = set(numbers)
-            
+
             # Check for gaps in sequence
             missing = expected_range - actual_numbers
             if missing:
                 self.fail(f"MASTER GENERIC RULES have gaps in sequence: {sorted(missing)}")
-    
+
     def test_vscode_extension_rules_prefix(self):
         """Verify VSCODE EXTENSION RULES have correct prefixes."""
         rules = self.loader.get_all_rules('VSCODE EXTENSION RULES.json')
         valid_prefixes = ['ARC-', 'PER-', 'UI-', 'DIST-', 'FS-']
-        
+
         for rule in rules:
             with self.subTest(rule_id=rule.get('rule_id')):
                 rule_id = rule.get('rule_id')
@@ -462,11 +462,11 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     any(rule_id.startswith(prefix) for prefix in valid_prefixes),
                     f"VSCODE EXTENSION RULE {rule_id} has invalid prefix"
                 )
-    
+
     def test_logging_rules_prefix(self):
         """Verify LOGGING & TROUBLESHOOTING RULES have OBS- prefix."""
         rules = self.loader.get_all_rules('LOGGING & TROUBLESHOOTING RULES.json')
-        
+
         for rule in rules:
             with self.subTest(rule_id=rule.get('rule_id')):
                 rule_id = rule.get('rule_id')
@@ -474,12 +474,12 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     rule_id.startswith('OBS-'),
                     f"LOGGING RULE {rule_id} must start with OBS-"
                 )
-    
+
     def test_testing_rules_prefix(self):
         """Verify TESTING RULES have correct prefixes."""
         rules = self.loader.get_all_rules('TESTING RULES.json')
         valid_prefixes = ['FTP-', 'DNC-', 'NCP-', 'TTR-', 'DET-', 'TDF-', 'TRE-', 'CGT-', 'QTG-', 'RVC-']
-        
+
         for rule in rules:
             with self.subTest(rule_id=rule.get('rule_id')):
                 rule_id = rule.get('rule_id')
@@ -487,11 +487,11 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     any(rule_id.startswith(prefix) for prefix in valid_prefixes),
                     f"TESTING RULE {rule_id} has invalid prefix"
                 )
-    
+
     def test_comments_rules_prefix(self):
         """Verify COMMENTS RULES have DOC- prefix."""
         rules = self.loader.get_all_rules('COMMENTS RULES.json')
-        
+
         for rule in rules:
             with self.subTest(rule_id=rule.get('rule_id')):
                 rule_id = rule.get('rule_id')
@@ -503,4 +503,3 @@ class ConstitutionRuleContentTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
-

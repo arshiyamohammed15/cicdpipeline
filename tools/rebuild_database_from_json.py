@@ -35,31 +35,31 @@ from config.constitution.constitution_rules_json import ConstitutionRulesJSON
 def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> List[Dict[str, Any]]:
     """
     Load all rules from JSON source files (single source of truth).
-    
+
     Args:
         constitution_dir: Path to directory containing constitution JSON files
-        
+
     Returns:
         List of rule dictionaries
     """
     constitution_path = Path(constitution_dir)
     if not constitution_path.exists():
         raise FileNotFoundError(f"Constitution directory not found: {constitution_path}")
-    
+
     json_files = sorted(list(constitution_path.glob("*.json")))
     if not json_files:
         raise FileNotFoundError(f"No JSON files found in {constitution_path}")
-    
+
     all_rules = []
     rule_counter = 1  # Sequential rule numbering
-    
+
     for json_file in json_files:
         print(f"Loading rules from {json_file.name}...")
         try:
             with open(json_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 rules = data.get('constitution_rules', [])
-                
+
                 for rule in rules:
                     # Extract rule data
                     rule_id = rule.get('rule_id', '')
@@ -69,7 +69,7 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
                     severity = rule.get('severity_level', 'Major')
                     description = rule.get('description', '')
                     requirements = rule.get('requirements', [])
-                    
+
                     # Determine priority from severity
                     priority_map = {
                         'Blocker': 'critical',
@@ -78,7 +78,7 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
                         'Info': 'recommended'
                     }
                     priority = priority_map.get(severity, 'important')
-                    
+
                     # Build content from description and requirements
                     content_parts = [description]
                     if requirements:
@@ -86,7 +86,7 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
                         for req in requirements:
                             content_parts.append(f"- {req}")
                     content = "\n".join(content_parts)
-                    
+
                     # Create rule data structure
                     rule_data = {
                         'rule_number': rule_counter,
@@ -106,14 +106,14 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
                         'validation': rule.get('validation', ''),
                         'error_condition': rule.get('error_condition', '')
                     }
-                    
+
                     all_rules.append(rule_data)
                     rule_counter += 1
-                    
+
         except Exception as e:
             print(f"Error loading {json_file.name}: {e}")
             continue
-    
+
     print(f"\nLoaded {len(all_rules)} rules from {len(json_files)} files")
     return all_rules
 
@@ -121,7 +121,7 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
 def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/constitution_rules.db"):
     """
     Rebuild SQLite database with rules from JSON source files.
-    
+
     Args:
         rules: List of rule dictionaries
         db_path: Path to SQLite database file
@@ -129,7 +129,7 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
     print(f"\n{'='*70}")
     print("REBUILDING SQLITE DATABASE")
     print(f"{'='*70}")
-    
+
     # Backup existing database
     db_file = Path(db_path)
     if db_file.exists():
@@ -137,15 +137,15 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         import shutil
         shutil.copy2(db_file, backup_path)
         print(f"Backed up existing database to {backup_path.name}")
-    
+
     # Remove existing database
     if db_file.exists():
         db_file.unlink()
         print("Removed existing database")
-    
+
     # Create new database
     db = ConstitutionRulesDB(db_path)
-    
+
     # Clear existing rules
     with db.get_connection() as conn:
         cursor = conn.cursor()
@@ -154,11 +154,11 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         cursor.execute("DELETE FROM rule_categories")
         conn.commit()
         print("Cleared existing rules")
-    
+
     # Insert all rules
     with db.get_connection() as conn:
         cursor = conn.cursor()
-        
+
         for rule_data in rules:
             # Insert rule
             cursor.execute("""
@@ -172,7 +172,7 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
                 rule_data['content'],
                 json.dumps(rule_data)
             ))
-            
+
             # Insert configuration
             cursor.execute("""
                 INSERT INTO rule_configuration (rule_number, enabled, config_data)
@@ -188,13 +188,13 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
                     "maintenance_complete": True
                 })
             ))
-        
+
         # Update categories
         category_counts = {}
         for rule in rules:
             cat = rule['category']
             category_counts[cat] = category_counts.get(cat, 0) + 1
-        
+
         for category, count in category_counts.items():
             cursor.execute("""
                 INSERT OR REPLACE INTO rule_categories (name, description, priority, rule_count)
@@ -205,10 +205,10 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
                 "critical",
                 count
             ))
-        
+
         conn.commit()
         print(f"Inserted {len(rules)} rules into SQLite database")
-    
+
     db.close()
     print("[OK] SQLite database rebuilt successfully")
 
@@ -216,7 +216,7 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
 def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/constitution_rules.json"):
     """
     Rebuild JSON export with rules from JSON source files.
-    
+
     Args:
         rules: List of rule dictionaries
         json_path: Path to JSON export file
@@ -224,7 +224,7 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
     print(f"\n{'='*70}")
     print("REBUILDING JSON EXPORT")
     print(f"{'='*70}")
-    
+
     # Backup existing export
     json_file = Path(json_path)
     if json_file.exists():
@@ -232,11 +232,11 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
         import shutil
         shutil.copy2(json_file, backup_path)
         print(f"Backed up existing export to {backup_path.name}")
-    
+
     # Calculate statistics
     enabled_count = sum(1 for r in rules if r.get('enabled', True))
     disabled_count = len(rules) - enabled_count
-    
+
     # Count by category
     category_counts = {}
     category_rules = {}
@@ -246,7 +246,7 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
         if cat not in category_rules:
             category_rules[cat] = []
         category_rules[cat].append(rule['rule_number'])
-    
+
     # Build export structure
     export_data = {
         "version": "2.0",
@@ -293,12 +293,12 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
             for rule in rules
         }
     }
-    
+
     # Write export file
     json_file.parent.mkdir(parents=True, exist_ok=True)
     with open(json_file, 'w', encoding='utf-8') as f:
         json.dump(export_data, f, indent=2, ensure_ascii=False)
-    
+
     print(f"[OK] JSON export rebuilt with {len(rules)} rules")
     print(f"  - Enabled: {enabled_count}")
     print(f"  - Disabled: {disabled_count}")
@@ -307,7 +307,7 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
 def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "config/constitution_config.json"):
     """
     Update configuration file with correct rule count.
-    
+
     Args:
         rules: List of rule dictionaries
         config_path: Path to configuration file
@@ -315,9 +315,9 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
     print(f"\n{'='*70}")
     print("UPDATING CONFIGURATION FILE")
     print(f"{'='*70}")
-    
+
     config_file = Path(config_path)
-    
+
     # Load existing config to preserve settings
     if config_file.exists():
         with open(config_file, 'r', encoding='utf-8') as f:
@@ -353,11 +353,11 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
             },
             "rules": {}
         }
-    
+
     # Update total rules count
     config["total_rules"] = len(rules)
     config["last_updated"] = datetime.now().isoformat()
-    
+
     # Update or create rule entries (preserve existing enabled/disabled states)
     enabled_count = 0
     for rule in rules:
@@ -378,12 +378,12 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
                 enabled_count += 1
         if rule.get('enabled', True) and rule_num not in config.get("rules", {}):
             enabled_count += 1
-    
+
     # Save updated config
     config_file.parent.mkdir(parents=True, exist_ok=True)
     with open(config_file, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
-    
+
     print(f"[OK] Configuration file updated")
     print(f"  - Total rules: {len(rules)}")
     print(f"  - Enabled rules: {enabled_count}")
@@ -397,59 +397,59 @@ def main():
     print(f"Source of Truth: docs/constitution/*.json")
     print(f"Timestamp: {datetime.now().isoformat()}")
     print("="*70)
-    
+
     try:
         # Step 1: Load rules from JSON source files
         print("\n[1/4] Loading rules from JSON source files...")
         rules = load_rules_from_json_files()
-        
+
         if not rules:
             print("ERROR: No rules loaded from source files!")
             return 1
-        
+
         print(f"[OK] Loaded {len(rules)} rules")
-        
+
         # Step 2: Rebuild SQLite database
         print("\n[2/4] Rebuilding SQLite database...")
         rebuild_sqlite_database(rules)
-        
+
         # Step 3: Rebuild JSON export
         print("\n[3/4] Rebuilding JSON export...")
         rebuild_json_export(rules)
-        
+
         # Step 4: Update configuration file
         print("\n[4/4] Updating configuration file...")
         update_configuration_file(rules)
-        
+
         # Verification
         print(f"\n{'='*70}")
         print("VERIFICATION")
         print(f"{'='*70}")
-        
+
         # Verify SQLite
         db = ConstitutionRulesDB()
         db_rules = db.get_all_rules()
         print(f"SQLite database: {len(db_rules)} rules")
         db.close()
-        
+
         # Verify JSON export
         with open("config/constitution_rules.json", 'r', encoding='utf-8') as f:
             json_data = json.load(f)
         print(f"JSON export: {json_data['statistics']['total_rules']} rules")
-        
+
         # Verify config
         with open("config/constitution_config.json", 'r', encoding='utf-8') as f:
             config_data = json.load(f)
         print(f"Configuration: {config_data.get('total_rules', 'N/A')} rules")
-        
+
         print(f"\n{'='*70}")
         print("[OK] DATABASE REBUILD COMPLETE")
         print(f"{'='*70}")
         print(f"Total rules: {len(rules)}")
         print(f"All sources synchronized with docs/constitution/*.json")
-        
+
         return 0
-        
+
     except Exception as e:
         print(f"\nERROR: {e}")
         import traceback
@@ -459,4 +459,3 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
-

@@ -194,4 +194,3 @@ describe('ReceiptGenerator Signature Implementation', () => {
         expectValidSignature(payload, signature);
     });
 });
-

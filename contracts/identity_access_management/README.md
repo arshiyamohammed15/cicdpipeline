@@ -45,4 +45,3 @@ This folder contains **OpenAPI**, **JSON Schemas**, and **example JSONs** for th
 
 - IAM Module Specification: `docs/architecture/modules/IDENTITY_ACCESS_MANAGEMENT_IAM_MODULE_v1_1_0.md`
 - IAM Triple Analysis: `docs/architecture/modules/IAM_MODULE_TRIPLE_ANALYSIS_v1_0.md`
-

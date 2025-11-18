@@ -11,4 +11,3 @@ export function registerModule(context: any, deps: any): any {
   };
   return module;
 }
-

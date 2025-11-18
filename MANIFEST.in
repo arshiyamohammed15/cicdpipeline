@@ -36,4 +36,3 @@ include README.md
 include requirements*.txt
 recursive-include config *.json
 recursive-include docs *.md
-

@@ -1,13 +1,13 @@
 /**
  * Receipt Storage Reader
- * 
+ *
  * Reads receipts from IDE Plane storage according to 4-Plane Storage Architecture rules.
- * 
+ *
  * Compliance:
  * - Rule 219: JSONL receipts (newline-delimited)
  * - Rule 223: Path resolution via ZU_ROOT
  * - Rule 224: Receipts validation (signed, append-only)
- * 
+ *
  * @module storage
  */
 
@@ -31,7 +31,7 @@ export class ReceiptStorageReader {
 
     /**
      * Read receipts from storage
-     * 
+     *
      * @param repoId Repository identifier (kebab-case)
      * @param year 4-digit year (YYYY)
      * @param month 2-digit month (1-12)
@@ -100,7 +100,7 @@ export class ReceiptStorageReader {
 
     /**
      * Read receipts for a specific date range
-     * 
+     *
      * @param repoId Repository identifier
      * @param startDate Start date (inclusive)
      * @param endDate End date (inclusive)
@@ -130,7 +130,7 @@ export class ReceiptStorageReader {
             const actualYear = month === 0 ? year - 1 : year;
 
             const receipts = await this.readReceipts(repoId, actualYear, actualMonth);
-            
+
             // Filter receipts by date range
             for (const receipt of receipts) {
                 const receiptDate = new Date(receipt.timestamp_utc);
@@ -145,7 +145,7 @@ export class ReceiptStorageReader {
 
     /**
      * Read latest receipts
-     * 
+     *
      * @param repoId Repository identifier
      * @param limit Maximum number of receipts to return
      * @returns Promise<Array<DecisionReceipt | FeedbackReceipt>> Latest receipts
@@ -184,15 +184,15 @@ export class ReceiptStorageReader {
 
     /**
      * Validate receipt signature (Rule 224)
-     * 
+     *
      * Note: Full signature validation requires cryptographic verification.
      * This implementation provides structure for signature validation.
-     * 
+     *
      * TODO: Implement cryptographic signature verification using:
      * - Public keys from ide/policy/trust/pubkeys/ or product/policy/trust/pubkeys/
      * - Ed25519 or similar signing algorithm
      * - Canonical JSON form for signature verification
-     * 
+     *
      * @param receipt Receipt to validate
      * @returns boolean True if signature is valid
      */
@@ -217,4 +217,3 @@ export class ReceiptStorageReader {
         }
     }
 }
-

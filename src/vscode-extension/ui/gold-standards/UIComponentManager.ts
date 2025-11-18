@@ -13,4 +13,3 @@ export class GoldStandardsUIComponentManager extends PlaceholderUIComponentManag
         this.updateData(payload);
     }
 }
-

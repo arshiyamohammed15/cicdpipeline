@@ -21,13 +21,13 @@ export class HybridOrchestrator implements DelegationInterface {
 
     public async delegate(task: DelegationTask): Promise<DelegationResult> {
         const startTime = Date.now();
-        
+
         try {
             console.log(`Hybrid Orchestrator processing task: ${task.id}`);
-            
+
             // Orchestrate hybrid processing
             const orchestrationResult = await this.orchestrateProcessing(task);
-            
+
             const processingTime = Date.now() - startTime;
             this.tasksProcessed++;
             this.totalLatency += processingTime;
@@ -56,9 +56,9 @@ export class HybridOrchestrator implements DelegationInterface {
         } catch (error) {
             const processingTime = Date.now() - startTime;
             this.errorCount++;
-            
+
             console.error(`Hybrid Orchestrator failed task: ${task.id}`, error);
-            
+
             return {
                 taskId: task.id,
                 success: false,
@@ -111,10 +111,10 @@ export class HybridOrchestrator implements DelegationInterface {
     private async orchestrateProcessing(task: DelegationTask): Promise<any> {
         // Determine processing strategy based on task characteristics
         const strategy = this.determineProcessingStrategy(task);
-        
+
         // Execute hybrid processing
         const result = await this.executeHybridProcessing(task, strategy);
-        
+
         return result;
     }
 
@@ -134,7 +134,7 @@ export class HybridOrchestrator implements DelegationInterface {
     private async executeHybridProcessing(task: DelegationTask, strategy: string): Promise<any> {
         // Simulate hybrid processing based on strategy
         await new Promise(resolve => setTimeout(resolve, 50));
-        
+
         return {
             strategy,
             processed: true,

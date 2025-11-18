@@ -50,4 +50,3 @@ Verification occurs at:
 2. **IDE/Edge Agent**: Before using policy snapshot for evaluation
 
 See `verify_path.md` for detailed verification process.
-

@@ -7,4 +7,3 @@ Reads/Writes: No file I/O operations
 Contracts: FastAPI service contract, HTTP API endpoints
 Risks: None - initialization only
 """
-

@@ -181,4 +181,3 @@ describe('Pre-commit Integration', () => {
         expect(mismatch.detail.toLowerCase()).toContain('mismatch');
     });
 });
-

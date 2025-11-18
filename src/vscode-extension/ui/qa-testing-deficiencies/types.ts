@@ -3,5 +3,3 @@ export interface QATestingDeficiencyMetric {
     readonly description: string;
     readonly severity: 'low' | 'medium' | 'high';
 }
-
-

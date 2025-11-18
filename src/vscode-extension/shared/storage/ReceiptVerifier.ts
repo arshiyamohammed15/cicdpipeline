@@ -158,4 +158,3 @@ export const extractKidFromSignature = (signatureValue: unknown): string | null 
     const parsed = parseSignature(signatureValue);
     return parsed ? parsed.kid : null;
 };
-

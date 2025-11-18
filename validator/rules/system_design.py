@@ -28,23 +28,23 @@ SEPARATION_OF_CONCERNS_RULE = rule_fields("Keep Different Parts Separate")
 class SystemDesignValidator:
     """
     Validates advanced system design rules.
-    
+
     This class focuses on detecting consistency issues, progressive disclosure,
     and unified product experience violations.
     """
-    
+
     def __init__(self):
         """Initialize the system design validator."""
         self.standard_methods = ['__init__', 'setup', 'configure', 'initialize', 'start', 'stop', 'cleanup']
         self.standard_error_types = ['ValueError', 'TypeError', 'RuntimeError', 'ConfigurationError']
         self.standard_return_patterns = ['bool', 'dict', 'list', 'str', 'int', 'None']
-    
+
     def validate_information_usage(self, content: str) -> List[Violation]:
         """Validate information usage patterns for system design."""
         violations = []
         # Basic validation - return empty list for now
         return violations
-    
+
     def validate_architecture_consistency(self, content: str) -> List[Violation]:
         """Validate architecture consistency across modules."""
         violations = []
@@ -59,7 +59,7 @@ class SystemDesignValidator:
                 column_number=1
             ))
         return violations
-    
+
     def validate_separation_of_concerns(self, content: str) -> List[Violation]:
         """Validate separation of concerns patterns."""
         violations = []
@@ -69,7 +69,7 @@ class SystemDesignValidator:
             r'def\s+\w+.*config.*',
             r'def\s+\w+.*database.*'
         ]
-        
+
         lines = content.split('\n')
         for i, line in enumerate(lines, 1):
             for pattern in mixed_patterns:
@@ -83,7 +83,7 @@ class SystemDesignValidator:
                         column_number=1
                     ))
         return violations
-    
+
     def validate_dependency_injection(self, content: str) -> List[Violation]:
         """Validate dependency injection practices."""
         violations = []
@@ -93,7 +93,7 @@ class SystemDesignValidator:
             r'=\s+\w+\(\)',
             r'import\s+\w+'
         ]
-        
+
         lines = content.split('\n')
         for i, line in enumerate(lines, 1):
             for pattern in hardcoded_patterns:
@@ -107,27 +107,27 @@ class SystemDesignValidator:
                         column_number=1
                     ))
         return violations
-        
+
     def validate_consistent_modules(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for consistent module patterns.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of consistency violations
         """
         violations = []
-        
+
         # Check for inconsistent class naming patterns
         class_names = []
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
                 class_names.append(node.name)
-        
+
         # Check for inconsistent naming conventions
         naming_patterns = {
             'PascalCase': 0,
@@ -135,7 +135,7 @@ class SystemDesignValidator:
             'camelCase': 0,
             'UPPER_CASE': 0
         }
-        
+
         for class_name in class_names:
             if re.match(r'^[A-Z][a-zA-Z0-9]*$', class_name):
                 naming_patterns['PascalCase'] += 1
@@ -145,7 +145,7 @@ class SystemDesignValidator:
                 naming_patterns['camelCase'] += 1
             elif re.match(r'^[A-Z][A-Z0-9_]*$', class_name):
                 naming_patterns['UPPER_CASE'] += 1
-        
+
         # If multiple naming patterns are used, flag inconsistency
         used_patterns = sum(1 for count in naming_patterns.values() if count > 0)
         if used_patterns > 1:
@@ -159,18 +159,18 @@ class SystemDesignValidator:
                 code_snippet="Multiple naming patterns",
                 fix_suggestion="Use consistent naming convention across all modules"
             ))
-        
+
         # Check for inconsistent error handling
         error_handling_patterns = []
         for node in ast.walk(tree):
             if isinstance(node, ast.Raise):
                 if isinstance(node.exc, ast.Name):
                     error_handling_patterns.append(node.exc.id)
-        
+
         # Check if standard error types are used consistently
-        non_standard_errors = [error for error in error_handling_patterns 
+        non_standard_errors = [error for error in error_handling_patterns
                               if error not in self.standard_error_types]
-        
+
         if non_standard_errors:
             violations.append(Violation(
                 **ARCHITECTURE_CONSISTENCY,
@@ -182,28 +182,28 @@ class SystemDesignValidator:
                 code_snippet=str(non_standard_errors),
                 fix_suggestion="Use standard error types for consistency"
             ))
-        
+
         return violations
-    
+
     def validate_progressive_disclosure(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for progressive disclosure patterns.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of progressive disclosure violations
         """
         violations = []
-        
+
         # Check for functions with too many parameters (information overload)
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
                 param_count = len(node.args.args)
-                
+
                 # Flag functions with more than 5 parameters
                 if param_count > 5:
                     violations.append(Violation(
@@ -216,7 +216,7 @@ class SystemDesignValidator:
                         code_snippet=node.name,
                         fix_suggestion="Use configuration objects or builder pattern for complex functions"
                     ))
-                
+
                 # Check for missing default values (should show basic info first)
                 required_params = param_count - len(node.args.defaults)
                 if required_params > 3:
@@ -230,7 +230,7 @@ class SystemDesignValidator:
                         code_snippet=node.name,
                         fix_suggestion="Provide default values for optional parameters"
                     ))
-        
+
         # Check for missing abstraction layers
         complex_functions = []
         for node in ast.walk(tree):
@@ -240,10 +240,10 @@ class SystemDesignValidator:
                 for child in ast.walk(node):
                     if isinstance(child, (ast.If, ast.For, ast.While, ast.Try)):
                         complexity_score += 1
-                
+
                 if complexity_score > 5:
                     complex_functions.append((node.name, complexity_score))
-        
+
         if complex_functions:
             violations.append(Violation(
                 **PROGRESSIVE_DISCLOSURE,
@@ -255,28 +255,28 @@ class SystemDesignValidator:
                 code_snippet="High complexity",
                 fix_suggestion="Break complex functions into smaller, focused functions"
             ))
-        
+
         return violations
-    
+
     def validate_consistent_registration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for consistent module registration.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of registration consistency violations
         """
         violations = []
-        
+
         # Check for classes without standard lifecycle methods
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
                 class_methods = [child.name for child in node.body if isinstance(child, ast.FunctionDef)]
-                
+
                 # Check for missing standard initialization
                 if '__init__' not in class_methods and len(class_methods) > 0:
                     violations.append(Violation(
@@ -289,13 +289,13 @@ class SystemDesignValidator:
                         code_snippet=node.name,
                         fix_suggestion="Add standard __init__ method for consistent initialization"
                     ))
-                
+
                 # Check for inconsistent setup patterns
                 setup_methods = [
                     method for method in class_methods
                     if any(keyword in method.lower() for keyword in ['setup', 'configure', 'init'])
                 ]
-                
+
                 if len(setup_methods) > 1:
                     violations.append(Violation(
                         **MODULE_REGISTRATION,
@@ -307,7 +307,7 @@ class SystemDesignValidator:
                         code_snippet=str(setup_methods),
                         fix_suggestion="Use single, consistent setup method"
                     ))
-        
+
         # Check for inconsistent module-level initialization
         module_init_patterns = []
         for node in ast.walk(tree):
@@ -315,7 +315,7 @@ class SystemDesignValidator:
                 if isinstance(node.targets[0], ast.Name):
                     if 'init' in node.targets[0].id.lower() or 'config' in node.targets[0].id.lower():
                         module_init_patterns.append(node.targets[0].id)
-        
+
         if len(module_init_patterns) > 3:
             violations.append(Violation(
                 **MODULE_REGISTRATION,
@@ -327,29 +327,29 @@ class SystemDesignValidator:
                 code_snippet=str(module_init_patterns),
                 fix_suggestion="Use consistent module initialization pattern"
             ))
-        
+
         return violations
-    
+
     def validate_unified_product(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for unified product experience.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of unified product violations
         """
         violations = []
-        
+
         # Check for inconsistent command/function naming
         function_names = []
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
                 function_names.append(node.name)
-        
+
         # Check for inconsistent naming patterns in functions
         command_patterns = {
             'get_': 0,
@@ -360,12 +360,12 @@ class SystemDesignValidator:
             'process_': 0,
             'handle_': 0
         }
-        
+
         for func_name in function_names:
             for pattern in command_patterns:
                 if func_name.startswith(pattern):
                     command_patterns[pattern] += 1
-        
+
         # Check for missing standard command patterns
         used_patterns = sum(1 for count in command_patterns.values() if count > 0)
         if used_patterns > 0 and used_patterns < 3:
@@ -379,7 +379,7 @@ class SystemDesignValidator:
                 code_snippet="Command patterns",
                 fix_suggestion="Use consistent command naming patterns across modules"
             ))
-        
+
         # Check for inconsistent error message formats
         error_messages = []
         for node in ast.walk(tree):
@@ -387,7 +387,7 @@ class SystemDesignValidator:
                 if isinstance(node.exc, ast.Call):
                     if isinstance(node.exc.args[0], ast.Constant):
                         error_messages.append(node.exc.args[0].value)
-        
+
         # Check for inconsistent error message formats
         if error_messages:
             formats = {
@@ -396,7 +396,7 @@ class SystemDesignValidator:
                 'lower_case': 0,
                 'no_period': 0
             }
-            
+
             for msg in error_messages:
                 if isinstance(msg, str):
                     if msg.endswith('.'):
@@ -407,7 +407,7 @@ class SystemDesignValidator:
                         formats['lower_case'] += 1
                     else:
                         formats['no_period'] += 1
-            
+
             used_formats = sum(1 for count in formats.values() if count > 0)
             if used_formats > 1:
                 violations.append(Violation(
@@ -420,23 +420,23 @@ class SystemDesignValidator:
                     code_snippet="Error messages",
                     fix_suggestion="Use consistent error message format across all modules"
                 ))
-        
+
         return violations
-    
+
     def validate_feature_organization(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for clear feature organization.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of feature organization violations
         """
         violations = []
-        
+
         # Check for proper module organization
         module_structure = {
             'imports': 0,
@@ -444,7 +444,7 @@ class SystemDesignValidator:
             'functions': 0,
             'constants': 0
         }
-        
+
         for node in ast.walk(tree):
             if isinstance(node, (ast.Import, ast.ImportFrom)):
                 module_structure['imports'] += 1
@@ -457,7 +457,7 @@ class SystemDesignValidator:
                 for target in node.targets:
                     if isinstance(target, ast.Name) and target.id.isupper():
                         module_structure['constants'] += 1
-        
+
         # Check for missing organization patterns
         if module_structure['imports'] == 0:
             violations.append(Violation(
@@ -470,17 +470,17 @@ class SystemDesignValidator:
                 code_snippet="Module organization",
                 fix_suggestion="Organize imports, classes, and functions in clear sections"
             ))
-        
+
         # Check for feature hierarchy
         class_names = []
         function_names = []
-        
+
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
                 class_names.append(node.name)
             elif isinstance(node, ast.FunctionDef):
                 function_names.append(node.name)
-        
+
         # Check for consistent naming hierarchy
         if len(class_names) > 1:
             # Check if classes follow a naming pattern
@@ -492,12 +492,12 @@ class SystemDesignValidator:
                 'Model': 0,
                 'View': 0
             }
-            
+
             for class_name in class_names:
                 for pattern in patterns:
                     if pattern in class_name:
                         patterns[pattern] += 1
-            
+
             used_patterns = sum(1 for count in patterns.values() if count > 0)
             if used_patterns == 0:
                 violations.append(Violation(
@@ -510,27 +510,27 @@ class SystemDesignValidator:
                     code_snippet="Class hierarchy",
                     fix_suggestion="Use consistent naming patterns to organize features clearly"
                 ))
-        
+
         return violations
-    
+
     def validate_quick_adoption(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for quick adoption patterns.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of adoption pattern violations
         """
         violations = []
-        
+
         # Check for quick-start patterns
         quick_start_patterns = ['main', 'run', 'start', 'init', 'quick', 'simple', 'basic']
         has_quick_start = any(pattern in content.lower() for pattern in quick_start_patterns)
-        
+
         if not has_quick_start:
             violations.append(Violation(
                 rule_name="Design for Quick Adoption",
@@ -542,11 +542,11 @@ class SystemDesignValidator:
                 code_snippet="Quick start",
                 fix_suggestion="Add quick-start functions for immediate value"
             ))
-        
+
         # Check for onboarding mechanisms
         onboarding_patterns = ['example', 'demo', 'tutorial', 'guide', 'help', 'documentation']
         has_onboarding = any(pattern in content.lower() for pattern in onboarding_patterns)
-        
+
         if not has_onboarding:
             violations.append(Violation(
                 rule_name="Design for Quick Adoption",
@@ -558,11 +558,11 @@ class SystemDesignValidator:
                 code_snippet="Onboarding",
                 fix_suggestion="Add examples, demos, or guides for quick adoption"
             ))
-        
+
         # Check for adoption barriers
         barrier_patterns = ['complex', 'difficult', 'hard', 'complicated', 'advanced', 'expert']
         has_barriers = any(pattern in content.lower() for pattern in barrier_patterns)
-        
+
         if has_barriers:
             violations.append(Violation(
                 rule_name="Design for Quick Adoption",
@@ -574,11 +574,11 @@ class SystemDesignValidator:
                 code_snippet="Adoption barriers",
                 fix_suggestion="Simplify complex features for easier adoption"
             ))
-        
+
         # Check for immediate value patterns
         value_patterns = ['result', 'output', 'return', 'success', 'complete', 'done']
         has_immediate_value = any(pattern in content.lower() for pattern in value_patterns)
-        
+
         if not has_immediate_value:
             violations.append(Violation(
                 rule_name="Design for Quick Adoption",
@@ -590,27 +590,27 @@ class SystemDesignValidator:
                 code_snippet="Immediate value",
                 fix_suggestion="Ensure users get value in first 30 seconds of use"
             ))
-        
+
         return violations
-    
+
     def validate_user_experience_testing(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for user experience testing patterns.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of UX testing violations
         """
         violations = []
-        
+
         # Check for UX testing patterns
         ux_testing_patterns = ['test', 'testing', 'user_test', 'usability', 'ux_test', 'user_experience']
         has_ux_testing = any(pattern in content.lower() for pattern in ux_testing_patterns)
-        
+
         if not has_ux_testing:
             violations.append(Violation(
                 rule_name="Test User Experience",
@@ -622,11 +622,11 @@ class SystemDesignValidator:
                 code_snippet="UX testing",
                 fix_suggestion="Add user experience testing to validate usability"
             ))
-        
+
         # Check for usability metrics
         usability_patterns = ['usability', 'accessibility', 'user_friendly', 'intuitive', 'easy_to_use']
         has_usability = any(pattern in content.lower() for pattern in usability_patterns)
-        
+
         if not has_usability:
             violations.append(Violation(
                 rule_name="Test User Experience",
@@ -638,11 +638,11 @@ class SystemDesignValidator:
                 code_snippet="Usability",
                 fix_suggestion="Add usability testing and metrics"
             ))
-        
+
         # Check for user feedback patterns
         feedback_patterns = ['feedback', 'user_feedback', 'survey', 'rating', 'review', 'comment']
         has_feedback = any(pattern in content.lower() for pattern in feedback_patterns)
-        
+
         if not has_feedback:
             violations.append(Violation(
                 rule_name="Test User Experience",
@@ -654,11 +654,11 @@ class SystemDesignValidator:
                 code_snippet="User feedback",
                 fix_suggestion="Add user feedback collection mechanisms"
             ))
-        
+
         # Check for A/B testing patterns
         ab_testing_patterns = ['ab_test', 'a_b_test', 'experiment', 'variant', 'control', 'treatment']
         has_ab_testing = any(pattern in content.lower() for pattern in ab_testing_patterns)
-        
+
         if not has_ab_testing:
             violations.append(Violation(
                 rule_name="Test User Experience",
@@ -670,11 +670,11 @@ class SystemDesignValidator:
                 code_snippet="A/B testing",
                 fix_suggestion="Add A/B testing for user experience validation"
             ))
-        
+
         # Check for user journey patterns
         journey_patterns = ['user_journey', 'user_flow', 'workflow', 'process', 'steps', 'path']
         has_journey = any(pattern in content.lower() for pattern in journey_patterns)
-        
+
         if not has_journey:
             violations.append(Violation(
                 rule_name="Test User Experience",
@@ -686,23 +686,23 @@ class SystemDesignValidator:
                 code_snippet="User journey",
                 fix_suggestion="Add user journey testing and optimization"
             ))
-        
+
         return violations
-    
+
     def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Run all system design validations.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of all system design violations
         """
         violations = []
-        
+
         violations.extend(self.validate_consistent_modules(tree, content, file_path))
         violations.extend(self.validate_progressive_disclosure(tree, content, file_path))
         violations.extend(self.validate_consistent_registration(tree, content, file_path))
@@ -710,5 +710,5 @@ class SystemDesignValidator:
         violations.extend(self.validate_feature_organization(tree, content, file_path))
         violations.extend(self.validate_quick_adoption(tree, content, file_path))
         violations.extend(self.validate_user_experience_testing(tree, content, file_path))
-        
+
         return violations

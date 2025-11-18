@@ -56,7 +56,7 @@ def process_prompt(
     except Exception as exc:
         error_code = "OLLAMA_SERVICE_ERROR"
         error_message = str(exc)
-        
+
         # Log error per Rule 4083, Rule 62, Rule 1641
         log_data_error = {
             "timestamp": datetime.utcnow().timestamp(),
@@ -71,7 +71,7 @@ def process_prompt(
             "cause": error_message
         }
         logger.error(json.dumps(log_data_error))
-        
+
         # Raise HTTPException with error envelope structure per Rule 4171
         raise HTTPException(
             status_code=500,

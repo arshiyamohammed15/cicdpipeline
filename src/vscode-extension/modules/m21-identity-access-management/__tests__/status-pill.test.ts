@@ -5,4 +5,3 @@ describe('IAM Status Pill', () => {
     expect(true).toBe(true);
   });
 });
-

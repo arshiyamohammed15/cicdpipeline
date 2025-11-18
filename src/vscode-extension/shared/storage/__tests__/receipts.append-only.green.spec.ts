@@ -72,4 +72,3 @@ describe('receipts.append-only.green', () => {
         expect(finalContent.includes('receipt-2')).toBe(true);
     });
 });
-

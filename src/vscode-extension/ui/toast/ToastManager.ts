@@ -14,7 +14,7 @@ export class ToastManager implements vscode.Disposable {
     public showFeedbackToast(decisionId: string): void {
         const message = 'How did this decision work for you?';
         const actions = ['Worked', 'Partly', "Didn't Work"];
-        
+
         void vscode.window.showInformationMessage(message, ...actions).then(selection => {
             if (selection) {
                 this.handleFeedback(decisionId, selection);
@@ -25,7 +25,7 @@ export class ToastManager implements vscode.Disposable {
     private handleFeedback(decisionId: string, feedback: string): void {
         // Send feedback to Edge Agent
         console.log(`Feedback for decision ${decisionId}: ${feedback}`);
-        
+
         // Show follow-up toast for tags if needed
         if (feedback === 'Partly' || feedback === "Didn't Work") {
             this.showTagSelectionToast(decisionId, feedback);
@@ -35,7 +35,7 @@ export class ToastManager implements vscode.Disposable {
     private showTagSelectionToast(decisionId: string, feedback: string): void {
         const message = `Please select tags for "${feedback}" feedback:`;
         const actions = ['Too Noisy', 'Not Relevant', 'Incorrect', 'Other'];
-        
+
         void vscode.window.showInformationMessage(message, ...actions).then(selection => {
             if (selection) {
                 console.log(`Tags for decision ${decisionId}: ${selection}`);

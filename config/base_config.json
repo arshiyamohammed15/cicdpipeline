@@ -14,7 +14,7 @@
       "description": "Critical violation that must be fixed"
     },
     "warning": {
-      "color": "yellow", 
+      "color": "yellow",
       "exit_code": 0,
       "description": "Issue that should be addressed"
     },

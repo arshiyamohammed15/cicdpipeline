@@ -1,15 +1,15 @@
 /**
  * IngressPort
- * 
+ *
  * Cloud-agnostic interface for ingress/load balancer operations.
  * Implemented by local adapters for traffic routing and load balancing.
- * 
+ *
  * @interface IngressPort
  */
 export interface IngressPort {
   /**
    * Create or update an ingress rule.
-   * 
+   *
    * @param rule - Ingress rule configuration
    * @returns Promise resolving to ingress rule ID
    */
@@ -17,7 +17,7 @@ export interface IngressPort {
 
   /**
    * Delete an ingress rule.
-   * 
+   *
    * @param ruleId - Ingress rule ID to delete
    * @returns Promise resolving when rule is deleted
    */
@@ -25,7 +25,7 @@ export interface IngressPort {
 
   /**
    * Get ingress rule configuration.
-   * 
+   *
    * @param ruleId - Ingress rule ID
    * @returns Promise resolving to ingress rule
    */
@@ -33,7 +33,7 @@ export interface IngressPort {
 
   /**
    * List all ingress rules.
-   * 
+   *
    * @param options - Optional filter options
    * @returns Promise resolving to list of ingress rules
    */
@@ -41,7 +41,7 @@ export interface IngressPort {
 
   /**
    * Get ingress statistics and health.
-   * 
+   *
    * @param ruleId - Ingress rule ID
    * @returns Promise resolving to ingress statistics
    */
@@ -135,4 +135,3 @@ export interface IngressStats {
   /** Target health status */
   targetHealth?: 'healthy' | 'unhealthy' | 'degraded';
 }
-

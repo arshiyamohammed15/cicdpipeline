@@ -54,4 +54,3 @@ indent_style = tab
 # Batch files
 [*.{bat,cmd}]
 end_of_line = crlf
-

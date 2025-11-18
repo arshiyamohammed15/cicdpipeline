@@ -13,7 +13,7 @@ Resolves storage paths using ZU_ROOT (from environment variable or VS Code confi
 ```typescript
 import { StoragePathResolver } from './shared/storage/StoragePathResolver';
 
-const resolver = new StoragePathResolver(); 
+const resolver = new StoragePathResolver();
 // Uses: process.env.ZU_ROOT or vscode.workspace.getConfiguration('zeroui').get('zuRoot')
 
 const receiptPath = resolver.resolveReceiptPath('my-repo', 2025, 10);
@@ -103,4 +103,3 @@ Storage operations handle errors gracefully:
 - Node.js `fs` module
 - Node.js `path` module
 - ReceiptParser (for receipt validation)
-

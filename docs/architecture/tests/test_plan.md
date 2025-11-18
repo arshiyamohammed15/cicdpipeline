@@ -224,4 +224,3 @@ npm test -- --coverage
 - **Pass Rate**: 95%+ pass rate
 - **Execution Time**: < 10 minutes for full suite
 - **Flakiness**: < 1% flaky tests
-

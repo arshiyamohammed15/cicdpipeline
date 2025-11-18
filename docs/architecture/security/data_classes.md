@@ -221,4 +221,3 @@ Redaction occurs at:
 3. **Encrypt Always**: Encrypt Confidential and Restricted data
 4. **Audit Access**: Log all access to sensitive data
 5. **Regular Review**: Review classifications quarterly
-

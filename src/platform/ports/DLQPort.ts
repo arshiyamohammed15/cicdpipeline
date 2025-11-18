@@ -1,15 +1,15 @@
 /**
  * DLQPort
- * 
+ *
  * Cloud-agnostic interface for Dead Letter Queue (DLQ) operations.
  * Implemented by local adapters for handling failed messages.
- * 
+ *
  * @interface DLQPort
  */
 export interface DLQPort {
   /**
    * Send a failed message to the dead letter queue.
-   * 
+   *
    * @param originalQueueName - Name of the original queue where message failed
    * @param message - Original message that failed processing
    * @param error - Error that caused the failure
@@ -25,7 +25,7 @@ export interface DLQPort {
 
   /**
    * Receive messages from the dead letter queue for analysis/reprocessing.
-   * 
+   *
    * @param originalQueueName - Name of the original queue (to filter DLQ messages)
    * @param maxMessages - Maximum number of messages to receive (default: 1)
    * @returns Promise resolving to array of DLQ messages
@@ -37,7 +37,7 @@ export interface DLQPort {
 
   /**
    * Delete a message from the dead letter queue.
-   * 
+   *
    * @param originalQueueName - Name of the original queue
    * @param receiptHandle - DLQ message receipt handle
    * @returns Promise resolving when message is deleted
@@ -46,7 +46,7 @@ export interface DLQPort {
 
   /**
    * Get DLQ attributes and statistics.
-   * 
+   *
    * @param originalQueueName - Name of the original queue
    * @returns Promise resolving to DLQ attributes
    */
@@ -96,4 +96,3 @@ export interface DLQAttributes {
   /** Message retention period (seconds) */
   messageRetentionPeriod?: number;
 }
-

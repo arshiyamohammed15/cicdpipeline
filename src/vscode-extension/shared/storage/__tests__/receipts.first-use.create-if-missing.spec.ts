@@ -80,4 +80,3 @@ describe('receipts.first-use.create-if-missing', () => {
         expect(finalContent.includes('receipt-2')).toBe(true);
     });
 });
-

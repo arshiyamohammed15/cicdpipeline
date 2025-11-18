@@ -25,5 +25,3 @@
 - **Observed public key formats**:
     - PEM (`-----BEGIN PUBLIC KEY-----`) committed for `pscl-dev` in both product and tenant planes
     - Additional keys can be supplied locally via `.zeroui/verify/trust/pubkeys/` when running the verification harness
-
-

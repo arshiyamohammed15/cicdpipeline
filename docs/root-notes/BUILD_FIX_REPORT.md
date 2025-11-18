@@ -53,4 +53,3 @@ ui/toast/ToastManager.ts(44,32): error TS2345: Argument of type 'Thenable<string
 
 - **STATUS: PASS**
 - Diff summary: updated 19 extension interface files to call `_onDidChangeTreeData.fire(undefined)`, adjusted `ToastManager` to stop storing `Thenable` instances, and maintained `BUILD_FIX_REPORT.md` changelog.
-

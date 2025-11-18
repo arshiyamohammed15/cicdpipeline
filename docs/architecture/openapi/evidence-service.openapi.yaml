@@ -5,7 +5,7 @@ info:
   description: |
     Infrastructure service for evidence handle management and evidence storage.
     Provides evidence storage, retrieval, and lifecycle management for decision receipts.
-    
+
     **Service Type**: Infrastructure (Shared Services)
     **Implementation**: Python/FastAPI
 servers:
@@ -317,4 +317,3 @@ components:
             - message
       required:
         - error
-

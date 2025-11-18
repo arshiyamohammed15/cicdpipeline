@@ -204,4 +204,3 @@ ZeroUI 2.0 is committed to:
 - **User Control**: Users control their data
 - **Security**: Strong security measures
 - **Compliance**: Compliance with privacy regulations
-

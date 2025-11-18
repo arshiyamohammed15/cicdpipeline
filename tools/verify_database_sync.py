@@ -35,4 +35,3 @@ if total == db['statistics']['total_rules'] == config.get('total_rules', 0):
     print("\n[OK] All sources are synchronized")
 else:
     print("\n[ERROR] Sources are not synchronized!")
-

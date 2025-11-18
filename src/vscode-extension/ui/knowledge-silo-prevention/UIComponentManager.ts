@@ -13,5 +13,3 @@ export class KnowledgeSiloPreventionUIComponentManager extends PlaceholderUIComp
         this.updateData(payload);
     }
 }
-
-

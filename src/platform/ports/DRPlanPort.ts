@@ -1,15 +1,15 @@
 /**
  * DRPlanPort
- * 
+ *
  * Cloud-agnostic interface for Disaster Recovery (DR) plan operations.
  * Implemented by local adapters for DR planning and execution.
- * 
+ *
  * @interface DRPlanPort
  */
 export interface DRPlanPort {
   /**
    * Create or update a DR plan.
-   * 
+   *
    * @param plan - DR plan configuration
    * @returns Promise resolving to DR plan ID
    */
@@ -17,7 +17,7 @@ export interface DRPlanPort {
 
   /**
    * Get a DR plan.
-   * 
+   *
    * @param planId - DR plan ID
    * @returns Promise resolving to DR plan
    */
@@ -25,7 +25,7 @@ export interface DRPlanPort {
 
   /**
    * Delete a DR plan.
-   * 
+   *
    * @param planId - DR plan ID to delete
    * @returns Promise resolving when plan is deleted
    */
@@ -33,7 +33,7 @@ export interface DRPlanPort {
 
   /**
    * Execute a DR plan (failover).
-   * 
+   *
    * @param planId - DR plan ID to execute
    * @param options - Optional execution options
    * @returns Promise resolving to execution result
@@ -42,7 +42,7 @@ export interface DRPlanPort {
 
   /**
    * Test a DR plan (dry run).
-   * 
+   *
    * @param planId - DR plan ID to test
    * @returns Promise resolving to test result
    */
@@ -50,7 +50,7 @@ export interface DRPlanPort {
 
   /**
    * Get DR plan execution history.
-   * 
+   *
    * @param planId - DR plan ID
    * @param options - Optional filter options
    * @returns Promise resolving to execution history
@@ -211,4 +211,3 @@ export interface DRPlanExecution {
   /** Execution duration in seconds */
   durationSeconds?: number;
 }
-

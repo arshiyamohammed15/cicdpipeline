@@ -34,4 +34,3 @@ Critical checks:
 IMPORTANT: The "Critical checks" above are examples representing approximately 37% of all 415 rules. You MUST validate against ALL 415 rules from docs/constitution/*.json files, not just these examples. You must check ALL rule categories including: Security & Privacy, Testing Rules, Logging/Observability, Documentation, TypeScript, Basic Work Rules, Error Handling (32 rules), System Design Rules, Problem-Solving Rules, Performance Rules, Architecture Rules, Validation Rules, Schema Requirements, AI Generation Rules, Lifecycle Management, Storage Scripts Enforcement, Process Control, and ALL other rules in docs/constitution/*.json.
 
 If violations detected, respond with error format and halt. Do not generate code.
-

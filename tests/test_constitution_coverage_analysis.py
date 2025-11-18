@@ -20,12 +20,12 @@ def load_constitution_file(file_path: Path) -> Dict:
 def analyze_all_constitution_files() -> Tuple[Dict[str, int], int]:
     """
     Analyze all 7 constitution files and return rule counts.
-    
+
     Returns:
         Tuple of (file_counts dict, total_count int)
     """
     constitution_dir = Path(__file__).parent.parent / 'docs' / 'constitution'
-    
+
     files = [
         'MASTER GENERIC RULES.json',
         'VSCODE EXTENSION RULES.json',
@@ -34,10 +34,10 @@ def analyze_all_constitution_files() -> Tuple[Dict[str, int], int]:
         'TESTING RULES.json',
         'COMMENTS RULES.json'
     ]
-    
+
     file_counts = {}
     total = 0
-    
+
     for filename in files:
         file_path = constitution_dir / filename
         if file_path.exists():
@@ -47,7 +47,7 @@ def analyze_all_constitution_files() -> Tuple[Dict[str, int], int]:
             total += rule_count
         else:
             file_counts[filename] = 0
-    
+
     return file_counts, total
 
 
@@ -59,4 +59,3 @@ if __name__ == '__main__':
         print(f"{filename:45} {count:4} rules")
     print("=" * 60)
     print(f"{'TOTAL':45} {total:4} rules")
-

@@ -188,4 +188,3 @@ export class PSCLArtifactWriter {
         fs.renameSync(tempPath, targetPath);
     }
 }
-

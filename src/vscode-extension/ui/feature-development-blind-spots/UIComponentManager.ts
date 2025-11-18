@@ -13,4 +13,3 @@ export class FeatureDevelopmentBlindSpotsUIComponentManager extends PlaceholderU
         this.updateData(payload);
     }
 }
-

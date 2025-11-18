@@ -55,7 +55,7 @@ def should_exclude_file(file_path: Path) -> bool:
 def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
     """Scan file for privacy violations."""
     violations = []
-    
+
     try:
         with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
             for line_num, line in enumerate(f, 1):
@@ -74,52 +74,52 @@ def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
                             ))
     except Exception as e:
         print(f"Warning: Could not scan {file_path}: {e}", file=sys.stderr)
-    
+
     return violations
 
 
 def main():
     """Main entry point."""
     root_dir = Path(__file__).parent.parent.parent
-    
+
     print("=" * 80)
     print("PRIVACY-SPLIT ENFORCEMENT CHECK")
     print("=" * 80)
     print(f"Scanning: {root_dir}")
     print()
-    
+
     violations = []
     for file_path in root_dir.rglob('*'):
         if not file_path.is_file():
             continue
-        
+
         if should_exclude_file(file_path):
             continue
-        
+
         # Only scan code files
         if file_path.suffix not in ['.py', '.ts', '.tsx', '.js', '.jsx']:
             continue
-        
+
         file_violations = scan_file(file_path)
         violations.extend([(file_path, ln, pat, ctx) for ln, pat, ctx in file_violations])
-    
+
     if violations:
         print(f"[FAIL] FOUND {len(violations)} POTENTIAL PRIVACY VIOLATIONS")
         print()
         print("Raw code or PII may be sent outside IDE/Client planes without redaction.")
         print("Use privacy-split export flags or redaction before transmission.")
         print()
-        
+
         for file_path, line_num, pattern, context in violations[:20]:  # Limit output
             rel_path = file_path.relative_to(root_dir)
             print(f"  {rel_path}:{line_num}")
             print(f"    Pattern: {pattern}")
             print(f"    Context: {context[:100]}")
             print()
-        
+
         if len(violations) > 20:
             print(f"  ... and {len(violations) - 20} more violations")
-        
+
         print("=" * 80)
         print("FAILED: Privacy violations detected")
         print("=" * 80)
@@ -132,4 +132,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-

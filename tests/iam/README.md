@@ -58,4 +58,3 @@ python -m pytest tests/test_iam_service.py --cov=src/cloud-services/shared-servi
 - Tests are hermetic (no network, no file system)
 - Tests follow deterministic principles (fixed seeds, controlled time)
 - Performance tests use scaled-down iterations for test speed
-

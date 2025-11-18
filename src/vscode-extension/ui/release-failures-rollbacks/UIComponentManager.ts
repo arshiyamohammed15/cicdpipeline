@@ -13,5 +13,3 @@ export class ReleaseFailuresRollbacksUIComponentManager extends PlaceholderUICom
         this.updateData(payload);
     }
 }
-
-

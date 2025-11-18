@@ -1,15 +1,15 @@
 /**
  * QueuePort
- * 
+ *
  * Cloud-agnostic interface for message queue operations.
  * Implemented by local adapters for queue-based messaging.
- * 
+ *
  * @interface QueuePort
  */
 export interface QueuePort {
   /**
    * Send a message to the queue.
-   * 
+   *
    * @param queueName - Name of the queue
    * @param message - Message payload (serialized)
    * @param options - Optional queue-specific options (visibility timeout, delay, etc.)
@@ -23,7 +23,7 @@ export interface QueuePort {
 
   /**
    * Receive messages from the queue.
-   * 
+   *
    * @param queueName - Name of the queue
    * @param maxMessages - Maximum number of messages to receive (default: 1)
    * @param options - Optional receive options (wait time, visibility timeout, etc.)
@@ -37,7 +37,7 @@ export interface QueuePort {
 
   /**
    * Delete a message from the queue after processing.
-   * 
+   *
    * @param queueName - Name of the queue
    * @param receiptHandle - Message receipt handle from receive operation
    * @returns Promise resolving when message is deleted
@@ -46,7 +46,7 @@ export interface QueuePort {
 
   /**
    * Get queue attributes (approximate message count, visibility timeout, etc.).
-   * 
+   *
    * @param queueName - Name of the queue
    * @returns Promise resolving to queue attributes
    */
@@ -102,4 +102,3 @@ export interface QueueAttributes {
   /** Maximum message size (bytes) */
   maxMessageSize?: number;
 }
-

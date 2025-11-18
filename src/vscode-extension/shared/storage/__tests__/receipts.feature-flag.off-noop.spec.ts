@@ -122,4 +122,3 @@ describe('receipts.feature-flag.off-noop', () => {
         }
     });
 });
-

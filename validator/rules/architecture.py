@@ -17,11 +17,11 @@ from..models import Violation, Severity
 class ArchitectureValidator:
     """
     Validates architecture-related rules.
-    
+
     This class focuses on detecting architectural violations like
     mixed concerns, improper data flow, and system design issues.
     """
-    
+
     def __init__(self):
         """Initialize the architecture validator."""
         self.ui_keywords = ['ui', 'view', 'template', 'gui', 'interface', 'frontend', 'widget']
@@ -37,30 +37,30 @@ class ArchitectureValidator:
             'cloud', 'aws', 'azure', 'gcp', 'remote', 'external', 'api',
             'http', 'https', 'rest', 'graphql'
         ]
-    
+
     def validate_separation_of_concerns(self, tree: ast.AST, file_path: str) -> List[Violation]:
         """
         Check for separation of concerns violations.
-        
+
         Args:
             tree: AST tree of the code
             file_path: Path to the file
-            
+
         Returns:
             List of separation of concerns violations
         """
         violations = []
         file_name = Path(file_path).name.lower()
-        
+
         # Check if this is a UI file
         is_ui_file = any(keyword in file_name for keyword in self.ui_keywords)
-        
+
         if is_ui_file:
             # Look for business logic in UI files
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     func_name = self._get_function_name(node.func).lower()
-                    
+
                     for keyword in self.business_logic_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
@@ -73,13 +73,13 @@ class ArchitectureValidator:
                                 code_snippet=func_name,
                                 fix_suggestion="Move business logic to separate service/controller layer"
                             ))
-        
+
         # Check for data access in UI files
         if is_ui_file:
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     func_name = self._get_function_name(node.func).lower()
-                    
+
                     for keyword in self.data_keywords:
                         if keyword in func_name:
                             violations.append(Violation(
@@ -92,31 +92,31 @@ class ArchitectureValidator:
                                 code_snippet=func_name,
                                 fix_suggestion="Use data access layer or repository pattern"
                             ))
-        
+
         return violations
-    
+
     def validate_hybrid_system_design(self, tree: ast.AST, file_path: str) -> List[Violation]:
         """
         Check for hybrid system design compliance.
-        
+
         Args:
             tree: AST tree of the code
             file_path: Path to the file
-            
+
         Returns:
             List of hybrid system design violations
         """
         violations = []
-        
+
         # Check for proper module separation
         file_name = Path(file_path).name.lower()
-        
+
         # IDE Extension should only show information
         if 'extension' in file_name or 'ide' in file_name:
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     func_name = self._get_function_name(node.func).lower()
-                    
+
                     # IDE Extension shouldn't process data
                     if any(keyword in func_name for keyword in ['process', 'analyze', 'compute']):
                         violations.append(Violation(
@@ -129,13 +129,13 @@ class ArchitectureValidator:
                             code_snippet=func_name,
                             fix_suggestion="Move data processing to Edge Agent"
                         ))
-        
+
         # Edge Agent should process data locally
         if 'agent' in file_name or 'edge' in file_name:
             for node in ast.walk(tree):
                 if isinstance(node, ast.Call):
                     func_name = self._get_function_name(node.func).lower()
-                    
+
                     # Edge Agent shouldn't send data to cloud
                     if any(keyword in func_name for keyword in ['upload', 'send', 'post', 'put']):
                         violations.append(Violation(
@@ -148,22 +148,22 @@ class ArchitectureValidator:
                             code_snippet=func_name,
                             fix_suggestion="Ensure data processing happens locally in Edge Agent"
                         ))
-        
+
         return violations
-    
+
     def validate_local_data_processing(self, tree: ast.AST, file_path: str) -> List[Violation]:
         """
         Check for local data processing compliance.
-        
+
         Args:
             tree: AST tree of the code
             file_path: Path to the file
-            
+
         Returns:
             List of local data processing violations
         """
         violations = []
-        
+
         # Check for source code leaving the company
         if tree is None:
             # If no AST, fallback: detect obvious network usage without offline hints
@@ -182,7 +182,7 @@ class ArchitectureValidator:
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
                 func_name = self._get_function_name(node.func).lower()
-                
+
                 # Check for external data transmission
                 network_context_keywords = ['http', 'https', 'api.', 'cloud', 'aws', 'gcp', 'azure', 'requests.']
                 verb_indicators = ['send', 'post', 'upload']
@@ -199,22 +199,22 @@ class ArchitectureValidator:
                         code_snippet=func_name,
                         fix_suggestion="Process data locally and only send anonymous patterns to cloud"
                     ))
-        
+
         return violations
-    
+
     def validate_module_consistency(self, tree: ast.AST, file_path: str) -> List[Violation]:
         """
         Check for module consistency.
-        
+
         Args:
             tree: AST tree of the code
             file_path: Path to the file
-            
+
         Returns:
             List of module consistency violations
         """
         violations = []
-        
+
         # Check for consistent error handling
         has_try_catch = False
         if tree is None:
@@ -223,7 +223,7 @@ class ArchitectureValidator:
             if isinstance(node, ast.Try):
                 has_try_catch = True
                 break
-        
+
         if not has_try_catch and self._has_risky_operations(tree):
             violations.append(Violation(
                 rule_name="Make All Modules Feel Like One Product",
@@ -235,29 +235,29 @@ class ArchitectureValidator:
                 code_snippet="Missing error handling",
                 fix_suggestion="Implement consistent error handling across all modules"
             ))
-        
+
         return violations
-    
+
     def validate_data_flow(self, tree: ast.AST, file_path: str) -> List[Violation]:
         """
         Check for proper data flow patterns.
-        
+
         Args:
             tree: AST tree of the code
             file_path: Path to the file
-            
+
         Returns:
             List of data flow violations
         """
         violations = []
-        
+
         # Check for proper data classification
         for node in ast.walk(tree):
             if isinstance(node, ast.Assign):
                 for target in node.targets:
                     if isinstance(target, ast.Name):
                         var_name = target.id.lower()
-                        
+
                         # Check for sensitive data variables
                         if any(keyword in var_name for keyword in ['password', 'secret', 'private', 'personal']):
                             # Check if it's being sent externally
@@ -276,9 +276,9 @@ class ArchitectureValidator:
                                             code_snippet=var_name,
                                             fix_suggestion="Keep sensitive data local, only send anonymous patterns"
                                         ))
-        
+
         return violations
-    
+
     def _get_function_name(self, func_node: ast.AST) -> str:
         """Extract function name from AST node."""
         if isinstance(func_node, ast.Name):
@@ -287,36 +287,36 @@ class ArchitectureValidator:
             return f"{self._get_function_name(func_node.value)}.{func_node.attr}"
         else:
             return str(func_node)
-    
+
     def _has_risky_operations(self, tree: ast.AST) -> bool:
         """Check if code contains risky operations."""
         risky_keywords = [
             'open', 'file', 'requests', 'urllib', 'subprocess',
             'os.system', 'eval', 'exec', 'input'
         ]
-        
+
         for node in ast.walk(tree):
             if isinstance(node, ast.Call):
                 func_name = self._get_function_name(node.func).lower()
                 if any(keyword in func_name for keyword in risky_keywords):
                     return True
-        
+
         return False
-    
+
     def validate_zero_configuration(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for zero-configuration patterns.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of configuration-related violations
         """
         violations = []
-        
+
         # Check for mandatory configuration before use
         if tree is not None:
             for node in ast.walk(tree):
@@ -343,7 +343,7 @@ class ArchitectureValidator:
                             code_snippet=node.name,
                             fix_suggestion="Provide default values or make configuration optional"
                         ))
-        
+
         # Check for configuration files that are required
         config_patterns = [
             r'config\.json',
@@ -352,7 +352,7 @@ class ArchitectureValidator:
             r'\.env',
             r'settings\.py'
         ]
-        
+
         for pattern in config_patterns:
             if re.search(pattern, content, re.IGNORECASE):
                 # Check if it's required vs optional
@@ -367,32 +367,32 @@ class ArchitectureValidator:
                         code_snippet=pattern,
                         fix_suggestion="Make configuration optional with sensible defaults"
                     ))
-        
+
         return violations
-    
+
     def validate_offline_capability(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Check for offline capability.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of offline capability violations
         """
         violations = []
-        
+
         # Check for network dependencies without offline fallback
         network_imports = [
             'requests', 'urllib', 'http', 'socket', 'ftplib', 'smtplib',
             'poplib', 'imaplib', 'telnetlib', 'xmlrpc'
         ]
-        
+
         has_network_imports = False
         has_offline_fallback = False
-        
+
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):
                 for alias in node.names:
@@ -403,7 +403,7 @@ class ArchitectureValidator:
                 if node.module and any(network_lib in node.module for network_lib in network_imports):
                     has_network_imports = True
                     break
-        
+
         # Check for offline fallback patterns (ignore comments and inline trailing comments)
         cleaned_lines = []
         for line in content.splitlines():
@@ -419,7 +419,7 @@ class ArchitectureValidator:
             if re.search(pattern, code_only, re.IGNORECASE):
                 has_offline_fallback = True
                 break
-        
+
         # Determine whether network calls occur inside functions without try/except
         uses_network_calls = False
         function_has_network_calls = False
@@ -453,7 +453,7 @@ class ArchitectureValidator:
                 code_snippet="Network imports",
                 fix_suggestion="Add offline capability and local caching"
             ))
-        
+
         # Check for local caching mechanisms
         cache_patterns = [
             r'cache',
@@ -463,9 +463,9 @@ class ArchitectureValidator:
             r'json\.dump',
             r'json\.load'
         ]
-        
+
         has_caching = any(re.search(pattern, content, re.IGNORECASE) for pattern in cache_patterns)
-        
+
         if has_network_imports and uses_network_calls and not has_caching:
             violations.append(Violation(
                 rule_name="Work Without Internet",
@@ -477,23 +477,23 @@ class ArchitectureValidator:
                 code_snippet="Missing caching",
                 fix_suggestion="Implement local caching for offline operation"
             ))
-        
+
         return violations
-    
+
     def validate_all(self, tree: ast.AST, content: str, file_path: str) -> List[Violation]:
         """
         Run all architecture validations.
-        
+
         Args:
             tree: AST tree of the code
             content: File content
             file_path: Path to the file
-            
+
         Returns:
             List of all architecture violations
         """
         violations = []
-        
+
         violations.extend(self.validate_separation_of_concerns(tree, file_path))
         violations.extend(self.validate_hybrid_system_design(tree, file_path))
         violations.extend(self.validate_local_data_processing(tree, file_path))
@@ -501,5 +501,5 @@ class ArchitectureValidator:
         violations.extend(self.validate_data_flow(tree, file_path))
         violations.extend(self.validate_zero_configuration(tree, content, file_path))
         violations.extend(self.validate_offline_capability(tree, content, file_path))
-        
+
         return violations

@@ -15,4 +15,3 @@ $scriptRoot = (Resolve-Path $scriptRoot).Path
 
 Write-Host "Script root: $scriptRoot" -ForegroundColor Green
 Write-Host "Test root: $TestRoot" -ForegroundColor Green
-

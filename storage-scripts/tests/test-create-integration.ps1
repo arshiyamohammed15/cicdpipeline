@@ -43,7 +43,7 @@ if($LASTEXITCODE -eq 0) {
     $productExists = Test-Path (Join-Path $TestRoot "integration\product")
     $sharedExists = Test-Path (Join-Path $TestRoot "integration\shared")
     $ideExists = Test-Path (Join-Path $TestRoot "integration\ide")
-    
+
     if($tenantExists -and $productExists -and $sharedExists -and -not $ideExists) {
         Write-Host "[PASS] Integration environment created correctly (no IDE plane)" -ForegroundColor Green
     } else {
@@ -58,4 +58,3 @@ if(-not $SkipCleanup -and (Test-Path $TestRoot)) {
 }
 
 Write-Host "`nTest completed." -ForegroundColor Cyan
-

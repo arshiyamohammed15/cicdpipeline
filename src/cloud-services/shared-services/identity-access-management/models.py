@@ -211,4 +211,3 @@ class ConfigResponse(BaseModel):
     api_endpoints: Dict[str, str] = Field(..., description="API endpoints")
     performance_requirements: Dict[str, Any] = Field(..., description="Performance requirements")
     timestamp: datetime = Field(..., description="Config timestamp (ISO 8601)")
-

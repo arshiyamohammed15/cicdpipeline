@@ -13,5 +13,3 @@ export class TechnicalDebtAccumulationUIComponentManager extends PlaceholderUICo
         this.updateData(payload);
     }
 }
-
-

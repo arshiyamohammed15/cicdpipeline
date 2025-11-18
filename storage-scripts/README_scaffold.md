@@ -76,4 +76,3 @@ pwsh -File tests\test-folder-structure.ps1 `
 - **Folders only** — no files are created.
 - **Lazy creation** — only parent folders created; subfolders created on-demand.
 - **Spec‑aligned** — creates *only* the folders in `folder-business-rules.md` v2.0 (no `extension/*`).
-

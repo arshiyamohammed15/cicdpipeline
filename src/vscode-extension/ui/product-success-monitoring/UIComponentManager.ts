@@ -13,5 +13,3 @@ export class ProductSuccessMonitoringUIComponentManager extends PlaceholderUICom
         this.updateData(payload);
     }
 }
-
-

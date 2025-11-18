@@ -2,7 +2,7 @@
 
 ## Overview
 
-This guide covers deploying and running the ZeroUI 2.0 Constitution Validator in **Local without Docker** mode. The system is a Python-based code validation tool that enforces 218 enterprise-grade development rules.
+This guide covers deploying and running the ZeroUI 2.0 Constitution Validator in **Local without Docker** mode. The system is a Python-based code validation tool that enforces 414 enterprise-grade development rules.
 
 ## Prerequisites
 
@@ -47,32 +47,26 @@ python enhanced_cli.py --directory src/ --format html --output report.html
 - **`enhanced_cli.py`** - Main CLI interface with advanced features
 - **`config/constitution/`** - Rule management and database system
 - **`validator/`** - Code analysis and validation engine
-- **`ZeroUI2.0_Master_Constitution.md`** - Source of truth for all 218 rules
+- **`ZeroUI2.0_Master_Constitution.md`** - Source of truth for all 414 rules
 
 ### Database System
 
 - **SQLite Database** (`config/constitution_rules.db`) - Primary storage
 - **JSON Fallback** (`config/constitution_rules.json`) - Backup storage
 - **Auto-sync** - Keeps both backends synchronized
-- **218 Rules** - Complete rule set with 13 categories
+- **414 Rules** - Complete rule set sourced from seven JSON collections
 
-## Rule Categories
+## Rule Sources
 
-| Category | Rules | Description |
-|----------|-------|-------------|
-| **TypeScript** | 34 | Type safety and modern JavaScript patterns |
-| **Exception Handling** | 32 | Error handling and recovery patterns |
-| **Teamwork** | 26 | Collaboration and communication rules |
-| **API Contracts** | 22 | HTTP API design and contracts |
-| **Basic Work** | 18 | Fundamental development practices |
-| **Logging** | 18 | Structured logging and monitoring |
-| **Coding Standards** | 15 | Code quality and consistency |
-| **System Design** | 12 | Architecture and design patterns |
-| **Comments** | 10 | Documentation and code comments |
-| **Platform** | 10 | Platform-specific requirements |
-| **Code Review** | 9 | Review processes and standards |
-| **Problem Solving** | 9 | Debugging and issue resolution |
-| **Documentation** | 3 | Documentation standards |
+| Source JSON | Active Rules | Scope |
+|-------------|--------------|-------|
+| `MASTER GENERIC RULES.json` | 300 | Cross-cutting constitutional rules applied to every module |
+| `COMMENTS RULES.json` | 30 | Documentation, code comments, and narrative requirements |
+| `CURSOR TESTING RULES.json` | 22 | AI testing safeguards and Cursor-specific guidance |
+| `LOGGING & TROUBLESHOOTING RULES.json` | 11 | Structured logging, observability, and recovery |
+| `MODULES AND GSMD MAPPING RULES.json` | 19 | Module-to-GSMD alignment and governance |
+| `TESTING RULES.json` | 22 | Functional, integration, and non-functional testing mandates |
+| `VSCODE EXTENSION RULES.json` | 10 | UI-layer constraints and extension scaffolding |
 
 ## CLI Commands
 
@@ -135,7 +129,7 @@ The system uses `config/constitution_config.json` for configuration:
 {
   "version": "2.0",
   "primary_backend": "sqlite",
-  "total_rules": 218,
+  "total_rules": 414,
   "sync": {
     "enabled": true,
     "auto_sync_on_write": true
@@ -193,7 +187,7 @@ Individual rules can be enabled/disabled:
    ```bash
    # Check database status
    python enhanced_cli.py --backend-status
-   
+
    # Repair synchronization
    python enhanced_cli.py --repair-sync
    ```
@@ -289,7 +283,7 @@ repos:
 ### System Information
 
 - **Version**: 2.0
-- **Total Rules**: 218
+- **Total Rules**: 414
 - **Categories**: 13
 - **Backend**: SQLite + JSON hybrid
 - **Platform**: Cross-platform (Windows/Linux/macOS)

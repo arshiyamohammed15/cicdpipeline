@@ -7,4 +7,3 @@
 - `README_PSCL.md`: PSCL workflow overview describing setup, command usage, and artifact locations.
 - `VERIFICATION_KEY_DISCOVERY.md`: Notes on trust store locations, dev key generation, and signer/verifier modules.
 - `VERIFICATION_PSCL_REPORT.md`: Verification status report template detailing required PSCL scenarios and evidence tracking.
-

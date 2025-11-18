@@ -5,4 +5,3 @@ describe('IAM Commands', () => {
     expect(true).toBe(true);
   });
 });
-

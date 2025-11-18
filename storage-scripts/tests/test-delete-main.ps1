@@ -59,7 +59,7 @@ if($LASTEXITCODE -eq 0) {
     $intExists = Test-Path (Join-Path $TestRoot "integration")
     $stagingExists = Test-Path (Join-Path $TestRoot "staging")
     $prodExists = Test-Path (Join-Path $TestRoot "production")
-    
+
     if(-not $devExists -and -not $intExists -and -not $stagingExists -and -not $prodExists) {
         Write-Host "[PASS] All environments deleted successfully" -ForegroundColor Green
     } else {
@@ -83,7 +83,7 @@ Write-Host "[TEST 2] WhatIf mode (should not delete)" -ForegroundColor Yellow
 if($LASTEXITCODE -eq 0) {
     $devExists = Test-Path (Join-Path $TestRoot "development")
     $intExists = Test-Path (Join-Path $TestRoot "integration")
-    
+
     if($devExists -and $intExists) {
         Write-Host "[PASS] WhatIf mode preserved all environments" -ForegroundColor Green
     } else {
@@ -97,7 +97,7 @@ Write-Host "`n[TEST 3] Delete with Environment parameter" -ForegroundColor Yello
 if($LASTEXITCODE -eq 0) {
     $devExists = Test-Path (Join-Path $TestRoot "development")
     $intExists = Test-Path (Join-Path $TestRoot "integration")
-    
+
     # Should delete all environments, but IDE only from development
     Write-Host "[INFO] Check if all environments were deleted (IDE only from development)" -ForegroundColor Cyan
 }
@@ -108,4 +108,3 @@ if(Test-Path $TestRoot) {
 }
 
 Write-Host "`nTest completed." -ForegroundColor Cyan
-

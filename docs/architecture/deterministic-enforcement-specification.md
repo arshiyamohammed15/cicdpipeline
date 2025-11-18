@@ -345,4 +345,3 @@ The pre-implementation hooks are **deterministic, consistent, and repeatable**:
 - ✅ All tests pass (11/11)
 
 **Enforcement is guaranteed to be deterministic, consistent, and repeatable.**
-

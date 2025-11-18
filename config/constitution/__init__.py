@@ -32,7 +32,7 @@ from .rule_count_loader import RuleCountLoader, get_rule_count_loader, get_rule_
 
 __all__ = [
     "ConstitutionRulesDB",
-    "ConstitutionRuleExtractor", 
+    "ConstitutionRuleExtractor",
     "ConstitutionRuleManager",
     "ConstitutionQueries",
     "BaseConstitutionManager",

@@ -1,6 +1,6 @@
 /**
  * LocalDRPlan
- * 
+ *
  * Local file-based implementation of DRPlanPort.
  * Implements drills: backup-verify, queue-drain.
  */
@@ -247,7 +247,7 @@ export class LocalDRPlan implements DRPlanPort {
     for (const line of lines) {
       try {
         const record: DRPlanExecutionRecord = JSON.parse(line);
-        
+
         // Filter by plan ID
         if (record.planId !== planId) {
           continue;
@@ -435,4 +435,3 @@ export class LocalDRPlan implements DRPlanPort {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
 }
-
