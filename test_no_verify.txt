@@ -1,0 +1,1 @@
+This file tests what happens with --no-verify flag that bypasses pre-commit hooks.
