@@ -4,6 +4,7 @@ Test script to validate commit consistency across different methods.
 This file intentionally has formatting issues to test pre-commit hook behavior.
 
 Testing Cursor Agent method with formatting issues.
+Testing IDE Commit Feature method with formatting issues.
 """
 
 def   test_function   (   ):
