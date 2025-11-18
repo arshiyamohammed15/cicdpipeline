@@ -344,18 +344,25 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
 
             all_rules = self.db_manager.get_all_rules()
 
+            if "rules" not in self.constitution_config:
+                self.constitution_config["rules"] = {}
+
             for rule in all_rules:
                 rule_number = rule['rule_number']
                 enabled = rule['enabled']
+                rule_key = str(rule_number)
 
-                if "rules" not in self.constitution_config:
-                    self.constitution_config["rules"] = {}
+                if rule_key not in self.constitution_config["rules"]:
+                    self.constitution_config["rules"][rule_key] = {}
 
-                if str(rule_number) not in self.constitution_config["rules"]:
-                    self.constitution_config["rules"][str(rule_number)] = {}
-
-                self.constitution_config["rules"][str(rule_number)]["enabled"] = enabled
-                self.constitution_config["rules"][str(rule_number)]["updated_at"] = datetime.now().isoformat()
+                # Only update timestamp if the enabled state actually changed
+                current_enabled = self.constitution_config["rules"][rule_key].get("enabled", True)
+                if current_enabled != enabled:
+                    self.constitution_config["rules"][rule_key]["enabled"] = enabled
+                    self.constitution_config["rules"][rule_key]["updated_at"] = datetime.now().isoformat()
+                elif "enabled" not in self.constitution_config["rules"][rule_key]:
+                    # Initialize enabled state if missing, but don't update timestamp
+                    self.constitution_config["rules"][rule_key]["enabled"] = enabled
 
             self._save_constitution_config()
         except Exception as e:
