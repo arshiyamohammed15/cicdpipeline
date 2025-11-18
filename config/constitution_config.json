@@ -1,5 +1,6 @@
 {
   "version": "2.0",
+  "description": "ZeroUI 2.0 Constitution Configuration - Test commit",
   "last_updated": "2025-11-18T11:53:00.369622",
   "primary_backend": "sqlite",
   "backend_config": {
