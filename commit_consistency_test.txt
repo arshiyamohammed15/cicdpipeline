@@ -9,3 +9,4 @@ All three methods should behave consistently with pre-commit hooks, staging, and
 Test timestamp: 2025-11-18
 
 Testing Cursor Agent method - Method 2 of 3
+Testing IDE Commit Feature - Method 3 of 3
