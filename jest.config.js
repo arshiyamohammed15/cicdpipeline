@@ -38,5 +38,6 @@ module.exports = {
     verbose: true,
     clearMocks: true,
     resetMocks: true,
-    restoreMocks: true
+    restoreMocks: true,
+    cache: false
 };
