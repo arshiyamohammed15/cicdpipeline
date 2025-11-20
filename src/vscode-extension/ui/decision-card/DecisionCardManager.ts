@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { MismatchInfo, PreCommitStatus } from '../../shared/storage/PreCommitDecisionService';
+import { DecisionReceipt } from '../../shared/receipt-parser/ReceiptParser';
+import { formatDecisionForDisplay, FormattedDecision } from '../../shared/transparency/TransparencyFormatter';
 
 export interface DecisionCardData {
     status: PreCommitStatus;
@@ -74,7 +76,11 @@ export class DecisionCardManager implements vscode.Disposable {
 
     private getWebviewContent(decisionData?: DecisionCardData): string {
         const statusBadge = this.renderStatusBadge(decisionData?.status);
-        const decisionContent = decisionData ? this.renderDecisionContent(decisionData) : 'No decision data available';
+        // Use transparency formatting if available (TR-2.1.1, TR-2.1.2)
+        const formatted = (decisionData as any)?.formatted as FormattedDecision | undefined;
+        const decisionContent = decisionData 
+            ? this.renderDecisionContentWithTransparency(decisionData, formatted) 
+            : 'No decision data available';
         const quickFixButtons = this.renderQuickFixButtons(decisionData);
 
         return `<!DOCTYPE html>
@@ -226,6 +232,55 @@ export class DecisionCardManager implements vscode.Disposable {
             ${decisionData.timestampUtc ? `<div><span class="field-label">Timestamp:</span> ${decisionData.timestampUtc}</div>` : ''}
             ${mismatches}
         `;
+    }
+
+    /**
+     * Show decision card from Decision Receipt (TR-2.1.3)
+     * Uses transparency formatting for summary and "Why" explanation
+     */
+    public showDecisionCardFromReceipt(receipt: DecisionReceipt, actions?: DecisionCardActions): void {
+        const formatted = formatDecisionForDisplay(receipt);
+        
+        // Convert DecisionReceipt to DecisionCardData format
+        const decisionData: DecisionCardData = {
+            status: receipt.decision.status as PreCommitStatus,
+            policySnapshotId: receipt.snapshot_hash,
+            rationale: formatted.summary, // Use formatted summary (TR-2.1.1)
+            timestampUtc: receipt.timestamp_utc,
+            mismatches: [] // Mismatches would need to be extracted from receipt.inputs if available
+        };
+
+        // Store formatted data for display
+        (decisionData as any).formatted = formatted;
+
+        this.showDecisionCard(decisionData, actions);
+    }
+
+    /**
+     * Render decision content with transparency formatting (TR-2.1.1, TR-2.1.2)
+     */
+    private renderDecisionContentWithTransparency(
+        decisionData: DecisionCardData,
+        formatted?: FormattedDecision
+    ): string {
+        // Use formatted summary and explanation if available (TR-2.1.1, TR-2.1.2)
+        if (formatted) {
+            return `
+                <div class="decision-summary">
+                    <div><span class="field-label">Summary:</span> ${formatted.summary}</div>
+                    <div><span class="field-label">Why:</span> ${formatted.whyExplanation}</div>
+                </div>
+                <div class="decision-details">
+                    <div><span class="field-label">Status:</span> ${formatted.status.toUpperCase()}</div>
+                    <div><span class="field-label">Full Rationale:</span> ${formatted.rationale}</div>
+                    ${decisionData.policySnapshotId ? `<div><span class="field-label">Policy Snapshot:</span> ${decisionData.policySnapshotId}</div>` : ''}
+                    ${decisionData.timestampUtc ? `<div><span class="field-label">Timestamp:</span> ${decisionData.timestampUtc}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Fallback to original rendering
+        return this.renderDecisionContent(decisionData);
     }
 
     private renderQuickFixButtons(decisionData?: DecisionCardData): string {

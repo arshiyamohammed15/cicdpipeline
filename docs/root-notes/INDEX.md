@@ -14,6 +14,7 @@ The ZeroUI 2.0 repository keeps historical analyses, validation reports, and imp
 | `PRE_COMMIT_FIX_SUMMARY.md` | Explanation of the non-blocking pre-commit hook workflow. |
 | `REPOSITORY_VALIDATION_REPORT.md` | Cross-module health review (structure, dependencies, security, documentation). |
 | `VALIDATION_REPORT_RESUMED.md` | Latest full constitution validation output (large; keep outside the repo root). |
+| `Trust_as_a_Capability_VALIDATION_REPORT_FINAL.md` | Historical validation report identifying gaps in Trust as a Capability implementation (all gaps resolved). |
 
 All other PSCL discovery notes remain available in this folder for forensic completeness. When generating new reports, drop them here and update this index rather than cluttering the repository root.
 

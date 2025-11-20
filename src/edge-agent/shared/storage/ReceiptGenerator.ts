@@ -58,8 +58,12 @@ export class ReceiptGenerator {
      * @param inputs Input data
      * @param decision Decision result
      * @param evidenceHandles Evidence handles
-     * @param actor Actor information
+     * @param actor Actor information (may include type for TR-6.2)
      * @param degraded Whether operation was degraded
+     * @param evaluationPoint Evaluation point (pre-commit, pre-merge, etc.)
+     * @param context Optional context information (TR-1.2.3)
+     * @param override Optional override information (TR-3.2.1)
+     * @param dataCategory Optional data category classification (TR-4.4.1)
      * @returns DecisionReceipt Signed receipt
      */
     public generateDecisionReceipt(
@@ -81,9 +85,23 @@ export class ReceiptGenerator {
         actor: {
             repo_id: string;
             machine_fingerprint?: string;
+            type?: 'human' | 'ai' | 'automated'; // TR-6.2.1
         },
         degraded: boolean = false,
-        evaluationPoint: DecisionReceipt['evaluation_point'] = 'pre-commit'
+        evaluationPoint: DecisionReceipt['evaluation_point'] = 'pre-commit',
+        context?: {
+            surface?: 'ide' | 'pr' | 'ci';
+            branch?: string;
+            commit?: string;
+            pr_id?: string;
+        },
+        override?: {
+            reason: string;
+            approver: string;
+            timestamp: string;
+            override_id?: string;
+        },
+        dataCategory?: 'public' | 'internal' | 'confidential' | 'restricted'
     ): DecisionReceipt {
         const now = new Date();
         const receiptId = this.generateReceiptId();
@@ -103,6 +121,17 @@ export class ReceiptGenerator {
             actor: actor,
             degraded: degraded
         };
+
+        // Add optional fields if provided (TR-1.2.1 schema extensions)
+        if (context !== undefined) {
+            (receipt as any).context = context;
+        }
+        if (override !== undefined) {
+            (receipt as any).override = override;
+        }
+        if (dataCategory !== undefined) {
+            (receipt as any).data_category = dataCategory;
+        }
 
         return {
             ...receipt,
