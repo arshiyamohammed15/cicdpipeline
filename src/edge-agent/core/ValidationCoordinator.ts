@@ -26,7 +26,18 @@ export class ValidationCoordinator {
     public async validate(result: DelegationResult): Promise<boolean> {
         console.log('Validating result...');
 
-        const validationResult = {
+        type RuleValidation = {
+            rule: string;
+            passed: boolean;
+            message: string;
+        };
+
+        const validationResult: {
+            result: DelegationResult;
+            timestamp: string;
+            validations: RuleValidation[];
+            isValid: boolean;
+        } = {
             result,
             timestamp: new Date().toISOString(),
             validations: [],
@@ -47,10 +58,14 @@ export class ValidationCoordinator {
                     validationResult.isValid = false;
                 }
             } catch (error) {
+                const message =
+                    error instanceof Error
+                        ? `Error: ${error.message}`
+                        : `Error: ${String(error)}`;
                 validationResult.validations.push({
                     rule: ruleName,
                     passed: false,
-                    message: `Error: ${error.message}`
+                    message
                 });
                 validationResult.isValid = false;
             }

@@ -4,7 +4,7 @@ A Python-based automated code review tool that validates code against the ZeroUI
 
 ## Repository Layout
 
-- `docs/root-notes/`: PSCL discovery, verification reports, and recovery playbooks formerly kept in the repo root (see `docs/root-notes/README.md`).
+- `docs/root-notes/`: PSCL discovery, verification reports, and recovery playbooks formerly kept in the repo root (see `docs/root-notes/INDEX.md`).
 - `config/`: Constitution configuration (JSON, DB, logs, patterns, history) consumed by the validator and tooling.
 - `contracts/`: JSON/YAML contract specifications grouped by domain (analytics, API, integration, release, and more).
 - `src/`: Application sources (`cloud-services`, `edge-agent`, `vscode-extension`) spanning Python and TypeScript.
@@ -54,13 +54,22 @@ The folder-business rules file remains the single source of truth; regenerate sc
 2. Ensure Python 3.9+ is installed
 3. Install dependencies:
    ```bash
-   pip install -r requirements.txt
-   pip install -r requirements-api.txt  # For automatic enforcement
+   python -m pip install --upgrade pip
+   python -m pip install ".[dev]"                  # Core validator + tooling
+   python -m pip install -r requirements-api.txt   # Automatic enforcement service
    ```
+   Use `python -m pip install .` if you only need the runtime (without dev extras).
 
 ## 🚀 Automatic AI Code Generation Enforcement
 
 The system now includes **100% automatic enforcement** of all 424 enabled ZeroUI constitution rules (425 total) before any AI code generation occurs.
+
+Regenerate the enforcement prompt directly from the JSON source of truth whenever constitution files change:
+
+```bash
+python scripts/ci/render_constitution_prompt.py \
+  -o docs/root-notes/COMPLETE_CONSTITUTION_ENFORCEMENT_PROMPT.md
+```
 
 ### Start the Validation Service
 
@@ -127,6 +136,21 @@ python enhanced_cli.py --start-validation-service --service-port 8080
 3. Use commands:
    - `ZeroUI: Validate Prompt Against Constitution`
    - `ZeroUI: Generate Code with Constitution Validation`
+
+### Offline VS Code Test Harness
+
+The VS Code integration tests rely on the Electron build of VS Code. To run them on networks that block downloads:
+
+1. Download the [win32-x64 archive build of VS Code](https://code.visualstudio.com/Download) from a network that allows HTTPS.
+2. Extract the archive so that the folder contains `Code.exe` (e.g. `D:\VSCode-Offline\Code.exe`).
+3. Copy that extracted folder to this repository (recommended path: `src/vscode-extension/.vscode-test/VSCode-win32-x64/`).
+4. Set the `VSCODE_TEST_PATH` environment variable to either the extracted folder or the `Code.exe` binary:
+   ```powershell
+   $env:VSCODE_TEST_PATH = "D:\VSCode-Offline"
+   ```
+5. Run the extension tests: `cd src/vscode-extension; npm test -- --coverage`.
+
+`runTest.ts` now respects `VSCODE_TEST_PATH`, so the tests will use the cached executable and will not attempt to download VS Code.
 
 ### Configuration
 
@@ -403,6 +427,13 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 2. **Import Errors**: Missing validator modules
 3. **File Permissions**: Cannot create/delete test files
 ```
+
+### Manual Test Fixtures
+
+Files that intentionally violate lint/formatting rules (used to exercise the
+non-blocking pre-commit workflow) live under `tests/manual/`. Automated test
+discovery and CI suites should ignore that folder; consult
+`tests/manual/README.md` before running those probes locally.
 
 ## Rule Categories
 

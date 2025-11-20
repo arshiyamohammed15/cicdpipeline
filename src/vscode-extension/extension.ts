@@ -359,6 +359,7 @@ export function activate(context: vscode.ExtensionContext) {
         return snapshot;
     };
 
+    console.log('Registering zeroui.pscl.preparePlan command');
     const psclPreparePlan = vscode.commands.registerCommand('zeroui.pscl.preparePlan', async () => {
         if (!isPsclEnabled()) {
             void vscode.window.showInformationMessage(

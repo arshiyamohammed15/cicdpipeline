@@ -19,11 +19,11 @@ from src.shared_libs.cccs.ratelimit import RateLimiterConfig
 from src.shared_libs.cccs.redaction import RedactionConfig, RedactionRule
 from src.shared_libs.cccs.types import ActorContext, ConfigLayers
 from src.shared_libs.cccs.receipts import ReceiptConfig
+from tests.cccs.helpers import SIGNING_SECRET, dependency_health, sign_snapshot
 from tests.cccs.mocks import (
     MockEPC1Adapter,
-    MockEPC3Adapter,
-    MockEPC11Adapter,
     MockEPC13Adapter,
+    MockEPC11Adapter,
     MockPM7Adapter,
 )
 from unittest.mock import patch
@@ -39,9 +39,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
             epc1_api_version="v1",
         ),
         policy=PolicyConfig(
-            epc3_base_url="http://localhost:8003",
-            epc3_timeout_seconds=5.0,
-            epc3_api_version="v1",
+            signing_secrets=[SIGNING_SECRET],
             rule_version_negotiation_enabled=True,
         ),
         config_layers=ConfigLayers(local={}, tenant={"feature": True}, product={}),
@@ -71,7 +69,6 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
     )
     
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.policy.runtime.EPC3PolicyAdapter', MockEPC3Adapter), \
          patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
          patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
          patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
@@ -96,8 +93,8 @@ def test_policy_to_receipt_end_to_end_offline_courier_replay(tmp_path):
             }
         ],
     }
-    runtime.load_policy_snapshot(snapshot, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    runtime.load_policy_snapshot(snapshot, sign_snapshot(snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -132,8 +129,9 @@ def test_budget_enforcement_burst_and_sustained_traffic(tmp_path):
     """Test budget enforcement for burst + sustained traffic, including deny fallback."""
     runtime = _runtime(tmp_path)
     runtime._ratelimiter._adapter._default_capacity = 100.0
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -174,8 +172,9 @@ def test_budget_enforcement_burst_and_sustained_traffic(tmp_path):
 def test_trace_propagation_concurrent_spans_receipt_linking(tmp_path):
     """Test trace propagation with concurrent spans and receipt linking."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -210,8 +209,9 @@ def test_trace_propagation_concurrent_spans_receipt_linking(tmp_path):
 def test_redaction_receipt_pm7_courier_replay(tmp_path):
     """Test redaction + receipt + PM-7 courier replay."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",

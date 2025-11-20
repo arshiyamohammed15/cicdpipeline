@@ -13,22 +13,12 @@ from src.shared_libs.cccs.config.service import ConfigLayers
 from src.shared_libs.cccs.exceptions import PolicyUnavailableError
 from src.shared_libs.cccs.policy import PolicyConfig, PolicyRuntime
 from src.shared_libs.cccs.types import PolicyDecision
-from tests.cccs.mocks import MockEPC3Adapter
-
-
-@pytest.fixture(autouse=True)
-def patch_epc3_adapter(monkeypatch):
-    monkeypatch.setattr(
-        "src.shared_libs.cccs.policy.runtime.EPC3PolicyAdapter",
-        MockEPC3Adapter,
-    )
+from tests.cccs.helpers import SIGNING_SECRET, sign_snapshot
 
 
 def _policy_config() -> PolicyConfig:
     return PolicyConfig(
-        epc3_base_url="http://localhost:8003",
-        epc3_timeout_seconds=5.0,
-        epc3_api_version="v1",
+        signing_secrets=[SIGNING_SECRET],
         rule_version_negotiation_enabled=True,
     )
 
@@ -50,7 +40,7 @@ def test_policy_snapshot_signature_verification_valid():
             }
         ],
     }
-    runtime.load_snapshot(payload, "valid-sig")
+    runtime.load_snapshot(payload, sign_snapshot(payload))
     decision = runtime.evaluate("m01", {"risk": 2})
     assert isinstance(decision, PolicyDecision)
     assert decision.decision == "allow"
@@ -62,7 +52,7 @@ def test_policy_signature_validation_invalid():
     config = _policy_config()
     runtime = PolicyRuntime(config)
     payload = {"module_id": "m01", "version": "1.0.0", "rules": []}
-    with pytest.raises(PolicyUnavailableError, match="Failed to load policy snapshot"):
+    with pytest.raises(PolicyUnavailableError, match="Policy snapshot signature invalid"):
         runtime.load_snapshot(payload, "invalid")
 
 
@@ -70,10 +60,11 @@ def test_policy_signature_validation_corrupted():
     """Test policy signature validation with adapter failure."""
     config = _policy_config()
     runtime = PolicyRuntime(config)
-    runtime._adapter._fail_signature = True  # type: ignore[attr-defined]
     payload = {"module_id": "m01", "version": "1.0.0", "rules": []}
-    with pytest.raises(PolicyUnavailableError, match="Failed to load policy snapshot"):
-        runtime.load_snapshot(payload, "valid-sig")
+    signature = sign_snapshot(payload)
+    payload["rules"].append({"rule_id": "tampered"})
+    with pytest.raises(PolicyUnavailableError, match="Policy snapshot signature invalid"):
+        runtime.load_snapshot(payload, signature)
 
 
 def test_policy_denial_determinism_concurrent_requests():
@@ -93,7 +84,7 @@ def test_policy_denial_determinism_concurrent_requests():
             }
         ],
     }
-    runtime.load_snapshot(payload, "valid-sig")
+    runtime.load_snapshot(payload, sign_snapshot(payload))
 
     results = []
 
@@ -174,6 +165,6 @@ def test_policy_rule_version_negotiation():
         "version": "1.0.0",
         "rules": [{"rule_id": "r1", "decision": "allow", "conditions": {}}],
     }
-    runtime.load_snapshot(payload, "valid-sig")
+    runtime.load_snapshot(payload, sign_snapshot(payload))
     runtime.evaluate("m01", {})
     assert "m01" in runtime._negotiated_versions

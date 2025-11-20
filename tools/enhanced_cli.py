@@ -386,8 +386,14 @@ class EnhancedCLI:
 
     def _generate_markdown_report(self, results: Dict[str, Any]) -> str:
         """Generate Markdown report."""
+        from datetime import datetime
+        from pathlib import Path
+        from validator.models import Severity
+        
         md = []
         md.append("# ZEROUI 2.0 Constitution Validation Report")
+        md.append("")
+        md.append(f"**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         md.append("")
 
         if "summary" in results:
@@ -398,6 +404,109 @@ class EnhancedCLI:
             md.append(f"- **Total Violations**: {summary.get('total_violations', 0)}")
             md.append(f"- **Average Compliance**: {summary.get('average_compliance', 0):.1f}%")
             md.append("")
+            
+            # Calculate severity breakdown
+            if "files" in results:
+                total_errors = 0
+                total_warnings = 0
+                total_info = 0
+                for file_data in results["files"].values():
+                    result = file_data.get("result")
+                    if result and hasattr(result, 'violations_by_severity'):
+                        total_errors += result.violations_by_severity.get(Severity.ERROR, 0)
+                        total_warnings += result.violations_by_severity.get(Severity.WARNING, 0)
+                        total_info += result.violations_by_severity.get(Severity.INFO, 0)
+                
+                md.append("### Violations by Severity")
+                md.append("")
+                md.append(f"- **Errors**: {total_errors}")
+                md.append(f"- **Warnings**: {total_warnings}")
+                md.append(f"- **Info**: {total_info}")
+                md.append("")
+            
+            # Performance summary
+            if "performance_summary" in summary and summary["performance_summary"]:
+                perf = summary["performance_summary"]
+                md.append("### Performance Summary")
+                md.append("")
+                if "total_time" in perf:
+                    md.append(f"- **Total Processing Time**: {perf.get('total_time', 0):.3f}s")
+                if "average_time_per_file" in perf:
+                    md.append(f"- **Average Time per File**: {perf.get('average_time_per_file', 0):.3f}s")
+                md.append("")
+
+        # File details
+        if "files" in results and results["files"]:
+            md.append("## File Details")
+            md.append("")
+            
+            # Sort files by compliance score (lowest first to highlight issues)
+            sorted_files = sorted(
+                results["files"].items(),
+                key=lambda x: x[1].get("result", type('obj', (object,), {"compliance_score": 0})()).compliance_score
+            )
+            
+            for file_path, file_data in sorted_files:
+                result = file_data.get("result")
+                if not result:
+                    continue
+                    
+                file_name = Path(file_path).name
+                compliance_score = result.compliance_score
+                
+                # Emoji based on compliance
+                if compliance_score >= 80:
+                    emoji = "✅"
+                elif compliance_score >= 60:
+                    emoji = "⚠️"
+                else:
+                    emoji = "❌"
+                
+                md.append(f"### {emoji} {file_name}")
+                md.append("")
+                md.append(f"- **Path**: `{file_path}`")
+                md.append(f"- **Compliance**: {compliance_score:.1f}%")
+                md.append(f"- **Total Violations**: {result.total_violations}")
+                md.append(f"- **Processing Time**: {result.processing_time:.3f}s")
+                md.append("")
+                
+                # Violations breakdown
+                if hasattr(result, 'violations_by_severity') and result.violations_by_severity:
+                    md.append("#### Violations by Severity")
+                    md.append("")
+                    md.append(f"- **Errors**: {result.violations_by_severity.get(Severity.ERROR, 0)}")
+                    md.append(f"- **Warnings**: {result.violations_by_severity.get(Severity.WARNING, 0)}")
+                    md.append(f"- **Info**: {result.violations_by_severity.get(Severity.INFO, 0)}")
+                    md.append("")
+                
+                # List violations (limit to first 10 to keep report manageable)
+                if result.violations:
+                    md.append("#### Violations")
+                    md.append("")
+                    for i, violation in enumerate(result.violations[:10]):
+                        severity_emoji = {
+                            Severity.ERROR: "🔴",
+                            Severity.WARNING: "🟡",
+                            Severity.INFO: "🔵"
+                        }.get(violation.severity, "⚪")
+                        
+                        md.append(f"**{severity_emoji} Rule {violation.rule_number}: {violation.rule_name}**")
+                        md.append(f"- **Line {violation.line_number}**: {violation.message}")
+                        if violation.code_snippet:
+                            md.append(f"- **Code**: `{violation.code_snippet[:100]}`")
+                        if violation.fix_suggestion:
+                            md.append(f"- **Fix**: {violation.fix_suggestion}")
+                        md.append("")
+                    
+                    if len(result.violations) > 10:
+                        md.append(f"*... and {len(result.violations) - 10} more violations*")
+                        md.append("")
+                else:
+                    md.append("✅ No violations found")
+                    md.append("")
+                
+                md.append("---")
+                md.append("")
 
         return "\n".join(md)
 

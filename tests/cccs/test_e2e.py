@@ -18,11 +18,11 @@ from src.shared_libs.cccs.ratelimit import RateLimiterConfig
 from src.shared_libs.cccs.redaction import RedactionConfig, RedactionRule
 from src.shared_libs.cccs.types import ActorContext, ConfigLayers
 from src.shared_libs.cccs.receipts import ReceiptConfig
+from tests.cccs.helpers import SIGNING_SECRET, dependency_health, sign_snapshot
 from tests.cccs.mocks import (
     MockEPC1Adapter,
-    MockEPC3Adapter,
-    MockEPC11Adapter,
     MockEPC13Adapter,
+    MockEPC11Adapter,
     MockPM7Adapter,
 )
 from unittest.mock import patch
@@ -38,9 +38,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
             epc1_api_version="v1",
         ),
         policy=PolicyConfig(
-            epc3_base_url="http://localhost:8003",
-            epc3_timeout_seconds=5.0,
-            epc3_api_version="v1",
+            signing_secrets=[SIGNING_SECRET],
             rule_version_negotiation_enabled=True,
         ),
         config_layers=ConfigLayers(local={}, tenant={"feature": True}, product={}),
@@ -70,7 +68,6 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
     )
     
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.policy.runtime.EPC3PolicyAdapter', MockEPC3Adapter), \
          patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
          patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
          patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
@@ -95,8 +92,8 @@ def test_fm_cccs_epc_deterministic_result(tmp_path):
             }
         ],
     }
-    runtime.load_policy_snapshot(snapshot, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    runtime.load_policy_snapshot(snapshot, sign_snapshot(snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -138,8 +135,9 @@ def test_fm_cccs_epc_deterministic_result(tmp_path):
 def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
     """Test Edge Agent offline 48h → reconnect → zero data loss."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -149,6 +147,11 @@ def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
         actor_type="machine",
         runtime_clock=datetime.now(timezone.utc),
     )
+
+    # Prime caches before entering offline mode
+    runtime._identity.resolve_actor(actor_context, use_cache=False)
+    for i in range(5):
+        runtime._ratelimiter._budget_cache[f"offline-{i}"] = 10.0  # noqa: SLF001
 
     # Simulate degraded mode
     runtime._dependencies_ready = False
@@ -183,7 +186,7 @@ def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
         assert all(entry["payload"]["degraded"] for entry in wal_entries if entry["payload"].get("receipt_id"))
 
     # "Reconnect" - services available again
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    runtime.bootstrap(dependency_health())
 
     # Drain courier - should process all pending receipts
     drained = runtime.drain_courier()
@@ -193,8 +196,9 @@ def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
 def test_security_attestation_forged_receipt(tmp_path):
     """Test security attestation: forged receipt detection."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     # Create a receipt
     actor_context = ActorContext(
@@ -250,8 +254,9 @@ def test_security_attestation_forged_receipt(tmp_path):
 def test_security_attestation_replay_attempt(tmp_path):
     """Test security attestation: replay attempt detection."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",
@@ -294,8 +299,9 @@ def test_security_attestation_replay_attempt(tmp_path):
 def test_security_attestation_tamper_detection(tmp_path):
     """Test security attestation: tamper detection."""
     runtime = _runtime(tmp_path)
-    runtime.load_policy_snapshot({"module_id": "m01", "version": "1.0.0", "rules": []}, "valid-sig")
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    empty_snapshot = {"module_id": "m01", "version": "1.0.0", "rules": []}
+    runtime.load_policy_snapshot(empty_snapshot, sign_snapshot(empty_snapshot))
+    runtime.bootstrap(dependency_health())
 
     actor_context = ActorContext(
         tenant_id="t1",

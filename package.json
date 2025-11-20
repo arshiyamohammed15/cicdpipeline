@@ -9,7 +9,6 @@
     "test:python:full": "pytest -q",
     "test:python:coverage": "pytest --cov=validator --cov-report=html --cov-report=term-missing",
     "test:validator": "python -m pytest tests -k \"constitution\" --cov=validator --cov-report=term-missing -v",
-    "test:all": "python run_all_tests.py",
     "test:storage": "jest --config jest.config.js --testPathPattern=storage",
     "test:storage:watch": "jest --config jest.config.js --testPathPattern=storage --watch",
     "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage"

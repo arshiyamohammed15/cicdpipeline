@@ -182,7 +182,8 @@ describe('Local Adapters E2E', () => {
 
       const volumeAfter = await store.getVolume(volume.id);
       expect(volumeAfter.status).toBe('in-use');
-      expect(volumeAfter.attachments.length).toBe(1);
+      expect(volumeAfter.attachments).toBeDefined();
+      expect(volumeAfter.attachments!.length).toBe(1);
 
       await store.detachVolume(volume.id, 'instance-1');
       const volumeDetached = await store.getVolume(volume.id);

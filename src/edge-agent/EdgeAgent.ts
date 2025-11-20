@@ -19,15 +19,15 @@ export interface EdgeAgentOptions {
 }
 
 export class EdgeAgent {
-    private orchestrator: AgentOrchestrator;
-    private delegationManager: DelegationManager;
-    private validationCoordinator: ValidationCoordinator;
-    private securityEnforcer: SecurityEnforcer;
-    private cacheManager: CacheManager;
-    private hybridOrchestrator: HybridOrchestrator;
-    private localInference: LocalInference;
-    private modelManager: ModelManager;
-    private resourceOptimizer: ResourceOptimizer;
+    private orchestrator!: AgentOrchestrator;
+    private delegationManager!: DelegationManager;
+    private validationCoordinator!: ValidationCoordinator;
+    private securityEnforcer!: SecurityEnforcer;
+    private cacheManager!: CacheManager;
+    private hybridOrchestrator!: HybridOrchestrator;
+    private localInference!: LocalInference;
+    private modelManager!: ModelManager;
+    private resourceOptimizer!: ResourceOptimizer;
     private receiptStorage: ReceiptStorageService;
     private receiptGenerator: ReceiptGenerator;
     private policyStorage: PolicyStorageService;

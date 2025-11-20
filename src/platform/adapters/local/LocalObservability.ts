@@ -42,6 +42,8 @@ export class LocalObservability implements ObservabilityPort {
   constructor(baseDir: string) {
     this.baseDir = baseDir;
     this.metricsFile = path.join(baseDir, 'logs', 'observability.ndjson');
+    this.logsFile = this.metricsFile;
+    this.tracesFile = this.metricsFile;
   }
 
   async emitMetric(metric: Metric): Promise<void> {

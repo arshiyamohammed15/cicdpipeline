@@ -163,20 +163,12 @@ describe('ReceiptStorageReader', () => {
             const receiptDir = path.join(testZuRoot, 'ide', 'receipts', testRepoId, '2025', '01');
             fs.mkdirSync(receiptDir, { recursive: true });
             const receiptFile = path.join(receiptDir, 'receipts.jsonl');
-            appendReceiptsJsonl(receiptFile, 'test');
-
-            // Use jest.spyOn to mock fs.readFileSync
-            const readFileSyncSpy = jest.spyOn(fs, 'readFileSync').mockImplementation(() => {
-                throw new Error('Permission denied');
-            });
+            fs.mkdirSync(receiptFile, { recursive: true }); // Force EISDIR error
 
             const receipts = await reader.readReceipts(testRepoId, 2025, 1);
 
             // Should return empty array on error
             expect(receipts).toEqual([]);
-
-            // Restore original
-            readFileSyncSpy.mockRestore();
         });
     });
 

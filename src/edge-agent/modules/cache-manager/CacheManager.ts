@@ -56,6 +56,7 @@ export class CacheManager implements DelegationInterface {
             return result;
 
         } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
             const processingTime = Date.now() - startTime;
             this.errorCount++;
 
@@ -64,7 +65,7 @@ export class CacheManager implements DelegationInterface {
             return {
                 taskId: task.id,
                 success: false,
-                error: error.message,
+                error: message,
                 processingTime,
                 metadata: {
                     module: 'cache-manager',

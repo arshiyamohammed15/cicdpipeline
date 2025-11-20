@@ -22,7 +22,8 @@ pipeline {
                         python${PYTHON_VERSION} -m venv venv
                         . venv/bin/activate
                         pip install --upgrade pip
-                        pip install -r requirements.txt
+                        pip install ".[dev]"
+                        pip install -r requirements-api.txt
                     '''
 
                     // Setup Node.js environment

@@ -18,9 +18,9 @@ from src.shared_libs.cccs.ratelimit import RateLimiterConfig
 from src.shared_libs.cccs.redaction import RedactionConfig, RedactionRule
 from src.shared_libs.cccs.types import ActorContext, ConfigLayers
 from src.shared_libs.cccs.receipts import ReceiptConfig
+from tests.cccs.helpers import SIGNING_SECRET, dependency_health, sign_snapshot
 from tests.cccs.mocks import (
     MockEPC1Adapter,
-    MockEPC3Adapter,
     MockEPC13Adapter,
     MockEPC11Adapter,
     MockPM7Adapter,
@@ -38,9 +38,7 @@ def _runtime(tmp_path: Path, rate_config: RateLimiterConfig | None = None) -> CC
             epc1_api_version="v1",
         ),
         policy=PolicyConfig(
-            epc3_base_url="http://localhost:8003",
-            epc3_timeout_seconds=5.0,
-            epc3_api_version="v1",
+            signing_secrets=[SIGNING_SECRET],
             rule_version_negotiation_enabled=True,
         ),
         config_layers=ConfigLayers(local={}, tenant={"feature": True}, product={}),
@@ -70,7 +68,6 @@ def _runtime(tmp_path: Path, rate_config: RateLimiterConfig | None = None) -> CC
     )
     
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.policy.runtime.EPC3PolicyAdapter', MockEPC3Adapter), \
          patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
          patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
          patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
@@ -89,7 +86,7 @@ def _runtime(tmp_path: Path, rate_config: RateLimiterConfig | None = None) -> CC
                 }
             ],
         }
-        runtime.load_policy_snapshot(snapshot, "valid-sig")
+        runtime.load_policy_snapshot(snapshot, sign_snapshot(snapshot))
     return runtime
 
 
@@ -108,7 +105,7 @@ def _actor_context():
 def test_runtime_end_to_end(tmp_path):
     """Test end-to-end flow: IAPS → CFFS → PREE → RLBGS → OTCS → RGES → SSDRS → PM-7."""
     runtime = _runtime(tmp_path)
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    runtime.bootstrap(dependency_health())
     runtime.negotiate_version("1.0.0")
 
     result = runtime.execute_flow(
@@ -136,15 +133,14 @@ def test_runtime_backend_requires_dependencies(tmp_path):
     runtime = _runtime(tmp_path)
     runtime._config.mode = "backend"
     with pytest.raises(PolicyUnavailableError, match="Bootstrap failed"):
-        runtime.bootstrap({"epc-1": False, "epc-3": True, "epc-13": True})
+        runtime.bootstrap(dependency_health(**{"epc-1": False}))
 
 
 def test_runtime_edge_mode_degraded_startup(tmp_path):
     """Test edge mode allows degraded startup when dependencies unavailable."""
     runtime = _runtime(tmp_path)
     runtime._config.mode = "edge"
-    # Should not raise, but enter degraded mode
-    runtime.bootstrap({"epc-1": False, "epc-3": True, "epc-13": True})
+    runtime.bootstrap(dependency_health(**{"epc-1": False}))
     assert runtime._dependencies_ready is False
 
 
@@ -163,7 +159,7 @@ def test_budget_exceeded(tmp_path):
         epc13_api_version="v1",
         default_deny_on_unavailable=True,
     ))
-    runtime.bootstrap({"epc-1": True, "epc-3": True, "epc-13": True})
+    runtime.bootstrap(dependency_health())
     
     # Set low capacity
     runtime._ratelimiter._adapter._default_capacity = 1.0

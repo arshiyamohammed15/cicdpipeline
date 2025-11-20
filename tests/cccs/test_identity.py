@@ -40,7 +40,7 @@ def test_identity_resolution_deterministic():
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter):
         service = IdentityService(config)
 
-        result1 = service.resolve_actor(_context())
+        result1 = service.resolve_actor(_context(), use_cache=False)
         result2 = service.resolve_actor(_context())
 
         assert result1.actor_id == result2.actor_id
@@ -77,7 +77,7 @@ def test_identity_failure_handling_missing_epc1_metadata():
         service._adapter._fail_verify = True
 
         with pytest.raises(ActorUnavailableError, match="Identity resolution failed"):
-            service.resolve_actor(_context())
+            service.resolve_actor(_context(), use_cache=False)
 
 
 def test_identity_clock_skew_detection():
@@ -92,7 +92,7 @@ def test_identity_clock_skew_detection():
         service = IdentityService(config)
 
         ctx = _context(extras={"clock_skew_s": 2.5})  # > 1 second skew
-        result = service.resolve_actor(ctx)
+        result = service.resolve_actor(ctx, use_cache=False)
         # Clock skew should be detected and handled (warnings may be in provenance)
         assert result.actor_id is not None
 
@@ -110,7 +110,7 @@ def test_identity_deep_copy_context():
 
         ctx = _context()
         original_user_id = ctx.user_id
-        service.resolve_actor(ctx)
+        service.resolve_actor(ctx, use_cache=False)
 
         # Context should not be mutated
         assert ctx.user_id == original_user_id

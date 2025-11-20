@@ -53,6 +53,7 @@ export class LocalInference implements DelegationInterface {
             return delegationResult;
 
         } catch (error) {
+            const message = error instanceof Error ? error.message : String(error);
             const processingTime = Date.now() - startTime;
             this.errorCount++;
 
@@ -61,7 +62,7 @@ export class LocalInference implements DelegationInterface {
             return {
                 taskId: task.id,
                 success: false,
-                error: error.message,
+                error: message,
                 processingTime,
                 metadata: {
                     module: 'local-inference',

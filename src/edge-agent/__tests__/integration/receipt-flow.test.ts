@@ -65,7 +65,7 @@ describe('Receipt Flow Integration Test', () => {
 
         const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
         privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
-        publicKey = crypto.createPublicKey(pub);
+        publicKey = pub;
 
         // Ensure test directory exists
         fs.mkdirSync(testZuRoot, { recursive: true });
