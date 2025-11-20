@@ -79,6 +79,11 @@ export class LocalBlockStore implements BlockStorePort {
       throw new Error(`Volume ${volumeId} not found`);
     }
 
+    // Ensure attachments is initialized
+    if (!volume.attachments) {
+      volume.attachments = [];
+    }
+
     if (volume.attachments.length > 0) {
       throw new Error(`Cannot delete volume ${volumeId}: volume is attached`);
     }
@@ -111,6 +116,11 @@ export class LocalBlockStore implements BlockStorePort {
       throw new Error(`Volume ${volumeId} is not available`);
     }
 
+    // Ensure attachments is initialized
+    if (!volume.attachments) {
+      volume.attachments = [];
+    }
+
     const attachment: BlockVolumeAttachment = {
       volumeId,
       instanceId,
@@ -132,6 +142,11 @@ export class LocalBlockStore implements BlockStorePort {
     const volume = this.volumes.get(volumeId);
     if (!volume) {
       throw new Error(`Volume ${volumeId} not found`);
+    }
+
+    // Ensure attachments is initialized
+    if (!volume.attachments) {
+      volume.attachments = [];
     }
 
     const attachmentIndex = volume.attachments.findIndex(
@@ -165,7 +180,7 @@ export class LocalBlockStore implements BlockStorePort {
       availabilityZone: volume.availabilityZone,
       encrypted: volume.encrypted,
       createdAt: new Date(volume.createdAt),
-      attachments: volume.attachments,
+      attachments: volume.attachments || [],
     };
   }
 
@@ -210,6 +225,10 @@ export class LocalBlockStore implements BlockStorePort {
     for (const line of lines) {
       try {
         const record: VolumeRecord = JSON.parse(line);
+        // Ensure attachments is always initialized as an array
+        if (!record.attachments) {
+          record.attachments = [];
+        }
         // Keep latest record for each volume ID
         if (!this.volumes.has(record.id) || record.status !== 'deleted') {
           this.volumes.set(record.id, record);
