@@ -42,6 +42,8 @@ coverage.xml
 
 # Test artifacts
 tests/test_reports/*.json
+.vscode-test/
+.cache/
 
 # Logs
 *.log
