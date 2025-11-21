@@ -131,6 +131,20 @@ class DeduplicationStore:
         if signal.sequence_no is None:
             return True, None
 
+        # Validate sequence number is positive
+        if signal.sequence_no < 0:
+            warning = f"Invalid sequence_no: {signal.sequence_no} is negative"
+            logger.warning(warning)
+            return False, warning
+
+        # Validate sequence number is within reasonable range (prevent overflow issues)
+        # Maximum sequence number: 2^63 - 1 (signed 64-bit integer)
+        MAX_SEQUENCE_NO = 9223372036854775807
+        if signal.sequence_no > MAX_SEQUENCE_NO:
+            warning = f"Invalid sequence_no: {signal.sequence_no} exceeds maximum {MAX_SEQUENCE_NO}"
+            logger.warning(warning)
+            return False, warning
+
         producer_key = signal.producer_id
         last_sequence = self.producer_sequences.get(producer_key)
 

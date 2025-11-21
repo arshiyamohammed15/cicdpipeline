@@ -192,11 +192,28 @@ class SignalIngestionService:
 
         # Normalize signal
         try:
-            normalized_signal = self.normalization_engine.normalize(redacted_signal, coercion_warnings)
-            warnings.extend([w.warning_message for w in coercion_warnings])
+            # Create a copy of coercion_warnings list to avoid mutation issues
+            normalization_warnings = []
+            # Get contract version from producer registry for proper transformation rule lookup
+            contract_version = self.producer_registry.get_contract_version(
+                redacted_signal.producer_id,
+                redacted_signal.signal_type
+            )
+            normalized_signal = self.normalization_engine.normalize(
+                redacted_signal,
+                normalization_warnings,
+                contract_version=contract_version
+            )
+            # Extend warnings from normalization (these are new warnings, not duplicates)
+            warnings.extend([w.warning_message for w in normalization_warnings])
+            # Extend warnings from validation coercion (already collected, avoid duplicates)
+            # Note: coercion_warnings from validation are already added to warnings at line 136
         except Exception as e:
             logger.error(f"Normalization error for signal {signal.signal_id}: {e}")
+            # Record normalization error (not validation failure)
             self.metrics_registry.record_validation_failure(ErrorCode.NORMALIZATION_ERROR.value)
+            # Note: In a more sophisticated metrics system, we might have separate methods
+            # for normalization errors vs validation errors, but for now we use the same method
             return SignalIngestResult(
                 signal_id=signal.signal_id,
                 status=IngestStatus.REJECTED,
@@ -205,59 +222,97 @@ class SignalIngestionService:
                 warnings=warnings
             )
 
+        # Enrich signal with actor and resource context (per PRD F5)
+        # Note: Actor and resource context should be extracted from signal or external sources
+        # For now, enrich() will apply classification if not already applied in normalize()
+        try:
+            # Extract actor context from signal if available
+            actor_context = None
+            if normalized_signal.actor_id:
+                actor_context = {'actor_id': normalized_signal.actor_id}
+                # Check if payload has additional actor context
+                if 'actor_context' in normalized_signal.payload:
+                    actor_context.update(normalized_signal.payload['actor_context'])
+            
+            # Extract resource context from signal.resource if available
+            resource_context = None
+            if normalized_signal.resource:
+                resource_context = normalized_signal.resource.model_dump(exclude_none=True)
+            
+            # Enrich signal (this will also apply classification if enrich() is called)
+            enriched_signal = self.normalization_engine.enrich(
+                normalized_signal,
+                actor_context=actor_context,
+                resource_context=resource_context
+            )
+            normalized_signal = enriched_signal
+        except Exception as e:
+            logger.warning(f"Enrichment error for signal {signal.signal_id}: {e}, continuing without enrichment")
+            # Don't fail on enrichment errors, just log and continue
+
         # Route signal
         try:
             routing_results = self.routing_engine.route_signal(normalized_signal)
-            routing_success = any(success for _, _, success in routing_results)
-            if not routing_success:
-                # Check if should retry
-                if self.dlq_handler.should_retry(signal.signal_id):
-                    retry_count = self.dlq_handler.record_retry(signal.signal_id)
-                    self.structured_logger.log_retry(
-                        signal.signal_id,
-                        retry_count,
-                        MAX_RETRY_ATTEMPTS,
-                        correlation_id
-                    )
-                    return SignalIngestResult(
-                        signal_id=signal.signal_id,
-                        status=IngestStatus.REJECTED,
-                        error_code=ErrorCode.ROUTING_ERROR,
-                        error_message="Routing failed, will retry",
-                        warnings=warnings
-                    )
-                else:
-                    # Permanent failure - route to DLQ
-                    original_signal = signal.model_dump()
-                    dlq_id = self.dlq_handler.add_to_dlq(
-                        signal,
-                        ErrorCode.ROUTING_ERROR,
-                        "Routing failed after retries",
-                        original_signal
-                    )
-                    self.structured_logger.log_dlq_entry(
-                        signal.signal_id,
-                        dlq_id,
-                        ErrorCode.ROUTING_ERROR.value,
-                        self.dlq_handler.retry_counts.get(signal.signal_id, 0),
-                        correlation_id
-                    )
-                    self.metrics_registry.record_dlq_entry(
-                        signal.tenant_id,
-                        signal.producer_id,
-                        signal.signal_type
-                    )
-                    return SignalIngestResult(
-                        signal_id=signal.signal_id,
-                        status=IngestStatus.DLQ,
-                        error_code=ErrorCode.ROUTING_ERROR,
-                        error_message="Routing failed after retries",
-                        dlq_id=dlq_id,
-                        warnings=warnings
-                    )
+            # Handle empty routing results (no routing rules match)
+            if not routing_results:
+                logger.warning(f"No routing rules matched for signal {signal.signal_id} (signal_type: {signal.signal_type})")
+                # If no routing rules match, this is not necessarily an error
+                # Some signals may not need routing, or routing rules may not be configured yet
+                # Continue processing as accepted (signal is valid, just not routed)
+            else:
+                routing_success = any(success for _, _, success in routing_results)
+                if not routing_success:
+                    # Check if should retry
+                    if self.dlq_handler.should_retry(signal.signal_id):
+                        retry_count = self.dlq_handler.record_retry(signal.signal_id)
+                        self.structured_logger.log_retry(
+                            signal.signal_id,
+                            retry_count,
+                            MAX_RETRY_ATTEMPTS,
+                            correlation_id
+                        )
+                        return SignalIngestResult(
+                            signal_id=signal.signal_id,
+                            status=IngestStatus.REJECTED,
+                            error_code=ErrorCode.ROUTING_ERROR,
+                            error_message="Routing failed, will retry",
+                            warnings=warnings
+                        )
+                    else:
+                        # Permanent failure - route to DLQ
+                        original_signal = signal.model_dump()
+                        dlq_id = self.dlq_handler.add_to_dlq(
+                            signal,
+                            ErrorCode.ROUTING_ERROR,
+                            "Routing failed after retries",
+                            original_signal
+                        )
+                        self.structured_logger.log_dlq_entry(
+                            signal.signal_id,
+                            dlq_id,
+                            ErrorCode.ROUTING_ERROR.value,
+                            self.dlq_handler.retry_counts.get(signal.signal_id, 0),
+                            correlation_id
+                        )
+                        self.metrics_registry.record_dlq_entry(
+                            signal.tenant_id,
+                            signal.producer_id,
+                            signal.signal_type
+                        )
+                        return SignalIngestResult(
+                            signal_id=signal.signal_id,
+                            status=IngestStatus.DLQ,
+                            error_code=ErrorCode.ROUTING_ERROR,
+                            error_message="Routing failed after retries",
+                            dlq_id=dlq_id,
+                            warnings=warnings
+                        )
         except Exception as e:
             logger.error(f"Routing error for signal {signal.signal_id}: {e}")
+            # Record routing error (not validation failure)
             self.metrics_registry.record_validation_failure(ErrorCode.ROUTING_ERROR.value)
+            # Note: In a more sophisticated metrics system, we might have separate methods
+            # for routing errors vs validation errors, but for now we use the same method
             return SignalIngestResult(
                 signal_id=signal.signal_id,
                 status=IngestStatus.REJECTED,
