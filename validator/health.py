@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List
 from .pre_implementation_hooks import PreImplementationHookManager
+from .shared_health_stats import get_shared_rule_counts, get_backend_status
 
 
 class HealthChecker:
@@ -155,11 +156,16 @@ class HealthChecker:
         rule_count_check = self.check_rule_count_consistency()
         json_files_check = self.check_json_files_accessible()
         hook_manager_check = self.check_hook_manager_functional()
+        
+        # Use shared rule counts for consistency
+        shared_counts = get_shared_rule_counts()
+        backend_status = get_backend_status()
 
         overall_healthy = (
             rule_count_check['healthy'] and
             json_files_check['healthy'] and
-            hook_manager_check['healthy']
+            hook_manager_check['healthy'] and
+            backend_status.get('synchronized', False)
         )
 
         return {
@@ -167,12 +173,16 @@ class HealthChecker:
             'checks': {
                 'rule_count_consistency': rule_count_check,
                 'json_files_accessible': json_files_check,
-                'hook_manager_functional': hook_manager_check
+                'hook_manager_functional': hook_manager_check,
+                'backend_sync': backend_status
             },
             'summary': {
-                'total_rules': self.hook_manager.total_rules,
+                'total_rules': shared_counts.get('total_rules', self.hook_manager.total_rules),
+                'enabled_rules': shared_counts.get('enabled_rules', 0),
+                'disabled_rules': shared_counts.get('disabled_rules', 0),
                 'json_files_count': json_files_check['total_files'],
-                'constitution_dir': str(self.constitution_dir)
+                'constitution_dir': str(self.constitution_dir),
+                'backend_synchronized': backend_status.get('synchronized', False)
             }
         }
 

@@ -24,7 +24,15 @@ def health_check():
     """Health check endpoint."""
     try:
         from ..health import get_health_endpoint
+        from ..shared_health_stats import get_health_response
         health_status = get_health_endpoint()
+        
+        # Use shared health response for consistency
+        shared_health = get_health_response(include_backend=True)
+        
+        # Merge shared health data into response
+        health_status['rule_counts'] = shared_health.get('rule_counts', {})
+        health_status['backend'] = shared_health.get('backend', {})
 
         integrations = integration_registry.list_integrations()
 
@@ -174,12 +182,13 @@ def list_integrations():
 def get_stats():
     """Get service statistics."""
     try:
-        total_rules = hook_manager.total_rules
-        return jsonify({
-            'total_rules': total_rules,
-            'enforcement_active': True,
-            'available_integrations': integration_registry.list_integrations()
-        })
+        from ..shared_health_stats import get_stats_response
+        stats = get_stats_response(include_backend=True)
+        
+        # Add integration-specific stats
+        stats['available_integrations'] = integration_registry.list_integrations()
+        
+        return jsonify(stats)
     except Exception as e:
         logger.error(f"Stats error: {e}")
         return jsonify({

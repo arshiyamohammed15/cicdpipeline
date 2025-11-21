@@ -130,6 +130,9 @@ pipeline {
                     python scripts/ci/verify_architecture_artifacts.py
                     python scripts/ci/check_hardcoded_rules.py
                     python scripts/ci/check_privacy_split.py
+                    python scripts/ci/check_storage_resolver_contract.py
+                    # Backend convergence check
+                    python -c "from config.constitution.sync_manager import verify_sync; result = verify_sync(); assert result.get('synchronized', False), f'Backend sync failed: {result}'; print('Backend sync verified')"
                 '''
             }
         }

@@ -11,7 +11,10 @@
     "test:validator": "python -m pytest tests -k \"constitution\" --cov=validator --cov-report=term-missing -v",
     "test:storage": "jest --config jest.config.js --testPathPattern=storage",
     "test:storage:watch": "jest --config jest.config.js --testPathPattern=storage --watch",
-    "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage"
+    "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage",
+    "build:typescript": "tsc -p tsconfig.config.json && npm run verify:infra-config",
+    "verify:infra-config": "powershell -ExecutionPolicy Bypass -File scripts/di_config_verify.ps1",
+    "test:typescript": "npm run build:typescript && npm run test:storage"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

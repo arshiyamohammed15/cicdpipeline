@@ -79,6 +79,7 @@ EXCLUDE_PATTERNS = [
     r'.*count_rules\.py$',  # Utility scripts
     r'.*verify.*\.py$',  # Verification scripts (they check, not hardcode)
     r'.*test.*\.py$',  # Test files may have expected values
+    r'.*rule_count_loader\.py$',  # The loader itself
 ]
 
 # Directories to exclude
@@ -139,19 +140,27 @@ def scan_file(file_path: Path) -> List[Tuple[int, str, str]]:
     return violations
 
 
-def scan_directory(root_dir: Path) -> List[Tuple[Path, int, str, str]]:
+def scan_directory(root_dir: Path, include_built_artifacts: bool = True) -> List[Tuple[Path, int, str, str]]:
     """Scan directory recursively for violations."""
     all_violations = []
 
+    # Directories to scan for built artifacts
+    built_artifact_dirs = ['dist', 'build', 'out', 'lib']
+    
     for file_path in root_dir.rglob('*'):
         if not file_path.is_file():
             continue
 
+        # Skip built artifacts unless explicitly included
+        if not include_built_artifacts:
+            if any(part in built_artifact_dirs for part in file_path.parts):
+                continue
+
         if should_exclude_file(file_path):
             continue
 
-        # Only scan Python files
-        if file_path.suffix not in ['.py', '.ts', '.tsx', '.js', '.jsx']:
+        # Scan source files and built artifacts
+        if file_path.suffix not in ['.py', '.ts', '.tsx', '.js', '.jsx', '.map']:
             continue
 
         violations = scan_file(file_path)
@@ -159,6 +168,49 @@ def scan_directory(root_dir: Path) -> List[Tuple[Path, int, str, str]]:
             all_violations.append((file_path, line_num, match, context))
 
     return all_violations
+
+
+def scan_generated_stubs(root_dir: Path) -> List[Tuple[Path, int, str, str]]:
+    """Scan generated stub files and type definitions."""
+    violations = []
+    
+    # Scan for .d.ts files (type definitions)
+    for file_path in root_dir.rglob('*.d.ts'):
+        if should_exclude_file(file_path):
+            continue
+        if not file_path.is_file():
+            continue
+        
+        file_violations = scan_file(file_path)
+        for line_num, match, context in file_violations:
+            violations.append((file_path, line_num, match, context))
+    
+    # Scan for .d.ts.map files
+    for file_path in root_dir.rglob('*.d.ts.map'):
+        if should_exclude_file(file_path):
+            continue
+        if not file_path.is_file():
+            continue
+        
+        file_violations = scan_file(file_path)
+        for line_num, match, context in file_violations:
+            violations.append((file_path, line_num, match, context))
+    
+    # Scan generated directories
+    for gen_dir in ['__generated__', 'generated']:
+        for file_path in root_dir.rglob(f'**/{gen_dir}/**/*'):
+            if should_exclude_file(file_path):
+                continue
+            if not file_path.is_file():
+                continue
+            if file_path.suffix not in ['.ts', '.tsx', '.js', '.jsx', '.py']:
+                continue
+            
+            file_violations = scan_file(file_path)
+            for line_num, match, context in file_violations:
+                violations.append((file_path, line_num, match, context))
+    
+    return violations
 
 
 def main():
@@ -170,8 +222,16 @@ def main():
     print("=" * 80)
     print(f"Scanning: {root_dir}")
     print()
-
-    violations = scan_directory(root_dir)
+    print("Scanning source files...")
+    violations = scan_directory(root_dir, include_built_artifacts=False)
+    
+    print("Scanning built artifacts...")
+    built_violations = scan_directory(root_dir, include_built_artifacts=True)
+    violations.extend(built_violations)
+    
+    print("Scanning generated stubs...")
+    stub_violations = scan_generated_stubs(root_dir)
+    violations.extend(stub_violations)
 
     if violations:
         print(f"[FAIL] FOUND {len(violations)} POTENTIAL VIOLATIONS")
