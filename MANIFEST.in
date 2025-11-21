@@ -1,6 +1,5 @@
 # Exclude transient and log artifacts from distribution
 global-exclude *.log
-global-exclude validation_service.log
 global-exclude logs/
 global-exclude *.tmp
 global-exclude *.temp

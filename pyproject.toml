@@ -182,7 +182,7 @@ module = [
 ignore_missing_imports = true
 
 [tool.coverage.run]
-source = ["config", "validator"]
+source = ["config", "validator", "bdr"]
 omit = [
     "*/tests/*",
     "*/test_*",

@@ -359,13 +359,16 @@ export class LocalDRPlan implements DRPlanPort {
     // Drill: queue-drain
     const queueName = step.config.queueName as string;
     if (queueName) {
-      // Drain queue
-      let messages = await this.queuePort.receive(queueName, 10);
+      // Drain queue efficiently: use larger batch size to reduce file I/O operations
+      const batchSize = 50; // Increased from 10 to reduce number of receive operations
+      let messages = await this.queuePort.receive(queueName, batchSize);
       while (messages.length > 0) {
+        // Delete messages immediately to free up queue space
         for (const message of messages) {
           await this.queuePort.delete(queueName, message.receiptHandle);
         }
-        messages = await this.queuePort.receive(queueName, 10);
+        // Receive next batch
+        messages = await this.queuePort.receive(queueName, batchSize);
       }
     }
   }

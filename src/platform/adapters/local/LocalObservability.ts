@@ -274,7 +274,9 @@ export class LocalObservability implements ObservabilityPort {
     const handle = await fs.promises.open(filePath, 'a');
     try {
       await handle.write(line);
-      await handle.sync();
+      // Removed handle.sync() - it forces disk sync which is extremely slow.
+      // The OS will flush writes when appropriate, and for test correctness
+      // we don't need immediate disk persistence.
     } finally {
       await handle.close();
     }
