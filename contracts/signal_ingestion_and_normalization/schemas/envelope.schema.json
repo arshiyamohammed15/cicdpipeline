@@ -1,7 +1,102 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Envelope",
+  "title": "SignalEnvelope",
   "type": "object",
-  "description": "Template schema. Replace with real constraints.",
-  "additionalProperties": true
+  "description": "Canonical SignalEnvelope schema per PRD F1.1",
+  "required": [
+    "signal_id",
+    "tenant_id",
+    "environment",
+    "producer_id",
+    "signal_kind",
+    "signal_type",
+    "occurred_at",
+    "ingested_at",
+    "payload",
+    "schema_version"
+  ],
+  "properties": {
+    "signal_id": {
+      "type": "string",
+      "description": "Global unique ID"
+    },
+    "tenant_id": {
+      "type": "string",
+      "description": "Tenant ID"
+    },
+    "environment": {
+      "type": "string",
+      "enum": ["dev", "stage", "prod"],
+      "description": "Environment (dev/stage/prod)"
+    },
+    "producer_id": {
+      "type": "string",
+      "description": "Component / integration ID"
+    },
+    "actor_id": {
+      "type": "string",
+      "description": "Human or AI agent ID"
+    },
+    "signal_kind": {
+      "type": "string",
+      "enum": ["event", "metric", "log", "trace"],
+      "description": "Signal kind (event, metric, log, trace)"
+    },
+    "signal_type": {
+      "type": "string",
+      "description": "Signal type (e.g., pr_opened, test_failed)"
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the signal occurred"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the signal was ingested"
+    },
+    "trace_id": {
+      "type": "string",
+      "description": "Trace ID (when available)"
+    },
+    "span_id": {
+      "type": "string",
+      "description": "Span ID (when available)"
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Correlation ID (when available)"
+    },
+    "resource": {
+      "type": "object",
+      "description": "Resource context",
+      "properties": {
+        "service_name": {"type": "string"},
+        "repository": {"type": "string"},
+        "branch": {"type": "string"},
+        "commit": {"type": "string"},
+        "module": {"type": "string"},
+        "plane": {"type": "string", "enum": ["edge", "tenant_cloud", "product_cloud", "shared_services"]},
+        "file_path": {"type": "string"},
+        "pr_id": {"type": "integer"},
+        "environment": {"type": "string"},
+        "deployment_id": {"type": "string"}
+      }
+    },
+    "payload": {
+      "type": "object",
+      "description": "Type-specific normalized payload",
+      "additionalProperties": true
+    },
+    "schema_version": {
+      "type": "string",
+      "description": "Schema version for forward/backward compatibility"
+    },
+    "sequence_no": {
+      "type": "integer",
+      "description": "Sequence number for ordering (when available)"
+    }
+  },
+  "additionalProperties": false
 }
