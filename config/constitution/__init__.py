@@ -1,61 +1,53 @@
 """
-Constitution Rules Database Module for ZeroUI 2.0
+Constitution package (lazy imports to avoid circular dependencies).
 
-This module provides a SQLite database system to store and manage
-constitution rules with configuration management for enabling/disabling rules.
-
-Rule counts are dynamically calculated from docs/constitution/*.json files (single source of truth).
-No hardcoded rule counts exist in this module.
-
-All rules are enabled by default and can be toggled on/off through the
-configuration system.
+Rule counts and metadata come from docs/constitution (or docs/architecture/constitution).
+Heavy modules are loaded on demand via __getattr__ to prevent import cycles.
 """
+
+from __future__ import annotations
+
+from importlib import import_module
+from typing import Any
 
 __version__ = "1.0.0"
 __author__ = "ZeroUI 2.0 Constitution System"
 
-from .database import ConstitutionRulesDB
-from .rule_extractor import ConstitutionRuleExtractor
-from .config_manager import ConstitutionRuleManager
-from .queries import ConstitutionQueries
-from .base_manager import BaseConstitutionManager
-from .constitution_rules_json import ConstitutionRulesJSON
-from .config_manager_json import ConstitutionRuleManagerJSON
-from .backend_factory import (
-    get_constitution_manager, get_backend_factory, switch_backend, get_backend_status,
-    get_active_backend_config, migrate_configuration, validate_configuration, get_migration_info
-)
-from .sync_manager import get_sync_manager, sync_backends, verify_sync
-from .migration import get_migration_manager, migrate_sqlite_to_json, migrate_json_to_sqlite, repair_sync
-from .logging_config import get_constitution_logger, setup_logging
-from .rule_count_loader import RuleCountLoader, get_rule_count_loader, get_rule_counts
+_EXPORTS = {
+    "ConstitutionRulesDB": "database",
+    "ConstitutionRuleExtractor": "rule_extractor",
+    "ConstitutionRuleManager": "config_manager",
+    "ConstitutionQueries": "queries",
+    "BaseConstitutionManager": "base_manager",
+    "ConstitutionRulesJSON": "constitution_rules_json",
+    "ConstitutionRuleManagerJSON": "config_manager_json",
+    "get_constitution_manager": "backend_factory",
+    "get_backend_factory": "backend_factory",
+    "switch_backend": "backend_factory",
+    "get_backend_status": "backend_factory",
+    "get_active_backend_config": "backend_factory",
+    "migrate_configuration": "backend_factory",
+    "validate_configuration": "backend_factory",
+    "get_migration_info": "backend_factory",
+    "get_sync_manager": "sync_manager",
+    "sync_backends": "sync_manager",
+    "verify_sync": "sync_manager",
+    "get_migration_manager": "migration",
+    "migrate_sqlite_to_json": "migration",
+    "migrate_json_to_sqlite": "migration",
+    "repair_sync": "migration",
+    "get_constitution_logger": "logging_config",
+    "setup_logging": "logging_config",
+    "RuleCountLoader": "rule_count_loader",
+    "get_rule_count_loader": "rule_count_loader",
+    "get_rule_counts": "rule_count_loader",
+}
 
-__all__ = [
-    "ConstitutionRulesDB",
-    "ConstitutionRuleExtractor",
-    "ConstitutionRuleManager",
-    "ConstitutionQueries",
-    "BaseConstitutionManager",
-    "ConstitutionRulesJSON",
-    "ConstitutionRuleManagerJSON",
-    "get_constitution_manager",
-    "get_backend_factory",
-    "switch_backend",
-    "get_backend_status",
-    "get_active_backend_config",
-    "migrate_configuration",
-    "validate_configuration",
-    "get_migration_info",
-    "get_sync_manager",
-    "sync_backends",
-    "verify_sync",
-    "get_migration_manager",
-    "migrate_sqlite_to_json",
-    "migrate_json_to_sqlite",
-    "repair_sync",
-    "get_constitution_logger",
-    "setup_logging",
-    "RuleCountLoader",
-    "get_rule_count_loader",
-    "get_rule_counts"
-]
+__all__ = sorted(_EXPORTS.keys())
+
+
+def __getattr__(name: str) -> Any:
+    if name not in _EXPORTS:
+        raise AttributeError(f"module {__name__} has no attribute {name}")
+    module = import_module(f"{__name__}.{_EXPORTS[name]}")
+    return getattr(module, name)

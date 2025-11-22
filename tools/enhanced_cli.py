@@ -41,6 +41,7 @@ from validator.optimized_core import OptimizedConstitutionValidator
 from validator.intelligent_selector import IntelligentRuleSelector
 from validator.performance_monitor import PerformanceMonitor
 from config.enhanced_config_manager import EnhancedConfigManager
+from config.constitution.rule_catalog import get_catalog_counts
 
 
 class ErrorCode(Enum):
@@ -1710,7 +1711,9 @@ class EnhancedCLI:
             from pathlib import Path
 
             safe_print(f"Starting Constitution Validation Service on port {args.service_port}...")
-            safe_print("This service enforces all 293 ZeroUI constitution rules before AI code generation.")
+            counts = get_catalog_counts()
+            total_rules = counts.get("total_rules", "all")
+            safe_print(f"This service enforces all {total_rules} ZeroUI constitution rules before AI code generation.")
             safe_print("Press Ctrl+C to stop the service.")
 
             # Start the service in a subprocess

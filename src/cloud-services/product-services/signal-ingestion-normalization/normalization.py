@@ -231,37 +231,37 @@ class NormalizationEngine:
                 
                 # Now value is guaranteed to be numeric
                 normalized_value, was_converted = self.normalize_units(float(value), source_unit, target_unit)
-                    if was_converted:
-                        # Conversion was successful
-                        normalized_payload[field] = normalized_value
-                        normalized_payload[f"{field}_unit"] = target_unit
-                        warnings.append(CoercionWarning(
-                            field_path=f"payload.{field}",
-                            original_value=original_value,
-                            coerced_value=normalized_value,
-                            warning_message=f"Unit converted from {source_unit} to {target_unit}"
-                        ))
-                    elif source_unit == target_unit:
-                        # No conversion needed, just set the unit
-                        normalized_payload[f"{field}_unit"] = target_unit
-                    elif source_unit == SOURCE_UNIT_UNKNOWN:
-                        # Source unit was unknown, set target unit but don't convert value
-                        warnings.append(CoercionWarning(
-                            field_path=f"payload.{field}_unit",
-                            original_value=source_unit,
-                            coerced_value=target_unit,
-                            warning_message=f"Source unit was unknown, assuming {target_unit} (value not converted)"
-                        ))
-                        normalized_payload[f"{field}_unit"] = target_unit
-                    else:
-                        # Conversion failed (unknown conversion), log warning but don't modify
-                        logger.warning(f"Unit conversion failed for field {field}: {source_unit} -> {target_unit}")
-                        warnings.append(CoercionWarning(
-                            field_path=f"payload.{field}_unit",
-                            original_value=source_unit,
-                            coerced_value=source_unit,
-                            warning_message=f"Unknown unit conversion: {source_unit} -> {target_unit}, keeping original unit"
-                        ))
+                if was_converted:
+                    # Conversion was successful
+                    normalized_payload[field] = normalized_value
+                    normalized_payload[f"{field}_unit"] = target_unit
+                    warnings.append(CoercionWarning(
+                        field_path=f"payload.{field}",
+                        original_value=original_value,
+                        coerced_value=normalized_value,
+                        warning_message=f"Unit converted from {source_unit} to {target_unit}"
+                    ))
+                elif source_unit == target_unit:
+                    # No conversion needed, just set the unit
+                    normalized_payload[f"{field}_unit"] = target_unit
+                elif source_unit == SOURCE_UNIT_UNKNOWN:
+                    # Source unit was unknown, set target unit but don't convert value
+                    warnings.append(CoercionWarning(
+                        field_path=f"payload.{field}_unit",
+                        original_value=source_unit,
+                        coerced_value=target_unit,
+                        warning_message=f"Source unit was unknown, assuming {target_unit} (value not converted)"
+                    ))
+                    normalized_payload[f"{field}_unit"] = target_unit
+                else:
+                    # Conversion failed (unknown conversion), log warning but don't modify
+                    logger.warning(f"Unit conversion failed for field {field}: {source_unit} -> {target_unit}")
+                    warnings.append(CoercionWarning(
+                        field_path=f"payload.{field}_unit",
+                        original_value=source_unit,
+                        coerced_value=target_unit,
+                        warning_message=f"Unit conversion failed: {source_unit} -> {target_unit}"
+                    ))
 
         # Apply classification rules (even if enrich() is not called)
         classification = self.classification_rules.get(signal.signal_type)
@@ -440,4 +440,3 @@ class NormalizationEngine:
         # Unknown conversion
         logger.warning(f"Unknown unit conversion: {source_unit} -> {target_unit}")
         return value, False
-

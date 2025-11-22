@@ -131,6 +131,7 @@ pipeline {
                     python scripts/ci/check_hardcoded_rules.py
                     python scripts/ci/check_privacy_split.py
                     python scripts/ci/check_storage_resolver_contract.py
+                    python scripts/ci/verify_constitution_consistency.py
                     # Backend convergence check
                     python -c "from config.constitution.sync_manager import verify_sync; result = verify_sync(); assert result.get('synchronized', False), f'Backend sync failed: {result}'; print('Backend sync verified')"
                 '''

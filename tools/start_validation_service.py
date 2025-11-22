@@ -2,8 +2,8 @@
 """
 Start the Constitution Validation Service
 
-This service enforces all 293 ZeroUI constitution rules before any AI code generation.
-All prompts are validated against the complete constitution before being sent to AI services.
+This service enforces the complete set of ZeroUI constitution rules before any AI
+code generation. Rule counts are derived from docs/constitution (single source of truth).
 """
 
 import sys
@@ -16,6 +16,7 @@ sys.path.insert(0, str(project_root))
 
 import logging
 from validator.integrations.api_service import app
+from config.constitution.rule_catalog import get_catalog_counts
 
 def setup_logging():
     """Setup logging configuration."""
@@ -33,10 +34,16 @@ def main():
     setup_logging()
     logger = logging.getLogger(__name__)
 
+    counts = get_catalog_counts()
+    total_rules = counts.get("total_rules", 0)
+
     logger.info("=" * 60)
     logger.info("STARTING CONSTITUTION VALIDATION SERVICE")
     logger.info("=" * 60)
-    logger.info("This service enforces all 293 ZeroUI constitution rules before AI code generation.")
+    logger.info(
+        "This service enforces all %s ZeroUI constitution rules before AI code generation.",
+        total_rules or "all available",
+    )
     logger.info("Service will be available at http://localhost:5000")
     logger.info("All AI code generation requests will be validated against the constitution.")
     logger.info("Press Ctrl+C to stop")

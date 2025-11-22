@@ -11,13 +11,15 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from functools import lru_cache
-import json
 from pathlib import Path
 import re
 from typing import Dict, Optional
 
-BASE_DIR = Path(__file__).resolve().parents[1]
-CONSTITUTION_PATH = BASE_DIR / "config" / "constitution_rules.json"
+from config.constitution.rule_catalog import (
+    get_catalog_rules,
+    get_rule_by_doc_id,
+    get_rule_by_title,
+)
 
 
 @dataclass(frozen=True)
@@ -43,21 +45,13 @@ def _normalize(text: str) -> str:
 @lru_cache(maxsize=1)
 def _load_rules_index() -> Dict[str, RuleMetadata]:
     """Load constitution rule metadata and index by normalized title."""
-    if not CONSTITUTION_PATH.exists():
-        raise FileNotFoundError(
-            f"Constitution rules JSON not found at {CONSTITUTION_PATH}"
-        )
-
-    with CONSTITUTION_PATH.open("r", encoding="utf-8") as handle:
-        data = json.load(handle)
-
     rules: Dict[str, RuleMetadata] = {}
-    for entry in data.get("rules", {}).values():
+    for entry in get_catalog_rules():
         metadata = RuleMetadata(
-            number=int(entry["rule_number"]),
-            title=entry["title"],
-            category=entry["category"],
-            priority=entry["priority"],
+            number=int(entry.rule_number) if entry.rule_number is not None else 0,
+            title=entry.title,
+            category=entry.category,
+            priority=entry.priority,
         )
         rules[_normalize(metadata.title)] = metadata
     return rules
@@ -118,6 +112,16 @@ def get_rule_metadata(name: str) -> Optional[RuleMetadata]:
     ]
     if len(matches) == 1:
         return matches[0]
+
+    # Fallback: try DOC rule id from docs/constitution
+    doc_rule = get_rule_by_doc_id(name)
+    if doc_rule:
+        return RuleMetadata(
+            number=int(doc_rule.rule_number) if doc_rule.rule_number else 0,
+            title=doc_rule.title,
+            category=doc_rule.category,
+            priority=doc_rule.priority,
+        )
 
     return None
 

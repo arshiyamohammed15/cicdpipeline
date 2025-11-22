@@ -6,6 +6,7 @@ Test Integration of Automatic Constitution Enforcement
 import sys
 import os
 sys.path.insert(0, 'D:/Projects/ZeroUI2.0')
+from config.constitution.rule_catalog import get_catalog_counts
 
 def test_direct_hooks():
     """Test direct pre-implementation hooks."""
@@ -114,7 +115,8 @@ def main():
     if passed == total:
         print("SUCCESS ALL TESTS PASSED - Automatic enforcement is properly implemented!")
         print("\nImplementation Summary:")
-        print("OK Pre-implementation hooks validate all 293 constitution rules")
+        total_rules = get_catalog_counts().get("total_rules", "all")
+        print(f"OK Pre-implementation hooks validate all {total_rules} constitution rules")
         print("OK Integration registry manages AI service connections")
         print("OK API service provides HTTP endpoints for validation")
         print("OK VS Code extension integrates with validation service")

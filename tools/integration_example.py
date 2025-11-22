@@ -9,6 +9,7 @@ into your own applications and workflows.
 import sys
 import os
 from pathlib import Path
+from config.constitution.rule_catalog import get_catalog_counts
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
@@ -20,7 +21,8 @@ def demonstrate_integration():
     print("=" * 60)
     print("INTEGRATION EXAMPLE: AUTOMATIC CONSTITUTION ENFORCEMENT")
     print("=" * 60)
-    print("This shows how to integrate automatic enforcement into your workflow.")
+    total_rules = get_catalog_counts().get("total_rules", "all")
+    print(f"This shows how to integrate automatic enforcement of all {total_rules} rules into your workflow.")
     print()
 
     # Example 1: Direct integration
@@ -117,7 +119,7 @@ async function generateCodeWithValidation(prompt: string, fileType: string) {
     print("Cursor configuration (.cursorrules):")
     print("""
 # Automatic constitution validation
-cursor.preImplementation: "Validate prompt against ALL 293 Constitution rules before generation"
+    cursor.preImplementation: "Validate prompt against ALL Constitution rules before generation"
 
 # Custom validation endpoint
 cursor.constitutionValidationUrl: "http://localhost:5000/validate"
@@ -232,7 +234,7 @@ echo "✅ Constitution validation passed"
     print()
     print("🎯 Integration Benefits:")
     print("✅ Zero constitution violations reach AI services")
-    print("✅ All 293 rules automatically enforced")
+    print(f"✅ All {total_rules} rules automatically enforced")
     print("✅ Complete audit trail of validation decisions")
     print("✅ Seamless integration with existing workflows")
     print("✅ Real-time feedback during development")

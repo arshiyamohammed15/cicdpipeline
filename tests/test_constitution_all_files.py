@@ -407,6 +407,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         total = 0
         files = [
             'MASTER GENERIC RULES.json',
+            'CURSOR TESTING RULES.json',
             'VSCODE EXTENSION RULES.json',
             'LOGGING & TROUBLESHOOTING RULES.json',
             'MODULES AND GSMD MAPPING RULES.json',

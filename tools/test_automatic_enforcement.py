@@ -2,8 +2,8 @@
 """
 Test Automatic Enforcement of Constitution Rules
 
-This script demonstrates the automatic enforcement of all 293 ZeroUI constitution rules
-before AI code generation occurs.
+This script demonstrates the automatic enforcement of the ZeroUI constitution rules
+before AI code generation occurs. Rule counts are derived dynamically from docs/constitution.
 """
 
 import sys
@@ -17,6 +17,7 @@ sys.path.insert(0, str(project_root))
 import requests
 import json
 import time
+from config.constitution.rule_catalog import get_catalog_counts
 
 def test_automatic_enforcement():
     """Test the automatic enforcement system."""
@@ -24,7 +25,9 @@ def test_automatic_enforcement():
     print("=" * 60)
     print("TESTING AUTOMATIC CONSTITUTION ENFORCEMENT")
     print("=" * 60)
-    print("This demonstrates 100% automatic enforcement of all 293 ZeroUI constitution rules")
+    counts = get_catalog_counts()
+    total_rules = counts.get("total_rules", "all")
+    print(f"This demonstrates automatic enforcement of all {total_rules} ZeroUI constitution rules")
     print("before any AI code generation occurs.")
     print()
 

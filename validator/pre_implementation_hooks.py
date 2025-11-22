@@ -14,6 +14,11 @@ import re
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Set
 from validator.models import Violation, Severity
+from config.constitution.rule_catalog import (
+    get_rule_by_doc_id,
+    get_rule_by_title,
+    get_catalog_counts,
+)
 
 
 class ConstitutionRuleLoader:
@@ -51,15 +56,14 @@ class ConstitutionRuleLoader:
                     rules = data.get('constitution_rules', [])
 
                     for rule in rules:
-                        if rule.get('enabled', True):
-                            rule_id = rule.get('rule_id', '')
-                            self.rules.append(rule)
-                            self.rules_by_id[rule_id] = rule
+                        rule_id = rule.get('rule_id', '')
+                        self.rules.append(rule)
+                        self.rules_by_id[rule_id] = rule
 
-                            category = rule.get('category', 'UNKNOWN')
-                            if category not in self.rules_by_category:
-                                self.rules_by_category[category] = []
-                            self.rules_by_category[category].append(rule)
+                        category = rule.get('category', 'UNKNOWN')
+                        if category not in self.rules_by_category:
+                            self.rules_by_category[category] = []
+                        self.rules_by_category[category].append(rule)
 
             except Exception as e:
                 print(f"Warning: Could not load rules from {json_file}: {e}")
@@ -176,39 +180,35 @@ class PromptValidator:
         category = rule.get('category', '')
         severity_str = rule.get('severity_level', 'Major')
 
-        # Map severity levels
+        # Resolve canonical metadata from catalog (DOC id or title)
+        metadata = get_rule_by_doc_id(rule_id) or get_rule_by_title(title)
+
+        # Map severity levels to validator enums
         severity_map = {
-            'Blocker': Severity.ERROR,
-            'Critical': Severity.ERROR,
-            'Major': Severity.ERROR,
-            'Minor': Severity.WARNING,
-            'Info': Severity.INFO
+            'blocker': Severity.ERROR,
+            'critical': Severity.ERROR,
+            'major': Severity.ERROR,
+            'minor': Severity.WARNING,
+            'warning': Severity.WARNING,
+            'info': Severity.INFO
         }
-        severity = severity_map.get(severity_str, Severity.ERROR)
+        severity = severity_map.get(str(severity_str).lower(), Severity.ERROR)
 
         # Rule-specific validation patterns
         violation_indicators = self._get_violation_indicators(rule, prompt_lower)
 
         if violation_indicators:
-            # Extract rule number if available (e.g., R-001 -> 1)
-            rule_number = None
-            if rule_id.startswith('R-'):
-                try:
-                    rule_number = int(rule_id.split('-')[1])
-                except:
-                    pass
-
             return Violation(
-                rule_id=rule_id,
+                rule_id=metadata.rule_id if metadata else rule_id,
                 severity=severity,
-                message=f"Prompt violates {rule_id}: {title}",
+                message=f"Prompt violates {metadata.rule_id if metadata else rule_id}: {title}",
                 file_path="prompt",
                 line_number=1,
                 code_snippet=prompt[:200] + "..." if len(prompt) > 200 else prompt,
                 fix_suggestion=self._generate_fix_suggestion(rule, requirements),
-                category=category,
-                rule_name=title,
-                rule_number=rule_number
+                category=metadata.category if metadata else category,
+                rule_name=metadata.title if metadata else title,
+                rule_number=metadata.rule_number if metadata else None
             )
 
         return None
@@ -634,7 +634,8 @@ class PreImplementationHookManager:
         """
         self.rule_loader = ConstitutionRuleLoader(constitution_dir)
         self.validator = PromptValidator(self.rule_loader)
-        self.total_rules = self.rule_loader.get_total_rule_count()
+        counts = get_catalog_counts()
+        self.total_rules = counts.get("total_rules", self.rule_loader.get_total_rule_count())
 
     def validate_before_generation(self, prompt: str, file_type: str = None,
                                  task_type: str = None) -> Dict[str, Any]:

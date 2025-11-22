@@ -46,7 +46,7 @@ The folder-business rules file remains the single source of truth; regenerate sc
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
 - **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
-- **🚀 Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against all 424 enabled constitution rules (425 total) before AI code generation occurs
+- **Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against the complete constitution rule set derived from `docs/constitution` (currently 415 rules) before AI code generation occurs
 
 ## Installation
 
@@ -60,9 +60,9 @@ The folder-business rules file remains the single source of truth; regenerate sc
    ```
    Use `python -m pip install .` if you only need the runtime (without dev extras).
 
-## 🚀 Automatic AI Code Generation Enforcement
+## Automatic AI Code Generation Enforcement
 
-The system now includes **100% automatic enforcement** of all 424 enabled ZeroUI constitution rules (425 total) before any AI code generation occurs.
+The system now includes **automatic enforcement** of the full ZeroUI constitution rule set sourced from `docs/constitution` (currently 415 rules) before any AI code generation occurs.
 
 Regenerate the enforcement prompt directly from the JSON source of truth whenever constitution files change:
 

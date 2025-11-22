@@ -19,6 +19,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import lru_cache
 
 from .models import Violation, ValidationResult, Severity
+from .rule_registry import get_rule_metadata
 from .analyzer import CodeAnalyzer
 from .reporter import ReportGenerator
 
@@ -85,25 +86,38 @@ class OptimizedConstitutionValidator:
         processors = {}
 
         # Import rule validators dynamically
-        try:
-            from .rules.basic_work import BasicWorkValidator
-            processors['basic_work'] = BasicWorkValidator()
-        except ImportError:
-            pass
+        mapping = [
+            ("basic_work", "rules.basic_work", "BasicWorkValidator"),
+            ("requirements", "rules.requirements", "RequirementsValidator"),
+            ("privacy_security", "rules.privacy", "PrivacyValidator"),
+            ("performance", "rules.performance", "PerformanceValidator"),
+            ("architecture", "rules.architecture", "ArchitectureValidator"),
+            ("system_design", "rules.system_design", "SystemDesignValidator"),
+            ("problem_solving", "rules.problem_solving", "ProblemSolvingValidator"),
+            ("platform", "rules.platform", "PlatformValidator"),
+            ("teamwork", "rules.teamwork", "TeamworkValidator"),
+            ("code_review", "rules.code_review", "CodeReviewValidator"),
+            ("coding_standards", "rules.coding_standards", "CodingStandardsValidator"),
+            ("comments", "rules.comments", "CommentsValidator"),
+            ("folder_standards", "rules.folder_standards", "FolderStandardsValidator"),
+            ("logging", "rules.logging", "LoggingValidator"),
+            ("exception_handling", "rules.exception_handling", "ExceptionHandlingValidator"),
+            ("typescript", "rules.typescript", "TypeScriptValidator"),
+            ("storage_governance", "rules.storage_governance", "StorageGovernanceValidator"),
+            ("api_contracts", "rules.api_contracts", "APIContractsValidator"),
+            ("code_quality", "rules.quality", "QualityValidator"),
+        ]
 
-        try:
-            from .rules.requirements import RequirementsValidator
-            processors['requirements'] = RequirementsValidator()
-        except ImportError:
-            pass
+        for category, module_path, class_name in mapping:
+            try:
+                module = __import__(f"validator.{module_path}", fromlist=[class_name])
+                validator_cls = getattr(module, class_name)
+                processors[category] = validator_cls()
+            except ImportError:
+                continue
+            except Exception as exc:
+                self._logger.warning("Failed to load validator %s (%s): %s", class_name, module_path, exc)
 
-        try:
-            from .rules.privacy import PrivacyValidator
-            processors['privacy_security'] = PrivacyValidator()
-        except ImportError:
-            pass
-
-        # Add more processors as needed
         return processors
 
     def _get_file_hash(self, file_path: str) -> str:
@@ -230,42 +244,42 @@ class OptimizedConstitutionValidator:
 
         for pattern_name, pattern_data in patterns.items():
             try:
+                rule_name = pattern_data.get("rule_name") or pattern_data.get("message") or pattern_name
+                rule_metadata = get_rule_metadata(rule_name)
+                severity_value = str(pattern_data.get("severity", "warning")).lower()
+                severity = Severity.ERROR if severity_value == "error" else (
+                    Severity.WARNING if severity_value == "warning" else Severity.INFO
+                )
+
+                def build_violation(line_number: int, column_number: int, snippet: str, message: str) -> Violation:
+                    return Violation(
+                        rule_id=rule_metadata.rule_id if rule_metadata else (f"rule_{rules[0]:03d}" if rules else "rule_unknown"),
+                        rule_name=rule_metadata.title if rule_metadata else rule_name,
+                        rule_number=rule_metadata.number if rule_metadata else (rules[0] if rules else None),
+                        severity=severity,
+                        message=message,
+                        file_path=file_path,
+                        line_number=line_number,
+                        column_number=column_number,
+                        code_snippet=snippet,
+                        fix_suggestion=f"Fix {pattern_name} violation",
+                        category=rule_metadata.category if rule_metadata else None,
+                    )
+
                 if "regex" in pattern_data:
-                    # Regex-based validation
                     regex = pattern_data["regex"]
                     for match in re.finditer(regex, content):
-                        violation = Violation(
-                            rule_id=f"rule_{rules[0]:03d}" if rules else "unknown",
-                            rule_name=pattern_data.get("message", "Pattern violation"),
-                            rule_number=rules[0] if rules else 0,
-                            severity=Severity(pattern_data.get("severity", "warning")),
-                            message=pattern_data.get("message", "Pattern violation detected"),
-                            file_path=file_path,
-                            line_number=content[:match.start()].count('\n') + 1,
-                            column_number=match.start() - content.rfind('\n', 0, match.start()) - 1,
-                            code_snippet=match.group(),
-                            fix_suggestion=f"Fix {pattern_name} violation"
-                        )
-                        violations.append(violation)
+                        line_number = content[:match.start()].count("\n") + 1
+                        column_number = match.start() - content.rfind("\n", 0, match.start()) - 1
+                        message = pattern_data.get("message", "Pattern violation detected")
+                        violations.append(build_violation(line_number, column_number, match.group(), message))
 
                 elif "keywords" in pattern_data:
-                    # Keyword-based validation
                     keywords = pattern_data["keywords"]
                     for keyword in keywords:
                         if keyword in content:
-                            violation = Violation(
-                                rule_id=f"rule_{rules[0]:03d}" if rules else "unknown",
-                                rule_name=pattern_data.get("message", "Keyword violation"),
-                                rule_number=rules[0] if rules else 0,
-                                severity=Severity(pattern_data.get("severity", "warning")),
-                                message=pattern_data.get("message", f"Keyword '{keyword}' detected"),
-                                file_path=file_path,
-                                line_number=1,
-                                column_number=0,
-                                code_snippet=keyword,
-                                fix_suggestion=f"Review usage of '{keyword}'"
-                            )
-                            violations.append(violation)
+                            message = pattern_data.get("message", f"Keyword '{keyword}' detected")
+                            violations.append(build_violation(1, 0, keyword, message))
 
             except Exception as e:
                 self._logger.warning("Error in pattern validation %s: %s", pattern_name, e)

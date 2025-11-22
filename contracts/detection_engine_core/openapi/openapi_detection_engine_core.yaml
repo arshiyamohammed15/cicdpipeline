@@ -1,7 +1,416 @@
 openapi: 3.1.0
 info:
-  title: "Detection Engine Core Local API"
-  version: "0.1.0"
-paths: {}
+  title: "Detection Engine Core API"
+  description: "API for Detection Engine Core Module (M05) - decision evaluation and feedback per PRD v1.0"
+  version: "1.0.0"
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+  - url: https://api.zeroui.com/v1
+    description: Production server
+
+paths:
+  /v1/decisions/evaluate:
+    post:
+      summary: Evaluate decision
+      description: Evaluate decision per PRD §3.2. Returns decision response with receipt, confidence, and accuracy metrics.
+      operationId: evaluateDecision
+      tags:
+        - detection-engine-core
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DecisionRequest'
+      responses:
+        '200':
+          description: Decision evaluation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResponse'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResponseError'
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResponseError'
+
+  /v1/feedback:
+    post:
+      summary: Submit feedback
+      description: Submit feedback per PRD §3.6. Links feedback to decision receipt for learning from corrections.
+      operationId: submitFeedback
+      tags:
+        - detection-engine-core
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackRequest'
+      responses:
+        '201':
+          description: Feedback submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+
+  /v1/health:
+    get:
+      summary: Health check
+      description: Health check endpoint per PRD §3.9
+      operationId: healthCheck
+      tags:
+        - detection-engine-core
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /v1/ready:
+    get:
+      summary: Readiness check
+      description: Readiness check endpoint per PRD §3.9
+      operationId: readinessCheck
+      tags:
+        - detection-engine-core
+      responses:
+        '200':
+          description: Service readiness status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+
 components:
-  schemas: {}
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    DecisionRequest:
+      type: object
+      required:
+        - evaluation_point
+        - inputs
+        - actor
+      properties:
+        evaluation_point:
+          type: string
+          enum: [pre-commit, pre-merge, pre-deploy, post-deploy]
+          description: Evaluation point per PRD §3.1
+        inputs:
+          type: object
+          description: Input signals (metadata only, no raw code/secrets) per PRD §3.2
+          additionalProperties: true
+        actor:
+          type: object
+          required:
+            - repo_id
+          properties:
+            repo_id:
+              type: string
+              description: Repository identifier (kebab-case)
+            machine_fingerprint:
+              type: string
+              description: Optional machine fingerprint
+            type:
+              type: string
+              enum: [human, ai, automated]
+              description: Actor type per Trust TR-6.2.1
+          additionalProperties: false
+        context:
+          type: object
+          properties:
+            surface:
+              type: string
+              enum: [ide, pr, ci]
+            branch:
+              type: string
+            commit:
+              type: string
+            pr_id:
+              type: string
+          additionalProperties: false
+        policy_version_ids:
+          type: array
+          items:
+            type: string
+          description: Policy version IDs to evaluate
+
+    DecisionResponse:
+      type: object
+      required:
+        - receipt
+      properties:
+        receipt:
+          $ref: '#/components/schemas/DecisionReceipt'
+        confidence:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+          description: Confidence level (0.0-1.0) per PRD §3.3
+        accuracy_metrics:
+          type: object
+          description: Accuracy metrics per PRD §3.3
+          properties:
+            precision:
+              type: number
+            recall:
+              type: number
+            f1:
+              type: number
+            false_positive_rate:
+              type: number
+            false_negative_rate:
+              type: number
+            error_rate:
+              type: number
+
+    DecisionReceipt:
+      type: object
+      required:
+        - receipt_id
+        - gate_id
+        - policy_version_ids
+        - snapshot_hash
+        - timestamp_utc
+        - timestamp_monotonic_ms
+        - evaluation_point
+        - inputs
+        - decision
+        - evidence_handles
+        - actor
+        - degraded
+        - signature
+      properties:
+        receipt_id:
+          type: string
+          format: uuid
+          description: Unique receipt identifier
+        gate_id:
+          type: string
+          description: Gate identifier
+        policy_version_ids:
+          type: array
+          items:
+            type: string
+          description: Array of policy version IDs evaluated
+        snapshot_hash:
+          type: string
+          pattern: '^sha256:[0-9a-f]{64}$'
+          description: SHA256 hash of policy snapshot
+        timestamp_utc:
+          type: string
+          format: date-time
+          description: ISO 8601 UTC timestamp
+        timestamp_monotonic_ms:
+          type: integer
+          description: Hardware monotonic timestamp in milliseconds
+        evaluation_point:
+          type: string
+          enum: [pre-commit, pre-merge, pre-deploy, post-deploy]
+        inputs:
+          type: object
+          description: Input signals (metadata only)
+          additionalProperties: true
+        decision:
+          type: object
+          required:
+            - status
+            - rationale
+            - badges
+          properties:
+            status:
+              type: string
+              enum: [pass, warn, soft_block, hard_block]
+            rationale:
+              type: string
+            badges:
+              type: array
+              items:
+                type: string
+        evidence_handles:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvidenceHandle'
+        actor:
+          type: object
+          required:
+            - repo_id
+          properties:
+            repo_id:
+              type: string
+            machine_fingerprint:
+              type: string
+            type:
+              type: string
+              enum: [human, ai, automated]
+          additionalProperties: false
+        context:
+          type: object
+          properties:
+            surface:
+              type: string
+              enum: [ide, pr, ci]
+            branch:
+              type: string
+            commit:
+              type: string
+            pr_id:
+              type: string
+          additionalProperties: false
+        override:
+          type: object
+          properties:
+            reason:
+              type: string
+            approver:
+              type: string
+            timestamp:
+              type: string
+              format: date-time
+            override_id:
+              type: string
+          additionalProperties: false
+        data_category:
+          type: string
+          enum: [public, internal, confidential, restricted]
+        degraded:
+          type: boolean
+          description: Degraded mode flag per PRD §3.12
+        signature:
+          type: string
+          description: Cryptographic signature
+
+    EvidenceHandle:
+      type: object
+      required:
+        - url
+        - type
+        - description
+      properties:
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+        description:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+
+    FeedbackRequest:
+      type: object
+      required:
+        - decision_receipt_id
+        - pattern_id
+        - choice
+        - actor
+      properties:
+        decision_receipt_id:
+          type: string
+          format: uuid
+        pattern_id:
+          type: string
+          enum: [FB-01, FB-02, FB-03, FB-04]
+        choice:
+          type: string
+          enum: [worked, partly, didnt]
+        tags:
+          type: array
+          items:
+            type: string
+        actor:
+          type: object
+          required:
+            - repo_id
+          properties:
+            repo_id:
+              type: string
+            machine_fingerprint:
+              type: string
+          additionalProperties: false
+
+    FeedbackResponse:
+      type: object
+      required:
+        - feedback_id
+        - status
+      properties:
+        feedback_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+        message:
+          type: string
+
+    DecisionResponseError:
+      type: object
+      required:
+        - error_code
+        - error_message
+        - degraded
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+        degraded:
+          type: boolean
+
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    ReadinessResponse:
+      type: object
+      required:
+        - ready
+        - checks
+      properties:
+        ready:
+          type: boolean
+        checks:
+          type: object
+          additionalProperties:
+            type: boolean
+        timestamp:
+          type: string
+          format: date-time

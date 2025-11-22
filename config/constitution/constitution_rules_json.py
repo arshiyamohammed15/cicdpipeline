@@ -280,10 +280,26 @@ class ConstitutionRulesJSON:
     def _create_database(self):
         """Create new JSON database with all rules from source of truth."""
         try:
+            rules_data = []
+            # Prefer master markdown if available; otherwise fall back to catalog derived from docs/constitution JSON
             from .rule_extractor import ConstitutionRuleExtractor
-
             extractor = ConstitutionRuleExtractor()
-            rules_data = extractor.extract_all_rules()
+            if extractor.constitution_file.exists():
+                rules_data = extractor.extract_all_rules()
+            if not rules_data:
+                # Fallback: build from catalog (docs/constitution JSONs)
+                from .rule_catalog import get_catalog_rules
+                rules_data = [
+                    {
+                        "rule_number": r.rule_number,
+                        "title": r.title,
+                        "category": r.category,
+                        "priority": r.priority,
+                        "content": r.description or "",
+                        "enabled": r.enabled,
+                    }
+                    for r in get_catalog_rules()
+                ]
 
             # Initialize database structure
             # total_rules will be calculated dynamically after rules are loaded
@@ -322,16 +338,16 @@ class ConstitutionRulesJSON:
                 }
 
             # Add rules
-            for rule_data in rules_data:
-                rule_number = str(rule_data['rule_number'])
+            for idx, rule_data in enumerate(rules_data, start=1):
+                rule_number = str(idx)
 
                 self.data["rules"][rule_number] = {
-                    "rule_number": rule_data['rule_number'],
+                    "rule_number": idx,
                     "title": rule_data['title'],
                     "category": rule_data['category'],
                     "priority": rule_data['priority'],
                     "content": rule_data['content'],
-                    "enabled": True,  # All rules enabled by default
+                    "enabled": rule_data.get("enabled", True),
                     "config": {
                         "default_enabled": True,
                         "notes": "",

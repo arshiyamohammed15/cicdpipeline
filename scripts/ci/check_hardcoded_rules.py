@@ -15,7 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-STATIC_FORBIDDEN_NUMBERS = {'149', '293', '414', '423', '424', '425'}
+STATIC_FORBIDDEN_NUMBERS = {'149', '293', '414', '415', '423', '424', '425'}
 
 
 def get_canonical_rule_count() -> Optional[int]:

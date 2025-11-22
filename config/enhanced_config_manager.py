@@ -12,6 +12,7 @@ from typing import Dict, List, Optional, Any
 from functools import lru_cache
 
 from validator.rule_registry import get_rule_metadata
+from config.constitution.rule_catalog import get_catalog_rules
 
 class EnhancedConfigManager:
     """
@@ -166,6 +167,17 @@ class EnhancedConfigManager:
         Returns:
             List of rule numbers
         """
+        # Prefer dynamic catalog-derived rule lists to avoid stale hard-coded ranges
+        try:
+            dynamic = [
+                r.rule_number for r in get_catalog_rules()
+                if r.rule_number is not None and r.priority == priority
+            ]
+            if dynamic:
+                return sorted(dynamic)
+        except Exception:
+            pass
+
         base_config = self.base_config
         key = f"enterprise_{priority}_rules"
         return base_config.get(key, [])
