@@ -2290,6 +2290,23 @@ def test_no_any_violation():
 - **Bulk Operations**: Enable/disable all rules across all sources
 - **Automatic Synchronization**: Fix inconsistencies with `--sync-all` command
 
+## Documentation
+
+### Guides
+
+- **[Rule Category to Validator/Test Mapping](docs/guides/RULE_CATEGORY_VALIDATOR_TEST_MAPPING.md)**: Complete mapping of rule categories to validators, config files, and test locations
+- **[Targeted Test Suite Execution](docs/guides/TARGETED_TEST_SUITE_EXECUTION.md)**: Guide for running targeted test suites (exception handling vs TypeScript rules)
+- **[Storage Governance Flow Trace](docs/guides/STORAGE_GOVERNANCE_FLOW_TRACE.md)**: Complete flow trace across config, validator, and edge-agent storage modules
+
+### Other Guides
+
+See `docs/guides/` for additional documentation including:
+- Constitution Analyzer Commands
+- Enhanced CLI Commands
+- Rule Manager Commands
+- Pre-Implementation Hooks Testing Guide
+- And more...
+
 ## Support
 
 For issues and questions:
@@ -2299,6 +2316,7 @@ For issues and questions:
 4. Check configuration file format
 5. Use `--health-check` for system diagnostics
 6. Check log files under `${ZEROU_LOG_ROOT}/constitution`
+7. Consult the guides in `docs/guides/` for detailed documentation
 
 ---
 
