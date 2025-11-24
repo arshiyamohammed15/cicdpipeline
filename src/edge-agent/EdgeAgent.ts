@@ -10,7 +10,24 @@ import { ResourceOptimizer } from './modules/resource-optimizer/ResourceOptimize
 import { ReceiptStorageService } from './shared/storage/ReceiptStorageService';
 import { ReceiptGenerator, ReceiptGeneratorOptions } from './shared/storage/ReceiptGenerator';
 import { PolicyStorageService } from './shared/storage/PolicyStorageService';
+import { HeartbeatEmitter } from './shared/health/HeartbeatEmitter';
 import { DelegationTask, DelegationResult } from './interfaces/core/DelegationInterface';
+
+const resolvePlane = (value?: string): 'Laptop' | 'Tenant' | 'Product' | 'Shared' => {
+    const allowed = new Set(['Laptop', 'Tenant', 'Product', 'Shared']);
+    if (value && allowed.has(value)) {
+        return value as 'Laptop' | 'Tenant' | 'Product' | 'Shared';
+    }
+    return 'Laptop';
+};
+
+const resolveEnvironment = (value?: string): 'dev' | 'test' | 'stage' | 'prod' => {
+    const allowed = new Set(['dev', 'test', 'stage', 'prod']);
+    if (value && allowed.has(value)) {
+        return value as 'dev' | 'test' | 'stage' | 'prod';
+    }
+    return 'dev';
+};
 
 export interface EdgeAgentOptions {
     signingKey?: string | Buffer;
@@ -31,6 +48,7 @@ export class EdgeAgent {
     private receiptStorage: ReceiptStorageService;
     private receiptGenerator: ReceiptGenerator;
     private policyStorage: PolicyStorageService;
+    private heartbeatEmitter: HeartbeatEmitter;
 
     constructor(zuRoot?: string, options: EdgeAgentOptions = {}) {
         // Initialize storage services
@@ -47,6 +65,17 @@ export class EdgeAgent {
         }
         this.receiptGenerator = new ReceiptGenerator(generatorOptions);
         this.policyStorage = new PolicyStorageService(zuRoot);
+
+        this.heartbeatEmitter = new HeartbeatEmitter({
+            componentId: process.env.HEALTH_RELIABILITY_MONITORING_COMPONENT_ID ?? 'edge-agent',
+            plane: resolvePlane(process.env.HEALTH_RELIABILITY_MONITORING_PLANE),
+            environment: resolveEnvironment(process.env.HEALTH_RELIABILITY_MONITORING_ENVIRONMENT),
+            tenantId: process.env.HEALTH_RELIABILITY_MONITORING_TENANT_ID,
+            endpoint: process.env.HEALTH_RELIABILITY_MONITORING_HEARTBEAT_ENDPOINT,
+            intervalMs: process.env.HEALTH_RELIABILITY_MONITORING_HEARTBEAT_INTERVAL_MS
+                ? Number(process.env.HEALTH_RELIABILITY_MONITORING_HEARTBEAT_INTERVAL_MS)
+                : undefined
+        });
 
         this.initializeModules();
         this.setupCoordination();
@@ -90,6 +119,7 @@ export class EdgeAgent {
         await this.validationCoordinator.initialize();
 
         console.log('Edge Agent initialized - Ready for delegation and validation');
+        this.heartbeatEmitter.start();
     }
 
     public async stop(): Promise<void> {
@@ -98,6 +128,7 @@ export class EdgeAgent {
         await this.orchestrator.shutdown();
         await this.delegationManager.shutdown();
         await this.validationCoordinator.shutdown();
+        this.heartbeatEmitter.stop();
 
         console.log('Edge Agent stopped');
     }

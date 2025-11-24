@@ -1,0 +1,19 @@
+{
+  "component_id": "pm-4-detection-engine",
+  "name": "Detection Engine Core",
+  "component_type": "service",
+  "plane": "Tenant",
+  "environment": "prod",
+  "tenant_scope": "tenant",
+  "dependencies": [
+    { "component_id": "epc-8-deployment", "critical": true },
+    { "component_id": "pm-7-eris", "critical": true }
+  ],
+  "metrics_profile": ["GOLDEN_SIGNALS", "RED"],
+  "health_policies": ["policy_detection_engine_latency", "policy_detection_engine_errors"],
+  "slo_target": 99.5,
+  "error_budget_minutes": 216,
+  "owner_team": "Detection Platform",
+  "documentation_url": "https://docs.zeroui.local/detection-engine"
+}
+

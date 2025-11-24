@@ -1,0 +1,314 @@
+openapi: 3.0.3
+info:
+  title: ZeroUI Health & Reliability Monitoring
+  version: 0.1.0
+  description: >
+    API contract for component registry, health status, tenant/plane views, and Safe-to-Act decisions
+    per `docs/architecture/modules/Health_and_Reliability_Monitoring_PRD_Updated.md`.
+servers:
+  - url: https://api.zeroui.local/health
+paths:
+  /v1/health/components:
+    post:
+      summary: Register or update a monitored component
+      operationId: registerComponent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComponentDefinition'
+      responses:
+        '201':
+          description: Component registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentRegistrationResponse'
+    get:
+      summary: List components
+      operationId: listComponents
+      responses:
+        '200':
+          description: Component list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComponentDefinition'
+  /v1/health/components/{component_id}:
+    get:
+      summary: Retrieve component definition
+      parameters:
+        - in: path
+          name: component_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Component definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComponentDefinition'
+  /v1/health/components/{component_id}/status:
+    get:
+      summary: Latest component health snapshot
+      parameters:
+        - in: path
+          name: component_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Health snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthSnapshot'
+  /v1/health/tenants/{tenant_id}:
+    get:
+      summary: Tenant roll-up
+      parameters:
+        - in: path
+          name: tenant_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tenant health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantHealthView'
+  /v1/health/planes/{plane}/{environment}:
+    get:
+      summary: Plane roll-up
+      parameters:
+        - name: plane
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: environment
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Plane health
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaneHealthView'
+  /v1/health/check_safe_to_act:
+    post:
+      summary: Safe-to-Act decision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SafeToActRequest'
+      responses:
+        '200':
+          description: Safe-to-Act response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SafeToActResponse'
+components:
+  schemas:
+    ComponentDefinition:
+      type: object
+      required:
+        - component_id
+        - name
+        - component_type
+        - plane
+        - environment
+        - tenant_scope
+      properties:
+        component_id:
+          type: string
+        name:
+          type: string
+        component_type:
+          type: string
+          enum: [service, agent, dependency, plane, composite_group]
+        plane:
+          type: string
+        environment:
+          type: string
+        tenant_scope:
+          type: string
+        dependencies:
+          type: array
+          items:
+            type: object
+            properties:
+              component_id:
+                type: string
+              critical:
+                type: boolean
+        metrics_profile:
+          type: array
+          items:
+            type: string
+            enum: [GOLDEN_SIGNALS, RED, USE]
+        health_policies:
+          type: array
+          items:
+            type: string
+        slo_target:
+          type: number
+          format: float
+        error_budget_minutes:
+          type: integer
+        owner_team:
+          type: string
+        documentation_url:
+          type: string
+          format: uri
+    ComponentRegistrationResponse:
+      type: object
+      properties:
+        component_id:
+          type: string
+        enrolled:
+          type: boolean
+        message:
+          type: string
+    TelemetryPayload:
+      type: object
+      required: [component_id, plane, environment, timestamp, metrics, telemetry_type]
+      properties:
+        component_id:
+          type: string
+        tenant_id:
+          type: string
+        plane:
+          type: string
+        environment:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        metrics:
+          type: object
+          additionalProperties:
+            type: number
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+        telemetry_type:
+          type: string
+          enum: [metrics, probe, heartbeat]
+    HealthSnapshot:
+      type: object
+      properties:
+        snapshot_id:
+          type: string
+        component_id:
+          type: string
+        tenant_id:
+          type: string
+        plane:
+          type: string
+        environment:
+          type: string
+        state:
+          type: string
+          enum: [OK, DEGRADED, FAILED, UNKNOWN]
+        reason_code:
+          type: string
+        metrics_summary:
+          type: object
+          additionalProperties:
+            type: number
+        slo_state:
+          type: string
+        policy_version:
+          type: string
+        evaluated_at:
+          type: string
+          format: date-time
+    TenantHealthView:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        plane_states:
+          type: object
+          additionalProperties:
+            type: string
+        counts:
+          type: object
+          additionalProperties:
+            type: integer
+        error_budget:
+          type: object
+          additionalProperties:
+            type: number
+        updated_at:
+          type: string
+          format: date-time
+    PlaneHealthView:
+      type: object
+      properties:
+        plane:
+          type: string
+        environment:
+          type: string
+        state:
+          type: string
+        component_breakdown:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        updated_at:
+          type: string
+          format: date-time
+    SafeToActRequest:
+      type: object
+      required: [tenant_id, plane, action_type]
+      properties:
+        tenant_id:
+          type: string
+        plane:
+          type: string
+        action_type:
+          type: string
+          enum: [auto_remediate, rollout, risky_migration, standard_action]
+        component_scope:
+          type: array
+          items:
+            type: string
+    SafeToActResponse:
+      type: object
+      properties:
+        allowed:
+          type: boolean
+        recommended_mode:
+          type: string
+          enum: [normal, degraded, read_only]
+        reason_codes:
+          type: array
+          items:
+            type: string
+        evaluated_at:
+          type: string
+          format: date-time
+        snapshot_refs:
+          type: array
+          items:
+            type: string
+

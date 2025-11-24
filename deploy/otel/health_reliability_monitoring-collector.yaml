@@ -1,0 +1,38 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+  filelog/heartbeats:
+    include: ["/var/log/zeroui/edge-heartbeats.log"]
+    start_at: beginning
+    operators:
+      - type: json_parser
+        timestamp:
+          parse_from: body.timestamp
+exporters:
+  otlphttp/metrics:
+    endpoint: ${HEALTH_RELIABILITY_MONITORING_OTLP_EXPORTER_ENDPOINT}
+  kafka/health:
+    brokers: ${KAFKA_BROKERS}
+    topic: ccp4.telemetry.health
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 512
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 512
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/metrics]
+    logs:
+      receivers: [filelog/heartbeats]
+      processors: [batch]
+      exporters: [kafka/health]
+

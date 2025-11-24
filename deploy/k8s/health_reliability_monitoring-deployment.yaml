@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-reliability-monitoring
+  labels:
+    app: health-reliability-monitoring
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: health-reliability-monitoring
+  template:
+    metadata:
+      labels:
+        app: health-reliability-monitoring
+    spec:
+      containers:
+        - name: health-reliability-monitoring
+          image: ghcr.io/zeroui/health-reliability-monitoring:${IMAGE_TAG:-latest}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8095
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['env']
+            - name: HEALTH_RELIABILITY_MONITORING_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: health-reliability-monitoring-db
+                  key: url
+            - name: EPC3_BASE_URL
+              value: http://epc3-config:8080
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://otel-collector.observability:4317
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8095
+            initialDelaySeconds: 10
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8095
+            initialDelaySeconds: 30
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1"
+              memory: "2Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-reliability-monitoring
+  labels:
+    app: health-reliability-monitoring
+spec:
+  selector:
+    app: health-reliability-monitoring
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8095
+

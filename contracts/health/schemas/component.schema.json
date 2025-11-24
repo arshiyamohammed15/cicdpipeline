@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ComponentDefinition",
+  "type": "object",
+  "required": [
+    "component_id",
+    "name",
+    "component_type",
+    "plane",
+    "environment",
+    "tenant_scope"
+  ],
+  "properties": {
+    "component_id": { "type": "string", "minLength": 3, "maxLength": 128 },
+    "name": { "type": "string", "maxLength": 255 },
+    "component_type": {
+      "type": "string",
+      "enum": ["service", "agent", "dependency", "plane", "composite_group"]
+    },
+    "plane": { "type": "string" },
+    "environment": { "type": "string" },
+    "tenant_scope": { "type": "string", "enum": ["tenant", "global", "shared"] },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["component_id"],
+        "properties": {
+          "component_id": { "type": "string" },
+          "critical": { "type": "boolean", "default": true }
+        }
+      }
+    },
+    "metrics_profile": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["GOLDEN_SIGNALS", "RED", "USE"] }
+    },
+    "health_policies": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "slo_target": { "type": "number", "minimum": 0, "maximum": 100 },
+    "error_budget_minutes": { "type": "integer", "minimum": 0 },
+    "owner_team": { "type": "string" },
+    "documentation_url": { "type": "string", "format": "uri" }
+  }
+}
+

@@ -1,0 +1,14 @@
+{
+  "tenant_id": "tenant-123",
+  "plane": "Tenant",
+  "action_type": "auto_remediate",
+  "response": {
+    "allowed": true,
+    "recommended_mode": "normal",
+    "reason_codes": [
+      "healthy"
+    ],
+    "evaluated_at": "2025-11-24T00:00:00Z"
+  }
+}
+

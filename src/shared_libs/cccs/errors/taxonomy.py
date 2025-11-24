@@ -18,7 +18,7 @@ class TaxonomyEntry:
 
 
 class ErrorTaxonomy:
-    """Maps exceptions to canonical codes per EPC-5 manifests."""
+    """Maps exceptions to canonical codes per Health & Reliability Monitoring manifests."""
 
     def __init__(self, mapping: Dict[Type[BaseException], TaxonomyEntry]):
         self._mapping = mapping

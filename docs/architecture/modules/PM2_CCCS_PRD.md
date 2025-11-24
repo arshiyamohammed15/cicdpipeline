@@ -32,8 +32,8 @@ CCCS exposes **8 runtime façade services**:
 | RGES | PM-7 + CCP-3 |
 | SSDRS | EPC-2 + CCP-6 |
 | RLBGS | EPC-13 |
-| OTCS | EPC-4 + EPC-5 + CCP-4 |
-| ETFHF | EPC-5 + CCP-4 |
+| OTCS | EPC-4 + Health & Reliability Monitoring + CCP-4 |
+| ETFHF | Health & Reliability Monitoring + CCP-4 |
 
 ---
 
@@ -249,7 +249,7 @@ normalize_error(error, context) → {
   debug_id
 }
 ```
-- Canonical codes sourced from EPC-5 manifests; CCCS only maps.
+- Canonical codes sourced from Health & Reliability Monitoring manifests; CCCS only maps.
 
 ### API Versioning
 - CCCS façade APIs follow semantic versioning (`MAJOR.MINOR.PATCH`).

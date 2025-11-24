@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SafeToAct",
+  "type": "object",
+  "definitions": {
+    "Request": {
+      "type": "object",
+      "required": ["tenant_id", "plane", "action_type"],
+      "properties": {
+        "tenant_id": { "type": "string" },
+        "plane": { "type": "string" },
+        "action_type": {
+          "type": "string",
+          "enum": ["auto_remediate", "rollout", "risky_migration", "standard_action"]
+        },
+        "component_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "Response": {
+      "type": "object",
+      "required": ["allowed", "recommended_mode", "reason_codes", "evaluated_at"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "recommended_mode": {
+          "type": "string",
+          "enum": ["normal", "degraded", "read_only"]
+        },
+        "reason_codes": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "evaluated_at": { "type": "string", "format": "date-time" },
+        "snapshot_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}
+
