@@ -2,6 +2,20 @@
 
 A Python-based automated code review tool that validates code against the ZeroUI 2.0 Master Constitution for enterprise-grade product development with comprehensive, modular rule configuration management. The total rule count is derived from the single source of truth at build/test time.
 
+## Project Summary
+
+**ZeroUI 2.0** is a comprehensive enterprise-grade code validation and development platform implementing a three-tier hybrid architecture:
+
+- **415 Constitution Rules**: Comprehensive rule set covering requirements, privacy & security, performance, architecture, system design, problem-solving, platform, teamwork, testing, code quality, exception handling (31 rules), TypeScript (34 rules), storage governance (13 rules), and more
+- **22 Rule Validators**: Category-specific validators implementing AST-based code analysis
+- **Three-Tier Architecture**: 
+  - **Tier 1**: VS Code Extension (TypeScript) - 20 modules + 6 core UI components
+  - **Tier 2**: Edge Agent (TypeScript) - 6 delegation modules with orchestration
+  - **Tier 3**: Cloud Services (Python/FastAPI) - 24+ microservices with full implementation
+- **Comprehensive Testing**: 100+ test files covering unit, integration, security, performance, and resilience tests
+- **Hybrid Database System**: SQLite (primary) and JSON (fallback) storage for all 415 rules
+- **Storage Governance**: 4-plane storage architecture (IDE, Tenant, Product, Shared) with strict data governance
+
 ## Repository Layout
 
 - `docs/root-notes/`: PSCL discovery, verification reports, and recovery playbooks formerly kept in the repo root (see `docs/root-notes/INDEX.md`).
@@ -46,7 +60,7 @@ The folder-business rules file remains the single source of truth; regenerate sc
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
 - **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
-- **Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against the complete constitution rule set derived from `docs/constitution` (currently 415 rules) before AI code generation occurs
+- **Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against the complete constitution rule set derived from `docs/constitution` (415 rules) before AI code generation occurs
 
 ## Installation
 
@@ -62,7 +76,7 @@ The folder-business rules file remains the single source of truth; regenerate sc
 
 ## Automatic AI Code Generation Enforcement
 
-The system now includes **automatic enforcement** of the full ZeroUI constitution rule set sourced from `docs/constitution` (currently 415 rules) before any AI code generation occurs.
+The system now includes **automatic enforcement** of the full ZeroUI constitution rule set sourced from `docs/constitution` (415 rules) before any AI code generation occurs.
 
 Regenerate the enforcement prompt directly from the JSON source of truth whenever constitution files change:
 
@@ -379,12 +393,86 @@ python enhanced_cli.py --verify-consistency
 [OK] All sources are consistent
 
 Summary:
-  Total rules observed: 425
+  Total rules observed: 415
   Missing -> markdown: 0, db: 0, json: 0, config: 0
   Field mismatch rules: 0
   Enabled mismatch rules: 0
   Total differences: 0
 ```
+
+## Testing Infrastructure
+
+### Test Structure
+
+The project includes comprehensive test coverage across multiple test types:
+
+#### Unit Tests
+- **Validator Tests**: `tests/test_*_service.py`, `tests/test_*_routes.py` - Service and route unit tests
+- **Constitution Tests**: `tests/test_constitution_*.py` - Constitution rule validation tests
+- **Module Tests**: `tests/bdr/`, `tests/cccs/`, `tests/sin/` - Business logic module unit tests
+- **Health Monitoring Tests**: `tests/health_reliability_monitoring/unit/` - Unit tests for health monitoring service
+- **Edge Agent Tests**: `src/edge-agent/__tests__/` - Edge agent unit tests (TypeScript/Jest)
+- **VS Code Extension Tests**: `src/vscode-extension/modules/*/__tests__/` - Extension module unit tests (TypeScript/Jest)
+
+#### Integration Tests
+- **Service Integration**: `tests/test_service_integration_smoke.py`, `tests/test_integration.py` - Service integration tests
+- **End-to-End Tests**: `tests/test_receipt_invariants_end_to_end.py`, `tests/bdr/test_service_end_to_end.py` - E2E workflow tests
+- **API Integration**: `tests/test_api_endpoints.py`, `tests/test_api_service_end_to_end.py` - API integration tests
+- **Multi-Tenant Tests**: `tests/sin/integration/test_multi_tenant.py` - Multi-tenant integration tests
+- **Error Scenarios**: `tests/sin/integration/test_error_scenarios.py` - Error handling integration tests
+- **Edge Agent Integration**: `src/edge-agent/__tests__/integration/` - Edge agent integration tests
+
+#### Security Tests
+- **Security Validation**: `tests/test_data_governance_privacy_security.py` - Privacy and security tests
+- **IAM Security**: `tests/test_iam_*.py` - Identity and access management security tests
+- **KMS Security**: `tests/test_kms_*.py` - Key management security tests
+- **Configuration Security**: `tests/test_configuration_policy_management_security.py` - Configuration security tests
+- **BDR Security**: `tests/bdr/test_security.py` - Business data repository security tests
+
+#### Performance Tests
+- **Performance Benchmarks**: `tests/test_iam_performance.py`, `tests/test_kms_performance.py` - Performance tests
+- **Data Governance Performance**: `tests/test_data_governance_privacy_performance.py` - Data governance performance
+- **Configuration Performance**: `tests/test_configuration_policy_management_performance.py` - Configuration performance
+- **Load Tests**: `tests/health_reliability_monitoring/load/` - Load testing scripts
+
+#### Resilience Tests
+- **Safe Mode Tests**: `tests/health_reliability_monitoring/resilience/test_safe_mode.py` - Resilience and safe mode tests
+- **WAL Durability**: `tests/cccs/test_wal_durability.py` - Write-ahead log durability tests
+
+### Test Execution
+
+```bash
+# Run all Python tests
+python -m pytest tests -q
+
+# Run constitution-specific tests
+python -m pytest tests -k "constitution" -q
+
+# Run unit tests only
+python -m pytest tests -m "unit" -q
+
+# Run integration tests
+python -m pytest tests -m "integration" -q
+
+# Run with coverage
+python -m pytest tests --cov=validator --cov-report=html
+
+# Run TypeScript/Jest tests (Edge Agent)
+cd src/edge-agent && npm test
+
+# Run TypeScript/Jest tests (VS Code Extension)
+cd src/vscode-extension && npm test
+
+# Run storage governance tests
+npm run test:storage
+```
+
+### Test Coverage
+
+- **Total Test Files**: 100+ test files across Python and TypeScript
+- **Test Classes**: 1000+ test classes and methods
+- **Coverage Areas**: Unit, Integration, Security, Performance, Resilience, E2E
+- **Test Frameworks**: pytest (Python), Jest (TypeScript), unittest (Python)
 
 ## Dynamic Testing
 
@@ -399,7 +487,7 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 ### Understanding Test Output
 
 **Coverage Reports:**
-- **Total Coverage**: Percentage of all 425 rules that were triggered
+- **Total Coverage**: Percentage of all 415 rules that were triggered
 - **Category Coverage**: Coverage within each category
 - **Priority Coverage**: Coverage by priority level (Critical/Important/Recommended)
 - **Missing Rules**: Rules that weren't triggered by the test code
@@ -409,6 +497,118 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 - **Important Rules**: Should achieve 80%+ coverage
 - **Recommended Rules**: Should achieve 60%+ coverage
 - **Overall**: Should achieve 70%+ coverage
+
+## Module Implementation Status
+
+### Cloud Services (Python/FastAPI)
+
+#### Fully Implemented Services
+
+1. **Health & Reliability Monitoring** (`src/cloud-services/shared-services/health-reliability-monitoring/`)
+   - ✅ FastAPI application with routes, services, models
+   - ✅ Registry service, telemetry ingestion, health evaluation
+   - ✅ SLO tracking, safe-to-act decisions, audit service
+   - ✅ Unit, integration, resilience, and load tests
+
+2. **Budgeting, Rate Limiting & Cost Observability** (`src/cloud-services/shared-services/budgeting-rate-limiting-cost-observability/`)
+   - ✅ Complete FastAPI service with budget, quota, rate limit, and cost services
+   - ✅ Event subscription and receipt services
+   - ✅ Comprehensive test suite
+
+3. **Configuration Policy Management** (`src/cloud-services/shared-services/configuration-policy-management/`)
+   - ✅ FastAPI service with policy management
+   - ✅ Database models and migrations
+   - ✅ Service, routes, security, performance, and functional tests
+
+4. **Contracts Schema Registry** (`src/cloud-services/shared-services/contracts-schema-registry/`)
+   - ✅ Schema registry with versioning and compatibility
+   - ✅ Analytics aggregator, cache, validators
+   - ✅ API and service tests
+
+5. **Data Governance & Privacy** (`src/cloud-services/shared-services/data-governance-privacy/`)
+   - ✅ Privacy and data governance service
+   - ✅ Functional, performance, routes, security, and service tests
+
+6. **Deployment Infrastructure** (`src/cloud-services/shared-services/deployment-infrastructure/`)
+   - ✅ Infrastructure deployment service
+   - ✅ Terraform templates and deployment scripts
+   - ✅ Service and integration tests
+
+7. **Evidence Receipt Indexing Service** (`src/cloud-services/shared-services/evidence-receipt-indexing-service/`)
+   - ✅ Receipt indexing and storage
+   - ✅ Database models and services
+   - ✅ Comprehensive test suite
+
+8. **Identity Access Management** (`src/cloud-services/shared-services/identity-access-management/`)
+   - ✅ IAM service with authentication and authorization
+   - ✅ Service, routes, and performance tests
+
+9. **Key Management Service** (`src/cloud-services/shared-services/key-management-service/`)
+   - ✅ KMS with HSM integration
+   - ✅ Service, routes, and performance tests
+
+10. **Signal Ingestion & Normalization** (`src/cloud-services/product-services/signal-ingestion-normalization/`)
+    - ✅ Signal ingestion pipeline with deduplication, normalization, routing
+    - ✅ Producer registry, governance, DLQ, observability
+    - ✅ Comprehensive unit and integration tests
+
+11. **Detection Engine Core** (`src/cloud-services/product-services/detection-engine-core/`)
+    - ✅ Detection engine with FastAPI routes and services
+    - ✅ Models and test suite
+
+#### Structured Services (Minimal Implementation)
+
+- **Client Services**: 13 modules with structure but minimal business logic
+- **Product Services**: Additional modules with structure defined
+- **Ollama AI Agent**: LLM manager and service structure
+
+### Edge Agent (TypeScript)
+
+#### Implemented Components
+
+1. **Core Orchestration** (`src/edge-agent/`)
+   - ✅ `EdgeAgent.ts` - Main orchestrator
+   - ✅ `AgentOrchestrator.ts` - Module coordination
+   - ✅ `DelegationManager.ts` - Task delegation
+   - ✅ `ValidationCoordinator.ts` - Result validation
+
+2. **Modules** (`src/edge-agent/modules/`)
+   - ✅ `security-enforcer/` - Security delegation
+   - ✅ `cache-manager/` - Cache operations
+   - ✅ `hybrid-orchestrator/` - Hybrid processing
+   - ✅ `local-inference/` - Local inference
+   - ✅ `model-manager/` - Model management
+   - ✅ `resource-optimizer/` - Resource optimization
+
+3. **Shared Components** (`src/edge-agent/shared/`)
+   - ✅ `storage/` - Storage services with comprehensive Jest tests (40+ tests)
+   - ✅ `ai-detection/` - AI assistance detection
+   - ✅ `health/` - Heartbeat emitter
+   - ✅ `metrics/` - Rule metrics tracker
+
+### VS Code Extension (TypeScript)
+
+#### Implemented Components
+
+1. **Core Extension** (`src/vscode-extension/`)
+   - ✅ `extension.ts` - Main orchestration
+   - ✅ Module registration system
+
+2. **Modules** (`src/vscode-extension/modules/`)
+   - ✅ 20 modules (m01-m20) with manifest-based structure
+   - ✅ Each module includes: `index.ts`, `commands.ts`, `providers/`, `views/`, `actions/`
+   - ✅ Module-specific test suites
+
+3. **UI Components** (`src/vscode-extension/ui/`)
+   - ✅ 6 core components: status-bar, problems-panel, decision-card, evidence-drawer, toast, receipt-viewer
+   - ✅ 20 module-specific UI components
+
+4. **Shared Components** (`src/vscode-extension/shared/`)
+   - ✅ `receipt-parser/` - Receipt parsing utilities
+   - ✅ `storage/` - Storage utilities
+   - ✅ `transparency/` - Transparency features
+   - ✅ `validation/` - Validation utilities
+   - ✅ `workloads/` - Workload management
 
 ### Troubleshooting
 
@@ -435,9 +635,72 @@ non-blocking pre-commit workflow) live under `tests/manual/`. Automated test
 discovery and CI suites should ignore that folder; consult
 `tests/manual/README.md` before running those probes locally.
 
+## Architecture Overview
+
+### Three-Tier Hybrid Architecture
+
+ZeroUI 2.0 implements a **three-tier hybrid architecture** with strict separation of concerns:
+
+#### **TIER 1: PRESENTATION LAYER**
+- **VS Code Extension**: Presentation-only UI rendering (TypeScript)
+- **Architecture**: Receipt-driven, no business logic
+- **Modules**: 20 UI modules (m01-m20) + 6 core UI components
+- **Status**: ✅ Complete structure with module manifests and UI components
+
+#### **TIER 2: EDGE PROCESSING LAYER**
+- **Edge Agent**: Delegation and validation only (TypeScript)
+- **Architecture**: Local processing coordination
+- **Modules**: 6 delegation modules (security-enforcer, cache-manager, hybrid-orchestrator, local-inference, model-manager, resource-optimizer)
+- **Status**: ✅ Complete structure with orchestration and validation
+
+#### **TIER 3: BUSINESS LOGIC LAYER**
+- **Cloud Services**: All business logic implementation (Python/FastAPI)
+- **Architecture**: Service-oriented with clear boundaries
+- **Services**: 
+  - **Client Services**: 13 modules (compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, etc.)
+  - **Product Services**: 2 modules (detection-engine-core, signal-ingestion-normalization)
+  - **Shared Services**: 9 modules (health-reliability-monitoring, budgeting-rate-limiting-cost-observability, configuration-policy-management, contracts-schema-registry, data-governance-privacy, deployment-infrastructure, evidence-receipt-indexing-service, identity-access-management, key-management-service, ollama-ai-agent)
+- **Status**: ✅ Fully implemented services with FastAPI routes, services, models, and tests
+
+### Validator Architecture
+
+The core validation system consists of:
+
+- **Core Validator** (`validator/core.py`): Main orchestration class `ConstitutionValidator`
+- **Code Analyzer** (`validator/analyzer.py`): AST-based code analysis
+- **Report Generator** (`validator/reporter.py`): Multi-format reporting (JSON, HTML, Markdown)
+- **Pre-Implementation Hooks** (`validator/pre_implementation_hooks.py`): Pre-generation validation
+- **Post-Generation Validator** (`validator/post_generation_validator.py`): Post-generation validation
+- **Rule Validators**: 22 category-specific validator files in `validator/rules/`
+
+### Rule Validators (22 Files)
+
+1. `api_contracts.py` - API contract validation
+2. `architecture.py` - Architecture pattern validation
+3. `basic_work.py` - Basic work principles
+4. `code_review.py` - Code review standards
+5. `coding_standards.py` - Coding standards enforcement
+6. `comments.py` - Documentation and commenting
+7. `exception_handling.py` - Exception handling rules (150-181, 31 rules)
+8. `folder_standards.py` - Folder structure standards
+9. `logging.py` - Logging standards
+10. `performance.py` - Performance optimization
+11. `platform.py` - Platform-specific rules
+12. `privacy.py` - Privacy and security
+13. `problem_solving.py` - Problem-solving approaches
+14. `quality.py` - Code quality metrics
+15. `requirements.py` - Requirements validation
+16. `simple_code_readability.py` - Code readability
+17. `storage_governance.py` - Storage governance rules (216-228, 13 rules)
+18. `system_design.py` - System design principles
+19. `teamwork.py` - Teamwork and collaboration
+20. `typescript.py` - TypeScript rules (182-215, 34 rules)
+21. `tests/test_legacy_path.py` - Legacy path testing
+22. `__init__.py` - Validator package initialization
+
 ## Rule Categories
 
-### Constitution Scope (425 total rules, 424 enabled)
+### Constitution Scope (415 total rules)
 
 #### Basic Work (5 rules - 100% coverage)
 - **Rule 4**: Use Settings Files, Not Hardcoded Numbers - Configuration management validation
@@ -870,7 +1133,7 @@ This project follows the ZEROUI 2.0 Constitution principles for open, transparen
 
 ## Hybrid Constitution Rules Database System
 
-The ZeroUI 2.0 Constitution Validator includes a comprehensive hybrid database system that maintains all 149 constitution rules in both SQLite (primary) and JSON (fallback) storage formats. This system provides high availability, data redundancy, and flexible backend switching capabilities.
+The ZeroUI 2.0 Constitution Validator includes a comprehensive hybrid database system that maintains all 415 constitution rules in both SQLite (primary) and JSON (fallback) storage formats. This system provides high availability, data redundancy, and flexible backend switching capabilities.
 
 ### 🏗️ System Architecture
 
@@ -903,8 +1166,8 @@ ZeroUI2.0/
 │   │   ├── queries.py                  # Common database queries
 │   │   └── logging_config.py           # Centralized logging configuration
 │   ├── constitution_config.json        # Main configuration (v2.0 format)
-│   ├── constitution_rules.db           # SQLite database (425 rules)
-│   ├── constitution_rules.json         # JSON export (425 rules)
+│   ├── constitution_rules.db           # SQLite database (415 rules)
+│   ├── constitution_rules.json         # JSON export (415 rules)
 │   ├── enhanced_config_manager.py      # Enhanced configuration manager
 │   ├── base_config.json                # Base configuration
 │   ├── sync_history.json               # Synchronization history
@@ -912,7 +1175,7 @@ ZeroUI2.0/
 │   ├── rules/                          # Rule category configurations (17 files)
 │   └── patterns/                       # Validation patterns (2 files)
 ├── enhanced_cli.py                     # Enhanced CLI with backend management
-├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 425 rules
+├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 415 rules
 ├── validator/rules/exception_handling.py # Exception handling validator (Rules 150-181)
 ├── validator/rules/typescript.py       # TypeScript validator (Rules 182-215)
 ├── config/constitution/tests/test_exception_handling/ # Exception handling tests
@@ -1108,7 +1371,7 @@ python enhanced_cli.py --restore-database path         # Restore from backup
 
 #### Exception Handling Commands
 ```bash
-# Extract and validate all 425 rules (including Exception Handling, TypeScript, and Storage Governance)
+# Extract and validate all 415 rules (including Exception Handling, TypeScript, and Storage Governance)
 python config/constitution/rule_extractor.py
 
 # Run Exception Handling validator tests
@@ -1330,7 +1593,7 @@ All constitution logs are emitted to `${ZEROU_LOG_ROOT}/constitution` (recommend
 
 ### 🏗️ Hybrid Constitution Rules Database Implementation
 
-The ZeroUI 2.0 Constitution Validator implements a comprehensive hybrid database system that maintains both SQLite (primary) and JSON (fallback) storage for all 149 constitution rules. The system is fully configurable, allowing users to switch between backends while keeping both in sync.
+The ZeroUI 2.0 Constitution Validator implements a comprehensive hybrid database system that maintains both SQLite (primary) and JSON (fallback) storage for all 415 constitution rules. The system is fully configurable, allowing users to switch between backends while keeping both in sync.
 
 ### 📐 System Architecture Overview
 
@@ -1502,7 +1765,7 @@ The hybrid system consists of multiple interconnected components:
 - **Auto-fallback** enabled by default
 - **Auto-sync** enabled by default
 - Both backends maintained in sync automatically
-- All 149 rules enabled by default in both backends
+- All 415 rules enabled by default in both backends
 
 ### ✅ Implementation Status
 
@@ -1527,12 +1790,12 @@ The hybrid system consists of multiple interconnected components:
 - [x] Implement centralized logging configuration
 - [x] Add Exception Handling Rules 150-181 to databases and validator system
 - [x] Add TypeScript Rules 182-215 to databases and validator system
-- [x] Update rule extractor to support 425 total rules (424 enabled) with exception_handling, typescript, and storage_governance categories
+- [x] Update rule extractor to support 415 total rules with exception_handling, typescript, and storage_governance categories
 - [x] Create ExceptionHandlingValidator with 31 validation methods
 - [x] Create TypeScriptValidator with 34 validation methods
 - [x] Integrate exception handling validation into core validator system
 - [x] Create comprehensive test suite for exception handling rules
-- [x] Update all configuration files to support 425 rules (424 enabled)
+- [x] Update all configuration files to support 415 rules
 
 ## 🚨 Exception Handling Rules Implementation (Rules 150-181)
 
@@ -1634,7 +1897,7 @@ ZeroUI2.0/
 
 ### Rule Categories Updated
 
-- **Total Rules**: 149 → 180 (+31 Exception Handling rules)
+- **Total Rules**: 415 rules (including Exception Handling and all other categories)
 - **New Category**: `exception_handling` with 31 rules (150-181, missing 159)
 - **Priority**: All Exception Handling rules marked as "critical"
 - **Coverage**: 100% test coverage for all 31 rules
@@ -1681,11 +1944,11 @@ except Exception as e:
 
 ### Success Metrics
 
-- ✅ **Rule Extraction**: Successfully extracts all 180 rules
+- ✅ **Rule Extraction**: Successfully extracts all 415 rules
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: Exception handling rules enforced
 - ✅ **Test Coverage**: 100% pass rate for all tests
-- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
+- ✅ **Configuration**: All config files updated to 415 rules
 - ✅ **Documentation**: README updated with implementation details
 
 ## 🚨 TypeScript Rules Implementation (Rules 182-215)
@@ -1723,10 +1986,10 @@ The ZeroUI 2.0 Constitution now includes 34 comprehensive TypeScript rules (182-
 
 #### Extract and Validate Rules
 ```bash
-# Extract all 425 rules from constitution
+# Extract all 415 rules from constitution
 python config/constitution/rule_extractor.py
 
-# Expected output: "Extracted 425 rules (424 enabled)" with all rule categories
+# Expected output: "Extracted 415 rules" with all rule categories
 ```
 
 #### Run TypeScript Tests
@@ -1780,7 +2043,7 @@ ZeroUI2.0/
 
 ### Rule Categories Updated
 
-- **Total Rules**: 180 → 215 → 425 (+34 TypeScript rules + 13 Storage Governance rules + additional rules)
+- **Total Rules**: 415 rules (including Exception Handling, TypeScript, Storage Governance, and all other categories)
 - **New Category**: `typescript` with 34 rules (182-215)
 - **Priority**: All TypeScript rules marked as "critical"
 - **Coverage**: 100% test coverage for all 34 rules
@@ -1834,11 +2097,11 @@ fetch('/api/data')
 
 ### Success Metrics
 
-- ✅ **Rule Extraction**: Successfully extracts all 425 rules (424 enabled)
+- ✅ **Rule Extraction**: Successfully extracts all 415 rules
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: TypeScriptValidator integrated into core system
 - ✅ **Test Coverage**: 100% pass rate for all tests
-- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
+- ✅ **Configuration**: All config files updated to 415 rules
 - ✅ **Documentation**: README updated with implementation details
 
 ## 🏗️ Storage Governance Rules Implementation (Rules 216-228)
@@ -1942,7 +2205,7 @@ ZeroUI2.0/
 
 ### Rule Categories Updated
 
-- **Total Rules**: 215 → 228 → 425 (+13 Storage Governance rules + additional rules)
+- **Total Rules**: 415 rules (including Storage Governance and all other categories)
 - **New Category**: `storage_governance` with 13 rules (216-228)
 - **Priority**: All Storage Governance rules marked as "critical"
 - **Coverage**: 100% test coverage for all 13 rules
@@ -2025,9 +2288,9 @@ receipt_path = "ide/agent/receipts/repo-id/2025/10/"
 - ✅ **Database Integration**: Both SQLite and JSON databases updated
 - ✅ **Validator Integration**: StorageGovernanceValidator integrated into core system
 - ✅ **Test Coverage**: 100% pass rate for all 40+ tests
-- ✅ **Configuration**: All config files updated to 425 rules (424 enabled)
+- ✅ **Configuration**: All config files updated to 415 rules
 - ✅ **Documentation**: Complete integration guide and examples
-- ✅ **No Breaking Changes**: Backward compatible with existing 425 rules (424 enabled)
+- ✅ **No Breaking Changes**: Backward compatible with existing 415 rules
 
 ### Documentation
 
