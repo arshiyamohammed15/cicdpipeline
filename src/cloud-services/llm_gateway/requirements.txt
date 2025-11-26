@@ -1,0 +1,14 @@
+# LLM Gateway & Safety Enforcement Service Dependencies
+# Per §14 implementation checklist
+
+# HTTP client for service integration
+httpx>=0.25.0
+
+# FastAPI and dependencies (if not already in parent requirements)
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+
+# Optional: for async HTTP if needed
+aiohttp>=3.9.0
+

@@ -1,0 +1,225 @@
+name: LLM Gateway CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'src/cloud-services/llm_gateway/**'
+      - 'tests/llm_gateway/**'
+      - 'contracts/schemas/llm_*.json'
+      - 'scripts/ci/**'
+      - '.github/workflows/llm_gateway_ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'src/cloud-services/llm_gateway/**'
+      - 'tests/llm_gateway/**'
+      - 'contracts/schemas/llm_*.json'
+      - 'scripts/ci/**'
+
+env:
+  PYTHON_VERSION: '3.11'
+  ZU_ROOT: ${{ github.workspace }}
+
+jobs:
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+          pip install pytest pytest-cov
+      - name: Run unit tests
+        run: npm run test:llm-gateway:unit
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          files: ./coverage.xml
+          flags: llm_gateway_unit
+
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+          pip install pytest
+      - name: Run integration tests
+        run: npm run test:llm-gateway:integration
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: integration-test-results
+          path: test-results/
+
+  schema-validation:
+    name: Schema & Contract Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install jsonschema
+      - name: Validate JSON schemas
+        run: |
+          python scripts/ci/validate_llm_gateway_schemas.py
+      - name: Run contract tests
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+          pip install pytest
+          python -m pytest tests/llm_gateway/test_clients_contracts.py -v
+
+  observability-validation:
+    name: Observability Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+      - name: Run telemetry scenario
+        run: |
+          mkdir -p artifacts
+          npm run test:llm-gateway:observability:ci
+      - name: Validate observability
+        run: |
+          python scripts/ci/validate_llm_gateway_observability.py artifacts/llm_gateway_telemetry.log
+      - name: Upload telemetry artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: observability-telemetry
+          path: artifacts/llm_gateway_telemetry.log
+          retention-days: 180
+
+  performance-tests:
+    name: Performance Tests (k6)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install k6
+        run: |
+          sudo gpg -k
+          sudo gpg --no-default-keyring --keyring /usr/share/keyrings/k6-archive-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys C5AD17C747E3415A3642D57D77C6C491D6AC1D9
+          echo "deb [signed-by=/usr/share/keyrings/k6-archive-keyring.gpg] https://dl.k6.io/deb stable main" | sudo tee /etc/apt/sources.list.d/k6.list
+          sudo apt-get update
+          sudo apt-get install k6
+      - name: Start gateway (if needed)
+        run: |
+          # In CI, assume gateway is running or use test client
+          echo "LLM_GATEWAY_URL=${LLM_GATEWAY_URL:-http://localhost:8006}" >> $GITHUB_ENV
+      - name: Run k6 performance tests
+        run: |
+          k6 run tools/k6/llm_gateway_safe_flow.js --out json=artifacts/k6_results.json
+      - name: Upload k6 results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: k6-performance-results
+          path: artifacts/k6_results.json
+          retention-days: 180
+      - name: Check SLO compliance
+        run: |
+          python scripts/ci/validate_k6_slo.py artifacts/k6_results.json
+
+  security-regression:
+    name: Security Regression Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+          pip install pytest
+      - name: Run security regression tests
+        run: |
+          python -m pytest tests/llm_gateway/test_security_regression.py -v -m llm_gateway_security
+      - name: Generate security findings
+        if: always()
+        run: |
+          python -m pytest tests/llm_gateway/test_security_regression.py -v -m llm_gateway_security --json-report --json-report-file=artifacts/security_findings.json || true
+      - name: Upload security findings
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-findings
+          path: artifacts/security_findings.json
+          retention-days: 180
+
+  regression-harness:
+    name: Regression Harness (Corpus Replay)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+      - name: Replay benign corpus
+        run: |
+          mkdir -p artifacts
+          python scripts/ci/replay_llm_gateway_corpus.py \
+            docs/architecture/tests/golden/llm_gateway/benign_corpus.jsonl \
+            artifacts/benign_corpus_results.jsonl
+      - name: Replay adversarial corpus
+        run: |
+          python scripts/ci/replay_llm_gateway_corpus.py \
+            docs/architecture/tests/golden/llm_gateway/adversarial_corpus.jsonl \
+            artifacts/adversarial_corpus_results.jsonl
+      - name: Upload corpus replay results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: corpus-replay-results
+          path: artifacts/*_corpus_results.jsonl
+          retention-days: 180
+
+  promote:
+    name: Promotion Gate
+    runs-on: ubuntu-latest
+    needs: [unit-tests, integration-tests, schema-validation, observability-validation, performance-tests, security-regression, regression-harness]
+    if: always()
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [ "${{ needs.unit-tests.result }}" != "success" ] || \
+             [ "${{ needs.integration-tests.result }}" != "success" ] || \
+             [ "${{ needs.schema-validation.result }}" != "success" ] || \
+             [ "${{ needs.observability-validation.result }}" != "success" ] || \
+             [ "${{ needs.performance-tests.result }}" != "success" ] || \
+             [ "${{ needs.security-regression.result }}" != "success" ] || \
+             [ "${{ needs.regression-harness.result }}" != "success" ]; then
+            echo "One or more required jobs failed. Promotion blocked."
+            exit 1
+          fi
+          echo "All promotion gates passed. Ready for deployment."
+

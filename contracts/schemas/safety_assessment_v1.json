@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:zeroui:schemas:safety_assessment:v1",
+  "title": "SafetyAssessment",
+  "description": "Detailed record of safety checks executed for a single LLM request.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assessment_id",
+    "schema_version",
+    "request_id",
+    "input_checks",
+    "output_checks",
+    "risk_classes",
+    "actions_taken",
+    "generated_at"
+  ],
+  "properties": {
+    "assessment_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{12,64}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "input_checks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/check" },
+      "minItems": 1
+    },
+    "output_checks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/check" },
+      "minItems": 1
+    },
+    "risk_classes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk_class", "severity", "score"],
+        "properties": {
+          "risk_class": {
+            "type": "string",
+            "enum": ["R1", "R2", "R3", "R4", "R5"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["INFO", "WARN", "CRITICAL"]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "actions_taken": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["action", "reason"],
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "block",
+              "redact",
+              "sanitize",
+              "route_backup",
+              "downgrade_tool",
+              "alert",
+              "simulate"
+            ]
+          },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "processing_latency_ms": { "type": "integer", "minimum": 0 },
+        "detector_versions": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "definitions": {
+    "check": {
+      "type": "object",
+      "required": ["name", "status", "score"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["passed", "failed", "degraded", "skipped"]
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "details": { "type": "string" },
+        "classifier_version": { "type": "string" }
+      }
+    }
+  }
+}
+

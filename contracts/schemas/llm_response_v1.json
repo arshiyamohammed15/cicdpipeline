@@ -1,0 +1,151 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "urn:zeroui:schemas:llm_response:v1",
+  "title": "LLMResponse",
+  "description": "Standard response body emitted by the LLM Gateway & Safety Enforcement APIs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "response_id",
+    "schema_version",
+    "request_id",
+    "decision",
+    "receipt_id",
+    "tokens",
+    "risk_flags",
+    "policy_snapshot_id",
+    "policy_version_ids",
+    "timestamp_utc"
+  ],
+  "properties": {
+    "response_id": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]{12,64}$"
+    },
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "request_id": {
+      "type": "string",
+      "description": "Echoes the originating request for correlation."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOWED", "BLOCKED", "TRANSFORMED", "DEGRADED"]
+    },
+    "receipt_id": {
+      "type": "string",
+      "description": "ERIS receipt identifier."
+    },
+    "tokens": {
+      "type": "object",
+      "required": ["tokens_in", "tokens_out", "model_cost_estimate"],
+      "additionalProperties": false,
+      "properties": {
+        "tokens_in": { "type": "integer", "minimum": 0 },
+        "tokens_out": { "type": "integer", "minimum": 0 },
+        "model_cost_estimate": { "type": "number", "minimum": 0 }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "Sanitised output returned to caller. Omitted when blocked."
+        },
+        "redacted_output_summary": {
+          "type": "string",
+          "description": "Human-readable summary of redactions applied."
+        },
+        "tool_calls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["tool_name", "status"],
+            "properties": {
+              "tool_name": { "type": "string" },
+              "status": {
+                "type": "string",
+                "enum": ["allowed", "blocked", "downgraded"]
+              },
+              "reason": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "risk_flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["risk_class", "severity", "actions"],
+        "properties": {
+          "risk_class": {
+            "type": "string",
+            "enum": ["R1", "R2", "R3", "R4", "R5"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["INFO", "WARN", "CRITICAL"]
+          },
+          "actions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "blocked",
+                "redacted",
+                "downgraded",
+                "alerted",
+                "routed_backup"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "policy_snapshot_id": { "type": "string" },
+    "policy_version_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "fail_open": { "type": "boolean" },
+    "degradation_stage": {
+      "type": "string",
+      "enum": ["NONE", "DETECTED", "REROUTED", "FAIL_SAFE"]
+    },
+    "fallback_chain": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["logical_model_id", "outcome", "reason"],
+        "properties": {
+          "logical_model_id": { "type": "string" },
+          "outcome": {
+            "type": "string",
+            "enum": ["attempted", "success", "failed"]
+          },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "telemetry_ids": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trace_id": { "type": "string" },
+        "span_id": { "type": "string" }
+      }
+    },
+    "timestamp_utc": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
+
