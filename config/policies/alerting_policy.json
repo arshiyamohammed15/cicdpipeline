@@ -1,0 +1,137 @@
+{
+  "schema_version": "1.0.0",
+  "dedup": {
+    "defaults": 15,
+    "by_category": {
+      "security": 5,
+      "reliability": 10
+    },
+    "by_severity": {
+      "P0": 1,
+      "P1": 5
+    }
+  },
+  "correlation": {
+    "window_minutes": 10,
+    "rules": [
+      {
+        "name": "tenant-plane",
+        "conditions": ["tenant_id", "plane"],
+        "window_minutes": 10,
+        "dependency_match": "shared"
+      },
+      {
+        "name": "tenant-only",
+        "conditions": ["tenant_id"],
+        "window_minutes": 5
+      }
+    ]
+  },
+  "routing": {
+    "defaults": {
+      "targets": [
+        "{tenant_id}-oncall"
+      ],
+      "channels": [
+        "email"
+      ],
+      "channel_overrides": {
+        "P0": [
+          "sms",
+          "voice"
+        ],
+        "P1": [
+          "sms"
+        ]
+      }
+    },
+    "tenant_overrides": {}
+  },
+  "escalation": {
+    "policies": {
+      "default": {
+        "policy_id": "default",
+        "steps": [
+          {
+            "order": 1,
+            "delay_seconds": 0,
+            "channels": [
+              "sms"
+            ]
+          },
+          {
+            "order": 2,
+            "delay_seconds": 300,
+            "channels": [
+              "voice"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "fatigue": {
+    "rate_limits": {
+      "per_alert": {
+        "max_notifications": 5,
+        "window_minutes": 60
+      },
+      "per_user": {
+        "max_notifications": 20,
+        "window_minutes": 60
+      }
+    },
+    "maintenance": [],
+    "suppression": {
+      "suppress_followup_during_incident": true,
+      "suppress_window_minutes": 15
+    }
+  },
+  "retry": {
+    "defaults": {
+      "max_attempts": 5,
+      "backoff_strategy": "exponential",
+      "backoff_intervals": [30, 60, 120, 240, 480]
+    },
+    "by_channel": {
+      "email": {
+        "max_attempts": 3,
+        "backoff_intervals": [60, 120, 300]
+      },
+      "sms": {
+        "max_attempts": 5,
+        "backoff_intervals": [30, 60, 120, 240, 480]
+      },
+      "voice": {
+        "max_attempts": 3,
+        "backoff_intervals": [30, 60, 120]
+      }
+    },
+    "by_severity": {
+      "P0": {
+        "max_attempts": 5,
+        "backoff_intervals": [15, 30, 60, 120, 240]
+      },
+      "P1": {
+        "max_attempts": 4,
+        "backoff_intervals": [30, 60, 120, 240]
+      }
+    }
+  },
+  "fallback": {
+    "defaults": {
+      "channels": ["email", "sms", "voice", "webhook"]
+    },
+    "by_severity": {
+      "P0": {
+        "required_channels": ["sms", "voice"],
+        "fallback_order": ["sms", "voice", "email", "webhook"]
+      },
+      "P1": {
+        "required_channels": ["sms"],
+        "fallback_order": ["sms", "email", "webhook"]
+      }
+    }
+  }
+}
+
