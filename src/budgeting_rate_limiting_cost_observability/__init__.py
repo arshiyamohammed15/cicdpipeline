@@ -9,7 +9,7 @@ from pathlib import Path
 
 _alias_path = (
     Path(__file__).resolve().parent.parent
-    / "cloud-services"
+    / "cloud_services"
     / "shared-services"
     / "budgeting-rate-limiting-cost-observability"
 )

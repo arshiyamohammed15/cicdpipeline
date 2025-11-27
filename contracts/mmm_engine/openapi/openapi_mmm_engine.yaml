@@ -1,3 +1,149 @@
+openapi: 3.0.3
+info:
+  title: MMM Engine API
+  version: 0.1.0
+  description: API contracts for Mirror-Mentor-Multiplier engine decisions and playbook admin.
+servers:
+  - url: https://api.zero.ui/mmm
+paths:
+  /v1/mmm/decide:
+    post:
+      summary: Evaluate signals and return MMM actions
+      operationId: decideMMM
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DecideRequest"
+      responses:
+        "200":
+          description: Successful decision
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DecideResponse"
+  /v1/mmm/decisions/{decision_id}/outcomes:
+    post:
+      summary: Record MMM outcome
+      operationId: recordOutcome
+      parameters:
+        - in: path
+          name: decision_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MMMOutcome"
+      responses:
+        "202":
+          description: Outcome accepted
+components:
+  schemas:
+    MMMSignalInput:
+      type: object
+      properties:
+        signal_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_id:
+          type: string
+          nullable: true
+        actor_type:
+          type: string
+          enum: [human, ai_agent]
+        source:
+          type: string
+        event_type:
+          type: string
+        severity:
+          type: string
+        occurred_at:
+          type: string
+          format: date-time
+        payload:
+          type: object
+    MMMAction:
+      type: object
+      properties:
+        action_id:
+          type: string
+        type:
+          type: string
+          enum: [mirror, mentor, multiplier]
+        surfaces:
+          type: array
+          items:
+            type: string
+            enum: [ide, ci, alert]
+        payload:
+          type: object
+        requires_consent:
+          type: boolean
+        requires_dual_channel:
+          type: boolean
+    MMMDecision:
+      type: object
+      properties:
+        decision_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_id:
+          type: string
+        actor_type:
+          type: string
+        context:
+          type: object
+        actions:
+          type: array
+          items:
+            $ref: "#/components/schemas/MMMAction"
+        created_at:
+          type: string
+          format: date-time
+    DecideRequest:
+      type: object
+      required: [tenant_id]
+      properties:
+        tenant_id:
+          type: string
+        actor_id:
+          type: string
+        actor_type:
+          type: string
+          enum: [human, ai_agent]
+        context:
+          type: object
+        signal:
+          $ref: "#/components/schemas/MMMSignalInput"
+    DecideResponse:
+      type: object
+      properties:
+        decision:
+          $ref: "#/components/schemas/MMMDecision"
+    MMMOutcome:
+      type: object
+      required: [decision_id, action_id, result]
+      properties:
+        decision_id:
+          type: string
+        action_id:
+          type: string
+        actor_id:
+          type: string
+        result:
+          type: string
+        reason:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
 openapi: 3.1.0
 info:
   title: "MMM Engine Local API"

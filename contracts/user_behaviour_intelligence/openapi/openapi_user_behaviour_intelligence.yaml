@@ -1,0 +1,507 @@
+openapi: 3.0.3
+info:
+  title: User Behaviour Intelligence (UBI) API
+  description: API for behavioural analytics, feature computation, baseline management, and signal generation
+  version: 1.0.0
+  contact:
+    name: ZeroUI Platform Team
+
+servers:
+  - url: http://localhost:8000/v1/ubi
+    description: Local development server
+  - url: https://api.zeroui.com/v1/ubi
+    description: Production server
+
+tags:
+  - name: user-behaviour-intelligence
+    description: User Behaviour Intelligence operations
+
+paths:
+  /actors/{actor_id}/profile:
+    get:
+      tags:
+        - user-behaviour-intelligence
+      summary: Get actor behaviour profile
+      description: Returns actor metadata, recent signals, features, and baselines per PRD Section 11.1
+      operationId: getActorProfile
+      parameters:
+        - name: actor_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Actor identifier
+        - name: tenant_id
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Tenant identifier (must match IAM token)
+        - name: window
+          in: query
+          required: false
+          schema:
+            type: string
+            default: "7d"
+          description: Time window (default: last 7 days)
+      responses:
+        '200':
+          description: Actor profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActorProfileResponse'
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Actor not found or not accessible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+
+  /query/signals:
+    post:
+      tags:
+        - user-behaviour-intelligence
+      summary: Query signals
+      description: Returns signals matching query criteria per PRD Section 11.2
+      operationId: querySignals
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuerySignalsRequest'
+      responses:
+        '200':
+          description: Signals retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuerySignalsResponse'
+        '400':
+          description: Bad Request - Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+
+  /config/{tenant_id}:
+    get:
+      tags:
+        - user-behaviour-intelligence
+      summary: Get tenant configuration
+      description: Returns current configuration for tenant per PRD Section 11.4
+      operationId: getTenantConfig
+      parameters:
+        - name: tenant_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Tenant identifier
+      responses:
+        '200':
+          description: Configuration retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantConfigResponse'
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+
+    put:
+      tags:
+        - user-behaviour-intelligence
+      summary: Update tenant configuration
+      description: Updates configuration and emits receipt to ERIS per PRD Section 11.4
+      operationId: updateTenantConfig
+      parameters:
+        - name: tenant_id
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Tenant identifier
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TenantConfigRequest'
+      responses:
+        '200':
+          description: Configuration updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TenantConfigUpdateResponse'
+        '400':
+          description: Bad Request - Invalid configuration values
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - Missing or invalid token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - Insufficient permissions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+        - bearerAuth: []
+
+  /health:
+    get:
+      tags:
+        - user-behaviour-intelligence
+      summary: Health check
+      description: Returns service health status
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /ready:
+    get:
+      tags:
+        - user-behaviour-intelligence
+      summary: Readiness check
+      description: Returns service readiness status
+      operationId: readinessCheck
+      responses:
+        '200':
+          description: Service is ready
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadinessResponse'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from IAM (EPC-1)
+
+  schemas:
+    ActorProfileResponse:
+      type: object
+      properties:
+        actor_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_type:
+          type: string
+          enum: [human, ai_agent, service]
+        signals:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              $ref: '#/components/schemas/BehaviouralSignal'
+        features:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehaviouralFeature'
+        baselines:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehaviouralBaseline'
+        stale:
+          type: boolean
+
+    QuerySignalsRequest:
+      type: object
+      required:
+        - tenant_id
+        - scope
+        - time_range
+      properties:
+        tenant_id:
+          type: string
+        scope:
+          type: string
+          enum: [actor, team, tenant]
+        dimensions:
+          type: array
+          items:
+            type: string
+            enum: [activity, flow, collaboration, agent_synergy]
+        time_range:
+          type: object
+          required:
+            - from
+            - to
+          properties:
+            from:
+              type: string
+              format: date-time
+            to:
+              type: string
+              format: date-time
+        filters:
+          type: object
+
+    QuerySignalsResponse:
+      type: object
+      properties:
+        signals:
+          type: array
+          items:
+            $ref: '#/components/schemas/BehaviouralSignal'
+        stale:
+          type: boolean
+
+    TenantConfigResponse:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        config_version:
+          type: string
+        enabled_event_categories:
+          type: array
+          items:
+            type: string
+        feature_windows:
+          type: object
+        aggregation_thresholds:
+          type: object
+        enabled_signal_types:
+          type: array
+          items:
+            type: string
+            enum: [risk, opportunity, informational]
+        privacy_settings:
+          type: object
+        anomaly_thresholds:
+          type: object
+        baseline_algorithm:
+          type: object
+
+    TenantConfigRequest:
+      type: object
+      properties:
+        enabled_event_categories:
+          type: array
+          items:
+            type: string
+        feature_windows:
+          type: object
+        aggregation_thresholds:
+          type: object
+        enabled_signal_types:
+          type: array
+          items:
+            type: string
+            enum: [risk, opportunity, informational]
+        privacy_settings:
+          type: object
+        anomaly_thresholds:
+          type: object
+        baseline_algorithm:
+          type: object
+
+    TenantConfigUpdateResponse:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        config_version:
+          type: string
+        config:
+          $ref: '#/components/schemas/TenantConfigResponse'
+        receipt_id:
+          type: string
+
+    BehaviouralSignal:
+      type: object
+      properties:
+        signal_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_scope:
+          type: string
+          enum: [actor, team, cohort, tenant]
+        actor_or_group_id:
+          type: string
+        dimension:
+          type: string
+          enum: [activity, flow, collaboration, agent_synergy]
+        signal_type:
+          type: string
+          enum: [risk, opportunity, informational]
+        score:
+          type: number
+          minimum: 0
+          maximum: 100
+        severity:
+          type: string
+          enum: [INFO, WARN, CRITICAL]
+        status:
+          type: string
+          enum: [active, resolved]
+        evidence_refs:
+          type: array
+          items:
+            type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        resolved_at:
+          type: string
+          format: date-time
+
+    BehaviouralFeature:
+      type: object
+      properties:
+        feature_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_scope:
+          type: string
+          enum: [actor, team, cohort]
+        actor_or_group_id:
+          type: string
+        feature_name:
+          type: string
+        window_start:
+          type: string
+          format: date-time
+        window_end:
+          type: string
+          format: date-time
+        value:
+          type: number
+        dimension:
+          type: string
+          enum: [activity, flow, collaboration, agent_synergy]
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+        metadata:
+          type: object
+
+    BehaviouralBaseline:
+      type: object
+      properties:
+        baseline_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_scope:
+          type: string
+          enum: [actor, team, cohort]
+        actor_or_group_id:
+          type: string
+        feature_name:
+          type: string
+        window:
+          type: string
+        mean:
+          type: number
+        std_dev:
+          type: number
+        percentiles:
+          type: object
+        last_recomputed_at:
+          type: string
+          format: date-time
+        confidence:
+          type: number
+          minimum: 0
+          maximum: 1
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    ReadinessResponse:
+      type: object
+      properties:
+        ready:
+          type: boolean
+        checks:
+          type: object
+          additionalProperties:
+            type: boolean
+        timestamp:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      properties:
+        error_code:
+          type: string
+        error_message:
+          type: string
+        details:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+

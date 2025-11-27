@@ -13,7 +13,7 @@ def _load_package() -> None:
     package_dir = (
         Path(__file__).resolve()
         .parent.parent
-        / "cloud-services"
+        / "cloud_services"
         / "shared-services"
         / "identity-access-management"
     )
