@@ -356,7 +356,11 @@ class ConsentManagementService:
         required_legal_basis: Optional[str] = None,
     ) -> Dict[str, Any]:
         start = time.perf_counter()
-        consents = self.data_plane.list_consents(tenant_id, data_subject_id)
+        consents = [
+            record
+            for record in self.data_plane.list_consents(tenant_id, data_subject_id)
+            if record.get("status") != "revoked"
+        ]
         matched = [
             record
             for record in consents
@@ -457,7 +461,12 @@ class RetentionManagementService:
     ) -> Dict[str, Any]:
         policy = self.data_plane.get_retention_policy(tenant_id, data_category)
         if not policy:
-            return {"action": "none", "reason": "policy_not_found"}
+            return {
+                "action": "none",
+                "policy_id": None,
+                "legal_hold": None,
+                "regulatory_basis": None,
+            }
 
         should_delete = (
             last_activity_months >= policy["retention_period_months"]

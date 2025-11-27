@@ -86,7 +86,11 @@ pipeline {
                     steps {
                         sh '''
                             . venv/bin/activate
-                            pytest --cov=src/cloud-services --cov-report=html --cov-report=xml -v
+                            mkdir -p artifacts/evidence
+                            pytest --cov=src/cloud-services --cov-report=html --cov-report=xml \
+                                --junit-xml=artifacts/junit.xml \
+                                -v \
+                                -p tests.pytest_evidence_plugin
                         '''
                     }
                     post {
@@ -99,6 +103,10 @@ pipeline {
                             publishCoverage adapters: [
                                 coberturaAdapter('coverage.xml')
                             ]
+                            // Archive evidence packs
+                            archiveArtifacts artifacts: 'artifacts/evidence/*.zip', allowEmptyArchive: true
+                            // Archive JUnit XML for test reporting
+                            junit 'artifacts/junit.xml'
                         }
                     }
                 }
@@ -119,6 +127,55 @@ pipeline {
                             ]
                         }
                     }
+                }
+            }
+        }
+
+        stage('Mandatory Test Suites') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    mkdir -p artifacts/evidence
+                    # Run mandatory test suites (fail build if any fail)
+                    echo "Running mandatory DG&P regression tests..."
+                    pytest -m "dgp_regression" --junit-xml=artifacts/junit-dgp-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    
+                    echo "Running mandatory DG&P security tests..."
+                    pytest -m "dgp_security" --junit-xml=artifacts/junit-dgp-security.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    
+                    echo "Running mandatory DG&P performance tests..."
+                    pytest -m "dgp_performance" --junit-xml=artifacts/junit-dgp-performance.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    
+                    # Alerting mandatory suites (if tests exist)
+                    if pytest -m "alerting_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                        echo "Running mandatory Alerting regression tests..."
+                        pytest -m "alerting_regression" --junit-xml=artifacts/junit-alerting-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    fi
+                    
+                    if pytest -m "alerting_security" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                        echo "Running mandatory Alerting security tests..."
+                        pytest -m "alerting_security" --junit-xml=artifacts/junit-alerting-security.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    fi
+                    
+                    # Budgeting mandatory suites (if tests exist)
+                    if pytest -m "budgeting_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                        echo "Running mandatory Budgeting regression tests..."
+                        pytest -m "budgeting_regression" --junit-xml=artifacts/junit-budgeting-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    fi
+                    
+                    # Deployment mandatory suites (if tests exist)
+                    if pytest -m "deployment_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                        echo "Running mandatory Deployment regression tests..."
+                        pytest -m "deployment_regression" --junit-xml=artifacts/junit-deployment-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    fi
+                '''
+            }
+            post {
+                always {
+                    // Archive all evidence packs
+                    archiveArtifacts artifacts: 'artifacts/evidence/*.zip', allowEmptyArchive: true
+                    // Archive JUnit reports
+                    junit 'artifacts/junit-*.xml'
                 }
             }
         }

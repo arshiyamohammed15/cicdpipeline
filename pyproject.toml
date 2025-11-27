@@ -143,6 +143,29 @@ markers = [
     "llm_gateway_unit: LLM Gateway unit tests (safety pipeline, policy plumbing)",
     "llm_gateway_integration: LLM Gateway FastAPI route tests",
     "llm_gateway_real_integration: LLM Gateway real service integration tests (requires USE_REAL_SERVICES=true)",
+    # Data Governance & Privacy (M22) - mandatory for releases
+    "dgp_regression: Regression tests for DG&P module (mandatory for releases)",
+    "dgp_security: Security tests for DG&P module (mandatory for releases)",
+    "dgp_performance: Performance tests for DG&P module (mandatory for releases)",
+    "dgp_compliance: Compliance evidence tests for DG&P module",
+    # Alerting & Notification Service (EPC-4) - mandatory for releases
+    "alerting_regression: Regression tests for Alerting module (mandatory for releases)",
+    "alerting_security: Security tests for Alerting module (mandatory for releases)",
+    "alerting_performance: Performance tests for Alerting module (mandatory for releases)",
+    "alerting_integration: Integration tests for Alerting module",
+    # Budgeting, Rate-Limiting & Cost Observability (M35) - mandatory for releases
+    "budgeting_regression: Regression tests for Budgeting module (mandatory for releases)",
+    "budgeting_security: Security tests for Budgeting module (mandatory for releases)",
+    "budgeting_performance: Performance tests for Budgeting module (mandatory for releases)",
+    # Deployment & Infrastructure (EPC-8) - mandatory for releases
+    "deployment_regression: Regression tests for Deployment module (mandatory for releases)",
+    "deployment_security: Security tests for Deployment module (mandatory for releases)",
+    "deployment_integration: Integration tests for Deployment module",
+    # General markers
+    "performance: Performance tests",
+    "security: Security tests",
+    "compliance: Compliance evidence tests",
+    "chaos: Chaos engineering tests",
 ]
 filterwarnings = [
     "error",
