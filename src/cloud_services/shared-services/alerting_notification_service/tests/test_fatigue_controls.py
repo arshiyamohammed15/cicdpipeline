@@ -36,6 +36,8 @@ def _alert(alert_id: str, tenant: str = "tenant-test", severity: str = "P1", inc
 
 
 @pytest.mark.asyncio
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 async def test_rate_limiter_alert_limit(session: AsyncSession, tmp_path):
     """Test that rate limiter enforces per-alert limits."""
     policy_bundle = {

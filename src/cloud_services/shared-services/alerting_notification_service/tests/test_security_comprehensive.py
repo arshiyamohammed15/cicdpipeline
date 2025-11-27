@@ -31,6 +31,8 @@ def _alert(alert_id: str, tenant_id: str = "tenant-integration") -> dict:
     }
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st1_unauthenticated_calls_rejected(test_client):
     """
@@ -71,6 +73,8 @@ async def test_st1_unauthenticated_calls_rejected(test_client):
     assert invalid_response.status_code == 400
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st1_unauthorized_cross_tenant_blocked(test_client):
     """
@@ -111,6 +115,8 @@ async def test_st1_unauthorized_cross_tenant_blocked(test_client):
     assert search_response.status_code == 403  # Forbidden
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st1_authorized_cross_tenant_allowed(test_client):
     """
@@ -150,6 +156,8 @@ async def test_st1_authorized_cross_tenant_allowed(test_client):
     assert get_response2.status_code == 200
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st2_payload_sanitization_secrets_rejected(test_client):
     """
@@ -183,6 +191,8 @@ async def test_st2_payload_sanitization_secrets_rejected(test_client):
             assert "description" in alert_data
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st2_payload_sanitization_pii_handling(test_client):
     """
@@ -214,6 +224,8 @@ async def test_st2_payload_sanitization_pii_handling(test_client):
             assert "labels" in alert_data
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st2_payload_sanitization_sql_injection_prevention(test_client):
     """
@@ -247,6 +259,8 @@ async def test_st2_payload_sanitization_sql_injection_prevention(test_client):
     assert len(search_response.json()) > 0  # Other alerts still exist
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 @pytest.mark.asyncio
 async def test_st2_payload_sanitization_xss_prevention(test_client):
     """

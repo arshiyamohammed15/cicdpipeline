@@ -1,8 +1,12 @@
 from datetime import datetime
 
+import pytest
+
 from ..services.routing_service import QuietHoursEvaluator
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 def test_quiet_hours_enforcement():
     evaluator = QuietHoursEvaluator({"Mon": "22:00-06:00"})
     quiet_time = datetime.strptime("2025-11-24 23:30", "%Y-%m-%d %H:%M")

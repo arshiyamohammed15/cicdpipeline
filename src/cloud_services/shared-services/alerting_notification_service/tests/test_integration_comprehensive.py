@@ -38,6 +38,8 @@ def _slo_breach_alert(alert_id: str) -> dict:
     }
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_it1_health_slo_breach_p1_page(test_client):
     """
@@ -78,6 +80,8 @@ async def test_it1_health_slo_breach_p1_page(test_client):
     assert alert["incident_id"] is not None, "Alert should be correlated into incident"
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_it3_channel_failure_fallback(test_client, session):
     """
@@ -155,6 +159,8 @@ async def test_it3_channel_failure_fallback(test_client, session):
     assert updated.attempts > 0 or updated.status in ["sent", "pending"]
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_it4_external_oncall_integration(test_client, session):
     """
@@ -233,6 +239,8 @@ async def test_it4_external_oncall_integration(test_client, session):
     assert ack_response.json()["status"] == "acknowledged"
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_it5_eris_receipts_end_to_end(test_client, session):
     """
@@ -335,6 +343,8 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
         ErisClient.emit_receipt = original_emit
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_it8_multichannel_delivery(test_client, session):
     """

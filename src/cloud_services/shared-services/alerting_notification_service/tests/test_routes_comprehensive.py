@@ -38,6 +38,8 @@ def _payload(alert_id: str, tenant_id: str = "tenant-route") -> AlertPayload:
     )
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_alert_routes_full_flow(session):
     ctx = RequestContext(tenant_id="tenant-route", actor_id="tester", roles=["tenant_user"], allowed_tenants=[])
@@ -79,6 +81,8 @@ async def test_alert_routes_full_flow(session):
     assert incident["status"] == "resolved"
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_preferences_and_error_paths(session):
     ctx = RequestContext(tenant_id="tenant-route", actor_id="tester", roles=["tenant_user"], allowed_tenants=[])
@@ -119,6 +123,8 @@ async def test_preferences_and_error_paths(session):
         await v1.snooze_alert("missing-alert", SnoozeRequest(actor="tester", duration_minutes=5), session, ctx)
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_streaming_endpoints_cover_generators(session):
     """Test that stream endpoint returns StreamingResponse with alert events."""

@@ -36,6 +36,8 @@ def _alert(idx: int, tenant: str = "tenant-perf") -> Alert:
     )
 
 
+@pytest.mark.alerting_performance
+@pytest.mark.performance
 @pytest.mark.asyncio
 async def test_pt1_ingestion_throughput_1000_per_sec(session):
     """
@@ -95,6 +97,8 @@ async def test_pt1_ingestion_throughput_1000_per_sec(session):
     assert p50 < 500, f"p50 latency {p50}ms too high (test environment)"
 
 
+@pytest.mark.alerting_performance
+@pytest.mark.performance
 @pytest.mark.asyncio
 async def test_pt1_dedup_correlation_latency(session):
     """
@@ -146,6 +150,8 @@ async def test_pt1_dedup_correlation_latency(session):
     assert corr_p99 < 2000, f"Correlation p99 latency {corr_p99}ms too high (test environment)"
 
 
+@pytest.mark.alerting_performance
+@pytest.mark.performance
 @pytest.mark.asyncio
 async def test_pt2_notification_volume_load_test(session):
     """

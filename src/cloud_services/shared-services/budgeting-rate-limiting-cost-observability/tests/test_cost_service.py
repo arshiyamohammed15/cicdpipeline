@@ -40,6 +40,8 @@ def cost_service(db_session):
 class TestCostService:
     """Test suite for CostService."""
 
+    @pytest.mark.budgeting_regression
+    @pytest.mark.unit
     def test_record_cost(self, cost_service):
         """Test cost recording."""
         tenant_id = str(uuid.uuid4())

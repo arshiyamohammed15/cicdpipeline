@@ -27,6 +27,8 @@ def _alert(idx: int) -> Alert:
     )
 
 
+@pytest.mark.alerting_performance
+@pytest.mark.performance
 @pytest.mark.asyncio
 async def test_ingestion_throughput(session):
     service = AlertIngestionService(session)

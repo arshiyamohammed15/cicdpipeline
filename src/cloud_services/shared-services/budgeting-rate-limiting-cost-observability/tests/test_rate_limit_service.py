@@ -57,6 +57,8 @@ class TestRateLimitService:
     def _resource_key(tenant_id: str) -> str:
         return f"{tenant_id}:api_calls"
 
+    @pytest.mark.budgeting_regression
+    @pytest.mark.unit
     def test_leaky_bucket_blocks_when_queue_full(self, rate_limit_service):
         tenant_id = str(uuid.uuid4())
         policy = create_policy(rate_limit_service, tenant_id, "leaky_bucket", limit_value=5, window_seconds=5)

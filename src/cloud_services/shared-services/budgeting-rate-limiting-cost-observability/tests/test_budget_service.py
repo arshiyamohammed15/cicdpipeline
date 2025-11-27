@@ -73,6 +73,8 @@ def budget_service(db_session):
 class TestBudgetService:
     """Test suite for BudgetService."""
 
+    @pytest.mark.budgeting_regression
+    @pytest.mark.unit
     def test_create_budget(self, budget_service):
         """Test budget creation."""
         budget = budget_service.create_budget(

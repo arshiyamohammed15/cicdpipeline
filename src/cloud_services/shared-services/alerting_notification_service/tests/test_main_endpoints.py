@@ -1,8 +1,11 @@
+import pytest
 from fastapi.testclient import TestClient
 
 from ..main import app
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.unit
 def test_health_and_metrics_endpoints():
     with TestClient(app) as client:
         health = client.get("/healthz")

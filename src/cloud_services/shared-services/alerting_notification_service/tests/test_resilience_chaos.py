@@ -34,6 +34,8 @@ def _alert(alert_id: str, tenant: str = "tenant-resilience") -> Alert:
     )
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt1_integration_outages_channel_failure(test_client, session):
     """
@@ -86,6 +88,8 @@ async def test_rt1_integration_outages_channel_failure(test_client, session):
         assert updated.failure_reason is not None or updated.next_attempt_at is not None
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt1_integration_outages_fallback_channels(test_client, session):
     """
@@ -138,6 +142,8 @@ async def test_rt1_integration_outages_fallback_channels(test_client, session):
     assert updated.status in ["sent", "pending"] or updated.attempts > 0
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt1_integration_outages_eris_unavailable(test_client, session):
     """
@@ -190,6 +196,8 @@ async def test_rt1_integration_outages_eris_unavailable(test_client, session):
         ErisClient.emit_receipt = original_emit
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt2_epc4_restart_state_recovery(test_client, session):
     """
@@ -242,6 +250,8 @@ async def test_rt2_epc4_restart_state_recovery(test_client, session):
     assert isinstance(notifications, list)
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt2_epc4_restart_pending_notifications_recovered(test_client, session):
     """
@@ -286,6 +296,8 @@ async def test_rt2_epc4_restart_pending_notifications_recovered(test_client, ses
     assert updated.attempts > 1 or updated.status == "sent"
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_rt2_epc4_restart_escalation_continuation(test_client, session):
     """

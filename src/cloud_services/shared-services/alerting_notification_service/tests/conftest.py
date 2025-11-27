@@ -18,6 +18,18 @@ from ..database import models  # noqa: F401 ensures metadata registration
 from ..dependencies import get_session
 from ..main import app
 
+# Add root to path for shared harness
+ROOT = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+try:
+    from tests.shared_harness import AlertFixtureFactory, TenantFactory
+except ImportError:
+    # Fallback if shared harness not available
+    AlertFixtureFactory = None
+    TenantFactory = None
+
 
 @pytest.fixture(scope="session")
 def event_loop():

@@ -25,6 +25,8 @@ def _alert_payload(alert_id: str, tenant_id: str = "tenant-integration") -> dict
     }
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 def test_missing_tenant_header_rejected(test_client):
     payload = _alert_payload("tenant-missing")
     headers = dict(test_client.headers)
@@ -41,12 +43,16 @@ def test_missing_tenant_header_rejected(test_client):
     assert response.status_code == 400
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 def test_cross_tenant_forbidden_without_allowance(test_client):
     payload = _alert_payload("tenant-forbid", tenant_id="tenant-other")
     response = test_client.post("/v1/alerts", json=payload)
     assert response.status_code == 403
 
 
+@pytest.mark.alerting_security
+@pytest.mark.security
 def test_cross_tenant_allowed_with_allowance(test_client):
     payload = _alert_payload("tenant-allowed", tenant_id="tenant-shared")
     headers = {**test_client.headers, "X-Allow-Tenants": "tenant-shared"}

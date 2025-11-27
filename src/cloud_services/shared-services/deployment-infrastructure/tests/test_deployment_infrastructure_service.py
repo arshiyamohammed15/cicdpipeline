@@ -14,12 +14,18 @@ from deployment_infrastructure.services import (
 class TestDeploymentService:
     """Test deployment service functionality."""
 
+    @pytest.mark.deployment_regression
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test deployment service initialization."""
         service = DeploymentService()
         assert service is not None
         assert service.deployments is not None
 
+    @pytest.mark.deployment_regression
+    @pytest.mark.unit
+    @pytest.mark.deployment_regression
+    @pytest.mark.unit
     def test_deploy(self):
         """Test deployment operation."""
         service = DeploymentService()
@@ -124,6 +130,8 @@ class TestDeploymentService:
 class TestEnvironmentParityService:
     """Test environment parity service functionality."""
 
+    @pytest.mark.deployment_regression
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test environment parity service initialization."""
         service = EnvironmentParityService()
@@ -208,6 +216,8 @@ class TestEnvironmentParityService:
 class TestInfrastructureStatusService:
     """Test infrastructure status service functionality."""
 
+    @pytest.mark.deployment_regression
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test infrastructure status service initialization."""
         service = InfrastructureStatusService()

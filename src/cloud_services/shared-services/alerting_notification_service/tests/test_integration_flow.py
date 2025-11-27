@@ -29,6 +29,8 @@ def _alert(alert_id: str) -> dict:
     }
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_alert_ack_resolve_flow(test_client):
     payload = _alert("integration-1")
@@ -49,6 +51,8 @@ async def test_alert_ack_resolve_flow(test_client):
     assert len(search.json()) >= 1
 
 
+@pytest.mark.alerting_regression
+@pytest.mark.integration
 @pytest.mark.asyncio
 async def test_preferences_round_trip(test_client):
     pref_payload = {

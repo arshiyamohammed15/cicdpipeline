@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, List
+from typing import Any, Dict, List
 from uuid import uuid4
 
 from .tenants import TenantProfile
