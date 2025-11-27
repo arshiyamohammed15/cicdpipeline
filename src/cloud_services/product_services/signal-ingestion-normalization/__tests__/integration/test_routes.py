@@ -1,0 +1,124 @@
+"""Integration tests for Signal Ingestion & Normalization API routes."""
+from __future__ import annotations
+
+import sys
+import importlib.util
+from pathlib import Path
+from unittest.mock import patch, Mock
+
+import pytest
+from fastapi import status
+
+# Add parent directories to path
+PACKAGE_ROOT = Path(__file__).resolve().parent.parent.parent
+if str(PACKAGE_ROOT) not in sys.path:
+    sys.path.insert(0, str(PACKAGE_ROOT))
+
+# Create package structure and load modules
+parent_pkg = type(sys)('signal_ingestion_normalization')
+sys.modules['signal_ingestion_normalization'] = parent_pkg
+
+# Load all required modules (similar pattern to conftest.py)
+modules_to_load = [
+    ("models", "models.py"),
+    ("dependencies", "dependencies.py"),
+    ("producer_registry", "producer_registry.py"),
+    ("governance", "governance.py"),
+    ("validation", "validation.py"),
+    ("normalization", "normalization.py"),
+    ("routing", "routing.py"),
+    ("deduplication", "deduplication.py"),
+    ("dlq", "dlq.py"),
+    ("observability", "observability.py"),
+    ("services", "services.py"),
+    ("routes", "routes.py"),
+    ("main", "main.py"),
+]
+
+for module_name, filename in modules_to_load:
+    module_path = PACKAGE_ROOT / filename
+    if module_path.exists():
+        spec = importlib.util.spec_from_file_location(
+            f"signal_ingestion_normalization.{module_name}",
+            module_path
+        )
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[f"signal_ingestion_normalization.{module_name}"] = module
+        spec.loader.exec_module(module)
+
+# Import main app
+main_module = sys.modules['signal_ingestion_normalization.main']
+app = main_module.create_app()
+
+from fastapi.testclient import TestClient
+
+test_client = TestClient(app)
+
+
+@pytest.mark.integration
+class TestIngestEndpoint:
+    """Test /v1/signals/ingest endpoint."""
+
+    @patch('signal_ingestion_normalization.routes.get_ingestion_service')
+    def test_ingest_signals_success(self, mock_get_service):
+        """Test successful signal ingestion."""
+        mock_service = Mock()
+        mock_result = Mock()
+        mock_result.status = "accepted"
+        mock_result.signal_id = "test-1"
+        mock_service.ingest_signal.return_value = mock_result
+        mock_get_service.return_value = mock_service
+
+        response = test_client.post(
+            "/v1/signals/ingest",
+            json={
+                "signals": [{
+                    "signal_id": "test-1",
+                    "tenant_id": "tenant-1",
+                    "producer_id": "producer-1",
+                    "signal_kind": "event",
+                    "plane": "tenant_cloud",
+                    "environment": "dev",
+                    "timestamp": "2025-01-01T00:00:00Z",
+                    "payload": {"message": "test"}
+                }]
+            },
+            headers={"Authorization": "Bearer valid_token_tenant-1"}
+        )
+
+        assert response.status_code in [status.HTTP_200_OK, status.HTTP_201_CREATED]
+
+    def test_ingest_signals_missing_auth(self, test_client):
+        """Test signal ingestion without authorization."""
+        response = test_client.post(
+            "/v1/signals/ingest",
+            json={"signals": []}
+        )
+
+        assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_ingest_signals_invalid_payload(self, test_client):
+        """Test signal ingestion with invalid payload."""
+        response = test_client.post(
+            "/v1/signals/ingest",
+            json={"invalid": "payload"},
+            headers={"Authorization": "Bearer valid_token_tenant-1"}
+        )
+
+        assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
+
+
+@pytest.mark.integration
+class TestHealthEndpoint:
+    """Test health and readiness endpoints."""
+
+    def test_health_check(self, test_client):
+        """Test health check endpoint."""
+        response = test_client.get("/health")
+        assert response.status_code == status.HTTP_200_OK
+
+    def test_readiness_check(self, test_client):
+        """Test readiness check endpoint."""
+        response = test_client.get("/ready")
+        assert response.status_code == status.HTTP_200_OK
+
