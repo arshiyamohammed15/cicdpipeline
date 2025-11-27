@@ -9,7 +9,10 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import List
+
+from config.constitution.path_utils import resolve_health_reliability_monitoring_db_path
 
 
 def _env(key: str, default: str) -> str:
@@ -40,7 +43,12 @@ class ServiceSettings:
 class DatabaseSettings:
     """Database configuration for component registry & health snapshots."""
 
-    url: str = _env("HEALTH_RELIABILITY_MONITORING_DATABASE_URL", "sqlite:///./health_reliability_monitoring.db")
+    url: str = field(
+        default_factory=lambda: _env(
+            "HEALTH_RELIABILITY_MONITORING_DATABASE_URL",
+            f"sqlite:///{resolve_health_reliability_monitoring_db_path()}",
+        )
+    )
     echo_sql: bool = _env("HEALTH_RELIABILITY_MONITORING_DB_ECHO", "false").lower() == "true"
     pool_size: int = int(_env("HEALTH_RELIABILITY_MONITORING_DB_POOL_SIZE", "10"))
     max_overflow: int = int(_env("HEALTH_RELIABILITY_MONITORING_DB_MAX_OVERFLOW", "20"))

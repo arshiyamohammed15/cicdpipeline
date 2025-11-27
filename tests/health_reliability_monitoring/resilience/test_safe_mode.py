@@ -41,6 +41,7 @@ class StubPolicy:
             "component_overrides": {},
         }
 
+@pytest.mark.resilience
 @pytest.mark.asyncio
 async def test_safe_to_act_unknown_state_triggers_safe_mode(monkeypatch):
     service = SafeToActService(

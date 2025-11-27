@@ -2,10 +2,18 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import sqlite3
 from pathlib import Path
 
-DEFAULT_DB = Path("alerting.db")
+# Add repo root to path for imports
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from config.constitution.path_utils import resolve_alerting_db_path
+
+DEFAULT_DB = resolve_alerting_db_path()
 MIGRATION_FILE = Path("src/cloud-services/shared-services/alerting_notification_service/database/migrations/001_extend_schema.sql")
 
 

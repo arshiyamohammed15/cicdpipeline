@@ -49,6 +49,7 @@ class StubPolicy:
         }
 
 
+@pytest.mark.unit
 @pytest.mark.asyncio
 async def test_safe_to_act_denies_on_failed_plane():
     service = SafeToActService(
@@ -65,6 +66,7 @@ async def test_safe_to_act_denies_on_failed_plane():
     assert response.recommended_mode == "read_only"
 
 
+@pytest.mark.unit
 @pytest.mark.asyncio
 async def test_safe_to_act_scope_unknown_component_triggers_default_mode():
     class ScopeRollup(StubRollup):

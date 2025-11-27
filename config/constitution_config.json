@@ -2935,7 +2935,7 @@
     }
   },
   "constitution_version": "2.0",
-  "total_rules": 415,
+  "_note": "total_rules is dynamically calculated from docs/constitution/*.json files (single source of truth). Do not hardcode rule counts.",
   "default_enabled": true,
   "backend": "sqlite",
   "backends": {

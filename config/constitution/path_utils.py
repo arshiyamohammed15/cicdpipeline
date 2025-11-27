@@ -82,3 +82,59 @@ def resolve_constitution_db_path(candidate: Optional[str]) -> Path:
 
     path.parent.mkdir(parents=True, exist_ok=True)
     return path
+
+
+def resolve_alerting_db_path(candidate: Optional[str] = None) -> Path:
+    """
+    Resolve the Alerting & Notification Service database path, guaranteeing it sits outside the repo.
+
+    Resolution order:
+      1. ALERTING_DB_PATH env var
+      2. Candidate argument (absolute paths win; relative paths use filename only)
+      3. Fallback to `${ZU_ROOT}/ide/db/alerting.db`
+    """
+    env_override = os.environ.get("ALERTING_DB_PATH")
+    if env_override:
+        path = Path(env_override).expanduser()
+    elif candidate:
+        path = Path(candidate).expanduser()
+    else:
+        path = Path("alerting.db")
+
+    if not path.is_absolute():
+        # Drop any relative parents and reuse the filename.
+        path = _default_storage_dir() / path.name
+
+    path = path.resolve()
+    path = _ensure_external(path)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def resolve_health_reliability_monitoring_db_path(candidate: Optional[str] = None) -> Path:
+    """
+    Resolve the Health & Reliability Monitoring database path, guaranteeing it sits outside the repo.
+
+    Resolution order:
+      1. HEALTH_RELIABILITY_MONITORING_DB_PATH env var
+      2. Candidate argument (absolute paths win; relative paths use filename only)
+      3. Fallback to `${ZU_ROOT}/ide/db/health_reliability_monitoring.db`
+    """
+    env_override = os.environ.get("HEALTH_RELIABILITY_MONITORING_DB_PATH")
+    if env_override:
+        path = Path(env_override).expanduser()
+    elif candidate:
+        path = Path(candidate).expanduser()
+    else:
+        path = Path("health_reliability_monitoring.db")
+
+    if not path.is_absolute():
+        # Drop any relative parents and reuse the filename.
+        path = _default_storage_dir() / path.name
+
+    path = path.resolve()
+    path = _ensure_external(path)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    return path

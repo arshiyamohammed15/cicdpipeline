@@ -9,6 +9,7 @@ from contracts_schema_registry.dependencies import (
 )
 
 
+@pytest.mark.unit
 class TestSchemaService:
     """Test schema service functionality."""
 
@@ -28,6 +29,7 @@ class TestSchemaService:
         assert service is not None
 
 
+@pytest.mark.unit
 class TestContractService:
     """Test contract service functionality."""
 

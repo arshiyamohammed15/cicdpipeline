@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from contracts_schema_registry.main import app
 
 
+@pytest.mark.integration
 class TestContractsSchemaRegistryRoutes:
     """Test Contracts & Schema Registry API routes."""
 

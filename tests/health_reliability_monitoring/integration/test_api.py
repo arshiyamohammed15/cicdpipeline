@@ -40,6 +40,7 @@ def setup_db():
     app.dependency_overrides.pop(get_db_session, None)
 
 
+@pytest.mark.integration
 def test_component_registry_and_status_flow():
     client = TestClient(app)
     headers = {"Authorization": "Bearer valid_epc1_test"}

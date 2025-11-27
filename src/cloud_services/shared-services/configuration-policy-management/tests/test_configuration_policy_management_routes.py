@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 from configuration_policy_management.main import app
 
 
+@pytest.mark.integration
 class TestConfigurationPolicyManagementRoutes:
     """Test Configuration & Policy Management API routes."""
 

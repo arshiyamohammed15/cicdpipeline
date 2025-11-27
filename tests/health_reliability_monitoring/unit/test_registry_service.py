@@ -24,6 +24,7 @@ class StubPolicyClient:
         return {}
 
 
+@pytest.mark.unit
 @pytest.mark.asyncio
 async def test_register_and_fetch_component(session, monkeypatch):
     service = ComponentRegistryService(session, StubPolicyClient(), EdgeAgentClient())

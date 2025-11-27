@@ -10,6 +10,7 @@ from configuration_policy_management.dependencies import (
 )
 
 
+@pytest.mark.unit
 class TestPolicyEvaluationEngine:
     """Test policy evaluation engine functionality."""
 
@@ -39,6 +40,7 @@ class TestPolicyEvaluationEngine:
         assert result is not None
 
 
+@pytest.mark.unit
 class TestPolicyService:
     """Test policy service functionality."""
 

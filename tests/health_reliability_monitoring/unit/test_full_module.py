@@ -56,6 +56,7 @@ def memory_session():
     engine.dispose()
 
 
+@pytest.mark.unit
 def test_env_list_handles_empty_and_lists(monkeypatch):
     monkeypatch.delenv("HRM_LIST", raising=False)
     assert config._env_list("HRM_LIST") == []
@@ -63,6 +64,7 @@ def test_env_list_handles_empty_and_lists(monkeypatch):
     assert config._env_list("HRM_LIST") == ["alpha", "beta", "gamma"]
 
 
+@pytest.mark.unit
 def test_session_scope_commit_and_rollback(tmp_path, monkeypatch):
     from health_reliability_monitoring.database import session as session_module
 
@@ -92,6 +94,7 @@ def test_session_scope_commit_and_rollback(tmp_path, monkeypatch):
     assert rows == ["first"]
 
 
+@pytest.mark.unit
 def test_session_handles_non_sqlite(monkeypatch):
     from health_reliability_monitoring.database import session as session_module
 
@@ -160,6 +163,7 @@ async def test_security_helpers(monkeypatch):
         ensure_cross_plane_access({"scope": []})
 
 
+@pytest.mark.unit
 def test_main_healthz_and_metrics(monkeypatch):
     import health_reliability_monitoring.main as main
 
@@ -181,6 +185,7 @@ def test_main_healthz_and_metrics(monkeypatch):
     assert events == ["start", "stop"]
 
 
+@pytest.mark.unit
 def test_service_container_db_session(monkeypatch, memory_session):
     import health_reliability_monitoring.service_container as container
 
@@ -204,6 +209,7 @@ def test_service_container_db_session(monkeypatch, memory_session):
         container.get_registry_service()
 
 
+@pytest.mark.unit
 def test_service_container_factories(memory_session):
     import health_reliability_monitoring.service_container as container
 
@@ -424,6 +430,7 @@ async def test_health_routes_cover_views(monkeypatch, memory_session):
         health_routes.get_component_slo("ghost", service=slo_service, claims=claims)
 
 
+@pytest.mark.unit
 def test_rollup_service_with_dependencies(memory_session):
     component_a = models.Component(
         component_id="A",
@@ -493,6 +500,7 @@ def test_rollup_service_with_dependencies(memory_session):
     assert plane_view.state == "FAILED"
 
 
+@pytest.mark.unit
 def test_registry_routes_cover_paths(memory_session):
     class StubPolicy:
         async def fetch_health_policy(self, policy_id: str):
@@ -645,6 +653,7 @@ async def test_safe_to_act_service_stale_telemetry():
     assert "health_system_unavailable" in response.reason_codes
 
 
+@pytest.mark.unit
 def test_slo_service_updates(memory_session):
     class StubPolicy:
         async def fetch_slo(self, slo_id: str):
@@ -664,6 +673,7 @@ def test_slo_service_updates(memory_session):
     assert latest is not None
 
 
+@pytest.mark.unit
 def test_slo_service_state_transitions(memory_session):
     class StubPolicy:
         async def fetch_slo(self, slo_id: str):
@@ -690,11 +700,13 @@ def test_slo_service_state_transitions(memory_session):
     assert result.state == "breached"
 
 
+@pytest.mark.unit
 def test_telemetry_ingestion_age_defaults():
     service = TelemetryIngestionService()
     assert service.last_ingest_age() == float("inf")
 
 
+@pytest.mark.unit
 def test_telemetry_guards_validation_errors():
     guards = TelemetryGuards(max_labels=1)
     with pytest.raises(ValueError):
@@ -788,6 +800,7 @@ async def test_telemetry_worker_processes_batch(monkeypatch):
     await idle_worker.stop()
 
 
+@pytest.mark.unit
 def test_otel_pipeline_handles_imports(monkeypatch):
     module_name = "health_reliability_monitoring.telemetry.otel_pipeline"
     original = sys.modules.pop(module_name, None)

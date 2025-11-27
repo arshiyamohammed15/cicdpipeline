@@ -8,6 +8,8 @@ from typing import List, Optional
 from pydantic import Field, HttpUrl
 from pydantic_settings import BaseSettings
 
+from config.constitution.path_utils import resolve_alerting_db_path
+
 
 class ServiceSettings(BaseSettings):
     name: str = Field(default="Alerting & Notification Service")
@@ -36,7 +38,7 @@ class NotificationSettings(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
-    url: str = Field(default="sqlite+aiosqlite:///./alerting.db")
+    url: str = Field(default_factory=lambda: f"sqlite+aiosqlite:///{resolve_alerting_db_path()}")
     echo: bool = Field(default=False)
 
 

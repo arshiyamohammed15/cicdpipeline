@@ -8,6 +8,7 @@ from health_reliability_monitoring.services.telemetry_ingestion_service import (
 from health_reliability_monitoring.models import TelemetryPayload
 
 
+@pytest.mark.unit
 @pytest.mark.asyncio
 async def test_telemetry_ingestion_enforces_label_limit():
     service = TelemetryIngestionService()
@@ -27,6 +28,7 @@ async def test_telemetry_ingestion_enforces_label_limit():
     assert drained[0].component_id == "pm-4"
 
 
+@pytest.mark.unit
 def test_telemetry_ingestion_blocks_high_cardinality_on_model():
     with pytest.raises(ValueError):
         TelemetryPayload(
