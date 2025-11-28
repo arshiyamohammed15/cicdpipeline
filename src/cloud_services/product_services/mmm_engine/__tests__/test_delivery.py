@@ -53,6 +53,7 @@ def build_decision() -> MMMDecision:
         actor_type=ActorType.HUMAN,
         context=context,
         actions=[action],
+        policy_snapshot_id="demo-snapshot-default",
     )
 
 

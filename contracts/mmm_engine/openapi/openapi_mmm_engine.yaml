@@ -1,15 +1,21 @@
 openapi: 3.0.3
 info:
   title: MMM Engine API
-  version: 0.1.0
-  description: API contracts for Mirror-Mentor-Multiplier engine decisions and playbook admin.
+  version: 1.0.0
+  description: |
+    API contracts for Mirror-Mentor-Multiplier engine decisions and playbook admin.
+    Per PRD Phase 5, includes all endpoints for actor preferences, experiments, tenant policies, dual-channel approvals, and summary metrics.
 servers:
   - url: https://api.zero.ui/mmm
+    description: Production server
+  - url: http://localhost:8005
+    description: Local development server
 paths:
   /v1/mmm/decide:
     post:
       summary: Evaluate signals and return MMM actions
       operationId: decideMMM
+      tags: [decisions]
       requestBody:
         required: true
         content:
@@ -23,10 +29,17 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DecideResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "503":
+          $ref: "#/components/responses/ServiceUnavailable"
   /v1/mmm/decisions/{decision_id}/outcomes:
     post:
       summary: Record MMM outcome
       operationId: recordOutcome
+      tags: [outcomes]
       parameters:
         - in: path
           name: decision_id
@@ -42,6 +55,392 @@ paths:
       responses:
         "202":
           description: Outcome accepted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+  /v1/mmm/playbooks:
+    get:
+      summary: List playbooks for tenant
+      operationId: listPlaybooks
+      tags: [playbooks]
+      responses:
+        "200":
+          description: List of playbooks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Playbook"
+    post:
+      summary: Create playbook
+      operationId: createPlaybook
+      tags: [playbooks]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PlaybookCreateRequest"
+      responses:
+        "200":
+          description: Playbook created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playbook"
+  /v1/mmm/playbooks/{playbook_id}/publish:
+    post:
+      summary: Publish playbook
+      operationId: publishPlaybook
+      tags: [playbooks]
+      parameters:
+        - in: path
+          name: playbook_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Playbook published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Playbook"
+  /v1/mmm/actors/{actor_id}/preferences:
+    get:
+      summary: Get actor preferences
+      operationId: getActorPreferences
+      tags: [actor-preferences]
+      parameters:
+        - in: path
+          name: actor_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Actor preferences
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActorPreferences"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    put:
+      summary: Update actor preferences
+      operationId: updateActorPreferences
+      tags: [actor-preferences]
+      parameters:
+        - in: path
+          name: actor_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActorPreferencesUpdateRequest"
+      responses:
+        "200":
+          description: Preferences updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActorPreferences"
+  /v1/mmm/actors/{actor_id}/preferences/snooze:
+    post:
+      summary: Snooze actor preferences
+      operationId: snoozeActorPreferences
+      tags: [actor-preferences]
+      parameters:
+        - in: path
+          name: actor_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ActorPreferencesSnoozeRequest"
+      responses:
+        "200":
+          description: Preferences snoozed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActorPreferences"
+  /v1/mmm/tenants/{tenant_id}/policy:
+    get:
+      summary: Get tenant MMM policy
+      operationId: getTenantPolicy
+      tags: [tenant-policy]
+      parameters:
+        - in: path
+          name: tenant_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Tenant policy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantMMMPolicy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    put:
+      summary: Update tenant MMM policy
+      operationId: updateTenantPolicy
+      tags: [tenant-policy]
+      parameters:
+        - in: path
+          name: tenant_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TenantMMMPolicyUpdateRequest"
+      responses:
+        "200":
+          description: Policy updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantMMMPolicy"
+  /v1/mmm/tenants/{tenant_id}/metrics:
+    get:
+      summary: Get tenant summary metrics
+      operationId: getTenantMetrics
+      tags: [metrics]
+      parameters:
+        - in: path
+          name: tenant_id
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: start_date
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: end_date
+          schema:
+            type: string
+            format: date-time
+      responses:
+        "200":
+          description: Tenant metrics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenantMetrics"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /v1/mmm/experiments:
+    get:
+      summary: List experiments
+      operationId: listExperiments
+      tags: [experiments]
+      parameters:
+        - in: query
+          name: tenant_id
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [active, inactive, draft]
+      responses:
+        "200":
+          description: List of experiments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Experiment"
+    post:
+      summary: Create experiment
+      operationId: createExperiment
+      tags: [experiments]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ExperimentCreateRequest"
+      responses:
+        "200":
+          description: Experiment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Experiment"
+  /v1/mmm/experiments/{experiment_id}:
+    put:
+      summary: Update experiment
+      operationId: updateExperiment
+      tags: [experiments]
+      parameters:
+        - in: path
+          name: experiment_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        "200":
+          description: Experiment updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Experiment"
+  /v1/mmm/experiments/{experiment_id}/activate:
+    post:
+      summary: Activate experiment
+      operationId: activateExperiment
+      tags: [experiments]
+      parameters:
+        - in: path
+          name: experiment_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Experiment activated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Experiment"
+  /v1/mmm/experiments/{experiment_id}/deactivate:
+    post:
+      summary: Deactivate experiment
+      operationId: deactivateExperiment
+      tags: [experiments]
+      parameters:
+        - in: path
+          name: experiment_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Experiment deactivated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Experiment"
+  /v1/mmm/actions/{action_id}/approve:
+    post:
+      summary: Approve action (dual-channel)
+      operationId: approveAction
+      tags: [dual-channel]
+      parameters:
+        - in: path
+          name: action_id
+          schema:
+            type: string
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                actor_id:
+                  type: string
+                is_first:
+                  type: boolean
+                  default: true
+      responses:
+        "200":
+          description: Approval recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  approval:
+                    $ref: "#/components/schemas/DualChannelApproval"
+  /v1/mmm/actions/{action_id}/approval-status:
+    get:
+      summary: Get dual-channel approval status
+      operationId: getApprovalStatus
+      tags: [dual-channel]
+      parameters:
+        - in: path
+          name: action_id
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Approval status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DualChannelApproval"
+        "404":
+          description: Approval not found
+  /v1/mmm/health:
+    get:
+      summary: Health check
+      operationId: health
+      tags: [system]
+      responses:
+        "200":
+          description: Service healthy
+        "503":
+          description: Service unhealthy
+  /v1/mmm/ready:
+    get:
+      summary: Readiness check
+      operationId: ready
+      tags: [system]
+      responses:
+        "200":
+          description: Service ready
+        "503":
+          description: Service not ready
+  /v1/mmm/metrics:
+    get:
+      summary: Prometheus metrics
+      operationId: metrics
+      tags: [system]
+      responses:
+        "200":
+          description: Prometheus metrics
+          content:
+            text/plain:
+              schema:
+                type: string
 components:
   schemas:
     MMMSignalInput:
@@ -96,8 +495,10 @@ components:
           type: string
         actor_id:
           type: string
+          nullable: true
         actor_type:
           type: string
+          enum: [human, ai_agent]
         context:
           type: object
         actions:
@@ -107,6 +508,13 @@ components:
         created_at:
           type: string
           format: date-time
+        policy_snapshot_id:
+          type: string
+          nullable: true
+        latency_warning:
+          type: boolean
+        degraded_mode:
+          type: boolean
     DecideRequest:
       type: object
       required: [tenant_id]
@@ -115,6 +523,7 @@ components:
           type: string
         actor_id:
           type: string
+          nullable: true
         actor_type:
           type: string
           enum: [human, ai_agent]
@@ -122,6 +531,7 @@ components:
           type: object
         signal:
           $ref: "#/components/schemas/MMMSignalInput"
+          nullable: true
     DecideResponse:
       type: object
       properties:
@@ -135,19 +545,305 @@ components:
           type: string
         action_id:
           type: string
+        tenant_id:
+          type: string
         actor_id:
           type: string
+          nullable: true
         result:
           type: string
         reason:
           type: string
+          nullable: true
         timestamp:
           type: string
           format: date-time
-openapi: 3.1.0
-info:
-  title: "MMM Engine Local API"
-  version: "0.1.0"
-paths: {}
-components:
-  schemas: {}
+    Playbook:
+      type: object
+      properties:
+        playbook_id:
+          type: string
+        tenant_id:
+          type: string
+        version:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+          enum: [draft, published, deprecated]
+        triggers:
+          type: array
+          items:
+            type: object
+        conditions:
+          type: array
+          items:
+            type: object
+        actions:
+          type: array
+          items:
+            type: object
+        limits:
+          type: object
+    PlaybookCreateRequest:
+      type: object
+      required: [name]
+      properties:
+        version:
+          type: string
+          default: "1.0.0"
+        name:
+          type: string
+        triggers:
+          type: array
+          items:
+            type: object
+        conditions:
+          type: array
+          items:
+            type: object
+        actions:
+          type: array
+          items:
+            type: object
+        limits:
+          type: object
+    ActorPreferences:
+      type: object
+      properties:
+        preference_id:
+          type: string
+        tenant_id:
+          type: string
+        actor_id:
+          type: string
+        opt_out_categories:
+          type: array
+          items:
+            type: string
+        snooze_until:
+          type: string
+          format: date-time
+          nullable: true
+        preferred_surfaces:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    ActorPreferencesUpdateRequest:
+      type: object
+      properties:
+        opt_out_categories:
+          type: array
+          items:
+            type: string
+        preferred_surfaces:
+          type: array
+          items:
+            type: string
+        snooze_until:
+          type: string
+          format: date-time
+          nullable: true
+    ActorPreferencesSnoozeRequest:
+      type: object
+      properties:
+        duration_hours:
+          type: integer
+          nullable: true
+        until:
+          type: string
+          format: date-time
+          nullable: true
+    TenantMMMPolicy:
+      type: object
+      properties:
+        policy_id:
+          type: string
+        tenant_id:
+          type: string
+        enabled_surfaces:
+          type: array
+          items:
+            type: string
+        quotas:
+          type: object
+          properties:
+            max_actions_per_day:
+              type: integer
+            max_actions_per_hour:
+              type: integer
+        quiet_hours:
+          type: object
+          properties:
+            start:
+              type: integer
+            end:
+              type: integer
+        enabled_action_types:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    TenantMMMPolicyUpdateRequest:
+      type: object
+      properties:
+        enabled_surfaces:
+          type: array
+          items:
+            type: string
+        quotas:
+          type: object
+        quiet_hours:
+          type: object
+        enabled_action_types:
+          type: array
+          items:
+            type: string
+    DualChannelApproval:
+      type: object
+      properties:
+        approval_id:
+          type: string
+        action_id:
+          type: string
+        decision_id:
+          type: string
+        actor_id:
+          type: string
+        approver_id:
+          type: string
+          nullable: true
+        first_approval_at:
+          type: string
+          format: date-time
+          nullable: true
+        second_approval_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+          enum: [pending, first_approved, fully_approved, rejected]
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    Experiment:
+      type: object
+      properties:
+        experiment_id:
+          type: string
+        tenant_id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+    ExperimentCreateRequest:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          default: "draft"
+        config:
+          type: object
+    TenantMetrics:
+      type: object
+      properties:
+        tenant_id:
+          type: string
+        period:
+          type: object
+          properties:
+            start:
+              type: string
+              format: date-time
+              nullable: true
+            end:
+              type: string
+              format: date-time
+              nullable: true
+        aggregates:
+          type: object
+          properties:
+            decisions_total:
+              type: integer
+            actions_total:
+              type: integer
+            actions_by_type:
+              type: object
+              properties:
+                mirror:
+                  type: integer
+                mentor:
+                  type: integer
+                multiplier:
+                  type: integer
+            outcomes_total:
+              type: integer
+            outcomes_by_result:
+              type: object
+              properties:
+                accepted:
+                  type: integer
+                ignored:
+                  type: integer
+                dismissed:
+                  type: integer
+  responses:
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

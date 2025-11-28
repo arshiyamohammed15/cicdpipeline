@@ -142,3 +142,58 @@ class ExperimentModel(Base):
     __table_args__ = (Index("idx_experiments_tenant", "tenant_id", "status"),)
 
 
+class ActorPreferencesModel(Base):
+    __tablename__ = "mmm_actor_preferences"
+
+    preference_id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(String(255), nullable=False)
+    actor_id = Column(String(255), nullable=False)
+    opt_out_categories = Column(JSONType(), nullable=False, default=list)
+    snooze_until = Column(DateTime(timezone=True), nullable=True)
+    preferred_surfaces = Column(JSONType(), nullable=False, default=list)
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_actor_preferences_tenant_actor", "tenant_id", "actor_id", unique=True),
+    )
+
+
+class TenantPolicyModel(Base):
+    __tablename__ = "mmm_tenant_policies"
+
+    policy_id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(String(255), nullable=False, unique=True)
+    enabled_surfaces = Column(JSONType(), nullable=False, default=lambda: ["ide", "ci", "alert"])
+    quotas = Column(JSONType(), nullable=False, default=lambda: {"max_actions_per_day": 10, "max_actions_per_hour": 3})
+    quiet_hours = Column(JSONType(), nullable=False, default=lambda: {"start": 22, "end": 6})
+    enabled_action_types = Column(JSONType(), nullable=False, default=lambda: ["mirror", "mentor", "multiplier"])
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_tenant_policies_tenant", "tenant_id", unique=True),
+    )
+
+
+class DualChannelApprovalModel(Base):
+    __tablename__ = "mmm_dual_channel_approvals"
+
+    approval_id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    action_id = Column(GUID(), nullable=False)
+    decision_id = Column(GUID(), nullable=False)
+    actor_id = Column(String(255), nullable=False)
+    approver_id = Column(String(255), nullable=True)
+    first_approval_at = Column(DateTime(timezone=True), nullable=True)
+    second_approval_at = Column(DateTime(timezone=True), nullable=True)
+    status = Column(String(50), nullable=False, default="pending")
+    created_at = Column(DateTime(timezone=True), default=datetime.utcnow)
+    updated_at = Column(DateTime(timezone=True), default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    __table_args__ = (
+        Index("idx_dual_channel_action", "action_id"),
+        Index("idx_dual_channel_decision", "decision_id"),
+        Index("idx_dual_channel_status", "status"),
+    )
+
+

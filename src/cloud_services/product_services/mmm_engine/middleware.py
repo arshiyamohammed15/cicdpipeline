@@ -5,7 +5,7 @@ IAM authentication middleware for MMM Engine.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Callable, Dict, Optional, Tuple
 
 from fastapi import Request, status
@@ -21,8 +21,13 @@ PUBLIC_PATHS = {"/health", "/ready", "/v1/mmm/health", "/v1/mmm/ready", "/v1/mmm
 
 
 async def verify_token(token: str) -> Tuple[bool, Optional[Dict[str, Any]], Optional[str]]:
+    """Verify JWT token via IAM service."""
     iam = get_iam()
-    return iam.verify_token(token)
+    # IAM client verify_token is sync, but middleware is async
+    # Run in executor to avoid blocking
+    import asyncio
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, iam.verify_token, token)
 
 
 class IAMAuthMiddleware(BaseHTTPMiddleware):
@@ -55,7 +60,7 @@ class IAMAuthMiddleware(BaseHTTPMiddleware):
                     "code": "UNAUTHORIZED",
                     "message": message,
                     "retryable": False,
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
             },
         )

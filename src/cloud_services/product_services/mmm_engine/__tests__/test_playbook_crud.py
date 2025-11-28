@@ -1,8 +1,15 @@
+from unittest.mock import patch
 from fastapi.testclient import TestClient
 
 from cloud_services.product_services.mmm_engine.main import app
 
-client = TestClient(app)
+# Mock IAM authentication for tests
+@patch("cloud_services.product_services.mmm_engine.middleware.verify_token")
+def get_test_client(mock_verify):
+    mock_verify.return_value = (True, {"tenant_id": "demo", "roles": ["mmm_admin"]}, None)
+    return TestClient(app)
+
+client = get_test_client()
 
 
 def auth_headers(tenant: str = "tenant-demo") -> dict[str, str]:

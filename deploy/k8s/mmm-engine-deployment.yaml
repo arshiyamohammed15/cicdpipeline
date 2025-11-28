@@ -1,0 +1,191 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mmm-engine
+  namespace: zeroui
+  labels:
+    app: mmm-engine
+    tier: product-services
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mmm-engine
+  template:
+    metadata:
+      labels:
+        app: mmm-engine
+        tier: product-services
+    spec:
+      containers:
+        - name: mmm-engine
+          image: ghcr.io/zeroui/mmm-engine:${IMAGE_TAG:-latest}
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8005
+              protocol: TCP
+          env:
+            - name: ENVIRONMENT
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['env']
+            # Service URLs (Phase 1)
+            - name: IAM_SERVICE_URL
+              value: http://iam-service:8001/iam/v1
+            - name: ERIS_SERVICE_URL
+              value: http://eris-service:8007
+            - name: LLM_GATEWAY_SERVICE_URL
+              value: http://llm-gateway-service:8006
+            - name: POLICY_SERVICE_URL
+              value: http://policy-service:8003
+            - name: DATA_GOVERNANCE_SERVICE_URL
+              value: http://data-governance-service:8002
+            - name: UBI_SERVICE_URL
+              value: http://ubi-service:8009
+            # Redis configuration (Phase 3)
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mmm-engine-secrets
+                  key: redis-url
+            # Database configuration
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: mmm-engine-secrets
+                  key: database-url
+            # OpenTelemetry configuration (Phase 3)
+            - name: OTLP_EXPORTER_ENDPOINT
+              value: http://otel-collector.observability:4317
+            # ERIS signing key (Phase 1)
+            - name: ERIS_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mmm-engine-secrets
+                  key: eris-signing-key
+            # Feature flags
+            - name: MMM_ENABLE_ACTOR_PREFERENCES
+              value: "true"
+            - name: MMM_ENABLE_EXPERIMENTS
+              value: "true"
+            - name: MMM_ENABLE_DUAL_CHANNEL
+              value: "true"
+            - name: MMM_ENABLE_DISTRIBUTED_TRACING
+              value: "true"
+            - name: MMM_ENABLE_REDIS_FATIGUE
+              value: "true"
+          readinessProbe:
+            httpGet:
+              path: /v1/mmm/ready
+              port: 8005
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /v1/mmm/health
+              port: 8005
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "2"
+              memory: "4Gi"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop:
+                - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mmm-engine
+  namespace: zeroui
+  labels:
+    app: mmm-engine
+spec:
+  type: ClusterIP
+  selector:
+    app: mmm-engine
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8005
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: mmm-engine-hpa
+  namespace: zeroui
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mmm-engine
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 50
+          periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 60
+        - type: Pods
+          value: 2
+          periodSeconds: 60
+      selectPolicy: Max
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mmm-engine-config
+  namespace: zeroui
+data:
+  # Timeouts (per PRD Section 12)
+  MMM_IAM_TIMEOUT_SECONDS: "2.0"
+  MMM_ERIS_TIMEOUT_SECONDS: "2.0"
+  MMM_LLM_GATEWAY_TIMEOUT_SECONDS: "3.0"
+  MMM_POLICY_TIMEOUT_SECONDS: "0.5"
+  MMM_DATA_GOVERNANCE_TIMEOUT_SECONDS: "0.5"
+  MMM_UBI_TIMEOUT_SECONDS: "1.0"
+  # Circuit breaker configuration
+  MMM_CIRCUIT_BREAKER_FAILURE_THRESHOLD: "5"
+  MMM_CIRCUIT_BREAKER_RECOVERY_TIMEOUT: "60.0"
+  # Data retention configuration
+  MMM_DEFAULT_DECISION_RETENTION_DAYS: "90"
+  MMM_DEFAULT_OUTCOME_RETENTION_DAYS: "365"
+  # Audit logging configuration
+  MMM_AUDIT_LOG_FILE: "/var/log/mmm_engine/audit.log"
+
