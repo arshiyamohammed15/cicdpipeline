@@ -49,7 +49,7 @@ pytest -m "dgp_regression or dgp_security or dgp_performance or alerting_regress
 
 # Individual module markers
 pytest -m "dgp_regression" src/cloud_services/shared-services/data-governance-privacy/tests -v
-pytest -m "alerting_regression" src/cloud_services/shared-services/alerting_notification_service/tests -v
+pytest -m "alerting_regression" src/cloud_services/shared-services/alerting-notification-service/tests -v
 pytest -m "budgeting_regression" src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests -v
 pytest -m "deployment_regression" src/cloud_services/shared-services/deployment-infrastructure/tests -v
 ```

@@ -128,7 +128,7 @@ src/cloud_services/
 │   ├── signal-ingestion-normalization/
 │   └── user_behaviour_intelligence/
 └── shared-services/                # 10+ modules (ZeroUI-owned, infrastructure)
-    ├── alerting_notification_service/
+    ├── alerting-notification-service/
     ├── budgeting-rate-limiting-cost-observability/
     ├── configuration-policy-management/
     ├── contracts-schema-registry/

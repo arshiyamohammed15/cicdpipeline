@@ -34,10 +34,10 @@
 **Test files to verify:**
 1. `src/cloud_services/shared-services/data-governance-privacy/tests/security/test_cross_tenant_export_blocked.py`
 2. `src/cloud_services/shared-services/data-governance-privacy/tests/end_to_end/test_right_to_erasure_workflow.py`
-3. `src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_alert_deduplication_regression.py`
-4. `src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_quiet_hours_suppression.py`
-5. `src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_p1_paging_latency.py`
-6. `src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_fatigue_controls_metrics.py`
+3. `src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_alert_deduplication_regression.py`
+4. `src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_quiet_hours_suppression.py`
+5. `src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_p1_paging_latency.py`
+6. `src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_fatigue_controls_metrics.py`
 7. `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/integration/test_budget_enforcement_matrix.py`
 8. `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/performance/test_rate_limit_counter_accuracy.py`
 9. `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/performance/test_budget_check_latency.py`

@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from alerting_notification_service.database.models import Alert
+from alerting_notification_service.database.models import Alert, Incident
 from alerting_notification_service.services.ingestion_service import AlertIngestionService
 
 
@@ -46,6 +46,13 @@ async def test_new_incident_when_window_expired(session, monkeypatch):
     service = AlertIngestionService(session)
     first = _alert("alert-3", "comp-2:P2")
     saved = await service.ingest(first)
+
+    saved.last_seen_at = datetime.utcnow() - timedelta(minutes=60)
+    session.add(saved)
+    incident = await session.get(Incident, saved.incident_id)
+    incident.opened_at = datetime.utcnow() - timedelta(hours=2)
+    session.add(incident)
+    await session.commit()
 
     expired = _alert("alert-4", "comp-2:P2", started_at=datetime.utcnow() + timedelta(hours=1))
     latest = await service.ingest(expired)

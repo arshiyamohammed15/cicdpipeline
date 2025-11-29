@@ -57,10 +57,10 @@
 - `src/cloud_services/shared-services/data-governance-privacy/tests/end_to_end/test_right_to_erasure_workflow.py`
 
 ### Alerting Tests
-- `src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_alert_deduplication_regression.py`
-- `src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_quiet_hours_suppression.py`
-- `src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_p1_paging_latency.py`
-- `src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_fatigue_controls_metrics.py`
+- `src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_alert_deduplication_regression.py`
+- `src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_quiet_hours_suppression.py`
+- `src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_p1_paging_latency.py`
+- `src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_fatigue_controls_metrics.py`
 
 ### Budgeting Tests
 - `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/integration/test_budget_enforcement_matrix.py`
@@ -87,7 +87,7 @@ pytest -m "dgp_regression or dgp_security or dgp_performance or alerting_regress
 pytest -m "dgp_regression" src/cloud_services/shared-services/data-governance-privacy/tests -v
 
 # Alerting
-pytest -m "alerting_regression" src/cloud_services/shared-services/alerting_notification_service/tests -v
+pytest -m "alerting_regression" src/cloud_services/shared-services/alerting-notification-service/tests -v
 
 # Budgeting
 pytest -m "budgeting_regression" src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests -v

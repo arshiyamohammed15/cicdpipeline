@@ -14,7 +14,7 @@ if str(REPO_ROOT) not in sys.path:
 from config.constitution.path_utils import resolve_alerting_db_path
 
 DEFAULT_DB = resolve_alerting_db_path()
-MIGRATION_FILE = Path("src/cloud-services/shared-services/alerting_notification_service/database/migrations/001_extend_schema.sql")
+MIGRATION_FILE = Path("src/cloud_services/shared-services/alerting-notification-service/database/migrations/001_extend_schema.sql")
 
 
 def apply_migration(db_path: Path, migration_path: Path) -> None:

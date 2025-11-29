@@ -77,10 +77,10 @@ pytest src/cloud_services/shared-services/data-governance-privacy/tests/security
 pytest src/cloud_services/shared-services/data-governance-privacy/tests/end_to_end/test_right_to_erasure_workflow.py -v
 
 # Test Alerting new suites
-pytest src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_alert_deduplication_regression.py -v
-pytest src/cloud_services/shared-services/alerting_notification_service/tests/integration/test_quiet_hours_suppression.py -v
-pytest src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_p1_paging_latency.py -v
-pytest src/cloud_services/shared-services/alerting_notification_service/tests/performance/test_fatigue_controls_metrics.py -v
+pytest src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_alert_deduplication_regression.py -v
+pytest src/cloud_services/shared-services/alerting-notification-service/tests/integration/test_quiet_hours_suppression.py -v
+pytest src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_p1_paging_latency.py -v
+pytest src/cloud_services/shared-services/alerting-notification-service/tests/performance/test_fatigue_controls_metrics.py -v
 
 # Test Budgeting new suites
 pytest src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/integration/test_budget_enforcement_matrix.py -v
@@ -149,7 +149,7 @@ If tests fail:
 ## Files to Update
 
 1. `docs/testing/risk_test_matrix.md` - Update status column
-2. `src/cloud_services/shared-services/alerting_notification_service/tests/*.py` - Add markers
+2. `src/cloud_services/shared-services/alerting-notification-service/tests/*.py` - Add markers
 3. `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/tests/*.py` - Add markers
 4. `src/cloud_services/shared-services/deployment-infrastructure/tests/*.py` - Add markers
 

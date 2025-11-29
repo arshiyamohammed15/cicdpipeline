@@ -215,7 +215,7 @@ This report provides a comprehensive triple validation of the Integration Adapte
 - **PRD Line 622**: "EPC-4 – Alerting & Notification / EPC-5 – Health & Reliability Monitoring"
 - **Codebase**: EPC-4 exists as Alerting & Notification Service
 - **Evidence**:
-  - `src/cloud_services/shared-services/alerting_notification_service/` exists
+  - `src/cloud_services/shared-services/alerting-notification-service/` exists
 - **Status**: ✅ **PASS**
 
 ### ✅ 2.7 EPC-5 (Health & Reliability Monitoring) References

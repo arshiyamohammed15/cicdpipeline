@@ -6,15 +6,15 @@ A Python-based automated code review tool that validates code against the ZeroUI
 
 **ZeroUI 2.0** is a comprehensive enterprise-grade code validation and development platform implementing a three-tier hybrid architecture:
 
-- **415 Constitution Rules**: Comprehensive rule set covering requirements, privacy & security, performance, architecture, system design, problem-solving, platform, teamwork, testing, code quality, exception handling (31 rules), TypeScript (34 rules), storage governance (13 rules), and more
+- **415 Constitution Rules**: Comprehensive rule set covering requirements, privacy & security, performance, architecture, system design, problem-solving, platform, teamwork, testing, code quality, exception handling (31 rules), TypeScript (34 rules), storage governance (13 rules), and more. Rule counts are dynamically calculated from `docs/constitution/*.json` files (single source of truth).
 - **22 Rule Validators**: Category-specific validators implementing AST-based code analysis
 - **Three-Tier Architecture**: 
   - **Tier 1**: VS Code Extension (TypeScript) - 20 modules + 6 core UI components
   - **Tier 2**: Edge Agent (TypeScript) - 6 delegation modules with orchestration
-  - **Tier 3**: Cloud Services (Python/FastAPI) - 24+ microservices with full implementation
-- **Comprehensive Testing**: 100+ test files covering unit, integration, security, performance, and resilience tests
+  - **Tier 3**: Cloud Services (Python/FastAPI) - 15 fully implemented production-ready microservices + 8 structured services
+- **Comprehensive Testing**: 100+ test files covering unit, integration, security, performance, resilience, and load tests
 - **Hybrid Database System**: SQLite (primary) and JSON (fallback) storage for all 415 rules
-- **Storage Governance**: 4-plane storage architecture (IDE, Tenant, Product, Shared) with strict data governance
+- **Storage Governance**: 4-plane storage architecture (IDE, Tenant, Product, Shared) with strict data governance. All storage lives outside the repository under `${ZU_ROOT}`.
 
 ## Repository Layout
 
@@ -65,7 +65,7 @@ The folder-business rules file remains the single source of truth; regenerate sc
 ## Installation
 
 1. Clone or download the validator files
-2. Ensure Python 3.9+ is installed
+2. Ensure Python 3.11+ is installed (required for cloud services; validator supports 3.9+)
 3. Install dependencies:
    ```bash
    python -m pip install --upgrade pip
@@ -504,62 +504,108 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 
 #### Fully Implemented Services
 
-1. **Health & Reliability Monitoring** (`src/cloud-services/shared-services/health-reliability-monitoring/`)
+**Shared Services (Infrastructure):**
+
+1. **Health & Reliability Monitoring** (`src/cloud_services/shared-services/health-reliability-monitoring/`)
    - ✅ FastAPI application with routes, services, models
    - ✅ Registry service, telemetry ingestion, health evaluation
    - ✅ SLO tracking, safe-to-act decisions, audit service
-   - ✅ Unit, integration, resilience, and load tests
+   - ✅ Unit, integration, resilience, security, performance, and load tests
 
-2. **Budgeting, Rate Limiting & Cost Observability** (`src/cloud-services/shared-services/budgeting-rate-limiting-cost-observability/`)
+2. **Budgeting, Rate Limiting & Cost Observability (M35)** (`src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/`)
    - ✅ Complete FastAPI service with budget, quota, rate limit, and cost services
+   - ✅ Real-time cost calculation engine with amortized allocation
+   - ✅ Quota management with multiple allocation strategies
    - ✅ Event subscription and receipt services
-   - ✅ Comprehensive test suite
+   - ✅ Comprehensive test suite (unit, integration, security, performance)
 
-3. **Configuration Policy Management** (`src/cloud-services/shared-services/configuration-policy-management/`)
+3. **Configuration Policy Management (M23)** (`src/cloud_services/shared-services/configuration-policy-management/`)
    - ✅ FastAPI service with policy management
    - ✅ Database models and migrations
    - ✅ Service, routes, security, performance, and functional tests
 
-4. **Contracts Schema Registry** (`src/cloud-services/shared-services/contracts-schema-registry/`)
+4. **Contracts Schema Registry (M34)** (`src/cloud_services/shared-services/contracts-schema-registry/`)
    - ✅ Schema registry with versioning and compatibility
    - ✅ Analytics aggregator, cache, validators
-   - ✅ API and service tests
+   - ✅ Integration, security, and performance tests
 
-5. **Data Governance & Privacy** (`src/cloud-services/shared-services/data-governance-privacy/`)
+5. **Data Governance & Privacy (M22)** (`src/cloud_services/shared-services/data-governance-privacy/`)
    - ✅ Privacy and data governance service
    - ✅ Functional, performance, routes, security, and service tests
 
-6. **Deployment Infrastructure** (`src/cloud-services/shared-services/deployment-infrastructure/`)
+6. **Deployment Infrastructure (EPC-8)** (`src/cloud_services/shared-services/deployment-infrastructure/`)
    - ✅ Infrastructure deployment service
    - ✅ Terraform templates and deployment scripts
    - ✅ Service and integration tests
 
-7. **Evidence Receipt Indexing Service** (`src/cloud-services/shared-services/evidence-receipt-indexing-service/`)
+7. **Evidence Receipt Indexing Service (M27/ERIS)** (`src/cloud_services/shared-services/evidence-receipt-indexing-service/`)
    - ✅ Receipt indexing and storage
    - ✅ Database models and services
    - ✅ Comprehensive test suite
 
-8. **Identity Access Management** (`src/cloud-services/shared-services/identity-access-management/`)
+8. **Identity Access Management (M21)** (`src/cloud_services/shared-services/identity-access-management/`)
    - ✅ IAM service with authentication and authorization
    - ✅ Service, routes, and performance tests
 
-9. **Key Management Service** (`src/cloud-services/shared-services/key-management-service/`)
+9. **Key Management Service (M33)** (`src/cloud_services/shared-services/key-management-service/`)
    - ✅ KMS with HSM integration
    - ✅ Service, routes, and performance tests
 
-10. **Signal Ingestion & Normalization** (`src/cloud-services/product-services/signal-ingestion-normalization/`)
+**Product Services (ZeroUI-owned, Cross-Tenant):**
+
+10. **MMM Engine (M01)** (`src/cloud_services/product_services/mmm_engine/`)
+    - ✅ Complete FastAPI service with decision routing, action delivery, and fatigue management
+    - ✅ Integration with IAM, ERIS, LLM Gateway, Policy, Data Governance, UBI
+    - ✅ Circuit breakers, degraded modes, and resilience patterns
+    - ✅ Actor preferences, dual-channel approvals, tenant policies, experiments
+    - ✅ Comprehensive test suite: integration (12 tests), resilience (7 tests), features (21 tests), performance (4 tests), load (4 tests)
+    - ✅ Kubernetes deployment manifests with HPA, health probes, resource limits
+    - ✅ Production monitoring documentation (Prometheus, Grafana, OpenTelemetry)
+    - ✅ **Status**: Phase 4 & 5 complete, production-ready
+
+11. **Signal Ingestion & Normalization (M04)** (`src/cloud_services/product_services/signal-ingestion-normalization/`)
     - ✅ Signal ingestion pipeline with deduplication, normalization, routing
     - ✅ Producer registry, governance, DLQ, observability
     - ✅ Comprehensive unit and integration tests
 
-11. **Detection Engine Core** (`src/cloud-services/product-services/detection-engine-core/`)
+12. **Detection Engine Core (M05)** (`src/cloud_services/product_services/detection-engine-core/`)
     - ✅ Detection engine with FastAPI routes and services
     - ✅ Models and test suite
 
+13. **User Behaviour Intelligence (EPC-9/UBI)** (`src/cloud_services/product_services/user_behaviour_intelligence/`)
+    - ✅ Production-ready implementation with PostgreSQL connection pooling
+    - ✅ Event bus integration (Kafka/RabbitMQ/In-Memory)
+    - ✅ Feature computation engine (Activity, Flow, Collaboration, Agent Usage)
+    - ✅ Baseline computation with EMA algorithm
+    - ✅ Anomaly detection with Z-score based thresholds
+    - ✅ Signal generation and PM-3 integration
+    - ✅ Comprehensive test suite (16 test files)
+    - ✅ **Status**: Production-ready
+
+**Client Services (Company-owned, Private Data):**
+
+14. **Integration Adapters (M10)** (`src/cloud_services/client-services/integration-adapters/`)
+    - ✅ Core implementation complete per PRD v2.0
+    - ✅ Database models (6 tables), repositories, Pydantic models
+    - ✅ Adapter SPI with BaseAdapter interface
+    - ✅ Provider adapters: GitHub, GitLab, Jira
+    - ✅ Integration service implementing all 15 functional requirements
+    - ✅ Integration with IAM, KMS, Budgeting, ERIS, PM-3
+    - ✅ Comprehensive test suite (30+ test files: unit, integration, performance, security, resilience)
+    - ✅ **Status**: Core implementation complete, ready for testing and validation
+
+**LLM Gateway:**
+
+15. **LLM Gateway** (`src/cloud_services/llm_gateway/`)
+    - ✅ Safety pipeline with policy enforcement
+    - ✅ Provider client abstraction (OpenAI, Anthropic, etc.)
+    - ✅ Integration with Alerting, Budget, Data Governance, ERIS, IAM, Policy
+    - ✅ Telemetry emission and incident store
+    - ✅ Comprehensive test suite (unit, integration, real services, performance, observability)
+
 #### Structured Services (Minimal Implementation)
 
-- **Client Services**: 13 modules with structure but minimal business logic
-- **Product Services**: Additional modules with structure defined
+- **Client Services**: Additional modules with structure defined (compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, knowledge-silo-prevention, legacy-systems-safety, merge-conflicts-delays, monitoring-observability-gaps, release-failures-rollbacks, technical-debt-accumulation)
 - **Ollama AI Agent**: LLM manager and service structure
 
 ### Edge Agent (TypeScript)
@@ -657,10 +703,11 @@ ZeroUI 2.0 implements a **three-tier hybrid architecture** with strict separatio
 - **Cloud Services**: All business logic implementation (Python/FastAPI)
 - **Architecture**: Service-oriented with clear boundaries
 - **Services**: 
-  - **Client Services**: 13 modules (compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, etc.)
-  - **Product Services**: 2 modules (detection-engine-core, signal-ingestion-normalization)
-  - **Shared Services**: 9 modules (health-reliability-monitoring, budgeting-rate-limiting-cost-observability, configuration-policy-management, contracts-schema-registry, data-governance-privacy, deployment-infrastructure, evidence-receipt-indexing-service, identity-access-management, key-management-service, ollama-ai-agent)
-- **Status**: ✅ Fully implemented services with FastAPI routes, services, models, and tests
+  - **Client Services**: 9 modules (1 fully implemented: integration-adapters; 8 structured: compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, knowledge-silo-prevention, legacy-systems-safety, merge-conflicts-delays, monitoring-observability-gaps, release-failures-rollbacks, technical-debt-accumulation)
+  - **Product Services**: 4 modules (all fully implemented: mmm-engine, signal-ingestion-normalization, detection-engine-core, user-behaviour-intelligence)
+  - **Shared Services**: 10 modules (all fully implemented: health-reliability-monitoring, budgeting-rate-limiting-cost-observability, configuration-policy-management, contracts-schema-registry, data-governance-privacy, deployment-infrastructure, evidence-receipt-indexing-service, identity-access-management, key-management-service, ollama-ai-agent)
+  - **LLM Gateway**: Fully implemented with safety pipeline and provider abstraction
+- **Status**: ✅ 15 fully implemented production-ready services with FastAPI routes, services, models, comprehensive tests, and deployment configurations
 
 ### Validator Architecture
 
