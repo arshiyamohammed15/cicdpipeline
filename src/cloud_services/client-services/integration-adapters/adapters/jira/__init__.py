@@ -1,0 +1,2 @@
+"""Jira adapter implementation."""
+
