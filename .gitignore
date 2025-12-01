@@ -116,3 +116,8 @@ requirements.lock
 .zeroui/**
 **/pscl/**/FileEnvelope.json
 **/pscl/**/BuildPlan.json
+
+# k6 binaries (should be downloaded, not stored in repo)
+tools/k6/*.exe
+tools/k6/*/k6.exe
+tools/k6/*-windows-amd64/
