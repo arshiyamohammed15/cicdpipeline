@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Tenant fixtures used across all ZeroUI module test suites.
 """
 
-from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime

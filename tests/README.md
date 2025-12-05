@@ -1,194 +1,242 @@
-# ZEROUI 2.0 Constitution Rules - Comprehensive Test Suite
+# ZeroUI 2.0 Test Organization
 
 ## Overview
 
-This test suite provides systematic validation for all 293 constitution rules following Martin Fowler's testing principles. The implementation ensures world-class quality standards with comprehensive coverage, proper test isolation, and detailed reporting.
+This directory contains all tests for the ZeroUI 2.0 project, organized into a scalable, maintainable structure.
 
-## Test Architecture
+---
 
-### Core Test Files
+## Test Organization Structure
 
-1. **`test_constitution_rules.py`** - Main constitution rules structure and integrity tests
-2. **`test_rule_validation.py`** - Individual rule validation logic tests
-3. **`test_rule_implementations.py`** - Detailed rule implementation tests
-4. **`test_performance.py`** - Performance and stress testing
-5. **`test_runner.py`** - Test execution and metrics collection
-6. **`run_all_tests.py`** - Comprehensive test runner
-7. **`validate_implementation.py`** - Implementation validation script
+### Cloud Services Tests
 
-### Test Categories
+**Location**: `tests/cloud_services/`
 
-#### 1. Constitution Rules Structure Tests
-- **Total rule count validation** (exactly 293 rules)
-- **Rule numbering sequence** (1-293)
-- **Required fields validation** (rule_number, title, category, priority, enabled)
-- **Category consistency** (all categories match definitions)
-- **Priority levels validation** (critical, high, medium, low, recommended)
+All cloud service tests are organized by service category and module:
 
-#### 2. Rule Category Tests
-- **Basic Work Rules** (Rules 1-18) - Core development principles
-- **System Design Rules** (Rules 22-32) - Architecture and design
-- **Teamwork Rules** (Rules 52-77) - Collaboration and team dynamics
-- **Coding Standards Rules** - Technical coding standards
-- **Comments Rules** - Documentation and commenting
-- **Logging Rules** - Logging and monitoring
-- **Performance Rules** - Performance optimization
-- **Privacy Rules** - Privacy and security
+```
+tests/cloud_services/
+├── client_services/          # Client Services (company-owned, private data)
+│   ├── integration_adapters/
+│   ├── compliance_security_challenges/
+│   └── [other client service modules...]
+│
+├── product_services/         # Product Services (ZeroUI-owned, cross-tenant)
+│   ├── detection_engine_core/
+│   ├── mmm_engine/
+│   ├── signal_ingestion_normalization/
+│   └── [other product service modules...]
+│
+└── shared_services/         # Shared Services (ZeroUI-owned, infrastructure)
+    ├── identity_access_management/
+    ├── key_management_service/
+    ├── data_governance_privacy/
+    └── [other shared service modules...]
+```
 
-#### 3. Rule Implementation Tests
-- **Documentation requirements** (Rule 1)
-- **Information usage** (Rule 2)
-- **Privacy protection** (Rule 3)
-- **Settings files usage** (Rule 4)
-- **Record keeping** (Rule 5)
-- **Architecture consistency** (Rule 22)
-- **Separation of concerns** (Rule 25)
-- **Dependency injection** (Rule 26)
-- **Collaboration standards** (Rule 52)
-- **Code review readiness** (Rule 53)
+### Module Test Structure
 
-#### 4. Performance Tests
-- **Small file validation** (< 1 second)
-- **Medium file validation** (< 5 seconds)
-- **Large file validation** (< 30 seconds)
-- **Very large file validation** (< 60 seconds)
-- **Memory usage optimization**
-- **Concurrent validation**
-- **Stress testing**
+Each module follows this structure:
 
-#### 5. Edge Case Tests
-- **Empty file handling**
-- **Malformed code handling**
-- **Unicode character support**
-- **Very long lines handling**
-- **Multiple rule violations**
-- **Rule priority handling**
+```
+tests/cloud_services/{category}/{module_name}/
+├── unit/                     # Unit tests (services, repositories, models)
+├── integration/              # Integration tests (API endpoints, workflows)
+├── security/                 # Security tests (authentication, authorization, tenant isolation)
+├── performance/             # Performance tests (latency, throughput)
+└── resilience/              # Resilience tests (circuit breakers, degradation modes)
+```
+
+### Root-Level Tests
+
+**Location**: `tests/` (root level)
+
+Tests that don't belong to specific cloud service modules:
+
+- **Validator Tests** (`tests/test_*.py`): Constitution rules, rule validation, system-level tests
+- **LLM Gateway Tests** (`tests/llm_gateway/`): LLM Gateway service tests
+- **BDR Tests** (`tests/bdr/`): Backup & Disaster Recovery tests
+- **CCCS Tests** (`tests/cccs/`): Cross-Cutting Concern Services tests
+- **SIN Tests** (`tests/sin/`): Signal Ingestion Normalization tests (legacy)
+- **Manual Tests** (`tests/manual/`): Manual test cases
+- **Other System Tests**: Platform, health, contracts, etc.
+
+---
 
 ## Running Tests
 
-### Run All Tests
+### Run All Cloud Service Tests
+
 ```bash
-python tests/run_all_tests.py --verbose
+# Run all cloud service tests
+pytest tests/cloud_services/
+
+# Run with parallel execution
+pytest tests/cloud_services/ -n auto
 ```
 
-### Run Specific Test Categories
+### Run Tests for Specific Module
+
 ```bash
-python tests/run_all_tests.py --category constitution_rules
-python tests/run_all_tests.py --category performance
+# Run all tests for a module
+pytest tests/cloud_services/shared_services/identity_access_management/
+
+# Run specific test category
+pytest tests/cloud_services/shared_services/identity_access_management/security/
+pytest tests/cloud_services/shared_services/identity_access_management/unit/
 ```
 
-### Run Individual Test Files
+### Run Tests with Markers
+
 ```bash
-python tests/test_constitution_rules.py
-python tests/test_rule_validation.py
-python tests/test_rule_implementations.py
-python tests/test_performance.py
+# Run unit tests
+pytest tests/cloud_services/ -m unit
+
+# Run security tests
+pytest tests/cloud_services/ -m security
+
+# Run performance tests
+pytest tests/cloud_services/ -m performance
 ```
 
-### Run with Parallel Execution
+### Run Root-Level Tests
+
 ```bash
-python tests/run_all_tests.py --parallel --verbose
+# Run validator tests
+pytest tests/test_constitution*.py
+
+# Run LLM Gateway tests
+pytest tests/llm_gateway/
+
+# Run BDR tests
+pytest tests/bdr/
 ```
 
-### Generate Reports
+### Using Test Registry Framework
+
 ```bash
-python tests/run_all_tests.py --output-dir reports --verbose
+# Generate/update test manifest
+python tools/test_registry/generate_manifest.py
+
+# Run tests using test runner
+python tools/test_registry/test_runner.py --marker unit --parallel
+python tools/test_registry/test_runner.py --module identity-access-management
 ```
 
-## Test Metrics
+---
 
-### Coverage Metrics
-- **Rule Coverage**: 100% (293/293 rules)
-- **Category Coverage**: 100% (13/13 categories)
-- **Test File Coverage**: 100% (7/7 test files)
+## Adding New Tests
 
-### Performance Metrics
-- **Execution Time**: < 60 seconds for full suite
-- **Memory Usage**: < 100MB peak usage
-- **Concurrent Execution**: 4x parallel processing
-- **Stress Testing**: 100 rapid validations
+### For Existing Modules
 
-### Quality Metrics
-- **Test Isolation**: Each test is independent
-- **Clear Naming**: Descriptive test method names
-- **Comprehensive Coverage**: All edge cases covered
-- **Error Handling**: Proper exception handling
-- **Reporting**: Detailed metrics and reporting
+1. **Determine Test Category**: unit, integration, security, performance, or resilience
+2. **Create Test File**: `tests/cloud_services/{category}/{module_name}/{test_category}/test_*.py`
+3. **Follow Naming Convention**: `test_*.py` for test files
+4. **Use Markers**: Add appropriate pytest markers (`@pytest.mark.unit`, etc.)
 
-## Martin Fowler's Testing Principles
+### For New Modules
 
-### 1. Test Isolation
-- Each test is independent and can run in any order
-- No shared state between tests
-- Proper setup and teardown
+1. **Create Module Directory**: `tests/cloud_services/{category}/{module_name}/`
+2. **Create Test Category Directories**: unit, integration, security, performance, resilience
+3. **Create conftest.py**: Module-specific fixtures
+4. **Create README.md**: Module test documentation
+5. **Add Tests**: Follow standard structure
 
-### 2. Clear Test Names
-- Descriptive method names that explain what is being tested
-- Consistent naming conventions
-- Self-documenting test structure
+**Tool**: Use `python tools/test_reorganization/create_structure.py` to create structure automatically.
 
-### 3. Comprehensive Coverage
-- All 293 rules are tested
-- Edge cases are covered
-- Error conditions are tested
-- Performance characteristics are validated
+---
 
-### 4. Proper Assertions
-- Clear, specific assertions
-- Meaningful error messages
-- Appropriate test data
+## Test Categories
 
-### 5. Maintainable Tests
-- Well-organized test structure
-- Reusable test utilities
-- Clear separation of concerns
-- Easy to understand and modify
+### Unit Tests (`unit/`)
 
-## Test Results
+- **Purpose**: Test individual functions, classes, modules in isolation
+- **Scope**: Services, repositories, models, utilities
+- **Speed**: Fast (< 1 second per test)
+- **Dependencies**: Mocked external dependencies
 
-### Success Criteria
-- ✅ All 293 rules covered by tests
-- ✅ 100% test file coverage
-- ✅ All test categories implemented
-- ✅ Performance requirements met
-- ✅ Edge cases handled properly
-- ✅ Comprehensive reporting available
+### Integration Tests (`integration/`)
 
-### Quality Standards
-- **No TODOs or placeholders**
-- **No fake implementations**
-- **No assumptions or hallucinations**
-- **Real, working test code**
-- **World-class quality standards**
+- **Purpose**: Test component interactions
+- **Scope**: API endpoints, workflows, service interactions
+- **Speed**: Medium (1-10 seconds per test)
+- **Dependencies**: May use test database, mocked external services
 
-## Implementation Status
+### Security Tests (`security/`)
 
-### Completed
-- ✅ Rule structure validation
-- ✅ Category organization
-- ✅ Individual rule tests
-- ✅ Implementation tests
-- ✅ Performance tests
-- ✅ Edge case handling
-- ✅ Test runners
-- ✅ Reporting system
-- ✅ Validation scripts
+- **Purpose**: Test security controls
+- **Scope**: Authentication, authorization, tenant isolation, data protection
+- **Speed**: Medium (1-10 seconds per test)
+- **Dependencies**: May use test IAM, mocked security services
 
-### Test Coverage
-- **293 Constitution Rules**: 100% covered
-- **13 Categories**: 100% tested
-- **7 Test Files**: 100% implemented
-- **Performance Tests**: Comprehensive
-- **Edge Cases**: All covered
+### Performance Tests (`performance/`)
 
-## Conclusion
+- **Purpose**: Test performance characteristics
+- **Scope**: Latency, throughput, resource usage
+- **Speed**: Slow (10+ seconds per test)
+- **Dependencies**: May use performance test tools, load generators
 
-This test suite provides comprehensive validation for all 293 ZEROUI 2.0 constitution rules following Martin Fowler's testing principles. The implementation ensures world-class quality standards with:
+### Resilience Tests (`resilience/`)
 
-- **Systematic Coverage**: Every rule is tested
-- **Proper Architecture**: Well-organized test structure
-- **Performance Validation**: Meets all performance requirements
-- **Edge Case Handling**: Comprehensive error scenarios
-- **Quality Standards**: No shortcuts or compromises
+- **Purpose**: Test system resilience
+- **Scope**: Circuit breakers, degradation modes, failure handling
+- **Speed**: Medium-Slow (5-30 seconds per test)
+- **Dependencies**: May simulate failures, test recovery
 
-The test suite is ready for production use and provides the foundation for maintaining code quality across the entire ZEROUI 2.0 system.
+---
+
+## Test Markers
+
+Tests use pytest markers for categorization:
+
+- `@pytest.mark.unit` - Unit tests
+- `@pytest.mark.integration` - Integration tests
+- `@pytest.mark.security` - Security tests
+- `@pytest.mark.performance` - Performance tests
+- `@pytest.mark.slow` - Slow tests (opt-in only)
+
+Module-specific markers:
+- `@pytest.mark.dgp_regression` - DG&P regression tests
+- `@pytest.mark.dgp_security` - DG&P security tests
+- `@pytest.mark.alerting_regression` - Alerting regression tests
+- etc.
+
+---
+
+## Best Practices
+
+1. **Test Isolation**: Each test should be independent
+2. **Deterministic**: Tests should produce consistent results
+3. **Fast**: Unit tests should be fast (< 1 second)
+4. **Clear Names**: Test names should clearly describe what they test
+5. **Use Fixtures**: Share common setup via pytest fixtures
+6. **Mock External Dependencies**: Don't rely on external services
+7. **Follow Structure**: Place tests in appropriate category directories
+
+---
+
+## Migration Notes
+
+**Migration Date**: 2025-01-27
+
+**Migrated**: 154 test files from old locations to new structure
+
+**Old Locations** (removed):
+- `src/cloud_services/*/tests/` directories
+- `src/cloud_services/*/__tests__/` directories
+
+**New Location**: `tests/cloud_services/{category}/{module}/{test_type}/`
+
+---
+
+## Related Documentation
+
+- `TEST_REORGANIZATION_STRATEGY.md` - Test reorganization strategy
+- `TEST_REORGANIZATION_IMPLEMENTATION_PLAN.md` - Implementation plan
+- `TEST_MIGRATION_EXECUTION_REPORT.md` - Migration execution report
+- `tools/test_reorganization/README.md` - Migration tools documentation
+
+---
+
+**Last Updated**: 2025-01-27  
+**Status**: ✅ **MIGRATION COMPLETE**

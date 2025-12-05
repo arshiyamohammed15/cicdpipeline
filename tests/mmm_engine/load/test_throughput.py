@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Load tests for MMM Engine throughput.
 
@@ -8,7 +9,6 @@ Per PRD NFR-2, tests:
 - Database connection pooling
 """
 
-from __future__ import annotations
 
 import asyncio
 import time
@@ -115,7 +115,7 @@ def test_redis_fatigue_horizontal_scaling() -> None:
 
 def test_database_connection_pooling() -> None:
     """Test database connection pooling under load.
-    
+
     Note: SQLite has threading limitations, so this test uses a single-threaded
     approach to validate connection pooling behavior without SQLite threading issues.
     """

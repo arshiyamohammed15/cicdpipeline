@@ -1,109 +1,103 @@
 """
-Root-level pytest configuration for ZeroUI test suites.
+Root-level pytest configuration.
 
-Provides:
-- Automatic evidence pack generation via pytest hooks
-- Marker registration
-- Shared fixtures available to all test modules
+Provides standardized module path resolution for all tests.
+Handles hyphenated directory names by creating proper Python package structures.
 """
-
-from __future__ import annotations
-
-import json
 import sys
+import importlib.util
+import types
 from pathlib import Path
 
-import pytest
-from _pytest.config import Config
-from _pytest.terminal import TerminalReporter
+# Project root - conftest.py is in tests/, so go up one level
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+SRC_ROOT = PROJECT_ROOT / "src" / "cloud_services"
 
-# Add src/ to path for imports
-ROOT = Path(__file__).resolve().parent.parent
-if str(ROOT / "src") not in sys.path:
-    sys.path.insert(0, str(ROOT / "src"))
+# Module name mappings: hyphenated directory -> Python package name
+MODULE_MAPPINGS = {
+    # Shared services
+    "identity-access-management": "identity_access_management",
+    "key-management-service": "key_management_service",
+    "alerting-notification-service": "alerting_notification_service",
+    "budgeting-rate-limiting-cost-observability": "budgeting_rate_limiting_cost_observability",
+    "configuration-policy-management": "configuration_policy_management",
+    "contracts-schema-registry": "contracts_schema_registry",
+    "data-governance-privacy": "data_governance_privacy",
+    "deployment-infrastructure": "deployment_infrastructure",
+    "evidence-receipt-indexing-service": "evidence_receipt_indexing_service",
+    "health-reliability-monitoring": "health_reliability_monitoring",
+    "ollama-ai-agent": "ollama_ai_agent",
+    # Client services
+    "integration-adapters": "integration_adapters",
+    # Product services
+    "detection-engine-core": "detection_engine_core",
+    "signal-ingestion-normalization": "signal_ingestion_normalization",
+    "user-behaviour-intelligence": "user_behaviour_intelligence",
+    "mmm_engine": "mmm_engine",
+}
 
-# Import evidence builder
-try:
-    from tests.shared_harness import EvidencePackBuilder
-except ImportError:
-    # Fallback if shared_harness not available
-    EvidencePackBuilder = None
+def setup_module_package(module_dir_name: str, category: str = "shared-services") -> None:
+    """
+    Set up Python package structure for a hyphenated module directory.
 
+    Args:
+        module_dir_name: Directory name (e.g., "integration-adapters")
+        category: Service category ("shared-services", "client-services", "product-services")
+    """
+    python_pkg_name = MODULE_MAPPINGS.get(module_dir_name, module_dir_name.replace("-", "_"))
+    # Category directories use hyphens, not underscores!
+    module_path = SRC_ROOT / category / module_dir_name
 
-@pytest.hookimpl(trylast=True)
-def pytest_configure(config: Config) -> None:
-    """Register custom markers and configure evidence generation."""
-    # Markers are registered in pytest.ini, but we ensure they're recognized
-    config.addinivalue_line(
-        "markers", "dgp_regression: Regression tests for DG&P module"
-    )
-    config.addinivalue_line(
-        "markers", "dgp_security: Security tests for DG&P module"
-    )
-    config.addinivalue_line(
-        "markers", "dgp_performance: Performance tests for DG&P module"
-    )
-    config.addinivalue_line(
-        "markers", "alerting_regression: Regression tests for Alerting module"
-    )
-    config.addinivalue_line(
-        "markers", "alerting_security: Security tests for Alerting module"
-    )
-    config.addinivalue_line(
-        "markers", "budgeting_regression: Regression tests for Budgeting module"
-    )
-    config.addinivalue_line(
-        "markers", "deployment_regression: Regression tests for Deployment module"
-    )
-
-
-@pytest.fixture(scope="session")
-def evidence_builder(request) -> EvidencePackBuilder | None:
-    """Provide evidence pack builder for test session."""
-    if EvidencePackBuilder is None:
-        return None
-    
-    # Determine module name from test path
-    test_path = request.config.rootpath
-    module_name = "zeroui"
-    
-    # Try to infer module from test path
-    if "data-governance-privacy" in str(test_path):
-        module_name = "dgp"
-    elif "alerting" in str(test_path):
-        module_name = "alerting"
-    elif "budgeting" in str(test_path):
-        module_name = "budgeting"
-    elif "deployment" in str(test_path):
-        module_name = "deployment"
-    
-    output_dir = test_path / "artifacts" / "evidence"
-    return EvidencePackBuilder(output_dir=str(output_dir))
-
-
-@pytest.hookimpl(trylast=True)
-def pytest_sessionfinish(session, exitstatus):
-    """Generate evidence pack after test session completes."""
-    if EvidencePackBuilder is None:
+    if not module_path.exists():
         return
-    
-    # Collect evidence from session
-    builder = EvidencePackBuilder(output_dir=str(session.config.rootpath / "artifacts" / "evidence"))
-    
-    # Add test summary
-    test_summary = {
-        "total_tests": session.testscollected,
-        "passed": sum(1 for item in session.items if hasattr(item, "rep_call") and item.rep_call.outcome == "passed"),
-        "failed": sum(1 for item in session.items if hasattr(item, "rep_call") and item.rep_call.outcome == "failed"),
-        "skipped": sum(1 for item in session.items if hasattr(item, "rep_call") and item.rep_call.outcome == "skipped"),
-        "exit_status": exitstatus,
-    }
-    builder.add_metrics({"test_summary": test_summary})
-    
-    # Build evidence pack
-    try:
-        evidence_path = builder.build(module_name="zeroui", test_suite="session")
-        print(f"\n✓ Evidence pack generated: {evidence_path}")
-    except Exception as e:
-        print(f"\n⚠ Failed to generate evidence pack: {e}")
 
+    # Create root package
+    if python_pkg_name not in sys.modules:
+        pkg = types.ModuleType(python_pkg_name)
+        pkg.__path__ = [str(module_path)]
+        sys.modules[python_pkg_name] = pkg
+
+    # Add module path to sys.path if not already there
+    if str(module_path) not in sys.path:
+        sys.path.insert(0, str(module_path))
+
+    # Create subpackages for common directories
+    common_subdirs = ["services", "database", "adapters", "reliability", "observability", "routes", "models", "integrations"]
+    for subdir in common_subdirs:
+        subdir_path = module_path / subdir
+        if subdir_path.exists() and subdir_path.is_dir():
+            subpkg_name = f"{python_pkg_name}.{subdir}"
+            if subpkg_name not in sys.modules:
+                subpkg = types.ModuleType(subpkg_name)
+                subpkg.__path__ = [str(subdir_path)]
+                sys.modules[subpkg_name] = subpkg
+
+                # For nested subdirectories (e.g., adapters/github)
+                if subdir == "adapters" and (subdir_path / "github").exists():
+                    github_pkg_name = f"{python_pkg_name}.adapters.github"
+                    if github_pkg_name not in sys.modules:
+                        github_pkg = types.ModuleType(github_pkg_name)
+                        github_pkg.__path__ = [str(subdir_path / "github")]
+                        sys.modules[github_pkg_name] = github_pkg
+
+    # Load key modules if they exist
+    # Note: We don't eagerly load modules here as they may have dependencies
+    # that aren't available during collection. Tests should import directly.
+    # The package structure is set up above, which is sufficient for imports.
+
+# Set up all modules at root level
+# This runs when conftest.py is imported by pytest
+# Only execute if SRC_ROOT exists (prevents errors during direct import testing)
+if SRC_ROOT.exists():
+    for category in ["shared-services", "client-services", "product-services"]:
+        # Category directories use hyphens, not underscores!
+        category_path = SRC_ROOT / category
+        if category_path.exists():
+            for item in category_path.iterdir():
+                if item.is_dir() and not item.name.startswith("_"):
+                    try:
+                        setup_module_package(item.name, category)
+                    except Exception as e:
+                        # Log but don't fail - some modules may have issues
+                        import warnings
+                        warnings.warn(f"Failed to set up {item.name}: {e}", UserWarning)

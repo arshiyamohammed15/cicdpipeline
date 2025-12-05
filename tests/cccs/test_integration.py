@@ -67,11 +67,11 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
         ),
         taxonomy_mapping={BudgetExceededError: TaxonomyEntry("budget_exceeded", "high", False, "Budget exceeded")},
     )
-    
+
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
+        patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
         runtime = CCCSRuntime(config, wal_path=tmp_path / "wal.log")
     return runtime
 
@@ -79,7 +79,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
 def test_policy_to_receipt_end_to_end_offline_courier_replay(tmp_path):
     """Test Policy → Receipt end-to-end with offline courier replay."""
     runtime = _runtime(tmp_path)
-    
+
     snapshot = {
         "module_id": "m01",
         "version": "1.0.0",
@@ -247,16 +247,16 @@ def test_redaction_receipt_pm7_courier_replay(tmp_path):
 def test_config_override_propagation_tenant_to_edge_agent(tmp_path):
     """Test config override propagation from tenant to Edge Agent."""
     runtime = _runtime(tmp_path)
-    
+
     # Update config layers with tenant override
     runtime._config_service._layers.tenant["override_key"] = "tenant_value"
     runtime._config_service._layers.local["override_key"] = "local_value"
-    
+
     result = runtime._config_service.get_config("override_key")
     # Local has highest precedence, so should return local_value
     assert result.value == "local_value"
     assert "local" in result.source_layers
-    
+
     # Test tenant override when local not present
     runtime._config_service._layers.local.pop("override_key")
     result2 = runtime._config_service.get_config("override_key")

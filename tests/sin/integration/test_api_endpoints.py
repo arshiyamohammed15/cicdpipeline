@@ -35,7 +35,7 @@ def registered_producer_setup(client, auth_token, app_schema_registry):
             optional_fields=[]
         )
     ]
-    
+
     for contract in contracts:
         app_schema_registry.register_contract(
             contract.signal_type,

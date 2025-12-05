@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Security / regression-style tests for adversarial prompts (NFR-3, §12.4, §12.6).
 
@@ -5,7 +6,6 @@ These tests replay the adversarial corpus entries and assert that:
 - Prompts expected to be BLOCKED or TRANSFORMED are not silently ALLOWED.
 """
 
-from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -77,7 +77,7 @@ async def test_adversarial_corpus_never_silently_allowed() -> None:
     """
     Regression guarantee:
     - For any adversarial entry whose expected_decision != "ALLOWED",
-      the gateway must not return Decision.ALLOWED.
+                            the gateway must not return Decision.ALLOWED.
     """
     service = build_default_service()
     entries = _iter_adversarial_entries()

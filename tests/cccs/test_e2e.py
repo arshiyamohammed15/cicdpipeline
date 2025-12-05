@@ -66,11 +66,11 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
         ),
         taxonomy_mapping={BudgetExceededError: TaxonomyEntry("budget_exceeded", "high", False, "Budget exceeded")},
     )
-    
+
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
+        patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
         runtime = CCCSRuntime(config, wal_path=tmp_path / "wal.log")
     return runtime
 
@@ -78,7 +78,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
 def test_fm_cccs_epc_deterministic_result(tmp_path):
     """Test FM → CCCS → EPC/PM/CCP → Deterministic result."""
     runtime = _runtime(tmp_path)
-    
+
     snapshot = {
         "module_id": "m01",
         "version": "1.0.0",
@@ -233,7 +233,7 @@ def test_security_attestation_forged_receipt(tmp_path):
     # Attempt to verify signature via EPC-11
     import asyncio
     signing_adapter = runtime._receipts._signing_adapter  # noqa: SLF001
-    
+
     # Read receipt from file
     import json
     for line in receipts_file.read_text().splitlines():
@@ -244,7 +244,7 @@ def test_security_attestation_forged_receipt(tmp_path):
                 # Verify signature
                 valid = asyncio.run(signing_adapter.verify_signature(receipt, signature))
                 assert valid is True
-                
+
                 # Forged signature should fail
                 forged_valid = asyncio.run(signing_adapter.verify_signature(receipt, "forged-sig"))
                 assert forged_valid is False
@@ -331,7 +331,7 @@ def test_security_attestation_tamper_detection(tmp_path):
         for line in wal_path.read_text().splitlines():
             if line.strip():
                 wal_entries.append(json.loads(line))
-        
+
         # WAL entries should have sequence numbers
         sequences = [e["sequence"] for e in wal_entries]
         assert sequences == sorted(sequences)  # Monotonic sequence

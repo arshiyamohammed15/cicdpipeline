@@ -214,10 +214,9 @@ class ComprehensiveTestRunner:
             print("-" * 70)
             for detail in self.results['test_details']:
                 print(f"{detail['status']}: {detail['test']}")
-                if len(detail['traceback']) > 0:
-                    # Print first line of traceback
-                    first_line = detail['traceback'].split('\n')[0]
-                    print(f"  {first_line}")
+                # Print first line of traceback
+                first_line = detail['traceback'].split('\n')[0]
+                print(f"  {first_line}")
             print("-" * 70)
 
         # Coverage summary

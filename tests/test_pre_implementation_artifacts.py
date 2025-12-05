@@ -641,9 +641,8 @@ class TestEdgeCases:
 
         for doc_path in docs_to_check:
             doc = Path(doc_path)
-            if doc.exists():
-                # Should be readable
-                assert doc.is_file(), f"{doc_path} should be a file"
+            # Should be readable
+            assert doc.is_file(), f"{doc_path} should be a file"
                 try:
                     doc.read_text(encoding='utf-8')
                 except Exception as e:

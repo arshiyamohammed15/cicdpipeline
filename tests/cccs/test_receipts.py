@@ -89,7 +89,7 @@ def test_receipt_fsync_and_signature(tmp_path):
     # Verify receipt was written to disk
     receipts_file = tmp_path / "receipts.jsonl"
     assert receipts_file.exists()
-    
+
     # Verify signature is present
     content = receipts_file.read_text()
     assert "signature" in content

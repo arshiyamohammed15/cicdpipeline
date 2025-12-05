@@ -37,7 +37,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-m23_dir = project_root / "src" / "cloud-services" / "shared-services" / "configuration-policy-management"
+m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('configuration_policy_management')
@@ -127,9 +127,8 @@ def adapt_models_for_sqlite(engine):
     from configuration_policy_management.database.models import Base
 
     # Only adapt if using SQLite
-    if engine.dialect.name == 'sqlite':
-        # Replace UUID columns with UUIDString and JSONB with SQLiteJSON
-        for table in Base.metadata.tables.values():
+    # Replace UUID columns with UUIDString and JSONB with SQLiteJSON
+    for table in Base.metadata.tables.values():
             for column in table.columns:
                 if isinstance(column.type, UUID):
                     column.type = UUIDString(36)

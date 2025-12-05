@@ -1,6 +1,6 @@
+from __future__ import annotations
 """Pytest fixtures and import wiring for the LLM Gateway tests."""
 
-from __future__ import annotations
 
 import importlib.machinery
 import os
@@ -11,7 +11,7 @@ from pathlib import Path
 import pytest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-CLOUD_SERVICES_ROOT = PROJECT_ROOT / "src" / "cloud-services"
+CLOUD_SERVICES_ROOT = PROJECT_ROOT / "src" / "cloud_services"
 
 
 def ensure_cloud_services_package() -> None:

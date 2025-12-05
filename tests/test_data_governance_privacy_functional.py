@@ -1,9 +1,9 @@
+from __future__ import annotations
 #!/usr/bin/env python3
 """
 Functional test cases mapped to PRD TC-FUNC scenarios.
 """
 
-from __future__ import annotations
 
 from tests.privacy_imports import import_module
 

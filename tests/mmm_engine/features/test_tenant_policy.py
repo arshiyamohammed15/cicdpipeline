@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Feature tests for tenant MMM policy configuration (FR-13).
 
@@ -8,7 +9,6 @@ Tests tenant policy enforcement in decide() method:
 - quiet_hours override
 """
 
-from __future__ import annotations
 
 from unittest.mock import patch
 

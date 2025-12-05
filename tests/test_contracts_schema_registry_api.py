@@ -18,7 +18,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # Setup module imports (same as test_contracts_schema_registry.py)
-registry_dir = project_root / "src" / "cloud-services" / "shared-services" / "contracts-schema-registry"
+registry_dir = project_root / "src" / "cloud_services" / "shared-services" / "contracts-schema-registry"
 
 # Create package structure
 parent_pkg = type(sys)('contracts_schema_registry')
@@ -200,10 +200,9 @@ def adapt_models_for_sqlite():
             return uuid.UUID(value) if isinstance(value, str) else value
 
     engine = get_engine()
-    if engine.dialect.name == 'sqlite':
-        # Replace UUID columns with UUIDString for SQLite
-        # Replace JSONB columns with SQLiteJSON for SQLite
-        for table in Base.metadata.tables.values():
+    # Replace UUID columns with UUIDString for SQLite
+    # Replace JSONB columns with SQLiteJSON for SQLite
+    for table in Base.metadata.tables.values():
             for column in table.columns:
                 if isinstance(column.type, UUID):
                     column.type = UUIDString(36)

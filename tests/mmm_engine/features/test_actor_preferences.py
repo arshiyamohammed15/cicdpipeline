@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Feature tests for actor preferences (FR-14).
 
@@ -7,7 +8,6 @@ Tests preference enforcement in decide() method:
 - Preferred surfaces filtering
 """
 
-from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch, MagicMock

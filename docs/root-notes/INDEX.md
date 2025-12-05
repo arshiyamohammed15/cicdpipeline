@@ -18,3 +18,30 @@ The ZeroUI 2.0 repository keeps historical analyses, validation reports, and imp
 
 All other PSCL discovery notes remain available in this folder for forensic completeness. When generating new reports, drop them here and update this index rather than cluttering the repository root.
 
+## Recently Moved from Root (2025-01-27)
+
+The following files were moved from the project root to `docs/root-notes/` during root directory cleanup:
+
+| File | Purpose |
+| --- | --- |
+| `ALERTING_SERVICE_TRIPLE_VALIDATION_REPORT.md` | Alerting service validation report |
+| `DEVELOPMENT_ENVIRONMENT_READY.md` | Development environment setup completion |
+| `HEALTH_RELIABILITY_MONITORING_TEST_IMPLEMENTATION_COMPLETE.md` | Health monitoring test implementation summary |
+| `IMPLEMENTATION_SUMMARY.md` | General implementation summary |
+| `MMM_ENGINE_CIRCUIT_BREAKER_IMPLEMENTATION_SUMMARY.md` | MMM engine circuit breaker implementation |
+| `MMM_ENGINE_IMPLEMENTATION_CONFIRMATION.md` | MMM engine implementation confirmation |
+| `MMM_ENGINE_PHASE_4_5_COMPLETION_SUMMARY.md` | MMM engine phase completion summary |
+| `MMM_ENGINE_TRIPLE_VALIDATION_REPORT.md` | MMM engine triple validation report |
+| `MMM_ENGINE_VALIDATION_REPORT.md` | MMM engine validation report |
+| `MODULE_DOCUMENTATION_ARCHIVE_COMPLETE.md` | Module documentation archive completion |
+| `MODULE_DOCUMENTATION_CONSOLIDATION_COMPLETE.md` | Module documentation consolidation completion |
+| `MODULE_IMPLEMENTATION_AND_TEST_COVERAGE_REPORT.md` | Module implementation and test coverage report |
+| `NEXT_STEPS_COMPLETE.md` | Next steps completion summary |
+| `PROJECT_TRIPLE_ANALYSIS_REPORT.md` | Comprehensive project triple analysis report |
+| `PROJECT_UNDERSTANDING.md` | Project understanding document |
+| `REMAINING_WORK_IMPLEMENTATION_SUMMARY.md` | Remaining work implementation summary |
+| `STORAGE_GOVERNANCE_VALIDATION_REPORT.md` | Storage governance validation report |
+| `TEST_DOCUMENTATION_REORGANIZATION_COMPLETE.md` | Test documentation reorganization completion |
+| `VENV_SETUP.md` | Virtual environment setup guide |
+| `VENV_VERIFICATION_REPORT.md` | Virtual environment verification report |
+

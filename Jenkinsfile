@@ -24,6 +24,7 @@ pipeline {
                         pip install --upgrade pip
                         pip install ".[dev]"
                         pip install -r requirements-api.txt
+                        pip install pytest-xdist>=3.0.0
                     '''
 
                     // Setup Node.js environment
@@ -80,6 +81,21 @@ pipeline {
             }
         }
 
+        stage('Generate Test Manifest') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    mkdir -p artifacts
+                    python tools/test_registry/generate_manifest.py
+                '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'artifacts/test_manifest.json', allowEmptyArchive: false
+                }
+            }
+        }
+
         stage('Tests') {
             parallel {
                 stage('Python Tests') {
@@ -87,9 +103,12 @@ pipeline {
                         sh '''
                             . venv/bin/activate
                             mkdir -p artifacts/evidence
-                            pytest --cov=src/cloud-services --cov-report=html --cov-report=xml \
+                            # Use test runner for faster execution, fallback to pytest if needed
+                            python tools/test_registry/test_runner.py --marker unit --parallel || \
+                            pytest tests/cloud_services/ --cov=src/cloud-services --cov-report=html --cov-report=xml \
                                 --junit-xml=artifacts/junit.xml \
                                 -v \
+                                -n auto \
                                 -p tests.pytest_evidence_plugin
                         '''
                     }
@@ -136,37 +155,47 @@ pipeline {
                 sh '''
                     . venv/bin/activate
                     mkdir -p artifacts/evidence
-                    # Run mandatory test suites (fail build if any fail)
+                    # Ensure manifest is up to date
+                    python tools/test_registry/generate_manifest.py --update || true
+                    
+                    # Run mandatory test suites using test runner for faster execution
                     echo "Running mandatory DG&P regression tests..."
-                    pytest -m "dgp_regression" --junit-xml=artifacts/junit-dgp-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    python tools/test_registry/test_runner.py --marker dgp_regression --parallel --verbose || \
+                    pytest tests/cloud_services/shared_services/data_governance_privacy/ -m "dgp_regression" --junit-xml=artifacts/junit-dgp-regression.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     
                     echo "Running mandatory DG&P security tests..."
-                    pytest -m "dgp_security" --junit-xml=artifacts/junit-dgp-security.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    python tools/test_registry/test_runner.py --marker dgp_security --parallel --verbose || \
+                    pytest tests/cloud_services/shared_services/data_governance_privacy/ -m "dgp_security" --junit-xml=artifacts/junit-dgp-security.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     
                     echo "Running mandatory DG&P performance tests..."
-                    pytest -m "dgp_performance" --junit-xml=artifacts/junit-dgp-performance.xml -v -p tests.pytest_evidence_plugin || exit 1
+                    python tools/test_registry/test_runner.py --marker dgp_performance --parallel --verbose || \
+                    pytest tests/cloud_services/shared_services/data_governance_privacy/ -m "dgp_performance" --junit-xml=artifacts/junit-dgp-performance.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     
                     # Alerting mandatory suites (if tests exist)
-                    if pytest -m "alerting_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                    if python tools/test_registry/test_runner.py --marker alerting_regression --file test_alerting 2>/dev/null | grep -q "Selected"; then
                         echo "Running mandatory Alerting regression tests..."
-                        pytest -m "alerting_regression" --junit-xml=artifacts/junit-alerting-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                        python tools/test_registry/test_runner.py --marker alerting_regression --parallel --verbose || \
+                        pytest -m "alerting_regression" --junit-xml=artifacts/junit-alerting-regression.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     fi
                     
-                    if pytest -m "alerting_security" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                    if python tools/test_registry/test_runner.py --marker alerting_security --file test_alerting 2>/dev/null | grep -q "Selected"; then
                         echo "Running mandatory Alerting security tests..."
-                        pytest -m "alerting_security" --junit-xml=artifacts/junit-alerting-security.xml -v -p tests.pytest_evidence_plugin || exit 1
+                        python tools/test_registry/test_runner.py --marker alerting_security --parallel --verbose || \
+                        pytest -m "alerting_security" --junit-xml=artifacts/junit-alerting-security.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     fi
                     
                     # Budgeting mandatory suites (if tests exist)
-                    if pytest -m "budgeting_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                    if python tools/test_registry/test_runner.py --marker budgeting_regression --file test_budgeting 2>/dev/null | grep -q "Selected"; then
                         echo "Running mandatory Budgeting regression tests..."
-                        pytest -m "budgeting_regression" --junit-xml=artifacts/junit-budgeting-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                        python tools/test_registry/test_runner.py --marker budgeting_regression --parallel --verbose || \
+                        pytest -m "budgeting_regression" --junit-xml=artifacts/junit-budgeting-regression.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     fi
                     
                     # Deployment mandatory suites (if tests exist)
-                    if pytest -m "deployment_regression" --collect-only -q 2>/dev/null | grep -q "test session starts"; then
+                    if python tools/test_registry/test_runner.py --marker deployment_regression --file test_deployment 2>/dev/null | grep -q "Selected"; then
                         echo "Running mandatory Deployment regression tests..."
-                        pytest -m "deployment_regression" --junit-xml=artifacts/junit-deployment-regression.xml -v -p tests.pytest_evidence_plugin || exit 1
+                        python tools/test_registry/test_runner.py --marker deployment_regression --parallel --verbose || \
+                        pytest -m "deployment_regression" --junit-xml=artifacts/junit-deployment-regression.xml -v -n auto -p tests.pytest_evidence_plugin || exit 1
                     fi
                 '''
             }

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Health check utilities for real backend services.
 
@@ -5,7 +6,6 @@ Validates that required services are available before running integration tests
 with real HTTP clients.
 """
 
-from __future__ import annotations
 
 import os
 from typing import Dict, Optional
@@ -81,7 +81,6 @@ def check_all_services_healthy() -> Dict[str, bool]:
 
     # Alerting health endpoint (may not have /health, try /alerts as fallback)
     alerting_healthy = check_service_health(urls["alerting"], "/health")
-    if not alerting_healthy:
         # Try alternative endpoint
         alerting_healthy = check_service_health(urls["alerting"], "/alerts")
     health_status["alerting"] = alerting_healthy

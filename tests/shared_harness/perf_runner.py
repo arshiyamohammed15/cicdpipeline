@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Async performance runner that enforces PRD latency budgets.
 """
 
-from __future__ import annotations
 
 import asyncio
 import statistics

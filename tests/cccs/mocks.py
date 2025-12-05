@@ -1,10 +1,10 @@
+from __future__ import annotations
 """
 Mock adapters for CCCS testing.
 
 These mocks simulate EPC-1, EPC-3, EPC-13, PM-7, and EPC-11 services for unit testing.
 """
 
-from __future__ import annotations
 
 import hashlib
 import json

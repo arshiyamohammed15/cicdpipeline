@@ -354,11 +354,11 @@ class ConstitutionRuleContentTests(unittest.TestCase):
     def test_master_generic_rules_count(self):
         """Verify MASTER GENERIC RULES count matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
-        
+
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
         counts = get_rule_counts()
         category_counts = counts.get('category_counts', {})
-        
+
         # Category name may vary, so we check that the count matches any category
         # or we verify it's consistent with total
         actual_count = len(rules)
@@ -398,11 +398,11 @@ class ConstitutionRuleContentTests(unittest.TestCase):
     def test_total_rules_count(self):
         """Verify total rule count matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
-        
+
         # Get expected count from single source of truth
         counts = get_rule_counts()
         expected_total = counts.get('total_rules', 0)
-        
+
         # Calculate actual total from loader
         total = 0
         files = [
@@ -416,7 +416,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         ]
         for filename in files:
             total += len(self.loader.get_all_rules(filename))
-        
+
         self.assertEqual(
             total, 
             expected_total, 

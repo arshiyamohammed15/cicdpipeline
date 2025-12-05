@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Integration tests for MMM Engine real service clients.
 
@@ -8,7 +9,6 @@ Per PRD Phase 4, tests all real HTTP clients with mock servers to validate:
 - Timeout handling
 """
 
-from __future__ import annotations
 
 import asyncio
 from typing import Any, Dict

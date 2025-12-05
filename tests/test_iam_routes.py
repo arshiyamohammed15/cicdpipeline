@@ -20,24 +20,23 @@ except ImportError:
     # Fallback for older versions
     from starlette.testclient import TestClient
 
-def create_test_client(app_instance):
-    """
-    Create TestClient with version compatibility handling.
+    def create_test_client(app_instance):
+        """
+        Create TestClient with version compatibility handling.
 
-    Args:
-        app_instance: FastAPI app instance
+        Args:
+            app_instance: FastAPI app instance
 
-    Returns:
-        TestClient instance
+        Returns:
+            TestClient instance
 
-    Raises:
-        RuntimeError: If TestClient cannot be initialized due to version incompatibility
-    """
-    try:
-        # Try standard initialization
-        return TestClient(app_instance)
-    except TypeError as e:
-        if "unexpected keyword argument 'app'" in str(e):
+        Raises:
+            RuntimeError: If TestClient cannot be initialized due to version incompatibility
+        """
+        try:
+            # Try standard initialization
+            return TestClient(app_instance)
+        except TypeError as e:
             # Version incompatibility - provide helpful error
             import httpx
             import starlette
@@ -54,7 +53,7 @@ def create_test_client(app_instance):
                 f"{'='*60}\n"
             )
             raise RuntimeError(error_msg) from e
-        raise
+            raise
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
@@ -64,7 +63,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-iam_dir = project_root / "src" / "cloud-services" / "shared-services" / "identity-access-management"
+iam_dir = project_root / "src" / "cloud_services" / "shared-services" / "identity-access-management"
 
 # Create parent package structure
 parent_pkg = type(sys)('identity_access_management')
@@ -72,7 +71,7 @@ sys.modules['identity_access_management'] = parent_pkg
 
 # Load main module
 main_path = iam_dir / "main.py"
-spec_main = importlib.util.spec_from_file_location("identity_access_management.main", main_path)
+spec_main = importlib.util.spec_from_file_location("identity-access-management.main", main_path)
 main_module = importlib.util.module_from_spec(spec_main)
 
 # Load dependencies first
@@ -112,7 +111,7 @@ spec_middleware.loader.exec_module(middleware_module)
 
 # Now load main
 spec_main.loader.exec_module(main_module)
-sys.modules['identity_access_management.main'] = main_module
+sys.modules['identity-access-management.main'] = main_module
 
 # Get the app
 app = main_module.app

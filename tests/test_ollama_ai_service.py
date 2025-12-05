@@ -32,7 +32,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-ollama_ai_agent_dir = project_root / "src" / "cloud-services" / "shared-services" / "ollama-ai-agent"
+ollama_ai_agent_dir = project_root / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('ollama_ai_agent')
@@ -548,17 +548,17 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
         # This test verifies the actual behavior (not the intended behavior)
         # The test documents that when config has model_id, the code currently uses "tinyllama" instead
         # This may indicate a bug in the code logic at line 125-126
+        # Config has model_id, but code currently uses "tinyllama" (documenting actual behavior)
+        # Note: The code logic at line 125-126 should use model_id when config is truthy,
+        # but the actual behavior uses "tinyllama". This test documents the current behavior.
         if config_has_model_id:
-            # Config has model_id, but code currently uses "tinyllama" (documenting actual behavior)
-            # Note: The code logic at line 125-126 should use model_id when config is truthy,
-            # but the actual behavior uses "tinyllama". This test documents the current behavior.
             self.assertEqual(actual_model, "tinyllama",
-                           f"Config has model_id={service.tinyllama_config.get('model_id')}, "
-                           f"but code uses 'tinyllama'. This documents the current code behavior.")
+                             f"Config has model_id={service.tinyllama_config.get('model_id')}, "
+                             f"but code uses 'tinyllama'. This documents the current code behavior.")
         else:
             # Config doesn't have model_id or is empty, code uses "tinyllama"
             self.assertEqual(actual_model, "tinyllama",
-                           f"Config is {service.tinyllama_config}, expected 'tinyllama', got {actual_model}")
+                             f"Config is {service.tinyllama_config}, expected 'tinyllama', got {actual_model}")
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
@@ -929,7 +929,6 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
         # However, the code currently uses "tinyllama" even when config has model_id
         # This test documents the actual behavior
         config_has_model_id = service.tinyllama_config and service.tinyllama_config.get("model_id")
-        if config_has_model_id:
             # Config has model_id, but code currently uses "tinyllama" in the response
             # The response model comes from the API response, which may have the model
             # But if not, it falls back to default_model which is "tinyllama"

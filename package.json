@@ -21,7 +21,16 @@
     "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage",
     "build:typescript": "tsc -p tsconfig.config.json && npm run verify:infra-config",
     "verify:infra-config": "powershell -ExecutionPolicy Bypass -File scripts/di_config_verify.ps1",
-    "test:typescript": "npm run build:typescript && npm run test:storage"
+    "test:typescript": "npm run build:typescript && npm run test:storage",
+    "test:constitution:count": "python tools/test_registry/constitution_test_counter.py",
+    "test:constitution:report": "python tools/test_registry/dynamic_test_reporter.py",
+    "test:constitution:report:json": "python tools/test_registry/dynamic_test_reporter.py --format json",
+    "test:manifest": "python tools/test_registry/generate_manifest.py",
+    "test:manifest:update": "python tools/test_registry/generate_manifest.py --update",
+    "test:fast": "python tools/test_registry/test_runner.py",
+    "test:fast:security": "python tools/test_registry/test_runner.py --marker security --parallel",
+    "test:fast:unit": "python tools/test_registry/test_runner.py --marker unit --parallel",
+    "test:fast:clear-cache": "python tools/test_registry/clear_cache.py"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

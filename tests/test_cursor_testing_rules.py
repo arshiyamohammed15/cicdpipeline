@@ -704,7 +704,7 @@ class CursorTestingRulesCategoryTests(unittest.TestCase):
     def test_category_distribution(self):
         """Verify category distribution matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
-        
+
         category_counts = {}
         for rule in self.rules:
             category = rule.get('category')
@@ -722,7 +722,7 @@ class CursorTestingRulesCategoryTests(unittest.TestCase):
                     expected_count,
                     f"Category {category} has {actual_count} rules, expected {expected_count} from file distribution"
                 )
-        
+
         # Verify we have at least some categories
         self.assertGreater(len(category_counts), 0, "Must have at least one category")
 

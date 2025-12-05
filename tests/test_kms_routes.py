@@ -60,7 +60,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-kms_dir = project_root / "src" / "cloud-services" / "shared-services" / "key-management-service"
+kms_dir = project_root / "src" / "cloud_services" / "shared-services" / "key-management-service"
 
 # Create parent package structure
 parent_pkg = type(sys)('key_management_service')
@@ -127,9 +127,9 @@ spec_middleware.loader.exec_module(middleware_module)
 
 # Load main
 main_path = kms_dir / "main.py"
-spec_main = importlib.util.spec_from_file_location("key_management_service.main", main_path)
+spec_main = importlib.util.spec_from_file_location("key-management-service.main", main_path)
 main_module = importlib.util.module_from_spec(spec_main)
-sys.modules['key_management_service.main'] = main_module
+sys.modules['key-management-service.main'] = main_module
 spec_main.loader.exec_module(main_module)
 
 # Get the app

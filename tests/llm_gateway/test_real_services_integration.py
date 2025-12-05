@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Integration tests with real backend services.
 
@@ -7,7 +8,6 @@ and healthy. They validate end-to-end workflows against actual service implement
 Test Plan Reference: IT-LLM-01 through IT-LLM-05
 """
 
-from __future__ import annotations
 
 import json
 from pathlib import Path

@@ -66,11 +66,11 @@ def _runtime(tmp_path: Path, rate_config: RateLimiterConfig | None = None) -> CC
         ),
         taxonomy_mapping={BudgetExceededError: TaxonomyEntry("budget_exceeded", "high", False, "Budget exceeded")},
     )
-    
+
     with patch('src.shared_libs.cccs.identity.service.EPC1IdentityAdapter', MockEPC1Adapter), \
-         patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
-         patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
+        patch('src.shared_libs.cccs.ratelimit.service.EPC13BudgetAdapter', MockEPC13Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.EPC11SigningAdapter', MockEPC11Adapter), \
+        patch('src.shared_libs.cccs.receipts.service.PM7ReceiptAdapter', MockPM7Adapter):
         runtime = CCCSRuntime(config, wal_path=tmp_path / "wal.log")
 
         snapshot = {
@@ -160,7 +160,7 @@ def test_budget_exceeded(tmp_path):
         default_deny_on_unavailable=True,
     ))
     runtime.bootstrap(dependency_health())
-    
+
     # Set low capacity
     runtime._ratelimiter._adapter._default_capacity = 1.0
 
@@ -208,7 +208,7 @@ def test_wal_budget_snapshot_persistence(tmp_path):
     """Test WAL persists budget snapshots."""
     runtime = _runtime(tmp_path)
     wal = runtime._receipts._courier._wal  # noqa: SLF001
-    
+
     budget_data = {"action_id": "action1", "remaining": 50.0}
     entry = wal.append_budget_snapshot(budget_data)
     assert entry.entry_type == "budget"
@@ -219,7 +219,7 @@ def test_wal_policy_snapshot_persistence(tmp_path):
     """Test WAL persists policy snapshots."""
     runtime = _runtime(tmp_path)
     wal = runtime._receipts._courier._wal  # noqa: SLF001
-    
+
     policy_data = {"module_id": "m01", "version": "1.0.0"}
     entry = wal.append_policy_snapshot(policy_data)
     assert entry.entry_type == "policy_snapshot"

@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Pytest plugin for automatic evidence pack generation.
 
@@ -8,7 +9,6 @@ This plugin hooks into pytest's test execution lifecycle to:
 4. Generate timestamped evidence packs after test completion
 """
 
-from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -64,10 +64,10 @@ _evidence_collector: EvidenceCollector | None = None
 def pytest_configure(config: Config) -> None:
     """Initialize evidence collector when pytest starts."""
     global _evidence_collector
-    
+
     if EvidencePackBuilder is None:
         return
-    
+
     output_dir = Path(config.rootpath) / "artifacts" / "evidence"
     output_dir.mkdir(parents=True, exist_ok=True)
     _evidence_collector = EvidenceCollector(output_dir)
@@ -78,10 +78,10 @@ def pytest_runtest_makereport(item: Item, call):
     """Capture test results for evidence pack."""
     outcome = yield
     report = outcome.get_result()
-    
+
     if _evidence_collector and report.when == "call":
         _evidence_collector.record_test_result(item, report)
-    
+
     return outcome
 
 
@@ -89,10 +89,10 @@ def pytest_runtest_makereport(item: Item, call):
 def pytest_sessionfinish(session, exitstatus):
     """Generate evidence pack after all tests complete."""
     global _evidence_collector
-    
+
     if _evidence_collector is None or EvidencePackBuilder is None:
         return
-    
+
     # Determine module name from test paths
     module_name = "zeroui"
     test_paths = [str(item.fspath) for item in session.items[:10]]  # Sample first 10
@@ -104,20 +104,20 @@ def pytest_sessionfinish(session, exitstatus):
         module_name = "budgeting"
     elif any("deployment" in p for p in test_paths):
         module_name = "deployment"
-    
+
     # Build evidence pack
     builder = EvidencePackBuilder(output_dir=str(_evidence_collector.output_dir))
-    
+
     # Add collected evidence
     for receipt in _evidence_collector.receipts:
         builder.add_receipt(receipt)
-    
+
     for config_snap in _evidence_collector.config_snapshots:
         builder.add_config_snapshot(config_snap["config"], config_snap["name"])
-    
+
     for metrics in _evidence_collector.metrics:
         builder.add_metrics(metrics)
-    
+
     # Add test execution summary
     builder.add_metrics({
         "test_execution": {
@@ -128,7 +128,7 @@ def pytest_sessionfinish(session, exitstatus):
             "exit_status": exitstatus,
         }
     })
-    
+
     try:
         evidence_path = builder.build(module_name=module_name, test_suite="pytest_session")
         print(f"\n{'='*60}")

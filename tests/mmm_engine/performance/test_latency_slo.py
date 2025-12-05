@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Performance tests for latency SLO monitoring.
 
@@ -8,7 +9,6 @@ Per PRD NFR-1, tests:
 - Caching effectiveness
 """
 
-from __future__ import annotations
 
 import time
 from unittest.mock import patch

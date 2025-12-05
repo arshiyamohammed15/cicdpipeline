@@ -1,5 +1,5 @@
-"""Security tests for Health & Reliability Monitoring service."""
 from __future__ import annotations
+"""Security tests for Health & Reliability Monitoring service."""
 
 import pytest
 from fastapi import status
@@ -34,7 +34,7 @@ class TestAuthentication:
         """Test that unauthenticated requests are denied."""
         app = _get_app()
         client = TestClient(app)
-        
+
         # Try to access protected endpoint without auth
         # FastAPI returns 422 (validation error) when required header is missing, or 401 if header is present but invalid
         response = client.get("/v1/health/components")
@@ -45,7 +45,7 @@ class TestAuthentication:
         app = _get_app()
         client = TestClient(app)
         headers = {"Authorization": "Bearer invalid_token"}
-        
+
         response = client.get("/v1/health/components", headers=headers)
         # May return 401 (unauthorized) or 422 (validation error) depending on token validation
         assert response.status_code in [status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
@@ -54,7 +54,7 @@ class TestAuthentication:
         """Test that missing authorization header is rejected."""
         app = _get_app()
         client = TestClient(app)
-        
+
         response = client.post("/v1/health/components", json={})
         # FastAPI returns 422 when required header is missing
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
@@ -69,7 +69,7 @@ class TestAuthorization:
         client = TestClient(app)
         # Token with read scope trying to write
         headers = {"Authorization": "Bearer valid_epc1_read_only"}
-        
+
         response = client.post(
             "/v1/health/components",
             json={
@@ -92,7 +92,7 @@ class TestAuthorization:
         """Test that cross-tenant access is denied."""
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_tenant-1"}
-        
+
         # Try to access tenant-2's data
         response = client.post(
             "/v1/health/safe_to_act/check_safe_to_act",
@@ -119,7 +119,7 @@ class TestInputValidation:
         """Test handling of malformed component IDs."""
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
-        
+
         response = client.post(
             "/v1/health/components",
             json={
@@ -142,7 +142,7 @@ class TestInputValidation:
         """Test handling of oversized payloads."""
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
-        
+
         large_payload = {
             "component_id": "test-1",
             "name": "x" * 10000,  # Very large name
@@ -150,7 +150,7 @@ class TestInputValidation:
             "plane": "Tenant",
             "tenant_scope": "tenant"
         }
-        
+
         response = client.post(
             "/v1/health/components",
             json=large_payload,
@@ -168,7 +168,7 @@ class TestInputValidation:
         """Test handling of SQL injection attempts."""
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
-        
+
         response = client.get(
             "/v1/health/components/'; DROP TABLE components; --",
             headers=headers
@@ -190,7 +190,7 @@ class TestTenantIsolation:
         client = TestClient(app)
         headers_tenant1 = {"Authorization": "Bearer valid_epc1_tenant-1"}
         headers_tenant2 = {"Authorization": "Bearer valid_epc1_tenant-2"}
-        
+
         # Register component for tenant-1
         component = {
             "component_id": "tenant1-component",
@@ -204,13 +204,13 @@ class TestTenantIsolation:
             json=component,
             headers=headers_tenant1
         )
-        
+
         # Try to access from tenant-2
         response2 = client.get(
             "/v1/health/components/tenant1-component",
             headers=headers_tenant2
         )
-        
+
         # Should deny access or return not found
         assert response2.status_code in [
             status.HTTP_404_NOT_FOUND,

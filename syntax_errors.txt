@@ -1,0 +1,76 @@
+﻿
+  E                ^
+> E   SyntaxError: invalid syntax
+  E                ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                                  ^
+> E   SyntaxError: invalid syntax
+  E                    ^
+> E   SyntaxError: invalid syntax
+  E                                       ^
+> E   SyntaxError: invalid syntax
+  E                                       ^
+> E   SyntaxError: invalid syntax
+  E                                       ^
+> E   SyntaxError: invalid syntax
+  E       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> E   SyntaxError: cannot assign to expression here. Maybe you meant '==' 
+instead of '='?
+
+

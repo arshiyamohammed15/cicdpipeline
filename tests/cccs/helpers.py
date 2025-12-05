@@ -1,6 +1,6 @@
+from __future__ import annotations
 """Shared helpers for CCCS tests aligned with offline runtime behavior."""
 
-from __future__ import annotations
 
 import hashlib
 import hmac

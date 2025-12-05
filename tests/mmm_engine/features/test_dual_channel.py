@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Feature tests for dual-channel approval (FR-6).
 
@@ -9,7 +10,6 @@ Tests dual-channel approval workflow:
 - Action execution blocking until fully approved
 """
 
-from __future__ import annotations
 
 from datetime import datetime, timezone
 from unittest.mock import patch

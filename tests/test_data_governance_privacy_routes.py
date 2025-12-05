@@ -1,9 +1,9 @@
+from __future__ import annotations
 #!/usr/bin/env python3
 """
 Integration tests for Data Governance & Privacy API routes.
 """
 
-from __future__ import annotations
 
 from fastapi.testclient import TestClient
 

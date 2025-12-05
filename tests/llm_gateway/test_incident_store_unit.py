@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Unit tests for SafetyIncidentStore deduplication and alert payloads.
 """
 
-from __future__ import annotations
 
 from cloud_services.llm_gateway.services import SafetyIncidentStore  # type: ignore  # pylint: disable=import-error
 from cloud_services.llm_gateway.models import (  # type: ignore  # pylint: disable=import-error

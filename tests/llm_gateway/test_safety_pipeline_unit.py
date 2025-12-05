@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Unit tests for SafetyPipeline detectors (R1, R2, R3, R4).
 """
 
-from __future__ import annotations
 
 from cloud_services.llm_gateway.models import (  # type: ignore  # pylint: disable=import-error
     Actor,

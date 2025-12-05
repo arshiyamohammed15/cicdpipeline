@@ -1,5 +1,5 @@
-"""Performance tests for Health & Reliability Monitoring service."""
 from __future__ import annotations
+"""Performance tests for Health & Reliability Monitoring service."""
 
 import time
 import pytest
@@ -40,7 +40,7 @@ class TestComponentRegistryPerformance:
         from sqlalchemy.pool import StaticPool
         from health_reliability_monitoring.database import models
         from health_reliability_monitoring.service_container import get_db_session
-        
+
         engine = create_engine(
             "sqlite:///:memory:",
             future=True,
@@ -49,7 +49,7 @@ class TestComponentRegistryPerformance:
         )
         models.Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine, autoflush=False)
-        
+
         def get_test_session():
             session = Session()
             try:
@@ -60,13 +60,13 @@ class TestComponentRegistryPerformance:
                 raise
             finally:
                 session.close()
-        
+
         app.dependency_overrides[get_db_session] = get_test_session
-        
+
         try:
             client = TestClient(app)
             headers = {"Authorization": "Bearer valid_epc1_test"}
-            
+
             component = {
                 "component_id": "perf-test-1",
                 "name": "Performance Test",
@@ -74,7 +74,7 @@ class TestComponentRegistryPerformance:
                 "plane": "Tenant",
                 "tenant_scope": "tenant"
             }
-            
+
             start_time = time.perf_counter()
             response = client.post(
                 "/v1/health/components",
@@ -82,7 +82,7 @@ class TestComponentRegistryPerformance:
                 headers=headers
             )
             latency_ms = (time.perf_counter() - start_time) * 1000
-            
+
             # Should complete within reasonable time (< 500ms for registration)
             assert latency_ms < 500
             assert response.status_code in [status.HTTP_201_CREATED, status.HTTP_401_UNAUTHORIZED]
@@ -98,7 +98,7 @@ class TestComponentRegistryPerformance:
         from sqlalchemy.pool import StaticPool
         from health_reliability_monitoring.database import models
         from health_reliability_monitoring.service_container import get_db_session
-        
+
         engine = create_engine(
             "sqlite:///:memory:",
             future=True,
@@ -107,7 +107,7 @@ class TestComponentRegistryPerformance:
         )
         models.Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine, autoflush=False)
-        
+
         def get_test_session():
             session = Session()
             try:
@@ -118,17 +118,17 @@ class TestComponentRegistryPerformance:
                 raise
             finally:
                 session.close()
-        
+
         app.dependency_overrides[get_db_session] = get_test_session
-        
+
         try:
             client = TestClient(app)
             headers = {"Authorization": "Bearer valid_epc1_test"}
-            
+
             start_time = time.perf_counter()
             response = client.get("/v1/health/components", headers=headers)
             latency_ms = (time.perf_counter() - start_time) * 1000
-            
+
             # Should complete within reasonable time (< 200ms for listing)
             assert latency_ms < 200
             assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
@@ -144,7 +144,7 @@ class TestComponentRegistryPerformance:
         from sqlalchemy.pool import StaticPool
         from health_reliability_monitoring.database import models
         from health_reliability_monitoring.service_container import get_db_session
-        
+
         engine = create_engine(
             "sqlite:///:memory:",
             future=True,
@@ -153,7 +153,7 @@ class TestComponentRegistryPerformance:
         )
         models.Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine, autoflush=False)
-        
+
         def get_test_session():
             session = Session()
             try:
@@ -164,15 +164,15 @@ class TestComponentRegistryPerformance:
                 raise
             finally:
                 session.close()
-        
+
         app.dependency_overrides[get_db_session] = get_test_session
-        
+
         try:
             client = TestClient(app)
             headers = {"Authorization": "Bearer valid_epc1_test"}
-            
+
             import concurrent.futures
-            
+
             def register_component(i):
                 component = {
                     "component_id": f"concurrent-{i}",
@@ -186,13 +186,13 @@ class TestComponentRegistryPerformance:
                     json=component,
                     headers=headers
                 )
-            
+
             start_time = time.perf_counter()
             with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
                 futures = [executor.submit(register_component, i) for i in range(10)]
                 results = [f.result() for f in concurrent.futures.as_completed(futures)]
             total_time = (time.perf_counter() - start_time) * 1000
-            
+
             # Should handle 10 concurrent requests within reasonable time (< 2s)
             assert total_time < 2000
             assert all(r.status_code in [status.HTTP_201_CREATED, status.HTTP_401_UNAUTHORIZED] for r in results)
@@ -213,7 +213,7 @@ class TestSafeToActPerformance:
         from sqlalchemy.pool import StaticPool
         from health_reliability_monitoring.database import models
         from health_reliability_monitoring.service_container import get_db_session
-        
+
         engine = create_engine(
             "sqlite:///:memory:",
             future=True,
@@ -222,7 +222,7 @@ class TestSafeToActPerformance:
         )
         models.Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine, autoflush=False)
-        
+
         def get_test_session():
             session = Session()
             try:
@@ -233,19 +233,19 @@ class TestSafeToActPerformance:
                 raise
             finally:
                 session.close()
-        
+
         app.dependency_overrides[get_db_session] = get_test_session
-        
+
         try:
             client = TestClient(app)
             headers = {"Authorization": "Bearer valid_epc1_test"}
-            
+
             request = {
                 "tenant_id": "tenant-1",
                 "plane": "Tenant",
                 "action_type": "deploy"
             }
-            
+
             start_time = time.perf_counter()
             response = client.post(
                 "/v1/health/safe_to_act/check_safe_to_act",
@@ -253,7 +253,7 @@ class TestSafeToActPerformance:
                 headers=headers
             )
             latency_ms = (time.perf_counter() - start_time) * 1000
-            
+
             # Should complete within reasonable time (< 100ms for evaluation)
             assert latency_ms < 100
             # May return 200 (success), 401 (unauthorized), or 404 (endpoint not found) depending on setup

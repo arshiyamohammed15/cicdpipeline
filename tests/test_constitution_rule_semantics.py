@@ -266,7 +266,6 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                 continue
 
             rules = file_data.get('constitution_rules', [])
-            if not rules:
                 # File has no rules, skip this test
                 continue
 

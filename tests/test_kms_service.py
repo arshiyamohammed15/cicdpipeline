@@ -33,7 +33,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-kms_dir = project_root / "src" / "cloud-services" / "shared-services" / "key-management-service"
+kms_dir = project_root / "src" / "cloud_services" / "shared-services" / "key-management-service"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('key_management_service')

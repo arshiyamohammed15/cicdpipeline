@@ -31,7 +31,6 @@ def test_tc_sin_002_schema_violation_dlq(ingestion_service, registered_producer,
 
     # Should be rejected initially (retry)
     assert result.status.value in ["rejected", "dlq"]
-    if result.status.value == "rejected":
         # Retry until it goes to DLQ
         for _ in range(4):
             result = ingestion_service.ingest_signal(invalid_signal)

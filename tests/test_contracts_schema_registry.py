@@ -21,7 +21,7 @@ project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # Setup module path for relative imports
-registry_dir = project_root / "src" / "cloud-services" / "shared-services" / "contracts-schema-registry"
+registry_dir = project_root / "src" / "cloud_services" / "shared-services" / "contracts-schema-registry"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('contracts_schema_registry')

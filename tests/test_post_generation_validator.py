@@ -85,10 +85,9 @@ class TestFileHeaderValidation(unittest.TestCase):
         result = self.validator.validate_generated_code(code_without_header)
 
         # Should detect violation if rule exists
-        if self.validator.rule_file_header:
-            # May or may not detect depending on code length
-            self.assertIn('valid', result)
-            self.assertIn('violations', result)
+        # May or may not detect depending on code length
+        self.assertIn('valid', result)
+        self.assertIn('violations', result)
 
     def test_comprehensive_header_passes(self):
         """Test that code with comprehensive header passes."""

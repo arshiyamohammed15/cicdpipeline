@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 IAM token helpers for multi-tenant security tests.
 """
 
-from __future__ import annotations
 
 import hmac
 import json

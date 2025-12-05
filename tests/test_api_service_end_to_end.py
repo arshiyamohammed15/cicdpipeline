@@ -14,7 +14,7 @@ def test_api_service():
 
     # Start the service in background
     proc = subprocess.Popen([sys.executable, 'tools/start_validation_service.py'],
-                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Wait for startup
     time.sleep(5)

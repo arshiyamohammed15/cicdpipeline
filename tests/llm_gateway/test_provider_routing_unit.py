@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Unit tests for ProviderClient multi-tenant routing (FR-10).
 """
 
-from __future__ import annotations
 
 from cloud_services.llm_gateway.clients import ProviderClient  # type: ignore  # pylint: disable=import-error
 

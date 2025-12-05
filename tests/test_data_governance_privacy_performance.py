@@ -1,9 +1,9 @@
+from __future__ import annotations
 #!/usr/bin/env python3
 """
 Performance-focused tests validating latency targets using hermetic execution.
 """
 
-from __future__ import annotations
 
 from tests.privacy_imports import import_module
 

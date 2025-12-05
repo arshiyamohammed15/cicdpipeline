@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Contract-oriented tests for LLM Gateway external clients.
 
@@ -8,7 +9,6 @@ These tests do NOT call real services. They validate that:
 This helps catch accidental drift from the contracts described in the PRDs.
 """
 
-from __future__ import annotations
 
 from typing import Any, Dict, List
 

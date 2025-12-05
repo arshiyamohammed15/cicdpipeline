@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Integration tests exercising FastAPI routes for the LLM Gateway.
 """
 
-from __future__ import annotations
 
 import json
 from pathlib import Path

@@ -30,6 +30,7 @@ dependencies = [
     "mypy==1.18.2",
     "pytest==8.4.2",
     "pytest-cov==7.0.0",
+    "pytest-xdist>=3.0.0",
     "gitpython==3.1.45",
     "jinja2==3.1.6",
     "types-PyYAML==6.0.12.20250915",
@@ -128,7 +129,11 @@ norecursedirs = [
     "dist",
     "out",
     "build",
+    # Old test locations (to be removed after migration)
     "src/cloud-services/shared-services/*/tests",
+    "src/cloud-services/product-services/*/tests",
+    "src/cloud-services/client-services/*/tests",
+    "src/cloud-services/*/*/__tests__",
     "src/edge-agent/*/__tests__",
     "src/edge-agent/*/*/__tests__",
 ]
@@ -142,6 +147,7 @@ markers = [
     "unittest: marks tests using unittest framework (legacy style)",
     "llm_gateway_unit: LLM Gateway unit tests (safety pipeline, policy plumbing)",
     "llm_gateway_integration: LLM Gateway FastAPI route tests",
+    "constitution: marks tests that validate constitution rules",
     "llm_gateway_real_integration: LLM Gateway real service integration tests (requires USE_REAL_SERVICES=true)",
     # Data Governance & Privacy (M22) - mandatory for releases
     "dgp_regression: Regression tests for DG&P module (mandatory for releases)",

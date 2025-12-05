@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Integration test for policy refresh scenarios (IT-LLM-06).
 
@@ -5,7 +6,6 @@ Validates that policy cache invalidation and refresh work correctly when
 policy snapshots change, ensuring receipts show updated policy_snapshot_id.
 """
 
-from __future__ import annotations
 
 import json
 from pathlib import Path
@@ -121,11 +121,11 @@ def test_policy_refresh_shows_new_snapshot_id() -> None:
     # Both requests should succeed
     assert body1["decision"] == "ALLOWED"
     assert body2["decision"] == "ALLOWED"
-    
+
     # Policy snapshot IDs should be present (may be same or different depending on cache behavior)
     assert body2["policy_snapshot_id"]
     assert body2["policy_version_ids"]
-    
+
     # Verify receipts include policy metadata
     assert "policy_snapshot_id" in body1
     assert "policy_snapshot_id" in body2

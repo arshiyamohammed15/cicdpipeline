@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Resilience tests for MMM Engine degraded modes.
 
@@ -10,7 +11,6 @@ Per PRD Phase 4, tests resilience requirements:
 - IAM unavailable → 503 rejection
 """
 
-from __future__ import annotations
 
 import asyncio
 from unittest.mock import AsyncMock, MagicMock, patch

@@ -66,7 +66,7 @@ def test_all_examples():
         assert p.exists(), f"Example file {n} does not exist"
         data = json.loads(p.read_text(encoding="utf-8"))
         assert isinstance(data, (dict, list)), f"Example {n} is not JSON object/list"
-        
+
         if isinstance(data, dict):
             if "decision_response" in n or "decision_response" in str(data):
                 validate_decision_response(data)
@@ -76,7 +76,7 @@ def test_all_examples():
                 validate_feedback_receipt(data)
             elif "receipt" in n and "feedback" not in n:
                 validate_receipt(data)
-    
+
     print("OK: loaded and validated 5 examples for detection_engine_core")
 
 

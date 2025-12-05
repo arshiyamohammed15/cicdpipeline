@@ -204,9 +204,8 @@ class TestConsistentBehavior(unittest.TestCase):
 
         # Normalized prompts should produce same results
         normalized_prompts = [p.strip().lower() for p in prompts]
-        if len(set(normalized_prompts)) == 1:
-            # If all normalize to same, results should be same
-            self.assertEqual(
+        # If all normalize to same, results should be same
+        self.assertEqual(
                 len(set(str(r) for r in results)),
                 1,
                 "Normalized prompts should produce same results"

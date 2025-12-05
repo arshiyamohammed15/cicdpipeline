@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Evidence pack builder for compliance and audit requirements.
 """
 
-from __future__ import annotations
 
 import json
 import zipfile

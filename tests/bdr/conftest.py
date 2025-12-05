@@ -22,7 +22,7 @@ def dataset_definitions():
         {
             "dataset_id": "ds_observability",
             "name": "Observability Logs",
-            "plane": "shared_services",
+            "plane": "shared-services",
             "store_type": "object_store",
             "criticality": "tier1",
             "data_classification": "internal",
@@ -57,7 +57,7 @@ def plan_definitions():
             "plan_id": "bp_observability",
             "name": "Observability Backup",
             "dataset_ids": ["ds_observability"],
-            "plane": "shared_services",
+            "plane": "shared-services",
             "backup_frequency": "PT30M",
             "target_rpo": "PT30M",
             "target_rto": "PT60M",

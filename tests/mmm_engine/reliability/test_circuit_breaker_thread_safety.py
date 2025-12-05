@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 Test thread safety of CircuitBreaker implementation.
 
@@ -5,7 +6,6 @@ Verifies that the circuit breaker correctly handles concurrent access
 from multiple threads without race conditions.
 """
 
-from __future__ import annotations
 
 import threading
 import time
@@ -28,7 +28,6 @@ def test_circuit_breaker_thread_safety():
     def test_call(i: int) -> None:
         """Test function that may succeed or fail."""
         try:
-            if i < 3:
                 # First 3 calls succeed
                 result = cb.call(lambda: f"success-{i}")
                 results.append(result)
@@ -120,7 +119,6 @@ def test_circuit_breaker_fallback_thread_safety():
     def test_with_fallback(i: int) -> None:
         """Test function with fallback."""
         try:
-            if i < 2:
                 # First 2 calls succeed
                 result = cb.call(lambda: f"success-{i}")
                 with results_lock:

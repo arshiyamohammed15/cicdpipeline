@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Utility helpers to import modules from the hyphenated data-governance-privacy path.
 """
 
-from __future__ import annotations
 
 import importlib
 import sys
@@ -10,7 +10,7 @@ import types
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
-MODULE_ROOT = PROJECT_ROOT / "src" / "cloud-services" / "shared-services" / "data-governance-privacy"
+MODULE_ROOT = PROJECT_ROOT / "src" / "cloud_services" / "shared-services" / "data-governance-privacy"
 PACKAGE_NAME = "data_governance_privacy"
 
 

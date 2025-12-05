@@ -1,8 +1,8 @@
+from __future__ import annotations
 """
 Budgeting-specific fixtures for test harness.
 """
 
-from __future__ import annotations
 
 from dataclasses import dataclass, field
 from datetime import datetime

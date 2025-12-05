@@ -29,7 +29,7 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-m23_dir = project_root / "src" / "cloud-services" / "shared-services" / "configuration-policy-management"
+m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure
 parent_pkg = type(sys)('configuration_policy_management')
@@ -469,7 +469,7 @@ class TestCreateConfigurationEndpoint(unittest.TestCase):
         mock_session = MagicMock(return_value=mock_session_context)
 
         with patch('configuration_policy_management.services.get_session', mock_session), \
-             patch('configuration_policy_management.database.connection.get_session', mock_session):
+                                                                                                                                                                                        patch('configuration_policy_management.database.connection.get_session', mock_session):
             response = self.client.post(
                 f"/policy/v1/configurations?tenant_id={tenant_id}",
                 json=request_data

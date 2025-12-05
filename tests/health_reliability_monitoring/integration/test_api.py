@@ -5,7 +5,8 @@ from datetime import datetime, timezone
 import pytest
 from fastapi.testclient import TestClient
 
-from health_reliability_monitoring.main import app
+from health_reliability_monitoring.main import create_app
+app = create_app()
 from health_reliability_monitoring.database import models
 from health_reliability_monitoring.service_container import get_db_session
 from sqlalchemy import create_engine

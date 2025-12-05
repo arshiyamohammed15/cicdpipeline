@@ -1,10 +1,10 @@
+from __future__ import annotations
 """
 Feature tests for experiment management (FR-13).
 
 Tests experiment CRUD and activation/deactivation.
 """
 
-from __future__ import annotations
 
 from unittest.mock import patch
 

@@ -30,7 +30,7 @@ sys.path.insert(0, str(project_root))
 # Import using direct file path
 import importlib.util
 
-m23_dir = project_root / "src" / "cloud-services" / "shared-services" / "configuration-policy-management"
+m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('configuration_policy_management')

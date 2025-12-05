@@ -1,9 +1,9 @@
+from __future__ import annotations
 #!/usr/bin/env python3
 """
 Security-focused tests validating tenant isolation and breach prevention.
 """
 
-from __future__ import annotations
 
 from tests.privacy_imports import import_module
 
