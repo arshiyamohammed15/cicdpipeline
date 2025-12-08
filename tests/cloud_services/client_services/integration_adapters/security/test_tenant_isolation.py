@@ -17,6 +17,33 @@ from uuid import uuid4
 from integration_adapters.database.models import IntegrationConnection
 from integration_adapters.database.repositories import ConnectionRepository
 
+
+@pytest.fixture
+def connection_repo():
+    """In-memory connection repository for tenant isolation tests."""
+    class Repo:
+        def __init__(self):
+            self.connections = {}
+
+        def create(self, conn):
+            self.connections[conn.connection_id] = conn
+            return conn
+
+        def get_by_id(self, connection_id, tenant_id):
+            conn = self.connections.get(connection_id)
+            if conn and conn.tenant_id == tenant_id:
+                return conn
+            return None
+
+        def list_by_tenant(self, tenant_id):
+            return [c for c in self.connections.values() if c.tenant_id == tenant_id]
+
+        def get_all_by_tenant(self, tenant_id):
+            return self.list_by_tenant(tenant_id)
+
+    return Repo()
+
+
 class TestTenantIsolation:
     """Test tenant isolation."""
 

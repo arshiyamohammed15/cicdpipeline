@@ -9,16 +9,19 @@ Risks: Authentication/authorization must be enforced, input validation required
 """
 
 import logging
+import sys
 from typing import Optional
 from fastapi import APIRouter, HTTPException, Depends, Header
 from fastapi.responses import JSONResponse
 
 try:
+    from . import models as _models
     from .models import (
         DecisionRequest, DecisionResponse, DecisionResponseError,
         FeedbackRequest, FeedbackResponse,
         HealthResponse, ReadinessResponse
     )
+    from . import services as _services
     from .services import DetectionEngineService
 except ImportError:
     # For direct execution or testing
@@ -28,8 +31,15 @@ except ImportError:
         HealthResponse, ReadinessResponse
     )
     from services import DetectionEngineService
+else:
+    # Expose aliases so bare `import models`/`import services` resolve to this package.
+    sys.modules.setdefault("models", _models)
+    sys.modules.setdefault("services", _services)
 
 logger = logging.getLogger(__name__)
+
+# Ensure subsequent bare `import routes` resolves to this module (test helpers rely on it).
+sys.modules.setdefault("routes", sys.modules[__name__])
 
 router = APIRouter(prefix="/v1", tags=["detection-engine-core"])
 

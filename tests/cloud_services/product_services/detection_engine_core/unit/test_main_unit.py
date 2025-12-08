@@ -14,6 +14,10 @@ from unittest.mock import patch, MagicMock
 
 # Module setup handled by root conftest.py
 from detection_engine_core.main import create_app, app
+import detection_engine_core.main as dec_main
+# Ensure 'main' module has logger attribute for patching in tests.
+dec_main.logger = getattr(dec_main, "logger", MagicMock())
+sys.modules["main"] = dec_main
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

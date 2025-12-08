@@ -211,14 +211,8 @@ class FatigueControlService:
         if self.maintenance_service.is_in_maintenance(alert.component_id, alert.tenant_id, now):
             return True, "maintenance_window"
 
-        # Check rate limits
-        if not await self.rate_limiter.check_alert_rate_limit(alert.alert_id):
-            return True, "alert_rate_limit_exceeded"
-
-        if not await self.rate_limiter.check_user_rate_limit(target_id):
-            return True, "user_rate_limit_exceeded"
-
-        # Check incident suppression
+        # Check incident suppression before rate limits so follow-up alerts in an
+        # active incident return the suppression reason instead of a rate-limit reason.
         suppression_config = self.policy_client.get_suppression_config()
         if suppression_config.get("suppress_followup_during_incident", True):
             if alert.incident_id:
@@ -240,6 +234,13 @@ class FatigueControlService:
                     existing_alerts = list(result.scalars().all())
                     if existing_alerts:
                         return True, "incident_followup_suppressed"
+
+        # Check rate limits
+        if not await self.rate_limiter.check_alert_rate_limit(alert.alert_id):
+            return True, "alert_rate_limit_exceeded"
+
+        if not await self.rate_limiter.check_user_rate_limit(target_id):
+            return True, "user_rate_limit_exceeded"
 
         return False, None
 

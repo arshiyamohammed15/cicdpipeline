@@ -25,9 +25,20 @@ if str(root) not in sys.path:
     sys.path.insert(0, str(root))
 
 from tests.shared_harness import PerfRunner, PerfScenario, RateLimitFixture, TenantFactory
-from ..database.models import Base, RateLimitUsage
-from ..services.rate_limit_service import RateLimitService
-from budgeting_rate_limiting_cost_observability.dependencies import MockM29DataPlane
+import sys
+from pathlib import Path
+import importlib.util
+
+# Register package shims for budgeting-rate-limiting-cost-observability
+bootstrap_path = root / "tests" / "src" / "cloud_services" / "shared_services" / "budgeting_rate_limiting_cost_observability" / "bootstrap.py"
+spec_bootstrap = importlib.util.spec_from_file_location("brlco_bootstrap", bootstrap_path)
+bootstrap_module = importlib.util.module_from_spec(spec_bootstrap)
+spec_bootstrap.loader.exec_module(bootstrap_module)
+bootstrap_module.ensure_brlco()
+
+from database.models import Base, RateLimitUsage
+from services.rate_limit_service import RateLimitService
+from dependencies import MockM29DataPlane
 
 
 @pytest.fixture

@@ -4,8 +4,18 @@ from datetime import datetime, timezone
 
 import pytest
 from fastapi.testclient import TestClient
+import importlib.util
+import sys
+from pathlib import Path
 
-from health_reliability_monitoring.main import create_app
+# Ensure shim package is used (clear any preloaded modules)
+for _mod in [m for m in list(sys.modules) if m.startswith("health_reliability_monitoring")]:
+    sys.modules.pop(_mod, None)
+shim_path = Path(__file__).resolve().parents[3] / "health_reliability_monitoring" / "main.py"
+spec = importlib.util.spec_from_file_location("health_reliability_monitoring.main", shim_path)
+shim_mod = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(shim_mod)
+create_app = shim_mod.create_app
 app = create_app()
 from health_reliability_monitoring.database import models
 from health_reliability_monitoring.service_container import get_db_session

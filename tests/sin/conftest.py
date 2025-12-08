@@ -9,7 +9,7 @@ from datetime import datetime
 
 # Add the src directory to Python path
 project_root = Path(__file__).parent.parent.parent
-sin_module_path = project_root / "src" / "cloud_services" / "product-services" / "signal-ingestion-normalization"
+sin_module_path = project_root / "src" / "cloud_services" / "product_services" / "signal-ingestion-normalization"
 sys.path.insert(0, str(sin_module_path.parent))
 
 # Import modules using importlib with proper package setup

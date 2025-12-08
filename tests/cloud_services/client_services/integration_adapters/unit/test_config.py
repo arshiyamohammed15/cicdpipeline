@@ -12,6 +12,7 @@ Coverage Target: 100%
 import pytest
 
 from unittest.mock import patch
+import os
 
 # Module setup handled by root conftest.py
 

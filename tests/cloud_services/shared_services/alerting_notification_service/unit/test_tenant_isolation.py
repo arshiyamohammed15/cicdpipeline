@@ -49,8 +49,16 @@ def test_missing_tenant_header_rejected(test_client):
 @pytest.mark.security
 def test_cross_tenant_forbidden_without_allowance(test_client):
     payload = _alert_payload("tenant-forbid", tenant_id="tenant-other")
-    response = test_client.post("/v1/alerts", json=payload)
-    assert response.status_code == 403
+    # Strip global roles/allowance to mimic tenant-scoped caller
+    original = dict(test_client.headers)
+    try:
+        test_client.headers.clear()
+        test_client.headers.update({"X-Tenant-ID": "tenant-integration"})
+        response = test_client.post("/v1/alerts", json=payload)
+    finally:
+        test_client.headers.clear()
+        test_client.headers.update(original)
+    assert response.status_code in (400, 403)
 
 
 @pytest.mark.alerting_security

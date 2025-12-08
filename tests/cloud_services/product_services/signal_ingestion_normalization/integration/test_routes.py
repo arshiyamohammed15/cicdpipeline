@@ -47,12 +47,38 @@ for module_name, filename in modules_to_load:
         spec.loader.exec_module(module)
 
 # Import main app
-main_module = sys.modules['signal_ingestion_normalization.main']
-app = main_module.create_app()
+if 'signal_ingestion_normalization.main' not in sys.modules:
+    # Load main module
+    main_path = PACKAGE_ROOT / "main.py"
+    if main_path.exists():
+        spec_main = importlib.util.spec_from_file_location("signal_ingestion_normalization.main", main_path)
+        if spec_main is not None and spec_main.loader is not None:
+            main_module = importlib.util.module_from_spec(spec_main)
+            sys.modules['signal_ingestion_normalization.main'] = main_module
+            spec_main.loader.exec_module(main_module)
+        else:
+            raise ImportError(f"Cannot load main module from {main_path}")
+    else:
+        raise FileNotFoundError(f"Main module not found at {main_path}")
+else:
+    main_module = sys.modules['signal_ingestion_normalization.main']
+
+# Check if create_app exists, otherwise use app directly
+if hasattr(main_module, 'create_app'):
+    app = main_module.create_app()
+elif hasattr(main_module, 'app'):
+    app = main_module.app
+else:
+    raise AttributeError("Main module has neither 'create_app' nor 'app'")
 
 from fastapi.testclient import TestClient
 
-test_client = TestClient(app)
+_test_client = TestClient(app)
+
+
+@pytest.fixture
+def test_client():
+    return _test_client
 
 
 @pytest.mark.integration
@@ -60,7 +86,7 @@ class TestIngestEndpoint:
     """Test /v1/signals/ingest endpoint."""
 
     @patch('signal_ingestion_normalization.routes.get_ingestion_service')
-    def test_ingest_signals_success(self, mock_get_service):
+    def test_ingest_signals_success(self, mock_get_service, test_client):
         """Test successful signal ingestion."""
         mock_service = Mock()
         mock_result = Mock()

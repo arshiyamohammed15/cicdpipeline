@@ -13,6 +13,14 @@ import pytest
 from datetime import datetime
 from uuid import uuid4
 
+@pytest.fixture
+def sample_tenant_id():
+    return "tenant-default"
+
+@pytest.fixture
+def sample_connection_id():
+    return uuid4()
+
 # Module setup handled by root conftest.py
 
 from integration_adapters.database.models import (

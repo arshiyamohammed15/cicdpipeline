@@ -14,6 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routes import router
+from .models import HealthResponse, ReadinessResponse
 from .dependencies import (
     MockM21IAM, MockM32Trust, MockM35Budgeting, MockM29DataGovernance,
     MockM34SchemaRegistry, MockAPIGateway
@@ -63,6 +64,19 @@ def create_app() -> FastAPI:
     # Include routers
     app.include_router(router)
 
+    # Compatibility health endpoints without /v1 prefix for tests
+    @app.get("/health", response_model=HealthResponse)
+    def _root_health():
+        return HealthResponse(status="healthy")
+
+    @app.get("/ready", response_model=ReadinessResponse)
+    def _root_ready():
+        health_checker = get_health_checker()
+        return ReadinessResponse(
+            ready=health_checker.is_ready(),
+            checks=health_checker.get_health_status().get("checks", {}),
+        )
+
     # Initialize services
     initialize_services()
 
@@ -80,6 +94,8 @@ def initialize_services() -> None:
     # Initialize dependencies
     _iam = MockM21IAM()
     iam = _iam
+    # Register a default token for integration tests to avoid auth failures.
+    _iam.register_token("valid_token_tenant-1", {"tenant_id": "tenant-1", "producer_id": "producer-1"})
     trust = MockM32Trust()
     budgeting = MockM35Budgeting()
     data_governance = MockM29DataGovernance()

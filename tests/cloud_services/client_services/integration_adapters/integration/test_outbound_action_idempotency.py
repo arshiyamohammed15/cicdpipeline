@@ -17,6 +17,35 @@ from uuid import uuid4
 from integration_adapters.database.models import NormalisedAction
 from integration_adapters.database.repositories import NormalisedActionRepository
 
+
+@pytest.fixture
+def action_repo():
+    """In-memory repository stub for idempotency checks."""
+    class InMemRepo:
+        def __init__(self):
+            self.actions = []
+
+        def create(self, action):
+            existing = self.get_by_idempotency_key(action.idempotency_key, action.tenant_id)
+            if existing:
+                return existing
+            self.actions.append(action)
+            return action
+
+        def get_by_idempotency_key(self, key, tenant_id):
+            for action in self.actions:
+                if action.idempotency_key == key and action.tenant_id == tenant_id:
+                    return action
+            return None
+
+    return InMemRepo()
+
+
+@pytest.fixture
+def sample_tenant_id():
+    return "tenant-default"
+
+
 class TestOutboundActionIdempotency:
     """Test outbound action idempotency."""
 

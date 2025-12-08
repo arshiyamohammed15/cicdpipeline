@@ -15,7 +15,18 @@ from fastapi.testclient import TestClient
 PACKAGE_ROOT = Path(__file__).resolve().parents[5]  # Updated for new structure
 # Path setup handled by conftest.py
 # Import main app
-from main import app
+MODULE_ROOT = Path(__file__).resolve().parents[4] / "src" / "cloud_services" / "shared-services" / "identity-access-management"
+# Remove any conflicting paths and add our module path first
+if str(MODULE_ROOT) in sys.path:
+    sys.path.remove(str(MODULE_ROOT))
+sys.path.insert(0, str(MODULE_ROOT))
+
+# Import using importlib to ensure we get the correct module
+import importlib.util
+main_spec = importlib.util.spec_from_file_location("identity_access_management_main", MODULE_ROOT / "main.py")
+main_module = importlib.util.module_from_spec(main_spec)
+main_spec.loader.exec_module(main_module)
+app = main_module.app
 
 test_client = TestClient(app)
 

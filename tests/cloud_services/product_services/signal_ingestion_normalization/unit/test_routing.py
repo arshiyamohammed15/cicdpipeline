@@ -17,10 +17,17 @@ parent_pkg = type(sys)('signal_ingestion_normalization')
 sys.modules['signal_ingestion_normalization'] = parent_pkg
 
 # Models imported via root conftest
-spec_models = importlib.util.spec_from_file_location("signal_ingestion_normalization.models", Path(__file__).parent.parent.parent.parent / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent")
-models_module = importlib.util.module_from_spec(spec_models)
-sys.modules['signal_ingestion_normalization.models'] = models_module
-spec_models.loader.exec_module(models_module)
+models_path = PACKAGE_ROOT / "models.py"
+if models_path.exists():
+    spec_models = importlib.util.spec_from_file_location("signal_ingestion_normalization.models", models_path)
+    if spec_models is not None and spec_models.loader is not None:
+        models_module = importlib.util.module_from_spec(spec_models)
+        sys.modules['signal_ingestion_normalization.models'] = models_module
+        spec_models.loader.exec_module(models_module)
+    else:
+        models_module = None
+else:
+    models_module = None
 
 routing_path = PACKAGE_ROOT / "routing.py"
 spec_routing = importlib.util.spec_from_file_location("signal_ingestion_normalization.routing", routing_path)
@@ -75,11 +82,14 @@ class TestRoutingEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
-        destinations = engine.route(signal)
+        destinations = engine.route_signal(signal)
         assert isinstance(destinations, list)
 
     def test_route_with_tenant_awareness(self):
@@ -93,8 +103,11 @@ class TestRoutingEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
         # Register tenant-aware rule
@@ -109,8 +122,8 @@ class TestRoutingEngine:
         )
 
         engine.register_rule(RoutingClass.REALTIME_DETECTION, rule)
-        destinations = engine.route(signal)
+        destinations = engine.route_signal(signal)
 
-        # Should route to tenant-specific destination
-        assert "tenant-1-queue" in destinations or len(destinations) >= 0
+        # Should route to tenant-specific destination tuple (routing_class, destination, success)
+        assert any(dest[1].startswith("tenant-1-queue") for dest in destinations)
 

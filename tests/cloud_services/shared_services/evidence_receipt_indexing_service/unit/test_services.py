@@ -18,6 +18,11 @@ from uuid import uuid4
 
 # Import services - handle both relative and absolute imports
 try:
+    # Mock psycopg2 to avoid dependency issues
+    import sys
+    from unittest.mock import MagicMock
+    sys.modules['psycopg2'] = MagicMock()
+    
     from evidence_receipt_indexing_service.services import (
         ReceiptValidator, TenantIdResolver, ReceiptIngestionService,
         ReceiptQueryService, ReceiptAggregationService,
@@ -28,9 +33,16 @@ except ImportError:
     # Fallback: direct import
     import importlib.util
     from pathlib import Path
-    spec = importlib.util.spec_from_file_location("services", Path(__file__).parent.parent / "services.py")
-    services_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(services_module)
+    services_path = Path(__file__).resolve().parents[5] / "src" / "cloud_services" / "shared-services" / "evidence-receipt-indexing-service" / "services.py"
+    if services_path.exists():
+        spec = importlib.util.spec_from_file_location("services", services_path)
+        if spec is not None and spec.loader is not None:
+            services_module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(services_module)
+        else:
+            raise ImportError(f"Cannot load services module from {services_path}")
+    else:
+        raise ImportError(f"Services file not found at {services_path}")
     ReceiptValidator = services_module.ReceiptValidator
     TenantIdResolver = services_module.TenantIdResolver
     ReceiptIngestionService = services_module.ReceiptIngestionService

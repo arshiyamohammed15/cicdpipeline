@@ -11,11 +11,11 @@ Risks: Authentication/authorization must be enforced, input validation required
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, HTTPException, Depends, Header
+from fastapi import APIRouter, HTTPException, Depends, Header, Body
 from fastapi.responses import JSONResponse
 
 from .models import (
-    IngestRequest, IngestResponse, DLQInspectionRequest, DLQInspectionResponse,
+    IngestRequest, IngestResponse, SignalIngestResult, DLQInspectionRequest, DLQInspectionResponse,
     ProducerRegistrationRequest, ProducerRegistrationResponse,
     HealthResponse, ReadinessResponse
 )
@@ -28,6 +28,12 @@ from .dependencies import MockM21IAM
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/v1", tags=["signal-ingestion"])
+
+
+def get_ingestion_service() -> SignalIngestionService:
+    """Proxy to global ingestion service (needed for tests/mocking)."""
+    from .main import get_ingestion_service as _get_ingestion_service
+    return _get_ingestion_service()
 
 
 def get_iam() -> MockM21IAM:
@@ -68,7 +74,7 @@ def get_tenant_id(authorization: Optional[str] = Header(None), iam: MockM21IAM =
 
 @router.post("/signals/ingest", response_model=IngestResponse, status_code=200)
 async def ingest_signals(
-    request: IngestRequest,
+    request: dict = Body(...),
     tenant_id: str = Depends(get_tenant_id)
 ) -> IngestResponse:
     """
@@ -80,12 +86,36 @@ async def ingest_signals(
     from .main import get_ingestion_service
     service = get_ingestion_service()
 
-    try:
-        response = service.ingest_signals(request.signals, tenant_id)
-        return response
-    except Exception as e:
-        logger.error(f"Error ingesting signals: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    signals = request.get("signals") or []
+    if not signals:
+        raise HTTPException(status_code=422, detail="signals payload required")
+    results = []
+    for signal in signals:
+        try:
+            result = service.ingest_signal(signal)
+            signal_id = getattr(result, "signal_id", signal.get("signal_id", "unknown"))
+            status_val = getattr(result, "status", "accepted")
+        except Exception as e:
+            logger.error(f"Error ingesting signal: {e}")
+            signal_id = signal.get("signal_id", "unknown")
+            status_val = "rejected"
+        results.append(
+            SignalIngestResult(
+                signal_id=signal_id,
+                status=status_val,
+                error_code=None,
+                error_message=None,
+                dlq_id=None,
+                warnings=[],
+            )
+        )
+    summary = {
+        "total": len(results),
+        "accepted": sum(1 for r in results if r.status == "accepted"),
+        "rejected": sum(1 for r in results if r.status == "rejected"),
+        "dlq": sum(1 for r in results if r.status == "dlq"),
+    }
+    return IngestResponse(results=results, summary=summary)
 
 
 @router.get("/signals/dlq", response_model=DLQInspectionResponse)

@@ -226,11 +226,14 @@ class MMMService:
             # Apply preference filtering: snooze check
             actions = []  # Initialize actions list
             if actor_preferences and actor_preferences.snooze_until:
-                if actor_preferences.snooze_until > datetime.now(timezone.utc):
+                snooze_until = actor_preferences.snooze_until
+                if snooze_until.tzinfo is None:
+                    snooze_until = snooze_until.replace(tzinfo=timezone.utc)
+                if snooze_until > datetime.now(timezone.utc):
                     logger.info(
                         "Actor %s snoozed until %s, returning empty actions",
                         actor_id,
-                        actor_preferences.snooze_until,
+                        snooze_until,
                     )
                     # Leave actions empty, skip playbook evaluation
                 else:

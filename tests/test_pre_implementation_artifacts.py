@@ -643,10 +643,10 @@ class TestEdgeCases:
             doc = Path(doc_path)
             # Should be readable
             assert doc.is_file(), f"{doc_path} should be a file"
-                try:
-                    doc.read_text(encoding='utf-8')
-                except Exception as e:
-                    pytest.fail(f"{doc_path} should be readable: {e}")
+            try:
+                doc.read_text(encoding='utf-8')
+            except Exception as e:
+                pytest.fail(f"{doc_path} should be readable: {e}")
 
 
 if __name__ == '__main__':

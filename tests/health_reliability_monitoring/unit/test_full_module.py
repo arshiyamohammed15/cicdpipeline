@@ -255,20 +255,20 @@ async def test_evaluation_service_full_flow(memory_session):
     memory_session.add(component)
     memory_session.commit()
 
-        class StubPolicy:
-            async def fetch_health_policy(self, policy_id: str):
-                if policy_id == "policy-empty":
-                    return {"thresholds": {}}
-                return {
-                    "thresholds": {
-                        "latency_p95_ms": 200,
-                        "error_rate": 0.02,
-                        "saturation_pct": 80,
-                        "heartbeat_lag_sec": 120,
-                    },
-                    "hysteresis": {"exit": 2},
-                    "window_seconds": 60,
-                }
+    class StubPolicy:
+        async def fetch_health_policy(self, policy_id: str):
+            if policy_id == "policy-empty":
+                return {"thresholds": {}}
+            return {
+                "thresholds": {
+                    "latency_p95_ms": 200,
+                    "error_rate": 0.02,
+                    "saturation_pct": 80,
+                    "heartbeat_lag_sec": 120,
+                },
+                "hysteresis": {"exit": 2},
+                "window_seconds": 60,
+            }
 
     class StubSLO:
         def __init__(self):
@@ -291,7 +291,7 @@ async def test_evaluation_service_full_flow(memory_session):
         event_bus=StubBus(),
     )
     now = datetime.utcnow()
-        payloads = [
+    payloads = [
         TelemetryPayload(
             component_id="pm-4",
             tenant_id="tenant-default",
@@ -308,7 +308,7 @@ async def test_evaluation_service_full_flow(memory_session):
             plane="Tenant",
             environment="prod",
             timestamp=now,
-                metrics={"sample_window_sec": 10},
+            metrics={"sample_window_sec": 10},
             labels={},
             telemetry_type="metrics",
         ),

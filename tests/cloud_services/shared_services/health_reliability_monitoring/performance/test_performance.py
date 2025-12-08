@@ -108,9 +108,9 @@ class TestHealthQueryPerformance:
         """Test component status query latency."""
         # Create component and snapshot
         try:
-    from health_reliability_monitoring.database import models as db_models
-except ImportError:
-    db_models = None  # Database module not implemented
+            from health_reliability_monitoring.database import models as db_models
+        except ImportError:
+            db_models = None  # Database module not implemented
         
         component = db_models.Component(
             component_id="test-component-1",
@@ -143,8 +143,8 @@ except ImportError:
         latency = time.perf_counter() - start
         
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_404_NOT_FOUND]
-            # Query should be fast (< 500ms)
-            assert latency < 0.5
+        # Query should be fast (< 500ms)
+        assert latency < 0.5
 
     def test_tenant_health_query_latency(self, db_session):
         """Test tenant health query latency."""
@@ -156,8 +156,8 @@ except ImportError:
         latency = time.perf_counter() - start
         
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
-            # Rollup query should be reasonable (< 1 second)
-            assert latency < 1.0
+        # Rollup query should be reasonable (< 1 second)
+        assert latency < 1.0
 
 
 class TestSafeToActPerformance:
@@ -181,6 +181,6 @@ class TestSafeToActPerformance:
         latency = time.perf_counter() - start
         
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
-            # Evaluation should be fast (< 500ms)
-            assert latency < 0.5
+        # Evaluation should be fast (< 500ms)
+        assert latency < 0.5
 

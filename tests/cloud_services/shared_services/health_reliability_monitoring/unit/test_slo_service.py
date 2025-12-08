@@ -70,9 +70,9 @@ class TestSLOService:
     def test_latest_slo_existing(self, slo_service, db_session):
         """Test retrieving latest SLO for existing component."""
         try:
-    from health_reliability_monitoring.database import models as db_models
-except ImportError:
-    db_models = None  # Database module not implemented
+            from health_reliability_monitoring.database import models as db_models
+        except ImportError:
+            db_models = None  # Database module not implemented
         
         # Create SLO status
         slo_status = db_models.SLOStatus(

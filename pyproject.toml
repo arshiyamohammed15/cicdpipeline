@@ -113,32 +113,29 @@ inline-quotes = "double"
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pytest.ini_options]
-addopts = "-q -p no:cacheprovider"
-python_files = [
-    "test_*.py",
-    "*_test.py",
+addopts = [
+    "-q",
+    "-ra",
+    "--maxfail=1",
+    "--strict-config",
+    "--strict-markers",
 ]
-python_classes = [
-    "Test*",
-]
-python_functions = [
-    "test_*",
-]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+xfail_strict = true
 norecursedirs = [
+    ".git",
+    ".venv",
+    "venv",
     "node_modules",
     "dist",
     "out",
     "build",
-    # Old test locations (to be removed after migration)
-    "src/cloud-services/shared-services/*/tests",
-    "src/cloud-services/product-services/*/tests",
-    "src/cloud-services/client-services/*/tests",
-    "src/cloud-services/*/*/__tests__",
-    "src/edge-agent/*/__tests__",
-    "src/edge-agent/*/*/__tests__",
+    "artifacts",
 ]
-# Pytest can run unittest tests natively
-# No need to change existing unittest code
 markers = [
     "unit: marks tests as unit tests (fast, pure functions)",
     "integration: marks tests as integration tests (I/O, process boundaries)",
@@ -174,12 +171,10 @@ markers = [
     "chaos: Chaos engineering tests",
 ]
 filterwarnings = [
-    "error",
-    "ignore::UserWarning",
+    "default",
     "ignore::DeprecationWarning",
     "ignore::PendingDeprecationWarning",
 ]
-# Enable unittest compatibility (pytest runs unittest tests natively)
 
 [tool.mypy]
 python_version = "3.11"

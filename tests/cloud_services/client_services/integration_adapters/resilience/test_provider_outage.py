@@ -11,6 +11,7 @@ Coverage Target: Outage scenarios
 
 import pytest
 from unittest.mock import Mock, patch
+import uuid
 
 # Module setup handled by root conftest.py
 

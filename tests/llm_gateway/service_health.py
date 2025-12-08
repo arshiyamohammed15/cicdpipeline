@@ -81,8 +81,8 @@ def check_all_services_healthy() -> Dict[str, bool]:
 
     # Alerting health endpoint (may not have /health, try /alerts as fallback)
     alerting_healthy = check_service_health(urls["alerting"], "/health")
-        # Try alternative endpoint
-        alerting_healthy = check_service_health(urls["alerting"], "/alerts")
+    # Try alternative endpoint
+    alerting_healthy = check_service_health(urls["alerting"], "/alerts")
     health_status["alerting"] = alerting_healthy
 
     return health_status

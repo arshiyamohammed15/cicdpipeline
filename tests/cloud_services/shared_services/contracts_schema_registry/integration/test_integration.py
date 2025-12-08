@@ -75,15 +75,15 @@ class TestSchemaLifecycle:
         
         if register_response.status_code == status.HTTP_201_CREATED:
             schema_id = register_response.json().get("schema_id")
-                # Update schema (creates new version)
-                update_response = client.put(
-                    f"/registry/v1/schemas/{schema_id}",
-                    json={
-                        "definition": {"type": "object", "properties": {"id": {"type": "string"}}}
-                    }
-                )
-                
-                assert update_response.status_code in [
+            # Update schema (creates new version)
+            update_response = client.put(
+                f"/registry/v1/schemas/{schema_id}",
+                json={
+                    "definition": {"type": "object", "properties": {"id": {"type": "string"}}}
+                }
+            )
+            
+            assert update_response.status_code in [
                     status.HTTP_200_OK,
                     status.HTTP_404_NOT_FOUND,
                     status.HTTP_400_BAD_REQUEST

@@ -25,9 +25,25 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from ..database.models import Base
-from ..services.budget_service import BudgetService
-from budgeting_rate_limiting_cost_observability.dependencies import MockM29DataPlane
+import sys
+from pathlib import Path
+
+# Add module path
+MODULE_ROOT = Path(__file__).resolve().parents[4] / "src" / "cloud_services" / "shared-services" / "budgeting-rate-limiting-cost-observability"
+if str(MODULE_ROOT) not in sys.path:
+    sys.path.insert(0, str(MODULE_ROOT))
+
+import sys
+from pathlib import Path
+
+# Add module path
+MODULE_ROOT = Path(__file__).resolve().parents[4] / "src" / "cloud_services" / "shared-services" / "budgeting-rate-limiting-cost-observability"
+if str(MODULE_ROOT) not in sys.path:
+    sys.path.insert(0, str(MODULE_ROOT))
+
+from database.models import Base
+from services.budget_service import BudgetService
+from dependencies import MockM29DataPlane
 
 
 @pytest.fixture

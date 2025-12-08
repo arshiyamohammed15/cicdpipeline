@@ -6,6 +6,7 @@ Handles hyphenated directory names by creating proper Python package structures.
 """
 import sys
 import importlib.util
+import os
 import types
 from pathlib import Path
 
@@ -89,15 +90,32 @@ def setup_module_package(module_dir_name: str, category: str = "shared-services"
 # This runs when conftest.py is imported by pytest
 # Only execute if SRC_ROOT exists (prevents errors during direct import testing)
 if SRC_ROOT.exists():
+    module_filter = os.getenv("ZEROUI_TEST_MODULE_FILTER")
+    # Optional optimization: when ZEROUI_TEST_MODULE_FILTER is set (used by the runner),
+    # only initialize the matching module; when unset, the full default setup runs.
     for category in ["shared-services", "client-services", "product-services"]:
         # Category directories use hyphens, not underscores!
         category_path = SRC_ROOT / category
         if category_path.exists():
             for item in category_path.iterdir():
                 if item.is_dir() and not item.name.startswith("_"):
+                    if module_filter:
+                        mapped_name = MODULE_MAPPINGS.get(item.name, item.name.replace("-", "_"))
+                        if module_filter not in (item.name, mapped_name):
+                            continue
                     try:
                         setup_module_package(item.name, category)
                     except Exception as e:
                         # Log but don't fail - some modules may have issues
                         import warnings
                         warnings.warn(f"Failed to set up {item.name}: {e}", UserWarning)
+
+
+def pytest_configure(config):
+    # Register custom markers used in performance suites.
+    config.addinivalue_line("markers", "iam_performance: identity performance tests")
+    config.addinivalue_line("markers", "iam_security: identity security tests")
+    config.addinivalue_line("markers", "kms_performance: key management service performance tests")
+    config.addinivalue_line("markers", "kms_security: key management service security tests")
+    config.addinivalue_line("markers", "resilience: resilience scenarios")
+    config.addinivalue_line("markers", "llm_gateway_security: llm gateway security tests")

@@ -64,6 +64,7 @@ kms_dir = project_root / "src" / "cloud_services" / "shared-services" / "key-man
 
 # Create parent package structure
 parent_pkg = type(sys)('key_management_service')
+parent_pkg.__path__ = [str(kms_dir)]
 sys.modules['key_management_service'] = parent_pkg
 
 # Create hsm subpackage
@@ -127,7 +128,7 @@ spec_middleware.loader.exec_module(middleware_module)
 
 # Load main
 main_path = kms_dir / "main.py"
-spec_main = importlib.util.spec_from_file_location("key-management-service.main", main_path)
+spec_main = importlib.util.spec_from_file_location("key_management_service.main", main_path)
 main_module = importlib.util.module_from_spec(spec_main)
 sys.modules['key-management-service.main'] = main_module
 spec_main.loader.exec_module(main_module)

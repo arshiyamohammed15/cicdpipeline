@@ -15,7 +15,21 @@ from fastapi.testclient import TestClient
 
 # Path setup handled by conftest.py
 # Import main app
-from main import app
+import sys
+from pathlib import Path
+import importlib.util
+
+MODULE_ROOT = Path(__file__).resolve().parents[4] / "src" / "cloud_services" / "shared-services" / "identity-access-management"
+# Remove any conflicting paths and add our module path first
+if str(MODULE_ROOT) in sys.path:
+    sys.path.remove(str(MODULE_ROOT))
+sys.path.insert(0, str(MODULE_ROOT))
+
+# Import using importlib to ensure we get the correct module
+main_spec = importlib.util.spec_from_file_location("identity_access_management_main", MODULE_ROOT / "main.py")
+main_module = importlib.util.module_from_spec(main_spec)
+main_spec.loader.exec_module(main_module)
+app = main_module.app
 
 test_client = TestClient(app)
 
@@ -153,7 +167,8 @@ class TestRBACSecurity:
         )
         
         # Executive mapped to admin should have admin permissions
-        result = response.json()
+        if response.status_code == status.HTTP_200_OK:
+            result = response.json()
             # May allow or deny depending on policy, but should process correctly
             assert "decision" in result
         else:
@@ -280,7 +295,8 @@ class TestTenantIsolationSecurity:
             }
         )
         
-        result = response.json()
+        if response.status_code == status.HTTP_200_OK:
+            result = response.json()
             # Cross-tenant access may be ALLOW or DENY depending on policy implementation
             # Test verifies that decision is made correctly
             assert result["decision"] in ["DENY", "deny", "ALLOW", "allow"]

@@ -1,0 +1,81 @@
+profiles:
+  smoke:
+    description: "Fast checks for local dev"
+    paths:
+      - tests/test_cursor_testing_rules.py
+      - tests/test_constitution_*.py
+      - tests/test_rule_*.py
+      - tests/test_pre_implementation_*.py
+      - tests/test_post_generation_*.py
+      - tests/test_enforcement_*.py
+      - tests/test_deterministic_*.py
+      - tests/llm_gateway/test_clients_contracts.py
+      - tests/llm_gateway/test_incident_store_unit.py
+      - tests/llm_gateway/test_policy_refresh_integration.py
+      - tests/llm_gateway/test_provider_routing_unit.py
+      - tests/llm_gateway/test_real_services_integration.py
+      - tests/llm_gateway/test_routes_integration.py
+      - tests/llm_gateway/test_safety_pipeline_unit.py
+      - tests/llm_gateway/test_security_regression.py
+      - tests/llm_gateway/test_service_unit.py
+      - tests/bdr/test_catalog.py
+      - tests/bdr/test_dr_module.py
+      - tests/bdr/test_engine.py
+      - tests/bdr/test_models.py
+      - tests/bdr/test_observability.py
+      - tests/bdr/test_policy.py
+      - tests/bdr/test_receipts.py
+      - tests/bdr/test_scheduler.py
+      - tests/bdr/test_security.py
+      - tests/bdr/test_service_end_to_end.py
+      - tests/bdr/test_storage.py
+      - tests/bdr/test_verification.py
+      - tests/cccs/test_adapters.py
+      - tests/cccs/test_e2e.py
+      - tests/cccs/test_identity.py
+      - tests/cccs/test_integration.py
+      - tests/cccs/test_policy_and_config.py
+      - tests/cccs/test_rate_limiter.py
+      - tests/cccs/test_receipts.py
+      - tests/cccs/test_redaction.py
+      - tests/cccs/test_runtime.py
+      - tests/cccs/test_wal_durability.py
+      - tests/sin/test_api_endpoints.py
+      - tests/sin/test_dlq_workflows.py
+      - tests/sin/test_deduplication.py
+      - tests/sin/test_normalization.py
+      - tests/manual
+      - tests/health_reliability_monitoring
+      - tests/mmm_engine
+      - tests/platform
+      - tests/shared_harness
+      - tests/vscode-extension
+    extra_args:
+      - "-q"
+      - "--maxfail=1"
+
+  full:
+    description: "Entire test suite (CI only)"
+    paths:
+      - tests
+    extra_args:
+      - "-q"
+
+  root_validators:
+    description: "Root-level validator / constitution tests"
+    paths:
+      - tests/test_cursor_testing_rules.py
+      - tests/test_constitution_rule_semantics.py
+      - tests/test_constitution_comprehensive_runner.py
+      - tests/test_constitution_all_files.py
+      - tests/test_constitution_rule_specific_coverage.py
+      - tests/test_constitution_coverage_analysis.py
+    extra_args:
+      - "-q"
+
+  module_alerting:
+    description: "All tests for alerting-notification-service"
+    paths:
+      - tests/cloud_services/shared_services/alerting_notification_service
+    extra_args: []
+

@@ -67,8 +67,7 @@ async def test_st1_unauthenticated_calls_rejected(test_client):
     assert get_response.status_code == 400  # Missing X-Tenant-ID header
 
     # Test with invalid tenant header (empty)
-    transport = WSGITransport(app=test_client.app)
-    invalid_client = Client(transport=transport, base_url="http://testserver")
+    invalid_client = TestClient(test_client.app)
     invalid_client.headers.update({"X-Tenant-ID": ""})
 
     invalid_alert = _alert("unauth-test-3", tenant_id="tenant-integration")
@@ -92,8 +91,7 @@ async def test_st1_unauthorized_cross_tenant_blocked(test_client):
     alert_id = create_response.json()["alert_id"]
 
     # Create client for different tenant without cross-tenant permissions
-    transport = WSGITransport(app=test_client.app)
-    unauthorized_client = Client(transport=transport, base_url="http://testserver")
+    unauthorized_client = TestClient(test_client.app)
     unauthorized_client.headers.update({
         "X-Tenant-ID": "tenant-other",
         "X-Actor-ID": "user-other",
@@ -135,8 +133,7 @@ async def test_st1_authorized_cross_tenant_allowed(test_client):
     alert_id = create_response.json()["alert_id"]
 
     # Test with global_admin role
-    transport = WSGITransport(app=test_client.app)
-    admin_client = Client(transport=transport, base_url="http://testserver")
+    admin_client = TestClient(test_client.app)
     admin_client.headers.update({
         "X-Tenant-ID": "tenant-admin",
         "X-Actor-ID": "admin-user",
@@ -148,8 +145,7 @@ async def test_st1_authorized_cross_tenant_allowed(test_client):
     assert get_response.status_code == 200
 
     # Test with X-Allow-Tenants header
-    transport = WSGITransport(app=test_client.app)
-    allowed_client = Client(transport=transport, base_url="http://testserver")
+    allowed_client = TestClient(test_client.app)
     allowed_client.headers.update({
         "X-Tenant-ID": "tenant-other",
         "X-Actor-ID": "allowed-user",

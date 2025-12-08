@@ -79,8 +79,14 @@ class PolicyLoader:
         snapshot_hash = _hash_payload(datasets_raw) + _hash_payload(plans_raw)
 
         try:
-            datasets = [Dataset.model_validate(item) for item in datasets_raw]
-            plans = [BackupPlan.model_validate(item) for item in plans_raw]
+            def _normalize_plane(entry):
+                if isinstance(entry, dict) and "plane" in entry and isinstance(entry["plane"], str):
+                    entry = dict(entry)
+                    entry["plane"] = entry["plane"].replace("-", "_")
+                return entry
+
+            datasets = [Dataset.model_validate(_normalize_plane(item)) for item in datasets_raw]
+            plans = [BackupPlan.model_validate(_normalize_plane(plan)) for plan in plans_raw]
         except ValidationError as exc:
             msg = f"Policy validation failed: {exc}"
             raise PolicyLoadError(msg) from exc

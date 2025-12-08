@@ -15,8 +15,8 @@ import importlib.util
 from pathlib import Path
 
 # Add parent directories to path for imports
-# From tests/unit/test_services.py, go up 3 levels to ollama-ai-agent directory
-PACKAGE_ROOT = Path(__file__).resolve().parents[3] / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent"
+# From tests/unit/test_services.py, go up to project root
+PACKAGE_ROOT = Path(__file__).resolve().parents[5] / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent"
 # Path setup handled by conftest.py
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('ollama_ai_agent')
@@ -24,10 +24,16 @@ sys.modules['ollama_ai_agent'] = parent_pkg
 
 # Load models module first (needed by services)
 models_path = PACKAGE_ROOT / "models.py"
-spec_models = importlib.util.spec_from_file_location("ollama_ai_agent.models", models_path)
-models_module = importlib.util.module_from_spec(spec_models)
-sys.modules['ollama_ai_agent.models'] = models_module
-spec_models.loader.exec_module(models_module)
+if models_path.exists():
+    spec_models = importlib.util.spec_from_file_location("ollama_ai_agent.models", models_path)
+    if spec_models is not None and spec_models.loader is not None:
+        models_module = importlib.util.module_from_spec(spec_models)
+        sys.modules['ollama_ai_agent.models'] = models_module
+        spec_models.loader.exec_module(models_module)
+    else:
+        models_module = None
+else:
+    models_module = None
 
 # Load services module
 services_path = PACKAGE_ROOT / "services.py"

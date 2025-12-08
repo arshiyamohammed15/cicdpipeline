@@ -54,6 +54,7 @@ except ImportError:
         tenant_id: str
         environment: Environment
         producer_id: str
+        provider_id: Optional[str] = None
         actor_id: Optional[str] = None
         signal_kind: SignalKind
         signal_type: str
@@ -129,6 +130,7 @@ class SignalMapper:
             tenant_id=tenant_id,
             environment=self.environment,
             producer_id=connection_id,  # Adapter acts as producer for PM-3
+            provider_id=provider_id,
             signal_kind=SignalKind.EVENT,
             signal_type=canonical_signal_type,
             occurred_at=occurred_at,
@@ -138,6 +140,11 @@ class SignalMapper:
             payload=payload,
             schema_version=self.schema_version,
         )
+        # Ensure provider_id attribute is present even if underlying model omits it.
+        try:
+            object.__setattr__(signal_envelope, "provider_id", provider_id)
+        except Exception:
+            pass
         
         return signal_envelope
 
@@ -166,8 +173,6 @@ class SignalMapper:
             "issue.commented": "issue_commented",
             # Slack
             "message.posted": "chat_message",
-            # Generic
-            "event": "event",
         }
         
         # Try direct mapping first (full event type)
@@ -202,7 +207,7 @@ class SignalMapper:
                     return canonical
         
         # Default: use event type as-is (normalized)
-        return event_type.replace(".", "_").replace("-", "_")
+        return "unknown_event"
 
     def _extract_resource_context(self, provider_id: str, provider_event: Dict[str, Any]) -> Optional[Resource]:
         """
@@ -229,13 +234,19 @@ class SignalMapper:
             
             # Extract branch
             if "ref" in provider_event:
-                resource_data["branch"] = provider_event["ref"]
+                branch_ref = provider_event["ref"]
+                if isinstance(branch_ref, str) and branch_ref.startswith("refs/heads/"):
+                    branch_ref = branch_ref.split("/", 2)[-1]
+                resource_data["branch"] = branch_ref
             elif "pull_request" in provider_event:
                 pr = provider_event["pull_request"]
                 if isinstance(pr, dict) and "head" in pr:
                     head = pr["head"]
                     if isinstance(head, dict) and "ref" in head:
-                        resource_data["branch"] = head["ref"]
+                        branch_ref = head["ref"]
+                        if isinstance(branch_ref, str) and branch_ref.startswith("refs/heads/"):
+                            branch_ref = branch_ref.split("/", 2)[-1]
+                        resource_data["branch"] = branch_ref
             
             # Extract PR ID
             if "pull_request" in provider_event:

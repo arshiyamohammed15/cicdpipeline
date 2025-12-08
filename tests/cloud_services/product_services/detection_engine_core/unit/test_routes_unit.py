@@ -24,6 +24,9 @@ from detection_engine_core.models import (
     DecisionRequest, DecisionResponse, EvaluationPoint, DecisionStatus,
     FeedbackRequest, FeedbackResponse, HealthResponse, ReadinessResponse
 )
+import detection_engine_core.models as dec_models
+import sys
+sys.modules["models"] = dec_models
 from detection_engine_core.services import DetectionEngineService
 
 

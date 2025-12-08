@@ -30,7 +30,11 @@
     "test:fast": "python tools/test_registry/test_runner.py",
     "test:fast:security": "python tools/test_registry/test_runner.py --marker security --parallel",
     "test:fast:unit": "python tools/test_registry/test_runner.py --marker unit --parallel",
-    "test:fast:clear-cache": "python tools/test_registry/clear_cache.py"
+    "test:fast:clear-cache": "python tools/test_registry/clear_cache.py",
+    "test:all": "python run_all_tests_complete.py",
+    "test:all:quick": "python run_all_tests_quick.py",
+    "test:quick": "python test_quick.py",
+    "test:all:powershell": "powershell -ExecutionPolicy Bypass -File run_all_tests_one_click.ps1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

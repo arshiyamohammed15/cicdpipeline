@@ -279,6 +279,44 @@ class BudgetService:
 
         return sorted_budgets[0]
 
+    def resolve_overlapping_budgets(
+        self,
+        tenant_id: str,
+        budget_type: Optional[str] = None,
+        allocated_to_type: Optional[str] = None,
+        allocated_to_id: Optional[str] = None,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Public helper to resolve overlapping budgets for a tenant.
+
+        Returns the most restrictive budget (highest priority, lowest amount)
+        as a dictionary, or None if no applicable budgets exist.
+        """
+        query = self.db.query(BudgetDefinition).filter(BudgetDefinition.tenant_id == uuid.UUID(tenant_id))
+        if budget_type:
+            query = query.filter(BudgetDefinition.budget_type == budget_type)
+        if allocated_to_type and allocated_to_id:
+            query = query.filter(
+                and_(
+                    BudgetDefinition.allocated_to_type == allocated_to_type,
+                    BudgetDefinition.allocated_to_id == uuid.UUID(allocated_to_id),
+                )
+            )
+        budgets = query.all()
+        resolved = self._resolve_overlapping_budgets(budgets)
+        if not resolved:
+            return None
+        return {
+            "budget_id": str(resolved.budget_id),
+            "tenant_id": str(resolved.tenant_id),
+            "budget_type": resolved.budget_type,
+            "budget_amount": resolved.budget_amount,
+            "period_type": resolved.period_type,
+            "allocated_to_type": resolved.allocated_to_type,
+            "allocated_to_id": str(resolved.allocated_to_id),
+            "enforcement_action": resolved.enforcement_action,
+        }
+
     def create_budget(
         self,
         tenant_id: str,

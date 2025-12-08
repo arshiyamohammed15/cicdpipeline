@@ -35,9 +35,14 @@ class CorrelationService:
 
     async def _find_match(self, alert: Alert, rules, window_minutes: int) -> Optional[Incident]:
         window_start = datetime.utcnow() - timedelta(minutes=window_minutes)
-        statement = select(Incident).where(
-            Incident.tenant_id == alert.tenant_id,
-            Incident.opened_at >= window_start,
+        # Prefer the most recently opened incident first to avoid stale matches
+        statement = (
+            select(Incident)
+            .where(
+                Incident.tenant_id == alert.tenant_id,
+                Incident.opened_at >= window_start,
+            )
+            .order_by(Incident.opened_at.desc())
         )
         # Use session.execute() with proper ORM mapping
         # The deprecation warning is from SQLModel internals, not our usage

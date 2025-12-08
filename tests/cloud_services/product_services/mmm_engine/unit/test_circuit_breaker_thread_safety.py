@@ -30,6 +30,7 @@ def test_circuit_breaker_thread_safety():
     def test_call(i: int) -> None:
         """Test function that may succeed or fail."""
         try:
+            if i < 3:
                 # First 3 calls succeed
                 result = cb.call(lambda: f"success-{i}")
                 results.append(result)
@@ -120,29 +121,29 @@ def test_circuit_breaker_fallback_thread_safety():
 
     def test_with_fallback(i: int) -> None:
         """Test function with fallback."""
-        try:
-                # First 2 calls succeed
-                result = cb.call(lambda: f"success-{i}")
+        if i < 2:
+            # First 2 calls succeed
+            result = cb.call(lambda: f"success-{i}")
+            with results_lock:
+                results.append(result)
+        else:
+            # Remaining calls fail, should use fallback
+            try:
+                result = cb.call(
+                    lambda: (_ for _ in ()).throw(Exception("error")),
+                    fallback=lambda: f"fallback-{i}"
+                )
                 with results_lock:
                     results.append(result)
-            else:
-                # Remaining calls fail, should use fallback
-                try:
-                    result = cb.call(
-                        lambda: (_ for _ in ()).throw(Exception("error")),
-                        fallback=lambda: f"fallback-{i}"
-                    )
-                    with results_lock:
-                        results.append(result)
-                except RuntimeError:
-                    # Circuit breaker open, use fallback
-                    result = cb.call(lambda: None, fallback=lambda: f"fallback-open-{i}")
-                    with results_lock:
-                        results.append(result)
-        except Exception as e:
-            # Any other exception, still record
-            with results_lock:
-                results.append(f"exception-{i}: {type(e).__name__}")
+            except RuntimeError:
+                # Circuit breaker open, use fallback
+                result = cb.call(lambda: None, fallback=lambda: f"fallback-open-{i}")
+                with results_lock:
+                    results.append(result)
+            except Exception as e:
+                # Any other exception, still record
+                with results_lock:
+                    results.append(f"exception-{i}: {type(e).__name__}")
 
     # Create threads
     threads = [threading.Thread(target=test_with_fallback, args=(i,)) for i in range(5)]

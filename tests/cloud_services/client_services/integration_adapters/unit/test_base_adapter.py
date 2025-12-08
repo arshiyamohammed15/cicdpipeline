@@ -11,11 +11,30 @@ Coverage Target: 100%
 
 import pytest
 from uuid import uuid4
+import sys
+import types
+from enum import Enum
+from datetime import datetime
 
 # Module setup handled by root conftest.py
 
 from integration_adapters.adapters.base import BaseAdapter
 from integration_adapters.models import NormalisedActionCreate
+
+# Provide shim models module to satisfy adapter imports.
+_models = types.ModuleType("models")
+
+class ActionStatus(Enum):
+    COMPLETED = "completed"
+
+class NormalisedActionResponse:
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+_models.ActionStatus = ActionStatus
+_models.NormalisedActionResponse = NormalisedActionResponse
+sys.modules["models"] = _models
 
 class ConcreteAdapter(BaseAdapter):
     """Concrete adapter for testing."""
@@ -27,8 +46,6 @@ class ConcreteAdapter(BaseAdapter):
         return [], "new-cursor"
 
     def execute_action(self, action):
-        from models import NormalisedActionResponse, ActionStatus
-        from datetime import datetime
         return NormalisedActionResponse(
             action_id=uuid4(),
             tenant_id=self.tenant_id,

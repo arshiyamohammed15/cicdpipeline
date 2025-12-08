@@ -19,10 +19,17 @@ sys.modules['signal_ingestion_normalization'] = parent_pkg
 
 # Load required modules
 # Models imported via root conftest
-spec_models = importlib.util.spec_from_file_location("signal_ingestion_normalization.models", Path(__file__).parent.parent.parent.parent / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent")
-models_module = importlib.util.module_from_spec(spec_models)
-sys.modules['signal_ingestion_normalization.models'] = models_module
-spec_models.loader.exec_module(models_module)
+models_path = PACKAGE_ROOT / "models.py"
+if models_path.exists():
+    spec_models = importlib.util.spec_from_file_location("signal_ingestion_normalization.models", models_path)
+    if spec_models is not None and spec_models.loader is not None:
+        models_module = importlib.util.module_from_spec(spec_models)
+        sys.modules['signal_ingestion_normalization.models'] = models_module
+        spec_models.loader.exec_module(models_module)
+    else:
+        models_module = None
+else:
+    models_module = None
 
 producer_registry_path = PACKAGE_ROOT / "producer_registry.py"
 spec_producer = importlib.util.spec_from_file_location("signal_ingestion_normalization.producer_registry", producer_registry_path)
@@ -85,8 +92,11 @@ class TestValidationEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={"message": "test"},
+            schema_version="1.0.0",
         )
 
         is_valid, error = engine.validate_structure(signal)
@@ -106,8 +116,11 @@ class TestValidationEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
         is_valid, error = engine.validate_structure(signal)
@@ -128,8 +141,11 @@ class TestValidationEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
         is_valid, error = engine.validate_structure(signal)
@@ -140,7 +156,7 @@ class TestValidationEngine:
     def test_validate_producer_registered(self):
         """Test producer validation when producer is registered."""
         producer_registry = Mock(spec=ProducerRegistry)
-        producer_registry.is_registered.return_value = True
+        producer_registry.get_producer.return_value = Mock()
         governance_enforcer = Mock(spec=GovernanceEnforcer)
         engine = ValidationEngine(producer_registry, governance_enforcer)
 
@@ -151,8 +167,11 @@ class TestValidationEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
         is_valid, error = engine.validate_producer(signal)
@@ -162,7 +181,7 @@ class TestValidationEngine:
     def test_validate_producer_not_registered(self):
         """Test producer validation when producer is not registered."""
         producer_registry = Mock(spec=ProducerRegistry)
-        producer_registry.is_registered.return_value = False
+        producer_registry.get_producer.return_value = None
         governance_enforcer = Mock(spec=GovernanceEnforcer)
         engine = ValidationEngine(producer_registry, governance_enforcer)
 
@@ -173,8 +192,11 @@ class TestValidationEngine:
             signal_kind=SignalKind.EVENT,
             plane=Plane.TENANT_CLOUD,
             environment=Environment.DEV,
-            timestamp="2025-01-01T00:00:00Z",
-            payload={}
+            signal_type="event",
+            occurred_at="2025-01-01T00:00:00Z",
+            ingested_at="2025-01-01T00:00:00Z",
+            payload={},
+            schema_version="1.0.0",
         )
 
         is_valid, error = engine.validate_producer(signal)

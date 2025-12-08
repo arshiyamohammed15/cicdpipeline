@@ -13,6 +13,94 @@ import pytest
 from datetime import datetime
 from uuid import uuid4
 
+@pytest.fixture
+def sample_tenant_id():
+    return "tenant-default"
+
+@pytest.fixture
+def provider_repo():
+    class Repo:
+        def __init__(self):
+            self.providers = {}
+
+        def create(self, provider):
+            self.providers[provider.provider_id] = provider
+            return provider
+
+        def get_by_id(self, provider_id):
+            return self.providers.get(provider_id)
+
+        def get_all(self):
+            return list(self.providers.values())
+
+        def get_by_category(self, category):
+            return [p for p in self.providers.values() if p.category == category]
+
+        def update(self, provider):
+            self.providers[provider.provider_id] = provider
+            return provider
+
+        def delete(self, provider_id):
+            return self.providers.pop(provider_id, None) is not None
+
+    return Repo()
+
+
+@pytest.fixture
+def connection_repo():
+    class Repo:
+        def __init__(self):
+            self.connections = {}
+
+        def create(self, connection):
+            self.connections[connection.connection_id] = connection
+            return connection
+
+        def get_by_id(self, connection_id, tenant_id):
+            conn = self.connections.get(connection_id)
+            if conn and conn.tenant_id == tenant_id:
+                return conn
+            return None
+
+        def get_all_by_tenant(self, tenant_id):
+            return [c for c in self.connections.values() if c.tenant_id == tenant_id]
+
+        def get_by_status(self, tenant_id, status):
+            return [c for c in self.connections.values() if c.tenant_id == tenant_id and c.status == status]
+
+        def delete(self, connection_id, tenant_id):
+            conn = self.connections.get(connection_id)
+            if conn and conn.tenant_id == tenant_id:
+                self.connections.pop(connection_id, None)
+                return True
+            return False
+
+    return Repo()
+
+@pytest.fixture
+def action_repo():
+    class Repo:
+        def __init__(self):
+            self.actions = []
+
+        def create(self, action):
+            existing = self.get_by_idempotency_key(action.idempotency_key, action.tenant_id)
+            if existing:
+                return existing
+            self.actions.append(action)
+            return action
+
+        def get_by_idempotency_key(self, key, tenant_id):
+            for action in self.actions:
+                if action.idempotency_key == key and action.tenant_id == tenant_id:
+                    return action
+            return None
+
+        def get_pending_by_tenant(self, tenant_id):
+            return [a for a in self.actions if a.tenant_id == tenant_id and getattr(a, "status", None) == "pending"]
+
+    return Repo()
+
 # Module setup handled by root conftest.py
 
 from integration_adapters.database.models import (

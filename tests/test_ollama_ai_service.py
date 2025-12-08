@@ -929,17 +929,24 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
         # However, the code currently uses "tinyllama" even when config has model_id
         # This test documents the actual behavior
         config_has_model_id = service.tinyllama_config and service.tinyllama_config.get("model_id")
+        if config_has_model_id:
             # Config has model_id, but code currently uses "tinyllama" in the response
             # The response model comes from the API response, which may have the model
             # But if not, it falls back to default_model which is "tinyllama"
             # This documents the actual behavior
-            self.assertEqual(result.model, "tinyllama",
-                           f"Config has model_id={service.tinyllama_config.get('model_id')}, "
-                           f"but response model is 'tinyllama'. This may indicate a bug.")
+            self.assertEqual(
+                result.model,
+                "tinyllama",
+                f"Config has model_id={service.tinyllama_config.get('model_id')}, "
+                f"but response model is 'tinyllama'. This may indicate a bug.",
+            )
         else:
             # If config is empty or falsy, uses "tinyllama"
-            self.assertEqual(result.model, "tinyllama",
-                           f"Config is {service.tinyllama_config}, expected 'tinyllama'")
+            self.assertEqual(
+                result.model,
+                "tinyllama",
+                f"Config is {service.tinyllama_config}, expected 'tinyllama'",
+            )
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')

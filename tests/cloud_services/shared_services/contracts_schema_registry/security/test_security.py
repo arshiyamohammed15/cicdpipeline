@@ -32,11 +32,11 @@ class TestTenantIsolation:
         # Try to access from different tenant context
         if register_response.status_code == status.HTTP_201_CREATED:
             schema_id = register_response.json().get("schema_id")
-                # Attempt access with different tenant
-                get_response = client.get(f"/registry/v1/schemas/{schema_id}")
-                
-                # Should either allow (if no tenant isolation) or deny
-                assert get_response.status_code in [
+            # Attempt access with different tenant
+            get_response = client.get(f"/registry/v1/schemas/{schema_id}")
+            
+            # Should either allow (if no tenant isolation) or deny
+            assert get_response.status_code in [
                     status.HTTP_200_OK,
                     status.HTTP_403_FORBIDDEN,
                     status.HTTP_404_NOT_FOUND

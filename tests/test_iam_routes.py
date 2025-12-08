@@ -67,11 +67,12 @@ iam_dir = project_root / "src" / "cloud_services" / "shared-services" / "identit
 
 # Create parent package structure
 parent_pkg = type(sys)('identity_access_management')
+parent_pkg.__path__ = [str(iam_dir)]
 sys.modules['identity_access_management'] = parent_pkg
 
 # Load main module
 main_path = iam_dir / "main.py"
-spec_main = importlib.util.spec_from_file_location("identity-access-management.main", main_path)
+spec_main = importlib.util.spec_from_file_location("identity_access_management.main", main_path)
 main_module = importlib.util.module_from_spec(spec_main)
 
 # Load dependencies first
