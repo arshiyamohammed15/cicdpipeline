@@ -10,6 +10,8 @@ budgets exceed thresholds.
 # Imports handled by conftest.py
 
 import pytest
+import uuid
+from datetime import datetime
 from decimal import Decimal
 
 import sys
@@ -19,7 +21,7 @@ root = Path(__file__).resolve().parent.parent.parent.parent.parent.parent
 if str(root) not in sys.path:
     sys.path.insert(0, str(root))
 
-from tests.shared_harness import BudgetFixtureFactory, EvidencePackBuilder, TenantFactory
+from tests.shared_harness import EvidencePackBuilder
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -41,9 +43,9 @@ MODULE_ROOT = Path(__file__).resolve().parents[4] / "src" / "cloud_services" / "
 if str(MODULE_ROOT) not in sys.path:
     sys.path.insert(0, str(MODULE_ROOT))
 
-from database.models import Base
-from services.budget_service import BudgetService
-from dependencies import MockM29DataPlane
+from budgeting_rate_limiting_cost_observability.database.models import Base
+from budgeting_rate_limiting_cost_observability.services.budget_service import BudgetService
+from budgeting_rate_limiting_cost_observability.dependencies import MockM29DataPlane
 
 
 @pytest.fixture
@@ -99,38 +101,41 @@ def budget_service(db_session):
     return BudgetService(db_session, MockM29DataPlane(), event_service)
 
 
+@pytest.fixture
+def evidence_builder(tmp_path) -> EvidencePackBuilder:
+    """Provide an evidence builder that writes to a temporary directory."""
+    return EvidencePackBuilder(output_dir=tmp_path)
+
+
 @pytest.mark.budgeting_regression
 @pytest.mark.compliance
 def test_threshold_breach_emits_receipt_and_alert(
     budget_service: BudgetService,
-    tenant_factory: TenantFactory,
-    budget_factory: BudgetFixtureFactory,
     evidence_builder: EvidencePackBuilder | None,
 ) -> None:
     """Test that budget threshold breach emits ERIS receipt and alert."""
-    tenant = tenant_factory.create()
-    budget = budget_factory.create_budget(tenant, budget_amount=1000.0)
+    tenant_uuid = str(uuid.uuid4())
+    budget_amount = Decimal("1000.0")
 
     created = budget_service.create_budget(
-        tenant_id=budget.tenant_id,
-        budget_type=budget.budget_type,
-        budget_amount=Decimal(str(budget.budget_amount)),
-        period_type=budget.period_type,
+        tenant_id=tenant_uuid,
+        budget_name="threshold-budget",
+        budget_type="tenant",
+        budget_amount=budget_amount,
+        period_type="monthly",
+        start_date=datetime.utcnow(),
+        allocated_to_type="tenant",
+        allocated_to_id=tenant_uuid,
         enforcement_action="hard_stop",
     )
 
-    # Exceed threshold (80% threshold)
-    budget_service.record_usage(
-        tenant_id=budget.tenant_id,
-        budget_id=created["budget_id"],
-        amount=Decimal("850.0"),  # 85% utilization
-    )
-
-    # Trigger threshold check
+    # Exceed threshold (80% threshold) via check_budget
     check = budget_service.check_budget(
-        tenant_id=budget.tenant_id,
-        budget_id=created["budget_id"],
-        requested_amount=Decimal("100.0"),
+        tenant_id=tenant_uuid,
+        resource_type="api_calls",
+        estimated_cost=Decimal("850.0"),  # 85% utilization
+        allocated_to_type="tenant",
+        allocated_to_id=tenant_uuid,
     )
 
     # Verify event was emitted
@@ -144,8 +149,8 @@ def test_threshold_breach_emits_receipt_and_alert(
         evidence_builder.add_receipt({
             "receipt_id": breach_event["correlation_id"],
             "operation": "budget_threshold_exceeded",
-            "tenant_id": tenant.tenant_id,
-            "budget_id": created["budget_id"],
+            "tenant_id": tenant_uuid,
+            "budget_id": str(created.budget_id),
             "payload": breach_event,
         })
 

@@ -2,6 +2,18 @@
 Starter tests for Data Governance & Privacy routes.
 """
 
+import pytest
+from fastapi.testclient import TestClient
+
+from data_governance_privacy.main import app  # type: ignore
+
+
+@pytest.fixture
+def test_client() -> TestClient:
+    """FastAPI test client for privacy service routes."""
+    return TestClient(app)
+
+
 def test_health_endpoint(test_client):
     response = test_client.get("/privacy/v1/health")
     assert response.status_code == 200
@@ -62,4 +74,3 @@ def test_privacy_enforcement_smoke(test_client):
     response = test_client.post("/privacy/v1/compliance", json=payload)
     # 422 = validation error (endpoint exists and validates), 200 = success, 400 = bad request
     assert response.status_code in {200, 400, 422}
-

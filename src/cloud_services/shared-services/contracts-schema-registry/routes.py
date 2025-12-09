@@ -259,7 +259,18 @@ async def get_schema(
     """Get schema by ID."""
     context = get_tenant_context(request)
 
-    schema = service.get_schema(schema_id, context["tenant_id"], version)
+    try:
+        schema = service.get_schema(schema_id, context["tenant_id"], version)
+    except ValueError as exc:
+        error_response = create_error_response(
+            ErrorCode.SCHEMA_NOT_FOUND,
+            str(exc),
+            tenant_id=context["tenant_id"]
+        )
+        raise HTTPException(
+            status_code=get_http_status(ErrorCode.SCHEMA_NOT_FOUND),
+            detail=error_response.model_dump()
+        )
     if not schema:
         error_response = create_error_response(
             ErrorCode.SCHEMA_NOT_FOUND,

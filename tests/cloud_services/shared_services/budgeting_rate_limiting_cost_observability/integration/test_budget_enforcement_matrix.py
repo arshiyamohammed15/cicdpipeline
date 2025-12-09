@@ -205,10 +205,10 @@ def test_overlapping_budgets_most_restrictive_wins(
         created_budgets.append(created)
 
     # Check budget resolution - should use most restrictive (200.0 from user budget)
-    resolved = budget_service.resolve_overlapping_budgets(
-        tenant_id=tenant.tenant_id,
-        budget_type="user",
-    )
+        resolved = budget_service.resolve_overlapping_budgets(
+            tenant_id=str(tenant_uuid),
+            budget_type="user",
+        )
 
     # Most restrictive should be user budget (200.0)
     assert resolved is not None

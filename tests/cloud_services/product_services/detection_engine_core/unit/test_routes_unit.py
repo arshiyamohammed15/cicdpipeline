@@ -16,6 +16,7 @@ from fastapi import HTTPException
 
 # Module setup handled by root conftest.py.parent.parent))
 
+import detection_engine_core.routes as routes
 from detection_engine_core.routes import (
     router, get_service, get_tenant_id,
     evaluate_decision, submit_feedback, health_check, readiness_check
@@ -36,7 +37,6 @@ class TestGetService:
     def test_get_service_returns_service_instance(self):
         """Test that get_service returns DetectionEngineService instance"""
         # Clear global service
-        import routes
         routes._service = None
 
         service = get_service()
@@ -45,7 +45,6 @@ class TestGetService:
 
     def test_get_service_caches_service_instance(self):
         """Test that get_service caches service instance"""
-        import routes
         routes._service = None
 
         service1 = get_service()

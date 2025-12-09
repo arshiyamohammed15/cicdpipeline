@@ -11,6 +11,8 @@ and `/rate-limits/check` APIs.
 
 import asyncio
 import time
+import uuid
+from decimal import Decimal
 
 import pytest
 
@@ -24,7 +26,7 @@ if str(root) not in sys.path:
 from tests.shared_harness import BudgetFixtureFactory, PerfRunner, PerfScenario, RateLimitFixture, TenantFactory
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
 import sys
@@ -54,9 +56,11 @@ def db_session():
     )
     Base.metadata.create_all(engine)
     SessionLocal = sessionmaker(bind=engine)
-    session = SessionLocal()
-    yield session
-    session.close()
+    scoped = scoped_session(SessionLocal)
+    try:
+        yield scoped
+    finally:
+        scoped.remove()
 
 
 class DummyEventService:
@@ -85,22 +89,28 @@ async def test_budget_check_latency_under_10ms(
 ) -> None:
     """Test that budget check latency stays under 10ms p95."""
     tenant = tenant_factory.create()
+    tenant_uuid = str(uuid.uuid4())
     budget = budget_factory.create_budget(tenant, budget_amount=1000.0)
 
     created = budget_service.create_budget(
-        tenant_id=budget.tenant_id,
+        tenant_id=tenant_uuid,
         budget_type=budget.budget_type,
-        budget_amount=1000.0,
+        budget_amount=Decimal("1000.0"),
         period_type=budget.period_type,
+        budget_name=f"{budget.budget_type}-budget",
+        start_date=budget.start_date,
+        allocated_to_type=budget.budget_type,
+        allocated_to_id=tenant_uuid,
         enforcement_action="hard_stop",
     )
 
     async def check_budget_once() -> None:
-        await asyncio.to_thread(
-            budget_service.check_budget,
-            tenant_id=budget.tenant_id,
-            budget_id=created["budget_id"],
-            requested_amount=100.0,
+        budget_service.check_budget(
+            tenant_id=tenant_uuid,
+            resource_type="api_calls",
+            estimated_cost=Decimal("100.0"),
+            allocated_to_type=budget.budget_type,
+            allocated_to_id=tenant_uuid,
         )
 
     scenario = PerfScenario(
@@ -125,11 +135,12 @@ async def test_rate_limit_check_latency_under_5ms(
 ) -> None:
     """Test that rate limit check latency stays under 5ms p95."""
     tenant = tenant_factory.create()
+    tenant_uuid = str(uuid.uuid4())
 
     policy = rate_limit_service.create_rate_limit_policy(
-        tenant_id=tenant.tenant_id,
+        tenant_id=tenant_uuid,
         scope_type="tenant",
-        scope_id=tenant.tenant_id,
+        scope_id=tenant_uuid,
         resource_type="api_calls",
         limit_value=100,
         time_window_seconds=60,
@@ -137,12 +148,11 @@ async def test_rate_limit_check_latency_under_5ms(
     )
 
     async def check_rate_limit_once() -> None:
-        await asyncio.to_thread(
-            rate_limit_service.check_rate_limit,
-            tenant_id=tenant.tenant_id,
-            policy_id=policy["policy_id"],
+        rate_limit_service.check_rate_limit(
+            tenant_id=tenant_uuid,
             resource_type="api_calls",
-            requested_units=1,
+            request_count=1,
+            resource_key="api_calls",
         )
 
     scenario = PerfScenario(

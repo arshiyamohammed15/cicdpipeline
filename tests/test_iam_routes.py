@@ -55,6 +55,10 @@ except ImportError:
             raise RuntimeError(error_msg) from e
             raise
 
+def create_test_client(app_instance):
+    """Create a TestClient for the IAM app."""
+    return TestClient(app_instance)
+
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))

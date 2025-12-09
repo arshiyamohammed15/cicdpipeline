@@ -47,7 +47,10 @@ async def test_routing_and_notification_flow(session):
     pending = await repo.pending_for_alert("alert-route")
     assert len(pending) > 0
 
-    await routing.record_delivery(pending[0], "sent")
+    first_pending = pending[0]
+    if isinstance(first_pending, str):
+        first_pending = await repo.fetch(first_pending)
+    await routing.record_delivery(first_pending, "sent")
 
 
 @pytest.mark.asyncio

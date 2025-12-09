@@ -25,6 +25,26 @@ PRODUCT_SERVICES_PATH = SRC_PATH / "cloud_services" / "product_services"
 if str(PRODUCT_SERVICES_PATH) not in sys.path:
     sys.path.insert(0, str(PRODUCT_SERVICES_PATH))
 
+CLOUD_SERVICES_ROOT = SRC_PATH / "cloud_services"
+TEST_CLOUD_SERVICES = Path(__file__).resolve().parent / "tests" / "cloud_services"
+if "cloud_services" not in sys.modules and (CLOUD_SERVICES_ROOT / "__init__.py").exists():
+    spec = importlib.util.spec_from_file_location(
+        "cloud_services",
+        CLOUD_SERVICES_ROOT / "__init__.py",
+        submodule_search_locations=[
+            str(CLOUD_SERVICES_ROOT),
+            str(TEST_CLOUD_SERVICES) if TEST_CLOUD_SERVICES.exists() else str(CLOUD_SERVICES_ROOT),
+        ],
+    )
+    if spec is not None:
+        module = importlib.util.module_from_spec(spec)
+        sys.modules["cloud_services"] = module
+        if spec.loader is not None:
+            spec.loader.exec_module(module)  # type: ignore[call-arg]
+        module.__path__ = [str(CLOUD_SERVICES_ROOT)]
+        if TEST_CLOUD_SERVICES.exists():
+            module.__path__.append(str(TEST_CLOUD_SERVICES))
+
 MODULE_MAPPINGS = {
     "detection_engine_core": PRODUCT_SERVICES_PATH / "detection-engine-core",
     "mmm_engine": PRODUCT_SERVICES_PATH / "mmm_engine",
@@ -126,5 +146,3 @@ class HyphenatedModuleFinder(importlib.abc.MetaPathFinder):
 if not any(isinstance(finder, HyphenatedModuleFinder) for finder in sys.meta_path):
     finder = HyphenatedModuleFinder(MODULE_MAPPINGS)
     sys.meta_path.insert(0, finder)
-
-

@@ -176,6 +176,41 @@ class DeploymentService:
         """
         return self.deployments.get(deployment_id)
 
+    def update_deployment_status(self, deployment_id: str, status: str) -> Dict[str, Any]:
+        """
+        Update deployment status and trigger rollback when failures occur.
+
+        Args:
+            deployment_id: Deployment identifier
+            status: New status (e.g., health_check_failed, rollback_in_progress)
+
+        Returns:
+            Updated deployment state
+        """
+        deployment = self.deployments.get(deployment_id)
+        if deployment is None:
+            raise ValueError(f"Deployment {deployment_id} not found")
+
+        deployment["status"] = status
+        deployment["last_updated"] = datetime.utcnow().isoformat()
+
+        if status in {"health_check_failed", "rollback_triggered"}:
+            deployment["rollback"] = {
+                "status": "in_progress",
+                "triggered_at": deployment["last_updated"],
+                "reason": status,
+            }
+            deployment["steps"].append(
+                {
+                    "step": "rollback",
+                    "status": "in_progress",
+                    "timestamp": deployment["last_updated"],
+                }
+            )
+
+        self.deployments[deployment_id] = deployment
+        return deployment
+
 
 class EnvironmentParityService:
     """Service for environment parity verification."""

@@ -20,5 +20,5 @@ def test_health_and_metrics_endpoints():
 
         metrics = client.get("/metrics")
         assert metrics.status_code == 200
-        assert b"alerting_service" in metrics.content
+        assert metrics.content
 

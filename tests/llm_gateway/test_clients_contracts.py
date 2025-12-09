@@ -14,6 +14,7 @@ from typing import Any, Dict, List
 
 import httpx
 import pytest
+from pydantic import constr
 
 from cloud_services.llm_gateway.clients import (  # type: ignore  # pylint: disable=import-error
     AlertingClient,
@@ -24,6 +25,8 @@ from cloud_services.llm_gateway.clients import (  # type: ignore  # pylint: disa
     PolicyClient,
 )
 from cloud_services.llm_gateway.models import Actor  # type: ignore  # pylint: disable=import-error
+
+Actor.model_rebuild(_types_namespace={"constr": constr})
 
 
 class _CaptureClient:
@@ -191,5 +194,3 @@ def test_alerting_client_emits_alert_payload(patch_httpx_client: _CaptureClient)
     assert body["category"] == "safety_incident"
     assert body["metadata"]["risk_class"] == "R1"
     assert body["metadata"]["dedupe_key"] == "tenantA:R1:abc"
-
-

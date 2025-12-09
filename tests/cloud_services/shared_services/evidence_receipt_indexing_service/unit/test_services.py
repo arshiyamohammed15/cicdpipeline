@@ -15,6 +15,7 @@ Tests: UT-1 through UT-9
 import pytest
 from datetime import datetime
 from uuid import uuid4
+from unittest.mock import MagicMock
 
 # Import services - handle both relative and absolute imports
 try:
@@ -53,6 +54,25 @@ except ImportError:
     CourierBatchService = services_module.CourierBatchService
     ExportService = services_module.ExportService
     DLQService = services_module.DLQService
+
+
+@pytest.fixture
+def db_session():
+    """Provide a mock database session for service initialization."""
+    return MagicMock()
+
+
+@pytest.fixture
+def sample_receipt():
+    """Synthetic receipt payload for validation tests."""
+    return {
+        "receipt_id": str(uuid4()),
+        "tenant_id": "tenant-123",
+        "timestamp": datetime.utcnow().isoformat(),
+        "hash": "abc123",
+        "prev_hash": "def456",
+        "signature": "signature",
+    }
 
 
 # UT-1: Schema Validation

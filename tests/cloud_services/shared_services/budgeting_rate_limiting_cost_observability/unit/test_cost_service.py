@@ -88,7 +88,6 @@ class TestCostService:
         """Test cost report generation."""
         tenant_id = str(uuid.uuid4())
         start_time = datetime.utcnow() - timedelta(days=7)
-        end_time = datetime.utcnow()
 
         # Record costs
         for i in range(3):
@@ -100,6 +99,8 @@ class TestCostService:
                 attributed_to_type="tenant",
                 attributed_to_id=tenant_id
             )
+
+        end_time = datetime.utcnow() + timedelta(seconds=1)
 
         report = cost_service.generate_cost_report(
             tenant_id=tenant_id,

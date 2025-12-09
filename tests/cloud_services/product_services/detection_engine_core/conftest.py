@@ -75,3 +75,10 @@ if not any(isinstance(finder, HyphenatedModuleFinder) for finder in sys.meta_pat
 # Also add the directory to sys.path as a fallback
 if str(MODULE_ROOT) not in sys.path:
     sys.path.insert(0, str(MODULE_ROOT))
+
+# Ensure bare `import routes` resolves to detection_engine_core.routes for tests.
+try:
+    import detection_engine_core.routes as de_routes  # type: ignore
+    sys.modules["routes"] = de_routes
+except Exception:
+    pass

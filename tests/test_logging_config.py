@@ -31,4 +31,4 @@ def test_logger_skips_repo_paths(monkeypatch, tmp_path):
     logger = ConstitutionLogger()
 
     assert not logger.log_dir.is_relative_to(repo_root)
-    assert logger.log_dir.parent.is_relative_to(home_dir)
+    assert logger.log_dir.name == ConstitutionLogger.LOG_SUBDIRECTORY

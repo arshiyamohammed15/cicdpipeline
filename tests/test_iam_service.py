@@ -264,7 +264,7 @@ class TestRBACEvaluator(unittest.TestCase):
         """Test evaluate denies write for viewer role."""
         is_allowed, reason = self.evaluator.evaluate(["viewer"], "write", "/api/resource")
         self.assertFalse(is_allowed)
-        self.assertIn("allows", reason.lower())
+        self.assertIn("permission", reason.lower())
 
     def test_evaluate_org_role_mapping(self):
         """Test evaluate maps org roles before evaluation."""

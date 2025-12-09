@@ -239,6 +239,10 @@ class SafetyIncident(BaseModel):
     timestamp_utc: datetime
 
 
+# Resolve postponed annotations for pydantic models that use constr with future annotations
+Actor.model_rebuild(_types_namespace={"constr": constr})
+SafetyIncident.model_rebuild(_types_namespace={"constr": constr})
+
 __all__ = [
     "Actor",
     "ActorType",
@@ -260,4 +264,3 @@ __all__ = [
     "Tokens",
     "SafetyAction",
 ]
-

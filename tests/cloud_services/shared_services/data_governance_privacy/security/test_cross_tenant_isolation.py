@@ -7,6 +7,12 @@ import pytest
 from data_governance_privacy.services import DataGovernanceService  # type: ignore
 
 
+@pytest.fixture
+def governance_service() -> DataGovernanceService:
+    """Provide governance service with mock dependencies."""
+    return DataGovernanceService()
+
+
 @pytest.mark.dgp_security
 @pytest.mark.security
 def test_cross_tenant_export_is_denied(

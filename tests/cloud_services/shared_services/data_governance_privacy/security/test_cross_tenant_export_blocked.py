@@ -12,7 +12,19 @@ read/export Tenant B data, including tampered payloads and parallel sessions.
 import pytest
 
 from data_governance_privacy.services import DataGovernanceService  # type: ignore
-from tests.cloud_services.shared_services.data_governance_privacy.test_harness import IAMTokenFactory, TenantFactory
+from tests.shared_harness import IAMTokenFactory, TenantFactory
+
+
+@pytest.fixture
+def governance_service() -> DataGovernanceService:
+    """Provide a governance service instance for security tests."""
+    return DataGovernanceService()
+
+
+@pytest.fixture
+def token_factory() -> IAMTokenFactory:
+    """Mint test IAM tokens."""
+    return IAMTokenFactory()
 
 
 @pytest.mark.dgp_security

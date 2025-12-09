@@ -99,7 +99,8 @@ class TestErrorHandling:
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         data = response.json()
         # Error message should be present but implementation may sanitize
-        assert "error" in data
+        error_data = data.get("error") or data.get("detail", {}).get("error")
+        assert error_data is not None
 
     @patch('ollama_ai_agent.routes.OllamaAIService')
     def test_timeout_error_handling(self, mock_service_class, test_client):
@@ -115,7 +116,8 @@ class TestErrorHandling:
 
         assert response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR
         data = response.json()
-        assert "error" in data
+        error_data = data.get("error") or data.get("detail", {}).get("error")
+        assert error_data is not None
 
 
 @pytest.mark.security

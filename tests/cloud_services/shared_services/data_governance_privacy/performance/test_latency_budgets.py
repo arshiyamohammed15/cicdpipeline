@@ -7,7 +7,7 @@ import asyncio
 import pytest
 
 from data_governance_privacy.services import DataGovernanceService  # type: ignore
-from tests.cloud_services.shared_services.data_governance_privacy.test_harness import PerfRunner, PerfScenario
+from tests.shared_harness import PerfRunner, PerfScenario
 
 
 @pytest.mark.dgp_performance

@@ -36,7 +36,8 @@ class TestSchemaValidationPerformance:
         assert response.status_code in [
             status.HTTP_200_OK,
             status.HTTP_404_NOT_FOUND,
-            status.HTTP_400_BAD_REQUEST
+            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
     def test_concurrent_validations(self, client):

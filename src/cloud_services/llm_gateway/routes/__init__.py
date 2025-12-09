@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from fastapi import APIRouter
 
-from ..models import DryRunDecision, LLMRequest, LLMResponse
-from ..services import LLMGatewayService, build_default_service
+from cloud_services.llm_gateway.models import DryRunDecision, LLMRequest, LLMResponse
+from cloud_services.llm_gateway.services import LLMGatewayService, build_default_service
 
 router = APIRouter(prefix="/api/v1/llm", tags=["llm-gateway"])
 service: LLMGatewayService = build_default_service()
@@ -29,4 +29,3 @@ async def dry_run_endpoint(request: LLMRequest) -> DryRunDecision:
 @router.get("/safety/incidents")
 def list_incidents() -> dict:
     return service.list_incidents()
-

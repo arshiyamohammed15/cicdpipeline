@@ -175,17 +175,19 @@ class TestSafeToActRequest:
         """Test creating valid safe-to-act request."""
         request = SafeToActRequest(
             tenant_id="test-tenant",
-            action_type="deployment",
+            plane="Product",
+            action_type="standard_action",
         )
         assert request.tenant_id == "test-tenant"
-        assert request.action_type == "deployment"
+        assert request.action_type == "standard_action"
         assert request.component_scope is None
 
     def test_safe_to_act_request_with_scope(self):
         """Test safe-to-act request with component scope."""
         request = SafeToActRequest(
             tenant_id="test-tenant",
-            action_type="deployment",
+            plane="Product",
+            action_type="standard_action",
             component_scope=["component-1", "component-2"],
         )
         assert len(request.component_scope) == 2
@@ -236,6 +238,7 @@ class TestTenantHealthView:
             tenant_id="test-tenant",
             plane_states={"Product": "OK", "Shared": "OK"},
             counts={"OK": 10, "DEGRADED": 2, "FAILED": 0, "UNKNOWN": 0},
+            updated_at=datetime.utcnow(),
         )
         assert view.tenant_id == "test-tenant"
         assert view.plane_states["Product"] == "OK"
@@ -251,10 +254,9 @@ class TestPlaneHealthView:
             plane="Product",
             environment="prod",
             state="OK",
-            component_count=10,
-            component_states={"OK": 8, "DEGRADED": 2},
+            component_breakdown={"OK": ["c1", "c2"], "DEGRADED": ["c3"]},
+            updated_at=datetime.utcnow(),
         )
         assert view.plane == "Product"
         assert view.state == "OK"
-        assert view.component_count == 10
 

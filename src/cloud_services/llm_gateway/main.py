@@ -7,7 +7,8 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routes import router
+# Use absolute import to avoid resolution issues when package shims are used in tests.
+from cloud_services.llm_gateway.routes import router
 
 
 def create_app() -> FastAPI:
@@ -33,4 +34,3 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
-

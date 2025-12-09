@@ -7,6 +7,12 @@ import pytest
 from data_governance_privacy.services import DataGovernanceService  # type: ignore
 
 
+@pytest.fixture
+def governance_service() -> DataGovernanceService:
+    """Provide a governance service instance backed by mock dependencies."""
+    return DataGovernanceService()
+
+
 @pytest.mark.dgp_regression
 @pytest.mark.integration
 def test_multistep_consent_and_privacy_enforcement(

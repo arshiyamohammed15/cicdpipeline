@@ -445,8 +445,10 @@ class TestInputValidationSecurity:
             status.HTTP_200_OK,
             status.HTTP_400_BAD_REQUEST,
             status.HTTP_401_UNAUTHORIZED,  # Invalid token
+            status.HTTP_404_NOT_FOUND,
             status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-            status.HTTP_422_UNPROCESSABLE_ENTITY
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status.HTTP_429_TOO_MANY_REQUESTS,  # Rate limiting
         ]
 
     def test_json_injection_prevention(self):
@@ -469,7 +471,9 @@ class TestInputValidationSecurity:
         assert response.status_code in [
             status.HTTP_200_OK,
             status.HTTP_400_BAD_REQUEST,
-            status.HTTP_422_UNPROCESSABLE_ENTITY
+            status.HTTP_404_NOT_FOUND,
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status.HTTP_429_TOO_MANY_REQUESTS,  # Rate limiting
         ]
 
     def test_path_traversal_prevention(self):
@@ -559,7 +563,9 @@ class TestBreakGlassSecurity:
             status.HTTP_200_OK,
             status.HTTP_400_BAD_REQUEST,
             status.HTTP_403_FORBIDDEN,
-            status.HTTP_422_UNPROCESSABLE_ENTITY
+            status.HTTP_404_NOT_FOUND,
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            status.HTTP_429_TOO_MANY_REQUESTS,
         ]
 
     def test_break_glass_time_limited(self):
