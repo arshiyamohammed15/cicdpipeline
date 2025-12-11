@@ -21,6 +21,7 @@ Tests in the root `tests/` directory that don't belong to specific cloud service
 - `test_post_generation_*.py` - Post-generation validation
 - `test_enforcement_*.py` - Enforcement flow tests
 - `test_deterministic_*.py` - Deterministic enforcement tests
+- `constitution_positive_negative/test_constitution_positive_negative.py` - Table-driven positive/negative invariants for all 415 constitution rules (controlled mutations; no overlap with existing suites)
 
 **Organization**: Keep in root `tests/` directory (system-level, not module-specific)
 

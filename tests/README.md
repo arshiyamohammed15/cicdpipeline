@@ -54,6 +54,7 @@ tests/cloud_services/{category}/{module_name}/
 Tests that don't belong to specific cloud service modules:
 
 - **Validator Tests** (`tests/test_*.py`): Constitution rules, rule validation, system-level tests
+- **Constitution Positive/Negative Suite** (`tests/constitution_positive_negative/`): Table-driven positive/negative invariants for all 415 constitution rules using controlled mutations (designed to avoid overlap with existing constitution suites)
 - **LLM Gateway Tests** (`tests/llm_gateway/`): LLM Gateway service tests
 - **BDR Tests** (`tests/bdr/`): Backup & Disaster Recovery tests
 - **CCCS Tests** (`tests/cccs/`): Cross-Cutting Concern Services tests
