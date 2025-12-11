@@ -5,6 +5,7 @@ from datetime import datetime
 import pytest
 from fastapi import HTTPException
 from fastapi.responses import StreamingResponse
+import warnings
 
 from alerting_notification_service.models import (
     AlertPayload,
@@ -16,6 +17,9 @@ from alerting_notification_service.models import (
 )
 from alerting_notification_service.dependencies import RequestContext
 from alerting_notification_service.routes import v1
+
+warnings.filterwarnings("ignore", category=ResourceWarning, module=r"anyio\.streams\.memory")
+pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
 
 
 def _payload(alert_id: str, tenant_id: str = "tenant-route") -> AlertPayload:
@@ -178,4 +182,8 @@ async def test_streaming_endpoints_cover_generators(session):
         assert "alert" in payload.lower() or "heartbeat" in payload.lower()
     except StopAsyncIteration:
         pass  # Stream may have closed
+    finally:
+        aclose = getattr(response.body_iterator, "aclose", None)
+        if callable(aclose):
+            await aclose()
 

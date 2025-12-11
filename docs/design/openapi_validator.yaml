@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: Validator API
+  version: "1.0.0"
+servers:
+  - url: http://localhost
+paths:
+  /health:
+    get:
+      summary: Service health
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /healthz:
+    get:
+      summary: Liveness probe
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /validate:
+    post:
+      summary: Validate prompt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                file_type:
+                  type: string
+                  default: python
+                task_type:
+                  type: string
+                  default: general
+              required: [prompt]
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  valid:
+                    type: boolean
+                  violations:
+                    type: array
+                    items:
+                      type: object
+                  total_rules_checked:
+                    type: integer
+  /generate:
+    post:
+      summary: Generate with validation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                service:
+                  type: string
+                  default: openai
+                file_type:
+                  type: string
+                  default: python
+                task_type:
+                  type: string
+                  default: general
+                temperature:
+                  type: number
+                  format: float
+                  default: 0.3
+                max_tokens:
+                  type: integer
+                  default: 2000
+              required: [prompt]
+      responses:
+        '200':
+          description: Generation + validation result
+          content:
+            application/json:
+              schema:
+                type: object
+  /integrations:
+    get:
+      summary: List integrations
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  integrations:
+                    type: array
+                    items:
+                      type: string
+                  total:
+                    type: integer
+  /stats:
+    get:
+      summary: Service stats
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object

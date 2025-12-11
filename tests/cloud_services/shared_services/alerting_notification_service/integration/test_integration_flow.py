@@ -34,22 +34,21 @@ def _alert(alert_id: str) -> dict:
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_alert_ack_resolve_flow(test_client):
     payload = _alert("integration-1")
-    created = test_client.post("/v1/alerts", json=payload)
+    created = await test_client.post("/v1/alerts", json=payload)
     assert created.status_code == 200
     alert_id = created.json()["alert_id"]
 
-    ack = test_client.post(f"/v1/alerts/{alert_id}/ack", json={"actor": "automation"})
+    ack = await test_client.post(f"/v1/alerts/{alert_id}/ack", json={"actor": "automation"})
     assert ack.status_code == 200
     assert ack.json()["status"] == "acknowledged"
 
-    resolved = test_client.post(f"/v1/alerts/{alert_id}/resolve", json={"actor": "automation"})
+    resolved = await test_client.post(f"/v1/alerts/{alert_id}/resolve", json={"actor": "automation"})
     assert resolved.status_code == 200
     assert resolved.json()["status"] == "resolved"
 
-    search = test_client.post("/v1/alerts/search", json={"tenant_id": "tenant-integration"})
+    search = await test_client.post("/v1/alerts/search", json={"tenant_id": "tenant-integration"})
     assert search.status_code == 200
     assert len(search.json()) >= 1
 
@@ -57,7 +56,6 @@ async def test_alert_ack_resolve_flow(test_client):
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_preferences_round_trip(test_client):
     pref_payload = {
         "user_id": "user-int",
@@ -68,9 +66,9 @@ async def test_preferences_round_trip(test_client):
         "timezone": "UTC",
         "channel_preferences": {"email": ["email"]},
     }
-    saved = test_client.post("/v1/preferences", json=pref_payload)
+    saved = await test_client.post("/v1/preferences", json=pref_payload)
     assert saved.status_code == 200
-    fetched = test_client.get("/v1/preferences/user-int")
+    fetched = await test_client.get("/v1/preferences/user-int")
     assert fetched.status_code == 200
     assert fetched.json()["channels"] == ["email"]
 

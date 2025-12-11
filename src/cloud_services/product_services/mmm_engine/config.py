@@ -4,7 +4,7 @@ Configuration models for MMM Engine.
 Per PRD Phase 5, includes all service URL environment variables and feature flags.
 """
 
-from pydantic import Field
+from pydantic import Field, ConfigDict
 from pydantic_settings import BaseSettings
 
 
@@ -57,11 +57,8 @@ class MMMSettings(BaseSettings):
     # Audit logging configuration (Phase 3)
     audit_log_file: str = Field(default="/var/log/mmm_engine/audit.log")
 
-    class Config:
-        env_prefix = "MMM_"
-        case_sensitive = False
+    model_config = ConfigDict(env_prefix="MMM_", case_sensitive=False)
 
 
 settings = MMMSettings()
-
 

@@ -21,6 +21,8 @@ sys.modules["main"] = dec_main
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
+
 
 class TestCreateApp:
     """Test create_app function"""

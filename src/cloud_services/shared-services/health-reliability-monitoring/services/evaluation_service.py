@@ -11,6 +11,7 @@ import hashlib
 import logging
 from datetime import datetime, timedelta
 import time
+import inspect
 from typing import Dict, List, Optional, Tuple
 
 from sqlalchemy.orm import Session
@@ -58,7 +59,7 @@ class HealthEvaluationService:
                 await self._update_slo(component.component_id, component.slo_target, payload)
 
             if self._event_bus:
-                await self._event_bus.emit_health_transition(
+                maybe_coro = self._event_bus.emit_health_transition(
                     {
                         "component_id": payload.component_id,
                         "state": state,
@@ -66,6 +67,8 @@ class HealthEvaluationService:
                         "tenant_id": payload.tenant_id,
                     }
                 )
+                if inspect.isawaitable(maybe_coro):
+                    await maybe_coro
             snapshots.append(snapshot)
 
         evaluation_latency_seconds.observe(time.perf_counter() - start)
@@ -182,10 +185,11 @@ class HealthEvaluationService:
         error_rate = payload.metrics.get("error_rate", 0)
         success_ratio = max(0.0, 1.0 - error_rate)
         success_minutes = int(window_minutes * success_ratio)
-        await self._slo_service.update_slo(
+        maybe_coro = self._slo_service.update_slo(
             component_id=component_id,
             slo_id=f"{component_id}-default-slo",
             success_minutes=success_minutes,
             total_minutes=window_minutes,
         )
-
+        if inspect.isawaitable(maybe_coro):
+            await maybe_coro

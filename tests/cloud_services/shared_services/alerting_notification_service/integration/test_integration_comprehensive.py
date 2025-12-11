@@ -9,11 +9,12 @@ from typing import Dict, List
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
-from fastapi.testclient import TestClient
+import httpx
 
 from alerting_notification_service.clients import ErisClient
 from alerting_notification_service.database.models import Alert, Notification
 from alerting_notification_service.repositories import AlertRepository, NotificationRepository
+from alerting_notification_service.main import app
 
 
 def _slo_breach_alert(alert_id: str) -> dict:
@@ -43,7 +44,6 @@ def _slo_breach_alert(alert_id: str) -> dict:
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_it1_health_slo_breach_p1_page(test_client):
     """
     IT-1: Health SLO Breach → P1 Page
@@ -56,13 +56,13 @@ async def test_it1_health_slo_breach_p1_page(test_client):
     payload["tenant_id"] = "tenant-integration"  # Match test_client default
 
     # Ingest alert
-    response = test_client.post("/v1/alerts", json=payload)
+    response = await test_client.post("/v1/alerts", json=payload)
     assert response.status_code == 200
     alert_data = response.json()
     assert alert_data["alert_id"] == "slo-breach-1"
 
     # Verify alert was created
-    alert_response = test_client.get(f"/v1/alerts/{alert_data['alert_id']}")
+    alert_response = await test_client.get(f"/v1/alerts/{alert_data['alert_id']}")
     assert alert_response.status_code == 200
     alert = alert_response.json()
     assert alert["status"] == "open"
@@ -72,7 +72,7 @@ async def test_it1_health_slo_breach_p1_page(test_client):
     # Verify deduplication: send same alert again
     duplicate = _slo_breach_alert("slo-breach-1")
     duplicate["tenant_id"] = "tenant-integration"  # Match test_client default
-    duplicate_response = test_client.post("/v1/alerts", json=duplicate)
+    duplicate_response = await test_client.post("/v1/alerts", json=duplicate)
     assert duplicate_response.status_code == 200
     # Should return same alert_id (deduplicated)
     assert duplicate_response.json()["alert_id"] == "slo-breach-1"
@@ -86,7 +86,6 @@ async def test_it1_health_slo_breach_p1_page(test_client):
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_it3_channel_failure_fallback(test_client, session):
     """
     IT-3: Channel Failure Fallback
@@ -125,7 +124,7 @@ async def test_it3_channel_failure_fallback(test_client, session):
         "dedup_key": "channel-fail-test",
     }
 
-    response = test_client.post("/v1/alerts", json=alert_payload)
+    response = await test_client.post("/v1/alerts", json=alert_payload)
     assert response.status_code == 200
 
     # Get the alert
@@ -166,7 +165,6 @@ async def test_it3_channel_failure_fallback(test_client, session):
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_it4_external_oncall_integration(test_client, session):
     """
     IT-4: External On-Call Integration
@@ -196,7 +194,7 @@ async def test_it4_external_oncall_integration(test_client, session):
         "automation_hooks": ["https://pagerduty.example.com/webhook"],
     }
 
-    response = test_client.post("/v1/alerts", json=alert_payload)
+    response = await test_client.post("/v1/alerts", json=alert_payload)
     assert response.status_code == 200
 
     # Verify alert was created with automation hooks
@@ -236,7 +234,7 @@ async def test_it4_external_oncall_integration(test_client, session):
         assert call_args[1]["json"]["severity"] == "P0"
 
     # Test state transitions: ACK should be reflected
-    ack_response = test_client.post(
+    ack_response = await test_client.post(
         f"/v1/alerts/{alert.alert_id}/ack",
         json={"actor": "pagerduty-bot"}
     )
@@ -247,7 +245,6 @@ async def test_it4_external_oncall_integration(test_client, session):
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_it5_eris_receipts_end_to_end(test_client, session):
     """
     IT-5: ERIS Receipts
@@ -289,7 +286,7 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
             "dedup_key": "eris-test-1",
         }
 
-        create_response = test_client.post("/v1/alerts", json=alert_payload)
+        create_response = await test_client.post("/v1/alerts", json=alert_payload)
         assert create_response.status_code == 200
 
         # Verify ingestion receipt
@@ -299,7 +296,7 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
         assert ingestion_receipts[0]["tenant_id"] == "tenant-integration"
 
         # ACK alert (should emit ACK receipt)
-        ack_response = test_client.post(
+        ack_response = await test_client.post(
             f"/v1/alerts/eris-test-1/ack",
             json={"actor": "test-user"}
         )
@@ -312,7 +309,7 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
         assert ack_receipts[0].get("actor") == "test-user"
 
         # Resolve alert (should emit resolve receipt)
-        resolve_response = test_client.post(
+        resolve_response = await test_client.post(
             f"/v1/alerts/eris-test-1/resolve",
             json={"actor": "test-user"}
         )
@@ -325,25 +322,24 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
         assert resolve_receipts[0].get("actor") == "test-user"
 
         # Test meta-receipt for cross-tenant access
-        from fastapi.testclient import TestClient
-        cross_tenant_client = TestClient(test_client.app)
-        cross_tenant_client.headers.update({
-            "X-Tenant-ID": "tenant-other",
-            "X-Actor-ID": "admin-user",
-            "X-Roles": "global_admin",
-            "X-Allow-Tenants": "tenant-integration",
-        })
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as cross_tenant_client:  # type: ignore[name-defined]
+            cross_tenant_client.headers.update({
+                "X-Tenant-ID": "tenant-other",
+                "X-Actor-ID": "admin-user",
+                "X-Roles": "global_admin",
+                "X-Allow-Tenants": "tenant-integration",
+            })
 
-        # Access alert from different tenant (should emit meta-receipt)
-        cross_access = cross_tenant_client.get("/v1/alerts/eris-test-1")
-        assert cross_access.status_code == 200
+            # Access alert from different tenant (should emit meta-receipt)
+            cross_access = await cross_tenant_client.get("/v1/alerts/eris-test-1")
+            assert cross_access.status_code == 200
 
-        # Verify meta-receipt
-        meta_receipts = [r for r in eris_receipts if r.get("type") == "meta_access"]
-        assert len(meta_receipts) > 0
-        assert meta_receipts[0]["actor"] == "admin-user"
-        assert meta_receipts[0]["tenant_id"] == "tenant-integration"
-        assert meta_receipts[0]["endpoint"] == "/v1/alerts/eris-test-1"
+            # Verify meta-receipt
+            meta_receipts = [r for r in eris_receipts if r.get("type") == "meta_access"]
+            assert len(meta_receipts) > 0
+            assert meta_receipts[0]["actor"] == "admin-user"
+            assert meta_receipts[0]["tenant_id"] == "tenant-integration"
+            assert meta_receipts[0]["endpoint"] == "/v1/alerts/eris-test-1"
 
     finally:
         # Restore original method
@@ -353,7 +349,6 @@ async def test_it5_eris_receipts_end_to_end(test_client, session):
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="test_client fixture not available in current test harness")
 async def test_it8_multichannel_delivery(test_client, session):
     """
     IT-8: Multi-Channel Delivery
@@ -384,7 +379,7 @@ async def test_it8_multichannel_delivery(test_client, session):
         "dedup_key": "multichannel-test",
     }
 
-    response = test_client.post("/v1/alerts", json=alert_payload)
+    response = await test_client.post("/v1/alerts", json=alert_payload)
     assert response.status_code == 200
 
     # Get alert

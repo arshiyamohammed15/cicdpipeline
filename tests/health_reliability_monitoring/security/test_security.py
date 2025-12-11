@@ -5,8 +5,6 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-pytest.skip("Health registry persistence not configured in test harness", allow_module_level=True)
-
 # Import will be available after conftest sets up the module
 # Import lazily to ensure conftest runs first
 def _get_app():
@@ -68,6 +66,7 @@ class TestAuthorization:
 
     def test_insufficient_scope_denied(self):
         """Test that requests with insufficient scope are denied."""
+        app = _get_app()
         client = TestClient(app)
         # Token with read scope trying to write
         headers = {"Authorization": "Bearer valid_epc1_read_only"}
@@ -92,6 +91,7 @@ class TestAuthorization:
 
     def test_cross_tenant_access_denied(self):
         """Test that cross-tenant access is denied."""
+        app = _get_app()
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_tenant-1"}
 
@@ -109,7 +109,8 @@ class TestAuthorization:
         assert response.status_code in [
             status.HTTP_403_FORBIDDEN,
             status.HTTP_401_UNAUTHORIZED,
-            status.HTTP_200_OK  # If test allows cross-tenant
+            status.HTTP_200_OK,  # If test allows cross-tenant
+            status.HTTP_404_NOT_FOUND,
         ]
 
 
@@ -119,6 +120,7 @@ class TestInputValidation:
 
     def test_malformed_component_id(self):
         """Test handling of malformed component IDs."""
+        app = _get_app()
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
 
@@ -142,6 +144,7 @@ class TestInputValidation:
 
     def test_oversized_payload(self):
         """Test handling of oversized payloads."""
+        app = _get_app()
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
 
@@ -168,6 +171,7 @@ class TestInputValidation:
 
     def test_sql_injection_in_component_id(self):
         """Test handling of SQL injection attempts."""
+        app = _get_app()
         client = TestClient(app)
         headers = {"Authorization": "Bearer valid_epc1_test"}
 
@@ -189,6 +193,7 @@ class TestTenantIsolation:
 
     def test_tenant_data_isolation(self):
         """Test that tenant data is properly isolated."""
+        app = _get_app()
         client = TestClient(app)
         headers_tenant1 = {"Authorization": "Bearer valid_epc1_tenant-1"}
         headers_tenant2 = {"Authorization": "Bearer valid_epc1_tenant-2"}

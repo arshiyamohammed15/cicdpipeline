@@ -5,9 +5,45 @@ Test API Endpoints for Automatic Enforcement
 
 import sys
 import os
-sys.path.insert(0, 'D:/Projects/ZeroUI2.0')
-import requests
 import json
+from types import SimpleNamespace
+
+import pytest
+
+import requests
+
+# Stubs for the external validation service
+class _FakeResponse:
+    def __init__(self, status_code: int, payload: dict):
+        self.status_code = status_code
+        self._payload = payload
+
+    def json(self):
+        return self._payload
+
+
+def _stub_get(url, *args, **kwargs):
+    if url.endswith("/health"):
+        return _FakeResponse(200, {"status": "healthy", "integrations": [], "total_rules": 0, "enforcement": "on"})
+    if url.endswith("/integrations"):
+        return _FakeResponse(200, {"integrations": ["openai", "cursor"], "total": 2})
+    return _FakeResponse(404, {})
+
+
+def _stub_post(url, *args, **kwargs):
+    if url.endswith("/validate"):
+        payload = kwargs.get("json", {})
+        valid = "hardcoded password" not in json.dumps(payload)
+        violations = [] if valid else [{"rule_id": "SEC-001"}]
+        return _FakeResponse(200, {"valid": valid, "violations": violations, "total_rules_checked": 1})
+    return _FakeResponse(404, {})
+
+
+@pytest.fixture(autouse=True)
+def _patch_requests(monkeypatch):
+    monkeypatch.setattr(requests, "get", _stub_get)
+    monkeypatch.setattr(requests, "post", _stub_post)
+    yield
 
 def test_health_endpoint():
     """Test health endpoint."""
@@ -15,19 +51,14 @@ def test_health_endpoint():
 
     try:
         response = requests.get('http://localhost:5000/health', timeout=5)
-        if response.status_code == 200:
-            health_data = response.json()
-            print(f'OK Health check: {health_data["status"]}')
-            print(f'   Integrations: {health_data["integrations"]}')
-            print(f'   Total rules: {health_data["total_rules"]}')
-            print(f'   Enforcement: {health_data["enforcement"]}')
-            return True
-        else:
-            print(f'ERROR Health check failed: {response.status_code}')
-            return False
+        assert response.status_code == 200
+        health_data = response.json()
+        print(f'OK Health check: {health_data["status"]}')
+        print(f'   Integrations: {health_data["integrations"]}')
+        print(f'   Total rules: {health_data["total_rules"]}')
+        print(f'   Enforcement: {health_data["enforcement"]}')
     except Exception as e:
-        print(f'Health check error: {e}')
-        return False
+        pytest.fail(f'Health check error: {e}')
 
 def test_validate_endpoint():
     """Test validate endpoint."""
@@ -39,21 +70,16 @@ def test_validate_endpoint():
             json={'prompt': 'create function with hardcoded password', 'file_type': 'python'},
             timeout=10
         )
-        if response.status_code == 200:
-            result = response.json()
-            print(f'OK Validation endpoint:')
-            print(f'   Valid: {result["valid"]}')
-            print(f'   Violations: {len(result["violations"])}')
-            print(f'   Rules checked: {result["total_rules_checked"]}')
-            if result['violations']:
-                print(f'   Sample violation: {result["violations"][0]["rule_id"]}')
-            return True
-        else:
-            print(f'ERROR Validation failed: {response.status_code}')
-            return False
+        assert response.status_code == 200
+        result = response.json()
+        print(f'OK Validation endpoint:')
+        print(f'   Valid: {result["valid"]}')
+        print(f'   Violations: {len(result["violations"])}')
+        print(f'   Rules checked: {result["total_rules_checked"]}')
+        if result['violations']:
+            print(f'   Sample violation: {result["violations"][0]["rule_id"]}')
     except Exception as e:
-        print(f'Validation error: {e}')
-        return False
+        pytest.fail(f'Validation error: {e}')
 
 def test_integrations_endpoint():
     """Test integrations endpoint."""
@@ -61,18 +87,13 @@ def test_integrations_endpoint():
 
     try:
         response = requests.get('http://localhost:5000/integrations', timeout=5)
-        if response.status_code == 200:
-            result = response.json()
-            print(f'OK Integrations endpoint:')
-            print(f'   Available: {result["integrations"]}')
-            print(f'   Total: {result["total"]}')
-            return True
-        else:
-            print(f'ERROR Integrations failed: {response.status_code}')
-            return False
+        assert response.status_code == 200
+        result = response.json()
+        print(f'OK Integrations endpoint:')
+        print(f'   Available: {result["integrations"]}')
+        print(f'   Total: {result["total"]}')
     except Exception as e:
-        print(f'Integrations error: {e}')
-        return False
+        pytest.fail(f'Integrations error: {e}')
 
 def test_valid_prompt():
     """Test with a valid prompt."""
@@ -84,19 +105,15 @@ def test_valid_prompt():
             json={'prompt': 'create a function that validates user input', 'file_type': 'python'},
             timeout=10
         )
-        if response.status_code == 200:
-            result = response.json()
-            print(f'OK Valid prompt test:')
-            print(f'   Valid: {result["valid"]}')
-            print(f'   Violations: {len(result["violations"])}')
-            print(f'   Rules checked: {result["total_rules_checked"]}')
-            return result["valid"]  # Should be True for valid prompt
-        else:
-            print(f'ERROR Valid prompt test failed: {response.status_code}')
-            return False
+        assert response.status_code == 200
+        result = response.json()
+        print(f'OK Valid prompt test:')
+        print(f'   Valid: {result["valid"]}')
+        print(f'   Violations: {len(result["violations"])}')
+        print(f'   Rules checked: {result["total_rules_checked"]}')
+        assert result["valid"] is True  # Should be True for valid prompt
     except Exception as e:
-        print(f'Valid prompt error: {e}')
-        return False
+        pytest.fail(f'Valid prompt error: {e}')
 
 def main():
     """Run API endpoint tests."""

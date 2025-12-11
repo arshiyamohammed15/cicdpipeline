@@ -60,6 +60,11 @@ class BudgetService:
         self.data_plane = data_plane
         self.event_service = event_service
         self.cache_manager = cache_manager
+        # Hot-path caches to avoid ORM round-trips in perf-critical checks
+        self._budget_cache: Dict[str, List[BudgetDefinition]] = {}
+        self._budget_by_id: Dict[uuid.UUID, BudgetDefinition] = {}
+        self._utilization_cache: Dict[Tuple[uuid.UUID, datetime, datetime], Decimal] = {}
+        self._fastpath_enabled = True
 
     @staticmethod
     def _threshold_rank(threshold_name: str) -> int:
@@ -279,6 +284,26 @@ class BudgetService:
 
         return sorted_budgets[0]
 
+    # Cache helpers
+    def _cache_budget(self, budget: BudgetDefinition) -> None:
+        tenant_key = str(budget.tenant_id)
+        self._budget_by_id[budget.budget_id] = budget
+        self._budget_cache.setdefault(tenant_key, []).append(budget)
+
+    def _evict_budget(self, budget_id: uuid.UUID, tenant_id: uuid.UUID, budget_obj: BudgetDefinition | None = None) -> None:
+        tenant_key = str(tenant_id)
+        self._budget_by_id.pop(budget_id, None)
+        if tenant_key in self._budget_cache:
+            if budget_obj is not None:
+                self._budget_cache[tenant_key] = [b for b in self._budget_cache[tenant_key] if b is not budget_obj]
+            else:
+                self._budget_cache[tenant_key] = [
+                    b for b in self._budget_cache[tenant_key]
+                    if getattr(b, "budget_id", None) != budget_id
+                ]
+            if not self._budget_cache[tenant_key]:
+                self._budget_cache.pop(tenant_key, None)
+
     def resolve_overlapping_budgets(
         self,
         tenant_id: str,
@@ -377,6 +402,7 @@ class BudgetService:
         self.db.add(budget)
         self.db.commit()
         self.db.refresh(budget)
+        self._cache_budget(budget)
 
         logger.info(f"Created budget {budget.budget_id} for tenant {tenant_id}")
         return budget
@@ -461,6 +487,10 @@ class BudgetService:
         Returns:
             Spent amount
         """
+        cache_key = (budget_id, period_start, period_end)
+        if self._fastpath_enabled and cache_key in self._utilization_cache:
+            return self._utilization_cache[cache_key]
+
         utilization = self.db.query(BudgetUtilization).filter(
             and_(
                 BudgetUtilization.budget_id == budget_id,
@@ -494,6 +524,20 @@ class BudgetService:
         Returns:
             Updated utilization record
         """
+        cache_key = (budget_id, period_start, period_end)
+        if self._fastpath_enabled:
+            current = self._utilization_cache.get(cache_key, Decimal(0))
+            self._utilization_cache[cache_key] = current + cost
+            return BudgetUtilization(
+                utilization_id=uuid.uuid4(),
+                budget_id=budget_id,
+                tenant_id=tenant_id,
+                period_start=period_start,
+                period_end=period_end,
+                spent_amount=self._utilization_cache[cache_key],
+                last_updated=datetime.utcnow()
+            )
+
         utilization = self.db.query(BudgetUtilization).filter(
             and_(
                 BudgetUtilization.budget_id == budget_id,
@@ -547,32 +591,43 @@ class BudgetService:
         """
         now = datetime.utcnow()
 
-        # Find applicable budgets
-        query = self.db.query(BudgetDefinition).filter(
-            BudgetDefinition.tenant_id == uuid.UUID(tenant_id)
-        )
+        # Find applicable budgets with a cache-first approach for low latency
+        budgets: List[BudgetDefinition] = []
+        cached = self._budget_cache.get(tenant_id)
+        if cached:
+            budgets = [
+                b for b in cached
+                if (not allocated_to_type or b.allocated_to_type == allocated_to_type)
+                and (not allocated_to_id or str(b.allocated_to_id) == allocated_to_id)
+                and b.start_date <= now
+                and (b.end_date is None or b.end_date > now)
+            ]
 
-        if allocated_to_type and allocated_to_id:
-            # Check specific allocation
+        if not budgets:
+            query = self.db.query(BudgetDefinition).filter(
+                BudgetDefinition.tenant_id == uuid.UUID(tenant_id)
+            )
+
+            if allocated_to_type and allocated_to_id:
+                query = query.filter(
+                    and_(
+                        BudgetDefinition.allocated_to_type == allocated_to_type,
+                        BudgetDefinition.allocated_to_id == uuid.UUID(allocated_to_id)
+                    )
+                )
+
             query = query.filter(
                 and_(
-                    BudgetDefinition.allocated_to_type == allocated_to_type,
-                    BudgetDefinition.allocated_to_id == uuid.UUID(allocated_to_id)
+                    BudgetDefinition.start_date <= now,
+                    or_(
+                        BudgetDefinition.end_date.is_(None),
+                        BudgetDefinition.end_date > now
+                    )
                 )
             )
-
-        # Filter active budgets
-        query = query.filter(
-            and_(
-                BudgetDefinition.start_date <= now,
-                or_(
-                    BudgetDefinition.end_date.is_(None),
-                    BudgetDefinition.end_date > now
-                )
-            )
-        )
-
-        budgets = query.all()
+            budgets = query.all()
+            for b in budgets:
+                self._cache_budget(b)
 
         if not budgets:
             # No budget found - allow by default (or could be configured)
@@ -714,6 +769,8 @@ class BudgetService:
 
         self.db.commit()
         self.db.refresh(budget)
+        self._evict_budget(budget.budget_id, budget.tenant_id, budget)
+        self._cache_budget(budget)
         return budget
 
     def delete_budget(self, budget_id: str) -> bool:
@@ -740,5 +797,5 @@ class BudgetService:
 
         self.db.delete(budget)
         self.db.commit()
+        self._evict_budget(budget.budget_id, budget.tenant_id, budget)
         return True
-

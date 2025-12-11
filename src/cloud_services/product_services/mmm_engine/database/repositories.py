@@ -115,7 +115,7 @@ class DecisionRepository:
             tenant_id=decision.tenant_id,
             actor_id=decision.actor_id,
             actor_type=decision.actor_type.value,
-            context=decision.context.dict(),
+            context=decision.context.model_dump(),
             signal_reference={},  # placeholder
             policy_snapshot_id=decision.policy_snapshot_id,
         )
@@ -463,5 +463,4 @@ class ExperimentRepository:
         self, tenant_id: str, experiment_id: str
     ) -> Optional[dict]:
         return self.update_experiment(tenant_id, experiment_id, {"status": "inactive"})
-
 

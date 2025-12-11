@@ -128,7 +128,7 @@ class LLMRequest(BaseModel):
     sensitivity_level: constr(pattern="^(low|medium|high)$")
     system_prompt_id: constr(min_length=3)
     user_prompt: constr(min_length=1)
-    context_segments: List[ContextSegment] = Field(default_factory=list, max_items=50)
+    context_segments: List[ContextSegment] = Field(default_factory=list, max_length=50)
     policy_snapshot_id: constr(min_length=8)
     policy_version_ids: List[constr(min_length=4)]
     budget: Budget

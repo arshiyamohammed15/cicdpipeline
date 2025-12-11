@@ -56,6 +56,9 @@ class ConstitutionRuleLoader:
                     rules = data.get('constitution_rules', [])
 
                     for rule in rules:
+                        if not rule.get("enabled", True):
+                            # Skip disabled rules entirely so validators and tests operate on active catalog only.
+                            continue
                         rule_id = rule.get('rule_id', '')
                         self.rules.append(rule)
                         self.rules_by_id[rule_id] = rule

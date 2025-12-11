@@ -25,8 +25,6 @@ main_spec.loader.exec_module(main_module)
 app = main_module.app
 from health_reliability_monitoring.models import ComponentDefinition
 
-pytestmark = pytest.mark.skip(reason="Health registry persistence not configured in test harness")
-
 test_client = TestClient(app)
 
 
@@ -139,17 +137,17 @@ class TestInputValidation:
 
     def test_component_id_validation(self):
         """Test that component_id is validated."""
-        component = ComponentDefinition(
-            component_id="ab",  # Too short
-            name="Test",
-            component_type="service",
-            plane="Product",
-            tenant_scope="tenant",
-        )
+        component = {
+            "component_id": "ab",  # Too short
+            "name": "Test",
+            "component_type": "service",
+            "plane": "Product",
+            "tenant_scope": "tenant",
+        }
 
         response = test_client.post(
             "/v1/health/components",
-            json=component.model_dump(),
+            json=component,
             headers={"Authorization": "Bearer valid_epc1_test_token"},
         )
 
@@ -175,7 +173,7 @@ class TestInputValidation:
 
         response = test_client.post(
             "/v1/health/telemetry",
-            json=payload.model_dump(),
+            json=payload.model_dump(mode="json"),
             headers={"Authorization": "Bearer valid_epc1_test_token"},
         )
 
@@ -184,5 +182,6 @@ class TestInputValidation:
             status.HTTP_202_ACCEPTED,
             status.HTTP_422_UNPROCESSABLE_ENTITY,
             status.HTTP_401_UNAUTHORIZED,
+            status.HTTP_403_FORBIDDEN,
         ]
 

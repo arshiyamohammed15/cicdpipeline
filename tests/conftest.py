@@ -9,6 +9,7 @@ import importlib.util
 import importlib.machinery
 import os
 import types
+import warnings
 from pathlib import Path
 import pytest
 
@@ -18,6 +19,37 @@ from data_governance_privacy.services import DataGovernanceService
 # Project root - conftest.py is in tests/, so go up one level
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 setup_path_normalization(PROJECT_ROOT)
+
+# Suppress expected setup warnings for optional modules that are not present in this harness.
+warnings.filterwarnings(
+    "ignore",
+    message=r"Failed to set up (clients|models|services|health-reliability-monitoring): .*",
+    category=UserWarning,
+)
+# Suppress noisy deprecations from third-party clients used by TestClient/httpx.
+warnings.filterwarnings(
+    "ignore",
+    message=r"The 'app' shortcut is now deprecated",
+    category=DeprecationWarning,
+)
+warnings.filterwarnings(
+    "ignore",
+    message=r"Use 'content=<.*>' to upload raw bytes/text content.",
+    category=DeprecationWarning,
+)
+warnings.filterwarnings(
+    "ignore",
+    message=r"Unclosed <MemoryObject.*",
+    category=ResourceWarning,
+)
+warnings.filterwarnings("ignore", category=ResourceWarning)
+warnings.filterwarnings(
+    "ignore",
+    message=r".*app' shortcut is now deprecated.*",
+    category=DeprecationWarning,
+)
+warnings.simplefilter("ignore", ResourceWarning)
+warnings.simplefilter("ignore", DeprecationWarning)
 
 TESTS_ROOT = PROJECT_ROOT / "tests"
 if str(TESTS_ROOT) not in sys.path:
@@ -340,9 +372,9 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "llm_gateway_security: llm gateway security tests")
 
 
-def pytest_ignore_collect(path, config):  # type: ignore[override]
+def pytest_ignore_collect(collection_path: Path, config):  # type: ignore[override]
     # Avoid duplicate MMM Engine tests under two hierarchies; prefer cloud_services path.
-    path_str = str(path)
+    path_str = str(collection_path)
     if "tests\\mmm_engine\\" in path_str or "tests/mmm_engine/" in path_str:
         return True
 

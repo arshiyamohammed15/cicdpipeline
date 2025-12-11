@@ -19,7 +19,7 @@ from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
 from sqlalchemy.types import TypeDecorator, CHAR, JSON as SQLJSON
 from sqlalchemy.types import TypeDecorator, CHAR
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
@@ -406,4 +406,3 @@ class ReceiptDLQ(Base):
     __table_args__ = (
         Index('idx_receipt_dlq_tenant_created', 'tenant_id', 'created_at'),
     )
-

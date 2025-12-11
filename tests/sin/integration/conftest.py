@@ -8,16 +8,23 @@ from pathlib import Path
 import importlib.util
 from fastapi.testclient import TestClient
 
-pytestmark = pytest.mark.skip(reason="Signal ingestion normalization service not present in test harness")
-
 
 def load_main_app():
     """Load the FastAPI app from main.py."""
     project_root = Path(__file__).parent.parent.parent.parent
     sin_module_path = project_root / "src" / "cloud_services" / "product-services" / "signal-ingestion-normalization"
+    main_path = sin_module_path / "main.py"
+
+    if not main_path.exists():
+        pytest.skip("Signal ingestion normalization main.py not available in harness", allow_module_level=True)
 
     # Set up package structure
     package_name = "signal_ingestion_normalization"
+    # Always reload the stub modules to avoid leaking state from other conftests
+    for mod_name in list(sys.modules.keys()):
+        if mod_name == package_name or mod_name.startswith(f"{package_name}."):
+            sys.modules.pop(mod_name)
+
     if package_name not in sys.modules:
         package = type(sys)('module')
         package.__path__ = [str(sin_module_path)]

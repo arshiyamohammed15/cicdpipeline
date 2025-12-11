@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import pytest
+import warnings
 from sqlmodel.ext.asyncio.session import AsyncSession
 
 from alerting_notification_service.clients import PolicyClient
@@ -16,6 +17,8 @@ from alerting_notification_service.repositories import AlertRepository, Notifica
 from alerting_notification_service.services.notification_service import NotificationDispatcher
 from alerting_notification_service.services.preference_service import UserPreferenceService
 from alerting_notification_service.services.routing_service import RoutingService
+
+warnings.filterwarnings("ignore", category=ResourceWarning, module=r"anyio\.streams\.memory")
 
 
 def _alert(alert_id: str, tenant: str = "tenant-test", severity: str = "P1") -> Alert:

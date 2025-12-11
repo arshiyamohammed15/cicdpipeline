@@ -13,8 +13,6 @@ from health_reliability_monitoring.services.rollup_service import RollupService
 from health_reliability_monitoring.services.telemetry_ingestion_service import TelemetryIngestionService
 from health_reliability_monitoring.dependencies import DeploymentClient, PolicyClient
 
-pytestmark = pytest.mark.skip(reason="Health registry persistence not configured in test harness")
-
 
 class TestSafeToActService:
     """Test SafeToActService."""

@@ -109,7 +109,7 @@ async def evaluate_decision(
                 error_code="EVALUATION_ERROR",
                 error_message=str(e),
                 degraded=True
-            ).dict()
+            ).model_dump()
         )
 
 
@@ -154,4 +154,3 @@ async def readiness_check() -> ReadinessResponse:
         },
         timestamp=datetime.utcnow()
     )
-

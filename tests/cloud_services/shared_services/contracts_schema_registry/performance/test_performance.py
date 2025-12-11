@@ -5,8 +5,9 @@ from __future__ import annotations
 
 import time
 import pytest
+import httpx
+from httpx import ASGITransport
 from fastapi import status
-from fastapi.testclient import TestClient
 
 from contracts_schema_registry.main import app
 
@@ -16,11 +17,14 @@ class TestSchemaValidationPerformance:
     """Test schema validation performance."""
 
     @pytest.fixture
-    def client(self):
-        """Create test client."""
-        return TestClient(app)
+    async def client(self):
+        """Create async test client."""
+        transport = ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            yield client
 
-    def test_schema_validation_latency(self, client):
+    @pytest.mark.asyncio
+    async def test_schema_validation_latency(self, client):
         """Test that schema validation meets latency requirements."""
         request = {
             "schema_id": "test-schema",
@@ -28,7 +32,7 @@ class TestSchemaValidationPerformance:
         }
 
         start_time = time.perf_counter()
-        response = client.post("/registry/v1/validate", json=request)
+        response = await client.post("/registry/v1/validate", json=request)
         latency_ms = (time.perf_counter() - start_time) * 1000
 
         # Should complete within reasonable time (< 100ms per PRD)
@@ -40,21 +44,20 @@ class TestSchemaValidationPerformance:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
-    def test_concurrent_validations(self, client):
+    @pytest.mark.asyncio
+    async def test_concurrent_validations(self, client):
         """Test performance under concurrent validations."""
-        import concurrent.futures
+        import asyncio
 
-        def validate_data(i):
+        async def validate_data(i):
             request = {
                 "schema_id": "test-schema",
                 "data": {"name": f"test{i}"}
             }
-            return client.post("/registry/v1/validate", json=request)
+            return await client.post("/registry/v1/validate", json=request)
 
         start_time = time.perf_counter()
-        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
-            futures = [executor.submit(validate_data, i) for i in range(20)]
-            results = [f.result() for f in concurrent.futures.as_completed(futures)]
+        results = await asyncio.gather(*(validate_data(i) for i in range(20)))
         total_time = (time.perf_counter() - start_time) * 1000
 
         # Should handle 20 concurrent validations within reasonable time (< 1s)
@@ -66,11 +69,14 @@ class TestSchemaRegistrationPerformance:
     """Test schema registration performance."""
 
     @pytest.fixture
-    def client(self):
-        """Create test client."""
-        return TestClient(app)
+    async def client(self):
+        """Create async test client."""
+        transport = ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            yield client
 
-    def test_schema_registration_latency(self, client):
+    @pytest.mark.asyncio
+    async def test_schema_registration_latency(self, client):
         """Test that schema registration meets latency requirements."""
         request = {
             "name": "perf-test-schema",
@@ -80,7 +86,7 @@ class TestSchemaRegistrationPerformance:
         }
 
         start_time = time.perf_counter()
-        response = client.post("/registry/v1/schemas", json=request)
+        response = await client.post("/registry/v1/schemas", json=request)
         latency_ms = (time.perf_counter() - start_time) * 1000
 
         # Should complete within reasonable time (< 200ms per PRD)
@@ -91,7 +97,8 @@ class TestSchemaRegistrationPerformance:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
-    def test_compatibility_check_latency(self, client):
+    @pytest.mark.asyncio
+    async def test_compatibility_check_latency(self, client):
         """Test that compatibility checks meet latency requirements."""
         request = {
             "source_schema": {"type": "object"},
@@ -100,7 +107,7 @@ class TestSchemaRegistrationPerformance:
         }
 
         start_time = time.perf_counter()
-        response = client.post("/registry/v1/compatibility", json=request)
+        response = await client.post("/registry/v1/compatibility", json=request)
         latency_ms = (time.perf_counter() - start_time) * 1000
 
         # Should complete within reasonable time (< 150ms per PRD)

@@ -44,8 +44,6 @@ class CorrelationService:
             )
             .order_by(Incident.opened_at.desc())
         )
-        # Use session.execute() with proper ORM mapping
-        # The deprecation warning is from SQLModel internals, not our usage
         result = await self.session.execute(statement)
         incidents = result.scalars().all()
         for incident in incidents:
@@ -84,4 +82,3 @@ class CorrelationService:
             if condition == "severity" and incident.severity != alert.severity:
                 return False
         return True
-

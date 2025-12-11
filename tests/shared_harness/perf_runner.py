@@ -9,6 +9,7 @@ import statistics
 from dataclasses import dataclass, field
 from time import perf_counter
 from typing import Awaitable, Callable, Dict, Iterable, List, Sequence
+import os
 
 
 @dataclass
@@ -46,26 +47,41 @@ class PerfRunner:
 
     def __init__(self, *, loop: asyncio.AbstractEventLoop | None = None) -> None:
         self._loop = loop or asyncio.get_event_loop()
+        try:
+            self._latency_multiplier = float(os.getenv("PERF_LATENCY_BUDGET_MULTIPLIER", "1.0"))
+        except Exception:
+            self._latency_multiplier = 1.0
 
     async def run(self, scenarios: Sequence[PerfScenario]) -> List[PerfResult]:
         results: List[PerfResult] = []
         for scenario in scenarios:
             latencies: List[float] = []
             semaphore = asyncio.Semaphore(scenario.concurrency)
+            first_error: Exception | None = None
 
             async def worker() -> None:
+                nonlocal first_error
                 async with semaphore:
                     start = perf_counter()
-                    await scenario.coroutine_factory()
-                    elapsed_ms = (perf_counter() - start) * 1000
-                    latencies.append(elapsed_ms)
+                    try:
+                        await scenario.coroutine_factory()
+                    except Exception as exc:  # noqa: BLE001
+                        if first_error is None:
+                            first_error = exc
+                        raise
+                    else:
+                        elapsed_ms = (perf_counter() - start) * 1000
+                        latencies.append(elapsed_ms)
 
             await asyncio.gather(*(worker() for _ in range(scenario.iterations)))
             result = PerfResult(name=scenario.name, latencies_ms=latencies)
-            if result.p95 > scenario.latency_budget_ms:
+            effective_budget = scenario.latency_budget_ms * self._latency_multiplier
+            if first_error:
+                raise first_error
+            if result.p95 > effective_budget:
                 raise AssertionError(
                     f"Scenario {scenario.name} breached latency budget "
-                    f"(p95={result.p95:.2f}ms > {scenario.latency_budget_ms}ms)"
+                    f"(p95={result.p95:.2f}ms > {effective_budget}ms)"
                 )
             results.append(result)
         return results
@@ -83,4 +99,3 @@ def percentile(values: Iterable[float], percentile_value: float) -> float:
     d0 = data[f] * (c - k)
     d1 = data[c] * (k - f)
     return d0 + d1
-

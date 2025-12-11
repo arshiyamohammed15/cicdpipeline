@@ -43,7 +43,6 @@ def alert_factory():
 @pytest.mark.alerting_performance
 @pytest.mark.performance
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="session fixture not available in current test harness")
 async def test_alert_volume_within_noise_budget(
     session: AsyncSession,
     tenant_factory,
@@ -101,7 +100,6 @@ async def test_alert_volume_within_noise_budget(
 @pytest.mark.alerting_performance
 @pytest.mark.performance
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="session fixture not available in current test harness")
 async def test_rate_caps_enforced_across_rolling_window(
     session: AsyncSession,
     tenant_factory,

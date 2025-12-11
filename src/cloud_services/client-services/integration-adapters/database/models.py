@@ -24,7 +24,7 @@ from sqlalchemy import (
     Text,
     TIMESTAMP,
 )
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import TypeDecorator, CHAR, JSON as SQLJSON
 
@@ -291,4 +291,3 @@ class NormalisedAction(Base):
         Index("idx_normalised_actions_idempotency", "idempotency_key"),
         Index("idx_normalised_actions_connection", "connection_id", "status"),
     )
-

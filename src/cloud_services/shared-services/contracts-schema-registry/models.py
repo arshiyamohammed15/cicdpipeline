@@ -69,9 +69,9 @@ class CreateContractRequest(BaseModel):
     name: str = Field(..., description="Contract name", min_length=1, max_length=255)
     type: str = Field(..., description="Contract type", pattern="^(api|event|data)$")
     schema_id: str = Field(..., description="Schema identifier (UUID)", pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
-    validation_rules: List[Dict[str, Any]] = Field(..., description="Validation rules", min_items=1)
+    validation_rules: List[Dict[str, Any]] = Field(..., description="Validation rules", min_length=1)
     enforcement_level: str = Field(..., description="Enforcement level", pattern="^(strict|warning|advisory)$")
-    violation_actions: List[str] = Field(..., description="Violation actions", min_items=1)
+    violation_actions: List[str] = Field(..., description="Violation actions", min_length=1)
 
 
 class UpdateContractRequest(BaseModel):
@@ -85,7 +85,7 @@ class UpdateContractRequest(BaseModel):
 class BulkRegisterSchemasRequest(BaseModel):
     """Request model for bulk schema registration."""
 
-    schemas: List[Dict[str, Any]] = Field(..., description="List of schemas to register", min_items=1, max_items=100)
+    schemas: List[Dict[str, Any]] = Field(..., description="List of schemas to register", min_length=1, max_length=100)
     validate_only: bool = Field(False, description="Only validate, do not register")
     publish: bool = Field(True, description="Publish schemas after registration")
 
@@ -93,7 +93,7 @@ class BulkRegisterSchemasRequest(BaseModel):
 class BulkValidateRequest(BaseModel):
     """Request model for bulk validation."""
 
-    validations: List[Dict[str, Any]] = Field(..., description="List of validations", min_items=1, max_items=500)
+    validations: List[Dict[str, Any]] = Field(..., description="List of validations", min_length=1, max_length=500)
 
 
 class CreateTemplateRequest(BaseModel):

@@ -124,13 +124,11 @@ class ReceiptService:
         return await self._signing_adapter.sign_receipt(payload, self._config.epc11_key_id)
 
     def _sign(self, payload: Dict[str, Any]) -> str:
+        loop = asyncio.new_event_loop()
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-
-        return loop.run_until_complete(self._sign_async(payload))
+            return loop.run_until_complete(self._sign_async(payload))
+        finally:
+            loop.close()
 
     def _validate(self, receipt: Dict[str, Any]) -> None:
         missing = self.REQUIRED_FIELDS - receipt.keys()
@@ -202,16 +200,14 @@ class ReceiptService:
         courier_meta = self._courier.enqueue(copy.deepcopy(receipt))
 
         if self._pm7_adapter:
-            try:
-                loop = asyncio.get_event_loop()
-            except RuntimeError:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
+            loop = asyncio.new_event_loop()
             try:
                 loop.run_until_complete(self._pm7_adapter.index_receipt(copy.deepcopy(receipt)))
             except Exception:
                 # Non-fatal; will retry when courier drains
                 self._courier._wal.mark(courier_meta["sequence"], "pending_sync")  # noqa: SLF001
+            finally:
+                loop.close()
 
         return ReceiptRecord(
             receipt_id=receipt_id,

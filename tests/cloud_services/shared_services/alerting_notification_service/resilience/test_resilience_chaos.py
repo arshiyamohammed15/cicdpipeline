@@ -183,7 +183,7 @@ async def test_rt1_integration_outages_eris_unavailable(test_client, session):
             "dedup_key": "rt1-eris-outage",
         }
 
-        response = test_client.post("/v1/alerts", json=alert_payload)
+        response = await test_client.post("/v1/alerts", json=alert_payload)
 
         # Alert ingestion should succeed even if ERIS fails
         # (ERIS failures should be logged but not block alert processing)
@@ -191,7 +191,7 @@ async def test_rt1_integration_outages_eris_unavailable(test_client, session):
 
         # Verify alert was created
         alert_id = response.json()["alert_id"]
-        get_response = test_client.get(f"/v1/alerts/{alert_id}")
+        get_response = await test_client.get(f"/v1/alerts/{alert_id}")
         assert get_response.status_code == 200
     finally:
         # Restore original method

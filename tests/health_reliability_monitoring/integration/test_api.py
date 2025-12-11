@@ -17,40 +17,6 @@ shim_mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(shim_mod)
 create_app = shim_mod.create_app
 app = create_app()
-from health_reliability_monitoring.database import models
-from health_reliability_monitoring.service_container import get_db_session
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.pool import StaticPool
-
-pytest.skip("Health registry persistence not configured in test harness", allow_module_level=True)
-
-
-@pytest.fixture(autouse=True)
-def setup_db():
-    engine = create_engine(
-        "sqlite://",
-        future=True,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    models.Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine, autoflush=False)
-
-    def get_test_session():
-        session = Session()
-        try:
-            yield session
-            session.commit()
-        except Exception:
-            session.rollback()
-            raise
-        finally:
-            session.close()
-
-    app.dependency_overrides[get_db_session] = get_test_session
-    yield engine
-    app.dependency_overrides.pop(get_db_session, None)
 
 
 @pytest.mark.integration

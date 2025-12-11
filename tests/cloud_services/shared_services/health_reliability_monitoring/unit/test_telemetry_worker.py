@@ -10,8 +10,6 @@ from datetime import datetime
 from health_reliability_monitoring.services.telemetry_worker import TelemetryWorker
 from health_reliability_monitoring.models import TelemetryPayload
 
-pytestmark = pytest.mark.skip(reason="Health registry persistence not configured in test harness")
-
 
 class TestTelemetryWorker:
     """Test TelemetryWorker."""

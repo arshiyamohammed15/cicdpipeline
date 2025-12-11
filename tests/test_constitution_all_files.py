@@ -71,7 +71,7 @@ class ConstitutionRuleLoader:
             List of rule dictionaries
         """
         data = self.load_file(filename)
-        return data.get('constitution_rules', [])
+        return [rule for rule in data.get('constitution_rules', []) if rule.get("enabled", True)]
 
     def get_rule_by_id(self, filename: str, rule_id: str) -> Optional[Dict[str, Any]]:
         """
@@ -471,8 +471,18 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             expected_range = set(range(min_num, max_num + 1))
             actual_numbers = set(numbers)
 
+            # Allow gaps that correspond to explicitly disabled rules.
+            raw_rules = self.loader.load_file('MASTER GENERIC RULES.json').get('constitution_rules', [])
+            disabled_numbers = {
+                int(rule.get('rule_id', 'R-0')[2:])
+                for rule in raw_rules
+                if rule.get('rule_id', '').startswith('R-')
+                and not rule.get('enabled', True)
+                and str(rule.get('rule_id', 'R-0')[2:]).isdigit()
+            }
+
             # Check for gaps in sequence
-            missing = expected_range - actual_numbers
+            missing = expected_range - actual_numbers - disabled_numbers
             if missing:
                 self.fail(f"MASTER GENERIC RULES have gaps in sequence: {sorted(missing)}")
 

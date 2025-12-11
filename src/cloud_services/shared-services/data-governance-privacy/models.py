@@ -11,7 +11,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator
 
 
 # --------------------------------------------------------------------------- #
@@ -78,7 +78,8 @@ class ClassificationResponse(BaseModel):
     review_required: bool
     performance: Dict[str, Any]
 
-    @validator("classification_level")
+    @field_validator("classification_level")
+    @classmethod
     def validate_level(cls, value: str) -> str:
         allowed = {"public", "internal", "confidential", "restricted"}
         if value not in allowed:

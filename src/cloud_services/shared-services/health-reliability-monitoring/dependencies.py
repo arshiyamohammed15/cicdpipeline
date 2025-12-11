@@ -28,17 +28,31 @@ class IAMClient:
 
     async def verify(self, token: str) -> Optional[Dict[str, Any]]:
         """Verify token signature and expiration (mocked)."""
-        if token.startswith(self._trusted_prefix):
-            return {
-                "sub": "health-reliability-monitoring-system",
-                "tenant_id": "tenant-default",
-                "scope": [
-                    "health_reliability_monitoring.read",
-                    "health_reliability_monitoring.write",
-                ],
-                "exp": int((datetime.utcnow() + timedelta(hours=1)).timestamp()),
-            }
-        return None
+        if not token.startswith(self._trusted_prefix):
+            return None
+
+        token_lower = token.lower()
+        scopes = ["health_reliability_monitoring.read"]
+
+        if "readonly" in token_lower:
+            scopes = ["health_reliability_monitoring.read"]
+        else:
+            scopes.append("health_reliability_monitoring.write")
+
+        if "admin" in token_lower or "cross" in token_lower:
+            scopes.extend(
+                [
+                    "health_reliability_monitoring.cross_tenant",
+                    "health_reliability_monitoring.admin",
+                ]
+            )
+
+        return {
+            "sub": "health-reliability-monitoring-system",
+            "tenant_id": "tenant-default",
+            "scope": scopes,
+            "exp": int((datetime.utcnow() + timedelta(hours=1)).timestamp()),
+        }
 
     def authorize(self, claims: Dict[str, Any], scope: str) -> bool:
         """Check if token claims include the required scope."""
@@ -158,4 +172,3 @@ class EdgeAgentClient:
     async def upsert_profile(self, component: Dict[str, Any]) -> None:
         """Mocked call to push component expectations to agent fleets."""
         logger.debug("Updated edge agent profile", extra={"component": component.get("component_id")})
-

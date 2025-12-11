@@ -38,6 +38,7 @@ class TelemetryWorker:
         self._event_bus = event_bus
         self._stop_event: Optional[asyncio.Event] = None
         self._task: Optional[asyncio.Task] = None
+        self._running: bool = False
 
     async def start(self) -> None:
         """Start the worker loop if not already running."""
@@ -45,6 +46,7 @@ class TelemetryWorker:
             return
         self._stop_event = asyncio.Event()
         self._task = asyncio.create_task(self._run(), name="health-reliability-monitoring-telemetry-worker")
+        self._running = True
         logger.info(
             "Started telemetry worker",
             extra={"interval_ms": settings.telemetry.ingestion_interval_ms},
@@ -58,6 +60,7 @@ class TelemetryWorker:
         await self._task
         self._task = None
         self._stop_event = None
+        self._running = False
         logger.info("Stopped telemetry worker")
 
     async def _run(self) -> None:
@@ -87,4 +90,3 @@ class TelemetryWorker:
                 await asyncio.wait_for(self._stop_event.wait(), timeout=interval)
             except asyncio.TimeoutError:
                 continue
-

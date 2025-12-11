@@ -47,7 +47,6 @@ def alert_factory():
 @pytest.mark.alerting_performance
 @pytest.mark.performance
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="session fixture not available in current test harness")
 async def test_p1_paging_latency_under_30s(
     session: AsyncSession,
     perf_runner,

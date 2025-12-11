@@ -431,12 +431,11 @@ class CCCSRuntime:
             return False
 
     def _run_async(self, coro):
+        loop = asyncio.new_event_loop()
         try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        return loop.run_until_complete(coro)
+            return loop.run_until_complete(coro)
+        finally:
+            loop.close()
 
     def _process_wal_entries(self) -> None:
         """Background worker to process WAL entries."""

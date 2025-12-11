@@ -60,6 +60,7 @@ class RateLimitService:
         self.data_plane = data_plane
         self.cache_manager = cache_manager
         self._local_cache: Dict[str, Any] = {}
+        self._policy_cache: Dict[Tuple[str, str], RateLimitPolicy] = {}
 
     def _now(self) -> datetime:
         """Return current UTC time. Extracted for easier testing."""
@@ -233,6 +234,30 @@ class RateLimitService:
         capacity = prioritized_limit + (policy.burst_capacity or 0)
         return prioritized_limit, capacity
 
+    def _policy_cache_key(self, tenant_id: str, resource_type: str) -> Tuple[str, str]:
+        return tenant_id, resource_type
+
+    def _get_policy_cached(self, tenant_id: str, resource_type: str) -> Optional[RateLimitPolicy]:
+        cache_key = self._policy_cache_key(tenant_id, resource_type)
+        cached = self._policy_cache.get(cache_key)
+        if cached:
+            return cached
+
+        policy = self.db.query(RateLimitPolicy).filter(
+            and_(
+                RateLimitPolicy.tenant_id == uuid.UUID(tenant_id),
+                RateLimitPolicy.resource_type == resource_type
+            )
+        ).first()
+
+        if policy:
+            self._policy_cache[cache_key] = policy
+        return policy
+
+    def _invalidate_policy_cache(self, policy: RateLimitPolicy) -> None:
+        cache_key = self._policy_cache_key(str(policy.tenant_id), policy.resource_type)
+        self._policy_cache.pop(cache_key, None)
+
     def _record_usage(
         self,
         policy: RateLimitPolicy,
@@ -337,6 +362,49 @@ class RateLimitService:
         else:
             self.db.commit()
             return False, 0, window_end, effective_limit
+
+    def _token_bucket_fast_check(
+        self,
+        policy: RateLimitPolicy,
+        resource_key: str,
+        request_count: int,
+        priority: Optional[str] = None
+    ) -> Tuple[bool, int, datetime]:
+        """
+        Hot path for token bucket that uses in-memory cache to avoid per-call DB traffic.
+        """
+        now = self._now()
+        window_start = now.replace(second=0, microsecond=0)
+        window_end = window_start + timedelta(seconds=policy.time_window_seconds)
+
+        prioritized_limit = max(1, self._apply_priority_multiplier(policy.limit_value, priority))
+        capacity = prioritized_limit + (policy.burst_capacity or 0)
+
+        state_key = f"token:{policy.policy_id}:{resource_key}"
+        state = self._cache_get(state_key) or {"window_start": window_start, "used": 0}
+        if state.get("window_start") != window_start:
+            state = {"window_start": window_start, "used": 0}
+
+        used = int(state.get("used", 0))
+        elapsed_seconds = max(0.0, (now - window_start).total_seconds())
+        refill_rate = prioritized_limit / policy.time_window_seconds if policy.time_window_seconds else prioritized_limit
+        tokens_refilled = max(0, int(elapsed_seconds * refill_rate))
+        available_tokens = min(
+            capacity,
+            tokens_refilled + max(0, capacity - used)
+        )
+
+        allowed = available_tokens >= request_count
+        if allowed:
+            used += request_count
+            remaining = available_tokens - request_count
+        else:
+            remaining = 0
+
+        state["used"] = used
+        ttl_seconds = policy.time_window_seconds or 60
+        self._cache_set(state_key, state, ttl_seconds=ttl_seconds)
+        return allowed, remaining, window_end, prioritized_limit
 
     def _fixed_window_check(
         self,
@@ -509,6 +577,8 @@ class RateLimitService:
         self.db.add(policy)
         self.db.commit()
         self.db.refresh(policy)
+        cache_key = self._policy_cache_key(tenant_id, resource_type)
+        self._policy_cache[cache_key] = policy
 
         logger.info(f"Created rate limit policy {policy.policy_id} for tenant {tenant_id}")
         return policy
@@ -588,12 +658,7 @@ class RateLimitService:
             Rate limit check result dictionary
         """
         # Find applicable policy
-        policy = self.db.query(RateLimitPolicy).filter(
-            and_(
-                RateLimitPolicy.tenant_id == uuid.UUID(tenant_id),
-                RateLimitPolicy.resource_type == resource_type
-            )
-        ).first()
+        policy = self._get_policy_cached(tenant_id, resource_type)
 
         if not policy:
             # No policy found - allow by default
@@ -614,9 +679,15 @@ class RateLimitService:
 
         # Execute algorithm
         if algorithm == "token_bucket":
-            allowed, remaining, reset_time, effective_limit = self._token_bucket_check(
-                policy, resource_key, request_count, priority
-            )
+            fast_path = not policy.overrides
+            if fast_path:
+                allowed, remaining, reset_time, effective_limit = self._token_bucket_fast_check(
+                    policy, resource_key, request_count, priority
+                )
+            else:
+                allowed, remaining, reset_time, effective_limit = self._token_bucket_check(
+                    policy, resource_key, request_count, priority
+                )
         elif algorithm == "fixed_window":
             allowed, remaining, reset_time, effective_limit = self._fixed_window_check(
                 policy, resource_key, request_count, priority
@@ -675,6 +746,8 @@ class RateLimitService:
 
         self.db.commit()
         self.db.refresh(policy)
+        cache_key = self._policy_cache_key(str(policy.tenant_id), policy.resource_type)
+        self._policy_cache[cache_key] = policy
         return policy
 
     def delete_rate_limit_policy(self, policy_id: str) -> bool:
@@ -701,5 +774,5 @@ class RateLimitService:
 
         self.db.delete(policy)
         self.db.commit()
+        self._invalidate_policy_cache(policy)
         return True
-

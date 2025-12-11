@@ -19,7 +19,7 @@ from sqlalchemy import (
 )
 from sqlalchemy import DateTime, TIMESTAMP
 from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.types import TypeDecorator, CHAR
 from sqlalchemy.dialects.postgresql import UUID as PGUUID, JSONB as PGJSONB
 
@@ -379,4 +379,3 @@ class QuotaUsageHistory(Base):
             "operation_type": self.operation_type,
             "resource_id": str(self.resource_id) if isinstance(self.resource_id, uuid.UUID) else self.resource_id if self.resource_id else None,
         }
-

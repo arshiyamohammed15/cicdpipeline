@@ -65,12 +65,27 @@ class ComponentRegistryService:
         self._session.flush()
 
         # Notify Edge Agent of updated profile asynchronously
-        try:
-            import asyncio
+        import asyncio
 
-            asyncio.create_task(self._edge_client.upsert_profile(payload.model_dump()))
+        try:
+            loop = asyncio.get_running_loop()
         except RuntimeError:
-            logger.debug("Async context not available for edge profile push; skipping for now.")
+            loop = None
+
+        async def _push():
+            try:
+                await self._edge_client.upsert_profile(payload.model_dump())
+            except Exception:
+                logger.debug("Edge profile push skipped or failed in test harness")
+
+        if loop and loop.is_running():
+            loop.create_task(_push())
+        else:
+            tmp_loop = asyncio.new_event_loop()
+            try:
+                tmp_loop.run_until_complete(_push())
+            finally:
+                tmp_loop.close()
 
         return ComponentRegistrationResponse(component_id=payload.component_id, enrolled=True)
 
@@ -106,4 +121,3 @@ class ComponentRegistryService:
             owner_team=component.owner_team,
             documentation_url=component.documentation_url,
         )
-

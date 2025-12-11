@@ -13,8 +13,8 @@ import types
 import importlib.util
 from pathlib import Path
 
+import httpx
 import pytest
-from fastapi.testclient import TestClient
 
 # Module setup handled by root conftest.py
 
@@ -52,29 +52,34 @@ from integration_adapters.main import app
 class TestMainApp:
     """Test FastAPI main app."""
 
-    def test_app_initialization(self):
+    pytestmark = [pytest.mark.asyncio, pytest.mark.filterwarnings("ignore::ResourceWarning")]
+
+    async def test_app_initialization(self):
         """Test app initialization."""
         assert app is not None
         assert app.title == "ZeroUI Integration Adapters Service"
         assert app.version == "2.0.0"
 
-    def test_health_endpoint(self):
+    async def test_health_endpoint(self):
         """Test health check endpoint."""
-        client = TestClient(app)
-        response = client.get("/health")
-        assert response.status_code == 200
-        data = response.json()
-        assert data["status"] == "healthy"
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.get("/health")
+            assert response.status_code == 200
+            data = response.json()
+            assert data["status"] == "healthy"
 
-    def test_docs_endpoint(self):
+    async def test_docs_endpoint(self):
         """Test OpenAPI docs endpoint."""
-        client = TestClient(app)
-        response = client.get("/docs")
-        assert response.status_code in (200, 401)
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.get("/docs")
+            assert response.status_code in (200, 401)
 
-    def test_redoc_endpoint(self):
+    async def test_redoc_endpoint(self):
         """Test ReDoc endpoint."""
-        client = TestClient(app)
-        response = client.get("/redoc")
-        assert response.status_code in (200, 401)
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            response = await client.get("/redoc")
+            assert response.status_code in (200, 401)
 

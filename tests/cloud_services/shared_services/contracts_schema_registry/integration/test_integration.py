@@ -4,8 +4,9 @@ from __future__ import annotations
 # Imports handled by conftest.py
 
 import pytest
+import httpx
+from httpx import ASGITransport
 from fastapi import status
-from fastapi.testclient import TestClient
 
 from contracts_schema_registry.main import app
 
@@ -15,14 +16,17 @@ class TestSchemaLifecycle:
     """Test schema lifecycle integration."""
 
     @pytest.fixture
-    def client(self):
-        """Create test client."""
-        return TestClient(app)
+    async def client(self):
+        """Create async test client."""
+        transport = ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            yield client
 
-    def test_register_and_validate_schema(self, client):
+    @pytest.mark.asyncio
+    async def test_register_and_validate_schema(self, client):
         """Test registering and validating a schema."""
         # Register schema
-        register_response = client.post(
+        register_response = await client.post(
             "/registry/v1/schemas",
             json={
                 "name": "test-schema",
@@ -47,7 +51,7 @@ class TestSchemaLifecycle:
         if register_response.status_code == status.HTTP_201_CREATED:
             schema_id = register_response.json().get("schema_id")
             if schema_id:
-                validate_response = client.post(
+                validate_response = await client.post(
                     "/registry/v1/validate",
                     json={
                         "schema_id": schema_id,
@@ -60,10 +64,11 @@ class TestSchemaLifecycle:
                     status.HTTP_404_NOT_FOUND
                 ]
 
-    def test_schema_versioning(self, client):
+    @pytest.mark.asyncio
+    async def test_schema_versioning(self, client):
         """Test schema versioning workflow."""
         # Register initial schema
-        register_response = client.post(
+        register_response = await client.post(
             "/registry/v1/schemas",
             json={
                 "name": "versioned-schema",
@@ -76,7 +81,7 @@ class TestSchemaLifecycle:
         if register_response.status_code == status.HTTP_201_CREATED:
             schema_id = register_response.json().get("schema_id")
             # Update schema (creates new version)
-            update_response = client.put(
+            update_response = await client.put(
                 f"/registry/v1/schemas/{schema_id}",
                 json={
                     "definition": {"type": "object", "properties": {"id": {"type": "string"}}}
@@ -95,14 +100,17 @@ class TestContractFlow:
     """Test contract management integration."""
 
     @pytest.fixture
-    def client(self):
-        """Create test client."""
-        return TestClient(app)
+    async def client(self):
+        """Create async test client."""
+        transport = ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+            yield client
 
-    def test_contract_creation_and_retrieval(self, client):
+    @pytest.mark.asyncio
+    async def test_contract_creation_and_retrieval(self, client):
         """Test contract creation and retrieval."""
         # Create contract
-        create_response = client.post(
+        create_response = await client.post(
             "/registry/v1/contracts",
             json={
                 "name": "test-contract",
@@ -118,9 +126,10 @@ class TestContractFlow:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
-    def test_compatibility_check(self, client):
+    @pytest.mark.asyncio
+    async def test_compatibility_check(self, client):
         """Test schema compatibility checking."""
-        response = client.post(
+        response = await client.post(
             "/registry/v1/compatibility",
             json={
                 "source_schema": {"type": "object"},

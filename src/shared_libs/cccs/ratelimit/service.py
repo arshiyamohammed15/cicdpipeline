@@ -70,17 +70,14 @@ class RateLimiterService:
         return self._fetch_and_cache(action_id, cost, tenant_id)
 
     def _fetch_and_cache(self, action_id: str, cost: float, tenant_id: Optional[str]) -> BudgetDecision:
-        try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-
+        loop = asyncio.new_event_loop()
         try:
             decision = loop.run_until_complete(self._check_budget_async(action_id, cost, tenant_id))
         except BudgetExceededError:
             self._config.on_budget_exceeded(action_id, cost)
             raise
+        finally:
+            loop.close()
         if decision.allowed:
             self._budget_cache[action_id] = decision.remaining
         return decision

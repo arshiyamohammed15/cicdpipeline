@@ -129,8 +129,17 @@ class SafeToActRequest(BaseModel):
     """Request contract for Safe-to-Act API."""
 
     tenant_id: str
-    plane: str
-    action_type: Literal["auto_remediate", "rollout", "risky_migration", "standard_action"]
+    plane: str = "Product"
+    action_type: Literal[
+        "auto_remediate",
+        "rollout",
+        "risky_migration",
+        "standard_action",
+        "deployment",
+        "rollback",
+        "scale",
+        "migration",
+    ]
     component_scope: Optional[List[str]] = Field(
         default=None, description="Optional list of component IDs relevant to gating."
     )
@@ -153,4 +162,3 @@ class ErrorResponse(BaseModel):
     message: str
     correlation_id: str
     details: Optional[Dict[str, str]] = None
-

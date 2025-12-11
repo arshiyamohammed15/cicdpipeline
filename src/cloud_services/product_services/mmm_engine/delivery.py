@@ -69,8 +69,7 @@ class DeliveryOrchestrator:
             "requires_consent": action.requires_consent,
             "requires_dual_channel": action.requires_dual_channel,
             "payload": action.payload,
-            "context": decision.context.dict(),
+            "context": decision.context.model_dump(),
             "timestamp_utc": datetime.utcnow().isoformat(),
         }
-
 

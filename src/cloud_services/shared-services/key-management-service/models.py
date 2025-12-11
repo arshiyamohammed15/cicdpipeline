@@ -25,7 +25,7 @@ class GenerateKeyRequest(BaseModel):
     key_usage: List[str] = Field(
         ...,
         description="List of key usage types",
-        min_items=1
+        min_length=1
     )
     key_alias: Optional[str] = Field(None, description="Optional human-readable alias")
     approval_token: Optional[str] = Field(None, description="Optional approval token for dual-authorization")
@@ -190,7 +190,7 @@ class HealthResponse(BaseModel):
     """Health check response model."""
 
     status: str = Field(..., description="Overall health status", pattern="^(healthy|degraded|unhealthy)$")
-    checks: List[HealthCheck] = Field(..., description="List of health checks", min_items=1)
+    checks: List[HealthCheck] = Field(..., description="List of health checks", min_length=1)
 
 
 class ConfigResponse(BaseModel):
@@ -230,7 +230,7 @@ class ErrorResponse(BaseModel):
 class AccessPolicy(BaseModel):
     """Access policy model for key metadata."""
 
-    allowed_modules: List[str] = Field(..., description="List of allowed module IDs", min_items=1)
+    allowed_modules: List[str] = Field(..., description="List of allowed module IDs", min_length=1)
     requires_approval: bool = Field(..., description="Whether approval is required")
     max_usage_per_day: int = Field(..., description="Maximum usage per day", ge=1)
 
@@ -243,7 +243,7 @@ class KeyMetadata(BaseModel):
     plane: str = Field(..., description="Plane", pattern="^(laptop|tenant|product|shared)$")
     key_id: str = Field(..., description="Key identifier")
     key_type: str = Field(..., description="Key type", pattern="^(RSA-2048|Ed25519|AES-256)$")
-    key_usage: List[str] = Field(..., description="List of key usage types", min_items=1)
+    key_usage: List[str] = Field(..., description="List of key usage types", min_length=1)
     public_key: str = Field(..., description="PEM-encoded public key")
     key_state: str = Field(
         ...,

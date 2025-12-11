@@ -96,7 +96,8 @@ class RuleCountLoader:
         if not self._cache_valid or force_reload:
             total, enabled, disabled, categories = self._load_rules_from_json_files()
             self._cached_counts = {
-                'total_rules': total,
+                # Treat "total" as the active/enabled rule count to align with enforcement surfaces.
+                'total_rules': enabled,
                 'enabled_rules': enabled,
                 'disabled_rules': disabled,
                 'category_counts': categories

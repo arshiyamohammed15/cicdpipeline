@@ -18,7 +18,7 @@ from sqlalchemy import (
 )
 from sqlalchemy import DateTime, TIMESTAMP
 from sqlalchemy.dialects.sqlite import JSON as SQLiteJSON
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.types import TypeDecorator, CHAR
 
 DATABASE_URL = os.getenv("DATABASE_URL", "").lower()

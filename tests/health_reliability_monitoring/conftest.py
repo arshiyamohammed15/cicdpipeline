@@ -4,7 +4,18 @@ from __future__ import annotations
 import sys
 import importlib.util
 from pathlib import Path
+import tempfile
 import pytest
+import asyncio
+import gc
+try:
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())  # type: ignore[attr-defined]
+except Exception:
+    pass
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.pool import StaticPool
 
 # Setup module imports - create health_reliability_monitoring package from health-reliability-monitoring directory
 # conftest.py is at: tests/health_reliability_monitoring/conftest.py
@@ -92,6 +103,80 @@ def _setup_health_reliability_monitoring_module():
         sys.modules["health_reliability_monitoring.database.models"] = db_module
         try:
             spec_db.loader.exec_module(db_module)
+        except Exception:
+            pass
+
+
+@pytest.fixture(autouse=True)
+def hrm_test_db():
+    """
+    Provide an isolated SQLite database and wire FastAPI dependencies to it for HRM tests.
+    """
+    # Import core modules after path setup
+    from health_reliability_monitoring.database import models
+    import health_reliability_monitoring.service_container as sc
+    import health_reliability_monitoring.database.session as db_session
+    try:
+        import health_reliability_monitoring.main_real.service_container as real_sc
+        import health_reliability_monitoring.main_real.database.session as real_db_session
+    except ModuleNotFoundError:
+        # Allow tests to continue using shim main without the real package layout
+        real_sc = None
+        real_db_session = None
+
+    db_dir = Path(tempfile.mkdtemp())
+    db_path = db_dir / "hrm_test.db"
+    engine = create_engine(
+        f"sqlite:///{db_path}",
+        future=True,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    models.Base.metadata.create_all(engine)
+    Session = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
+    registry = scoped_session(Session)
+
+    # Rebind both the shim and real module session factories to the test engine.
+    db_session.engine = engine
+    db_session.SessionLocal = registry
+    sc.SessionLocal = registry
+    if real_db_session and real_sc:
+        real_db_session.engine = engine
+        real_db_session.SessionLocal = registry
+        real_sc.SessionLocal = registry
+
+    def get_test_session():
+        models.Base.metadata.create_all(engine)
+        session = registry()
+        try:
+            yield session
+            session.commit()
+        except Exception:
+            session.rollback()
+            raise
+        finally:
+            session.close()
+
+    # Override dependencies when app is available.
+    try:
+        from health_reliability_monitoring.main_real import app as real_app
+        real_app.dependency_overrides[sc.get_db_session] = get_test_session
+        if real_sc:
+            real_app.dependency_overrides[real_sc.get_db_session] = get_test_session
+    except Exception:
+        real_app = None
+
+    try:
+        yield
+    finally:
+        if real_app:
+            real_app.dependency_overrides.pop(sc.get_db_session, None)
+            if real_sc:
+                real_app.dependency_overrides.pop(real_sc.get_db_session, None)
+        engine.dispose()
+        try:
+            db_path.unlink()
+            db_dir.rmdir()
         except Exception:
             pass
 
@@ -270,4 +355,52 @@ def ensure_module_setup():
     """Ensure module is set up before any tests run."""
     _setup_health_reliability_monitoring_module()
     yield
+
+
+@pytest.fixture(scope="session")
+def event_loop():
+    """Provide a session-scoped asyncio event loop and ensure it is closed."""
+    loop = asyncio.new_event_loop()
+    yield loop
+    loop.close()
+
+
+@pytest.fixture(scope="session", autouse=True)
+def close_asyncio_loops():
+    """Close any lingering event loops to avoid ResourceWarnings in the harness."""
+    yield
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        return
+    if loop and not loop.is_closed():
+        loop.close()
+    for obj in gc.get_objects():
+        if isinstance(obj, asyncio.AbstractEventLoop) and not obj.is_closed():
+            obj.close()
+
+# As an extra guard, ensure any event loop tracked by the policy is closed at process exit.
+def _shutdown_event_loop():
+    try:
+        policy = asyncio.get_event_loop_policy()
+        candidates = [
+            getattr(policy, "_loop", None),
+            getattr(getattr(policy, "_local", None), "_loop", None),
+            getattr(getattr(policy, "_local", None), "loop", None),
+        ]
+        for loop in candidates:
+            if loop and hasattr(loop, "close") and not loop.is_closed():
+                loop.close()
+    except Exception:
+        pass
+
+import atexit
+atexit.register(_shutdown_event_loop)
+
+
+def pytest_sessionfinish(session, exitstatus):
+    """Best-effort cleanup of any event loops left by pytest-asyncio."""
+    for obj in gc.get_objects():
+        if isinstance(obj, asyncio.AbstractEventLoop) and not obj.is_closed():
+            obj.close()
 

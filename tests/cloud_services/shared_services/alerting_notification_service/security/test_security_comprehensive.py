@@ -6,8 +6,10 @@ from __future__ import annotations
 import json
 from datetime import datetime
 
+import httpx
+from httpx import ASGITransport
 import pytest
-from fastapi.testclient import TestClient
+from alerting_notification_service.main import app
 
 
 def _alert(alert_id: str, tenant_id: str = "tenant-integration") -> dict:
@@ -43,36 +45,37 @@ async def test_st1_unauthenticated_calls_rejected(test_client):
     Unauthenticated calls rejected.
     """
     # Create client without authentication headers
-    unauthenticated_client = TestClient(test_client.app)
-    # Explicitly remove any default headers
-    unauthenticated_client.headers.clear()
+    transport = ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as unauthenticated_client:
+        # Explicitly remove any default headers
+        unauthenticated_client.headers.clear()
 
-    # Test alert ingestion without tenant header
-    alert_payload = _alert("unauth-test-1")
-    response = unauthenticated_client.post("/v1/alerts", json=alert_payload)
+        # Test alert ingestion without tenant header
+        alert_payload = _alert("unauth-test-1")
+        response = await unauthenticated_client.post("/v1/alerts", json=alert_payload)
 
-    # Should be rejected with 400 (missing X-Tenant-ID)
-    assert response.status_code == 400
-    assert "X-Tenant-ID" in response.json()["detail"].lower() or "tenant" in response.json()["detail"].lower()
+        # Should be rejected with 400 (missing X-Tenant-ID)
+        assert response.status_code == 400
+        assert "X-Tenant-ID" in response.json()["detail"].lower() or "tenant" in response.json()["detail"].lower()
 
-    # Test alert retrieval without tenant header
-    # First create alert with authenticated client
-    auth_alert = _alert("unauth-test-2", tenant_id="tenant-integration")
-    auth_response = test_client.post("/v1/alerts", json=auth_alert)
-    assert auth_response.status_code == 200
-    alert_id = auth_response.json()["alert_id"]
+        # Test alert retrieval without tenant header
+        # First create alert with authenticated client
+        auth_alert = _alert("unauth-test-2", tenant_id="tenant-integration")
+        auth_response = await test_client.post("/v1/alerts", json=auth_alert)
+        assert auth_response.status_code == 200
+        alert_id = auth_response.json()["alert_id"]
 
-    # Try to access without tenant header
-    get_response = unauthenticated_client.get(f"/v1/alerts/{alert_id}")
-    assert get_response.status_code == 400  # Missing X-Tenant-ID header
+        # Try to access without tenant header
+        get_response = await unauthenticated_client.get(f"/v1/alerts/{alert_id}")
+        assert get_response.status_code == 400  # Missing X-Tenant-ID header
 
     # Test with invalid tenant header (empty)
-    invalid_client = TestClient(test_client.app)
-    invalid_client.headers.update({"X-Tenant-ID": ""})
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as invalid_client:
+        invalid_client.headers.update({"X-Tenant-ID": ""})
 
-    invalid_alert = _alert("unauth-test-3", tenant_id="tenant-integration")
-    invalid_response = invalid_client.post("/v1/alerts", json=invalid_alert)
-    assert invalid_response.status_code == 400
+        invalid_alert = _alert("unauth-test-3", tenant_id="tenant-integration")
+        invalid_response = await invalid_client.post("/v1/alerts", json=invalid_alert)
+        assert invalid_response.status_code == 400
 
 
 @pytest.mark.alerting_security
@@ -86,35 +89,36 @@ async def test_st1_unauthorized_cross_tenant_blocked(test_client):
     """
     # Create alert in tenant-integration (test_client default)
     alert_payload = _alert("cross-tenant-test", tenant_id="tenant-integration")
-    create_response = test_client.post("/v1/alerts", json=alert_payload)
+    create_response = await test_client.post("/v1/alerts", json=alert_payload)
     assert create_response.status_code == 200
     alert_id = create_response.json()["alert_id"]
 
     # Create client for different tenant without cross-tenant permissions
-    unauthorized_client = TestClient(test_client.app)
-    unauthorized_client.headers.update({
-        "X-Tenant-ID": "tenant-other",
-        "X-Actor-ID": "user-other",
-        "X-Roles": "tenant_user",  # No global_admin or cross-tenant allowance
-    })
+    transport = ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as unauthorized_client:
+        unauthorized_client.headers.update({
+            "X-Tenant-ID": "tenant-other",
+            "X-Actor-ID": "user-other",
+            "X-Roles": "tenant_user",  # No global_admin or cross-tenant allowance
+        })
 
-    # Try to access alert from different tenant
-    get_response = unauthorized_client.get(f"/v1/alerts/{alert_id}")
-    assert get_response.status_code == 403  # Forbidden
+        # Try to access alert from different tenant
+        get_response = await unauthorized_client.get(f"/v1/alerts/{alert_id}")
+        assert get_response.status_code == 403  # Forbidden
 
-    # Try to ACK alert from different tenant
-    ack_response = unauthorized_client.post(
-        f"/v1/alerts/{alert_id}/ack",
-        json={"actor": "user-other"}
-    )
-    assert ack_response.status_code == 403  # Forbidden
+        # Try to ACK alert from different tenant
+        ack_response = await unauthorized_client.post(
+            f"/v1/alerts/{alert_id}/ack",
+            json={"actor": "user-other"}
+        )
+        assert ack_response.status_code == 403  # Forbidden
 
-    # Try to search alerts from different tenant
-    search_response = unauthorized_client.post(
-        "/v1/alerts/search",
-        json={"tenant_id": "tenant-integration"}
-    )
-    assert search_response.status_code == 403  # Forbidden
+        # Try to search alerts from different tenant
+        search_response = await unauthorized_client.post(
+            "/v1/alerts/search",
+            json={"tenant_id": "tenant-integration"}
+        )
+        assert search_response.status_code == 403  # Forbidden
 
 
 @pytest.mark.alerting_security
@@ -128,34 +132,35 @@ async def test_st1_authorized_cross_tenant_allowed(test_client):
     """
     # Create alert in tenant-integration (test_client default)
     alert_payload = _alert("authorized-cross-tenant", tenant_id="tenant-integration")
-    create_response = test_client.post("/v1/alerts", json=alert_payload)
+    create_response = await test_client.post("/v1/alerts", json=alert_payload)
     assert create_response.status_code == 200
     alert_id = create_response.json()["alert_id"]
 
     # Test with global_admin role
-    admin_client = TestClient(test_client.app)
-    admin_client.headers.update({
-        "X-Tenant-ID": "tenant-admin",
-        "X-Actor-ID": "admin-user",
-        "X-Roles": "global_admin",
-    })
+    transport = ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as admin_client:
+        admin_client.headers.update({
+            "X-Tenant-ID": "tenant-admin",
+            "X-Actor-ID": "admin-user",
+            "X-Roles": "global_admin",
+        })
 
-    # Should be able to access
-    get_response = admin_client.get(f"/v1/alerts/{alert_id}")
-    assert get_response.status_code == 200
+        # Should be able to access
+        get_response = await admin_client.get(f"/v1/alerts/{alert_id}")
+        assert get_response.status_code == 200
 
     # Test with X-Allow-Tenants header
-    allowed_client = TestClient(test_client.app)
-    allowed_client.headers.update({
-        "X-Tenant-ID": "tenant-other",
-        "X-Actor-ID": "allowed-user",
-        "X-Roles": "tenant_user",
-        "X-Allow-Tenants": "tenant-integration",
-    })
+    async with httpx.AsyncClient(transport=transport, base_url="http://test") as allowed_client:
+        allowed_client.headers.update({
+            "X-Tenant-ID": "tenant-other",
+            "X-Actor-ID": "allowed-user",
+            "X-Roles": "tenant_user",
+            "X-Allow-Tenants": "tenant-integration",
+        })
 
-    # Should be able to access
-    get_response2 = allowed_client.get(f"/v1/alerts/{alert_id}")
-    assert get_response2.status_code == 200
+        # Should be able to access
+        get_response2 = await allowed_client.get(f"/v1/alerts/{alert_id}")
+        assert get_response2.status_code == 200
 
 
 @pytest.mark.alerting_security
@@ -174,7 +179,7 @@ async def test_st2_payload_sanitization_secrets_rejected(test_client):
     alert_with_secret = _alert("secret-test-1")
     alert_with_secret["description"] = "Password: mySecret123! API_KEY=REDACTED_KEY_PLACEHOLDER"
 
-    response = test_client.post("/v1/alerts", json=alert_with_secret)
+    response = await test_client.post("/v1/alerts", json=alert_with_secret)
 
     # Alert should be accepted (current implementation doesn't reject)
     # but in production, this should be sanitized or logged
@@ -184,7 +189,7 @@ async def test_st2_payload_sanitization_secrets_rejected(test_client):
     # If accepted, verify no secrets in stored alert
     if response.status_code == 200:
         alert_id = response.json()["alert_id"]
-        get_response = test_client.get(f"/v1/alerts/{alert_id}")
+        get_response = await test_client.get(f"/v1/alerts/{alert_id}")
         if get_response.status_code == 200:
             alert_data = get_response.json()
             description = alert_data.get("description", "")
@@ -210,7 +215,7 @@ async def test_st2_payload_sanitization_pii_handling(test_client):
         "credit_card": "4111-1111-1111-1111",  # Should be sanitized
     }
 
-    response = test_client.post("/v1/alerts", json=alert_with_pii)
+    response = await test_client.post("/v1/alerts", json=alert_with_pii)
 
     # Alert should be processed (sanitization happens in production)
     assert response.status_code in [200, 400]
@@ -218,7 +223,7 @@ async def test_st2_payload_sanitization_pii_handling(test_client):
     # If accepted, verify PII handling
     if response.status_code == 200:
         alert_id = response.json()["alert_id"]
-        get_response = test_client.get(f"/v1/alerts/{alert_id}")
+        get_response = await test_client.get(f"/v1/alerts/{alert_id}")
         if get_response.status_code == 200:
             alert_data = get_response.json()
             # In production, PII should be redacted from labels
@@ -240,14 +245,14 @@ async def test_st2_payload_sanitization_sql_injection_prevention(test_client):
     alert_with_sql["summary"] = "Test'; DROP TABLE alerts; --"
     alert_with_sql["description"] = "'; DELETE FROM incidents WHERE '1'='1'; --"
 
-    response = test_client.post("/v1/alerts", json=alert_with_sql)
+    response = await test_client.post("/v1/alerts", json=alert_with_sql)
 
     # Should be accepted (SQL injection prevented by ORM parameterization)
     assert response.status_code == 200
 
     # Verify alert was created safely (not executed as SQL)
     alert_id = response.json()["alert_id"]
-    get_response = test_client.get(f"/v1/alerts/{alert_id}")
+    get_response = await test_client.get(f"/v1/alerts/{alert_id}")
     assert get_response.status_code == 200
 
     alert_data = get_response.json()
@@ -256,7 +261,7 @@ async def test_st2_payload_sanitization_sql_injection_prevention(test_client):
     assert "DROP TABLE" in alert_data["summary"]  # Should be stored as string
 
     # Verify database is still intact (other alerts still exist)
-    search_response = test_client.post("/v1/alerts/search", json={"tenant_id": "tenant-integration"})
+    search_response = await test_client.post("/v1/alerts/search", json={"tenant_id": "tenant-integration"})
     assert search_response.status_code == 200
     assert len(search_response.json()) > 0  # Other alerts still exist
 
@@ -275,14 +280,14 @@ async def test_st2_payload_sanitization_xss_prevention(test_client):
     alert_with_xss["description"] = "<script>alert('XSS')</script>"
     alert_with_xss["summary"] = "Test <img src=x onerror=alert(1)>"
 
-    response = test_client.post("/v1/alerts", json=alert_with_xss)
+    response = await test_client.post("/v1/alerts", json=alert_with_xss)
 
     # Should be accepted (XSS prevention happens at display layer)
     assert response.status_code == 200
 
     # Verify alert was created
     alert_id = response.json()["alert_id"]
-    get_response = test_client.get(f"/v1/alerts/{alert_id}")
+    get_response = await test_client.get(f"/v1/alerts/{alert_id}")
     assert get_response.status_code == 200
 
     alert_data = get_response.json()

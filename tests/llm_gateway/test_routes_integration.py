@@ -6,15 +6,23 @@ Integration tests exercising FastAPI routes for the LLM Gateway.
 
 import json
 from pathlib import Path
+import warnings
 
 import pytest
 from fastapi.testclient import TestClient
+
+warnings.filterwarnings(
+    "ignore",
+    message="Pydantic serializer warnings:",
+    category=UserWarning,
+)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 from cloud_services.llm_gateway.main import app  # type: ignore  # pylint: disable=import-error
 from cloud_services.llm_gateway.models import (  # type: ignore  # pylint: disable=import-error
     LLMRequest,
+    Tenant,
 )
 from cloud_services.llm_gateway.routes import (  # type: ignore  # pylint: disable=import-error
     service as gateway_service,
@@ -187,7 +195,7 @@ def test_tenant_routing_isolated_via_provider_routes() -> None:
     req_b = req_a.model_copy(
         update={
             "request_id": "req-routing-B",
-            "tenant": {"tenant_id": "tenantB", "region": "eu-central"},
+            "tenant": Tenant(tenant_id="tenantB", region="eu-central"),
         }
     )
 
@@ -330,4 +338,3 @@ def test_provider_outage_triggers_degradation_path() -> None:
         assert body.get("degradation_stage") in {None, "REROUTED", "NONE"}
     finally:
         gateway_service.provider_client = original_provider
-

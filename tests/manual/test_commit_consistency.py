@@ -11,7 +11,8 @@ def   test_function   (   ):
     """This function has bad formatting to test pre-commit hooks"""
     x=1+2
     print("Hello World")
-    return    x
+    assert x == 3
+    return None
 
 if __name__ == "__main__":
     result = test_function()

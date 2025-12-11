@@ -34,7 +34,7 @@ class Subject(BaseModel):
     roles: List[str] = Field(
         ...,
         description="List of roles",
-        min_items=1
+        min_length=1
     )
     attributes: Optional[Dict[str, Any]] = Field(
         default=None,
@@ -143,7 +143,7 @@ class Policy(BaseModel):
     """Policy model for policy bundles."""
 
     id: str = Field(..., description="Policy identifier", min_length=1)
-    rules: List[PolicyRule] = Field(..., description="Policy rules", min_items=1)
+    rules: List[PolicyRule] = Field(..., description="Policy rules", min_length=1)
     status: str = Field(
         ...,
         description="Policy status",
@@ -156,7 +156,7 @@ class PolicyBundle(BaseModel):
 
     bundle_id: str = Field(..., description="Bundle identifier", min_length=1)
     version: str = Field(..., description="Bundle version", min_length=1)
-    policies: List[Policy] = Field(..., description="List of policies", min_items=1)
+    policies: List[Policy] = Field(..., description="List of policies", min_length=1)
     effective_from: Optional[datetime] = Field(
         default=None,
         description="Effective from time (ISO 8601)"

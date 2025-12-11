@@ -3,6 +3,10 @@
 from datetime import datetime
 
 import pytest
+import warnings
+
+pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
+warnings.filterwarnings("ignore", category=ResourceWarning, module=r"anyio\.streams\.memory")
 
 from alerting_notification_service.database.models import Alert, Incident, Notification
 from alerting_notification_service.repositories import AlertRepository, IncidentRepository, NotificationRepository

@@ -15,7 +15,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 # Import SignalEnvelope from PM-3 if available, otherwise define locally
 try:
@@ -74,6 +74,12 @@ class ActionStatus(str, Enum):
     FAILED = "failed"
 
 
+# ---------------------------------------------------------------------------
+# Pydantic model configuration
+# ---------------------------------------------------------------------------
+BaseModel.model_config = ConfigDict(extra="ignore")
+
+
 # ============================================================================
 # Provider Models
 # ============================================================================
@@ -97,8 +103,7 @@ class IntegrationProviderResponse(BaseModel):
     capabilities: Dict[str, bool]
     api_version: Optional[str]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============================================================================
@@ -135,8 +140,7 @@ class IntegrationConnectionResponse(BaseModel):
     updated_at: datetime
     last_verified_at: Optional[datetime]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============================================================================
@@ -161,8 +165,7 @@ class WebhookRegistrationResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============================================================================
@@ -190,8 +193,7 @@ class PollingCursorResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============================================================================
@@ -225,8 +227,7 @@ class NormalisedActionResponse(BaseModel):
     updated_at: datetime
     completed_at: Optional[datetime]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # ============================================================================
@@ -248,7 +249,7 @@ class ErrorResponse(BaseModel):
     error: Dict[str, Any] = Field(
         ...,
         description="Error details",
-        example={
+        json_schema_extra={
             "code": "ERROR_CODE",
             "message": "Human-readable error message",
             "details": {},
@@ -275,4 +276,3 @@ class ConnectionHealthResponse(BaseModel):
     last_successful_call: Optional[datetime]
     error_count: int = Field(default=0, description="Error count")
     rate_limit_state: Optional[Dict[str, Any]] = Field(None, description="Rate limit state")
-

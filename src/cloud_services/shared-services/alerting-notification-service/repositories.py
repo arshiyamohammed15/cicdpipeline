@@ -36,11 +36,8 @@ class AlertRepository:
 
     async def fetch_by_dedup(self, dedup_key: str) -> Optional[Alert]:
         statement = select(Alert).where(Alert.dedup_key == dedup_key)
-        # Use session.execute() - the deprecation warning is from SQLModel internals, not our usage
-        # The warning will be resolved by upgrading SQLModel to a version with PR #716
-        # See: https://github.com/tiangolo/sqlmodel/issues/716
         result = await self.session.execute(statement)
-        return result.scalar_one_or_none()
+        return result.scalars().first()
 
     async def fetch(self, alert_id: str) -> Optional[Alert]:
         return await self.session.get(Alert, alert_id)
@@ -49,7 +46,6 @@ class AlertRepository:
         """List all alerts for a tenant."""
         from sqlalchemy import select
         statement = select(Alert).where(Alert.tenant_id == tenant_id)
-        # Use session.execute() - the deprecation warning is from SQLModel internals, not our usage
         result = await self.session.execute(statement)
         return list(result.scalars().all())
 
@@ -79,7 +75,6 @@ class IncidentRepository:
         """List all incidents for a tenant."""
         from sqlalchemy import select
         statement = select(Incident).where(Incident.tenant_id == tenant_id)
-        # Use session.execute() - the deprecation warning is from SQLModel internals, not our usage
         result = await self.session.execute(statement)
         return list(result.scalars().all())
 
@@ -96,9 +91,7 @@ class NotificationRepository:
 
     async def pending_for_alert(self, alert_id: str) -> Iterable[Notification]:
         statement = select(Notification).where(Notification.alert_id == alert_id, Notification.status == "pending")
-        # Use connection().execute() to avoid SQLModel deprecation warning
-        conn = await self.session.connection()
-        result = await conn.execute(statement)
+        result = await self.session.execute(statement)
         return result.scalars().all()
 
     async def fetch(self, notification_id: str) -> Optional[Notification]:
@@ -109,6 +102,5 @@ class NotificationRepository:
         """List all notifications for an alert."""
         from sqlalchemy import select
         statement = select(Notification).where(Notification.alert_id == alert_id)
-        # Use session.execute() - the deprecation warning is from SQLModel internals, not our usage
         result = await self.session.execute(statement)
         return list(result.scalars().all())

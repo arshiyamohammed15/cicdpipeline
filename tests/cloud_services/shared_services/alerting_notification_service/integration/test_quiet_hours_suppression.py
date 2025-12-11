@@ -47,7 +47,6 @@ def alert_factory():
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="session fixture not available in current test harness")
 async def test_quiet_hours_suppress_paging_but_log_evidence(
     session: AsyncSession,
     tenant_factory,
@@ -110,7 +109,6 @@ async def test_quiet_hours_suppress_paging_but_log_evidence(
 @pytest.mark.alerting_regression
 @pytest.mark.integration
 @pytest.mark.asyncio
-@pytest.mark.skip(reason="session fixture not available in current test harness")
 async def test_maintenance_window_suppression(
     session: AsyncSession,
     tenant_factory,

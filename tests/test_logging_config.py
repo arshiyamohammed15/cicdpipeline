@@ -1,8 +1,18 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from config.constitution.logging_config import ConstitutionLogger
+
+
+def _cleanup_handlers():
+    root = logging.getLogger()
+    for handler in list(root.handlers):
+        try:
+            handler.close()
+        finally:
+            root.removeHandler(handler)
 
 
 def test_logger_uses_external_root(tmp_path, monkeypatch):
@@ -16,6 +26,7 @@ def test_logger_uses_external_root(tmp_path, monkeypatch):
     assert expected.exists()
     repo_root = Path(__file__).resolve().parents[1]
     assert not logger.log_dir.is_relative_to(repo_root)
+    _cleanup_handlers()
 
 
 def test_logger_skips_repo_paths(monkeypatch, tmp_path):
@@ -32,3 +43,4 @@ def test_logger_skips_repo_paths(monkeypatch, tmp_path):
 
     assert not logger.log_dir.is_relative_to(repo_root)
     assert logger.log_dir.name == ConstitutionLogger.LOG_SUBDIRECTORY
+    _cleanup_handlers()

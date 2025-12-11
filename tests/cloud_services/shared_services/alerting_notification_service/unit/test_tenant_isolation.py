@@ -3,6 +3,7 @@
 from datetime import datetime
 
 import pytest
+import warnings
 
 
 def _alert_payload(alert_id: str, tenant_id: str = "tenant-integration") -> dict:
@@ -27,9 +28,13 @@ def _alert_payload(alert_id: str, tenant_id: str = "tenant-integration") -> dict
     }
 
 
+pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
+
+
 @pytest.mark.alerting_security
 @pytest.mark.security
-def test_missing_tenant_header_rejected(test_client):
+@pytest.mark.asyncio
+async def test_missing_tenant_header_rejected(test_client):
     payload = _alert_payload("tenant-missing")
     headers = dict(test_client.headers)
     headers.pop("X-Tenant-ID", None)
@@ -38,7 +43,7 @@ def test_missing_tenant_header_rejected(test_client):
     try:
         test_client.headers.clear()
         test_client.headers.update(headers)
-        response = test_client.post("/v1/alerts", json=payload)
+        response = await test_client.post("/v1/alerts", json=payload)
     finally:
         test_client.headers.clear()
         test_client.headers.update(original)
@@ -47,14 +52,15 @@ def test_missing_tenant_header_rejected(test_client):
 
 @pytest.mark.alerting_security
 @pytest.mark.security
-def test_cross_tenant_forbidden_without_allowance(test_client):
+@pytest.mark.asyncio
+async def test_cross_tenant_forbidden_without_allowance(test_client):
     payload = _alert_payload("tenant-forbid", tenant_id="tenant-other")
     # Strip global roles/allowance to mimic tenant-scoped caller
     original = dict(test_client.headers)
     try:
         test_client.headers.clear()
         test_client.headers.update({"X-Tenant-ID": "tenant-integration"})
-        response = test_client.post("/v1/alerts", json=payload)
+        response = await test_client.post("/v1/alerts", json=payload)
     finally:
         test_client.headers.clear()
         test_client.headers.update(original)
@@ -63,9 +69,10 @@ def test_cross_tenant_forbidden_without_allowance(test_client):
 
 @pytest.mark.alerting_security
 @pytest.mark.security
-def test_cross_tenant_allowed_with_allowance(test_client):
+@pytest.mark.asyncio
+async def test_cross_tenant_allowed_with_allowance(test_client):
     payload = _alert_payload("tenant-allowed", tenant_id="tenant-shared")
     headers = {**test_client.headers, "X-Allow-Tenants": "tenant-shared"}
-    response = test_client.post("/v1/alerts", json=payload, headers=headers)
+    response = await test_client.post("/v1/alerts", json=payload, headers=headers)
     assert response.status_code == 200
 

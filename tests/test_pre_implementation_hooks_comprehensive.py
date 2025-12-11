@@ -38,10 +38,12 @@ class TestRuleLoading(unittest.TestCase):
         # Get actual count from JSON files
         constitution_dir = Path("docs/constitution")
         json_files = list(constitution_dir.glob("*.json"))
-        expected_rules = sum(
-            len(json.load(open(f, 'r', encoding='utf-8')).get('constitution_rules', []))
-            for f in json_files
-        )
+        expected_rules = 0
+        for f in json_files:
+            with f.open('r', encoding='utf-8') as handle:
+                expected_rules += sum(
+                    1 for rule in json.load(handle).get('constitution_rules', []) if rule.get("enabled", True)
+                )
 
         self.assertEqual(
             self.hook_manager.total_rules,
@@ -422,7 +424,7 @@ class TestRuleCountAccuracy(unittest.TestCase):
             with open(json_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
                 rules = data.get('constitution_rules', [])
-                total_enabled += len(rules)
+                total_enabled += sum(1 for rule in rules if rule.get("enabled", True))
 
         # Verify hook manager matches JSON files
         from validator.pre_implementation_hooks import PreImplementationHookManager
@@ -443,10 +445,12 @@ class TestRuleCountAccuracy(unittest.TestCase):
         # Get actual count from JSON files
         constitution_dir = Path("docs/constitution")
         json_files = list(constitution_dir.glob("*.json"))
-        expected_rules = sum(
-            len(json.load(open(f, 'r', encoding='utf-8')).get('constitution_rules', []))
-            for f in json_files
-        )
+        expected_rules = 0
+        for f in json_files:
+            with f.open('r', encoding='utf-8') as handle:
+                expected_rules += sum(
+                    1 for rule in json.load(handle).get('constitution_rules', []) if rule.get("enabled", True)
+                )
 
         self.assertEqual(
             hook_manager.total_rules,

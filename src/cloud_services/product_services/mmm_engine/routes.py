@@ -437,7 +437,7 @@ async def approve_action(
     if not approval:
         raise HTTPException(status_code=404, detail="Approval not found")
     db.commit()
-    return {"status": "approved", "approval": approval.dict()}
+    return {"status": "approved", "approval": approval.model_dump()}
 
 
 @router.get("/actions/{action_id}/approval-status", response_model=DualChannelApproval)
@@ -472,4 +472,3 @@ async def get_tenant_metrics(
     start = datetime.fromisoformat(start_date) if start_date else None
     end = datetime.fromisoformat(end_date) if end_date else None
     return service.get_tenant_metrics(tenant_id, start, end, db)
-

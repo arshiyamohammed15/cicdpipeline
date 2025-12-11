@@ -120,13 +120,13 @@ class MMMService:
         saved = repo.save(playbook)
         # Audit logging
         if admin_user_id:
-            AuditLogger.log_admin_action(
-                admin_user_id=admin_user_id,
-                action="playbook_create",
-                resource_type="playbook",
-                resource_id=playbook.playbook_id,
-                after_state=playbook.dict(),
-            )
+                AuditLogger.log_admin_action(
+                    admin_user_id=admin_user_id,
+                    action="playbook_create",
+                    resource_type="playbook",
+                    resource_id=playbook.playbook_id,
+                    after_state=playbook.model_dump(),
+                )
         return saved
 
     def publish_playbook(self, tenant_id: str, playbook_id: str, db: Session, admin_user_id: Optional[str] = None) -> Optional[Playbook]:
@@ -140,8 +140,8 @@ class MMMService:
                 action="playbook_publish",
                 resource_type="playbook",
                 resource_id=playbook_id,
-                before_state=before.dict() if before else None,
-                after_state=published.dict(),
+                before_state=before.model_dump() if before else None,
+                after_state=published.model_dump(),
             )
         return published
 
@@ -475,15 +475,24 @@ class MMMService:
                 "tenant_id": decision.tenant_id,  # ERIS-specific field
             }
 
-            # Emit receipt synchronously (blocking call)
-            # Use asyncio.run to execute async function in sync context
+            # Emit receipt synchronously (blocking call) while avoiding unawaited coroutine warnings.
             try:
-                receipt_id_result = asyncio.run(self.eris.emit_receipt(receipt))
+                loop = asyncio.get_running_loop()
             except RuntimeError:
-                # If event loop already running, create task in background
-                # This shouldn't happen in sync context, but handle gracefully
-                logger.warning("Event loop already running, receipt emission may be delayed")
+                loop = None
+
+            if loop and loop.is_running():
+                # Schedule fire-and-forget on the running loop
+                task = loop.create_task(self.eris.emit_receipt(receipt))
+                task.add_done_callback(lambda t: t.exception() if t.exception() else None)
                 receipt_id_result = None
+            else:
+                # Isolated loop to run the coroutine to completion
+                tmp_loop = asyncio.new_event_loop()
+                try:
+                    receipt_id_result = tmp_loop.run_until_complete(self.eris.emit_receipt(receipt))
+                finally:
+                    tmp_loop.close()
 
             if receipt_id_result:
                 logger.debug("Decision receipt emitted: %s", receipt_id_result)
@@ -592,7 +601,7 @@ class MMMService:
     ) -> Optional[ActorPreferences]:
         """Update actor preferences."""
         repo = ActorPreferencesRepository(db)
-        updates = request.dict(exclude_unset=True)
+        updates = request.model_dump(exclude_unset=True)
         preferences = repo.update_preferences(tenant_id, actor_id, updates)
         # Invalidate cache
         cache_key = f"{tenant_id}:{actor_id}"
@@ -644,7 +653,7 @@ class MMMService:
         """Update tenant MMM policy."""
         repo = TenantPolicyRepository(db)
         before = repo.get_policy(tenant_id)
-        updates = request.dict(exclude_unset=True)
+        updates = request.model_dump(exclude_unset=True)
         policy = repo.update_policy(tenant_id, updates)
         # Emit admin config receipt
         if policy:
@@ -656,8 +665,8 @@ class MMMService:
                 action="tenant_policy_update",
                 resource_type="tenant_policy",
                 resource_id=tenant_id,
-                before_state=before.dict() if before else None,
-                after_state=policy.dict(),
+                before_state=before.model_dump() if before else None,
+                after_state=policy.model_dump(),
             )
         return policy
 
@@ -812,5 +821,3 @@ class MMMService:
                 loop.create_task(self.eris_circuit.call_async(self.eris.emit_receipt, payload))
         except Exception as exc:  # pragma: no cover
             logger.warning("Failed to emit outcome receipt: %s", exc)
-
-

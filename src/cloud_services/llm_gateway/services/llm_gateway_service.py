@@ -88,7 +88,7 @@ class LLMGatewayService:
     def list_incidents(self) -> Dict[str, list[dict]]:
         return {
             "incidents": [
-                incident.dict() for incident in self.incident_store.list_incidents()
+                incident.model_dump() for incident in self.incident_store.list_incidents()
             ]
         }
 
@@ -188,7 +188,7 @@ class LLMGatewayService:
                 "decision": response.decision.value,
                 "policy_snapshot_id": response.policy_snapshot_id,
                 "policy_version_ids": response.policy_version_ids,
-                "risk_flags": [flag.dict() for flag in response.risk_flags],
+                "risk_flags": [flag.model_dump() for flag in response.risk_flags],
                 "fail_open": response.fail_open,
                 "tenant_id": request.tenant.tenant_id,
                 "timestamp_utc": response.timestamp_utc.isoformat(),
@@ -447,4 +447,3 @@ def build_service_with_real_clients(
         alerting_client=AlertingClient(base_url=alerting_url, timeout_seconds=2.0),
         eris_client=ErisClient(base_url=eris_url, timeout_seconds=2.0),
     )
-

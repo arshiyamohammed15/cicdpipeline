@@ -3,9 +3,12 @@
 from datetime import datetime, timedelta
 
 import pytest
+import warnings
 
 from alerting_notification_service.database.models import Alert, Incident
 from alerting_notification_service.services.ingestion_service import AlertIngestionService
+
+warnings.filterwarnings("ignore", category=ResourceWarning, module=r"anyio\.streams\.memory")
 
 
 def _alert(alert_id: str, dedup_key: str, started_at: datetime | None = None) -> Alert:

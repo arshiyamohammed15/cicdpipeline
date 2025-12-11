@@ -67,18 +67,15 @@ class IdentityService:
 
     def _resolve_online(self, context: ActorContext) -> ActorBlock:
         """Performs an EPC-1 call outside of the request path."""
-        try:
-            loop = asyncio.get_event_loop()
-        except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-
+        loop = asyncio.new_event_loop()
         try:
             actor = loop.run_until_complete(self._resolve_actor_async(context))
         except ActorUnavailableError:
             raise
         except Exception as exc:  # noqa: BLE001
             raise ActorUnavailableError(f"Identity resolution failed: {exc}") from exc
+        finally:
+            loop.close()
         self._actor_cache[self._cache_key(context)] = actor
         return actor
 
