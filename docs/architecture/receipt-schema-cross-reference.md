@@ -25,6 +25,7 @@ export interface DecisionReceipt {
     snapshot_hash: string;
     timestamp_utc: string;
     timestamp_monotonic_ms: number;
+    evaluation_point: 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy';
     inputs: Record<string, any>;
     decision: {
         status: 'pass' | 'warn' | 'soft_block' | 'hard_block';
@@ -35,7 +36,21 @@ export interface DecisionReceipt {
     actor: {
         repo_id: string;
         machine_fingerprint?: string;
+        type?: 'human' | 'ai' | 'automated';
     };
+    context?: {
+        surface?: 'ide' | 'pr' | 'ci';
+        branch?: string;
+        commit?: string;
+        pr_id?: string;
+    };
+    override?: {
+        reason: string;
+        approver: string;
+        timestamp: string;
+        override_id?: string;
+    };
+    data_category?: 'public' | 'internal' | 'confidential' | 'restricted';
     degraded: boolean;
     signature: string;
 }
@@ -152,6 +167,7 @@ export interface EvidenceHandle {
 | `snapshot_hash` | `policy_snapshot_hash` | `policy_snapshot_hash` | SHA256 hash of policy snapshot |
 | `timestamp_utc` | - | - | ISO 8601 UTC timestamp |
 | `timestamp_monotonic_ms` | `timestamps.hw` | `timestamps.hw` | Hardware monotonic timestamp |
+| `evaluation_point` | `evaluation_point` | `evaluation_point` | pre-commit / pre-merge / pre-deploy / post-deploy |
 | `inputs` | - | - | Task inputs (free-form object) |
 | `decision.status` | `decision` | `decision` | Enum: pass/warn/soft_block/hard_block |
 | `decision.rationale` | `rationale` | `rationale` | Human-readable explanation |
@@ -159,6 +175,16 @@ export interface EvidenceHandle {
 | `evidence_handles` | - | `evidence_ids[]` (optional) | Array of evidence handles |
 | `actor.repo_id` | `repo_id` | `repo_id` | Repository identifier |
 | `actor.machine_fingerprint` | - | - | Optional machine fingerprint |
+| `actor.type` | - | - | Optional actor classification (human/ai/automated) |
+| `context.surface` | - | - | Optional surface hint (ide/pr/ci) |
+| `context.branch` | - | - | Optional branch |
+| `context.commit` | - | - | Optional commit hash |
+| `context.pr_id` | - | - | Optional PR identifier |
+| `override.reason` | - | - | Present when overrides occur |
+| `override.approver` | - | - | Present when overrides occur |
+| `override.timestamp` | - | - | Present when overrides occur |
+| `override.override_id` | - | - | Optional override snapshot id |
+| `data_category` | - | - | Optional data classification |
 | `degraded` | - | - | Degraded mode flag |
 | `signature` | `signature` | `signature` | Cryptographic signature |
 

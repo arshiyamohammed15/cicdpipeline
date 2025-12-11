@@ -185,6 +185,48 @@ describe('EdgeAgent', () => {
             expect(signature.startsWith(`sig-ed25519:${keyId}:`)).toBe(true);
             expectValidSignature(payload, signature);
         });
+
+        it('should populate trust capability optional fields when provided', async () => {
+            const task = {
+                id: 'trust-task',
+                type: 'validation',
+                priority: 'medium' as const,
+                data: {
+                    branch: 'feature/trust',
+                    commit: 'abc123',
+                    pr_id: '42'
+                },
+                requirements: {}
+            };
+
+            const override = {
+                reason: 'Emergency override',
+                approver: 'lead@example.com',
+                timestamp: new Date().toISOString(),
+                override_id: 'ovr-1'
+            };
+
+            const result = await edgeAgent.processTaskWithReceipt(task, 'trust-repo', {
+                context: { surface: 'pr', branch: 'feature/trust', commit: 'abc123', pr_id: '42' },
+                override,
+                dataCategory: 'confidential',
+                actorType: 'ai'
+            });
+
+            const receiptContent = fs.readFileSync(result.receiptPath, 'utf-8');
+            const receiptLines = receiptContent.trim().split('\n');
+            const lastReceipt = JSON.parse(receiptLines[receiptLines.length - 1]) as DecisionReceipt;
+
+            expect(lastReceipt.context?.surface).toBe('pr');
+            expect(lastReceipt.context?.branch).toBe('feature/trust');
+            expect(lastReceipt.context?.commit).toBe('abc123');
+            expect(lastReceipt.context?.pr_id).toBe('42');
+            expect(lastReceipt.override?.reason).toBe(override.reason);
+            expect(lastReceipt.override?.approver).toBe(override.approver);
+            expect(lastReceipt.override?.override_id).toBe(override.override_id);
+            expect(lastReceipt.data_category).toBe('confidential');
+            expect(lastReceipt.actor.type).toBe('ai');
+        });
     });
 
     describe('processTaskWithReceipt() - Policy Integration', () => {

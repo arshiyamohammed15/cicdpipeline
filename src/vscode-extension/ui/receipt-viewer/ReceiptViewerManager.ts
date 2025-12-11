@@ -161,6 +161,24 @@ export class ReceiptViewerManager implements vscode.Disposable {
     private renderReceiptContent(receiptData: any): string {
         if (!receiptData) return 'No receipt data available';
 
+        const contextParts = receiptData.context
+            ? [
+                  receiptData.context.surface ? `surface=${receiptData.context.surface}` : undefined,
+                  receiptData.context.branch ? `branch=${receiptData.context.branch}` : undefined,
+                  receiptData.context.commit ? `commit=${receiptData.context.commit}` : undefined,
+                  receiptData.context.pr_id ? `pr=${receiptData.context.pr_id}` : undefined
+              ].filter(Boolean).join(' · ')
+            : '';
+
+        const overrideParts = receiptData.override
+            ? [
+                  receiptData.override.reason ? `reason=${receiptData.override.reason}` : undefined,
+                  receiptData.override.approver ? `approver=${receiptData.override.approver}` : undefined,
+                  receiptData.override.timestamp ? `timestamp=${receiptData.override.timestamp}` : undefined,
+                  receiptData.override.override_id ? `id=${receiptData.override.override_id}` : undefined
+              ].filter(Boolean).join(' · ')
+            : '';
+
         const fields = [
             { label: 'Receipt ID', value: receiptData.receipt_id },
             { label: 'Gate ID', value: receiptData.gate_id },
@@ -170,6 +188,11 @@ export class ReceiptViewerManager implements vscode.Disposable {
             { label: 'Status', value: receiptData.decision?.status },
             { label: 'Rationale', value: receiptData.decision?.rationale },
             { label: 'Badges', value: receiptData.decision?.badges?.join(', ') },
+            { label: 'Actor', value: receiptData.actor?.repo_id },
+            { label: 'Actor Type', value: receiptData.actor?.type },
+            { label: 'Data Category', value: receiptData.data_category },
+            { label: 'Context', value: contextParts },
+            { label: 'Override', value: overrideParts },
             { label: 'Degraded', value: receiptData.degraded?.toString() },
             { label: 'Signature', value: receiptData.signature }
         ];

@@ -668,3 +668,10 @@ The "Trust as a Capability" specification has **critical architectural drift** w
 **Accuracy**: 100% - All findings verified against actual codebase  
 **Next Review**: After schema drift resolution
 
+---
+
+## Addendum (Schema Drift Remediation Snapshot)
+- Decision receipt schema updated to include `actor.type`, `context`, `override`, and `data_category` fields (per TR-1.2.1/3/4/6).
+- Receipt generation, parsing, and UI rendering now preserve and display these fields end-to-end.
+- Transparency formatter now emits plain-language summary and “Why” explanations derived from actual inputs and policy IDs (TR-2.1.*).
+

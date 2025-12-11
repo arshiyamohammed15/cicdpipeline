@@ -8,6 +8,21 @@ export interface DecisionCardData {
     policySnapshotId?: string;
     artifactId?: string;
     rationale?: string;
+    evaluationPoint?: string;
+    actorType?: string;
+    dataCategory?: string;
+    context?: {
+        surface?: 'ide' | 'pr' | 'ci';
+        branch?: string;
+        commit?: string;
+        pr_id?: string;
+    };
+    override?: {
+        reason: string;
+        approver: string;
+        timestamp: string;
+        override_id?: string;
+    };
     mismatches: MismatchInfo[];
     labels?: Record<string, unknown>;
     timestampUtc?: string;
@@ -247,6 +262,11 @@ export class DecisionCardManager implements vscode.Disposable {
             policySnapshotId: receipt.snapshot_hash,
             rationale: formatted.summary, // Use formatted summary (TR-2.1.1)
             timestampUtc: receipt.timestamp_utc,
+            evaluationPoint: receipt.evaluation_point,
+            actorType: formatted.actorType,
+            dataCategory: formatted.dataCategory,
+            context: receipt.context,
+            override: receipt.override,
             mismatches: [] // Mismatches would need to be extracted from receipt.inputs if available
         };
 
@@ -274,6 +294,11 @@ export class DecisionCardManager implements vscode.Disposable {
                     <div><span class="field-label">Status:</span> ${formatted.status.toUpperCase()}</div>
                     <div><span class="field-label">Full Rationale:</span> ${formatted.rationale}</div>
                     ${decisionData.policySnapshotId ? `<div><span class="field-label">Policy Snapshot:</span> ${decisionData.policySnapshotId}</div>` : ''}
+                    ${decisionData.evaluationPoint ? `<div><span class="field-label">Evaluation Point:</span> ${decisionData.evaluationPoint}</div>` : ''}
+                    ${decisionData.actorType ? `<div><span class="field-label">Actor Type:</span> ${decisionData.actorType}</div>` : ''}
+                    ${decisionData.dataCategory ? `<div><span class="field-label">Data Category:</span> ${decisionData.dataCategory}</div>` : ''}
+                    ${this.renderContext(decisionData.context)}
+                    ${this.renderOverride(decisionData.override)}
                     ${decisionData.timestampUtc ? `<div><span class="field-label">Timestamp:</span> ${decisionData.timestampUtc}</div>` : ''}
                 </div>
             `;
@@ -281,6 +306,35 @@ export class DecisionCardManager implements vscode.Disposable {
 
         // Fallback to original rendering
         return this.renderDecisionContent(decisionData);
+    }
+
+    private renderContext(context?: DecisionCardData['context']): string {
+        if (!context) {
+            return '';
+        }
+
+        const parts = [
+            context.surface ? `surface=${context.surface}` : undefined,
+            context.branch ? `branch=${context.branch}` : undefined,
+            context.commit ? `commit=${context.commit}` : undefined,
+            context.pr_id ? `pr=${context.pr_id}` : undefined
+        ].filter(Boolean);
+
+        if (parts.length === 0) {
+            return '';
+        }
+
+        return `<div><span class="field-label">Context:</span> ${parts.join(' · ')}</div>`;
+    }
+
+    private renderOverride(override?: DecisionCardData['override']): string {
+        if (!override) {
+            return '';
+        }
+
+        return `
+            <div><span class="field-label">Override:</span> reason=${override.reason}; approver=${override.approver}; timestamp=${override.timestamp}${override.override_id ? `; id=${override.override_id}` : ''}</div>
+        `;
     }
 
     private renderQuickFixButtons(decisionData?: DecisionCardData): string {

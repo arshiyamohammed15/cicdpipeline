@@ -12,6 +12,8 @@ import { ReceiptGenerator, ReceiptGeneratorOptions } from './shared/storage/Rece
 import { PolicyStorageService } from './shared/storage/PolicyStorageService';
 import { HeartbeatEmitter } from './shared/health/HeartbeatEmitter';
 import { DelegationTask, DelegationResult } from './interfaces/core/DelegationInterface';
+import { AIAssistanceDetector, AIDetectionSignals, ActorType } from './shared/ai-detection/AIAssistanceDetector';
+import { DataCategory, DataCategoryClassifier, DataClassificationSignals } from './shared/storage/DataCategoryClassifier';
 
 const resolvePlane = (value?: string): 'Laptop' | 'Tenant' | 'Product' | 'Shared' => {
     const allowed = new Set(['Laptop', 'Tenant', 'Product', 'Shared']);
@@ -49,6 +51,8 @@ export class EdgeAgent {
     private receiptGenerator: ReceiptGenerator;
     private policyStorage: PolicyStorageService;
     private heartbeatEmitter: HeartbeatEmitter;
+    private aiDetector: AIAssistanceDetector;
+    private dataClassifier: DataCategoryClassifier;
 
     constructor(zuRoot?: string, options: EdgeAgentOptions = {}) {
         // Initialize storage services
@@ -65,6 +69,8 @@ export class EdgeAgent {
         }
         this.receiptGenerator = new ReceiptGenerator(generatorOptions);
         this.policyStorage = new PolicyStorageService(zuRoot);
+        this.aiDetector = new AIAssistanceDetector();
+        this.dataClassifier = new DataCategoryClassifier();
 
         this.heartbeatEmitter = new HeartbeatEmitter({
             componentId: process.env.HEALTH_RELIABILITY_MONITORING_COMPONENT_ID ?? 'edge-agent',
@@ -153,7 +159,29 @@ export class EdgeAgent {
      * @param repoId Repository identifier
      * @returns Promise<{result: DelegationResult, receiptPath: string}> Processing result and receipt storage path
      */
-    public async processTaskWithReceipt(task: DelegationTask, repoId: string): Promise<{result: DelegationResult, receiptPath: string}> {
+    public async processTaskWithReceipt(
+        task: DelegationTask,
+        repoId: string,
+        options?: {
+            context?: {
+                surface?: 'ide' | 'pr' | 'ci';
+                branch?: string;
+                commit?: string;
+                pr_id?: string;
+            };
+            override?: {
+                reason: string;
+                approver: string;
+                timestamp: string;
+                override_id?: string;
+            };
+            dataCategory?: DataCategory;
+            classificationSignals?: DataClassificationSignals;
+            actorType?: ActorType;
+            aiSignals?: AIDetectionSignals;
+            evaluationPoint?: 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy';
+        }
+    ): Promise<{result: DelegationResult, receiptPath: string}> {
         // Process task through delegation
         const result = await this.delegateTask(task);
 
@@ -164,6 +192,11 @@ export class EdgeAgent {
         const policyInfo = await this.policyStorage.getActivePolicyInfo(['default']);
 
         // Generate receipt with policy information
+        const evaluationPoint = options?.evaluationPoint ?? this.normalizeEvaluationPoint((task as any)?.data?.context);
+        const context = options?.context ?? this.extractContext(task);
+        const actorType = this.resolveActorType(task, options);
+        const dataCategory = this.resolveDataCategory(task, options);
+
         const receipt = this.receiptGenerator.generateDecisionReceipt(
             'edge-agent',
             policyInfo.policy_version_ids,
@@ -176,9 +209,14 @@ export class EdgeAgent {
             },
             [], // Evidence handles
             {
-                repo_id: repoId
+                repo_id: repoId,
+                ...(actorType ? { type: actorType } : {})
             },
-            !isValid
+            !isValid,
+            evaluationPoint,
+            context,
+            options?.override,
+            dataCategory
         );
 
         // Store receipt
@@ -226,5 +264,70 @@ export class EdgeAgent {
      */
     public getPolicyStorage(): PolicyStorageService {
         return this.policyStorage;
+    }
+
+    private normalizeEvaluationPoint(value: unknown): 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy' {
+        const allowed = new Set(['pre-commit', 'pre-merge', 'pre-deploy', 'post-deploy']);
+        if (typeof value === 'string' && allowed.has(value)) {
+            return value as any;
+        }
+        return 'pre-commit';
+    }
+
+    private extractContext(task: DelegationTask): {
+        surface?: 'ide' | 'pr' | 'ci';
+        branch?: string;
+        commit?: string;
+        pr_id?: string;
+    } | undefined {
+        const data = (task as any)?.data ?? {};
+        const surface = typeof data.surface === 'string' ? data.surface : undefined;
+        const branch = typeof data.branch === 'string' ? data.branch : undefined;
+        const commit = typeof data.commit === 'string' ? data.commit : undefined;
+        const pr_id = typeof data.pr_id === 'string' ? data.pr_id : undefined;
+
+        if (!surface && !branch && !commit && !pr_id) {
+            return undefined;
+        }
+
+        return { surface, branch, commit, pr_id };
+    }
+
+    private resolveActorType(
+        task: DelegationTask,
+        options?: {
+            actorType?: ActorType;
+            aiSignals?: AIDetectionSignals;
+        }
+    ): ActorType | undefined {
+        const data = (task as any)?.data ?? {};
+        const hint = options?.actorType ?? (typeof data.actor_type === 'string' ? data.actor_type : undefined);
+
+        return this.aiDetector.detect({
+            actorTypeHint: hint as ActorType | undefined,
+            ...(options?.aiSignals ?? {})
+        });
+    }
+
+    private resolveDataCategory(
+        task: DelegationTask,
+        options?: {
+            dataCategory?: DataCategory;
+            classificationSignals?: DataClassificationSignals;
+        }
+    ): DataCategory | undefined {
+        const data = (task as any)?.data ?? {};
+        const explicitCategory = options?.dataCategory ?? (typeof data.data_category === 'string' ? data.data_category : undefined);
+        const containsSensitiveData = Boolean(data.contains_sensitive_data);
+        const containsSecrets = Boolean(data.contains_secrets);
+        const piiDetected = Boolean(data.pii_detected);
+
+        return this.dataClassifier.classify({
+            explicitCategory,
+            containsSensitiveData,
+            containsSecrets,
+            piiDetected,
+            ...(options?.classificationSignals ?? {})
+        });
     }
 }
