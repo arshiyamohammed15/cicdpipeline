@@ -9,23 +9,30 @@ Rule counts are dynamically calculated from docs/constitution/*.json files (sing
 No hardcoded rule counts exist in this module.
 """
 
+import json
 import re
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Set
 
 class ConstitutionRuleExtractor:
     """
     Extracts and categorizes constitution rules from the master file.
     """
 
-    def __init__(self, constitution_file: str = "ZeroUI2.0_Master_Constitution.md"):
+    def __init__(
+        self,
+        constitution_file: str = "ZeroUI2.0_Master_Constitution.md",
+        constitution_dir: str = "docs/constitution",
+    ):
         """
         Initialize the rule extractor.
 
         Args:
             constitution_file: Path to the constitution file
+            constitution_dir: Path to the JSON corpus (single source of truth)
         """
         self.constitution_file = Path(constitution_file)
+        self.constitution_dir = Path(constitution_dir)
         self.rules = []
 
         # Define rule categories and their mappings
@@ -105,7 +112,8 @@ class ConstitutionRuleExtractor:
             List of rule dictionaries with metadata
         """
         if not self.constitution_file.exists():
-            raise FileNotFoundError(f"Constitution file not found: {self.constitution_file}")
+            # Fallback to JSON corpus when markdown source is absent
+            return self._load_from_json_corpus()
 
         with open(self.constitution_file, 'r', encoding='utf-8') as f:
             content = f.read()
@@ -150,6 +158,64 @@ class ConstitutionRuleExtractor:
         # Rule count is determined by docs/constitution/*.json files
 
         return rules
+
+    def _load_from_json_corpus(self) -> List[Dict[str, Any]]:
+        """
+        Load rules directly from the JSON corpus (single source of truth).
+        """
+        if not self.constitution_dir.exists():
+            raise FileNotFoundError(f"Constitution directory not found: {self.constitution_dir}")
+
+        json_files = sorted(self.constitution_dir.glob("*.json"))
+        if not json_files:
+            raise FileNotFoundError(f"No constitution JSON files found in {self.constitution_dir}")
+
+        rules: List[Dict[str, Any]] = []
+        seen_numbers: Set[int] = set()
+        next_number = 1
+
+        for json_file in json_files:
+            with open(json_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            for rule in data.get("constitution_rules", []):
+                rule_number = self._derive_rule_number(rule, next_number)
+                while rule_number in seen_numbers:
+                    rule_number += 1
+                seen_numbers.add(rule_number)
+                next_number = max(next_number, rule_number + 1)
+
+                title = rule.get("title", "").strip()
+                content = rule.get("description", "").strip()
+
+                rules.append({
+                    "rule_number": rule_number,
+                    "title": title,
+                    "category": rule.get("category", "other"),
+                    "priority": rule.get("severity_level", "important"),
+                    "content": content,
+                    "full_text": content or title,
+                    "extracted_at": self._get_timestamp(),
+                    "rule_id": rule.get("rule_id"),
+                    "source_file": json_file.name,
+                })
+
+        rules.sort(key=lambda x: x["rule_number"])
+        return rules
+
+    def _derive_rule_number(self, rule: Dict[str, Any], fallback_number: int) -> int:
+        """
+        Derive a numeric rule number from JSON rule data.
+        """
+        if isinstance(rule.get("rule_number"), int):
+            return int(rule["rule_number"])
+
+        rule_id = str(rule.get("rule_id", "")).strip()
+        match = re.search(r"(\d+)", rule_id)
+        if match:
+            return int(match.group(1))
+
+        return fallback_number
 
     def _extract_rule_header(self, line: str) -> Optional[tuple]:
         """

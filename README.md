@@ -51,7 +51,7 @@ The folder-business rules file remains the single source of truth; regenerate sc
 
 ## Features
 
-- **Rules from Single Source of Truth**: Unified in `ZeroUI2.0_Master_Constitution.md` (including Exception Handling and TypeScript rules). The exact total is validated during CI.
+- **Rules from Single Source of Truth**: Rules are loaded directly from `docs/constitution/*.json`; the Markdown source is optional. The exact total is validated during CI.
 - **Modular Rule Config**: Per-category JSON under `config/rules/*.json`
 - **Rule Configuration**: Enable/disable via config and programmatic API
 - **Multiple Output Formats**: Console, JSON, HTML, and Markdown reports
@@ -59,7 +59,8 @@ The folder-business rules file remains the single source of truth; regenerate sc
 - **Category-Based Validation**: Requirements, Privacy & Security, Performance, Architecture, System Design, Problem-Solving, Platform, Teamwork, Testing & Safety, Code Quality, Code Review, API Contracts, Coding Standards, Comments, Folder Standards, Logging, Exception Handling, TypeScript
 - **AST-Based Analysis**: Deep analysis using Python's AST
 - **Optimized**: AST caching, parallelism, and unified rule processing (where supported)
-- **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution
+- **Enhanced Rule Manager**: Comprehensive rule management across 5 sources (Database, JSON Export, Config, Hooks, Markdown) with intelligent conflict resolution. Empty database instances now self-seed from the JSON corpus.
+- **Resilient Rule Extraction**: Rule extractor falls back to the JSON corpus when the Markdown master file is absent, keeping bootstrap flows functional.
 - **Automatic AI Code Generation Enforcement**: Pre-implementation hooks that validate prompts against the complete constitution rule set derived from `docs/constitution` (415 rules) before AI code generation occurs
 
 ## Installation
@@ -1222,7 +1223,7 @@ ZeroUI2.0/
 │   ├── rules/                          # Rule category configurations (17 files)
 │   └── patterns/                       # Validation patterns (2 files)
 ├── enhanced_cli.py                     # Enhanced CLI with backend management
-├── ZeroUI2.0_Master_Constitution.md    # Source of truth for all 415 rules
+├── docs/constitution/*.json            # Single source of truth for all 415 rules
 ├── validator/rules/exception_handling.py # Exception handling validator (Rules 150-181)
 ├── validator/rules/typescript.py       # TypeScript validator (Rules 182-215)
 ├── config/constitution/tests/test_exception_handling/ # Exception handling tests
@@ -1819,13 +1820,13 @@ The hybrid system consists of multiple interconnected components:
 #### Completed Tasks:
 - [x] Create config/constitution/ directory structure with __init__.py, database.py, rule_extractor.py, config_manager.py, and queries.py files
 - [x] Implement SQLite database schema with constitution_rules, rule_configuration, rule_categories, rule_usage, and validation_history tables in database.py
-- [x] Create rule extractor to parse ZeroUI2.0_Master_Constitution.md and extract all 149 rules with proper categorization in rule_extractor.py
+- [x] Create rule extractor that pulls from the `docs/constitution` JSON corpus (with optional Markdown support) and assigns full rule categorization in rule_extractor.py
 - [x] Create ConstitutionRuleManager class extending EnhancedConfigManager with enable/disable methods in config_manager.py
 - [x] Implement common database queries for retrieving and filtering rules in queries.py
 - [x] Create constitution_config.json with default configuration structure
 - [x] Update enhanced_config_manager.py to integrate ConstitutionRuleManager
 - [x] Add CLI commands for rule management (list, enable, disable, stats, export) to enhanced_cli.py
-- [x] Test database creation, rule extraction, enable/disable functionality, and verify all 149 rules are enabled by default
+- [x] Test database creation, rule extraction, enable/disable functionality, and verify all 415 active rules are enabled by default across JSON and SQLite backends
 - [x] Implement JSON backend with full CRUD operations
 - [x] Create backend factory for automatic backend selection
 - [x] Implement synchronization system between backends
@@ -2247,7 +2248,7 @@ ZeroUI2.0/
 │   ├── README_scaffold.md                 # Scaffold documentation (includes quick start)
 │   └── tools/scaffold/
 │       └── zero_ui_scaffold.ps1           # PowerShell scaffold script
-└── ZeroUI2.0_Master_Constitution.md       # Updated with rules 216-228
+└── docs/constitution/*.json               # Includes storage governance rules 216-228
 ```
 
 ### Rule Categories Updated
@@ -2343,7 +2344,7 @@ receipt_path = "ide/agent/receipts/repo-id/2025/10/"
 
 - **Integration Guide**: `storage-scripts/INTEGRATION.md`
 - **Specification**: `storage-scripts/folder-business-rules.md` (v1.1)
-- **Constitution**: `ZeroUI2.0_Master_Constitution.md` (Rules 216-228)
+- **Constitution**: `docs/constitution/MASTER GENERIC RULES.json` and related corpus (includes storage governance rules 216-228)
 - **Scaffold README**: `storage-scripts/README_scaffold.md`
 
 ## 🧪 Dynamic Test Case System (No Hardcoded Rule Numbers)
@@ -2583,6 +2584,11 @@ def test_no_any_violation():
 - ✅ **Documentation**: Complete examples and migration guide
 
 ## Changelog
+
+### v1.1.2 (December 2025) - JSON Corpus Bootstrap Hardening
+- **Extractor Fallback**: `ConstitutionRuleExtractor` now loads directly from `docs/constitution/*.json` when the Markdown master file is missing.
+- **DB Auto-Seed**: Fresh SQLite databases are automatically populated from the JSON corpus on first initialization.
+- **Source-of-Truth Alignment**: All rule counting and bootstrapping paths now rely on the JSON corpus, eliminating failures when the Markdown file is unavailable.
 
 ### v1.1.1 (January 2025) - Rule Manager Fixes
 - **Fixed Database Method Error**: Resolved `get_rule` method missing error by using `get_rule_by_number()`

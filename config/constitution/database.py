@@ -79,6 +79,8 @@ class ConstitutionRulesDB:
             self._create_tables()
 
             # Insert all rules from source of truth if database is empty
+            if self._is_database_empty():
+                self._insert_all_rules()
         except sqlite3.Error as e:
             logging.getLogger(__name__).error("Database initialization error: %s", e)
             raise

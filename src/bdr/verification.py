@@ -39,13 +39,10 @@ class BackupVerifier:
             status=status,
             details=None if status == VerificationStatus.VERIFIED else "checksum_mismatch",
         )
-        if status == VerificationStatus.VERIFIED:
+        try:
+            # Record verification for both success and suspect outcomes to maintain observability.
             self._catalog.record_verification(record)
-        else:
-            # Still record the verification attempt for observability, but mark as suspect.
-            try:
-                self._catalog.record_verification(record)
-            except CatalogError as exc:
-                raise VerificationError(str(exc)) from exc
+        except CatalogError as exc:
+            raise VerificationError(str(exc)) from exc
         return record
 

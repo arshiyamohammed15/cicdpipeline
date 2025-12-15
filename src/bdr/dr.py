@@ -86,7 +86,11 @@ class FailoverOrchestrator:
         )
 
     def _require_scenario(self, scenario_id: str) -> DRScenario:
-        return self._scenarios.get(scenario_id)
+        scenario = self._scenarios.get(scenario_id)
+        if scenario is None:
+            msg = f"Scenario {scenario_id} not found"
+            raise DRError(msg)
+        return scenario
 
 
 class DrillRunner:
