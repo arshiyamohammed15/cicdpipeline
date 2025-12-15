@@ -23,6 +23,18 @@ from mmm_engine.models import DecideRequest, ActorType
 from mmm_engine.services import MMMService
 
 
+@pytest.fixture(autouse=True)
+def close_event_loop():
+    """Ensure any event loop created during tests is closed to avoid ResourceWarnings."""
+    yield
+    try:
+        loop = asyncio.get_event_loop()
+        if not loop.is_closed():
+            loop.close()
+    except RuntimeError:
+        pass
+
+
 def test_throughput_per_tenant() -> None:
     """Smoke: decision loop completes."""
     service = MMMService()
