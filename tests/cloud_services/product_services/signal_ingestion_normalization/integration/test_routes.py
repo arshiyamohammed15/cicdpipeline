@@ -103,9 +103,11 @@ class TestIngestEndpoint:
                     "tenant_id": "tenant-1",
                     "producer_id": "producer-1",
                     "signal_kind": "event",
-                    "plane": "tenant_cloud",
+                    "signal_type": "test_event",
                     "environment": "dev",
-                    "timestamp": "2025-01-01T00:00:00Z",
+                    "occurred_at": "2025-01-01T00:00:00Z",
+                    "ingested_at": "2025-01-01T00:00:01Z",
+                    "schema_version": "1.0.0",
                     "payload": {"message": "test"}
                 }]
             },

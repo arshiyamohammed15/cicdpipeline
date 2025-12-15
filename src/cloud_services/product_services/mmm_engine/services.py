@@ -59,6 +59,7 @@ from .database.repositories import (
     DualChannelApprovalRepository,
     ExperimentRepository,
 )
+from .database.models import DecisionModel, ActionModel, OutcomeModel
 from .fatigue import FatigueManager, EligibilityEngine, PrioritizationEngine, FatigueLimits
 from .delivery import DeliveryOrchestrator
 from .observability.metrics import record_decision_metrics, record_outcome_metrics

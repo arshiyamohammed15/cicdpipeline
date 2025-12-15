@@ -74,7 +74,7 @@ def get_tenant_id(authorization: Optional[str] = Header(None), iam: MockM21IAM =
 
 @router.post("/signals/ingest", response_model=IngestResponse, status_code=200)
 async def ingest_signals(
-    request: dict = Body(...),
+    request: IngestRequest,
     tenant_id: str = Depends(get_tenant_id)
 ) -> IngestResponse:
     """
@@ -86,18 +86,16 @@ async def ingest_signals(
     from .main import get_ingestion_service
     service = get_ingestion_service()
 
-    signals = request.get("signals") or []
-    if not signals:
-        raise HTTPException(status_code=422, detail="signals payload required")
+    signals = request.signals or []
     results = []
     for signal in signals:
         try:
             result = service.ingest_signal(signal)
-            signal_id = getattr(result, "signal_id", signal.get("signal_id", "unknown"))
+            signal_id = getattr(result, "signal_id", getattr(signal, "signal_id", "unknown"))
             status_val = getattr(result, "status", "accepted")
         except Exception as e:
             logger.error(f"Error ingesting signal: {e}")
-            signal_id = signal.get("signal_id", "unknown")
+            signal_id = getattr(signal, "signal_id", "unknown")
             status_val = "rejected"
         results.append(
             SignalIngestResult(

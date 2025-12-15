@@ -320,10 +320,19 @@ class UBIService:
             result={"config": updated_config.model_dump()}
         )
         
-        # Emit receipt to ERIS (non-blocking)
+        # Emit receipt to ERIS (non-blocking, safe in running event loop)
+        receipt_id = None
         try:
             import asyncio
-            receipt_id = asyncio.run(self.eris_client.emit_receipt(receipt))
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                loop = None
+
+            if loop and loop.is_running():
+                loop.create_task(self.eris_client.emit_receipt(receipt))
+            else:
+                receipt_id = asyncio.run(self.eris_client.emit_receipt(receipt))
         except Exception as e:
             logger.error(f"Error emitting receipt to ERIS: {e}")
             receipt_id = receipt.get("receipt_id")

@@ -10,7 +10,7 @@ Risks: PM-3 unavailability, event ordering issues, duplicate events
 
 import logging
 from typing import Callable, Optional, Dict, Any
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from collections import deque
 
 logger = logging.getLogger(__name__)
@@ -152,7 +152,7 @@ class PM3Client:
         Returns:
             True if out of order, False otherwise
         """
-        now = datetime.utcnow(occurred_at.tzinfo) if occurred_at.tzinfo else datetime.utcnow()
+        now = datetime.now(occurred_at.tzinfo) if occurred_at.tzinfo else datetime.utcnow()
         time_diff = (now - occurred_at).total_seconds()
         
         # If event is more than buffer_window_seconds in the future, it's out of order
@@ -209,11 +209,13 @@ class PM3Client:
         Returns:
             Number of events processed
         """
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         processed_count = 0
         
         while self.event_buffer:
             occurred_at, signal_envelope = self.event_buffer[0]
+            if occurred_at.tzinfo is None:
+                occurred_at = occurred_at.replace(tzinfo=timezone.utc)
             
             # Check if event is now in order (not too far in the future)
             time_diff = (now - occurred_at).total_seconds()
