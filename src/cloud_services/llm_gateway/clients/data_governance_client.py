@@ -12,6 +12,7 @@ import os
 from typing import Dict, Tuple
 
 import httpx
+from fastapi import HTTPException, status
 
 
 class DataGovernanceClient:
@@ -81,17 +82,22 @@ class DataGovernanceClient:
 
                 return redacted_content, counts
 
-        except httpx.TimeoutException:
-            # Timeout: return original content with empty counts
-            # Per FR-5, we should fail-closed, but for resilience we log and continue
-            return content, {}
+        except httpx.TimeoutException as exc:
+            # Fail-closed: redact or block when EPC-2 is unavailable.
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail="Data governance service timeout",
+            ) from exc
         except httpx.HTTPStatusError as exc:
-            if exc.response.status_code >= 500:
-                # Service error: return original content
-                return content, {}
-            # Client error: assume no redaction needed
-            return content, {}
-        except httpx.RequestError:
-            # Connection error: return original content
-            return content, {}
+            # Treat EPC-2 errors as blocking to avoid unredacted leakage.
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=f"Data governance service error: {exc.response.status_code}",
+            ) from exc
+        except httpx.RequestError as exc:
+            # Connection errors also block to keep FR-5 fail-closed semantics.
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=f"Data governance service unreachable: {exc}",
+            ) from exc
 

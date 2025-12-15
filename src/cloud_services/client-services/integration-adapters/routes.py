@@ -20,7 +20,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from .database.connection import get_db
-from .dependencies import get_integration_service
+from .dependencies import get_integration_service, get_webhook_service
 from .models import (
     IntegrationProviderCreate,
     IntegrationProviderResponse,
@@ -179,26 +179,26 @@ async def receive_webhook(
     connection_token: str,
     payload: dict,
     request: Request,
-    service: IntegrationService = Depends(get_integration_service),
+    webhook_service = Depends(get_webhook_service),
 ):
     """Receive provider webhook (FR-4)."""
     headers = dict(request.headers)
     
     try:
-        success = service.process_webhook(
+        success, error = webhook_service.process_webhook(
             provider_id=provider_id,
             connection_token=connection_token,
             payload=payload,
             headers=headers,
         )
         
-        if success:
-            return {"status": "ok"}
-        else:
+        if not success:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Webhook processing failed"
+                detail=error or "Webhook processing failed"
             )
+        
+        return {"status": "ok"}
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

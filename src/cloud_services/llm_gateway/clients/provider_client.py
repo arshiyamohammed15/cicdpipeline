@@ -26,6 +26,7 @@ class ProviderClient:
             "default_chat": "provider/gpt-4o",
             "fallback_chat": "provider/gpt-4o-mini",
             "default_embedding": "provider/text-embedding-3-small",
+            "fallback_embedding": "provider/text-embedding-3-small",
         }
         # Optional per‑tenant overrides: (tenant_id, logical_model_id) → provider_model
         self._tenant_routes: Dict[Tuple[str, str], str] = {}

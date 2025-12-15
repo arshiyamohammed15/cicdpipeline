@@ -327,47 +327,65 @@ class IntegrationService:
         headers: Dict[str, str],
     ) -> bool:
         """
-        Process incoming webhook (FR-4).
+        Process incoming webhook (FR-4) with tenant-aware, registration-scoped lookup.
         
         Args:
             provider_id: Provider identifier
-            connection_token: Connection token (for lookup)
+            connection_token: Registration token (UUID of WebhookRegistration)
             payload: Webhook payload
             headers: HTTP headers
             
         Returns:
             True if processed successfully, False otherwise
         """
-        # Look up connection by token (simplified - in practice would use proper token mapping)
-        # For now, assume connection_token is connection_id
+        # Require a registration token (not raw connection_id) to reduce guessability.
         try:
-            connection_id = UUID(connection_token)
+            registration_id = UUID(connection_token)
         except ValueError:
-            logger.error(f"Invalid connection token: {connection_token}")
+            logger.error(f"Invalid webhook token: {connection_token}")
             return False
-        
-        # Get connection (need tenant_id - would come from token/auth in practice)
-        # For now, simplified lookup
-        connection = self.session.query(IntegrationConnection).filter(
-            IntegrationConnection.connection_id == connection_id
-        ).first()
-        
+
+        registration = self.webhook_repo.get_active_by_registration(registration_id)
+        if not registration:
+            logger.error(f"No active webhook registration for token: {registration_id}")
+            return False
+
+        # Resolve connection with tenant isolation.
+        connection = self.connection_repo.get_by_id(
+            registration.connection_id,
+            getattr(registration, "connection", None).tenant_id
+            if getattr(registration, "connection", None)
+            else None,
+        )
         if not connection:
-            logger.error(f"Connection not found: {connection_id}")
+            logger.error(
+                f"Connection not found for registration {registration_id}: {registration.connection_id}"
+            )
             return False
-        
+
+        if connection.provider_id != provider_id:
+            logger.error(
+                f"Provider mismatch for connection {connection.connection_id}: "
+                f"expected {connection.provider_id}, got {provider_id}"
+            )
+            return False
+
         # Get adapter
         adapter = self.adapter_registry.get_adapter(
-            provider_id, connection_id, connection.tenant_id
+            provider_id, connection.connection_id, connection.tenant_id
         )
         if not adapter:
             logger.error(f"Adapter not found for provider: {provider_id}")
             return False
         
         # Get webhook secret from KMS
-        webhook_registrations = self.webhook_repo.get_active_by_connection(connection_id)
+        webhook_registrations = self.webhook_repo.get_active_by_connection(
+            connection.connection_id, connection.tenant_id
+        )
         if not webhook_registrations:
-            logger.error(f"No active webhook registration for connection: {connection_id}")
+            logger.error(
+                f"No active webhook registration for connection: {connection.connection_id}"
+            )
             return False
         
         webhook_secret = self.kms_client.get_secret(
@@ -383,7 +401,7 @@ class IntegrationService:
             # Map to SignalEnvelope (FR-6)
             signal_envelope = self.signal_mapper.map_provider_event_to_signal_envelope(
                 provider_id=provider_id,
-                connection_id=str(connection_id),
+                connection_id=str(connection.connection_id),
                 tenant_id=connection.tenant_id,
                 provider_event=event_data.get("payload", payload),
                 provider_event_type=event_data.get("event_type", "unknown"),
@@ -395,13 +413,13 @@ class IntegrationService:
             self.pm3_client.ingest_signal(signal_envelope)
             
             # Record metrics (FR-12)
-            self.metrics.increment_webhook_received(provider_id, connection_id)
-            self.metrics.increment_event_normalized(provider_id, connection_id)
+            self.metrics.increment_webhook_received(provider_id, connection.connection_id)
+            self.metrics.increment_event_normalized(provider_id, connection.connection_id)
             
             return True
         except Exception as e:
             logger.error(f"Webhook processing failed: {e}")
-            self.metrics.increment_webhook_error(provider_id, connection_id)
+            self.metrics.increment_webhook_error(provider_id, connection.connection_id)
             return False
 
     # FR-7: Outbound Actions

@@ -152,7 +152,7 @@ class PollingService:
 
         # Poll for events
         try:
-            events = adapter.poll_events(cursor_position)
+            events, new_cursor = adapter.poll_events(cursor_position)
             
             if not events:
                 # Update cursor even if no events (to track last poll time)
@@ -186,7 +186,7 @@ class PollingService:
                 self.pm3_client.ingest_signal(signal_envelope)
 
                 # Update cursor position
-                new_cursor_position = event.get("cursor_position") or event.get("id")
+                new_cursor_position = new_cursor or event.get("cursor_position") or event.get("id")
                 if cursor:
                     cursor.cursor_position = new_cursor_position
                     cursor.last_polled_at = datetime.utcnow()

@@ -307,9 +307,9 @@ class WebhookService:
         Returns:
             Tuple of (success, error_message)
         """
-        # Extract connection_id from token (simplified)
+        # Treat token as registration_id (not raw connection_id) to reduce guessability.
         try:
-            connection_id = UUID(connection_token)
+            registration_id = UUID(connection_token)
         except ValueError:
             return False, "Invalid connection token"
 
@@ -327,7 +327,7 @@ class WebhookService:
 
         # Validate replay protection
         is_valid, error = self.replay_protection.validate_webhook(
-            connection_id=connection_id,
+            connection_id=registration_id,
             payload=payload_bytes,
             headers=headers,
             event_timestamp=event_timestamp,
@@ -347,7 +347,7 @@ class WebhookService:
             # Record event for idempotency
             event_type = payload.get("action") or payload.get("event") or "unknown"
             self.replay_protection.record_webhook_event(
-                connection_id=connection_id,
+                connection_id=registration_id,
                 provider_event_type=event_type,
                 payload=payload_bytes,
                 headers=headers,

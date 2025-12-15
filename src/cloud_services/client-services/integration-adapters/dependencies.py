@@ -21,6 +21,7 @@ from .integrations.budget_client import BudgetClient
 from .integrations.pm3_client import PM3Client
 from .integrations.eris_client import ERISClient
 from .integrations.iam_client import IAMClient
+from .services.webhook_service import WebhookService
 from .services.integration_service import IntegrationService
 
 
@@ -54,4 +55,20 @@ def get_integration_service(
 def get_iam_client() -> IAMClient:
     """Get IAM client instance."""
     return IAMClient()
+
+
+def get_webhook_service(
+    db: Session = Depends(get_db),
+) -> WebhookService:
+    """
+    Get webhook service with replay protection and dependency wiring.
+    
+    Args:
+        db: Database session
+    
+    Returns:
+        WebhookService instance
+    """
+    integration_service = get_integration_service(db)
+    return WebhookService(integration_service=integration_service, session=db)
 

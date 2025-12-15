@@ -14,6 +14,7 @@ from typing import Any, Dict, List
 
 import httpx
 import pytest
+from fastapi import HTTPException
 from pydantic import constr
 
 from cloud_services.llm_gateway.clients import (  # type: ignore  # pylint: disable=import-error
@@ -111,6 +112,29 @@ def test_data_governance_client_calls_compliance(patch_httpx_client: _CaptureCli
     assert body["tenant_id"] == "tenantX"
     assert body["action"] == "redact"
     assert body["resource"]["resource_type"] == "llm_prompt"
+
+
+def test_data_governance_client_fails_closed_on_timeout(monkeypatch: pytest.MonkeyPatch) -> None:
+    """EPC-2 must fail-closed; timeouts should raise HTTP 503."""
+
+    class _TimeoutClient:
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
+            pass
+
+        def __enter__(self, *args: Any, **kwargs: Any) -> Any:
+            raise httpx.TimeoutException("timeout")
+
+        def __exit__(self, exc_type, exc, tb) -> None:  # type: ignore[override]
+            return None
+
+    monkeypatch.setattr(httpx, "Client", _TimeoutClient)  # type: ignore[arg-type]
+
+    client = DataGovernanceClient(base_url="http://dg.test/privacy/v1", timeout_seconds=0.01)
+
+    with pytest.raises(HTTPException) as excinfo:
+        client.redact("secret material", tenant_id="tenantX")
+
+    assert excinfo.value.status_code == 503
 
 
 def test_policy_client_calls_standards_endpoint(patch_httpx_client: _CaptureClient) -> None:

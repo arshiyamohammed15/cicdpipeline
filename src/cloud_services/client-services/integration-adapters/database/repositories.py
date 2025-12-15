@@ -85,14 +85,22 @@ class ConnectionRepository:
         self.session.refresh(connection)
         return connection
 
-    def get_by_id(self, connection_id: UUID, tenant_id: str) -> Optional[IntegrationConnection]:
-        """Get connection by ID with tenant isolation."""
-        return self.session.query(IntegrationConnection).filter(
-            and_(
-                IntegrationConnection.connection_id == connection_id,
-                IntegrationConnection.tenant_id == tenant_id
-            )
-        ).first()
+    def get_by_id(
+        self, connection_id: UUID, tenant_id: Optional[str] = None
+    ) -> Optional[IntegrationConnection]:
+        """
+        Get connection by ID with optional tenant isolation.
+        
+        Args:
+            connection_id: Connection ID
+            tenant_id: Tenant ID (if provided, enforces tenant scoping)
+        """
+        query = self.session.query(IntegrationConnection).filter(
+            IntegrationConnection.connection_id == connection_id
+        )
+        if tenant_id is not None:
+            query = query.filter(IntegrationConnection.tenant_id == tenant_id)
+        return query.first()
 
     def get_all_by_tenant(self, tenant_id: str) -> List[IntegrationConnection]:
         """Get all connections for a tenant."""
@@ -167,14 +175,41 @@ class WebhookRegistrationRepository:
             WebhookRegistration.connection_id == connection_id
         ).all()
 
-    def get_active_by_connection(self, connection_id: UUID) -> List[WebhookRegistration]:
-        """Get active webhook registrations by connection."""
-        return self.session.query(WebhookRegistration).filter(
-            and_(
-                WebhookRegistration.connection_id == connection_id,
-                WebhookRegistration.status == "active"
+    def get_active_by_connection(
+        self, connection_id: UUID, tenant_id: Optional[str] = None
+    ) -> List[WebhookRegistration]:
+        """Get active webhook registrations by connection (optionally tenant-scoped)."""
+        query = (
+            self.session.query(WebhookRegistration)
+            .join(IntegrationConnection, WebhookRegistration.connection_id == IntegrationConnection.connection_id)
+            .filter(
+                and_(
+                    WebhookRegistration.connection_id == connection_id,
+                    WebhookRegistration.status == "active",
+                )
             )
-        ).all()
+        )
+        if tenant_id is not None:
+            query = query.filter(IntegrationConnection.tenant_id == tenant_id)
+        return query.all()
+
+    def get_active_by_registration(
+        self, registration_id: UUID, tenant_id: Optional[str] = None
+    ) -> Optional[WebhookRegistration]:
+        """Get a single active webhook registration by ID (optionally tenant-scoped)."""
+        query = (
+            self.session.query(WebhookRegistration)
+            .join(IntegrationConnection, WebhookRegistration.connection_id == IntegrationConnection.connection_id)
+            .filter(
+                and_(
+                    WebhookRegistration.registration_id == registration_id,
+                    WebhookRegistration.status == "active",
+                )
+            )
+        )
+        if tenant_id is not None:
+            query = query.filter(IntegrationConnection.tenant_id == tenant_id)
+        return query.first()
 
     def update(self, registration: WebhookRegistration) -> WebhookRegistration:
         """Update webhook registration."""

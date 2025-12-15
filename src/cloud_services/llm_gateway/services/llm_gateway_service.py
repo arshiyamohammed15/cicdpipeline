@@ -9,6 +9,7 @@ import time
 from datetime import datetime, timezone
 from typing import Dict, Optional, Tuple
 
+import anyio
 from fastapi import HTTPException, status
 
 from ..clients import (
@@ -29,6 +30,7 @@ from ..models import (
     DryRunDecision,
     LLMRequest,
     LLMResponse,
+    OperationType,
     ResponseOutput,
     RiskClass,
     Severity,
@@ -94,17 +96,29 @@ class LLMGatewayService:
 
     async def _process(self, request: LLMRequest) -> LLMResponse | DryRunDecision:
         scope = f"llm.{request.operation_type.value}"
-        self.iam_client.validate_actor(request.actor, scope=scope)
+        await anyio.to_thread.run_sync(
+            self.iam_client.validate_actor, request.actor, scope
+        )
 
-        policy_snapshot = self._fetch_policy_snapshot(request)
+        policy_snapshot = await anyio.to_thread.run_sync(
+            self._fetch_policy_snapshot, request
+        )
 
-        sanitized_prompt, redaction_counts = self.data_governance_client.redact(
-            request.user_prompt, tenant_id=request.tenant.tenant_id
+        sanitized_prompt, redaction_counts = await anyio.to_thread.run_sync(
+            self.data_governance_client.redact,
+            request.user_prompt,
+            request.tenant.tenant_id,
         )
         pipeline_result = self.safety_pipeline.run_input_checks(request)
 
         estimated_tokens = min(len(sanitized_prompt.split()) * 4, request.budget.max_tokens)
-        self.budget_client.assert_within_budget(request.tenant.tenant_id, estimated_tokens)
+        await anyio.to_thread.run_sync(
+            self.budget_client.assert_within_budget,
+            request.tenant.tenant_id,
+            estimated_tokens,
+            request.workspace_id,
+            request.actor.actor_id,
+        )
 
         if request.dry_run:
             return self._build_dry_run_decision(
@@ -218,16 +232,21 @@ class LLMGatewayService:
                     "reason": "primary_unavailable",
                 }
             )
+            fallback_logical_model = (
+                "fallback_embedding"
+                if request.operation_type is OperationType.EMBEDDING
+                else "fallback_chat"
+            )
             fallback_result = self.provider_client.invoke(
                 request.tenant.tenant_id,
-                "fallback_chat",
+                fallback_logical_model,
                 sanitized_prompt,
                 request.operation_type.value,
                 fallback=True,
             )
             fallback_chain.append(
                 {
-                    "logical_model_id": "fallback_chat",
+                    "logical_model_id": fallback_logical_model,
                     "outcome": "success",
                     "reason": "fallback_invoked",
                 }
@@ -376,13 +395,21 @@ def build_default_service() -> LLMGatewayService:
                 bounds={"max_tokens": 2048, "max_concurrent": 5},
             )
 
+    class _TestDataGovernanceClient:
+        """In-process redaction stub to avoid network calls in unit tests."""
+
+        def redact(self, content: str, tenant_id: str = "default"):
+            # Return content unchanged with empty counts; EPC-2 behavior is
+            # covered by contract tests.
+            return content, {}
+
     policy_client = _TestPolicyClient()
     policy_cache = PolicyCache(policy_client)  # type: ignore[arg-type]
     return LLMGatewayService(
         iam_client=_TestIAMClient(),
         policy_cache=policy_cache,
         policy_client=policy_client,
-        data_governance_client=DataGovernanceClient(),
+        data_governance_client=_TestDataGovernanceClient(),
         provider_client=ProviderClient(),
         budget_client=BudgetClient(),
         telemetry=TelemetryEmitter(),
