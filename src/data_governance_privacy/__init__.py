@@ -19,6 +19,11 @@ def _load_package() -> None:
     )
     init_file = package_dir / "__init__.py"
 
+    if not package_dir.is_dir():
+        raise ImportError(f"data-governance-privacy package directory not found at {package_dir}")
+    if not init_file.is_file():
+        raise ImportError(f"data-governance-privacy __init__.py missing at {init_file}")
+
     spec = importlib.util.spec_from_file_location(
         __name__,
         init_file,
