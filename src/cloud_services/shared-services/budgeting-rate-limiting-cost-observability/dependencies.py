@@ -12,6 +12,7 @@ Risks: Mock implementations not production-ready, must be replaced before produc
 import hashlib
 import json
 import logging
+import os
 import time
 import uuid
 from datetime import datetime, timedelta
@@ -265,14 +266,19 @@ class MockM21IAM:
         if token in self.valid_tokens:
             return True, self.valid_tokens[token], None
 
-        # Mock token parsing
+        # Strict verification: require shared secret and signature validation
+        secret = os.getenv("M35_JWT_SECRET")
+        if not secret:
+            return False, None, "JWT secret not configured"
+
         try:
             import jwt
-            decoded = jwt.decode(token, options={"verify_signature": False})
-            required_claims = ["sub", "tenant_id"]
-            missing_claims = [claim for claim in required_claims if claim not in decoded]
-            if missing_claims:
-                return False, None, f"Missing required claims: {', '.join(missing_claims)}"
+            decoded = jwt.decode(
+                token,
+                secret,
+                algorithms=["HS256"],
+                options={"require": ["sub", "tenant_id", "exp"]},
+            )
             return True, decoded, None
         except ImportError:
             return False, None, "JWT library not available"

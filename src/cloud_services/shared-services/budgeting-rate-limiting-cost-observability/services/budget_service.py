@@ -64,7 +64,8 @@ class BudgetService:
         self._budget_cache: Dict[str, List[BudgetDefinition]] = {}
         self._budget_by_id: Dict[uuid.UUID, BudgetDefinition] = {}
         self._utilization_cache: Dict[Tuple[uuid.UUID, datetime, datetime], Decimal] = {}
-        self._fastpath_enabled = True
+        # Always persist utilization; in-memory cache only mirrors DB for quick reads.
+        self._fastpath_enabled = False
 
     @staticmethod
     def _threshold_rank(threshold_name: str) -> int:
@@ -525,19 +526,6 @@ class BudgetService:
             Updated utilization record
         """
         cache_key = (budget_id, period_start, period_end)
-        if self._fastpath_enabled:
-            current = self._utilization_cache.get(cache_key, Decimal(0))
-            self._utilization_cache[cache_key] = current + cost
-            return BudgetUtilization(
-                utilization_id=uuid.uuid4(),
-                budget_id=budget_id,
-                tenant_id=tenant_id,
-                period_start=period_start,
-                period_end=period_end,
-                spent_amount=self._utilization_cache[cache_key],
-                last_updated=datetime.utcnow()
-            )
-
         utilization = self.db.query(BudgetUtilization).filter(
             and_(
                 BudgetUtilization.budget_id == budget_id,
@@ -566,6 +554,8 @@ class BudgetService:
         
         # Refresh after commit to get database-generated values
         self.db.refresh(utilization)
+        # Mirror to cache for read optimisation
+        self._utilization_cache[cache_key] = utilization.spent_amount
         return utilization
 
     def check_budget(

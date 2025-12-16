@@ -194,23 +194,30 @@ class QuotaService:
         allowed = available >= required_amount
 
         if allowed:
-            # Update used amount (atomic operation with SERIALIZABLE isolation)
-            quota.used_amount += required_amount
-            quota.last_updated = datetime.utcnow()
-
-            # Record usage history
-            usage_history = QuotaUsageHistory(
-                usage_id=uuid.uuid4(),
-                quota_id=quota.quota_id,
-                tenant_id=quota.tenant_id,
-                usage_timestamp=now,
-                usage_amount=required_amount,
-                operation_type="quota_consumption"
-            )
-            self.db.add(usage_history)
-
-            self.db.commit()
-            self.db.refresh(quota)
+            # Update used amount with SERIALIZABLE isolation to prevent race conditions
+            with serializable_transaction(self.db):
+                # Re-fetch inside txn to avoid stale reads
+                locked_quota = self.db.query(QuotaAllocation).with_for_update().filter(
+                    QuotaAllocation.quota_id == quota.quota_id
+                ).one()
+                locked_available = (locked_quota.allocated_amount + (locked_quota.max_burst_amount or Decimal(0))) - locked_quota.used_amount
+                if locked_available < required_amount:
+                    allowed = False
+                else:
+                    locked_quota.used_amount += required_amount
+                    locked_quota.last_updated = datetime.utcnow()
+                    usage_history = QuotaUsageHistory(
+                        usage_id=uuid.uuid4(),
+                        quota_id=locked_quota.quota_id,
+                        tenant_id=locked_quota.tenant_id,
+                        usage_timestamp=now,
+                        usage_amount=required_amount,
+                        operation_type="quota_consumption"
+                    )
+                    self.db.add(usage_history)
+            # Refresh after txn if still allowed
+            if allowed:
+                self.db.refresh(quota)
 
         # Check thresholds for warnings
         utilization_ratio = float(quota.used_amount / quota.allocated_amount) if quota.allocated_amount > 0 else 0.0
