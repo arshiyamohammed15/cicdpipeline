@@ -11,16 +11,43 @@ export class MMMEngineExtensionInterface implements vscode.Disposable {
 
     public registerCommands(context: vscode.ExtensionContext): void {
         // Register MMM Engine specific commands
+        // CR-064: Add error boundary for command registration
         const showMMMDashboard = vscode.commands.registerCommand('zeroui.mmm.showDashboard', () => {
-            this.uiManager.showMMMEngineDashboard();
+            try {
+                this.uiManager.showMMMEngineDashboard();
+            } catch (error) {
+                console.error('Failed to show MMM Engine dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show MMM Engine dashboard');
+            }
         });
 
         const refreshMMMData = vscode.commands.registerCommand('zeroui.mmm.refresh', () => {
-            this.uiManager.updateMMMEngineData({} as any); // Will be replaced with actual data
+            // CR-063: Use proper type instead of unsafe type casting
+            // CR-064: Add error boundary
+            try {
+                const emptyData: import('./types').MMMEngineData = {
+                    metricsCollected: 0,
+                    measurements: 0,
+                    monitoringStatus: 'inactive',
+                    metricsTrend: '',
+                    measurementsTrend: '',
+                    lastUpdate: new Date().toISOString()
+                };
+                this.uiManager.updateMMMEngineData(emptyData);
+            } catch (error) {
+                console.error('Failed to refresh MMM Engine data:', error);
+                vscode.window.showErrorMessage('Failed to refresh MMM Engine data');
+            }
         });
 
         const exportMMMReport = vscode.commands.registerCommand('zeroui.mmm.exportReport', () => {
-            this.exportMMMReport();
+            // CR-064: Add error boundary
+            try {
+                this.exportMMMReport();
+            } catch (error) {
+                console.error('Failed to export MMM Engine report:', error);
+                vscode.window.showErrorMessage('Failed to export MMM Engine report');
+            }
         });
 
         this.disposables.push(showMMMDashboard, refreshMMMData, exportMMMReport);
@@ -29,14 +56,20 @@ export class MMMEngineExtensionInterface implements vscode.Disposable {
 
     public registerViews(context: vscode.ExtensionContext): void {
         // Register MMM Engine specific views
-        const mmmTreeProvider = new MMMTreeDataProvider();
-        const mmmTreeView = vscode.window.createTreeView('zerouiMMMEngine', {
-            treeDataProvider: mmmTreeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary for tree view creation
+        try {
+            const mmmTreeProvider = new MMMTreeDataProvider();
+            const mmmTreeView = vscode.window.createTreeView('zerouiMMMEngine', {
+                treeDataProvider: mmmTreeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(mmmTreeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(mmmTreeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register MMM Engine views:', error);
+            vscode.window.showErrorMessage('Failed to initialize MMM Engine views');
+        }
     }
 
     private exportMMMReport(): void {

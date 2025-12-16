@@ -7,6 +7,7 @@ Calls EPC-1 service endpoints for identity verification and actor provenance.
 from __future__ import annotations
 
 import logging
+import uuid
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
@@ -16,6 +17,19 @@ from ..exceptions import ActorUnavailableError
 from ..types import ActorBlock, ActorContext
 
 logger = logging.getLogger(__name__)
+
+
+def _sanitize_error_message(error_text: str, max_length: int = 200) -> str:
+    """CR-039: Sanitize error messages to prevent information disclosure."""
+    # Remove potential sensitive data patterns
+    sanitized = error_text
+    # Remove potential tokens/keys
+    sanitized = sanitized.replace(r'Bearer ', 'Bearer [REDACTED] ')
+    sanitized = sanitized.replace(r'api_key=', 'api_key=[REDACTED]')
+    # Limit length
+    if len(sanitized) > max_length:
+        sanitized = sanitized[:max_length] + '...'
+    return sanitized
 
 
 @dataclass
@@ -36,9 +50,23 @@ class EPC1IdentityAdapter:
 
     def __init__(self, config: EPC1AdapterConfig):
         self._config = config
+        # CR-036: Configure separate connection and read timeouts
+        timeout = httpx.Timeout(
+            connect=min(config.timeout_seconds, 5.0),  # Connection timeout
+            read=config.timeout_seconds,  # Read timeout
+            write=config.timeout_seconds,  # Write timeout
+            pool=10.0  # Pool timeout
+        )
+        # CR-040: Configure connection pooling limits
+        limits = httpx.Limits(
+            max_keepalive_connections=10,
+            max_connections=20,
+            keepalive_expiry=30.0
+        )
         self._client = httpx.AsyncClient(
             base_url=config.base_url,
-            timeout=config.timeout_seconds,
+            timeout=timeout,
+            limits=limits,
             headers={"Content-Type": "application/json"},
         )
 
@@ -58,6 +86,10 @@ class EPC1IdentityAdapter:
         Raises:
             ActorUnavailableError: If EPC-1 service is unavailable or verification fails
         """
+        # CR-038: Add request ID for tracing
+        request_id = str(uuid.uuid4())
+        headers = {"X-Request-ID": request_id}
+        
         try:
             payload = {
                 "tenant_id": context.tenant_id,
@@ -72,14 +104,17 @@ class EPC1IdentityAdapter:
             response = await self._client.post(
                 f"/iam/{self._config.api_version}/verify",
                 json=payload,
+                headers=headers,
             )
             response.raise_for_status()
             return response.json()
         except httpx.HTTPStatusError as e:
-            logger.error(f"EPC-1 verification failed: {e.response.status_code} - {e.response.text}")
+            # CR-039: Sanitize error messages
+            error_text = _sanitize_error_message(str(e.response.text))
+            logger.error(f"EPC-1 verification failed (request_id={request_id}): {e.response.status_code} - {error_text}")
             raise ActorUnavailableError(f"EPC-1 verification failed: {e.response.status_code}") from e
         except httpx.RequestError as e:
-            logger.error(f"EPC-1 request failed: {e}")
+            logger.error(f"EPC-1 request failed (request_id={request_id}): {type(e).__name__}")
             raise ActorUnavailableError("EPC-1 service unavailable") from e
 
     async def get_actor_provenance(

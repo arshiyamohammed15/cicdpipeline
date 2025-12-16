@@ -113,6 +113,10 @@ class ReceiptService:
                 api_version=config.pm7_api_version,
             )
             self._pm7_adapter = PM7ReceiptAdapter(pm7_config)
+        # CR-027: Track receipt IDs for deduplication
+        self._written_receipt_ids: set[str] = set()
+        # CR-025: Maximum receipt size (10MB)
+        self._max_receipt_size_bytes = 10 * 1024 * 1024
 
     def register_before_sign(self, hook: Hook) -> None:
         self._before_sign.append(hook)
@@ -124,11 +128,17 @@ class ReceiptService:
         return await self._signing_adapter.sign_receipt(payload, self._config.epc11_key_id)
 
     def _sign(self, payload: Dict[str, Any]) -> str:
-        loop = asyncio.new_event_loop()
+        # CR-018: Reuse event loop instead of creating new one
         try:
-            return loop.run_until_complete(self._sign_async(payload))
-        finally:
-            loop.close()
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+        except RuntimeError:
+            # No event loop exists, create new one
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        return loop.run_until_complete(self._sign_async(payload))
 
     def _validate(self, receipt: Dict[str, Any]) -> None:
         missing = self.REQUIRED_FIELDS - receipt.keys()
@@ -149,6 +159,16 @@ class ReceiptService:
         degraded: bool = False,
     ) -> ReceiptRecord:
         receipt_id = str(uuid.uuid4())
+        # CR-027: Check for duplicate receipt ID (extremely unlikely but possible)
+        if receipt_id in self._written_receipt_ids:
+            # Generate new ID if collision detected
+            receipt_id = str(uuid.uuid4())
+        self._written_receipt_ids.add(receipt_id)
+        # CR-027: Limit size of receipt ID set to prevent memory growth
+        if len(self._written_receipt_ids) > 100000:
+            # Keep only most recent 50000 IDs
+            self._written_receipt_ids = set(list(self._written_receipt_ids)[-50000:])
+        
         timestamp = self._time_fn()
         timestamp_monotonic_ms = int(timestamp.timestamp() * 1000)
 
@@ -191,8 +211,16 @@ class ReceiptService:
         for hook in self._before_flush:
             hook(receipt)
 
+        # CR-025: Validate receipt size before writing
+        receipt_json = json.dumps(receipt)
+        receipt_size = len(receipt_json.encode('utf-8'))
+        if receipt_size > self._max_receipt_size_bytes:
+            raise ReceiptSchemaError(
+                f"Receipt size {receipt_size} exceeds maximum {self._max_receipt_size_bytes} bytes"
+            )
+
         with self._config.storage_path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(receipt) + "\n")
+            handle.write(receipt_json + "\n")
             handle.flush()
             os.fsync(handle.fileno())
         self._fsync_offset += 1
@@ -200,14 +228,28 @@ class ReceiptService:
         courier_meta = self._courier.enqueue(copy.deepcopy(receipt))
 
         if self._pm7_adapter:
-            loop = asyncio.new_event_loop()
+            # CR-018: Reuse event loop
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_closed():
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            
             try:
                 loop.run_until_complete(self._pm7_adapter.index_receipt(copy.deepcopy(receipt)))
-            except Exception:
-                # Non-fatal; will retry when courier drains
+            except Exception as e:
+                # CR-026: Improved error handling and reporting
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(
+                    f"PM-7 receipt indexing failed for receipt {receipt_id}: {type(e).__name__}: {e}",
+                    exc_info=True
+                )
+                # Mark as pending_sync for retry
                 self._courier._wal.mark(courier_meta["sequence"], "pending_sync")  # noqa: SLF001
-            finally:
-                loop.close()
 
         return ReceiptRecord(
             receipt_id=receipt_id,

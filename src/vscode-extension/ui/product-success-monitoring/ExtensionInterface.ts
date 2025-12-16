@@ -10,12 +10,25 @@ export class ProductSuccessMonitoringExtensionInterface implements vscode.Dispos
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.product.success.monitoring.showDashboard', () => {
-            this.uiManager.showProductSuccessMonitoringDashboard();
+            try {
+                this.uiManager.showProductSuccessMonitoringDashboard();
+            } catch (error) {
+                console.error('Failed to show Product Success Monitoring dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
+        // CR-063: Use undefined instead of unsafe type casting
+        // CR-064: Add error boundary
         const refresh = vscode.commands.registerCommand('zeroui.product.success.monitoring.refresh', () => {
-            this.uiManager.updateProductSuccessMonitoringData({} as any);
+            try {
+                this.uiManager.updateProductSuccessMonitoringData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Product Success Monitoring data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class ProductSuccessMonitoringExtensionInterface implements vscode.Dispos
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new ProductSuccessMonitoringTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiProductSuccessMonitoring', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new ProductSuccessMonitoringTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiProductSuccessMonitoring', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Product Success Monitoring views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Product Success Monitoring Extension Interface:', error);
+        }
     }
 }
 

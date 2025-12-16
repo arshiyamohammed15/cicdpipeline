@@ -46,7 +46,8 @@ export class PreCommitDecisionService {
             }
 
             const status = this.normalizeStatus(latest.decision?.status);
-            const inputs = (latest as any).inputs ?? {};
+            // CR-048: Use proper type guard instead of unsafe type casting
+            const inputs = this.extractInputs(latest);
             const labels = inputs.labels as Record<string, unknown> | undefined;
             const policySnapshotId: string | undefined =
                 typeof inputs.policy_snapshot_id === 'string'
@@ -160,5 +161,16 @@ export class PreCommitDecisionService {
         } else {
             this.output.appendLine('No DecisionReceipt found.');
         }
+    }
+
+    // CR-048: Type guard to safely extract inputs
+    private extractInputs(receipt: DecisionReceipt): Record<string, unknown> {
+        if (receipt && typeof receipt === 'object' && 'inputs' in receipt) {
+            const inputs = (receipt as { inputs?: unknown }).inputs;
+            if (inputs && typeof inputs === 'object' && inputs !== null) {
+                return inputs as Record<string, unknown>;
+            }
+        }
+        return {};
     }
 }

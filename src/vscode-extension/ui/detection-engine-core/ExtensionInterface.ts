@@ -10,12 +10,25 @@ export class DetectionEngineCoreExtensionInterface implements vscode.Disposable 
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.detection.engine.core.showDashboard', () => {
-            this.uiManager.showDetectionEngineCoreDashboard();
+            try {
+                this.uiManager.showDetectionEngineCoreDashboard();
+            } catch (error) {
+                console.error('Failed to show Detection Engine Core dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
+        // CR-063: Use undefined instead of unsafe type casting
+        // CR-064: Add error boundary
         const refresh = vscode.commands.registerCommand('zeroui.detection.engine.core.refresh', () => {
-            this.uiManager.updateDetectionEngineCoreData({} as any);
+            try {
+                this.uiManager.updateDetectionEngineCoreData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Detection Engine Core data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class DetectionEngineCoreExtensionInterface implements vscode.Disposable 
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new DetectionEngineCoreTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiDetectionEngineCore', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new DetectionEngineCoreTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiDetectionEngineCore', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Detection Engine Core views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Detection Engine Core Extension Interface:', error);
+        }
     }
 }
 

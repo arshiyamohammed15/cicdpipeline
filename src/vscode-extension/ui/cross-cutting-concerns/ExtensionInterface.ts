@@ -10,12 +10,25 @@ export class CrossCuttingConcernsExtensionInterface implements vscode.Disposable
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.cross.cutting.concerns.showDashboard', () => {
-            this.uiManager.showCrossCuttingConcernsDashboard();
+            try {
+                this.uiManager.showCrossCuttingConcernsDashboard();
+            } catch (error) {
+                console.error('Failed to show Cross Cutting Concerns dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
         const refresh = vscode.commands.registerCommand('zeroui.cross.cutting.concerns.refresh', () => {
-            this.uiManager.updateCrossCuttingConcernsData({} as any);
+            // CR-063: Use undefined instead of unsafe type casting
+            // CR-064: Add error boundary
+            try {
+                this.uiManager.updateCrossCuttingConcernsData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Cross Cutting Concerns data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class CrossCuttingConcernsExtensionInterface implements vscode.Disposable
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new CrossCuttingConcernsTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiCrossCuttingConcerns', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new CrossCuttingConcernsTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiCrossCuttingConcerns', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Cross Cutting Concerns views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Cross Cutting Concerns Extension Interface:', error);
+        }
     }
 }
 

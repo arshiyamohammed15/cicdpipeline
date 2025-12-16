@@ -10,12 +10,25 @@ export class FeatureDevelopmentBlindSpotsExtensionInterface implements vscode.Di
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.feature.development.blind.spots.showDashboard', () => {
-            this.uiManager.showFeatureDevelopmentBlindSpotsDashboard();
+            try {
+                this.uiManager.showFeatureDevelopmentBlindSpotsDashboard();
+            } catch (error) {
+                console.error('Failed to show Feature Development Blind Spots dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
+        // CR-063: Use undefined instead of unsafe type casting
+        // CR-064: Add error boundary
         const refresh = vscode.commands.registerCommand('zeroui.feature.development.blind.spots.refresh', () => {
-            this.uiManager.updateFeatureDevelopmentBlindSpotsData({} as any);
+            try {
+                this.uiManager.updateFeatureDevelopmentBlindSpotsData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Feature Development Blind Spots data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class FeatureDevelopmentBlindSpotsExtensionInterface implements vscode.Di
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new FeatureDevelopmentBlindSpotsTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiFeatureDevelopmentBlindSpots', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new FeatureDevelopmentBlindSpotsTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiFeatureDevelopmentBlindSpots', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Feature Development Blind Spots views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Feature Development Blind Spots Extension Interface:', error);
+        }
     }
 }
 

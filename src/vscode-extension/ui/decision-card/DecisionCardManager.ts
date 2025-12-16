@@ -26,6 +26,8 @@ export interface DecisionCardData {
     mismatches: MismatchInfo[];
     labels?: Record<string, unknown>;
     timestampUtc?: string;
+    // CR-063: Add formatted property to interface instead of using 'as any'
+    formatted?: FormattedDecision;
 }
 
 export interface DecisionCardActions {
@@ -42,26 +44,37 @@ export class DecisionCardManager implements vscode.Disposable {
     private disposables: vscode.Disposable[] = [];
 
     public showDecisionCard(decisionData?: DecisionCardData, actions?: DecisionCardActions): void {
-        this.currentData = decisionData;
-        this.currentActions = actions;
+        // CR-064: Add error boundary for UI rendering
+        try {
+            this.currentData = decisionData;
+            this.currentActions = actions;
 
-        if (this.webviewPanel) {
-            this.webviewPanel.reveal(vscode.ViewColumn.One);
-            this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
-            return;
-        }
-
-        this.webviewPanel = vscode.window.createWebviewPanel(
-            'zerouiDecisionCard',
-            'ZeroUI Decision Card',
-            vscode.ViewColumn.One,
-            {
-                enableScripts: true,
-                retainContextWhenHidden: true
+            if (this.webviewPanel) {
+                this.webviewPanel.reveal(vscode.ViewColumn.One);
+                this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
+                return;
             }
-        );
 
-        this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
+            this.webviewPanel = vscode.window.createWebviewPanel(
+                'zerouiDecisionCard',
+                'ZeroUI Decision Card',
+                vscode.ViewColumn.One,
+                {
+                    enableScripts: true,
+                    retainContextWhenHidden: true
+                }
+            );
+
+            this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
+        } catch (error) {
+            console.error('Failed to show decision card:', error);
+            vscode.window.showErrorMessage('Failed to display decision card');
+            // CR-062: Ensure cleanup on error
+            if (this.webviewPanel) {
+                this.webviewPanel.dispose();
+                this.webviewPanel = undefined;
+            }
+        }
 
         const messageSubscription = this.webviewPanel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
@@ -92,7 +105,8 @@ export class DecisionCardManager implements vscode.Disposable {
     private getWebviewContent(decisionData?: DecisionCardData): string {
         const statusBadge = this.renderStatusBadge(decisionData?.status);
         // Use transparency formatting if available (TR-2.1.1, TR-2.1.2)
-        const formatted = (decisionData as any)?.formatted as FormattedDecision | undefined;
+        // CR-063: Use proper type guard instead of unsafe casting
+        const formatted = this.getFormattedDecision(decisionData);
         const decisionContent = decisionData 
             ? this.renderDecisionContentWithTransparency(decisionData, formatted) 
             : 'No decision data available';
@@ -270,10 +284,18 @@ export class DecisionCardManager implements vscode.Disposable {
             mismatches: [] // Mismatches would need to be extracted from receipt.inputs if available
         };
 
-        // Store formatted data for display
-        (decisionData as any).formatted = formatted;
+        // CR-063: Store formatted data using proper type
+        decisionData.formatted = formatted;
 
         this.showDecisionCard(decisionData, actions);
+    }
+
+    // CR-063: Type guard to safely extract formatted decision
+    private getFormattedDecision(decisionData?: DecisionCardData): FormattedDecision | undefined {
+        if (!decisionData) {
+            return undefined;
+        }
+        return decisionData.formatted;
     }
 
     /**
@@ -352,10 +374,16 @@ export class DecisionCardManager implements vscode.Disposable {
         this.disposables = [];
     }
 
+    // CR-062: Ensure proper disposal pattern implementation
     public dispose(): void {
-        if (this.webviewPanel) {
-            this.webviewPanel.dispose();
+        try {
+            if (this.webviewPanel) {
+                this.webviewPanel.dispose();
+                this.webviewPanel = undefined;
+            }
+            this.disposeSubscriptions();
+        } catch (error) {
+            console.error('Error disposing Decision Card Manager:', error);
         }
-        this.disposeSubscriptions();
     }
 }

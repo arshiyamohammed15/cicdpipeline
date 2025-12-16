@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Dict, Optional, Sequence, Tuple
 
 from ..adapters.epc1_adapter import EPC1AdapterConfig, EPC1IdentityAdapter
 from ..exceptions import ActorUnavailableError
@@ -40,7 +41,9 @@ class IdentityService:
         )
         self._adapter = EPC1IdentityAdapter(adapter_config)
         self._wal = wal
-        self._actor_cache: Dict[str, ActorBlock] = {}
+        # CR-022: Cache with TTL - store (ActorBlock, timestamp) tuples
+        self._actor_cache: Dict[str, Tuple[ActorBlock, float]] = {}
+        self._cache_ttl_seconds: float = 3600.0  # 1 hour default TTL
 
     async def _resolve_actor_async(self, context: ActorContext) -> ActorBlock:
         """Async actor resolution via EPC-1 (used by WAL drain)."""
@@ -49,15 +52,25 @@ class IdentityService:
 
     def resolve_actor(self, context: ActorContext, use_cache: bool = True) -> ActorBlock:
         """Returns a cached actor block or queues a refresh."""
+        # CR-019: Validate input before deep copy
+        if context is None:
+            raise ActorUnavailableError("Actor context cannot be None")
+        self._validate_context(context)
+        
         context_copy = copy.deepcopy(context)
-        self._validate_context(context_copy)
 
+        # CR-020: Include session_id in cache key to prevent collisions
         cache_key = self._cache_key(context_copy)
         if cache_key in self._actor_cache:
-            cached = self._actor_cache[cache_key]
-            if cached.session_id != context_copy.session_id:
-                self._queue_epc1_call(context_copy, "update_session")
-            return cached
+            cached_block, cache_timestamp = self._actor_cache[cache_key]
+            # CR-022: Check cache TTL
+            if time.time() - cache_timestamp < self._cache_ttl_seconds:
+                if cached_block.session_id != context_copy.session_id:
+                    self._queue_epc1_call(context_copy, "update_session")
+                return cached_block
+            else:
+                # Cache expired, remove it
+                del self._actor_cache[cache_key]
 
         if use_cache:
             self._queue_epc1_call(context_copy, "resolve_actor")
@@ -67,16 +80,34 @@ class IdentityService:
 
     def _resolve_online(self, context: ActorContext) -> ActorBlock:
         """Performs an EPC-1 call outside of the request path."""
-        loop = asyncio.new_event_loop()
+        # CR-018: Reuse event loop instead of creating new one
+        try:
+            loop = asyncio.get_event_loop()
+            if loop.is_closed():
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+        except RuntimeError:
+            # No event loop exists, create new one
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        
         try:
             actor = loop.run_until_complete(self._resolve_actor_async(context))
         except ActorUnavailableError:
             raise
-        except Exception as exc:  # noqa: BLE001
+        except (ValueError, TypeError, KeyError, AttributeError) as exc:
+            # CR-021: Catch specific exception types
             raise ActorUnavailableError(f"Identity resolution failed: {exc}") from exc
-        finally:
-            loop.close()
-        self._actor_cache[self._cache_key(context)] = actor
+        except Exception as exc:  # noqa: BLE001
+            # Log unexpected exceptions
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Unexpected error in identity resolution: {type(exc).__name__}: {exc}", exc_info=True)
+            raise ActorUnavailableError(f"Identity resolution failed: {exc}") from exc
+        
+        # CR-022: Store with timestamp for TTL
+        cache_key = self._cache_key(context)
+        self._actor_cache[cache_key] = (actor, time.time())
         return actor
 
     def _queue_epc1_call(self, context: ActorContext, action: str) -> None:
@@ -116,13 +147,25 @@ class IdentityService:
 
         try:
             self._resolve_online(context)
+        except ActorUnavailableError:
+            # CR-021: Re-raise ActorUnavailableError
+            if not self._config.fallback_enabled:
+                raise
+        except (ValueError, TypeError, KeyError) as exc:
+            # CR-021: Catch specific exception types
+            if not self._config.fallback_enabled:
+                raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
         except Exception as exc:  # noqa: BLE001
-            if self._config.fallback_enabled:
-                return
-            raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
+            # Log unexpected exceptions
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Unexpected error in WAL entry processing: {type(exc).__name__}: {exc}", exc_info=True)
+            if not self._config.fallback_enabled:
+                raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
 
     def _cache_key(self, context: ActorContext) -> str:
-        return f"{context.tenant_id}:{context.user_id}:{context.device_id}"
+        # CR-020: Include session_id in cache key to prevent stale data
+        return f"{context.tenant_id}:{context.user_id}:{context.device_id}:{context.session_id}"
 
     def _validate_context(self, context: ActorContext) -> None:
         missing: Sequence[str] = [

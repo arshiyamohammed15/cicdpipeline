@@ -10,12 +10,25 @@ export class MonitoringObservabilityGapsExtensionInterface implements vscode.Dis
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.monitoring.observability.gaps.showDashboard', () => {
-            this.uiManager.showMonitoringObservabilityGapsDashboard();
+            try {
+                this.uiManager.showMonitoringObservabilityGapsDashboard();
+            } catch (error) {
+                console.error('Failed to show Monitoring Observability Gaps dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
+        // CR-063: Use undefined instead of unsafe type casting
+        // CR-064: Add error boundary
         const refresh = vscode.commands.registerCommand('zeroui.monitoring.observability.gaps.refresh', () => {
-            this.uiManager.updateMonitoringObservabilityGapsData({} as any);
+            try {
+                this.uiManager.updateMonitoringObservabilityGapsData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Monitoring Observability Gaps data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class MonitoringObservabilityGapsExtensionInterface implements vscode.Dis
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new MonitoringObservabilityGapsTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiMonitoringObservabilityGaps', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new MonitoringObservabilityGapsTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiMonitoringObservabilityGaps', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Monitoring Observability Gaps views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Monitoring Observability Gaps Extension Interface:', error);
+        }
     }
 }
 

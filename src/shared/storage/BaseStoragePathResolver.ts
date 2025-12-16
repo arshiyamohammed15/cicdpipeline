@@ -89,10 +89,25 @@ export class BaseStoragePathResolver {
      * Resolve path for any storage plane with validation.
      */
     public resolvePlanePath(plane: StoragePlane, relativePath: string): string {
+        // CR-001: Validate input
+        if (!relativePath || typeof relativePath !== 'string') {
+            throw new Error('relativePath cannot be empty or null');
+        }
+
+        // CR-004: Runtime type validation for StoragePlane
+        const validPlanes: StoragePlane[] = ['ide', 'tenant', 'product', 'shared'];
+        if (!validPlanes.includes(plane)) {
+            throw new Error(`Invalid storage plane: ${plane}. Must be one of: ${validPlanes.join(', ')}`);
+        }
+
         this.assertKebabCase(plane, 'plane name');
 
         const pathParts = relativePath.split('/').filter(part => part.length > 0);
         for (const part of pathParts) {
+            // CR-002: Path traversal vulnerability check
+            if (part === '..' || part === '.' || part.startsWith('/') || part.includes('\\')) {
+                throw new Error(`Invalid path component: ${part}. Path traversal not allowed`);
+            }
             this.assertKebabCase(part, 'path component');
         }
 
@@ -113,7 +128,36 @@ export class BaseStoragePathResolver {
     }
 
     protected normalizePath(pathStr: string): string {
-        return pathStr.replace(/\\/g, '/').replace(/\/+/g, '/');
+        if (!pathStr || typeof pathStr !== 'string') {
+            throw new Error('pathStr must be a non-empty string');
+        }
+
+        // CR-003: Handle edge cases - Windows UNC paths and multiple slashes
+        // Preserve UNC path prefix (\\server\share) if present
+        let normalized = pathStr.replace(/\\/g, '/');
+        
+        // Handle UNC paths: \\server\share -> //server/share
+        if (normalized.startsWith('//')) {
+            // Keep UNC prefix, normalize rest
+            const uncMatch = normalized.match(/^(\/\/[^\/]+)(\/.*)?$/);
+            if (uncMatch) {
+                const uncPrefix = uncMatch[1];
+                const rest = uncMatch[2] || '';
+                normalized = uncPrefix + rest.replace(/\/+/g, '/');
+                return normalized;
+            }
+        }
+        
+        // Normalize multiple slashes, but preserve leading slash for absolute paths
+        const isAbsolute = normalized.startsWith('/');
+        normalized = normalized.replace(/\/+/g, '/');
+        
+        // Remove trailing slashes except for root
+        if (normalized.length > 1 && normalized.endsWith('/')) {
+            normalized = normalized.slice(0, -1);
+        }
+        
+        return normalized;
     }
 }
 

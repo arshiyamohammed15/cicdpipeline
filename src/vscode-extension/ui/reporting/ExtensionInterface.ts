@@ -10,12 +10,25 @@ export class ReportingExtensionInterface implements vscode.Disposable {
     }
 
     public registerCommands(context: vscode.ExtensionContext): void {
+        // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.reporting.showDashboard', () => {
-            this.uiManager.showReportingDashboard();
+            try {
+                this.uiManager.showReportingDashboard();
+            } catch (error) {
+                console.error('Failed to show Reporting dashboard:', error);
+                vscode.window.showErrorMessage('Failed to show dashboard');
+            }
         });
 
+        // CR-063: Use undefined instead of unsafe type casting
+        // CR-064: Add error boundary
         const refresh = vscode.commands.registerCommand('zeroui.reporting.refresh', () => {
-            this.uiManager.updateReportingData({} as any);
+            try {
+                this.uiManager.updateReportingData(undefined);
+            } catch (error) {
+                console.error('Failed to refresh Reporting data:', error);
+                vscode.window.showErrorMessage('Failed to refresh data');
+            }
         });
 
         this.disposables.push(showDashboard, refresh);
@@ -23,19 +36,37 @@ export class ReportingExtensionInterface implements vscode.Disposable {
     }
 
     public registerViews(context: vscode.ExtensionContext): void {
-        const treeProvider = new ReportingTreeDataProvider();
-        const treeView = vscode.window.createTreeView('zerouiReporting', {
-            treeDataProvider: treeProvider,
-            showCollapseAll: true
-        });
+        // CR-064: Add error boundary
+        try {
+            const treeProvider = new ReportingTreeDataProvider();
+            const treeView = vscode.window.createTreeView('zerouiReporting', {
+                treeDataProvider: treeProvider,
+                showCollapseAll: true
+            });
 
-        this.disposables.push(treeView);
-        context.subscriptions.push(...this.disposables);
+            this.disposables.push(treeView);
+            context.subscriptions.push(...this.disposables);
+        } catch (error) {
+            console.error('Failed to register Reporting views:', error);
+            vscode.window.showErrorMessage('Failed to initialize views');
+        }
     }
 
+    // CR-062: Ensure proper disposal pattern
     public dispose(): void {
-        this.disposables.forEach(d => d.dispose());
-        this.uiManager.dispose();
+        try {
+            this.disposables.forEach(d => {
+                try {
+                    d.dispose();
+                } catch (error) {
+                    console.error('Error disposing resource:', error);
+                }
+            });
+            this.disposables = [];
+            this.uiManager.dispose();
+        } catch (error) {
+            console.error('Error disposing Reporting Extension Interface:', error);
+        }
     }
 }
 

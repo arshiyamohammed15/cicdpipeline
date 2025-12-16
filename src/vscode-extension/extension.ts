@@ -43,9 +43,20 @@ class ConstitutionValidator {
 
         } catch (error) {
             console.error('Validation service error:', error);
-            // Allow generation if service fails to avoid blocking users
-            vscode.window.showWarningMessage('Constitution validation service unavailable - proceeding with generation');
-            return true;
+            // CR-047: Fail-secure behavior - block on validation service failure
+            const config = vscode.workspace.getConfiguration('zeroui');
+            const blockOnFailure = config.get<boolean>('blockOnValidationFailure', true);
+            
+            if (blockOnFailure) {
+                vscode.window.showErrorMessage(
+                    'Constitution validation service unavailable - code generation blocked for security. ' +
+                    'Set zeroui.blockOnValidationFailure to false to allow generation (not recommended).'
+                );
+                return false;
+            } else {
+                vscode.window.showWarningMessage('Constitution validation service unavailable - proceeding with generation');
+                return true;
+            }
         }
     }
 
@@ -124,8 +135,15 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('ZeroUI 2.0 Extension activated with Constitution Validation');
 
     // Initialize constitution validation service
-    const validationServiceUrl = vscode.workspace.getConfiguration('zeroui').get('validationServiceUrl', 'http://localhost:5000');
-    const constitutionValidator = new ConstitutionValidator(validationServiceUrl);
+    // CR-052: Make default configurable - require explicit configuration
+    const validationServiceUrl = vscode.workspace.getConfiguration('zeroui').get<string>('validationServiceUrl');
+    if (!validationServiceUrl) {
+        vscode.window.showWarningMessage(
+            'Constitution validation service URL not configured. ' +
+            'Set zeroui.validationServiceUrl in settings to enable validation.'
+        );
+    }
+    const constitutionValidator = new ConstitutionValidator(validationServiceUrl || '');
 
     // Initialize core UI managers
     const statusBarManager = new StatusBarManager();
@@ -144,9 +162,45 @@ export function activate(context: vscode.ExtensionContext) {
     const resolveZuRoot = (): string | undefined => {
         const configured = vscode.workspace.getConfiguration('zeroui').get<string>('zuRoot')?.trim();
         if (configured && configured.length > 0) {
+            // CR-051: Validate that path exists and is accessible
+            try {
+                const fs = require('fs');
+                if (!fs.existsSync(configured)) {
+                    vscode.window.showWarningMessage(`ZU_ROOT path does not exist: ${configured}`);
+                    return undefined;
+                }
+                if (!fs.statSync(configured).isDirectory()) {
+                    vscode.window.showWarningMessage(`ZU_ROOT is not a directory: ${configured}`);
+                    return undefined;
+                }
+                // Check read/write permissions
+                try {
+                    fs.accessSync(configured, fs.constants.R_OK | fs.constants.W_OK);
+                } catch {
+                    vscode.window.showWarningMessage(`ZU_ROOT path is not accessible: ${configured}`);
+                    return undefined;
+                }
+            } catch (error) {
+                vscode.window.showWarningMessage(`Failed to validate ZU_ROOT path: ${error}`);
+                return undefined;
+            }
             return configured;
         }
-        return process.env.ZU_ROOT || undefined;
+        const envZuRoot = process.env.ZU_ROOT;
+        if (envZuRoot) {
+            try {
+                const fs = require('fs');
+                if (!fs.existsSync(envZuRoot)) {
+                    return undefined;
+                }
+                if (!fs.statSync(envZuRoot).isDirectory()) {
+                    return undefined;
+                }
+            } catch {
+                return undefined;
+            }
+        }
+        return envZuRoot || undefined;
     };
 
     const toDecisionCardData = (snapshot?: PreCommitDecisionSnapshot): DecisionCardData | undefined => {
@@ -251,6 +305,14 @@ export function activate(context: vscode.ExtensionContext) {
         problemsPanelManager.refresh();
     });
 
+    // CR-049: Input sanitization helper
+    const sanitizeInput = (input: string): string => {
+        // Remove control characters and limit length
+        return input
+            .replace(/[\x00-\x1F\x7F]/g, '') // Remove control characters
+            .slice(0, 10000); // Limit to 10KB
+    };
+
     // Constitution validation commands
     const validatePrompt = vscode.commands.registerCommand('zeroui.validatePrompt', async (prompt?: string) => {
         const promptText = prompt || await vscode.window.showInputBox({
@@ -259,8 +321,10 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         if (promptText) {
+            // CR-049: Sanitize input before sending to external service
+            const sanitizedPrompt = sanitizeInput(promptText);
             const isValid = await constitutionValidator.validateBeforeGeneration(
-                promptText,
+                sanitizedPrompt,
                 'typescript',
                 'general'
             );
@@ -280,8 +344,10 @@ export function activate(context: vscode.ExtensionContext) {
         });
 
         if (prompt) {
+            // CR-049: Sanitize input before sending to external service
+            const sanitizedPrompt = sanitizeInput(prompt);
             const isValid = await constitutionValidator.validateBeforeGeneration(
-                prompt,
+                sanitizedPrompt,
                 'typescript',
                 'component'
             );
@@ -289,7 +355,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (isValid) {
                 const generatedCode = await constitutionValidator.generateWithValidation(
                     'openai',
-                    prompt,
+                    sanitizedPrompt,
                     {
                         file_type: 'typescript',
                         task_type: 'component',

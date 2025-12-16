@@ -54,6 +54,14 @@ export class ReceiptStorageReader {
         // Read file content with error handling
         let content: string;
         try {
+            // CR-054: Check file size before reading to prevent memory exhaustion
+            const stats = fs.statSync(receiptFile);
+            const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB limit
+            if (stats.size > MAX_FILE_SIZE) {
+                console.error(`Receipt file too large: ${receiptFile} (${stats.size} bytes, max ${MAX_FILE_SIZE})`);
+                return [];
+            }
+            
             content = fs.readFileSync(receiptFile, 'utf-8');
         } catch (error) {
             console.error(`Failed to read receipt file: ${receiptFile}`, error);
@@ -113,23 +121,19 @@ export class ReceiptStorageReader {
     ): Promise<Array<DecisionReceipt | FeedbackReceipt>> {
         const allReceipts: Array<DecisionReceipt | FeedbackReceipt> = [];
 
-        // Iterate through months in range
+        // CR-056: Optimize to only read necessary months
+        // Calculate which months are actually needed
         const startYear = startDate.getUTCFullYear();
         const startMonth = startDate.getUTCMonth() + 1;
         const endYear = endDate.getUTCFullYear();
         const endMonth = endDate.getUTCMonth() + 1;
 
-        // Calculate number of months to iterate
-        const startMonthIndex = startYear * 12 + startMonth;
-        const endMonthIndex = endYear * 12 + endMonth;
+        // Only iterate through months that could contain receipts in range
+        let currentYear = startYear;
+        let currentMonth = startMonth;
 
-        for (let monthIndex = startMonthIndex; monthIndex <= endMonthIndex; monthIndex++) {
-            const year = Math.floor(monthIndex / 12);
-            const month = monthIndex % 12;
-            const actualMonth = month === 0 ? 12 : month;
-            const actualYear = month === 0 ? year - 1 : year;
-
-            const receipts = await this.readReceipts(repoId, actualYear, actualMonth);
+        while (currentYear < endYear || (currentYear === endYear && currentMonth <= endMonth)) {
+            const receipts = await this.readReceipts(repoId, currentYear, currentMonth);
 
             // Filter receipts by date range
             for (const receipt of receipts) {
@@ -137,6 +141,13 @@ export class ReceiptStorageReader {
                 if (receiptDate >= startDate && receiptDate <= endDate) {
                     allReceipts.push(receipt);
                 }
+            }
+
+            // Move to next month
+            currentMonth++;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
             }
         }
 
@@ -194,26 +205,39 @@ export class ReceiptStorageReader {
      * - Canonical JSON form for signature verification
      *
      * @param receipt Receipt to validate
-     * @returns boolean True if signature is valid
+     * @returns boolean True if signature is valid, false if invalid, throws on error
      */
     private validateReceiptSignature(receipt: DecisionReceipt | FeedbackReceipt): boolean {
+        // CR-055: Distinguish between validation failure and error conditions
         if (!receipt.signature || receipt.signature.length === 0) {
             console.warn('Receipt missing signature (Rule 224 violation)');
-            return false;
+            return false; // Validation failure, not an error
         }
 
         const kid = extractKidFromSignature(receipt.signature);
         if (!kid) {
             console.warn('Receipt signature missing key identifier (kid)');
-            return false;
+            return false; // Validation failure, not an error
         }
 
         try {
             const { key } = resolvePublicKeyByKid(kid);
-            return verifyReceiptSignature(receipt, key);
+            const isValid = verifyReceiptSignature(receipt, key);
+            if (!isValid) {
+                console.warn(`Receipt signature verification failed for kid "${kid}"`);
+                return false; // Validation failure
+            }
+            return true; // Validation success
         } catch (error) {
-            console.warn(`Failed to verify receipt using kid "${kid}": ${(error as Error).message}`);
-            return false;
+            // CR-055: Distinguish error conditions from validation failures
+            const err = error as Error;
+            if (err.name === 'PublicKeyNotFoundError') {
+                console.warn(`Public key not found for kid "${kid}": ${err.message}`);
+                return false; // Validation failure - key not found
+            }
+            // Unexpected error - log and treat as validation failure
+            console.error(`Unexpected error verifying receipt signature: ${err.message}`, err);
+            return false; // Treat unexpected errors as validation failure
         }
     }
 }

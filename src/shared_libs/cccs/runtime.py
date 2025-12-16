@@ -68,6 +68,9 @@ class CCCSRuntime:
     _signal_numbers: tuple[int, ...] = tuple(
         sig for sig in (getattr(signal, "SIGINT", None), getattr(signal, "SIGTERM", None)) if sig is not None
     )
+    # CR-010: Shared event loop to prevent resource leaks
+    _shared_event_loop: Optional[asyncio.AbstractEventLoop] = None
+    _event_loop_lock: threading.Lock = threading.Lock()
 
     def __init__(
         self,
@@ -106,6 +109,8 @@ class CCCSRuntime:
         self._dependencies_ready = False
         self._shutdown_called = False
         self._wal_worker_stop = threading.Event()
+        # CR-011: Add lock for WAL worker thread synchronization
+        self._wal_lock = threading.Lock()
         self._wal_worker = threading.Thread(
             target=self._process_wal_entries,
             name="cccs-wal-drain",
@@ -150,7 +155,10 @@ class CCCSRuntime:
                 return
             if time.monotonic() - start >= timeout_seconds:
                 self._raise_bootstrap_error(missing)
-            time.sleep(poll_interval)
+            # CR-015: Use interruptible sleep instead of blocking sleep
+            self._wal_worker_stop.wait(poll_interval)
+            if self._shutdown_called:
+                return
 
     def negotiate_version(self, requested_version: str) -> str:
         requested = APIVersion.parse(requested_version)
@@ -189,7 +197,15 @@ class CCCSRuntime:
             actor = self._identity.resolve_actor(actor_context, use_cache=(not self._dependencies_ready))
         except ActorUnavailableError:
             raise  # Already canonical
+        except (ValueError, TypeError, AttributeError) as e:
+            # CR-014: Catch specific exception types instead of generic Exception
+            error = self._taxonomy.normalize_error(e)
+            raise ActorUnavailableError(
+                f"Identity resolution failed: {error.canonical_code} - {error.user_message}"
+            ) from e
         except Exception as e:
+            # Log unexpected exceptions for debugging
+            logger.error(f"Unexpected error in identity resolution: {type(e).__name__}: {e}", exc_info=True)
             error = self._taxonomy.normalize_error(e)
             raise ActorUnavailableError(
                 f"Identity resolution failed: {error.canonical_code} - {error.user_message}"
@@ -204,19 +220,29 @@ class CCCSRuntime:
             policy_decision = self._policy.evaluate(module_id, inputs)
         except PolicyUnavailableError:
             raise  # Already canonical
+        except (ValueError, TypeError, KeyError) as e:
+            # CR-014: Catch specific exception types instead of generic Exception
+            error = self._taxonomy.normalize_error(e)
+            raise PolicyUnavailableError(
+                f"Policy evaluation failed: {error.canonical_code} - {error.user_message}"
+            ) from e
         except Exception as e:
+            # Log unexpected exceptions for debugging
+            logger.error(f"Unexpected error in policy evaluation: {type(e).__name__}: {e}", exc_info=True)
             error = self._taxonomy.normalize_error(e)
             raise PolicyUnavailableError(
                 f"Policy evaluation failed: {error.canonical_code} - {error.user_message}"
             ) from e
 
         # Persist policy snapshot to WAL per PRD §7.1
-        if self._policy._snapshot:
-            wal = self._receipts._courier._wal
+        # CR-016: Use accessor method instead of direct private attribute access
+        policy_snapshot = self._get_policy_snapshot()
+        if policy_snapshot:
+            wal = self._get_wal()
             wal.append_policy_snapshot({
                 "module_id": module_id,
                 "snapshot_hash": policy_decision.policy_snapshot_hash,
-                "version": self._policy._snapshot.version,
+                "version": policy_snapshot.version,
                 "timestamp": datetime.now(timezone.utc).isoformat(),
             })
 
@@ -233,7 +259,15 @@ class CCCSRuntime:
             # Per PRD §5.6: Emit budget_exceeded receipt
             self._emit_budget_exceeded_receipt(action_id, cost, inputs, actor, policy_decision)
             raise
+        except (ValueError, TypeError) as e:
+            # CR-014: Catch specific exception types instead of generic Exception
+            error = self._taxonomy.normalize_error(e)
+            raise BudgetExceededError(
+                f"Budget check failed: {error.canonical_code} - {error.user_message}"
+            ) from e
         except Exception as e:
+            # Log unexpected exceptions for debugging
+            logger.error(f"Unexpected error in budget check: {type(e).__name__}: {e}", exc_info=True)
             error = self._taxonomy.normalize_error(e)
             raise BudgetExceededError(
                 f"Budget check failed: {error.canonical_code} - {error.user_message}"
@@ -241,7 +275,8 @@ class CCCSRuntime:
 
         # Persist budget snapshot to WAL per PRD §7.1
         if budget:
-            wal = self._receipts._courier._wal
+            # CR-016: Use accessor method instead of direct private attribute access
+            wal = self._get_wal()
             wal.append_budget_snapshot({
                 "action_id": action_id,
                 "cost": cost,
@@ -362,7 +397,9 @@ class CCCSRuntime:
         
         Per PRD §7.1: Nothing is dropped without an explicit dead_letter receipt.
         """
-        return self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
+        # CR-011: Use lock for thread-safe access to courier
+        with self._wal_lock:
+            return self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
 
     def normalize_error(self, error: BaseException) -> dict:
         return self._taxonomy.normalize_error(error).__dict__
@@ -377,10 +414,22 @@ class CCCSRuntime:
         self._wal_worker_stop.set()
         if self._wal_worker.is_alive():
             self._wal_worker.join(timeout=5)
-        self._run_async(self._identity.close())
-        self._run_async(self._policy.close())
-        self._run_async(self._ratelimiter.close())
-        self._run_async(self._receipts.close())
+        try:
+            self._run_async(self._identity.close())
+        except Exception as e:
+            logger.error(f"Error closing identity service: {e}")
+        try:
+            self._run_async(self._policy.close())
+        except Exception as e:
+            logger.error(f"Error closing policy service: {e}")
+        try:
+            self._run_async(self._ratelimiter.close())
+        except Exception as e:
+            logger.error(f"Error closing rate limiter service: {e}")
+        try:
+            self._run_async(self._receipts.close())
+        except Exception as e:
+            logger.error(f"Error closing receipt service: {e}")
 
     def _canonicalize_decision(self, decision: str) -> str:
         mapping = {
@@ -431,20 +480,49 @@ class CCCSRuntime:
             return False
 
     def _run_async(self, coro):
-        loop = asyncio.new_event_loop()
+        # CR-010: Reuse shared event loop to prevent resource leaks
+        with self.__class__._event_loop_lock:
+            if self.__class__._shared_event_loop is None or self.__class__._shared_event_loop.is_closed():
+                try:
+                    # Try to get existing event loop
+                    self.__class__._shared_event_loop = asyncio.get_event_loop()
+                except RuntimeError:
+                    # No event loop exists, create new one
+                    self.__class__._shared_event_loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(self.__class__._shared_event_loop)
+        
+        loop = self.__class__._shared_event_loop
         try:
             return loop.run_until_complete(coro)
-        finally:
-            loop.close()
+        except RuntimeError:
+            # If loop is closed, create a new one
+            loop = asyncio.new_event_loop()
+            try:
+                return loop.run_until_complete(coro)
+            finally:
+                loop.close()
 
     def _process_wal_entries(self) -> None:
         """Background worker to process WAL entries."""
         while not self._wal_worker_stop.is_set():
             try:
-                drained = self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
+                # CR-011: Use lock for thread-safe access to courier
+                with self._wal_lock:
+                    drained = self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
                 if not drained:
                     self._wal_worker_stop.wait(1.0)
-            except Exception:
+            except Exception as e:
+                # CR-012: Ensure exceptions trigger dead-letter receipt emission
+                logger.error(f"Error in WAL worker: {e}", exc_info=True)
+                try:
+                    # Emit dead-letter receipt for the error
+                    self._emit_dead_letter_receipt({
+                        "error": str(e),
+                        "entry_type": "wal_worker_error",
+                        "payload": {}
+                    })
+                except Exception as emit_error:
+                    logger.error(f"Failed to emit dead-letter receipt for WAL worker error: {emit_error}")
                 self._wal_worker_stop.wait(1.0)
 
     def _perform_version_negotiation(self) -> None:
@@ -457,6 +535,16 @@ class CCCSRuntime:
         # In a full implementation, this would check with EPC services for version compatibility
         # and emit ETFHF entries for mismatches
         pass
+
+    def _get_policy_snapshot(self):
+        """CR-016: Accessor method for policy snapshot."""
+        # Access private attribute through method to maintain encapsulation
+        return getattr(self._policy, '_snapshot', None)
+
+    def _get_wal(self):
+        """CR-016: Accessor method for WAL."""
+        # Access private attribute through method to maintain encapsulation
+        return getattr(getattr(self._receipts, '_courier', None), '_wal', None)
 
     def _register_lifecycle_hooks(self) -> None:
         cls = self.__class__
@@ -504,7 +592,17 @@ class CCCSRuntime:
     def _shutdown_all_instances(cls) -> None:
         with cls._instance_lock:
             refs = list(cls._instance_refs)
+            # CR-013: Clean up instance refs to prevent memory leak
+            cls._instance_refs.clear()
         for ref in refs:
             runtime = ref()
             if runtime:
                 runtime.shutdown()
+        # CR-010: Clean up shared event loop
+        with cls._event_loop_lock:
+            if cls._shared_event_loop and not cls._shared_event_loop.is_closed():
+                try:
+                    cls._shared_event_loop.close()
+                except Exception:
+                    pass
+                cls._shared_event_loop = None

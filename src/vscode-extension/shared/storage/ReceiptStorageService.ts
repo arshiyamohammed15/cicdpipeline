@@ -39,25 +39,53 @@ export class ReceiptStorageService {
      * Append a single JSONL line in append-only mode.
      * Ensures the file descriptor is fsync'ed before close (WORM continuity).
      * Previously: fs.createWriteStream(..., { flags: 'a' }) [DISCOVERY: single site]
+     * CR-053: Uses file locking to prevent race conditions
      */
     private async appendToJsonl(filePath: string, jsonContent: string): Promise<void> {
+        // CR-053: Use exclusive lock to prevent race conditions
+        const lockPath = `${filePath}.lock`;
+        let lockHandle: fs.promises.FileHandle | null = null;
+        
         try {
-            const createHandle = await fs.promises.open(filePath, 'ax');
-            await createHandle.close();
+            // Acquire exclusive lock
+            lockHandle = await fs.promises.open(lockPath, 'wx');
+            
+            // Check if file exists, create if not
+            try {
+                await fs.promises.access(filePath);
+            } catch {
+                // File doesn't exist, create it
+                await fs.promises.writeFile(filePath, '', 'utf-8');
+            }
+
+            const line = `${jsonContent}\n`;
+            const handle = await fs.promises.open(filePath, 'a');
+            try {
+                await handle.write(line, 0, 'utf-8');
+                await handle.sync();
+            } finally {
+                await handle.close();
+            }
         } catch (error) {
             const err = error as NodeJS.ErrnoException;
-            if (err.code !== 'EEXIST') {
-                throw err;
+            if (err.code === 'EEXIST' || err.code === 'EBUSY') {
+                // Lock file exists or file is busy, retry after short delay
+                await new Promise(resolve => setTimeout(resolve, 10));
+                return this.appendToJsonl(filePath, jsonContent);
             }
-        }
-
-        const line = `${jsonContent}\n`;
-        const handle = await fs.promises.open(filePath, 'a');
-        try {
-            await handle.write(line);
-            await handle.sync();
+            throw err;
         } finally {
-            await handle.close();
+            // Release lock
+            if (lockHandle) {
+                try {
+                    await lockHandle.close();
+                    await fs.promises.unlink(lockPath).catch(() => {
+                        // Ignore errors when removing lock file
+                    });
+                } catch {
+                    // Ignore errors when releasing lock
+                }
+            }
         }
     }
 
