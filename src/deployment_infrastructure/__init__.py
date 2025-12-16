@@ -20,6 +20,11 @@ def _load_package() -> None:
     )
     init_file = package_dir / "__init__.py"
 
+    if not package_dir.is_dir():
+        raise ImportError(f"deployment-infrastructure package directory not found at {package_dir}")
+    if not init_file.is_file():
+        raise ImportError(f"__init__.py missing for deployment-infrastructure at {init_file}")
+
     spec = importlib.util.spec_from_file_location(
         __name__,
         init_file,
