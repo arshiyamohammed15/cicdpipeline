@@ -14,5 +14,10 @@ _alias_path = (
     / "health-reliability-monitoring"
 )
 
+if not _alias_path.is_dir():
+    raise ImportError(
+        f"health_reliability_monitoring alias target missing: {_alias_path}"
+    )
+
 __path__ = [str(_alias_path)]
 
