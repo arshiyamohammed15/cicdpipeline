@@ -24,6 +24,7 @@ import * as crypto from 'crypto';
 const keyId = 'edge-agent-unit-test-kid';
 let privatePem: string;
 let publicKey: crypto.KeyObject;
+let privateKeyObject: crypto.KeyObject;
 
 const toCanonicalJson = (obj: unknown): string => {
     if (obj === null || typeof obj !== 'object') {
@@ -58,6 +59,7 @@ describe('EdgeAgent', () => {
 
     beforeAll(() => {
         const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privateKeyObject = privateKey;
         privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
         publicKey = pub;
     });
@@ -232,13 +234,20 @@ describe('EdgeAgent', () => {
     describe('processTaskWithReceipt() - Policy Integration', () => {
         it('should include policy information when policies are available', async () => {
             // Setup policy
-            const testPolicy: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'default',
                 version: '1.0.0',
                 snapshot_hash: 'sha256:1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
                 policy_content: { rules: ['rule1'] },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-test-policy'
+                timestamp_utc: new Date().toISOString()
+            };
+            const testPolicy: PolicySnapshot = {
+                ...base,
+                signature: (() => {
+                    const canonical = toCanonicalJson(base);
+                    const sig = crypto.sign(null, Buffer.from(canonical, 'utf-8'), privateKeyObject);
+                    return `sig-ed25519:${keyId}:${sig.toString('base64')}`;
+                })()
             };
 
             await policyStorage.cachePolicy(testPolicy);
@@ -267,13 +276,20 @@ describe('EdgeAgent', () => {
         it('should include correct policy version IDs format', async () => {
             // Note: EdgeAgent.processTaskWithReceipt() calls getActivePolicyInfo(['default'])
             // So we need to use 'default' as the policy ID
-            const testPolicy: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'default',
                 version: '2.5.3',
                 snapshot_hash: 'sha256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
                 policy_content: {},
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-test'
+                timestamp_utc: new Date().toISOString()
+            };
+            const testPolicy: PolicySnapshot = {
+                ...base,
+                signature: (() => {
+                    const canonical = toCanonicalJson(base);
+                    const sig = crypto.sign(null, Buffer.from(canonical, 'utf-8'), privateKeyObject);
+                    return `sig-ed25519:${keyId}:${sig.toString('base64')}`;
+                })()
             };
 
             await policyStorage.cachePolicy(testPolicy);
@@ -297,22 +313,27 @@ describe('EdgeAgent', () => {
         });
 
         it('should handle multiple policies correctly', async () => {
-            const policy1: PolicySnapshot = {
-                policy_id: 'policy-1',
-                version: '1.0.0',
-                snapshot_hash: 'sha256:1111111111111111111111111111111111111111111111111111111111111111',
-                policy_content: {},
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-1'
+            const mkSnapshot = (policy_id: string, version: string, snapshot_hash: string): PolicySnapshot => {
+                const base: Omit<PolicySnapshot, 'signature'> = {
+                    policy_id,
+                    version,
+                    snapshot_hash,
+                    policy_content: {},
+                    timestamp_utc: new Date().toISOString()
+                };
+                const sig = crypto.sign(null, Buffer.from(toCanonicalJson(base), 'utf-8'), privateKeyObject);
+                return { ...base, signature: `sig-ed25519:${keyId}:${sig.toString('base64')}` };
             };
-            const policy2: PolicySnapshot = {
-                policy_id: 'policy-2',
-                version: '2.0.0',
-                snapshot_hash: 'sha256:2222222222222222222222222222222222222222222222222222222222222222',
-                policy_content: {},
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-2'
-            };
+            const policy1 = mkSnapshot(
+                'policy-1',
+                '1.0.0',
+                'sha256:1111111111111111111111111111111111111111111111111111111111111111'
+            );
+            const policy2 = mkSnapshot(
+                'policy-2',
+                '2.0.0',
+                'sha256:2222222222222222222222222222222222222222222222222222222222222222'
+            );
 
             await policyStorage.cachePolicy(policy1);
             await policyStorage.cachePolicy(policy2);
@@ -320,13 +341,19 @@ describe('EdgeAgent', () => {
             await policyStorage.setCurrentPolicyVersion('policy-2', '2.0.0');
 
             // Note: getActivePolicyInfo is called with ['default'], so we need to set default policy
-            const defaultPolicy: PolicySnapshot = {
+            const defaultBase: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'default',
                 version: '1.0.0',
                 snapshot_hash: 'sha256:3333333333333333333333333333333333333333333333333333333333333333',
                 policy_content: {},
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-default'
+                timestamp_utc: new Date().toISOString()
+            };
+            const defaultPolicy: PolicySnapshot = {
+                ...defaultBase,
+                signature: (() => {
+                    const sig = crypto.sign(null, Buffer.from(toCanonicalJson(defaultBase), 'utf-8'), privateKeyObject);
+                    return `sig-ed25519:${keyId}:${sig.toString('base64')}`;
+                })()
             };
             await policyStorage.cachePolicy(defaultPolicy);
             await policyStorage.setCurrentPolicyVersion('default', '1.0.0');
@@ -371,13 +398,19 @@ describe('EdgeAgent', () => {
         });
 
         it('should use default policy ID when calling getActivePolicyInfo', async () => {
-            const defaultPolicy: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'default',
                 version: '1.0.0',
                 snapshot_hash: 'sha256:default1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
                 policy_content: {},
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-default'
+                timestamp_utc: new Date().toISOString()
+            };
+            const defaultPolicy: PolicySnapshot = {
+                ...base,
+                signature: (() => {
+                    const sig = crypto.sign(null, Buffer.from(toCanonicalJson(base), 'utf-8'), privateKeyObject);
+                    return `sig-ed25519:${keyId}:${sig.toString('base64')}`;
+                })()
             };
 
             await policyStorage.cachePolicy(defaultPolicy);

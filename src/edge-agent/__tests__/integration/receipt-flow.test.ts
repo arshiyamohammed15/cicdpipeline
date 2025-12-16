@@ -25,6 +25,13 @@ import * as crypto from 'crypto';
 const keyId = 'edge-agent-integration-kid';
 let privatePem: string;
 let publicKey: crypto.KeyObject;
+let privateKeyObj: crypto.KeyObject;
+
+const signPolicySnapshot = (base: Omit<PolicySnapshot, 'signature'>): string => {
+    const canonical = toCanonicalJson(base);
+    const sig = crypto.sign(null, Buffer.from(canonical, 'utf-8'), privateKeyObj);
+    return `sig-ed25519:${keyId}:${sig.toString('base64')}`;
+};
 
 const toCanonicalJson = (obj: unknown): string => {
     if (obj === null || typeof obj !== 'object') {
@@ -64,6 +71,7 @@ describe('Receipt Flow Integration Test', () => {
         testRepoId = 'test-repo';
 
         const { publicKey: pub, privateKey } = crypto.generateKeyPairSync('ed25519');
+        privateKeyObj = privateKey;
         privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
         publicKey = pub;
 
@@ -95,15 +103,18 @@ describe('Receipt Flow Integration Test', () => {
 
     test('Complete receipt flow: Agent → Receipt → Extension', async () => {
         // Step 1: Setup test policy
-        const testPolicy: PolicySnapshot = {
+        const basePolicy: Omit<PolicySnapshot, 'signature'> = {
             policy_id: 'default',
             version: '1.0.0',
             snapshot_hash: 'sha256:test1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab',
             policy_content: {
                 rules: ['rule1', 'rule2']
             },
-            timestamp_utc: new Date().toISOString(),
-            signature: 'sig-test-policy-signature'
+            timestamp_utc: new Date().toISOString()
+        };
+        const testPolicy: PolicySnapshot = {
+            ...basePolicy,
+            signature: signPolicySnapshot(basePolicy)
         };
 
         // Cache policy
@@ -217,13 +228,16 @@ describe('Receipt Flow Integration Test', () => {
 
     test('Receipt includes policy information when available', async () => {
         // Setup policy
-        const testPolicy: PolicySnapshot = {
+        const basePolicy: Omit<PolicySnapshot, 'signature'> = {
             policy_id: 'test-policy',
             version: '2.0.0',
             snapshot_hash: 'sha256:abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890',
             policy_content: {},
-            timestamp_utc: new Date().toISOString(),
-            signature: 'sig-test'
+            timestamp_utc: new Date().toISOString()
+        };
+        const testPolicy: PolicySnapshot = {
+            ...basePolicy,
+            signature: signPolicySnapshot(basePolicy)
         };
 
         await policyStorage.cachePolicy(testPolicy);

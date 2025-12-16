@@ -15,6 +15,7 @@ import * as crypto from 'crypto';
 
 const keyId = 'unit-test-kid';
 let privatePem: string;
+let publicPem: string;
 
 describe('ReceiptStorageService', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-test-' + Date.now();
@@ -23,8 +24,9 @@ describe('ReceiptStorageService', () => {
     const testRepoId = 'test-repo-id';
 
     beforeAll(() => {
-        const { privateKey } = crypto.generateKeyPairSync('ed25519');
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
         privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicPem = publicKey.export({ format: 'pem', type: 'spki' }).toString();
     });
 
     beforeEach(() => {
@@ -33,7 +35,7 @@ describe('ReceiptStorageService', () => {
             fs.mkdirSync(testZuRoot, { recursive: true });
         }
         process.env.ZU_ROOT = testZuRoot;
-        storageService = new ReceiptStorageService(testZuRoot);
+        storageService = new ReceiptStorageService(testZuRoot, { verificationKey: publicPem });
         receiptGenerator = new ReceiptGenerator({ privateKey: privatePem, keyId });
     });
 

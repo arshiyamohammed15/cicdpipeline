@@ -9,17 +9,43 @@ import { PolicyStorageService, PolicySnapshot } from '../PolicyStorageService';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as os from 'os';
+import * as crypto from 'crypto';
 
 describe('PolicyStorageService', () => {
     const testZuRoot = os.tmpdir() + '/zeroui-test-' + Date.now();
     let policyService: PolicyStorageService;
+    let privateKey: crypto.KeyObject;
+    let publicKey: crypto.KeyObject;
+    let publicPem: string;
+
+    const toCanonicalJson = (obj: any): string => {
+        if (obj === null || typeof obj !== 'object') {
+            return JSON.stringify(obj);
+        }
+        if (Array.isArray(obj)) {
+            return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+        }
+        const sortedKeys = Object.keys(obj).sort();
+        const entries = sortedKeys.map(key => `${JSON.stringify(key)}:${toCanonicalJson(obj[key])}`);
+        return '{' + entries.join(',') + '}';
+    };
+
+    const signSnapshot = (snapshot: Omit<PolicySnapshot, 'signature'>, keyId: string): string => {
+        const canonical = toCanonicalJson(snapshot);
+        const signature = crypto.sign(null, Buffer.from(canonical, 'utf-8'), privateKey);
+        return `sig-ed25519:${keyId}:${signature.toString('base64')}`;
+    };
 
     beforeEach(() => {
+        const { publicKey: pub, privateKey: priv } = crypto.generateKeyPairSync('ed25519');
+        privateKey = priv;
+        publicKey = pub;
+        publicPem = publicKey.export({ format: 'pem', type: 'spki' }).toString();
         if (!fs.existsSync(testZuRoot)) {
             fs.mkdirSync(testZuRoot, { recursive: true });
         }
         process.env.ZU_ROOT = testZuRoot;
-        policyService = new PolicyStorageService(testZuRoot);
+        policyService = new PolicyStorageService(testZuRoot, { verificationKey: publicPem });
     });
 
     afterEach(() => {
@@ -29,14 +55,19 @@ describe('PolicyStorageService', () => {
     });
 
     describe('Cache Policy (Rule 221)', () => {
-        const createPolicySnapshot = (policyId: string, version: string): PolicySnapshot => ({
-            policy_id: policyId,
-            version: version,
-            snapshot_hash: `hash-${policyId}-${version}`,
-            policy_content: { rule: 'test-rule', value: 'test-value' },
-            timestamp_utc: new Date().toISOString(),
-            signature: `sig-${policyId}-${version}`
-        });
+        const createPolicySnapshot = (policyId: string, version: string): PolicySnapshot => {
+            const base: Omit<PolicySnapshot, 'signature'> = {
+                policy_id: policyId,
+                version: version,
+                snapshot_hash: `hash-${policyId}-${version}`,
+                policy_content: { rule: 'test-rule', value: 'test-value' },
+                timestamp_utc: new Date().toISOString()
+            };
+            return {
+                ...base,
+                signature: signSnapshot(base, 'test-kid')
+            };
+        };
 
         it('should cache policy snapshot', async () => {
             const snapshot = createPolicySnapshot('policy-123', '1.0.0');
@@ -92,13 +123,16 @@ describe('PolicyStorageService', () => {
         });
 
         it('should read cached policy', async () => {
-            const snapshot: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'policy-123',
                 version: '1.0.0',
                 snapshot_hash: 'hash123',
                 policy_content: { rule: 'test' },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-123'
+                timestamp_utc: new Date().toISOString()
+            };
+            const snapshot: PolicySnapshot = {
+                ...base,
+                signature: signSnapshot(base, 'test-kid')
             };
 
             await policyService.cachePolicy(snapshot);
@@ -111,13 +145,16 @@ describe('PolicyStorageService', () => {
         });
 
         it('should throw error if cached policy missing signature', async () => {
-            const snapshot: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'policy-123',
                 version: '1.0.0',
                 snapshot_hash: 'hash123',
                 policy_content: { rule: 'test' },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-123'
+                timestamp_utc: new Date().toISOString()
+            };
+            const snapshot: PolicySnapshot = {
+                ...base,
+                signature: signSnapshot(base, 'test-kid')
             };
 
             await policyService.cachePolicy(snapshot);
@@ -176,14 +213,14 @@ describe('PolicyStorageService', () => {
 
     describe('Code/PII Detection (Rule 217)', () => {
         it('should reject policy containing function code', async () => {
-            const snapshot: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'policy-123',
                 version: '1.0.0',
                 snapshot_hash: 'hash',
                 policy_content: { code: 'function test() {}' },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-123'
+                timestamp_utc: new Date().toISOString()
             };
+            const snapshot: PolicySnapshot = { ...base, signature: signSnapshot(base, 'test-kid') };
 
             await expect(
                 policyService.cachePolicy(snapshot)
@@ -191,14 +228,14 @@ describe('PolicyStorageService', () => {
         });
 
         it('should reject policy containing class code', async () => {
-            const snapshot: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'policy-123',
                 version: '1.0.0',
                 snapshot_hash: 'hash',
                 policy_content: { code: 'class Test {}' },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-123'
+                timestamp_utc: new Date().toISOString()
             };
+            const snapshot: PolicySnapshot = { ...base, signature: signSnapshot(base, 'test-kid') };
 
             await expect(
                 policyService.cachePolicy(snapshot)
@@ -206,14 +243,14 @@ describe('PolicyStorageService', () => {
         });
 
         it('should accept policy without code', async () => {
-            const snapshot: PolicySnapshot = {
+            const base: Omit<PolicySnapshot, 'signature'> = {
                 policy_id: 'policy-123',
                 version: '1.0.0',
                 snapshot_hash: 'hash',
                 policy_content: { rule: 'safe-rule', value: 'safe-value' },
-                timestamp_utc: new Date().toISOString(),
-                signature: 'sig-123'
+                timestamp_utc: new Date().toISOString()
             };
+            const snapshot: PolicySnapshot = { ...base, signature: signSnapshot(base, 'test-kid') };
 
             await expect(
                 policyService.cachePolicy(snapshot)

@@ -24,23 +24,51 @@ import * as crypto from 'crypto';
 describe('PolicyStorageService.getActivePolicyInfo()', () => {
     let testZuRoot: string;
     let policyService: PolicyStorageService;
+    let privateKey: crypto.KeyObject;
+    let publicPem: string;
 
-    const createPolicySnapshot = (policyId: string, version: string, snapshotHash?: string): PolicySnapshot => ({
-        policy_id: policyId,
-        version: version,
-        snapshot_hash: snapshotHash || `sha256:${crypto.randomBytes(32).toString('hex')}`,
-        policy_content: { rule: 'test-rule', value: 'test-value' },
-        timestamp_utc: new Date().toISOString(),
-        signature: `sig-${policyId}-${version}`
-    });
+    const toCanonicalJson = (obj: any): string => {
+        if (obj === null || typeof obj !== 'object') {
+            return JSON.stringify(obj);
+        }
+        if (Array.isArray(obj)) {
+            return '[' + obj.map(item => toCanonicalJson(item)).join(',') + ']';
+        }
+        const sortedKeys = Object.keys(obj).sort();
+        const entries = sortedKeys.map(key => `${JSON.stringify(key)}:${toCanonicalJson(obj[key])}`);
+        return '{' + entries.join(',') + '}';
+    };
+
+    const signSnapshot = (snapshot: Omit<PolicySnapshot, 'signature'>, keyId: string): string => {
+        const canonical = toCanonicalJson(snapshot);
+        const signature = crypto.sign(null, Buffer.from(canonical, 'utf-8'), privateKey);
+        return `sig-ed25519:${keyId}:${signature.toString('base64')}`;
+    };
+
+    const createPolicySnapshot = (policyId: string, version: string, snapshotHash?: string): PolicySnapshot => {
+        const base: Omit<PolicySnapshot, 'signature'> = {
+            policy_id: policyId,
+            version: version,
+            snapshot_hash: snapshotHash || `sha256:${crypto.randomBytes(32).toString('hex')}`,
+            policy_content: { rule: 'test-rule', value: 'test-value' },
+            timestamp_utc: new Date().toISOString()
+        };
+        return {
+            ...base,
+            signature: signSnapshot(base, 'policy-kid')
+        };
+    };
 
     beforeEach(() => {
+        const { publicKey, privateKey: priv } = crypto.generateKeyPairSync('ed25519');
+        privateKey = priv;
+        publicPem = publicKey.export({ format: 'pem', type: 'spki' }).toString();
         testZuRoot = path.join(os.tmpdir(), `zeroui-test-${Date.now()}-${Math.random().toString(36).substring(7)}`);
         if (!fs.existsSync(testZuRoot)) {
             fs.mkdirSync(testZuRoot, { recursive: true });
         }
         process.env.ZU_ROOT = testZuRoot;
-        policyService = new PolicyStorageService(testZuRoot);
+        policyService = new PolicyStorageService(testZuRoot, { verificationKey: publicPem });
     });
 
     afterEach(() => {

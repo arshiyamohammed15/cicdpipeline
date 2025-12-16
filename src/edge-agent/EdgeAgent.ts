@@ -1,3 +1,5 @@
+import * as fs from 'fs';
+import * as crypto from 'crypto';
 import { AgentOrchestrator } from './core/AgentOrchestrator';
 import { DelegationManager } from './core/DelegationManager';
 import { ValidationCoordinator } from './core/ValidationCoordinator';
@@ -56,7 +58,8 @@ export class EdgeAgent {
 
     constructor(zuRoot?: string, options: EdgeAgentOptions = {}) {
         // Initialize storage services
-        this.receiptStorage = new ReceiptStorageService(zuRoot);
+        const publicKey = this.loadPublicKey(options);
+        this.receiptStorage = new ReceiptStorageService(zuRoot, { verificationKey: publicKey });
         const generatorOptions: ReceiptGeneratorOptions = {};
         if (options.signingKey !== undefined) {
             generatorOptions.privateKey = options.signingKey;
@@ -68,7 +71,7 @@ export class EdgeAgent {
             generatorOptions.keyId = options.signingKeyId;
         }
         this.receiptGenerator = new ReceiptGenerator(generatorOptions);
-        this.policyStorage = new PolicyStorageService(zuRoot);
+        this.policyStorage = new PolicyStorageService(zuRoot, { verificationKey: publicKey });
         this.aiDetector = new AIAssistanceDetector();
         this.dataClassifier = new DataCategoryClassifier();
 
@@ -329,5 +332,25 @@ export class EdgeAgent {
             piiDetected,
             ...(options?.classificationSignals ?? {})
         });
+    }
+
+    /**
+     * Load public key for signature verification from provided options or environment.
+     */
+    private loadPublicKey(options: EdgeAgentOptions): crypto.KeyObject {
+        const inline = options.signingKey ?? process.env.EDGE_AGENT_SIGNING_KEY;
+        if (inline) {
+            const privateKey = crypto.createPrivateKey(inline);
+            return crypto.createPublicKey(privateKey);
+        }
+
+        const keyPath = options.signingKeyPath ?? process.env.EDGE_AGENT_SIGNING_KEY_PATH;
+        if (keyPath) {
+            const pem = fs.readFileSync(keyPath, 'utf-8');
+            const privateKey = crypto.createPrivateKey(pem);
+            return crypto.createPublicKey(privateKey);
+        }
+
+        throw new Error('EdgeAgent requires a signing key (EDGE_AGENT_SIGNING_KEY or EDGE_AGENT_SIGNING_KEY_PATH)');
     }
 }

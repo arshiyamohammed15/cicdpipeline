@@ -15,6 +15,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
+import * as crypto from 'crypto';
 import { StoragePathResolver } from './StoragePathResolver';
 import { DecisionReceipt, FeedbackReceipt } from '../receipt-types';
 
@@ -24,9 +25,13 @@ import { DecisionReceipt, FeedbackReceipt } from '../receipt-types';
  */
 export class ReceiptStorageService {
     private pathResolver: StoragePathResolver;
+    private verificationKey?: crypto.KeyObject;
 
-    constructor(zuRoot?: string) {
+    constructor(zuRoot?: string, options: { verificationKey?: string | Buffer | crypto.KeyObject } = {}) {
         this.pathResolver = new StoragePathResolver(zuRoot);
+        if (options.verificationKey) {
+            this.verificationKey = this.toPublicKey(options.verificationKey);
+        }
     }
 
     /**
@@ -54,9 +59,7 @@ export class ReceiptStorageService {
         await this.ensureDirectoryExists(receiptDir);
 
         // Validate receipt signature before storing (Rule 224)
-        if (!receipt.signature || receipt.signature.length === 0) {
-            throw new Error('Receipt must be signed before storage (Rule 224)');
-        }
+        this.verifyReceiptSignature(receipt);
 
         // Validate no code/PII in receipt BEFORE storage (Rule 217)
         this.validateNoCodeOrPII(receipt);
@@ -96,9 +99,7 @@ export class ReceiptStorageService {
         await this.ensureDirectoryExists(receiptDir);
 
         // Validate receipt signature
-        if (!receipt.signature || receipt.signature.length === 0) {
-            throw new Error('Receipt must be signed before storage (Rule 224)');
-        }
+        this.verifyReceiptSignature(receipt);
 
         // Validate no code/PII BEFORE storage (Rule 217)
         this.validateNoCodeOrPII(receipt);
@@ -171,20 +172,6 @@ export class ReceiptStorageService {
     }
 
     /**
-     * Convert receipt to canonical JSON (for consistent signature validation)
-     *
-     * Note: This matches the canonical form used in ReceiptGenerator.signReceipt()
-     * Signature is removed before sorting keys to ensure consistent canonical form.
-     */
-    private toCanonicalJson(receipt: DecisionReceipt | FeedbackReceipt): string {
-        // Remove signature before creating canonical form (signature is not part of signed data)
-        const { signature, ...receiptWithoutSignature } = receipt as any;
-        // Sort keys for consistent canonical form
-        const sortedKeys = Object.keys(receiptWithoutSignature).sort();
-        return JSON.stringify(receiptWithoutSignature, sortedKeys);
-    }
-
-    /**
      * Validate no code/PII in receipt (Rule 217)
      */
     private validateNoCodeOrPII(receipt: DecisionReceipt | FeedbackReceipt): void {
@@ -234,5 +221,81 @@ export class ReceiptStorageService {
                 }
             });
         });
+    }
+
+    /**
+     * Verify receipt signature (sig-ed25519:{kid}:{base64}) using deep canonical JSON.
+     */
+    private verifyReceiptSignature(receipt: DecisionReceipt | FeedbackReceipt): void {
+        if (!receipt.signature || receipt.signature.length === 0) {
+            throw new Error('Receipt must be signed before storage (Rule 224)');
+        }
+
+        const verifier = this.getVerificationKey();
+        const { signature, ...payload } = receipt as any;
+        const canonical = this.toCanonicalJson(payload);
+
+        const parts = signature.split(':');
+        if (parts.length !== 3 || parts[0] !== 'sig-ed25519') {
+            throw new Error('Receipt signature format must be sig-ed25519:{kid}:{base64}');
+        }
+        const sigBuffer = Buffer.from(parts[2], 'base64');
+
+        const ok = crypto.verify(null, Buffer.from(canonical, 'utf-8'), verifier, sigBuffer);
+        if (!ok) {
+            throw new Error('Receipt signature verification failed');
+        }
+    }
+
+    private getVerificationKey(): crypto.KeyObject {
+        if (this.verificationKey) {
+            return this.verificationKey;
+        }
+
+        const inlineKey =
+            process.env.EDGE_AGENT_SIGNING_PUBLIC_KEY ??
+            process.env.EDGE_AGENT_SIGNING_KEY;
+        const keyPath = process.env.EDGE_AGENT_SIGNING_KEY_PATH;
+
+        if (inlineKey) {
+            this.verificationKey = this.toPublicKey(inlineKey);
+            return this.verificationKey;
+        }
+
+        if (keyPath) {
+            const pem = fs.readFileSync(keyPath, 'utf-8');
+            this.verificationKey = this.toPublicKey(pem);
+            return this.verificationKey;
+        }
+
+        throw new Error('Receipt verification key not configured (set EDGE_AGENT_SIGNING_PUBLIC_KEY or EDGE_AGENT_SIGNING_KEY)');
+    }
+
+    private toPublicKey(material: string | Buffer | crypto.KeyObject): crypto.KeyObject {
+        if (material instanceof crypto.KeyObject) {
+            return material.type === 'public' ? material : crypto.createPublicKey(material);
+        }
+        return crypto.createPublicKey(material);
+    }
+
+    /**
+     * Deep canonical JSON (sorted keys) matching ReceiptGenerator signing.
+     */
+    private toCanonicalJson(obj: any): string {
+        if (obj === null || typeof obj !== 'object') {
+            return JSON.stringify(obj);
+        }
+
+        if (Array.isArray(obj)) {
+            return '[' + obj.map(item => this.toCanonicalJson(item)).join(',') + ']';
+        }
+
+        const sortedKeys = Object.keys(obj).sort();
+        const entries = sortedKeys.map(key => {
+            const value = obj[key];
+            return JSON.stringify(key) + ':' + this.toCanonicalJson(value);
+        });
+
+        return '{' + entries.join(',') + '}';
     }
 }
