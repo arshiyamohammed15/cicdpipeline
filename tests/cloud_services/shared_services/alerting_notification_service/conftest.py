@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import AsyncGenerator
 
 import httpx
+from fastapi import HTTPException, Request, status
 import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
@@ -34,7 +35,11 @@ warnings.filterwarnings("ignore", category=ResourceWarning, module=r"anyio\.stre
 # Import models so SQLModel.metadata is populated before create_all
 from alerting_notification_service import models as _models  # noqa: E402,F401
 from alerting_notification_service.main import app  # noqa: E402
-from alerting_notification_service.dependencies import get_session as prod_get_session  # noqa: E402
+from alerting_notification_service.dependencies import (
+    get_request_context as prod_get_request_context,  # noqa: E402
+    get_session as prod_get_session,  # noqa: E402
+    RequestContext,  # noqa: E402
+)  # noqa: E402
 from alerting_notification_service.config import get_settings  # noqa: E402
 from alerting_notification_service.database import session as db_session  # noqa: E402
 
@@ -75,7 +80,28 @@ async def test_client(alerting_engine) -> AsyncGenerator[httpx.AsyncClient, None
         async with session_factory() as sess:
             yield sess
 
+    async def _get_ctx_override(request: Request) -> RequestContext:
+        tenant_id = request.headers.get("X-Tenant-ID")
+        if not tenant_id:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Missing X-Tenant-ID header",
+            )
+        actor_id = request.headers.get("X-Actor-ID", "tester")
+        roles = [role.strip() for role in request.headers.get("X-Roles", "").split(",") if role.strip()]
+        allowed_tenants = [
+            tenant.strip() for tenant in request.headers.get("X-Allow-Tenants", tenant_id).split(",") if tenant.strip()
+        ]
+        return RequestContext(
+            tenant_id=tenant_id,
+            actor_id=actor_id,
+            roles=roles,
+            allowed_tenants=allowed_tenants,
+            token_sub=actor_id,
+        )
+
     app.dependency_overrides[prod_get_session] = _get_session_override
+    app.dependency_overrides[prod_get_request_context] = _get_ctx_override
     # Keep global session helpers aligned with the test engine
     db_session.engine = engine
     db_session.SessionLocal = session_factory

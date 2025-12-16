@@ -90,23 +90,18 @@ async def ingest_signals(
     results = []
     for signal in signals:
         try:
-            result = service.ingest_signal(signal)
-            signal_id = getattr(result, "signal_id", getattr(signal, "signal_id", "unknown"))
-            status_val = getattr(result, "status", "accepted")
+            result = service.ingest_signal(signal, tenant_id=tenant_id)
         except Exception as e:
             logger.error(f"Error ingesting signal: {e}")
-            signal_id = getattr(signal, "signal_id", "unknown")
-            status_val = "rejected"
-        results.append(
-            SignalIngestResult(
-                signal_id=signal_id,
-                status=status_val,
+            result = SignalIngestResult(
+                signal_id=getattr(signal, "signal_id", "unknown"),
+                status="rejected",
                 error_code=None,
-                error_message=None,
+                error_message=str(e),
                 dlq_id=None,
                 warnings=[],
             )
-        )
+        results.append(result)
     summary = {
         "total": len(results),
         "accepted": sum(1 for r in results if r.status == "accepted"),

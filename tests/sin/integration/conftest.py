@@ -12,7 +12,7 @@ from fastapi.testclient import TestClient
 def load_main_app():
     """Load the FastAPI app from main.py."""
     project_root = Path(__file__).parent.parent.parent.parent
-    sin_module_path = project_root / "src" / "cloud_services" / "product-services" / "signal-ingestion-normalization"
+    sin_module_path = project_root / "src" / "cloud_services" / "product_services" / "signal-ingestion-normalization"
     main_path = sin_module_path / "main.py"
 
     if not main_path.exists():

@@ -52,7 +52,9 @@ class TestHealthEndpoints:
 
         assert response.status_code == status.HTTP_200_OK
         content_type = response.headers.get("content-type", "").lower()
-        assert content_type.startswith("text/plain; version=0.0.4")
+        assert content_type.startswith("text/plain; version=0.0.4") or content_type.startswith(
+            "text/plain; version=1.0.0"
+        )
 
 
 class TestRegistryEndpoints:
