@@ -66,7 +66,7 @@ class IdentityService:
             # CR-022: Check cache TTL
             if time.time() - cache_timestamp < self._cache_ttl_seconds:
                 if cached_block.session_id != context_copy.session_id:
-                    self._queue_epc1_call(context_copy, "update_session")
+                self._queue_epc1_call(context_copy, "update_session")
                 return cached_block
             else:
                 # Cache expired, remove it
@@ -88,7 +88,7 @@ class IdentityService:
                 asyncio.set_event_loop(loop)
         except RuntimeError:
             # No event loop exists, create new one
-            loop = asyncio.new_event_loop()
+        loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
         
         try:
@@ -161,7 +161,7 @@ class IdentityService:
             logger = logging.getLogger(__name__)
             logger.error(f"Unexpected error in WAL entry processing: {type(exc).__name__}: {exc}", exc_info=True)
             if not self._config.fallback_enabled:
-                raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
+            raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
 
     def _cache_key(self, context: ActorContext) -> str:
         # CR-020: Include session_id in cache key to prevent stale data

@@ -54,8 +54,8 @@ class ConstitutionValidator {
                 );
                 return false;
             } else {
-                vscode.window.showWarningMessage('Constitution validation service unavailable - proceeding with generation');
-                return true;
+            vscode.window.showWarningMessage('Constitution validation service unavailable - proceeding with generation');
+            return true;
             }
         }
     }

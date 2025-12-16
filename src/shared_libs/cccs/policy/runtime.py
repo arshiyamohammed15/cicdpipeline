@@ -131,11 +131,11 @@ class PolicyRuntime:
             )
         else:
             decision = PolicyDecision(
-                decision=matching_rule.decision,
-                rationale=matching_rule.rationale,
-                policy_version_ids=[self._snapshot.version],
-                policy_snapshot_hash=self._snapshot.snapshot_hash,
-            )
+            decision=matching_rule.decision,
+            rationale=matching_rule.rationale,
+            policy_version_ids=[self._snapshot.version],
+            policy_snapshot_hash=self._snapshot.snapshot_hash,
+        )
 
         # CR-072: Cache the result
         self._cache_decision(cache_key, decision)

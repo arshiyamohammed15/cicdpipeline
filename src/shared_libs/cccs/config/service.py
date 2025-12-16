@@ -31,15 +31,15 @@ class ConfigService:
             SHA-256 hash string prefixed with "sha256:"
         """
         if self._hash is None:
-            blob = json.dumps(
-                {
-                    "local": self._layers.local,
-                    "tenant": self._layers.tenant,
-                    "product": self._layers.product,
-                },
-                sort_keys=True,
-            ).encode()
-            digest = hashlib.sha256(blob).hexdigest()
+        blob = json.dumps(
+            {
+                "local": self._layers.local,
+                "tenant": self._layers.tenant,
+                "product": self._layers.product,
+            },
+            sort_keys=True,
+        ).encode()
+        digest = hashlib.sha256(blob).hexdigest()
             self._hash = f"sha256:{digest}"
         return self._hash
 

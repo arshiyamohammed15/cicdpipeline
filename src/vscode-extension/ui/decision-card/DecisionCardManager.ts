@@ -46,26 +46,26 @@ export class DecisionCardManager implements vscode.Disposable {
     public showDecisionCard(decisionData?: DecisionCardData, actions?: DecisionCardActions): void {
         // CR-064: Add error boundary for UI rendering
         try {
-            this.currentData = decisionData;
-            this.currentActions = actions;
+        this.currentData = decisionData;
+        this.currentActions = actions;
 
-            if (this.webviewPanel) {
-                this.webviewPanel.reveal(vscode.ViewColumn.One);
-                this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
-                return;
-            }
-
-            this.webviewPanel = vscode.window.createWebviewPanel(
-                'zerouiDecisionCard',
-                'ZeroUI Decision Card',
-                vscode.ViewColumn.One,
-                {
-                    enableScripts: true,
-                    retainContextWhenHidden: true
-                }
-            );
-
+        if (this.webviewPanel) {
+            this.webviewPanel.reveal(vscode.ViewColumn.One);
             this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
+            return;
+        }
+
+        this.webviewPanel = vscode.window.createWebviewPanel(
+            'zerouiDecisionCard',
+            'ZeroUI Decision Card',
+            vscode.ViewColumn.One,
+            {
+                enableScripts: true,
+                retainContextWhenHidden: true
+            }
+        );
+
+        this.webviewPanel.webview.html = this.getWebviewContent(this.currentData);
         } catch (error) {
             console.error('Failed to show decision card:', error);
             vscode.window.showErrorMessage('Failed to display decision card');
@@ -377,8 +377,8 @@ export class DecisionCardManager implements vscode.Disposable {
     // CR-062: Ensure proper disposal pattern implementation
     public dispose(): void {
         try {
-            if (this.webviewPanel) {
-                this.webviewPanel.dispose();
+        if (this.webviewPanel) {
+            this.webviewPanel.dispose();
                 this.webviewPanel = undefined;
             }
             this.disposeSubscriptions();

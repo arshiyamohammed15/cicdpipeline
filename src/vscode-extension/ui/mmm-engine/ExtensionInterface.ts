@@ -14,7 +14,7 @@ export class MMMEngineExtensionInterface implements vscode.Disposable {
         // CR-064: Add error boundary for command registration
         const showMMMDashboard = vscode.commands.registerCommand('zeroui.mmm.showDashboard', () => {
             try {
-                this.uiManager.showMMMEngineDashboard();
+            this.uiManager.showMMMEngineDashboard();
             } catch (error) {
                 console.error('Failed to show MMM Engine dashboard:', error);
                 vscode.window.showErrorMessage('Failed to show MMM Engine dashboard');
@@ -43,7 +43,7 @@ export class MMMEngineExtensionInterface implements vscode.Disposable {
         const exportMMMReport = vscode.commands.registerCommand('zeroui.mmm.exportReport', () => {
             // CR-064: Add error boundary
             try {
-                this.exportMMMReport();
+            this.exportMMMReport();
             } catch (error) {
                 console.error('Failed to export MMM Engine report:', error);
                 vscode.window.showErrorMessage('Failed to export MMM Engine report');
@@ -58,14 +58,14 @@ export class MMMEngineExtensionInterface implements vscode.Disposable {
         // Register MMM Engine specific views
         // CR-064: Add error boundary for tree view creation
         try {
-            const mmmTreeProvider = new MMMTreeDataProvider();
-            const mmmTreeView = vscode.window.createTreeView('zerouiMMMEngine', {
-                treeDataProvider: mmmTreeProvider,
-                showCollapseAll: true
-            });
+        const mmmTreeProvider = new MMMTreeDataProvider();
+        const mmmTreeView = vscode.window.createTreeView('zerouiMMMEngine', {
+            treeDataProvider: mmmTreeProvider,
+            showCollapseAll: true
+        });
 
-            this.disposables.push(mmmTreeView);
-            context.subscriptions.push(...this.disposables);
+        this.disposables.push(mmmTreeView);
+        context.subscriptions.push(...this.disposables);
         } catch (error) {
             console.error('Failed to register MMM Engine views:', error);
             vscode.window.showErrorMessage('Failed to initialize MMM Engine views');

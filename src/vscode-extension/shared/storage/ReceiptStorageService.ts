@@ -56,15 +56,15 @@ export class ReceiptStorageService {
             } catch {
                 // File doesn't exist, create it
                 await fs.promises.writeFile(filePath, '', 'utf-8');
-            }
+        }
 
-            const line = `${jsonContent}\n`;
-            const handle = await fs.promises.open(filePath, 'a');
-            try {
+        const line = `${jsonContent}\n`;
+        const handle = await fs.promises.open(filePath, 'a');
+        try {
                 await handle.write(line, 0, 'utf-8');
-                await handle.sync();
-            } finally {
-                await handle.close();
+            await handle.sync();
+        } finally {
+            await handle.close();
             }
         } catch (error) {
             const err = error as NodeJS.ErrnoException;

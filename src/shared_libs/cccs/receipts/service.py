@@ -132,13 +132,13 @@ class ReceiptService:
         try:
             loop = asyncio.get_event_loop()
             if loop.is_closed():
-                loop = asyncio.new_event_loop()
+        loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
         except RuntimeError:
             # No event loop exists, create new one
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
-        return loop.run_until_complete(self._sign_async(payload))
+            return loop.run_until_complete(self._sign_async(payload))
 
     def _validate(self, receipt: Dict[str, Any]) -> None:
         missing = self.REQUIRED_FIELDS - receipt.keys()
@@ -235,7 +235,7 @@ class ReceiptService:
                     loop = asyncio.new_event_loop()
                     asyncio.set_event_loop(loop)
             except RuntimeError:
-                loop = asyncio.new_event_loop()
+            loop = asyncio.new_event_loop()
                 asyncio.set_event_loop(loop)
             
             try:

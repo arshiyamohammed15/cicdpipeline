@@ -13,26 +13,26 @@ export class MMMEngineUIComponentManager implements vscode.Disposable {
     public showMMMEngineDashboard(data?: MMMEngineData): void {
         // CR-064: Add error boundary for UI rendering
         try {
-            if (this.webviewPanel) {
-                this.webviewPanel.reveal(vscode.ViewColumn.One);
-                return;
+        if (this.webviewPanel) {
+            this.webviewPanel.reveal(vscode.ViewColumn.One);
+            return;
+        }
+
+        this.webviewPanel = vscode.window.createWebviewPanel(
+            'zerouiMMMEngine',
+            'ZeroUI MMM Engine Dashboard',
+            vscode.ViewColumn.One,
+            {
+                enableScripts: true,
+                retainContextWhenHidden: true
             }
+        );
 
-            this.webviewPanel = vscode.window.createWebviewPanel(
-                'zerouiMMMEngine',
-                'ZeroUI MMM Engine Dashboard',
-                vscode.ViewColumn.One,
-                {
-                    enableScripts: true,
-                    retainContextWhenHidden: true
-                }
-            );
+        this.webviewPanel.webview.html = this.uiComponent.renderDashboard(data);
 
-            this.webviewPanel.webview.html = this.uiComponent.renderDashboard(data);
-
-            this.webviewPanel.onDidDispose(() => {
-                this.webviewPanel = undefined;
-            });
+        this.webviewPanel.onDidDispose(() => {
+            this.webviewPanel = undefined;
+        });
         } catch (error) {
             console.error('Failed to show MMM Engine dashboard:', error);
             vscode.window.showErrorMessage('Failed to display MMM Engine dashboard');
@@ -47,8 +47,8 @@ export class MMMEngineUIComponentManager implements vscode.Disposable {
     public updateMMMEngineData(data: MMMEngineData): void {
         // CR-064: Add error boundary for UI updates
         try {
-            if (this.webviewPanel) {
-                this.webviewPanel.webview.html = this.uiComponent.renderDashboard(data);
+        if (this.webviewPanel) {
+            this.webviewPanel.webview.html = this.uiComponent.renderDashboard(data);
             }
         } catch (error) {
             console.error('Failed to update MMM Engine data:', error);
@@ -59,8 +59,8 @@ export class MMMEngineUIComponentManager implements vscode.Disposable {
     // CR-062: Ensure proper disposal pattern implementation
     public dispose(): void {
         try {
-            if (this.webviewPanel) {
-                this.webviewPanel.dispose();
+        if (this.webviewPanel) {
+            this.webviewPanel.dispose();
                 this.webviewPanel = undefined;
             }
         } catch (error) {

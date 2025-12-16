@@ -13,7 +13,7 @@ export class CrossCuttingConcernsExtensionInterface implements vscode.Disposable
         // CR-064: Add error boundary
         const showDashboard = vscode.commands.registerCommand('zeroui.cross.cutting.concerns.showDashboard', () => {
             try {
-                this.uiManager.showCrossCuttingConcernsDashboard();
+            this.uiManager.showCrossCuttingConcernsDashboard();
             } catch (error) {
                 console.error('Failed to show Cross Cutting Concerns dashboard:', error);
                 vscode.window.showErrorMessage('Failed to show dashboard');
@@ -38,14 +38,14 @@ export class CrossCuttingConcernsExtensionInterface implements vscode.Disposable
     public registerViews(context: vscode.ExtensionContext): void {
         // CR-064: Add error boundary
         try {
-            const treeProvider = new CrossCuttingConcernsTreeDataProvider();
-            const treeView = vscode.window.createTreeView('zerouiCrossCuttingConcerns', {
-                treeDataProvider: treeProvider,
-                showCollapseAll: true
-            });
+        const treeProvider = new CrossCuttingConcernsTreeDataProvider();
+        const treeView = vscode.window.createTreeView('zerouiCrossCuttingConcerns', {
+            treeDataProvider: treeProvider,
+            showCollapseAll: true
+        });
 
-            this.disposables.push(treeView);
-            context.subscriptions.push(...this.disposables);
+        this.disposables.push(treeView);
+        context.subscriptions.push(...this.disposables);
         } catch (error) {
             console.error('Failed to register Cross Cutting Concerns views:', error);
             vscode.window.showErrorMessage('Failed to initialize views');
@@ -63,7 +63,7 @@ export class CrossCuttingConcernsExtensionInterface implements vscode.Disposable
                 }
             });
             this.disposables = [];
-            this.uiManager.dispose();
+        this.uiManager.dispose();
         } catch (error) {
             console.error('Error disposing Cross Cutting Concerns Extension Interface:', error);
         }

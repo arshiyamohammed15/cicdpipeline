@@ -399,7 +399,7 @@ class CCCSRuntime:
         """
         # CR-011: Use lock for thread-safe access to courier
         with self._wal_lock:
-            return self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
+        return self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
 
     def normalize_error(self, error: BaseException) -> dict:
         return self._taxonomy.normalize_error(error).__dict__
@@ -415,19 +415,19 @@ class CCCSRuntime:
         if self._wal_worker.is_alive():
             self._wal_worker.join(timeout=5)
         try:
-            self._run_async(self._identity.close())
+        self._run_async(self._identity.close())
         except Exception as e:
             logger.error(f"Error closing identity service: {e}")
         try:
-            self._run_async(self._policy.close())
+        self._run_async(self._policy.close())
         except Exception as e:
             logger.error(f"Error closing policy service: {e}")
         try:
-            self._run_async(self._ratelimiter.close())
+        self._run_async(self._ratelimiter.close())
         except Exception as e:
             logger.error(f"Error closing rate limiter service: {e}")
         try:
-            self._run_async(self._receipts.close())
+        self._run_async(self._receipts.close())
         except Exception as e:
             logger.error(f"Error closing receipt service: {e}")
 
@@ -497,10 +497,10 @@ class CCCSRuntime:
         except RuntimeError:
             # If loop is closed, create a new one
             loop = asyncio.new_event_loop()
-            try:
-                return loop.run_until_complete(coro)
-            finally:
-                loop.close()
+        try:
+            return loop.run_until_complete(coro)
+        finally:
+            loop.close()
 
     def _process_wal_entries(self) -> None:
         """Background worker to process WAL entries."""
@@ -508,7 +508,7 @@ class CCCSRuntime:
             try:
                 # CR-011: Use lock for thread-safe access to courier
                 with self._wal_lock:
-                    drained = self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
+                drained = self._courier.drain(self._courier_sink, receipt_emitter=self._emit_dead_letter_receipt)
                 if not drained:
                     self._wal_worker_stop.wait(1.0)
             except Exception as e:
