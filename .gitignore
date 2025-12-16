@@ -51,6 +51,12 @@ logs/
 validation_service.log
 config/logs/
 
+# Temporary error/debug files
+*_errors.txt
+syntax_*.txt
+temp_*.txt
+collect.txt
+
 # Storage plane scaffolds (must live under ZU_ROOT, never in repo)
 product/
 tenant/
