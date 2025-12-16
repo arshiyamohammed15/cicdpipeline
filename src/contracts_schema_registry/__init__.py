@@ -11,6 +11,10 @@ from pathlib import Path
 
 
 def _load_package() -> None:
+    existing = sys.modules.get(__name__)
+    if existing and getattr(existing, "_contracts_schema_registry_loaded", False):
+        return
+
     package_dir = (
         Path(__file__).resolve()
         .parent.parent
@@ -19,6 +23,11 @@ def _load_package() -> None:
         / "contracts-schema-registry"
     )
     init_file = package_dir / "__init__.py"
+
+    if not package_dir.is_dir():
+        raise ImportError(f"contracts-schema-registry directory not found at {package_dir}")
+    if not init_file.is_file():
+        raise ImportError(f"contracts-schema-registry __init__.py not found at {init_file}")
 
     spec = importlib.util.spec_from_file_location(
         __name__,
@@ -33,6 +42,7 @@ def _load_package() -> None:
     spec.loader.exec_module(module)
 
     globals().update(module.__dict__)
+    module._contracts_schema_registry_loaded = True
 
 
 _load_package()
