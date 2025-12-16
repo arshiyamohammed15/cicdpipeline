@@ -141,7 +141,7 @@ describe('PolicyStorageService', () => {
             expect(read).not.toBeNull();
             expect(read!.policy_id).toBe('policy-123');
             expect(read!.version).toBe('1.0.0');
-            expect(read!.signature).toBe('sig-123');
+            expect(read!.signature).toBe(snapshot.signature);
         });
 
         it('should throw error if cached policy missing signature', async () => {

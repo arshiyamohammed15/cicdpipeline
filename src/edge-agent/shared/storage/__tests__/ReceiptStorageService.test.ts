@@ -75,16 +75,15 @@ describe('ReceiptStorageService', () => {
         it('should append multiple receipts (append-only)', async () => {
             const receipt1 = receiptGenerator.generateDecisionReceipt(
                 'gate1', [], 'hash1', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-15T10:00:00.000Z' }
             );
-            // Set timestamp to ensure same month
-            receipt1.timestamp_utc = '2025-01-15T10:00:00.000Z';
 
             const receipt2 = receiptGenerator.generateDecisionReceipt(
                 'gate2', [], 'hash2', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-16T10:00:00.000Z' }
             );
-            receipt2.timestamp_utc = '2025-01-16T10:00:00.000Z';
 
             await storageService.storeDecisionReceipt(receipt1, testRepoId);
             await storageService.storeDecisionReceipt(receipt2, testRepoId);
@@ -101,11 +100,9 @@ describe('ReceiptStorageService', () => {
         it('should use YYYY/MM partitioning (Rule 228)', async () => {
             const receipt = receiptGenerator.generateDecisionReceipt(
                 'test-gate', [], 'hash', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-15T10:00:00.000Z' }
             );
-
-            // Set timestamp to January 2025
-            receipt.timestamp_utc = '2025-01-15T10:00:00.000Z';
 
             const receiptPath = await storageService.storeDecisionReceipt(receipt, testRepoId);
 
@@ -115,9 +112,9 @@ describe('ReceiptStorageService', () => {
         it('creates a new monthly file without touching previous months', async () => {
             const january = receiptGenerator.generateDecisionReceipt(
                 'gate-jan', [], 'hash-jan', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-31T23:59:59.000Z' }
             );
-            january.timestamp_utc = '2025-01-31T23:59:59.000Z';
 
             const januaryPath = await storageService.storeDecisionReceipt(january, testRepoId);
             const januaryContentBefore = fs.readFileSync(januaryPath, 'utf-8');
@@ -126,9 +123,9 @@ describe('ReceiptStorageService', () => {
 
             const februaryA = receiptGenerator.generateDecisionReceipt(
                 'gate-feb-a', [], 'hash-feb-a', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-02-01T00:00:01.000Z' }
             );
-            februaryA.timestamp_utc = '2025-02-01T00:00:01.000Z';
 
             const februaryPath = await storageService.storeDecisionReceipt(februaryA, testRepoId);
             expect(fs.existsSync(februaryPath)).toBe(true);
@@ -143,9 +140,9 @@ describe('ReceiptStorageService', () => {
 
             const februaryB = receiptGenerator.generateDecisionReceipt(
                 'gate-feb-b', [], 'hash-feb-b', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-02-02T00:00:01.000Z' }
             );
-            februaryB.timestamp_utc = '2025-02-02T00:00:01.000Z';
 
             await storageService.storeDecisionReceipt(februaryB, testRepoId);
 
@@ -310,10 +307,9 @@ describe('ReceiptStorageService', () => {
         it('should read stored receipts', async () => {
             const receipt = receiptGenerator.generateDecisionReceipt(
                 'gate', [], 'hash', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-15T10:00:00.000Z' }
             );
-            // Set timestamp to January 2025
-            receipt.timestamp_utc = '2025-01-15T10:00:00.000Z';
 
             await storageService.storeDecisionReceipt(receipt, testRepoId);
 
@@ -327,15 +323,15 @@ describe('ReceiptStorageService', () => {
         it('should read multiple receipts', async () => {
             const receipt1 = receiptGenerator.generateDecisionReceipt(
                 'gate1', [], 'hash1', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-15T10:00:00.000Z' }
             );
-            receipt1.timestamp_utc = '2025-01-15T10:00:00.000Z';
 
             const receipt2 = receiptGenerator.generateDecisionReceipt(
                 'gate2', [], 'hash2', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-16T10:00:00.000Z' }
             );
-            receipt2.timestamp_utc = '2025-01-16T10:00:00.000Z';
 
             await storageService.storeDecisionReceipt(receipt1, testRepoId);
             await storageService.storeDecisionReceipt(receipt2, testRepoId);
@@ -349,9 +345,9 @@ describe('ReceiptStorageService', () => {
         it('should store receipt without signature field in canonical form', async () => {
             const receipt = receiptGenerator.generateDecisionReceipt(
                 'gate', [], 'hash', {}, { status: 'pass', rationale: '', badges: [] },
-                [], { repo_id: testRepoId }, false
+                [], { repo_id: testRepoId }, false, 'pre-commit', undefined, undefined, undefined,
+                { utc: '2025-01-15T10:00:00.000Z' }
             );
-            receipt.timestamp_utc = '2025-01-15T10:00:00.000Z';
 
             await storageService.storeDecisionReceipt(receipt, testRepoId);
 

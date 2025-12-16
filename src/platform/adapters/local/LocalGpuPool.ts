@@ -55,16 +55,15 @@ export class LocalGpuPool implements GpuPoolPort {
     const gpuType = request.gpuType || this.defaultGpuType;
     const memoryGB = request.memoryGB || this.defaultMemoryGB;
 
-    if (requestedGpus > this.availableGpus) {
-      throw new Error(`Insufficient GPUs available. Requested: ${requestedGpus}, Available: ${this.availableGpus}`);
-    }
-
     if (!this.gpuTypes.includes(gpuType)) {
       throw new Error(`Unsupported GPU type: ${gpuType}`);
     }
 
-    // Check timeout
-    if (request.timeoutSeconds) {
+    // If not enough GPUs, optionally wait until timeout expires
+    if (requestedGpus > this.availableGpus) {
+      if (!request.timeoutSeconds) {
+        throw new Error(`Insufficient GPUs available. Requested: ${requestedGpus}, Available: ${this.availableGpus}`);
+      }
       const timeout = request.timeoutSeconds * 1000;
       const startTime = Date.now();
       while (this.availableGpus < requestedGpus) {

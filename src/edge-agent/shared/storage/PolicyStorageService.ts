@@ -106,6 +106,10 @@ export class PolicyStorageService {
         const content = fs.readFileSync(policyFile, 'utf-8');
         const snapshot = JSON.parse(content) as PolicySnapshot;
 
+        if (!snapshot.signature || snapshot.signature.length === 0) {
+            throw new Error('Cached policy missing signature');
+        }
+
         // Validate signature exists and is verifiable
         this.verifyPolicySignature(snapshot);
 

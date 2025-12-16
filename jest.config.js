@@ -5,18 +5,15 @@
 module.exports = {
     preset: 'ts-jest',
     testEnvironment: 'node',
-    globals: {
-        'ts-jest': {
-            tsconfig: 'tsconfig.jest.json'
-        }
-    },
     roots: ['<rootDir>/src', '<rootDir>/tests'],
     testMatch: [
         '**/__tests__/**/*.test.ts',
         '**/?(*.)+(spec|test).ts'
     ],
     transform: {
-        '^.+\\.ts$': 'ts-jest'
+        '^.+\\.ts$': ['ts-jest', {
+            tsconfig: 'tsconfig.jest.json'
+        }]
     },
     collectCoverageFrom: [
         'src/edge-agent/shared/storage/**/*.ts',

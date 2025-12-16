@@ -101,10 +101,13 @@ export class ReceiptGenerator {
             timestamp: string;
             override_id?: string;
         },
-        dataCategory?: 'public' | 'internal' | 'confidential' | 'restricted'
+        dataCategory?: 'public' | 'internal' | 'confidential' | 'restricted',
+        timestampOverride?: { utc: string; monotonicMs?: number }
     ): DecisionReceipt {
-        const now = new Date();
+        const now = timestampOverride?.utc ? new Date(timestampOverride.utc) : new Date();
         const receiptId = this.generateReceiptId();
+        const monotonicMs =
+            timestampOverride?.monotonicMs !== undefined ? timestampOverride.monotonicMs : Date.now();
 
         // Create receipt without signature
         const receipt: Omit<DecisionReceipt, 'signature'> = {
@@ -113,7 +116,7 @@ export class ReceiptGenerator {
             policy_version_ids: policyVersionIds,
             snapshot_hash: snapshotHash,
             timestamp_utc: now.toISOString(),
-            timestamp_monotonic_ms: Date.now(),
+            timestamp_monotonic_ms: monotonicMs,
             evaluation_point: evaluationPoint,
             inputs: inputs,
             decision: decision,

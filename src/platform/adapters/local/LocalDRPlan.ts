@@ -253,13 +253,16 @@ export class LocalDRPlan implements DRPlanPort {
           continue;
         }
 
+        const startedAt = new Date(record.startedAt);
+        const completedAt = record.completedAt ? new Date(record.completedAt) : undefined;
+
         // Filter by start time
-        if (options?.startTime && record.startedAt < options.startTime) {
+        if (options?.startTime && startedAt < options.startTime) {
           continue;
         }
 
         // Filter by end time
-        if (options?.endTime && record.startedAt > options.endTime) {
+        if (options?.endTime && startedAt > options.endTime) {
           continue;
         }
 
@@ -272,8 +275,8 @@ export class LocalDRPlan implements DRPlanPort {
           executionId: record.executionId,
           planId: record.planId,
           status: record.status,
-          startedAt: record.startedAt,
-          completedAt: record.completedAt,
+          startedAt,
+          completedAt,
           durationSeconds: record.durationSeconds,
         });
       } catch (error) {
