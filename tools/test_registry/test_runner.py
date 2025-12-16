@@ -11,8 +11,17 @@ import argparse
 import json
 import subprocess
 import sys
+import logging
 from pathlib import Path
 from typing import Iterable, List, Dict, Any
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 EXCLUDED_PREFIXES = ("tests/mmm_engine/",)
 
@@ -38,7 +47,10 @@ def load_manifest(path: Path) -> dict | None:
     try:
         if path.exists():
             return json.loads(path.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Failed to load manifest from {path}: {e}", exc_info=True)
         return None
     return None
 
@@ -132,7 +144,7 @@ def main(argv: list[str] | None = None) -> int:
                 from . import generate_manifest as gen_mod
             gen_mod.main(["--output", str(args.manifest), "--update"])
         except Exception as exc:
-            print(f"Warning: could not regenerate manifest: {exc}", file=sys.stderr)
+            logger.warning(f"Warning: could not regenerate manifest: {exc}")
 
     manifest = load_manifest(args.manifest)
     tests: list[dict[str, Any]]
@@ -146,16 +158,16 @@ def main(argv: list[str] | None = None) -> int:
     file_paths = sorted({t["path"] for t in selected_tests}) if selected_tests else None
 
     if selected_tests:
-        print(f"Selected {len(selected_tests)} tests")
+        logger.info(f"Selected {len(selected_tests)} tests")
     else:
-        print("No filtered tests found; falling back to pytest selection")
+        logger.info("No filtered tests found; falling back to pytest selection")
 
     # Use file-level selection if the nodeid list would create an overly long command.
     use_nodeids = nodeids
     if nodeids and len(nodeids) > 300:
         use_nodeids = None
     cmd = build_pytest_command(args, use_nodeids or file_paths)
-    print("Running:", " ".join(cmd))
+    logger.info("Running:", " ".join(cmd))
     result = subprocess.run(cmd)
     return result.returncode
 

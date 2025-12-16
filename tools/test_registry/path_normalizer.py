@@ -80,7 +80,10 @@ def pin_repo_config(root: Path) -> None:
     _dedupe_and_prepend(str(root))
     try:
         config_pkg = importlib.import_module("config")
-    except Exception:
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Failed to import config module: {e}", exc_info=True)
         return
     sys.modules["config"] = config_pkg
 

@@ -183,8 +183,10 @@ class PostGenerationValidator:
             if temp_file and os.path.exists(temp_file):
                 try:
                     os.unlink(temp_file)
-                except Exception:
-                    pass
+                except Exception as e:
+                    import logging
+                    logger = logging.getLogger(__name__)
+                    logger.debug(f"Failed to remove temporary file {temp_file}: {e}", exc_info=True)
 
     def _check_structural_violations(
         self,

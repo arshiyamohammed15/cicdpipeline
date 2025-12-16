@@ -16,10 +16,19 @@ import os
 import subprocess
 import time
 import socket
+import logging
 from pathlib import Path
 from typing import Optional, Dict, Any
 from datetime import datetime, timezone, timedelta
 import requests
+
+# Configure logging for CLI output
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 
 def convert_to_ist(timestamp_str: str) -> str:
@@ -48,8 +57,11 @@ def convert_to_ist(timestamp_str: str) -> str:
 
         # Format as readable string
         return ist_dt.strftime("%Y-%m-%d %H:%M:%S IST")
-    except Exception:
+    except Exception as e:
         # If conversion fails, return original with IST label
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Failed to convert timestamp to IST: {e}", exc_info=True)
         return f"{timestamp_str} (IST conversion failed)"
 
 
@@ -79,8 +91,11 @@ def format_duration(nanoseconds: int) -> str:
             return f"{minutes:02d}:{seconds:06.3f}"
         else:
             return f"{seconds:.3f}s"
-    except Exception:
+    except Exception as e:
         # If conversion fails, return original value
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Failed to format duration from nanoseconds: {e}", exc_info=True)
         return f"{nanoseconds}ns"
 
 
@@ -313,48 +328,48 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
 
         # Check if port is already in use
         if is_port_in_use(host, port):
-            print(f"Error: Port {port} is already in use", file=sys.stderr)
-            print(f"", file=sys.stderr)
+            logger.error(f"Error: Port {port} is already in use")
+            logger.error("")
 
             # Check if it's our service
             base_url = f"http://localhost:{port}"
             if check_service_running(base_url):
-                print(f"💡 The LLM service appears to be already running at {base_url}", file=sys.stderr)
-                print(f"   You can check its health with: python {Path(__file__).name} --health", file=sys.stderr)
-                print(f"", file=sys.stderr)
+                logger.info(f"💡 The LLM service appears to be already running at {base_url}")
+                logger.info(f"   You can check its health with: python {Path(__file__).name} --health")
+                logger.info("")
 
             # Try to find an available port
             available_port = find_available_port(host, start_port=port + 1)
             if available_port:
-                print(f"Options:", file=sys.stderr)
-                print(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port", file=sys.stderr)
-                print(f"  2. Use port {available_port} (available): python {Path(__file__).name} --start-service --port {available_port}", file=sys.stderr)
-                print(f"  3. Stop the service running on port {port}", file=sys.stderr)
-                print(f"  4. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
+                logger.info(f"Options:")
+                logger.info(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port")
+                logger.info(f"  2. Use port {available_port} (available): python {Path(__file__).name} --start-service --port {available_port}")
+                logger.info(f"  3. Stop the service running on port {port}")
+                logger.info(f"  4. Use a different port: python {Path(__file__).name} --start-service --port <different_port>")
             else:
-                print(f"Options:", file=sys.stderr)
-                print(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port", file=sys.stderr)
-                print(f"  2. Stop the service running on port {port}", file=sys.stderr)
-                print(f"  3. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
+                logger.info(f"Options:")
+                logger.info(f"  1. Use auto-port (recommended): python {Path(__file__).name} --start-service --auto-port")
+                logger.info(f"  2. Stop the service running on port {port}")
+                logger.info(f"  3. Use a different port: python {Path(__file__).name} --start-service --port <different_port>")
 
             return 1
 
-        print("=" * 60)
-        print("STARTING LLM SERVICE (Ollama AI Agent)")
-        print("=" * 60)
-        print(f"Service will be available at http://localhost:{port}")
-        print(f"API endpoints:")
-        print(f"  - Health: http://localhost:{port}/api/v1/health")
-        print(f"  - Prompt: http://localhost:{port}/api/v1/prompt")
-        print("Press Ctrl+C to stop")
-        print("=" * 60)
+        logger.info("=" * 60)
+        logger.info("STARTING LLM SERVICE (Ollama AI Agent)")
+        logger.info("=" * 60)
+        logger.info(f"Service will be available at http://localhost:{port}")
+        logger.info(f"API endpoints:")
+        logger.info(f"  - Health: http://localhost:{port}/api/v1/health")
+        logger.info(f"  - Prompt: http://localhost:{port}/api/v1/prompt")
+        logger.info("Press Ctrl+C to stop")
+        logger.info("=" * 60)
 
         # Paths
         service_dir = project_root / "src" / "cloud-services" / "shared-services" / "ollama-ai-agent"
         main_module_path = service_dir / "main.py"
 
         if not main_module_path.exists():
-            print(f"Error: Service module not found at {main_module_path}", file=sys.stderr)
+            logger.error(f"Error: Service module not found at {main_module_path}")
             return 1
 
         # Change to the service directory for proper relative imports
@@ -445,35 +460,35 @@ def start_service(port: int = 8000, host: str = "0.0.0.0") -> int:
             os.chdir(original_cwd)
 
     except ImportError as e:
-        print(f"Error: Could not import LLM service app: {e}", file=sys.stderr)
+        logger.error(f"Error: Could not import LLM service app: {e}", exc_info=True)
         import traceback
-        print(traceback.format_exc(), file=sys.stderr)
-        print("Make sure you're running from the project root directory", file=sys.stderr)
+        logger.error(traceback.format_exc())
+        logger.error("Make sure you're running from the project root directory")
         return 1
     except KeyboardInterrupt:
-        print("\nShutting down LLM service...")
+        logger.info("\nShutting down LLM service...")
         return 0
     except OSError as e:
         if e.errno == 10048 or "Address already in use" in str(e) or "only one usage of each socket address" in str(e):
-            print(f"Error: Port {port} is already in use", file=sys.stderr)
-            print(f"", file=sys.stderr)
-            print(f"Options:", file=sys.stderr)
-            print(f"  1. Stop the service running on port {port}", file=sys.stderr)
-            print(f"  2. Use a different port: python {Path(__file__).name} --start-service --port <different_port>", file=sys.stderr)
+            logger.error(f"Error: Port {port} is already in use")
+            logger.error("")
+            logger.error(f"Options:")
+            logger.error(f"  1. Stop the service running on port {port}")
+            logger.error(f"  2. Use a different port: python {Path(__file__).name} --start-service --port <different_port>")
 
             # Check if it's our service
             base_url = f"http://localhost:{port}"
             if check_service_running(base_url):
-                print(f"", file=sys.stderr)
-                print(f"💡 The LLM service appears to be already running at {base_url}", file=sys.stderr)
-                print(f"   You can check its health with: python {Path(__file__).name} --health", file=sys.stderr)
+                logger.error("")
+                logger.info(f"💡 The LLM service appears to be already running at {base_url}")
+                logger.info(f"   You can check its health with: python {Path(__file__).name} --health")
         else:
-            print(f"Error starting service: {e}", file=sys.stderr)
+            logger.error(f"Error starting service: {e}", exc_info=True)
         return 1
     except Exception as e:
-        print(f"Error starting service: {e}", file=sys.stderr)
+        logger.error(f"Error starting service: {e}", exc_info=True)
         import traceback
-        print(traceback.format_exc(), file=sys.stderr)
+        logger.error(traceback.format_exc())
         return 1
 
 
@@ -490,7 +505,10 @@ def check_service_running(base_url: str) -> bool:
     try:
         response = requests.get(f"{base_url}/api/v1/health", timeout=2)
         return response.status_code == 200
-    except Exception:
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Error checking LLM service health at {base_url}: {e}", exc_info=True)
         return False
 
 
@@ -510,7 +528,10 @@ def is_port_in_use(host: str, port: int) -> bool:
             s.settimeout(1)
             result = s.connect_ex((host if host != "0.0.0.0" else "127.0.0.1", port))
             return result == 0
-    except Exception:
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Error checking if port {port} on {host} is in use: {e}", exc_info=True)
         return False
 
 
@@ -532,7 +553,7 @@ def find_available_port(host: str, start_port: int = 8000, max_attempts: int = 1
     return None
 
 
-def main():
+def main() -> int:
     """Main entry point for the LLM CLI."""
     parser = argparse.ArgumentParser(
         description="CLI tool for interacting with the LLM Service (Shared Services Plane)",
@@ -628,7 +649,7 @@ Examples:
         try:
             options = json.loads(args.options)
         except json.JSONDecodeError:
-            print(f"Error: Invalid JSON in --options: {args.options}", file=sys.stderr)
+            logger.error(f"Error: Invalid JSON in --options: {args.options}")
             return 1
 
     # Execute command
@@ -636,8 +657,8 @@ Examples:
         if args.start_service:
             # Check if service is already running
             if check_service_running(args.base_url):
-                print(f"Service is already running at {args.base_url}", file=sys.stderr)
-                print("Use --base-url to specify a different URL or stop the existing service", file=sys.stderr)
+                logger.warning(f"Service is already running at {args.base_url}")
+                logger.warning("Use --base-url to specify a different URL or stop the existing service")
                 return 1
 
             # Handle auto-port selection
@@ -645,20 +666,20 @@ Examples:
             if args.auto_port and is_port_in_use(args.host, args.port):
                 available_port = find_available_port(args.host, start_port=args.port)
                 if available_port:
-                    print(f"Port {args.port} is in use. Using available port {available_port} instead.", file=sys.stderr)
+                    logger.info(f"Port {args.port} is in use. Using available port {available_port} instead.")
                     actual_port = available_port
                 else:
-                    print(f"Error: Could not find an available port starting from {args.port}", file=sys.stderr)
+                    logger.error(f"Error: Could not find an available port starting from {args.port}")
                     return 1
 
             return start_service(port=actual_port, host=args.host)
 
         elif args.health:
             health = cli.check_health()
-            print(cli.format_health(health, args.format))
+            logger.info(cli.format_health(health, args.format))
             # Add helpful suggestion if service is not running
             if "error" in health and "CONNECTION_ERROR" in str(health.get("error", "")):
-                print(f"\n💡 Tip: Start the service with: python {Path(__file__).name} --start-service", file=sys.stderr)
+                logger.info(f"\n💡 Tip: Start the service with: python {Path(__file__).name} --start-service")
             return 0 if "error" not in health else 1
 
         elif args.prompt:
@@ -668,20 +689,20 @@ Examples:
                 stream=args.stream,
                 options=options
             )
-            print(cli.format_response(response, args.format))
+            logger.info(cli.format_response(response, args.format))
             # Add helpful suggestion if service is not running
             if "error" in response:
                 error_code = response.get("error", {}).get("code", "") if isinstance(response.get("error"), dict) else ""
                 if "CONNECTION_ERROR" in str(error_code):
-                    print(f"\n💡 Tip: Start the service with: python {Path(__file__).name} --start-service", file=sys.stderr)
+                    logger.info(f"\n💡 Tip: Start the service with: python {Path(__file__).name} --start-service")
                 return 1
             return 0
 
     except KeyboardInterrupt:
-        print("\nOperation cancelled by user", file=sys.stderr)
+        logger.info("\nOperation cancelled by user")
         return 1
     except Exception as e:
-        print(f"Error: {e}", file=sys.stderr)
+        logger.error(f"Error: {e}", exc_info=True)
         return 1
 
 

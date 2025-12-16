@@ -18,10 +18,19 @@ Usage:
 import sys
 import json
 import argparse
+import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Tuple
 from dataclasses import dataclass
 from datetime import datetime
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 # Add the project root to Python path for imports
 project_root = Path(__file__).parent.parent
@@ -107,7 +116,7 @@ class RuleManager:
         try:
             return self.hook_manager.is_rule_enabled(rule_number)
         except Exception as e:
-            print(f"Warning: Could not get hook status for rule {rule_number}: {e}")
+            logger.warning(f"Warning: Could not get hook status for rule {rule_number}: {e}", exc_info=True)
             return None
 
     def _verify_consistency_across_all_sources(self, rule_number: int) -> Dict[str, Any]:
@@ -137,7 +146,7 @@ class RuleManager:
                 sources_status["markdown"]["exists"] = markdown_exists
                 sources_status["markdown"]["enabled"] = None  # Markdown doesn't track enabled status
             except Exception as e:
-                print(f"Warning: Could not check markdown for rule {rule_number}: {e}")
+                logger.warning(f"Warning: Could not check markdown for rule {rule_number}: {e}", exc_info=True)
 
             # Check database
             try:
@@ -146,7 +155,7 @@ class RuleManager:
                     sources_status["database"]["exists"] = True
                     sources_status["database"]["enabled"] = db_rule.get("enabled", True)
             except Exception as e:
-                print(f"Warning: Could not check database for rule {rule_number}: {e}")
+                logger.warning(f"Warning: Could not check database for rule {rule_number}: {e}", exc_info=True)
 
             # Check JSON export
             try:
@@ -158,7 +167,7 @@ class RuleManager:
                         sources_status["json_export"]["exists"] = True
                         sources_status["json_export"]["enabled"] = json_data["rules"][rule_key].get("enabled", True)
             except Exception as e:
-                print(f"Warning: Could not check JSON export for rule {rule_number}: {e}")
+                logger.warning(f"Warning: Could not check JSON export for rule {rule_number}: {e}", exc_info=True)
 
             # Check config
             try:
@@ -175,7 +184,7 @@ class RuleManager:
                         else:
                             sources_status["config"]["enabled"] = enabled_value
             except Exception as e:
-                print(f"Warning: Could not check config for rule {rule_number}: {e}")
+                logger.warning(f"Warning: Could not check config for rule {rule_number}: {e}", exc_info=True)
 
             # Check hooks
             try:
@@ -185,7 +194,7 @@ class RuleManager:
                         sources_status["hooks"]["exists"] = True
                         sources_status["hooks"]["enabled"] = hook_status
             except Exception as e:
-                print(f"Warning: Could not check hooks for rule {rule_number}: {e}")
+                logger.warning(f"Warning: Could not check hooks for rule {rule_number}: {e}", exc_info=True)
 
             # Determine consistency
             enabled_values = [s["enabled"] for s in sources_status.values() if s["enabled"] is not None]
@@ -283,7 +292,7 @@ class RuleManager:
             )
 
         except Exception as e:
-            print(f"Error getting rule status: {e}")
+            logger.error(f"Error getting rule status: {e}", exc_info=True)
             return RuleStatus(
                 rule_number=rule_number,
                 markdown_exists=False,
@@ -652,66 +661,66 @@ class RuleManager:
             return statuses
 
         except Exception as e:
-            print(f"Error getting all rule statuses: {e}")
+            logger.error(f"Error getting all rule statuses: {e}", exc_info=True)
             return []
 
 
-def print_rule_status(status: RuleStatus):
+def print_rule_status(status: RuleStatus) -> None:
     """Print formatted rule status."""
-    print(f"\nRule {status.rule_number}:")
-    print(f"  Markdown exists: {'Yes' if status.markdown_exists else 'No'}")
-    print(f"  Database enabled: {status.database_enabled}")
-    print(f"  JSON export enabled: {status.json_export_enabled}")
-    print(f"  Config enabled: {status.config_enabled}")
-    print(f"  Hooks enabled: {status.hooks_enabled}")
-    print(f"  Consistent: {'Yes' if status.consistent else 'No'}")
+    logger.info(f"\nRule {status.rule_number}:")
+    logger.info(f"  Markdown exists: {'Yes' if status.markdown_exists else 'No'}")
+    logger.info(f"  Database enabled: {status.database_enabled}")
+    logger.info(f"  JSON export enabled: {status.json_export_enabled}")
+    logger.info(f"  Config enabled: {status.config_enabled}")
+    logger.info(f"  Hooks enabled: {status.hooks_enabled}")
+    logger.info(f"  Consistent: {'Yes' if status.consistent else 'No'}")
 
     if status.sources:
-        print(f"  Sources: {status.sources}")
+        logger.info(f"  Sources: {status.sources}")
 
 
-def print_results(results: Dict[str, Any], operation: str):
+def print_results(results: Dict[str, Any], operation: str) -> None:
     """Print formatted results."""
-    print(f"\n{operation.upper()} RESULTS:")
-    print("=" * 50)
+    logger.info(f"\n{operation.upper()} RESULTS:")
+    logger.info("=" * 50)
 
     if "error" in results:
-        print(f"Error: {results['error']}")
+        logger.error(f"Error: {results['error']}")
         return
 
     if "total_rules" in results:
-        print(f"Total rules: {results['total_rules']}")
-        print(f"Successful: {results.get('enabled', results.get('disabled', 0))}")
-        print(f"Failed: {results.get('failed', 0)}")
+        logger.info(f"Total rules: {results['total_rules']}")
+        logger.info(f"Successful: {results.get('enabled', results.get('disabled', 0))}")
+        logger.info(f"Failed: {results.get('failed', 0)}")
 
         if results.get("details"):
-            print(f"\nDetails (showing first 5):")
+            logger.info(f"\nDetails (showing first 5):")
             for detail in results["details"][:5]:
                 rule_num = detail.get("rule_number")
                 result = detail.get("result", {})
-                print(f"  Rule {rule_num}: {result}")
+                logger.info(f"  Rule {rule_num}: {result}")
 
             if len(results["details"]) > 5:
-                print(f"  ... and {len(results['details']) - 5} more")
+                logger.info(f"  ... and {len(results['details']) - 5} more")
     else:
         if "success" in results:
             success = results.get("success", False)
             message = results.get("message", "Unknown")
             status = "OK" if success else "FAIL"
-            print(f"  Result: {status} {message}")
+            logger.info(f"  Result: {status} {message}")
 
             if "fixed_count" in results:
-                print(f"  Fixed inconsistencies: {results['fixed_count']}")
+                logger.info(f"  Fixed inconsistencies: {results['fixed_count']}")
         else:
             for source, result in results.items():
                 if isinstance(result, dict):
                     success = result.get("success", False)
                     message = result.get("message", "Unknown")
                     status = "OK" if success else "FAIL"
-                    print(f"  {source}: {status} {message}")
+                    logger.info(f"  {source}: {status} {message}")
 
 
-def main():
+def main() -> int:
     """Main function for command-line usage."""
     parser = argparse.ArgumentParser(
         description='ZeroUI 2.0 Rule Manager - Manage rules across all sources',
@@ -759,7 +768,7 @@ Examples:
     try:
         rule_manager = RuleManager()
     except Exception as e:
-        print(f"Error initializing rule manager: {e}")
+        logger.error(f"Error initializing rule manager: {e}", exc_info=True)
         return 1
 
     # Handle commands
@@ -770,7 +779,7 @@ Examples:
                 try:
                     config_data = json.loads(args.config_data)
                 except json.JSONDecodeError as e:
-                    print(f"Error: Invalid JSON in --config-data: {e}")
+                    logger.error(f"Error: Invalid JSON in --config-data: {e}")
                     return 1
 
             results = rule_manager.enable_rule(args.enable_rule, config_data, args.sources)
@@ -787,7 +796,7 @@ Examples:
                 try:
                     config_data = json.loads(args.config_data)
                 except json.JSONDecodeError as e:
-                    print(f"Error: Invalid JSON in --config-data: {e}")
+                    logger.error(f"Error: Invalid JSON in --config-data: {e}")
                     return 1
 
             results = rule_manager.enable_all_rules(config_data, args.sources)
@@ -800,16 +809,16 @@ Examples:
 
         elif args.status:
             statuses = rule_manager.get_all_rule_statuses()
-            print(f"\nRULE STATUS SUMMARY:")
-            print("=" * 50)
-            print(f"Total rules: {len(statuses)}")
+            logger.info(f"\nRULE STATUS SUMMARY:")
+            logger.info("=" * 50)
+            logger.info(f"Total rules: {len(statuses)}")
 
             consistent_count = sum(1 for s in statuses if s.consistent)
-            print(f"Consistent rules: {consistent_count}")
-            print(f"Inconsistent rules: {len(statuses) - consistent_count}")
+            logger.info(f"Consistent rules: {consistent_count}")
+            logger.info(f"Inconsistent rules: {len(statuses) - consistent_count}")
 
             if len(statuses) - consistent_count > 0:
-                print(f"\nInconsistent rules (showing first 10):")
+                logger.info(f"\nInconsistent rules (showing first 10):")
                 inconsistent = [s for s in statuses if not s.consistent][:10]
                 for status in inconsistent:
                     print_rule_status(status)
@@ -826,7 +835,7 @@ Examples:
             parser.print_help()
 
     except Exception as e:
-        print(f"Error executing command: {e}")
+        logger.error(f"Error executing command: {e}", exc_info=True)
         return 1
 
     return 0

@@ -11,6 +11,7 @@ No hardcoded rule counts exist in this module.
 
 import json
 import re
+import logging
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Set
 from validator.models import Violation, Severity
@@ -19,6 +20,8 @@ from config.constitution.rule_catalog import (
     get_rule_by_title,
     get_catalog_counts,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class ConstitutionRuleLoader:
@@ -39,7 +42,7 @@ class ConstitutionRuleLoader:
         self.rules_by_category: Dict[str, List[Dict[str, Any]]] = {}
         self._load_all_rules()
 
-    def _load_all_rules(self):
+    def _load_all_rules(self) -> None:
         """Load all rules from all JSON files in constitution directory."""
         if not self.constitution_dir.exists():
             raise FileNotFoundError(f"Constitution directory not found: {self.constitution_dir}")
@@ -69,7 +72,7 @@ class ConstitutionRuleLoader:
                         self.rules_by_category[category].append(rule)
 
             except Exception as e:
-                print(f"Warning: Could not load rules from {json_file}: {e}")
+                logger.warning(f"Warning: Could not load rules from {json_file}: {e}", exc_info=True)
                 continue
 
     def get_all_rules(self) -> List[Dict[str, Any]]:

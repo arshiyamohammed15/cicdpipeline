@@ -226,26 +226,26 @@ def validate_all_modules() -> Dict[str, Any]:
     return results
 
 
-def print_validation_report(results: Dict[str, Any]):
+def print_validation_report(results: Dict[str, Any]) -> None:
     """Print comprehensive validation report."""
-    print("=" * 80)
-    print("TRIPLE VALIDATION REPORT: Module Implementation & Test Coverage")
-    print("=" * 80)
+    logger.info("=" * 80)
+    logger.info("TRIPLE VALIDATION REPORT: Module Implementation & Test Coverage")
+    logger.info("=" * 80)
     
-    print(f"\nSUMMARY")
-    print(f"  Expected Modules: {results['summary']['total_expected']}")
-    print(f"  Implemented Modules: {results['summary']['total_implemented']}")
-    print(f"  Modules with Tests: {results['summary']['total_with_tests']}")
-    print(f"  Total Test Files: {results['summary']['total_test_files']}")
-    print(f"  Total Test Cases: {results['summary']['total_test_cases']}")
+    logger.info(f"\nSUMMARY")
+    logger.info(f"  Expected Modules: {results['summary']['total_expected']}")
+    logger.info(f"  Implemented Modules: {results['summary']['total_implemented']}")
+    logger.info(f"  Modules with Tests: {results['summary']['total_with_tests']}")
+    logger.info(f"  Total Test Files: {results['summary']['total_test_files']}")
+    logger.info(f"  Total Test Cases: {results['summary']['total_test_cases']}")
     
-    print(f"\nDETAILED MODULE VALIDATION")
-    print("-" * 80)
+    logger.info(f"\nDETAILED MODULE VALIDATION")
+    logger.info("-" * 80)
     
     for category in ['shared-services', 'client-services', 'product-services', 'other']:
         category_modules = [m for m, r in results['modules'].items() if r['category'] == category]
         if category_modules:
-            print(f"\n{category.upper().replace('-', ' ')}:")
+            logger.info(f"\n{category.upper().replace('-', ' ')}:")
             for module_name in category_modules:
                 module = results['modules'][module_name]
                 impl = module['implementation']
@@ -254,19 +254,19 @@ def print_validation_report(results: Dict[str, Any]):
                 impl_status = "✅" if impl['implementation_complete'] else "❌"
                 test_status = "✅" if tests['total_test_files'] > 0 else "❌"
                 
-                print(f"  {impl_status} {test_status} {module_name}")
-                print(f"     Implementation: {impl['implementation_complete']}")
-                print(f"     Files: {sum(impl['files'].values())}/{len(REQUIRED_IMPLEMENTATION_FILES)}")
+                logger.info(f"  {impl_status} {test_status} {module_name}")
+                logger.info(f"     Implementation: {impl['implementation_complete']}")
+                logger.info(f"     Files: {sum(impl['files'].values())}/{len(REQUIRED_IMPLEMENTATION_FILES)}")
                 if impl['missing_files']:
-                    print(f"     Missing: {', '.join(impl['missing_files'])}")
-                print(f"     Test Files: {tests['total_test_files']}")
-                print(f"     Test Cases: {tests['total_test_cases']}")
-                print(f"     Status: {module['status']}")
+                    logger.warning(f"     Missing: {', '.join(impl['missing_files'])}")
+                logger.info(f"     Test Files: {tests['total_test_files']}")
+                logger.info(f"     Test Cases: {tests['total_test_cases']}")
+                logger.info(f"     Status: {module['status']}")
     
-    print("\n" + "=" * 80)
+    logger.info("\n" + "=" * 80)
 
 
-def main():
+def main() -> None:
     """Main entry point."""
     results = validate_all_modules()
     print_validation_report(results)
@@ -277,7 +277,7 @@ def main():
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     
-    print(f"\nReport saved to: {output_path}")
+    logger.info(f"\nReport saved to: {output_path}")
 
 
 if __name__ == '__main__':

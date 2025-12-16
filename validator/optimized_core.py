@@ -127,7 +127,8 @@ class OptimizedConstitutionValidator:
                 with open(file_path, 'rb') as f:
                     content = f.read()
                     self._file_hash_cache[file_path] = hashlib.md5(content).hexdigest()
-            except Exception:
+            except Exception as e:
+                self._logger.warning(f"Failed to compute file hash for {file_path}: {e}", exc_info=True)
                 self._file_hash_cache[file_path] = ""
 
         return self._file_hash_cache[file_path]

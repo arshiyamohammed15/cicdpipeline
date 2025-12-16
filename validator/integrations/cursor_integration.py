@@ -20,8 +20,31 @@ class CursorIntegration(AIServiceIntegration):
         """Validate configuration."""
         if not self.api_key:
             self.logger.warning("CURSOR_API_KEY not set, Cursor integration disabled")
-        else:
-            self.logger.info(f"Cursor integration configured with API URL: {self.base_url}")
+            return
+        
+        # Validate API key: check not None, not empty, proper format
+        api_key = self.api_key.strip()
+        if not api_key:
+            self.logger.error("CURSOR_API_KEY is empty or whitespace only")
+            self.api_key = None
+            return
+        
+        # Validate API key format (Cursor keys are typically base64-like strings, at least 20 characters)
+        if len(api_key) < 20:
+            self.logger.error("CURSOR_API_KEY format appears invalid (should be at least 20 characters)")
+            self.api_key = None
+            return
+        
+        # Validate base URL format
+        if self.base_url:
+            base_url = self.base_url.strip()
+            if not base_url.startswith(('http://', 'https://')):
+                self.logger.error(f"Invalid CURSOR_API_URL format: {base_url} (should start with http:// or https://)")
+                self.base_url = 'https://api.cursor.sh'
+            else:
+                self.base_url = base_url
+        
+        self.logger.info(f"Cursor integration configured with API URL: {self.base_url}")
 
     def generate_code(self, prompt: str, context: Dict[str, Any]) -> Dict[str, Any]:
         """Generate code through Cursor with validation."""

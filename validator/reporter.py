@@ -16,7 +16,7 @@ from .models import ValidationResult, Violation, Severity
 # Global color toggle
 _USE_COLOR = True
 
-def set_use_color(use_color: bool):
+def set_use_color(use_color: bool) -> None:
     """Enable or disable ANSI colors in console reports."""
     global _USE_COLOR
     _USE_COLOR = bool(use_color)

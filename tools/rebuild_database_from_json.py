@@ -13,23 +13,29 @@ Usage:
 import json
 import sys
 import os
+import logging
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any
 
-# Fix Windows console encoding
-if sys.platform == "win32":
-    import codecs
-    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-    sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-    os.environ['PYTHONIOENCODING'] = 'utf-8'
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
+from tools.utils.file_utils import setup_windows_console_encoding
 from config.constitution.database import ConstitutionRulesDB
 from config.constitution.constitution_rules_json import ConstitutionRulesJSON
+
+# Fix Windows console encoding
+setup_windows_console_encoding()
 
 
 def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> List[Dict[str, Any]]:
@@ -54,7 +60,7 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
     rule_counter = 1  # Sequential rule numbering
 
     for json_file in json_files:
-        print(f"Loading rules from {json_file.name}...")
+        logger.info(f"Loading rules from {json_file.name}...")
         try:
             with open(json_file, 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -111,10 +117,10 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
                     rule_counter += 1
 
         except Exception as e:
-            print(f"Error loading {json_file.name}: {e}")
+            logger.error(f"Error loading {json_file.name}: {e}", exc_info=True)
             continue
 
-    print(f"\nLoaded {len(all_rules)} rules from {len(json_files)} files")
+    logger.info(f"\nLoaded {len(all_rules)} rules from {len(json_files)} files")
     return all_rules
 
 
@@ -126,9 +132,9 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         rules: List of rule dictionaries
         db_path: Path to SQLite database file
     """
-    print(f"\n{'='*70}")
-    print("REBUILDING SQLITE DATABASE")
-    print(f"{'='*70}")
+    logger.info(f"\n{'='*70}")
+    logger.info("REBUILDING SQLITE DATABASE")
+    logger.info(f"{'='*70}")
 
     # Backup existing database
     db_file = Path(db_path)
@@ -136,12 +142,12 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         backup_path = db_file.with_suffix(f'.backup.{datetime.now().strftime("%Y%m%d_%H%M%S")}.db')
         import shutil
         shutil.copy2(db_file, backup_path)
-        print(f"Backed up existing database to {backup_path.name}")
+        logger.info(f"Backed up existing database to {backup_path.name}")
 
     # Remove existing database
     if db_file.exists():
         db_file.unlink()
-        print("Removed existing database")
+        logger.info("Removed existing database")
 
     # Create new database
     db = ConstitutionRulesDB(db_path)
@@ -153,7 +159,7 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         cursor.execute("DELETE FROM rule_configuration")
         cursor.execute("DELETE FROM rule_categories")
         conn.commit()
-        print("Cleared existing rules")
+        logger.info("Cleared existing rules")
 
     # Insert all rules
     with db.get_connection() as conn:
@@ -207,10 +213,10 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
             ))
 
         conn.commit()
-        print(f"Inserted {len(rules)} rules into SQLite database")
+        logger.info(f"Inserted {len(rules)} rules into SQLite database")
 
     db.close()
-    print("[OK] SQLite database rebuilt successfully")
+    logger.info("[OK] SQLite database rebuilt successfully")
 
 
 def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/constitution_rules.json"):
@@ -221,9 +227,9 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
         rules: List of rule dictionaries
         json_path: Path to JSON export file
     """
-    print(f"\n{'='*70}")
-    print("REBUILDING JSON EXPORT")
-    print(f"{'='*70}")
+    logger.info(f"\n{'='*70}")
+    logger.info("REBUILDING JSON EXPORT")
+    logger.info(f"{'='*70}")
 
     # Backup existing export
     json_file = Path(json_path)
@@ -231,7 +237,7 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
         backup_path = json_file.with_suffix(f'.backup.{datetime.now().strftime("%Y%m%d_%H%M%S")}.json')
         import shutil
         shutil.copy2(json_file, backup_path)
-        print(f"Backed up existing export to {backup_path.name}")
+        logger.info(f"Backed up existing export to {backup_path.name}")
 
     # Calculate statistics
     enabled_count = sum(1 for r in rules if r.get('enabled', True))
@@ -299,9 +305,9 @@ def rebuild_json_export(rules: List[Dict[str, Any]], json_path: str = "config/co
     with open(json_file, 'w', encoding='utf-8') as f:
         json.dump(export_data, f, indent=2, ensure_ascii=False)
 
-    print(f"[OK] JSON export rebuilt with {len(rules)} rules")
-    print(f"  - Enabled: {enabled_count}")
-    print(f"  - Disabled: {disabled_count}")
+    logger.info(f"[OK] JSON export rebuilt with {len(rules)} rules")
+    logger.info(f"  - Enabled: {enabled_count}")
+    logger.info(f"  - Disabled: {disabled_count}")
 
 
 def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "config/constitution_config.json"):
@@ -312,9 +318,9 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
         rules: List of rule dictionaries
         config_path: Path to configuration file
     """
-    print(f"\n{'='*70}")
-    print("UPDATING CONFIGURATION FILE")
-    print(f"{'='*70}")
+    logger.info(f"\n{'='*70}")
+    logger.info("UPDATING CONFIGURATION FILE")
+    logger.info(f"{'='*70}")
 
     config_file = Path(config_path)
 
@@ -384,76 +390,76 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
     with open(config_file, 'w', encoding='utf-8') as f:
         json.dump(config, f, indent=2, ensure_ascii=False)
 
-    print(f"[OK] Configuration file updated")
-    print(f"  - Total rules: {len(rules)}")
-    print(f"  - Enabled rules: {enabled_count}")
+    logger.info(f"[OK] Configuration file updated")
+    logger.info(f"  - Total rules: {len(rules)}")
+    logger.info(f"  - Enabled rules: {enabled_count}")
 
 
 def main():
     """Main function to rebuild database from JSON source files."""
-    print("="*70)
-    print("REBUILDING CONSTITUTION DATABASE FROM JSON SOURCE FILES")
-    print("="*70)
-    print(f"Source of Truth: docs/constitution/*.json")
-    print(f"Timestamp: {datetime.now().isoformat()}")
-    print("="*70)
+    logger.info("="*70)
+    logger.info("REBUILDING CONSTITUTION DATABASE FROM JSON SOURCE FILES")
+    logger.info("="*70)
+    logger.info(f"Source of Truth: docs/constitution/*.json")
+    logger.info(f"Timestamp: {datetime.now().isoformat()}")
+    logger.info("="*70)
 
     try:
         # Step 1: Load rules from JSON source files
-        print("\n[1/4] Loading rules from JSON source files...")
+        logger.info("\n[1/4] Loading rules from JSON source files...")
         rules = load_rules_from_json_files()
 
         if not rules:
-            print("ERROR: No rules loaded from source files!")
+            logger.error("ERROR: No rules loaded from source files!")
             return 1
 
-        print(f"[OK] Loaded {len(rules)} rules")
+        logger.info(f"[OK] Loaded {len(rules)} rules")
 
         # Step 2: Rebuild SQLite database
-        print("\n[2/4] Rebuilding SQLite database...")
+        logger.info("\n[2/4] Rebuilding SQLite database...")
         rebuild_sqlite_database(rules)
 
         # Step 3: Rebuild JSON export
-        print("\n[3/4] Rebuilding JSON export...")
+        logger.info("\n[3/4] Rebuilding JSON export...")
         rebuild_json_export(rules)
 
         # Step 4: Update configuration file
-        print("\n[4/4] Updating configuration file...")
+        logger.info("\n[4/4] Updating configuration file...")
         update_configuration_file(rules)
 
         # Verification
-        print(f"\n{'='*70}")
-        print("VERIFICATION")
-        print(f"{'='*70}")
+        logger.info(f"\n{'='*70}")
+        logger.info("VERIFICATION")
+        logger.info(f"{'='*70}")
 
         # Verify SQLite
         db = ConstitutionRulesDB()
         db_rules = db.get_all_rules()
-        print(f"SQLite database: {len(db_rules)} rules")
+        logger.info(f"SQLite database: {len(db_rules)} rules")
         db.close()
 
         # Verify JSON export
         with open("config/constitution_rules.json", 'r', encoding='utf-8') as f:
             json_data = json.load(f)
-        print(f"JSON export: {json_data['statistics']['total_rules']} rules")
+        logger.info(f"JSON export: {json_data['statistics']['total_rules']} rules")
 
         # Verify config
         with open("config/constitution_config.json", 'r', encoding='utf-8') as f:
             config_data = json.load(f)
-        print(f"Configuration: {config_data.get('total_rules', 'N/A')} rules")
+        logger.info(f"Configuration: {config_data.get('total_rules', 'N/A')} rules")
 
-        print(f"\n{'='*70}")
-        print("[OK] DATABASE REBUILD COMPLETE")
-        print(f"{'='*70}")
-        print(f"Total rules: {len(rules)}")
-        print(f"All sources synchronized with docs/constitution/*.json")
+        logger.info(f"\n{'='*70}")
+        logger.info("[OK] DATABASE REBUILD COMPLETE")
+        logger.info(f"{'='*70}")
+        logger.info(f"Total rules: {len(rules)}")
+        logger.info(f"All sources synchronized with docs/constitution/*.json")
 
         return 0
 
     except Exception as e:
-        print(f"\nERROR: {e}")
+        logger.error(f"\nERROR: {e}", exc_info=True)
         import traceback
-        traceback.print_exc()
+        logger.error(traceback.format_exc())
         return 1
 
 

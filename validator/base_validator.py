@@ -8,6 +8,7 @@ reducing code duplication and ensuring consistent validation patterns.
 
 import ast
 import re
+import logging
 from typing import List, Dict, Any, Optional, Set
 from abc import ABC, abstractmethod
 
@@ -39,6 +40,7 @@ class BaseRuleValidator(ABC):
         self.category = rule_config.get("category", "unknown")
         self.priority = rule_config.get("priority", "unknown")
         self.description = rule_config.get("description", "")
+        self.logger = logging.getLogger(self.__class__.__name__)
 
         # Compile patterns for performance
         self._compiled_patterns = self._compile_patterns()
@@ -165,7 +167,7 @@ class BaseRuleValidator(ABC):
                 violations.append(violation)
 
         except Exception as e:
-            print(f"Error processing regex pattern {pattern_name}: {e}")
+            self.logger.error(f"Error processing regex pattern {pattern_name}: {e}", exc_info=True)
 
         return violations
 
@@ -215,7 +217,7 @@ class BaseRuleValidator(ABC):
                     break  # Only report first occurrence
 
         except Exception as e:
-            print(f"Error processing keyword pattern {pattern_name}: {e}")
+            self.logger.error(f"Error processing keyword pattern {pattern_name}: {e}", exc_info=True)
 
         return violations
 
@@ -260,7 +262,7 @@ class BaseRuleValidator(ABC):
                     violations.append(violation)
 
         except Exception as e:
-            print(f"Error processing AST pattern {pattern_name}: {e}")
+            self.logger.error(f"Error processing AST pattern {pattern_name}: {e}", exc_info=True)
 
         return violations
 

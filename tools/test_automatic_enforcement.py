@@ -8,6 +8,7 @@ before AI code generation occurs. Rule counts are derived dynamically from docs/
 
 import sys
 import os
+import logging
 from pathlib import Path
 
 # Add project root to path
@@ -19,26 +20,33 @@ import json
 import time
 from config.constitution.rule_catalog import get_catalog_counts
 
+# Configure logging for test output
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s'
+)
+logger = logging.getLogger(__name__)
+
 def test_automatic_enforcement():
     """Test the automatic enforcement system."""
 
-    print("=" * 60)
-    print("TESTING AUTOMATIC CONSTITUTION ENFORCEMENT")
-    print("=" * 60)
+    logger.info("=" * 60)
+    logger.info("TESTING AUTOMATIC CONSTITUTION ENFORCEMENT")
+    logger.info("=" * 60)
     counts = get_catalog_counts()
     total_rules = counts.get("total_rules", "all")
-    print(f"This demonstrates automatic enforcement of all {total_rules} ZeroUI constitution rules")
-    print("before any AI code generation occurs.")
-    print()
+    logger.info(f"This demonstrates automatic enforcement of all {total_rules} ZeroUI constitution rules")
+    logger.info("before any AI code generation occurs.")
+    logger.info("")
 
     # Test 1: Invalid prompt (should be blocked)
-    print("🧪 Test 1: Invalid Prompt (Should Be Blocked)")
-    print("-" * 40)
+    logger.info("🧪 Test 1: Invalid Prompt (Should Be Blocked)")
+    logger.info("-" * 40)
 
     invalid_prompt = "create a function that uses hardcoded password and api key"
 
-    print(f"Prompt: '{invalid_prompt}'")
-    print("Expected: Should be blocked due to security violations")
+    logger.info(f"Prompt: '{invalid_prompt}'")
+    logger.info("Expected: Should be blocked due to security violations")
 
     try:
         response = requests.post(
@@ -53,40 +61,40 @@ def test_automatic_enforcement():
 
         if response.status_code == 200:
             result = response.json()
-            print(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
+            logger.info(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
 
             if not result['valid']:
-                print(f"   Violations found: {len(result['violations'])}")
+                logger.info(f"   Violations found: {len(result['violations'])}")
                 for violation in result['violations'][:3]:  # Show first 3 violations
-                    print(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
+                    logger.info(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
                 if len(result['violations']) > 3:
-                    print(f"   ... and {len(result['violations']) - 3} more violations")
+                    logger.info(f"   ... and {len(result['violations']) - 3} more violations")
 
-                print(f"   Rules checked: {result['total_rules_checked']}")
-                print(f"   Recommendations: {len(result['recommendations'])}")
+                logger.info(f"   Rules checked: {result['total_rules_checked']}")
+                logger.info(f"   Recommendations: {len(result['recommendations'])}")
             else:
-                print(f"   Rules checked: {result['total_rules_checked']}")
+                logger.info(f"   Rules checked: {result['total_rules_checked']}")
         else:
-            print(f"❌ HTTP Error: {response.status_code}")
-            print(f"Response: {response.text}")
+            logger.error(f"❌ HTTP Error: {response.status_code}")
+            logger.error(f"Response: {response.text}")
 
     except requests.exceptions.ConnectionError:
-        print("❌ Validation service not running. Start with: python tools/start_validation_service.py")
+        logger.error("❌ Validation service not running. Start with: python tools/start_validation_service.py")
         return False
     except Exception as e:
-        print(f"❌ Error: {e}")
+        logger.error(f"❌ Error: {e}", exc_info=True)
         return False
 
-    print()
+    logger.info("")
 
     # Test 2: Valid prompt (should pass)
-    print("🧪 Test 2: Valid Prompt (Should Pass)")
-    print("-" * 40)
+    logger.info("🧪 Test 2: Valid Prompt (Should Pass)")
+    logger.info("-" * 40)
 
     valid_prompt = "create a function that validates user input using settings files"
 
-    print(f"Prompt: '{valid_prompt}'")
-    print("Expected: Should pass validation")
+    logger.info(f"Prompt: '{valid_prompt}'")
+    logger.info("Expected: Should pass validation")
 
     try:
         response = requests.post(
@@ -101,34 +109,34 @@ def test_automatic_enforcement():
 
         if response.status_code == 200:
             result = response.json()
-            print(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
+            logger.info(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
 
             if result['valid']:
-                print(f"   Rules checked: {result['total_rules_checked']}")
-                print(f"   Categories validated: {', '.join(result['relevant_categories'])}")
-                print("   ✅ Ready for code generation!")
+                logger.info(f"   Rules checked: {result['total_rules_checked']}")
+                logger.info(f"   Categories validated: {', '.join(result['relevant_categories'])}")
+                logger.info("   ✅ Ready for code generation!")
             else:
-                print(f"   Unexpected violations: {len(result['violations'])}")
+                logger.warning(f"   Unexpected violations: {len(result['violations'])}")
                 for violation in result['violations']:
-                    print(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
+                    logger.warning(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
 
         else:
-            print(f"❌ HTTP Error: {response.status_code}")
+            logger.error(f"❌ HTTP Error: {response.status_code}")
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        logger.error(f"❌ Error: {e}", exc_info=True)
         return False
 
-    print()
+    logger.info("")
 
     # Test 3: Code generation with validation
-    print("🧪 Test 3: Code Generation with Validation")
-    print("-" * 40)
+    logger.info("🧪 Test 3: Code Generation with Validation")
+    logger.info("-" * 40)
 
     generation_prompt = "create a simple function that adds two numbers"
 
-    print(f"Prompt: '{generation_prompt}'")
-    print("Expected: Should generate code after validation")
+    logger.info(f"Prompt: '{generation_prompt}'")
+    logger.info("Expected: Should generate code after validation")
 
     try:
         response = requests.post(
@@ -144,80 +152,80 @@ def test_automatic_enforcement():
 
         if response.status_code == 200:
             result = response.json()
-            print(f"✅ Generation Result: {'SUCCESS' if result['success'] else 'BLOCKED'}")
+            logger.info(f"✅ Generation Result: {'SUCCESS' if result['success'] else 'BLOCKED'}")
 
             if result['success']:
-                print(f"   Generated code length: {len(result['generated_code'])} characters")
-                print(f"   Validation info: {result['validation_info']['rules_checked']} rules checked")
-                print("   ✅ Code generated successfully!")
-                print()
-                print("Generated code preview:")
-                print("-" * 30)
+                logger.info(f"   Generated code length: {len(result['generated_code'])} characters")
+                logger.info(f"   Validation info: {result['validation_info']['rules_checked']} rules checked")
+                logger.info("   ✅ Code generated successfully!")
+                logger.info("")
+                logger.info("Generated code preview:")
+                logger.info("-" * 30)
                 # Show first few lines of generated code
                 generated_lines = result['generated_code'].splitlines()
                 for line in generated_lines[:10]:
-                    print(f"   {line}")
+                    logger.info(f"   {line}")
                 if len(generated_lines) > 10:
-                    print(f"   ... ({len(generated_lines) - 10} more lines)")
-                print("-" * 30)
+                    logger.info(f"   ... ({len(generated_lines) - 10} more lines)")
+                logger.info("-" * 30)
             else:
-                print(f"   Error: {result.get('error', 'Unknown error')}")
+                logger.error(f"   Error: {result.get('error', 'Unknown error')}")
                 if 'violations' in result:
-                    print(f"   Violations: {len(result['violations'])}")
+                    logger.error(f"   Violations: {len(result['violations'])}")
                     for violation in result['violations'][:2]:
-                        print(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
+                        logger.error(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
 
         else:
-            print(f"❌ HTTP Error: {response.status_code}")
-            print(f"Response: {response.text}")
+            logger.error(f"❌ HTTP Error: {response.status_code}")
+            logger.error(f"Response: {response.text}")
 
     except Exception as e:
-        print(f"❌ Error: {e}")
+        logger.error(f"❌ Error: {e}", exc_info=True)
         return False
 
-    print()
+    logger.info("")
 
     # Test 4: Service health and stats
-    print("🧪 Test 4: Service Health and Statistics")
-    print("-" * 40)
+    logger.info("🧪 Test 4: Service Health and Statistics")
+    logger.info("-" * 40)
 
     try:
         # Health check
         health_response = requests.get("http://localhost:5000/health", timeout=5)
         if health_response.status_code == 200:
             health_data = health_response.json()
-            print("✅ Service Health: OK")
-            print(f"   Status: {health_data.get('status', 'unknown')}")
-            print(f"   Total rules: {health_data.get('total_rules', 'unknown')}")
-            print(f"   Enforcement: {health_data.get('enforcement', 'unknown')}")
-            print(f"   Available integrations: {', '.join(health_data.get('integrations', []))}")
+            logger.info("✅ Service Health: OK")
+            logger.info(f"   Status: {health_data.get('status', 'unknown')}")
+            logger.info(f"   Total rules: {health_data.get('total_rules', 'unknown')}")
+            logger.info(f"   Enforcement: {health_data.get('enforcement', 'unknown')}")
+            logger.info(f"   Available integrations: {', '.join(health_data.get('integrations', []))}")
 
         # Stats
         stats_response = requests.get("http://localhost:5000/stats", timeout=5)
         if stats_response.status_code == 200:
             stats_data = stats_response.json()
-            print("✅ Service Statistics:")
-            print(f"   Total rules enforced: {stats_data.get('total_rules', 'unknown')}")
-            print(f"   Enforcement active: {stats_data.get('constitution_enforcement', 'unknown')}")
-            print(f"   Available integrations: {len(stats_data.get('integration_status', {}))}")
+            logger.info("✅ Service Statistics:")
+            logger.info(f"   Total rules enforced: {stats_data.get('total_rules', 'unknown')}")
+            logger.info(f"   Enforcement active: {stats_data.get('constitution_enforcement', 'unknown')}")
+            logger.info(f"   Available integrations: {len(stats_data.get('integration_status', {}))}")
 
     except Exception as e:
-        print(f"❌ Health check error: {e}")
+        logger.error(f"❌ Health check error: {e}", exc_info=True)
 
-    print()
-    print("=" * 60)
-    print("AUTOMATIC ENFORCEMENT TEST COMPLETE")
-    print("=" * 60)
-    print()
-    print("🎯 Key Results:")
-    print("✅ Invalid prompts are automatically blocked")
-    print("✅ Valid prompts pass validation and proceed to generation")
-    print("✅ All 293 constitution rules are enforced")
-    print("✅ Zero violations reach the AI services")
-    print("✅ Complete audit trail of validation decisions")
-    print()
-    print("🚀 The system now provides 100% automatic enforcement of all")
-    print("   ZeroUI constitution rules before any AI code generation occurs!")
+    logger.info("")
+    logger.info("=" * 60)
+    logger.info("AUTOMATIC ENFORCEMENT TEST COMPLETE")
+    logger.info("=" * 60)
+    logger.info("")
+    logger.info("🎯 Key Results:")
+    logger.info("✅ Invalid prompts are automatically blocked")
+    logger.info("✅ Valid prompts pass validation and proceed to generation")
+    logger.info("✅ All 293 constitution rules are enforced")
+    logger.info("✅ Zero violations reach the AI services")
+    logger.info("✅ Complete audit trail of validation decisions")
+    logger.info("")
+    logger.info("🚀 The system now provides 100% automatic enforcement of all")
+    logger.info("   ZeroUI constitution rules before any AI code generation occurs!")
 
     return True
 

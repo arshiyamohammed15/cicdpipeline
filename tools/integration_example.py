@@ -8,6 +8,7 @@ into your own applications and workflows.
 
 import sys
 import os
+import logging
 from pathlib import Path
 from config.constitution.rule_catalog import get_catalog_counts
 
@@ -15,22 +16,30 @@ from config.constitution.rule_catalog import get_catalog_counts
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-def demonstrate_integration():
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
+
+def demonstrate_integration() -> None:
     """Demonstrate integration with automatic enforcement."""
 
-    print("=" * 60)
-    print("INTEGRATION EXAMPLE: AUTOMATIC CONSTITUTION ENFORCEMENT")
-    print("=" * 60)
+    logger.info("=" * 60)
+    logger.info("INTEGRATION EXAMPLE: AUTOMATIC CONSTITUTION ENFORCEMENT")
+    logger.info("=" * 60)
     total_rules = get_catalog_counts().get("total_rules", "all")
-    print(f"This shows how to integrate automatic enforcement of all {total_rules} rules into your workflow.")
-    print()
+    logger.info(f"This shows how to integrate automatic enforcement of all {total_rules} rules into your workflow.")
+    logger.info("")
 
     # Example 1: Direct integration
-    print("📝 Example 1: Direct Integration")
-    print("-" * 40)
+    logger.info("📝 Example 1: Direct Integration")
+    logger.info("-" * 40)
 
-    print("Code before integration:")
-    print("""
+    logger.info("Code before integration:")
+    logger.info("""
 def generate_code_old(prompt: str) -> str:
     # This goes directly to AI without validation
     response = openai.Completion.create(
@@ -40,8 +49,8 @@ def generate_code_old(prompt: str) -> str:
     return response.choices[0].text
 """)
 
-    print("Code after integration:")
-    print("""
+    logger.info("Code after integration:")
+    logger.info("""
 def generate_code_new(prompt: str, file_type: str = "python") -> str:
     # Automatic constitution validation before AI generation
     from validator.integrations.integration_registry import IntegrationRegistry
@@ -73,14 +82,14 @@ def generate_code_new(prompt: str, file_type: str = "python") -> str:
     return result['generated_code']
 """)
 
-    print()
+    logger.info("")
 
     # Example 2: API integration
-    print("📝 Example 2: REST API Integration")
-    print("-" * 40)
+    logger.info("📝 Example 2: REST API Integration")
+    logger.info("-" * 40)
 
-    print("Frontend/IDE integration:")
-    print("""
+    logger.info("Frontend/IDE integration:")
+    logger.info("""
 async function generateCodeWithValidation(prompt: string, fileType: string) {
     const response = await fetch('http://localhost:5000/generate', {
         method: 'POST',
@@ -110,14 +119,14 @@ async function generateCodeWithValidation(prompt: string, fileType: string) {
 }
 """)
 
-    print()
+    logger.info("")
 
     # Example 3: Cursor IDE integration
-    print("📝 Example 3: Cursor IDE Integration")
-    print("-" * 40)
+    logger.info("📝 Example 3: Cursor IDE Integration")
+    logger.info("-" * 40)
 
-    print("Cursor configuration (.cursorrules):")
-    print("""
+    logger.info("Cursor configuration (.cursorrules):")
+    logger.info("""
 # Automatic constitution validation
     cursor.preImplementation: "Validate prompt against ALL Constitution rules before generation"
 
@@ -131,14 +140,14 @@ cursor.blockOnConstitutionViolations: true
 cursor.showConstitutionRecommendations: true
 """)
 
-    print()
+    logger.info("")
 
     # Example 4: CI/CD integration
-    print("📝 Example 4: CI/CD Integration")
-    print("-" * 40)
+    logger.info("📝 Example 4: CI/CD Integration")
+    logger.info("-" * 40)
 
-    print("GitHub Actions workflow:")
-    print("""
+    logger.info("GitHub Actions workflow:")
+    logger.info("""
 name: Constitution Validation
 on: [pull_request]
 
@@ -178,14 +187,14 @@ jobs:
         done
 """)
 
-    print()
+    logger.info("")
 
     # Example 5: Development workflow
-    print("📝 Example 5: Development Workflow Integration")
-    print("-" * 40)
+    logger.info("📝 Example 5: Development Workflow Integration")
+    logger.info("-" * 40)
 
-    print("Pre-commit hook (.git/hooks/pre-commit):")
-    print("""
+    logger.info("Pre-commit hook (.git/hooks/pre-commit):")
+    logger.info("""
 #!/bin/bash
 # Constitution validation pre-commit hook
 
@@ -226,21 +235,21 @@ kill $SERVICE_PID 2>/dev/null
 echo "✅ Constitution validation passed"
 """)
 
-    print()
+    logger.info("")
 
-    print("=" * 60)
-    print("INTEGRATION COMPLETE")
-    print("=" * 60)
-    print()
-    print("🎯 Integration Benefits:")
-    print("✅ Zero constitution violations reach AI services")
-    print(f"✅ All {total_rules} rules automatically enforced")
-    print("✅ Complete audit trail of validation decisions")
-    print("✅ Seamless integration with existing workflows")
-    print("✅ Real-time feedback during development")
-    print()
-    print("🚀 The system now provides enterprise-grade automatic enforcement")
-    print("   of all ZeroUI constitution rules across all development workflows!")
+    logger.info("=" * 60)
+    logger.info("INTEGRATION COMPLETE")
+    logger.info("=" * 60)
+    logger.info("")
+    logger.info("🎯 Integration Benefits:")
+    logger.info("✅ Zero constitution violations reach AI services")
+    logger.info(f"✅ All {total_rules} rules automatically enforced")
+    logger.info("✅ Complete audit trail of validation decisions")
+    logger.info("✅ Seamless integration with existing workflows")
+    logger.info("✅ Real-time feedback during development")
+    logger.info("")
+    logger.info("🚀 The system now provides enterprise-grade automatic enforcement")
+    logger.info("   of all ZeroUI constitution rules across all development workflows!")
 
 if __name__ == '__main__':
     demonstrate_integration()

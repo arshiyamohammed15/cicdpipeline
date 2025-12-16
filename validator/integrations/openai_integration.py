@@ -19,16 +19,34 @@ class OpenAIIntegration(AIServiceIntegration):
     def _initialize_client(self):
         """Initialize OpenAI client."""
         api_key = os.getenv('OPENAI_API_KEY')
+        
+        # Validate API key: check not None, not empty, proper format
         if not api_key:
             self.logger.warning("OPENAI_API_KEY not set, OpenAI integration disabled")
+            return
+        
+        api_key = api_key.strip()
+        if not api_key:
+            self.logger.error("OPENAI_API_KEY is empty or whitespace only")
+            return
+        
+        # Validate API key format (OpenAI keys typically start with 'sk-' and are 51+ characters)
+        if not api_key.startswith('sk-') or len(api_key) < 20:
+            self.logger.error("OPENAI_API_KEY format appears invalid (should start with 'sk-' and be at least 20 characters)")
             return
 
         try:
             self.client = openai.OpenAI(api_key=api_key)
             self.model = os.getenv('OPENAI_MODEL', 'gpt-4')
+            
+            # Validate model name format
+            if not self.model or not isinstance(self.model, str) or len(self.model.strip()) == 0:
+                self.logger.warning(f"Invalid model name '{self.model}', using default 'gpt-4'")
+                self.model = 'gpt-4'
+            
             self.logger.info(f"OpenAI client initialized with model: {self.model}")
         except Exception as e:
-            self.logger.error(f"Failed to initialize OpenAI client: {e}")
+            self.logger.error(f"Failed to initialize OpenAI client: {e}", exc_info=True)
             self.client = None
 
     def generate_code(self, prompt: str, context: Dict[str, Any]) -> Dict[str, Any]:

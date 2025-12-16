@@ -10,12 +10,13 @@ import json
 import re
 import os
 import time
-from typing import Dict, List, Tuple, Any, Optional
+from typing import Dict, List, Tuple, Any, Optional, Union
 from pathlib import Path
 
 from .models import Violation, ValidationResult, Severity
 from .analyzer import CodeAnalyzer
 from .reporter import ReportGenerator
+from .factories import get_validator_factory
 
 # Import enhanced configuration manager
 import sys
@@ -30,25 +31,40 @@ class ConstitutionValidator:
     This class loads the constitution rules, analyzes code files,
     and generates compliance reports. The total rule count is validated
     against the single source of truth during CI.
+    
+    Uses dependency injection for better testability and maintainability.
     """
 
-    def __init__(self, config_path: str = "config/constitution_rules.json"):
+    def __init__(
+        self,
+        config_path: str = "config/constitution_rules.json",
+        analyzer: Optional[CodeAnalyzer] = None,
+        reporter: Optional[ReportGenerator] = None,
+        config_manager: Optional[EnhancedConfigManager] = None,
+        validator_factory = None
+    ):
         """
-        Initialize the validator with configuration.
+        Initialize the validator with configuration and dependencies.
 
         Args:
             config_path: Path to the rules configuration JSON file
+            analyzer: Optional CodeAnalyzer instance (injected dependency)
+            reporter: Optional ReportGenerator instance (injected dependency)
+            config_manager: Optional EnhancedConfigManager instance (injected dependency)
+            validator_factory: Optional ValidatorFactory instance (injected dependency)
         """
         self.config_path = config_path
         self.config = self._load_config()
-        self.analyzer = CodeAnalyzer()
-        self.reporter = ReportGenerator()
+        
+        # Dependency injection - use provided instances or create defaults
+        self.analyzer = analyzer or CodeAnalyzer()
+        self.reporter = reporter or ReportGenerator()
+        self.config_manager = config_manager or EnhancedConfigManager()
+        self.validator_factory = validator_factory or get_validator_factory()
+        
         self.start_time = time.time()
 
-        # Initialize enhanced configuration manager
-        self.config_manager = EnhancedConfigManager()
-
-    def _normalize_rule_ids(self, violations):
+    def _normalize_rule_ids(self, violations: List[Violation]) -> List[Violation]:
         """Ensure every violation has a rule_id; derive from rule_number if missing."""
         normalized = []
         for v in violations:
@@ -56,7 +72,8 @@ class ConstitutionValidator:
                 try:
                     rn = int(getattr(v, "rule_number", 0))
                     setattr(v, "rule_id", f"rule_{rn:03d}" if rn > 0 else "rule_unknown")
-                except Exception:
+                except Exception as e:
+                    self._logger.warning(f"Failed to generate rule_id for violation: {e}", exc_info=True)
                     setattr(v, "rule_id", "rule_unknown")
             normalized.append(v)
         return normalized
@@ -95,29 +112,50 @@ class ConstitutionValidator:
         start_time = time.time()
 
         # Pre-implementation validation if prompt provided
-        if prompt:
-            try:
-                from .pre_implementation_hooks import PreImplementationHookManager
-                hook_manager = PreImplementationHookManager()
+        pre_validation_result = self._validate_pre_implementation(prompt, file_path, start_time)
+        if pre_validation_result:
+            return pre_validation_result
 
-                file_type = "typescript" if file_path.endswith(('.ts', '.tsx')) else "python"
-                pre_result = hook_manager.validate_before_generation(prompt, file_type=file_type)
+        # Read and parse file
+        content, tree = self._read_and_parse_file(file_path, start_time)
+        if isinstance(content, ValidationResult):
+            return content
 
-                if not pre_result['valid']:
-                    # Return early with prompt violations
-                    return ValidationResult(
-                        file_path=file_path,
-                        total_violations=len(pre_result['violations']),
-                        violations_by_severity={Severity.ERROR: len(pre_result['violations'])},
-                        violations=pre_result['violations'],
-                        processing_time=time.time() - start_time,
-                        compliance_score=0.0,
-                        metadata={'pre_validation_failed': True, 'recommendations': pre_result['recommendations']}
-                    )
-            except Exception as e:
-                print(f"Warning: Pre-implementation validation failed: {e}")
-                # Continue with normal validation if pre-validation fails
+        # Analyze the code
+        violations = self._check_all_rule_categories(tree, file_path, content)
 
+        # Calculate metrics and return result
+        return self._build_validation_result(file_path, violations, start_time)
+
+    def _validate_pre_implementation(self, prompt: Optional[str], file_path: str, 
+                                     start_time: float) -> Optional[ValidationResult]:
+        """Perform pre-implementation validation if prompt is provided."""
+        if not prompt:
+            return None
+
+        try:
+            from .pre_implementation_hooks import PreImplementationHookManager
+            hook_manager = PreImplementationHookManager()
+
+            file_type = "typescript" if file_path.endswith(('.ts', '.tsx')) else "python"
+            pre_result = hook_manager.validate_before_generation(prompt, file_type=file_type)
+
+            if not pre_result['valid']:
+                return ValidationResult(
+                    file_path=file_path,
+                    total_violations=len(pre_result['violations']),
+                    violations_by_severity={Severity.ERROR: len(pre_result['violations'])},
+                    violations=pre_result['violations'],
+                    processing_time=time.time() - start_time,
+                    compliance_score=0.0,
+                    metadata={'pre_validation_failed': True, 'recommendations': pre_result['recommendations']}
+                )
+        except Exception as e:
+            self._logger.warning(f"Warning: Pre-implementation validation failed: {e}", exc_info=True)
+        return None
+
+    def _read_and_parse_file(self, file_path: str, start_time: float) -> Union[tuple[str, ast.AST], ValidationResult]:
+        """Read file content and parse into AST, handling errors."""
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 content = f.read()
@@ -127,12 +165,11 @@ class ConstitutionValidator:
         # Parse the file into AST
         try:
             tree = ast.parse(content, filename=file_path)
+            return content, tree
         except SyntaxError as e:
-            # Handle syntax errors as critical violations
             violation = Violation(
                 rule_id="syntax_error",
                 rule_name="Syntax Error",
-                # Test Everything
                 severity=Severity.ERROR,
                 message=f"Syntax error in file: {e.msg}",
                 file_path=file_path,
@@ -150,7 +187,8 @@ class ConstitutionValidator:
                 compliance_score=0.0
             )
 
-        # Analyze the code
+    def _check_all_rule_categories(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
+        """Check all rule categories and return violations."""
         violations = []
 
         # Check each rule category (only if rules are enabled) and normalize rule_id
@@ -177,7 +215,11 @@ class ConstitutionValidator:
         violations.extend(self._check_typescript_rules(tree, file_path, content))
         violations.extend(self._check_storage_governance_rules(tree, file_path, content))
 
-        # Calculate metrics
+        return violations
+
+    def _build_validation_result(self, file_path: str, violations: List[Violation], 
+                                 start_time: float) -> ValidationResult:
+        """Build and return ValidationResult from violations."""
         violations_by_severity = self._count_violations_by_severity(violations)
         total_violations = len(violations)
         compliance_score = self._calculate_compliance_score(violations, total_violations)
@@ -195,44 +237,25 @@ class ConstitutionValidator:
     def _check_basic_work_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check basic work rules (4, 5, 10)."""
         violations = []
-
-        # Check if basic work rules are enabled
-        try:
-            from .rules.basic_work import BasicWorkValidator
-            validator = BasicWorkValidator()
+        validator = self.validator_factory.create('basic_work')
+        if validator:
             violations.extend(validator.validate_all(tree, content, file_path))
-        except ImportError:
-            # Fallback to basic pattern checking
-            pass
-
         return violations
 
     def _check_requirements_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check requirements and specification rules (1, 2)."""
         violations = []
-
-        # Check if requirements rules are enabled
-        try:
-            from .rules.requirements import RequirementsValidator
-            validator = RequirementsValidator()
+        validator = self.validator_factory.create('requirements')
+        if validator:
             violations.extend(validator.validate_all(tree, content, file_path))
-        except ImportError:
-            # Fallback to basic pattern checking
-            pass
-
         return violations
 
     def _check_privacy_security_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check privacy and security rules (3, 11, 12, 27, 36)."""
         violations = []
-
-        # Import the privacy validator
-        from .rules.privacy import PrivacyValidator
-        privacy_validator = PrivacyValidator()
-
-        # Run all privacy validations
-        violations.extend(privacy_validator.validate_all(tree, content, file_path))
-
+        validator = self.validator_factory.create('privacy')
+        if validator:
+            violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_performance_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
@@ -282,14 +305,9 @@ class ConstitutionValidator:
     def _check_architecture_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check architecture rules (19, 21, 23, 24, 28)."""
         violations = []
-
-        # Import the architecture validator
-        from .rules.architecture import ArchitectureValidator
-        architecture_validator = ArchitectureValidator()
-
-        # Run all architecture validations
-        violations.extend(architecture_validator.validate_all(tree, content, file_path))
-
+        validator = self.validator_factory.create('architecture')
+        if validator:
+            violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_testing_safety_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
@@ -383,48 +401,31 @@ class ConstitutionValidator:
     def _check_system_design_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check system design rules (22, 25, 29, 30)."""
         violations = []
-
-        # Import the system design validator
-        from .rules.system_design import SystemDesignValidator
-        system_design_validator = SystemDesignValidator()
-
-        # Run all system design validations
-        violations.extend(system_design_validator.validate_all(tree, content, file_path))
-
+        validator = self.validator_factory.create('system_design')
+        if validator:
+            violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_problem_solving_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check problem-solving rules (33, 35, 39)."""
         violations = []
-
-        # Import the problem-solving validator
-        from .rules.problem_solving import ProblemSolvingValidator
-        problem_solving_validator = ProblemSolvingValidator()
-
-        # Run all problem-solving validations
-        violations.extend(problem_solving_validator.validate_all(tree, content, file_path))
-
+        validator = self.validator_factory.create('problem_solving')
+        if validator:
+            violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_platform_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check platform rules (42, 43)."""
         violations = []
-
-        # Import the platform validator
-        from .rules.platform import PlatformValidator
-        platform_validator = PlatformValidator()
-
-        # Run all platform validations
-        violations.extend(platform_validator.validate_all(tree, content, file_path))
-
+        validator = self.validator_factory.create('platform')
+        if validator:
+            violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_teamwork_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check teamwork rules (58)."""
         violations = []
-
-        # Import the teamwork validator
-        from .rules.teamwork import TeamworkValidator
+        validator = self.validator_factory.create('teamwork')
         teamwork_validator = TeamworkValidator()
 
         # Run all teamwork validations
@@ -435,87 +436,74 @@ class ConstitutionValidator:
     def _check_code_review_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check code review rules."""
         violations = []
-
-        # Import the code review validator
-        from .rules.code_review import CodeReviewValidator
-        code_review_validator = CodeReviewValidator()
-
-        # Run all code review validations
-        violations.extend(code_review_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('code_review')
+        if validator:
+            # Some validators use validate() instead of validate_all()
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_api_contracts_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check API contracts rules."""
         violations = []
-
-        # Import the API contracts validator
-        from .rules.api_contracts import APIContractsValidator
-        api_contracts_validator = APIContractsValidator()
-
-        # Run all API contracts validations
-        violations.extend(api_contracts_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('api_contracts')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_coding_standards_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check coding standards rules."""
         violations = []
-
-        # Import the coding standards validator
-        from .rules.coding_standards import CodingStandardsValidator
-        coding_standards_validator = CodingStandardsValidator()
-
-        # Run all coding standards validations
-        violations.extend(coding_standards_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('coding_standards')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_comments_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check comments rules."""
         violations = []
-
-        # Import the comments validator
-        from .rules.comments import CommentsValidator
-        comments_validator = CommentsValidator()
-
-        # Run all comments validations
-        violations.extend(comments_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('comments')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_folder_standards_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check folder standards rules."""
         violations = []
-
-        # Import the folder standards validator
-        from .rules.folder_standards import FolderStandardsValidator
-        folder_standards_validator = FolderStandardsValidator()
-
-        # Run all folder standards validations
-        violations.extend(folder_standards_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('folder_standards')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_logging_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check logging rules."""
         violations = []
-
-        # Import the logging validator
-        from .rules.logging import LoggingValidator
-        logging_validator = LoggingValidator()
-
-        # Run all logging validations
-        violations.extend(logging_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('logging')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_exception_handling_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check exception handling rules (150-181)."""
         violations = []
-
-        # Import the exception handling validator
-        from .rules.exception_handling import ExceptionHandlingValidator
+        validator = self.validator_factory.create('exception_handling')
         exception_validator = ExceptionHandlingValidator()
 
         # Run all exception handling validations
@@ -526,38 +514,39 @@ class ConstitutionValidator:
     def _check_typescript_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check TypeScript rules (182-215)."""
         violations = []
-
-        # Import the TypeScript validator
-        from .rules.typescript import TypeScriptValidator
-        typescript_validator = TypeScriptValidator()
-
-        # Run all TypeScript validations
-        typescript_violations = typescript_validator.validate_file(file_path, content)
-
-        # Convert to Violation objects
-        for violation in typescript_violations:
-            violations.append(Violation(
-                rule_id=violation['rule_id'],
-                severity=Severity.ERROR if violation['severity'] == 'error' else
-                        Severity.WARNING if violation['severity'] == 'warning' else Severity.INFO,
-                message=violation['message'],
-                line=violation['line'],
-                file_path=violation['file']
-            ))
-
+        validator = self.validator_factory.create('typescript')
+        if validator:
+            # TypeScript validator has a different interface
+            if hasattr(validator, 'validate_file'):
+                typescript_violations = validator.validate_file(file_path, content)
+                # Convert to Violation objects
+                for violation in typescript_violations:
+                    violations.append(Violation(
+                        rule_id=violation.get('rule_id', 'typescript_rule'),
+                        severity=Severity.ERROR if violation.get('severity') == 'error' else
+                                Severity.WARNING if violation.get('severity') == 'warning' else Severity.INFO,
+                        message=violation.get('message', 'TypeScript violation'),
+                        line_number=violation.get('line', 0),
+                        file_path=violation.get('file', file_path),
+                        column_number=0,
+                        code_snippet="",
+                        fix_suggestion=""
+                    ))
+            elif hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _check_storage_governance_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check storage governance rules (216-228)."""
         violations = []
-
-        # Import the storage governance validator
-        from .rules.storage_governance import StorageGovernanceValidator
-        storage_validator = StorageGovernanceValidator()
-
-        # Run all storage governance validations
-        violations.extend(storage_validator.validate(file_path, content))
-
+        validator = self.validator_factory.create('storage_governance')
+        if validator:
+            if hasattr(validator, 'validate'):
+                violations.extend(validator.validate(file_path, content))
+            else:
+                violations.extend(validator.validate_all(tree, content, file_path))
         return violations
 
     def _count_violations_by_severity(self, violations: List[Violation]) -> Dict[Severity, int]:
@@ -613,18 +602,18 @@ class ConstitutionValidator:
         python_files = list(directory.glob(pattern))
 
         if not python_files:
-            print(f"No Python files found in {directory_path}")
+            self._logger.warning(f"No Python files found in {directory_path}")
             return results
 
-        print(f"Validating {len(python_files)} Python files...")
+        self._logger.info(f"Validating {len(python_files)} Python files...")
 
         for file_path in python_files:
             try:
                 result = self.validate_file(str(file_path))
                 results[str(file_path)] = result
-                print(f"[OK] {file_path.name}: {result.compliance_score}% compliance")
+                self._logger.info(f"[OK] {file_path.name}: {result.compliance_score}% compliance")
             except Exception as e:
-                print(f"[ERROR] Error validating {file_path}: {e}")
+                self._logger.error(f"[ERROR] Error validating {file_path}: {e}", exc_info=True)
 
         return results
 

@@ -10,9 +10,12 @@ Root Cause Prevention:
 - Always use programmatic lookup from constitution rules database
 """
 
+import logging
 from typing import Optional, Dict, Any
 from config.constitution.constitution_rules_json import ConstitutionRulesJSON
 from config.constitution.rule_count_loader import get_rule_count_loader
+
+logger = logging.getLogger(__name__)
 
 
 class RuleNumberValidator:
@@ -137,6 +140,6 @@ class RuleNumberValidator:
                 results[rule_num] = True
             except ValueError as e:
                 results[rule_num] = False
-                print(f"ERROR: Rule {rule_num} validation failed: {e}")
+                logger.error(f"ERROR: Rule {rule_num} validation failed: {e}", exc_info=True)
 
         return results

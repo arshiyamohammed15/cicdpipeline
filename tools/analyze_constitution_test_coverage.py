@@ -6,10 +6,21 @@ This script analyzes the actual test coverage vs rule count to identify
 the root cause of the discrepancy.
 """
 import json
+import logging
+import sys
 from pathlib import Path
+from typing import Dict
 from collections import defaultdict
 
-def count_rules():
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
+
+def count_rules() -> tuple[int, Dict[str, int]]:
     """Count actual rules in JSON files."""
     constitution_dir = Path('docs/constitution')
     total = 0
@@ -25,7 +36,7 @@ def count_rules():
     
     return total, by_file
 
-def analyze_test_structure():
+def analyze_test_structure() -> Dict[str, Dict[str, int]]:
     """Analyze how tests are structured."""
     test_files = {
         'test_constitution_all_files.py': Path('tests/test_constitution_all_files.py'),
@@ -60,62 +71,62 @@ def analyze_test_structure():
     
     return results
 
-def main():
-    print("=" * 70)
-    print("CONSTITUTION RULES VS TESTS ANALYSIS")
-    print("=" * 70)
+def main() -> None:
+    logger.info("=" * 70)
+    logger.info("CONSTITUTION RULES VS TESTS ANALYSIS")
+    logger.info("=" * 70)
     
     # Count rules
     total_rules, by_file = count_rules()
-    print(f"\n📊 Total Rules: {total_rules}")
-    print("\nRules by File:")
+    logger.info(f"\n📊 Total Rules: {total_rules}")
+    logger.info("\nRules by File:")
     for filename, count in sorted(by_file.items()):
-        print(f"  {filename}: {count} rules")
+        logger.info(f"  {filename}: {count} rules")
     
     # Analyze test structure
-    print("\n" + "=" * 70)
-    print("TEST STRUCTURE ANALYSIS")
-    print("=" * 70)
+    logger.info("\n" + "=" * 70)
+    logger.info("TEST STRUCTURE ANALYSIS")
+    logger.info("=" * 70)
     
     test_analysis = analyze_test_structure()
     total_test_functions = sum(r['test_functions'] for r in test_analysis.values())
     total_subtests = sum(r['subtest_usage'] for r in test_analysis.values())
     
-    print(f"\n📝 Test Functions: {total_test_functions}")
-    print(f"🔄 subTest() calls: {total_subtests}")
+    logger.info(f"\n📝 Test Functions: {total_test_functions}")
+    logger.info(f"🔄 subTest() calls: {total_subtests}")
     
-    print("\nBreakdown by File:")
+    logger.info("\nBreakdown by File:")
     for name, data in test_analysis.items():
-        print(f"  {name}:")
-        print(f"    Test functions: {data['test_functions']}")
-        print(f"    subTest calls: {data['subtest_usage']}")
-        print(f"    Parametrize: {data['parametrize']}")
+        logger.info(f"  {name}:")
+        logger.info(f"    Test functions: {data['test_functions']}")
+        logger.info(f"    subTest calls: {data['subtest_usage']}")
+        logger.info(f"    Parametrize: {data['parametrize']}")
     
     # Root cause analysis
-    print("\n" + "=" * 70)
-    print("ROOT CAUSE ANALYSIS")
-    print("=" * 70)
+    logger.info("\n" + "=" * 70)
+    logger.info("ROOT CAUSE ANALYSIS")
+    logger.info("=" * 70)
     
-    print(f"\n✅ Total Rules: {total_rules}")
-    print(f"✅ Test Functions: {total_test_functions}")
-    print(f"✅ Pytest Reports: 259 tests")
-    print(f"✅ subTest Iterations: ~{total_subtests} (estimated)")
+    logger.info(f"\n✅ Total Rules: {total_rules}")
+    logger.info(f"✅ Test Functions: {total_test_functions}")
+    logger.info(f"✅ Pytest Reports: 259 tests")
+    logger.info(f"✅ subTest Iterations: ~{total_subtests} (estimated)")
     
-    print("\n🔍 ROOT CAUSE:")
-    print("  1. Pytest counts TEST FUNCTIONS, not subTest() iterations")
-    print("  2. Many test functions use subTest() to iterate over multiple rules")
-    print("  3. Each test function counts as 1 test, even if it tests 100+ rules")
-    print("  4. The 259 count includes:")
-    print("     - Test functions (~144)")
-    print("     - Some subTest iterations counted by pytest")
-    print("     - Meta-tests (file structure, counts, etc.)")
+    logger.info("\n🔍 ROOT CAUSE:")
+    logger.info("  1. Pytest counts TEST FUNCTIONS, not subTest() iterations")
+    logger.info("  2. Many test functions use subTest() to iterate over multiple rules")
+    logger.info("  3. Each test function counts as 1 test, even if it tests 100+ rules")
+    logger.info("  4. The 259 count includes:")
+    logger.info("     - Test functions (~144)")
+    logger.info("     - Some subTest iterations counted by pytest")
+    logger.info("     - Meta-tests (file structure, counts, etc.)")
     
-    print("\n📋 VERIFICATION:")
-    print("  - All 415 rules ARE tested via subTest() iterations")
-    print("  - The discrepancy is a REPORTING issue, not a COVERAGE issue")
-    print("  - Pytest's test count doesn't reflect subTest iterations accurately")
+    logger.info("\n📋 VERIFICATION:")
+    logger.info("  - All 415 rules ARE tested via subTest() iterations")
+    logger.info("  - The discrepancy is a REPORTING issue, not a COVERAGE issue")
+    logger.info("  - Pytest's test count doesn't reflect subTest iterations accurately")
     
-    print("\n" + "=" * 70)
+    logger.info("\n" + "=" * 70)
 
 if __name__ == '__main__':
     main()

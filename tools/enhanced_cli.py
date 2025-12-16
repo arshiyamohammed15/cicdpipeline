@@ -73,14 +73,24 @@ def safe_print(text: str, file=None) -> None:
         text: Text to print
         file: Output file (default: stdout)
     """
+    logger_instance = logging.getLogger(__name__)
     try:
-        if file is None:
-            file = sys.stdout
-        print(text, file=file)
+        if file is None or file == sys.stdout:
+            logger_instance.info(text)
+        elif file == sys.stderr:
+            logger_instance.error(text)
+        else:
+            # For other files, use logging with custom handler
+            logger_instance.info(text)
     except UnicodeEncodeError:
         # Fallback: replace problematic characters with ASCII equivalents
         safe_text = text.encode('ascii', 'replace').decode('ascii')
-        print(safe_text, file=file)
+        if file is None or file == sys.stdout:
+            logger_instance.info(safe_text)
+        elif file == sys.stderr:
+            logger_instance.error(safe_text)
+        else:
+            logger_instance.info(safe_text)
 
 
 def sanitize_unicode(text: str) -> str:
@@ -129,9 +139,11 @@ class EnhancedCLI:
         try:
             from config.constitution.logging_config import setup_logging
             setup_logging("config", "INFO")
-        except Exception:
+        except Exception as e:
             # Fallback: continue without constitution logging setup
-            pass
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Failed to setup constitution logging: {e}", exc_info=True)
         self.config_manager = EnhancedConfigManager()
         self.validator = OptimizedConstitutionValidator()
         self.rule_selector = IntelligentRuleSelector(self.config_manager)
@@ -260,8 +272,11 @@ class EnhancedCLI:
                     content = f.read()
                 context = self.rule_selector.analyze_file_context(file_path, content)
                 strategy = self.rule_selector.get_validation_strategy(context)
-            except Exception:
+            except Exception as e:
                 # If context analysis fails, proceed without it
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.warning(f"Failed to analyze file context for {file_path}: {e}", exc_info=True)
                 context = None
                 strategy = None
 
@@ -624,7 +639,7 @@ class EnhancedCLI:
 
         return False
 
-    def _switch_backend(self, new_backend: str):
+    def _switch_backend(self, new_backend: str) -> None:
         """Switch the default backend."""
         try:
             success = self.config_manager.switch_constitution_backend(new_backend)
@@ -635,7 +650,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error switching backend: {e}")
 
-    def _sync_backends(self):
+    def _sync_backends(self) -> None:
         """Synchronize backends."""
         try:
             safe_print("Synchronizing backends...")
@@ -653,7 +668,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error synchronizing backends: {e}")
 
-    def _migrate_backends(self, migration_type: str):
+    def _migrate_backends(self, migration_type: str) -> None:
         """Migrate data between backends."""
         try:
             safe_print(f"Starting migration: {migration_type}")
@@ -679,7 +694,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error during migration: {e}")
 
-    def _verify_sync(self):
+    def _verify_sync(self) -> None:
         """Verify backend synchronization."""
         try:
             from config.constitution.sync_manager import verify_sync
@@ -703,7 +718,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error verifying sync: {e}")
 
-    def _verify_consistency(self):
+    def _verify_consistency(self) -> None:
         """Verify consistency across Markdown, DB, JSON export, and config."""
         try:
             from config.constitution.sync_manager import get_sync_manager
@@ -779,7 +794,7 @@ class EnhancedCLI:
             import traceback
             safe_print(traceback.format_exc())
 
-    def _show_backend_status(self):
+    def _show_backend_status(self) -> None:
         """Show status of all backends."""
         try:
             status = self.config_manager.get_constitution_backend_status()
@@ -822,7 +837,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error getting backend status: {e}")
 
-    def _repair_sync(self):
+    def _repair_sync(self) -> None:
         """Repair backend synchronization."""
         try:
             safe_print("Repairing backend synchronization...")
@@ -840,7 +855,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error repairing sync: {e}")
 
-    def _migrate_config(self):
+    def _migrate_config(self) -> None:
         """Migrate configuration from v1.0 to v2.0."""
         try:
             safe_print("Migrating configuration from v1.0 to v2.0...")
@@ -855,7 +870,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error migrating configuration: {e}")
 
-    def _validate_config(self):
+    def _validate_config(self) -> None:
         """Validate v2.0 configuration."""
         try:
             safe_print("Validating configuration...")
@@ -869,7 +884,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error validating configuration: {e}")
 
-    def _show_config_info(self):
+    def _show_config_info(self) -> None:
         """Show configuration information and migration status."""
         try:
             safe_print("Configuration Information")
@@ -911,7 +926,7 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"[FAIL] Error getting configuration info: {e}")
 
-    def _rebuild_from_markdown(self):
+    def _rebuild_from_markdown(self) -> None:
         """
         Rebuild SQLite and JSON databases from Markdown (single source of truth).
 
@@ -923,27 +938,53 @@ class EnhancedCLI:
         5. Restores preserved enabled/disabled states
         6. Validates consistency across all sources
         """
-        from config.constitution.rule_extractor import ConstitutionRuleExtractor
-        from config.constitution.database import ConstitutionRulesDB
-        import json
-        from pathlib import Path
-        from datetime import datetime
-
         safe_print("\n" + "="*70)
         safe_print("REBUILDING FROM MARKDOWN (Single Source of Truth)")
         safe_print("="*70)
 
         # Step 1: Extract rules from Markdown
+        rules, extractor = self._extract_rules_from_markdown()
+        if not rules:
+            return
+
+        # Step 2: Preserve current enabled/disabled states
+        preserved_states = self._preserve_rule_states()
+
+        # Step 3: Rebuild SQLite database
+        if not self._rebuild_sqlite_database(rules, extractor, preserved_states):
+            return
+
+        # Step 4: Rebuild JSON database
+        if not self._rebuild_json_database(rules, extractor, preserved_states):
+            return
+
+        # Step 5: Update config file
+        self._update_config_file(rules)
+
+        # Step 6: Verify consistency
+        self._verify_rebuild_consistency()
+
+        self._print_rebuild_completion()
+
+    def _extract_rules_from_markdown(self) -> tuple[List[Dict[str, Any]], Any]:
+        """Extract rules from Markdown file."""
+        from config.constitution.rule_extractor import ConstitutionRuleExtractor
+        
         safe_print("\n[1/6] Extracting rules from Markdown...")
         extractor = ConstitutionRuleExtractor("docs/architecture/ZeroUI2.0_Master_Constitution.md")
         try:
             rules = extractor.extract_all_rules()
             safe_print(f"✓ Found {len(rules)} rules in Markdown")
+            return rules, extractor
         except Exception as e:
             safe_print(f"✗ Failed to extract rules: {e}")
-            return
+            return [], None
 
-        # Step 2: Preserve current enabled/disabled states
+    def _preserve_rule_states(self) -> Dict[int, Dict[str, Any]]:
+        """Preserve current enabled/disabled states from config."""
+        import json
+        from pathlib import Path
+        
         safe_print("\n[2/6] Preserving enabled/disabled states...")
         preserved_states = {}
         try:
@@ -963,8 +1004,15 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"⚠ Warning: Could not preserve states: {e}")
             preserved_states = {}
+        return preserved_states
 
-        # Step 3: Rebuild SQLite database
+    def _rebuild_sqlite_database(self, rules: List[Dict[str, Any]], extractor: Any, 
+                                 preserved_states: Dict[int, Dict[str, Any]]) -> bool:
+        """Rebuild SQLite database with rules from Markdown."""
+        from config.constitution.database import ConstitutionRulesDB
+        import json
+        from pathlib import Path
+        
         safe_print("\n[3/6] Rebuilding SQLite database...")
         try:
             db_path = Path("config/constitution_rules.db")
@@ -979,129 +1027,82 @@ class EnhancedCLI:
                 conn.commit()
 
             # Insert all rules from Markdown
-            import json
             with db.get_connection() as conn:
                 cursor = conn.cursor()
-
-                for rule in rules:
-                    # Insert rule
-                    cursor.execute("""
-                        INSERT OR REPLACE INTO constitution_rules (rule_number, title, category, priority, content, json_metadata)
-                        VALUES (?, ?, ?, ?, ?, ?)
-                    """, (
-                        rule['rule_number'],
-                        rule['title'],
-                        rule['category'],
-                        rule['priority'],
-                        rule['content'],
-                        json.dumps(rule)
-                    ))
-
-                    # Insert configuration with preserved enabled/disabled state
-                    enabled = 1 if preserved_states.get(rule['rule_number'], {}).get("enabled", True) else 0
-                    disabled_reason = preserved_states.get(rule['rule_number'], {}).get("disabled_reason")
-                    disabled_at = preserved_states.get(rule['rule_number'], {}).get("disabled_at")
-
-                    cursor.execute("""
-                        INSERT OR REPLACE INTO rule_configuration (rule_number, enabled, config_data, disabled_reason, disabled_at)
-                        VALUES (?, ?, ?, ?, ?)
-                    """, (
-                        rule['rule_number'],
-                        enabled,
-                        json.dumps({"default_enabled": True, "notes": ""}),
-                        disabled_reason,
-                        disabled_at
-                    ))
-
-                # Insert categories
-                for category_name, category_info in extractor.categories.items():
-                    rule_count = len([r for r in rules if r['category'] == category_name])
-                    cursor.execute("""
-                        INSERT OR REPLACE INTO rule_categories (name, description, priority, rule_count)
-                        VALUES (?, ?, ?, ?)
-                    """, (
-                        category_name,
-                        category_info['description'],
-                        category_info['priority'],
-                        rule_count
-                    ))
-
+                self._insert_rules_into_sqlite(cursor, rules, preserved_states)
+                self._insert_categories_into_sqlite(cursor, rules, extractor)
                 conn.commit()
 
             db.close()
             safe_print(f"✓ Rebuilt SQLite database with {len(rules)} rules")
+            return True
         except Exception as e:
             safe_print(f"✗ Failed to rebuild SQLite: {e}")
             import traceback
             safe_print(traceback.format_exc())
-            return
+            return False
 
-        # Step 4: Rebuild JSON database
+    def _insert_rules_into_sqlite(self, cursor: Any, rules: List[Dict[str, Any]], 
+                                  preserved_states: Dict[int, Dict[str, Any]]) -> None:
+        """Insert rules into SQLite database."""
+        import json
+        
+        for rule in rules:
+            # Insert rule
+            cursor.execute("""
+                INSERT OR REPLACE INTO constitution_rules (rule_number, title, category, priority, content, json_metadata)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (
+                rule['rule_number'],
+                rule['title'],
+                rule['category'],
+                rule['priority'],
+                rule['content'],
+                json.dumps(rule)
+            ))
+
+            # Insert configuration with preserved enabled/disabled state
+            enabled = 1 if preserved_states.get(rule['rule_number'], {}).get("enabled", True) else 0
+            disabled_reason = preserved_states.get(rule['rule_number'], {}).get("disabled_reason")
+            disabled_at = preserved_states.get(rule['rule_number'], {}).get("disabled_at")
+
+            cursor.execute("""
+                INSERT OR REPLACE INTO rule_configuration (rule_number, enabled, config_data, disabled_reason, disabled_at)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                rule['rule_number'],
+                enabled,
+                json.dumps({"default_enabled": True, "notes": ""}),
+                disabled_reason,
+                disabled_at
+            ))
+
+    def _insert_categories_into_sqlite(self, cursor: Any, rules: List[Dict[str, Any]], 
+                                       extractor: Any) -> None:
+        """Insert categories into SQLite database."""
+        for category_name, category_info in extractor.categories.items():
+            rule_count = len([r for r in rules if r['category'] == category_name])
+            cursor.execute("""
+                INSERT OR REPLACE INTO rule_categories (name, description, priority, rule_count)
+                VALUES (?, ?, ?, ?)
+            """, (
+                category_name,
+                category_info['description'],
+                category_info['priority'],
+                rule_count
+            ))
+
+    def _rebuild_json_database(self, rules: List[Dict[str, Any]], extractor: Any,
+                              preserved_states: Dict[int, Dict[str, Any]]) -> bool:
+        """Rebuild JSON database with rules from Markdown."""
+        import json
+        from pathlib import Path
+        from datetime import datetime
+        
         safe_print("\n[4/6] Rebuilding JSON database...")
         try:
             json_path = Path("config/constitution_rules.json")
-
-            # Create new JSON structure
-            json_data = {
-                "version": "2.0",
-                "database": "constitution_rules",
-                "last_updated": None,
-                "statistics": {
-                    "total_rules": len(rules),
-                    "enabled_rules": 0,
-                    "disabled_rules": 0,
-                    "categories": {}
-                },
-                "categories": {},
-                "rules": {}
-            }
-
-            # Add categories
-            for category_name, category_info in extractor.categories.items():
-                json_data["categories"][category_name] = {
-                    "name": category_name,
-                    "description": category_info["description"],
-                    "priority": category_info["priority"],
-                    "rule_count": 0
-                }
-
-            # Add rules
-            for rule in rules:
-                rule_num_str = str(rule["rule_number"])
-                enabled = preserved_states.get(rule["rule_number"], {}).get("enabled", True)
-
-                json_data["rules"][rule_num_str] = {
-                    "rule_number": rule["rule_number"],
-                    "title": rule["title"],
-                    "category": rule["category"],
-                    "priority": rule["priority"],
-                    "content": rule["content"],
-                    "enabled": enabled,
-                    "config": {
-                        "default_enabled": True,
-                        "notes": "",
-                        "disabled_reason": preserved_states.get(rule["rule_number"], {}).get("disabled_reason"),
-                        "disabled_at": preserved_states.get(rule["rule_number"], {}).get("disabled_at")
-                    },
-                    "metadata": {
-                        "created_at": datetime.now().isoformat(),
-                        "updated_at": datetime.now().isoformat(),
-                        "usage_count": 0,
-                        "last_used": None,
-                        "source": "markdown_rebuild"
-                    }
-                }
-
-                # Update category counts
-                if rule["category"] in json_data["categories"]:
-                    json_data["categories"][rule["category"]]["rule_count"] += 1
-
-                # Update statistics
-                if enabled:
-                    json_data["statistics"]["enabled_rules"] += 1
-                else:
-                    json_data["statistics"]["disabled_rules"] += 1
-
+            json_data = self._create_json_structure(rules, extractor, preserved_states)
             json_data["last_updated"] = datetime.now().isoformat()
 
             # Write JSON file
@@ -1109,11 +1110,84 @@ class EnhancedCLI:
                 json.dump(json_data, f, indent=2, ensure_ascii=False)
 
             safe_print(f"✓ Rebuilt JSON database with {len(rules)} rules")
+            return True
         except Exception as e:
             safe_print(f"✗ Failed to rebuild JSON: {e}")
-            return
+            return False
 
-        # Step 5: Update config file to remove duplicated rule content
+    def _create_json_structure(self, rules: List[Dict[str, Any]], extractor: Any,
+                               preserved_states: Dict[int, Dict[str, Any]]) -> Dict[str, Any]:
+        """Create JSON database structure with rules and categories."""
+        from datetime import datetime
+        
+        json_data = {
+            "version": "2.0",
+            "database": "constitution_rules",
+            "last_updated": None,
+            "statistics": {
+                "total_rules": len(rules),
+                "enabled_rules": 0,
+                "disabled_rules": 0,
+                "categories": {}
+            },
+            "categories": {},
+            "rules": {}
+        }
+
+        # Add categories
+        for category_name, category_info in extractor.categories.items():
+            json_data["categories"][category_name] = {
+                "name": category_name,
+                "description": category_info["description"],
+                "priority": category_info["priority"],
+                "rule_count": 0
+            }
+
+        # Add rules
+        for rule in rules:
+            rule_num_str = str(rule["rule_number"])
+            enabled = preserved_states.get(rule["rule_number"], {}).get("enabled", True)
+
+            json_data["rules"][rule_num_str] = {
+                "rule_number": rule["rule_number"],
+                "title": rule["title"],
+                "category": rule["category"],
+                "priority": rule["priority"],
+                "content": rule["content"],
+                "enabled": enabled,
+                "config": {
+                    "default_enabled": True,
+                    "notes": "",
+                    "disabled_reason": preserved_states.get(rule["rule_number"], {}).get("disabled_reason"),
+                    "disabled_at": preserved_states.get(rule["rule_number"], {}).get("disabled_at")
+                },
+                "metadata": {
+                    "created_at": datetime.now().isoformat(),
+                    "updated_at": datetime.now().isoformat(),
+                    "usage_count": 0,
+                    "last_used": None,
+                    "source": "markdown_rebuild"
+                }
+            }
+
+            # Update category counts
+            if rule["category"] in json_data["categories"]:
+                json_data["categories"][rule["category"]]["rule_count"] += 1
+
+            # Update statistics
+            if enabled:
+                json_data["statistics"]["enabled_rules"] += 1
+            else:
+                json_data["statistics"]["disabled_rules"] += 1
+
+        return json_data
+
+    def _update_config_file(self, rules: List[Dict[str, Any]]) -> None:
+        """Update config file to remove duplicated rule content."""
+        import json
+        from pathlib import Path
+        from datetime import datetime
+        
         safe_print("\n[5/6] Updating config file (runtime state only)...")
         try:
             config_path = Path("config/constitution_config.json")
@@ -1142,7 +1216,8 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"⚠ Warning: Could not update config: {e}")
 
-        # Step 6: Verify consistency
+    def _verify_rebuild_consistency(self) -> None:
+        """Verify consistency across all sources after rebuild."""
         safe_print("\n[6/6] Verifying consistency across all sources...")
         try:
             from config.constitution.sync_manager import ConstitutionSyncManager
@@ -1157,6 +1232,8 @@ class EnhancedCLI:
         except Exception as e:
             safe_print(f"⚠ Warning: Could not verify consistency: {e}")
 
+    def _print_rebuild_completion(self) -> None:
+        """Print rebuild completion message."""
         safe_print("\n" + "="*70)
         safe_print("✓ REBUILD COMPLETE")
         safe_print("="*70)
@@ -1166,7 +1243,7 @@ class EnhancedCLI:
         safe_print("  2. Run: python enhanced_cli.py --rebuild-from-markdown")
         safe_print("  3. Commit changes to Git\n")
 
-    def _list_all_rules(self, constitution_manager):
+    def _list_all_rules(self, constitution_manager: Any) -> None:
         """List all constitution rules with their status."""
         safe_print("Constitution Rules Status:")
         safe_print("=" * 50)
@@ -1180,7 +1257,7 @@ class EnhancedCLI:
 
         safe_print(f"\nTotal: {len(all_rules)} rules")
 
-    def _enable_rule(self, constitution_manager, rule_number: int):
+    def _enable_rule(self, constitution_manager: Any, rule_number: int) -> None:
         """Enable a specific rule."""
         rule = constitution_manager.get_rule_by_number(rule_number)
         if not rule:
@@ -1197,7 +1274,7 @@ class EnhancedCLI:
         else:
             safe_print(f"[FAIL] Failed to enable rule {rule_number}")
 
-    def _disable_rule(self, constitution_manager, rule_number: int, reason: str):
+    def _disable_rule(self, constitution_manager: Any, rule_number: int, reason: str) -> None:
         """Disable a specific rule."""
         rule = constitution_manager.get_rule_by_number(rule_number)
         if not rule:
@@ -1215,7 +1292,7 @@ class EnhancedCLI:
         else:
             safe_print(f"[FAIL] Failed to disable rule {rule_number}")
 
-    def _show_rule_statistics(self, constitution_manager):
+    def _show_rule_statistics(self, constitution_manager: Any) -> None:
         """Show constitution rule statistics."""
         stats = constitution_manager.get_rule_statistics()
 
@@ -1234,7 +1311,7 @@ class EnhancedCLI:
         for priority, count in stats['priority_counts'].items():
             safe_print(f"  {priority}: {count} rules")
 
-    def _export_rules(self, constitution_manager, enabled_only: bool, output_file: Optional[str]):
+    def _export_rules(self, constitution_manager: Any, enabled_only: bool, output_file: Optional[str]) -> None:
         """Export rules to JSON."""
         json_data = constitution_manager.export_rules_to_json(enabled_only)
 
@@ -1252,7 +1329,7 @@ class EnhancedCLI:
         else:
             safe_print(json_data)
 
-    def _list_rules_by_category(self, constitution_manager, category: str):
+    def _list_rules_by_category(self, constitution_manager: Any, category: str) -> None:
         """List rules by category."""
         rules = constitution_manager.get_rules_by_category(category)
 
@@ -1270,7 +1347,7 @@ class EnhancedCLI:
 
         safe_print(f"\nTotal: {len(rules)} rules in category '{category}'")
 
-    def _search_rules(self, constitution_manager, search_term: str):
+    def _search_rules(self, constitution_manager: Any, search_term: str) -> None:
         """Search rules by title or content."""
         results = constitution_manager.search_rules(search_term)
 
@@ -1438,12 +1515,13 @@ class EnhancedCLI:
 
     def _log_error(self, log_entry: Dict[str, Any]) -> None:
         """Log error with structured format."""
+        logger_instance = logging.getLogger(__name__)
         if self._is_structured_logging_enabled():
             # Log as JSONL format
-            print(json.dumps(log_entry), file=sys.stderr)
+            logger_instance.error(json.dumps(log_entry))
         else:
             # Fallback to simple format
-            print(f"ERROR [{log_entry['traceId']}]: {log_entry['error.message']}", file=sys.stderr)
+            logger_instance.error(f"ERROR [{log_entry['traceId']}]: {log_entry['error.message']}")
 
     def _log_correlation_event(self, event_type: str, data: Dict[str, Any]) -> None:
         """Log correlation events for request tracking."""
@@ -1455,13 +1533,17 @@ class EnhancedCLI:
                 "traceId": self._correlation_id,
                 **data
             }
-            print(json.dumps(log_entry), file=sys.stderr)
+            logger_instance = logging.getLogger(__name__)
+            logger_instance.info(json.dumps(log_entry))
 
     def _is_structured_logging_enabled(self) -> bool:
         """Check if structured logging is enabled in configuration."""
         try:
             return self.config_manager.get_config().get("error_handling", {}).get("enable_structured_logging", True)
-        except Exception:
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Failed to check structured logging configuration: {e}", exc_info=True)
             return True
 
     def _should_retry(self, error_code: ErrorCode, exception: Exception) -> bool:
@@ -1590,74 +1672,103 @@ class EnhancedCLI:
         # Placeholder for performance monitoring
         return {}
 
-    def run(self, args):
+    def run(self, args: argparse.Namespace) -> int:
         """Run the CLI with given arguments."""
         try:
-            # Handle constitution rule management commands first
-            if self._handle_constitution_commands(args):
+            # Handle special commands first
+            if self._handle_special_commands(args):
                 return 0
 
-            # Handle backend management commands
-            if self._handle_backend_commands(args):
-                return 0
+            # Handle file/directory validation
+            if args.file or args.directory:
+                return self._handle_validation_commands(args)
 
-            # Handle validation service startup
-            if args.start_validation_service:
-                return self._handle_start_validation_service(args)
-
-            # Handle prompt validation
-            if args.validate_prompt:
-                return self._handle_prompt_validation(args)
-
-            if args.file:
-                # Validate single file
-                result = self.validate_file(args.file, args)
-                if "error" not in result:
-                    report = self.generate_enhanced_report({"files": {args.file: result}}, args.format)
-                    safe_print(report)
-                else:
-                    safe_print(f"Error: {result['error']}")
-                    return 1
-
-            elif args.directory:
-                # Validate directory
-                results = self.validate_directory(args.directory, args)
-                report = self.generate_enhanced_report(results, args.format)
-                safe_print(report)
-
-                # Save report if requested
-                if args.output:
-                    with open(args.output, 'w', encoding='utf-8') as f:
-                        f.write(report)
-                    safe_print(f"Report saved to {args.output}")
-
-            else:
-                # Check if any constitution commands were used
-                constitution_commands = [args.list_rules, args.enable_rule, args.disable_rule,
-                                       args.rule_stats, args.export_rules, args.rules_by_category, args.search_rules]
-                if any(constitution_commands):
-                    safe_print("Constitution rule management commands completed.")
-                    return 0
-                else:
-                    safe_print("Please specify either --file or --directory, or use a constitution rule command")
-                    return 1
-
-            return 0
+            # Check for constitution commands
+            return self._handle_constitution_command_completion(args)
 
         except KeyboardInterrupt:
-            error_result = self.handle_error(KeyboardInterrupt("User interrupted operation"),
-                                           context={"operation": "main_validation"})
-            safe_print(f"\n{error_result.get('user_message', 'Validation interrupted by user')}")
-            return 1
+            return self._handle_keyboard_interrupt()
         except Exception as e:
-            error_result = self.handle_error(e, context={"operation": "main_validation"})
-            safe_print(f"Error: {error_result.get('user_message', str(e))}")
-            return 1
+            return self._handle_general_error(e)
         finally:
             # Stop performance monitoring
             self.performance_monitor.stop_monitoring()
 
-    def _handle_prompt_validation(self, args):
+    def _handle_special_commands(self, args: argparse.Namespace) -> bool:
+        """Handle special commands (constitution, backend, validation service, prompt validation)."""
+        if self._handle_constitution_commands(args):
+            return True
+        if self._handle_backend_commands(args):
+            return True
+        if args.start_validation_service:
+            self._handle_start_validation_service(args)
+            return True
+        if args.validate_prompt:
+            self._handle_prompt_validation(args)
+            return True
+        return False
+
+    def _handle_validation_commands(self, args: argparse.Namespace) -> int:
+        """Handle file or directory validation commands."""
+        if args.file:
+            return self._validate_single_file(args)
+        elif args.directory:
+            return self._validate_directory_command(args)
+        return 0
+
+    def _validate_single_file(self, args: argparse.Namespace) -> int:
+        """Validate a single file."""
+        result = self.validate_file(args.file, args)
+        if "error" not in result:
+            report = self.generate_enhanced_report({"files": {args.file: result}}, args.format)
+            safe_print(report)
+            return 0
+        else:
+            safe_print(f"Error: {result['error']}")
+            return 1
+
+    def _validate_directory_command(self, args: argparse.Namespace) -> int:
+        """Validate a directory and optionally save report."""
+        results = self.validate_directory(args.directory, args)
+        report = self.generate_enhanced_report(results, args.format)
+        safe_print(report)
+
+        # Save report if requested
+        if args.output:
+            with open(args.output, 'w', encoding='utf-8') as f:
+                f.write(report)
+            safe_print(f"Report saved to {args.output}")
+        return 0
+
+    def _handle_constitution_command_completion(self, args: argparse.Namespace) -> int:
+        """Handle completion of constitution commands."""
+        constitution_commands = [
+            args.list_rules, args.enable_rule, args.disable_rule,
+            args.rule_stats, args.export_rules, args.rules_by_category, args.search_rules
+        ]
+        if any(constitution_commands):
+            safe_print("Constitution rule management commands completed.")
+            return 0
+        else:
+            safe_print("Please specify either --file or --directory, or use a constitution rule command")
+            return 1
+
+    def _handle_keyboard_interrupt(self) -> int:
+        """Handle keyboard interrupt gracefully."""
+        error_result = self.handle_error(
+            KeyboardInterrupt("User interrupted operation"),
+            context={"operation": "main_validation"}
+        )
+        safe_print(f"\n{error_result.get('user_message', 'Validation interrupted by user')}")
+        return 1
+
+    def _handle_general_error(self, e: Exception) -> int:
+        """Handle general exceptions."""
+        error_result = self.handle_error(e, context={"operation": "main_validation"})
+        safe_print(f"Error: {error_result.get('user_message', str(e))}")
+        return 1
+
+    def _handle_prompt_validation(self, args: argparse.Namespace) -> int:
         """Handle prompt validation using the API service."""
         try:
             import requests
@@ -1703,7 +1814,7 @@ class EnhancedCLI:
             safe_print(f"Error during prompt validation: {e}")
             return 1
 
-    def _handle_start_validation_service(self, args):
+    def _handle_start_validation_service(self, args: argparse.Namespace) -> int:
         """Start the constitution validation service."""
         try:
             import subprocess
@@ -1772,7 +1883,7 @@ class EnhancedCLI:
             return 1
 
 
-def main():
+def main() -> int:
     """Main entry point for the enhanced CLI."""
     parser = argparse.ArgumentParser(
         description="Enhanced ZEROUI 2.0 Constitution Validator",
@@ -1981,8 +2092,10 @@ Examples:
     try:
         from validator.reporter import set_use_color
         set_use_color(not args.no_color)
-    except Exception:
-        pass
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Failed to set color output: {e}", exc_info=True)
 
     # Create and run CLI
     cli = EnhancedCLI()

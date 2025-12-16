@@ -21,9 +21,18 @@ import re
 import json
 import argparse
 import sys
+import logging
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Any
 from dataclasses import dataclass, asdict
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 # Add the project root to Python path for imports
 project_root = Path(__file__).parent.parent
@@ -343,69 +352,69 @@ class ConstitutionAnalyzer:
         if not self.analysis:
             self.analyze_constitution()
 
-        print("=" * 60)
-        print("ZEROUI 2.0 MASTER CONSTITUTION ANALYSIS")
-        print("=" * 60)
-        print(f"Total Rules: {self.analysis.total_rules}")
-        print(f"Rule Range: {self.analysis.lowest_rule} - {self.analysis.highest_rule}")
-        print(f"Missing Numbers: {len(self.analysis.missing_numbers)}")
+        logger.info("=" * 60)
+        logger.info("ZEROUI 2.0 MASTER CONSTITUTION ANALYSIS")
+        logger.info("=" * 60)
+        logger.info(f"Total Rules: {self.analysis.total_rules}")
+        logger.info(f"Rule Range: {self.analysis.lowest_rule} - {self.analysis.highest_rule}")
+        logger.info(f"Missing Numbers: {len(self.analysis.missing_numbers)}")
         if self.analysis.missing_numbers:
-            print(f"Missing: {self.analysis.missing_numbers[:10]}{'...' if len(self.analysis.missing_numbers) > 10 else ''}")
+            logger.info(f"Missing: {self.analysis.missing_numbers[:10]}{'...' if len(self.analysis.missing_numbers) > 10 else ''}")
 
-        print("\nCategories:")
+        logger.info("\nCategories:")
         for category, rules in self.analysis.categories.items():
-            print(f"  {category}: {len(rules)} rules")
+            logger.info(f"  {category}: {len(rules)} rules")
 
-        print("\nTop 10 Rules by Number:")
+        logger.info("\nTop 10 Rules by Number:")
         for rule in self.analysis.rules[:10]:
-            print(f"  Rule {rule.number}: {rule.title}")
+            logger.info(f"  Rule {rule.number}: {rule.title}")
 
         if len(self.analysis.rules) > 10:
-            print(f"  ... and {len(self.analysis.rules) - 10} more rules")
+            logger.info(f"  ... and {len(self.analysis.rules) - 10} more rules")
 
         # Enable/Disable validation summary
         if self.analysis.enable_disable_validation:
             validation = self.analysis.enable_disable_validation
-            print(f"\nEnable/Disable Field Validation:")
-            print(f"  Consistent: {'Yes' if validation.consistent else 'No'}")
-            print(f"  Total Rules Checked: {validation.total_rules_checked}")
-            print(f"  Enabled Mismatches: {validation.enabled_mismatches}")
-            print(f"  Disabled Mismatches: {validation.disabled_mismatches}")
-            print(f"  Missing Enabled Fields: {validation.missing_enabled_fields}")
+            logger.info(f"\nEnable/Disable Field Validation:")
+            logger.info(f"  Consistent: {'Yes' if validation.consistent else 'No'}")
+            logger.info(f"  Total Rules Checked: {validation.total_rules_checked}")
+            logger.info(f"  Enabled Mismatches: {validation.enabled_mismatches}")
+            logger.info(f"  Disabled Mismatches: {validation.disabled_mismatches}")
+            logger.info(f"  Missing Enabled Fields: {validation.missing_enabled_fields}")
 
             if validation.validation_details and len(validation.validation_details) > 0:
-                print(f"\nValidation Details (showing first 5):")
+                logger.info(f"\nValidation Details (showing first 5):")
                 for detail in validation.validation_details[:5]:
                     if "error" in detail:
-                        print(f"  Error: {detail['error']}")
+                        logger.error(f"  Error: {detail['error']}")
                     else:
                         rule_num = detail.get("rule_number", "Unknown")
                         mismatch_type = detail.get("mismatch_type", "Unknown")
                         sources = detail.get("sources", {})
-                        print(f"  Rule {rule_num}: {mismatch_type} - {sources}")
+                        logger.warning(f"  Rule {rule_num}: {mismatch_type} - {sources}")
 
                 if len(validation.validation_details) > 5:
-                    print(f"  ... and {len(validation.validation_details) - 5} more issues")
+                    logger.info(f"  ... and {len(validation.validation_details) - 5} more issues")
 
     def print_rule_details(self, rule: Rule) -> None:
         """Print detailed information about a specific rule"""
-        print(f"\nRule {rule.number}: {rule.title}")
-        print(f"Content: {rule.content}")
-        print(f"Category: {rule.category}")
-        print(f"Section: {rule.section}")
-        print(f"Line: {rule.line_number}")
+        logger.info(f"\nRule {rule.number}: {rule.title}")
+        logger.info(f"Content: {rule.content}")
+        logger.info(f"Category: {rule.category}")
+        logger.info(f"Section: {rule.section}")
+        logger.info(f"Line: {rule.line_number}")
 
     def print_search_results(self, query: str, results: List[Rule]) -> None:
         """Print search results in a formatted way"""
-        print(f"\nFound {len(results)} rules matching '{query}':")
+        logger.info(f"\nFound {len(results)} rules matching '{query}':")
         for rule in results:
-            print(f"  Rule {rule.number}: {rule.title}")
+            logger.info(f"  Rule {rule.number}: {rule.title}")
 
     def print_category_results(self, category: str, results: List[Rule]) -> None:
         """Print category results in a formatted way"""
-        print(f"\nRules in category '{category}': {len(results)}")
+        logger.info(f"\nRules in category '{category}': {len(results)}")
         for rule in results:
-            print(f"  Rule {rule.number}: {rule.title}")
+            logger.info(f"  Rule {rule.number}: {rule.title}")
 
 
 def main():
@@ -438,9 +447,9 @@ Examples:
 
     try:
         # Extract rules
-        print("Extracting rules...")
+        logger.info("Extracting rules...")
         rules = analyzer.extract_rules()
-        print(f"Found {len(rules)} rules")
+        logger.info(f"Found {len(rules)} rules")
 
         # Analyze constitution
         analysis = analyzer.analyze_constitution()
@@ -451,7 +460,7 @@ Examples:
             if rule:
                 analyzer.print_rule_details(rule)
             else:
-                print(f"Rule {args.rule} not found")
+                logger.warning(f"Rule {args.rule} not found")
 
         elif args.search:
             matching_rules = analyzer.search_rules(args.search)
@@ -464,27 +473,27 @@ Examples:
         elif args.validate_enable_disable:
             # Show Enable/Disable validation results
             validation = analyzer.validate_enable_disable_consistency()
-            print("=" * 60)
-            print("ENABLE/DISABLE FIELD VALIDATION")
-            print("=" * 60)
-            print(f"Consistent: {'Yes' if validation.consistent else 'No'}")
-            print(f"Total Rules Checked: {validation.total_rules_checked}")
-            print(f"Enabled Mismatches: {validation.enabled_mismatches}")
-            print(f"Disabled Mismatches: {validation.disabled_mismatches}")
-            print(f"Missing Enabled Fields: {validation.missing_enabled_fields}")
+            logger.info("=" * 60)
+            logger.info("ENABLE/DISABLE FIELD VALIDATION")
+            logger.info("=" * 60)
+            logger.info(f"Consistent: {'Yes' if validation.consistent else 'No'}")
+            logger.info(f"Total Rules Checked: {validation.total_rules_checked}")
+            logger.info(f"Enabled Mismatches: {validation.enabled_mismatches}")
+            logger.info(f"Disabled Mismatches: {validation.disabled_mismatches}")
+            logger.info(f"Missing Enabled Fields: {validation.missing_enabled_fields}")
 
             if validation.validation_details:
-                print(f"\nDetailed Validation Results:")
+                logger.info(f"\nDetailed Validation Results:")
                 for detail in validation.validation_details:
                     if "error" in detail:
-                        print(f"  Error: {detail['error']}")
+                        logger.error(f"  Error: {detail['error']}")
                     else:
                         rule_num = detail.get("rule_number", "Unknown")
                         mismatch_type = detail.get("mismatch_type", "Unknown")
                         sources = detail.get("sources", {})
-                        print(f"  Rule {rule_num}: {mismatch_type}")
+                        logger.warning(f"  Rule {rule_num}: {mismatch_type}")
                         for source, value in sources.items():
-                            print(f"    {source}: {value}")
+                            logger.info(f"    {source}: {value}")
 
         else:
             # Default: show summary
@@ -493,10 +502,10 @@ Examples:
         # Export if requested
         if args.output:
             analyzer.export_analysis(args.output)
-            print(f"\nAnalysis exported to: {args.output}")
+            logger.info(f"\nAnalysis exported to: {args.output}")
 
     except Exception as e:
-        print(f"Error: {e}")
+        logger.error(f"Error: {e}", exc_info=True)
         return 1
 
     return 0

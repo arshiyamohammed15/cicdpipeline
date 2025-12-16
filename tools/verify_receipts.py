@@ -7,9 +7,12 @@ Verifies receipts across IDE/Tenant/Shared planes for end-to-end lineage.
 
 import json
 import sys
+import logging
 from pathlib import Path
 from typing import Dict, Any, List
 from validator.receipt_validator import ReceiptValidator
+
+logger = logging.getLogger(__name__)
 
 
 def verify_receipt_file(file_path: Path) -> Dict[str, Any]:
@@ -29,7 +32,7 @@ def find_receipt_files(root_dir: Path) -> List[Path]:
 
 def verify_receipts_in_plane(plane_dir: Path, plane_name: str) -> Dict[str, Any]:
     """Verify all receipts in a storage plane."""
-    print(f"\nVerifying {plane_name} plane: {plane_dir}")
+    logger.info(f"\nVerifying {plane_name} plane: {plane_dir}")
 
     if not plane_dir.exists():
         return {
@@ -76,10 +79,10 @@ def main():
     zu_root = os.getenv('ZU_ROOT', os.path.expanduser('~/.zeroui'))
     zu_root_path = Path(zu_root)
 
-    print("=" * 80)
-    print("RECEIPT VERIFICATION - END-TO-END LINEAGE CHECK")
-    print("=" * 80)
-    print(f"ZU_ROOT: {zu_root_path}")
+    logger.info("=" * 80)
+    logger.info("RECEIPT VERIFICATION - END-TO-END LINEAGE CHECK")
+    logger.info("=" * 80)
+    logger.info(f"ZU_ROOT: {zu_root_path}")
 
     # Verify receipts in each plane
     planes = {
@@ -94,22 +97,22 @@ def main():
         results.append(result)
 
         if result['status'] == 'ok':
-            print(f"  [OK] {plane_name}: {result.get('valid_receipts', 0)}/{result.get('total_receipts', 0)} receipts valid")
+            logger.info(f"  [OK] {plane_name}: {result.get('valid_receipts', 0)}/{result.get('total_receipts', 0)} receipts valid")
         elif result['status'] == 'errors':
-            print(f"  [FAIL] {plane_name}: {len(result.get('errors', []))} errors found")
+            logger.error(f"  [FAIL] {plane_name}: {len(result.get('errors', []))} errors found")
             for error in result['errors'][:5]:  # Show first 5 errors
-                print(f"    Line {error['line']}: {error['errors'][0]}")
+                logger.error(f"    Line {error['line']}: {error['errors'][0]}")
         else:
-            print(f"  [SKIP] {plane_name}: {result.get('message', 'N/A')}")
+            logger.warning(f"  [SKIP] {plane_name}: {result.get('message', 'N/A')}")
 
     # Summary
-    print("\n" + "=" * 80)
+    logger.info("\n" + "=" * 80)
     total_errors = sum(len(r.get('errors', [])) for r in results)
     if total_errors == 0:
-        print("[SUCCESS] All receipts valid")
+        logger.info("[SUCCESS] All receipts valid")
         return 0
     else:
-        print(f"[FAILURE] {total_errors} receipt validation errors found")
+        logger.error(f"[FAILURE] {total_errors} receipt validation errors found")
         return 1
 
 

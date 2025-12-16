@@ -5,7 +5,17 @@ Utility to clear pytest cache and __pycache__ directories.
 from __future__ import annotations
 
 import shutil
+import logging
+import sys
 from pathlib import Path
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
@@ -16,9 +26,11 @@ def _remove(path: Path) -> None:
             shutil.rmtree(path, ignore_errors=True)
         elif path.exists():
             path.unlink()
-    except Exception:
+    except Exception as e:
         # Best-effort cleanup; ignore errors to avoid masking test runs.
-        pass
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.debug(f"Best-effort cleanup failed for {path}: {e}", exc_info=True)
 
 
 def clear_pytest_cache() -> None:
@@ -29,7 +41,7 @@ def clear_pytest_cache() -> None:
 
 def main() -> int:
     clear_pytest_cache()
-    print("Cleared pytest cache and __pycache__ directories")
+    logger.info("Cleared pytest cache and __pycache__ directories")
     return 0
 
 

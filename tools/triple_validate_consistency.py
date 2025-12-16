@@ -18,36 +18,32 @@ Output: Deterministic pass/fail summary with any mismatches listed precisely.
 
 import json
 import sys
+import logging
 from pathlib import Path
 from typing import Dict, List, Tuple, Set
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 # Ensure project root on path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
-from config.constitution.database import ConstitutionRulesDB
+from tools.utils.file_utils import load_rules_from_json_files, setup_windows_console_encoding
+from tools.utils.db_utils import get_db_connection
 
 # Make prints ASCII-safe on Windows consoles
-if sys.platform == "win32":
-    import os, codecs
-    try:
-        sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
-        sys.stderr = codecs.getwriter('utf-8')(sys.stderr.buffer, 'strict')
-        os.environ['PYTHONIOENCODING'] = 'utf-8'
-    except Exception:
-        pass
+setup_windows_console_encoding()
 
 
 def load_source_rules() -> List[Dict]:
-    src_dir = project_root / "docs" / "constitution"
-    if not src_dir.exists():
-        raise FileNotFoundError(f"Missing source directory: {src_dir}")
-    rules: List[Dict] = []
-    for jf in sorted(src_dir.glob("*.json")):
-        with jf.open("r", encoding="utf-8") as f:
-            data = json.load(f)
-        rules.extend(data.get("constitution_rules", []))
-    return rules
+    """Load rules from JSON source files."""
+    return load_rules_from_json_files(str(project_root / "docs" / "constitution"))
 
 
 def normalize_text(s: str) -> str:
@@ -68,7 +64,7 @@ def make_identity_from_db(rule: Dict) -> Tuple[str, str]:
     return normalize_text(rule.get("title", "")), normalize_text(rule.get("category", ""))
 
 
-def validate():
+def validate() -> None:
     errors: List[str] = []
 
     # Load source of truth
@@ -77,6 +73,7 @@ def validate():
     src_identities: Set[Tuple[str, str]] = {make_identity_from_source(r) for r in src_rules}
 
     # Load DB
+    from config.constitution.database import ConstitutionRulesDB
     db = ConstitutionRulesDB()
     db_rules = db.get_all_rules()
     db_total = len(db_rules)
@@ -153,16 +150,16 @@ def validate():
         errors.append(f"Config entries missing 'enabled' field (sample): {cfg_missing_enabled}")
 
     if errors:
-        print("[FAIL] Triple validation failed\n")
+        logger.error("[FAIL] Triple validation failed\n")
         for e in errors:
             # Ensure ASCII-only to avoid console encoding issues
-            print(f"- {str(e).encode('ascii', 'ignore').decode('ascii')}")
+            logger.error(f"- {str(e).encode('ascii', 'ignore').decode('ascii')}")
         sys.exit(1)
     else:
-        print("[OK] Triple validation passed: Source, DB, Export, and Config are consistent")
-        print(f"Counts: {src_total}")
-        print("Rule numbers: 1..{} present in DB, Export, and Config".format(src_total))
-        print("Identity sets (Title+Category) match across DB/Export vs Source")
+        logger.info("[OK] Triple validation passed: Source, DB, Export, and Config are consistent")
+        logger.info(f"Counts: {src_total}")
+        logger.info("Rule numbers: 1..{} present in DB, Export, and Config".format(src_total))
+        logger.info("Identity sets (Title+Category) match across DB/Export vs Source")
 
 
 if __name__ == "__main__":

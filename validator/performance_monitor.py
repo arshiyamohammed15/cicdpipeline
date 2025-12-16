@@ -9,12 +9,15 @@ capabilities for the validation system.
 import time
 import psutil
 import threading
+import logging
 from typing import Dict, List, Any, Optional, Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from collections import defaultdict, deque
 from contextlib import contextmanager
 import json
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -130,7 +133,7 @@ class PerformanceMonitor:
 
                 time.sleep(interval)
             except Exception as e:
-                print(f"Error in system monitoring: {e}")
+                logger.error(f"Error in system monitoring: {e}", exc_info=True)
                 time.sleep(interval)
 
     @contextmanager

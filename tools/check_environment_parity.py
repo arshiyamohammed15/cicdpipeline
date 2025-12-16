@@ -12,8 +12,17 @@ Checks for drift between environments by comparing:
 import json
 import hashlib
 import sys
+import logging
 from pathlib import Path
 from typing import Dict, Any, List
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 
 def get_rule_count() -> int:
@@ -54,31 +63,31 @@ def check_environment_parity() -> Dict[str, Any]:
     }
 
 
-def main():
+def main() -> int:
     """Main entry point."""
-    print("=" * 80)
-    print("ENVIRONMENT PARITY CHECK")
-    print("=" * 80)
+    logger.info("=" * 80)
+    logger.info("ENVIRONMENT PARITY CHECK")
+    logger.info("=" * 80)
 
     try:
         result = check_environment_parity()
 
-        print(f"Rule count: {result['rule_count']}")
-        print(f"JSON files: {result['json_files_count']}")
-        print(f"JSON files hash: {result['json_files_hash']}")
-        print(f"Files: {', '.join(result['json_files'])}")
+        logger.info(f"Rule count: {result['rule_count']}")
+        logger.info(f"JSON files: {result['json_files_count']}")
+        logger.info(f"JSON files hash: {result['json_files_hash']}")
+        logger.info(f"Files: {', '.join(result['json_files'])}")
 
-        print("\n" + "=" * 80)
-        print("[OK] Environment parity check complete")
-        print("=" * 80)
+        logger.info("\n" + "=" * 80)
+        logger.info("[OK] Environment parity check complete")
+        logger.info("=" * 80)
 
         # Output JSON for CI/CD integration
         if '--json' in sys.argv:
-            print(json.dumps(result, indent=2))
+            logger.info(json.dumps(result, indent=2))
 
         return 0
     except Exception as e:
-        print(f"\n[FAIL] Error: {e}")
+        logger.error(f"\n[FAIL] Error: {e}", exc_info=True)
         return 1
 
 

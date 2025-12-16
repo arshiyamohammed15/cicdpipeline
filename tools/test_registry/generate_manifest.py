@@ -12,8 +12,18 @@ import argparse
 import ast
 import json
 import re
+import logging
+import sys
 from pathlib import Path
 from typing import Iterable, List, Dict, Any
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(message)s',
+    stream=sys.stdout
+)
+logger = logging.getLogger(__name__)
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 TEST_ROOT = PROJECT_ROOT / "tests"
@@ -66,8 +76,10 @@ def _discover_tests(paths: Iterable[Path]) -> List[Dict[str, Any]]:
             text = ""
             try:
                 text = file.read_text(encoding="utf-8")
-            except Exception:
-                pass
+            except Exception as e:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.debug(f"Failed to read file {file}: {e}", exc_info=True)
 
             markers = sorted(set(marker_re.findall(text)))
             module = _infer_module(rel)
@@ -154,7 +166,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
     if args.output.exists() and not args.update:
-        print(f"Manifest already exists at {args.output}; use --update to regenerate.")
+        logger.info(f"Manifest already exists at {args.output}; use --update to regenerate.")
         return 0
 
     tests = _discover_tests(args.paths)
@@ -171,8 +183,8 @@ def main(argv: list[str] | None = None) -> int:
             }
         ),
     }
-    print(f"Generated manifest at {args.output}")
-    print(f"Files: {stats['files']}  Tests: {stats['tests']}  Markers: {stats['markers']}")
+    logger.info(f"Generated manifest at {args.output}")
+    logger.info(f"Files: {stats['files']}  Tests: {stats['tests']}  Markers: {stats['markers']}")
     return 0
 
 

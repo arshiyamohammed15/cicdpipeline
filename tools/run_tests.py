@@ -13,9 +13,18 @@ import argparse
 import os
 import subprocess
 import sys
+import logging
 from pathlib import Path
 
 import yaml
+
+# Configure logging
+logging.basicConfig(
+    level=logging.WARNING,
+    format='%(message)s',
+    stream=sys.stderr
+)
+logger = logging.getLogger(__name__)
 
 
 CONFIG_PATH = Path(__file__).resolve().parent / "test_profiles.yaml"
@@ -77,22 +86,21 @@ def main(argv: list[str] | None = None) -> int:
     try:
         profiles = load_profiles()
     except (OSError, ValueError) as exc:
-        print(f"Error loading profiles: {exc}", file=sys.stderr)
+        logger.error(f"Error loading profiles: {exc}")
         return 1
 
     profile = profiles.get(args.profile_name)
     if profile is None:
         available = ", ".join(sorted(profiles)) if profiles else "none"
-        print(
-            f"Unknown profile '{args.profile_name}'. Available profiles: {available}",
-            file=sys.stderr,
+        logger.error(
+            f"Unknown profile '{args.profile_name}'. Available profiles: {available}"
         )
         return 1
 
     try:
         cmd = build_command(profile, args.pytest_args)
     except ValueError as exc:
-        print(f"Invalid profile '{args.profile_name}': {exc}", file=sys.stderr)
+        logger.error(f"Invalid profile '{args.profile_name}': {exc}")
         return 1
 
     env = os.environ.copy()
