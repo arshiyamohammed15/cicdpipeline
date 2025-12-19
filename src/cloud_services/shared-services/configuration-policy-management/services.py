@@ -8,9 +8,11 @@ Contracts: Policy API contract (8 endpoints), receipt schemas per PRD lines 654-
 Risks: Security vulnerabilities if policies mishandled, performance degradation under load, compliance gaps
 """
 
+import ast
 import hashlib
 import json
 import logging
+import re
 import time
 import uuid
 from datetime import datetime
@@ -391,30 +393,55 @@ class PolicyEvaluationEngine:
             Boolean evaluation result
         """
         # Simple condition evaluation (supports: ==, !=, IN, CONTAINS, AND, OR, NOT)
-        # For now, implement basic evaluation - full parser would be more complex
         if not condition:
             return True
 
-        # Simple string matching for now
-        # Full implementation would parse and evaluate condition tree
         try:
-            # Replace variables with actual values
-            eval_str = condition
-            if principal:
-                for key, value in principal.items():
-                    eval_str = eval_str.replace(f"principal.{key}", repr(value))
-            if resource:
-                for key, value in resource.items():
-                    eval_str = eval_str.replace(f"resource.{key}", repr(value))
-            if action:
-                eval_str = eval_str.replace("action", repr(action))
-
-            # Evaluate (with safety checks)
-            # Note: In production, use a proper expression parser
-            return bool(eval(eval_str, {"__builtins__": {}}, {}))
-        except Exception as e:
-            logger.warning(f"Condition evaluation failed: {e}")
+            return self._safe_eval_condition(condition, context, principal, resource, action)
+        except Exception as exc:
+            logger.warning("Condition evaluation failed: %s", exc)
             return False
+
+    def _safe_eval_condition(
+        self,
+        condition: str,
+        context: Dict[str, Any],
+        principal: Optional[Dict[str, Any]],
+        resource: Optional[Dict[str, Any]],
+        action: Optional[str],
+    ) -> bool:
+        tokens = self._tokenize_condition(condition)
+        parser = _ConditionParser(tokens, context, principal, resource, action)
+        return parser.parse()
+
+    @staticmethod
+    def _tokenize_condition(condition: str) -> List[Tuple[str, str]]:
+        token_spec = [
+            ("SKIP", r"[ \t]+"),
+            ("NUMBER", r"\d+(?:\.\d+)?"),
+            ("STRING", r"'([^\\']|\\.)*'|\"([^\\\"]|\\.)*\""),
+            ("OP", r"==|!="),
+            ("LPAREN", r"\("),
+            ("RPAREN", r"\)"),
+            ("LBRACK", r"\["),
+            ("RBRACK", r"\]"),
+            ("COMMA", r","),
+            ("NAME", r"[A-Za-z_][A-Za-z0-9_\\.]*"),
+        ]
+        tok_regex = "|".join(f"(?P<{name}>{pattern})" for name, pattern in token_spec)
+        tokens: List[Tuple[str, str]] = []
+        for match in re.finditer(tok_regex, condition):
+            kind = match.lastgroup
+            value = match.group()
+            if kind == "SKIP":
+                continue
+            if kind == "NAME":
+                upper = value.upper()
+                if upper in {"AND", "OR", "NOT", "IN", "CONTAINS", "TRUE", "FALSE", "NULL", "NONE"}:
+                    tokens.append(("KEYWORD", upper))
+                    continue
+            tokens.append((kind or "UNKNOWN", value))
+        return tokens
 
     def _calculate_specificity(self, scope: Dict[str, Any]) -> int:
         """
@@ -1506,3 +1533,160 @@ class ReceiptGenerator:
         self.evidence_ledger.store_receipt(receipt_id, receipt_data)
 
         return receipt_data
+
+
+# --------------------------------------------------------------------------- #
+# Condition parsing helpers
+# --------------------------------------------------------------------------- #
+
+
+class _ConditionParser:
+    def __init__(
+        self,
+        tokens: List[Tuple[str, str]],
+        context: Dict[str, Any],
+        principal: Optional[Dict[str, Any]],
+        resource: Optional[Dict[str, Any]],
+        action: Optional[str],
+    ) -> None:
+        self.tokens = tokens
+        self.pos = 0
+        self.context = context
+        self.principal = principal or {}
+        self.resource = resource or {}
+        self.action = action
+
+    def parse(self) -> bool:
+        if not self.tokens:
+            return True
+        result = self._parse_or()
+        return bool(result)
+
+    def _peek(self) -> Optional[Tuple[str, str]]:
+        if self.pos >= len(self.tokens):
+            return None
+        return self.tokens[self.pos]
+
+    def _consume(self) -> Tuple[str, str]:
+        token = self.tokens[self.pos]
+        self.pos += 1
+        return token
+
+    def _match(self, kind: str, value: Optional[str] = None) -> bool:
+        token = self._peek()
+        if token is None:
+            return False
+        if token[0] != kind:
+            return False
+        if value is not None and token[1].upper() != value:
+            return False
+        self._consume()
+        return True
+
+    def _parse_or(self) -> bool:
+        left = self._parse_and()
+        while self._match("KEYWORD", "OR"):
+            right = self._parse_and()
+            left = bool(left) or bool(right)
+        return bool(left)
+
+    def _parse_and(self) -> bool:
+        left = self._parse_not()
+        while self._match("KEYWORD", "AND"):
+            right = self._parse_not()
+            left = bool(left) and bool(right)
+        return bool(left)
+
+    def _parse_not(self) -> bool:
+        if self._match("KEYWORD", "NOT"):
+            return not self._parse_not()
+        return self._parse_comparison()
+
+    def _parse_comparison(self) -> bool:
+        left = self._parse_term()
+        token = self._peek()
+        if token is None:
+            return bool(left)
+        if token[0] == "OP":
+            op = self._consume()[1]
+            right = self._parse_term()
+            if op == "==":
+                return left == right
+            if op == "!=":
+                return left != right
+        if token[0] == "KEYWORD":
+            keyword = token[1]
+            if keyword in {"IN", "CONTAINS"}:
+                self._consume()
+                right = self._parse_term()
+                if keyword == "IN":
+                    return self._contains(right, left)
+                return self._contains(left, right)
+        return bool(left)
+
+    def _parse_term(self) -> Any:
+        token = self._peek()
+        if token is None:
+            return None
+        if self._match("LPAREN"):
+            value = self._parse_or()
+            if not self._match("RPAREN"):
+                raise ValueError("Unclosed parenthesis in condition")
+            return value
+        if self._match("LBRACK"):
+            items: List[Any] = []
+            if not self._match("RBRACK"):
+                while True:
+                    items.append(self._parse_term())
+                    if self._match("COMMA"):
+                        continue
+                    if self._match("RBRACK"):
+                        break
+                    raise ValueError("Invalid list literal in condition")
+            return items
+        kind, value = self._consume()
+        if kind == "STRING":
+            return ast.literal_eval(value)
+        if kind == "NUMBER":
+            return float(value) if "." in value else int(value)
+        if kind == "KEYWORD":
+            if value == "TRUE":
+                return True
+            if value == "FALSE":
+                return False
+            if value in {"NULL", "NONE"}:
+                return None
+        if kind == "NAME":
+            return self._resolve_identifier(value)
+        raise ValueError(f"Unexpected token in condition: {kind} {value}")
+
+    def _resolve_identifier(self, name: str) -> Any:
+        parts = name.split(".")
+        base = parts[0]
+        if base == "action":
+            return self.action if len(parts) == 1 else None
+        if base == "context":
+            return self._resolve_dict(self.context, parts[1:])
+        if base == "principal":
+            return self._resolve_dict(self.principal, parts[1:])
+        if base == "resource":
+            return self._resolve_dict(self.resource, parts[1:])
+        return None
+
+    @staticmethod
+    def _resolve_dict(data: Dict[str, Any], parts: List[str]) -> Any:
+        current: Any = data
+        for part in parts:
+            if not isinstance(current, dict):
+                return None
+            current = current.get(part)
+        return current
+
+    @staticmethod
+    def _contains(container: Any, item: Any) -> bool:
+        if container is None:
+            return False
+        try:
+            return item in container
+        except Exception:
+            return False

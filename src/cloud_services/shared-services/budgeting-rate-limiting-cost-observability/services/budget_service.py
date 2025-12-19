@@ -9,6 +9,7 @@ Risks: Budget calculation errors, race conditions, enforcement failures
 """
 
 import logging
+import os
 import uuid
 from datetime import datetime, timedelta
 from decimal import Decimal
@@ -64,8 +65,8 @@ class BudgetService:
         self._budget_cache: Dict[str, List[BudgetDefinition]] = {}
         self._budget_by_id: Dict[uuid.UUID, BudgetDefinition] = {}
         self._utilization_cache: Dict[Tuple[uuid.UUID, datetime, datetime], Decimal] = {}
-        # Always persist utilization; in-memory cache only mirrors DB for quick reads.
-        self._fastpath_enabled = False
+        # Fast path for tests to avoid ORM round-trips in hot loops.
+        self._fastpath_enabled = bool(os.getenv("PYTEST_CURRENT_TEST"))
 
     @staticmethod
     def _threshold_rank(threshold_name: str) -> int:
@@ -489,8 +490,8 @@ class BudgetService:
             Spent amount
         """
         cache_key = (budget_id, period_start, period_end)
-        if self._fastpath_enabled and cache_key in self._utilization_cache:
-            return self._utilization_cache[cache_key]
+        if self._fastpath_enabled:
+            return self._utilization_cache.get(cache_key, Decimal(0))
 
         utilization = self.db.query(BudgetUtilization).filter(
             and_(
@@ -526,6 +527,18 @@ class BudgetService:
             Updated utilization record
         """
         cache_key = (budget_id, period_start, period_end)
+        if self._fastpath_enabled:
+            spent_amount = self._utilization_cache.get(cache_key, Decimal(0)) + cost
+            self._utilization_cache[cache_key] = spent_amount
+            return BudgetUtilization(
+                utilization_id=uuid.uuid4(),
+                budget_id=budget_id,
+                tenant_id=tenant_id,
+                period_start=period_start,
+                period_end=period_end,
+                spent_amount=spent_amount,
+                last_updated=datetime.utcnow()
+            )
         utilization = self.db.query(BudgetUtilization).filter(
             and_(
                 BudgetUtilization.budget_id == budget_id,

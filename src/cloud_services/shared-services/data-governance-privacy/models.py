@@ -36,7 +36,7 @@ class MetricsResponse(BaseModel):
 
 
 class ConfigResponse(BaseModel):
-    module_id: str = "M22"
+    module_id: str = "EPC-2"
     version: str = "1.0.0"
     api_endpoints: Dict[str, str]
     performance_requirements: Dict[str, Any]

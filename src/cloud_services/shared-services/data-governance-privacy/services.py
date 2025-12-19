@@ -321,6 +321,9 @@ class ConsentManagementService:
         self.data_plane = data_plane
         self.kms = kms
         self.latencies = PerformanceWindow()
+        self._cache_version = 0
+        self._check_cache: Dict[str, Dict[str, Any]] = {}
+        self._cache_max_size = 512
 
     def grant_consent(
         self,
@@ -345,6 +348,8 @@ class ConsentManagementService:
         }
         consent_id = self.data_plane.store_consent(payload)
         payload["consent_id"] = consent_id
+        self._cache_version += 1
+        self._check_cache.clear()
         return payload
 
     def check_consent(
@@ -356,6 +361,19 @@ class ConsentManagementService:
         required_legal_basis: Optional[str] = None,
     ) -> Dict[str, Any]:
         start = time.perf_counter()
+        cache_key = (
+            f"{self._cache_version}:{tenant_id}:{data_subject_id}:{purpose}:"
+            f"{required_legal_basis}:{sorted(data_categories)}"
+        )
+        cached = self._check_cache.get(cache_key)
+        if cached:
+            latency_ms = (time.perf_counter() - start) * 1000
+            self.latencies.add(latency_ms)
+            result = cached.copy()
+            result["latency_ms"] = round(latency_ms, 2)
+            result["p95_ms"] = round(self.latencies.p95(), 2)
+            return result
+
         consents = [
             record
             for record in self.data_plane.list_consents(tenant_id, data_subject_id)
@@ -370,7 +388,7 @@ class ConsentManagementService:
         legal_basis = matched[0]["legal_basis"] if matched else required_legal_basis
         latency_ms = (time.perf_counter() - start) * 1000
         self.latencies.add(latency_ms)
-        return {
+        result = {
             "allowed": allowed,
             "consent_id": matched[0]["consent_id"] if matched else None,
             "legal_basis": legal_basis,
@@ -378,6 +396,15 @@ class ConsentManagementService:
             "latency_ms": round(latency_ms, 2),
             "p95_ms": round(self.latencies.p95(), 2),
         }
+        if len(self._check_cache) >= self._cache_max_size:
+            self._check_cache.clear()
+        self._check_cache[cache_key] = {
+            "allowed": result["allowed"],
+            "consent_id": result["consent_id"],
+            "legal_basis": result["legal_basis"],
+            "restrictions": result["restrictions"],
+        }
+        return result
 
     def withdraw_consent(self, consent_id: str, reason: Optional[str] = None) -> bool:
         consent = self.data_plane.get_consent(consent_id)
@@ -386,6 +413,8 @@ class ConsentManagementService:
         consent["withdrawal_at"] = datetime.utcnow().isoformat()
         consent["withdrawal_reason"] = reason
         consent["status"] = "revoked"
+        self._cache_version += 1
+        self._check_cache.clear()
         return True
 
     @staticmethod

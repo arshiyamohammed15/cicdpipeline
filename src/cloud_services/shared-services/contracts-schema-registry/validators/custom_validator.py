@@ -10,6 +10,7 @@ Risks: Security vulnerabilities if sandboxing fails, performance issues
 
 import logging
 import time
+from collections import OrderedDict
 from typing import Dict, Any, List, Tuple, Optional
 
 logger = logging.getLogger(__name__)
@@ -26,6 +27,7 @@ except ImportError:
 MAX_EXECUTION_TIME_MS = 100
 MAX_MEMORY_MB = 64
 ALLOWED_APIS = ["Math", "Date", "String", "Array"]
+MAX_CONTEXT_CACHE = 128
 
 
 class CustomValidator:
@@ -37,7 +39,7 @@ class CustomValidator:
 
     def __init__(self):
         """Initialize custom validator."""
-        self._context_cache: Dict[str, Any] = {}
+        self._context_cache: OrderedDict[str, Tuple[Any, str]] = OrderedDict()
 
     def _create_sandbox(self) -> Optional[Any]:
         """
@@ -94,8 +96,22 @@ class CustomValidator:
             Tuple of (is_valid, list_of_errors)
         """
         try:
+            valid, errors = self.validate_function(validation_function)
+            if not valid:
+                return False, [{"field": ".", "message": err, "code": "INVALID_FUNCTION"} for err in errors]
+
             # Check execution time
             start_time = time.perf_counter()
+
+            serialized_data = self._serialize_data(data)
+            payload_bytes = len(serialized_data.encode("utf-8"))
+            function_bytes = len(validation_function.encode("utf-8"))
+            if payload_bytes + function_bytes > MAX_MEMORY_MB * 1024 * 1024:
+                return False, [{
+                    "field": ".",
+                    "message": "Validation payload exceeds memory budget",
+                    "code": "MEMORY_LIMIT_EXCEEDED"
+                }]
 
             if not MINI_RACER_AVAILABLE:
                 # Fallback: basic validation
@@ -103,14 +119,19 @@ class CustomValidator:
                 return True, []
 
             # Create or get sandbox context
-            cache_key = context_id or str(hash(validation_function))
-            if cache_key not in self._context_cache:
+            function_hash = str(hash(validation_function))
+            cache_key = context_id or function_hash
+            if cache_key not in self._context_cache or self._context_cache[cache_key][1] != function_hash:
                 ctx = self._create_sandbox()
                 if ctx is None:
                     return True, []  # Skip validation if sandbox unavailable
-                self._context_cache[cache_key] = ctx
+                self._context_cache[cache_key] = (ctx, function_hash)
+                self._context_cache.move_to_end(cache_key)
+                if len(self._context_cache) > MAX_CONTEXT_CACHE:
+                    self._context_cache.popitem(last=False)
             else:
-                ctx = self._context_cache[cache_key]
+                ctx = self._context_cache[cache_key][0]
+                self._context_cache.move_to_end(cache_key)
 
             # Prepare validation code
             # Expected function signature: function validate(data) { return { valid: boolean, errors: [] } }
@@ -119,7 +140,7 @@ class CustomValidator:
 
             // Execute validation
             try {{
-                const result = validate({self._serialize_data(data)});
+                const result = validate({serialized_data});
                 if (result.valid === false) {{
                     JSON.stringify(result.errors || []);
                 }} else {{

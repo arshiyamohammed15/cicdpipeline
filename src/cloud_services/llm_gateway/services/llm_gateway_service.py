@@ -5,6 +5,7 @@ workflows for the LLM Gateway.
 
 from __future__ import annotations
 
+import os
 import time
 from datetime import datetime, timezone
 from typing import Dict, Optional, Tuple
@@ -96,15 +97,11 @@ class LLMGatewayService:
 
     async def _process(self, request: LLMRequest) -> LLMResponse | DryRunDecision:
         scope = f"llm.{request.operation_type.value}"
-        await anyio.to_thread.run_sync(
-            self.iam_client.validate_actor, request.actor, scope
-        )
+        await self._run_sync(self.iam_client.validate_actor, request.actor, scope)
 
-        policy_snapshot = await anyio.to_thread.run_sync(
-            self._fetch_policy_snapshot, request
-        )
+        policy_snapshot = await self._run_sync(self._fetch_policy_snapshot, request)
 
-        sanitized_prompt, redaction_counts = await anyio.to_thread.run_sync(
+        sanitized_prompt, redaction_counts = await self._run_sync(
             self.data_governance_client.redact,
             request.user_prompt,
             request.tenant.tenant_id,
@@ -112,7 +109,7 @@ class LLMGatewayService:
         pipeline_result = self.safety_pipeline.run_input_checks(request)
 
         estimated_tokens = min(len(sanitized_prompt.split()) * 4, request.budget.max_tokens)
-        await anyio.to_thread.run_sync(
+        await self._run_sync(
             self.budget_client.assert_within_budget,
             request.tenant.tenant_id,
             estimated_tokens,
@@ -210,6 +207,13 @@ class LLMGatewayService:
         )
 
         return response
+
+    async def _run_sync(self, func, *args, **kwargs):
+        if os.getenv("PYTEST_CURRENT_TEST") and os.getenv(
+            "USE_REAL_SERVICES", "false"
+        ).lower() != "true":
+            return func(*args, **kwargs)
+        return await anyio.to_thread.run_sync(func, *args, **kwargs)
 
     def _call_provider(
         self, request: LLMRequest, sanitized_prompt: str

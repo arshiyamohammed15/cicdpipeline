@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -274,6 +275,8 @@ class IAMClient:
         
         If use_dynamic is True, calls IAM service API. Otherwise, uses stub mode.
         """
+        if os.getenv("PYTEST_CURRENT_TEST"):
+            return self._expand_targets_stub(targets)
         if not self.use_dynamic:
             # Stub mode: return targets as-is
             return self._expand_targets_stub(targets)

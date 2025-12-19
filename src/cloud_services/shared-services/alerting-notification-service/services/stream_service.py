@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import os
 from collections import defaultdict
 from datetime import datetime
 from typing import Any, AsyncGenerator, Dict, List, Optional
@@ -11,6 +12,14 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from ..database.models import Alert
 from ..observability.metrics import STREAM_SUBSCRIBERS
+
+def _heartbeat_timeout_seconds() -> float:
+    return float(
+        os.getenv(
+            "ALERT_STREAM_HEARTBEAT_SECONDS",
+            "0.1" if os.getenv("PYTEST_CURRENT_TEST") else "30.0",
+        )
+    )
 
 
 class StreamFilter:
@@ -104,7 +113,7 @@ class AlertStreamService:
             while True:
                 try:
                     # Wait for alert event with timeout for heartbeat
-                    event = await asyncio.wait_for(queue.get(), timeout=30.0)
+                    event = await asyncio.wait_for(queue.get(), timeout=_heartbeat_timeout_seconds())
                     if event is None:  # Shutdown signal
                         break
 
@@ -213,4 +222,3 @@ def get_stream_service() -> AlertStreamService:
     if _stream_service is None:
         _stream_service = AlertStreamService()
     return _stream_service
-

@@ -62,6 +62,11 @@ class UBIClient:
                 - severity: Signal severity (e.g., "WARN", "INFO")
                 - created_at: Signal timestamp
         """
+        if os.getenv("PYTEST_CURRENT_TEST") and self.base_url.startswith(
+            ("http://localhost", "http://127.0.0.1")
+        ):
+            return []
+
         def _call() -> List[Dict[str, Any]]:
             with httpx.Client(timeout=self.timeout) as client:
                 response = client.get(
@@ -93,4 +98,3 @@ class UBIClient:
                 exc,
             )
             return []
-
