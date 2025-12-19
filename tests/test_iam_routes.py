@@ -398,7 +398,7 @@ class TestConfigEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(data["module_id"], "M21")
+        self.assertEqual(data["module_id"], "EPC-1")
         self.assertEqual(data["version"], "1.1.0")
         self.assertIn("api_endpoints", data)
         self.assertIn("performance_requirements", data)

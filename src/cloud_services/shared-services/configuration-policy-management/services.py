@@ -1,8 +1,8 @@
 """
-Service layer for Configuration & Policy Management (M23).
+Service layer for Configuration & Policy Management (EPC-3).
 
 What: Business logic for policy evaluation, configuration management, compliance checking per PRD v1.1.0
-Why: Encapsulates M23 logic, provides abstraction for route handlers, implements algorithms per PRD
+Why: Encapsulates EPC-3 logic, provides abstraction for route handlers, implements algorithms per PRD
 Reads/Writes: Reads policies, configurations, gold standards, writes receipts, audit logs via dependencies
 Contracts: Policy API contract (8 endpoints), receipt schemas per PRD lines 654-923, algorithms per PRD lines 1619-2138
 Risks: Security vulnerabilities if policies mishandled, performance degradation under load, compliance gaps
@@ -28,7 +28,7 @@ from .models import (
 from .dependencies import (
     MockM21IAM, MockM27EvidenceLedger, MockM29DataPlane,
     MockM33KeyManagement, MockM34SchemaRegistry, MockM32TrustPlane
-)
+)  # EPC-1, PM-7, CCP-6, EPC-11, EPC-12, CCP-1 (legacy class names)
 from sqlalchemy import func, cast, String, Text
 try:
     from .database.models import Base, Policy, Configuration, GoldStandard

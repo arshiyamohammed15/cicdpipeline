@@ -1,7 +1,7 @@
-# Identity & Access Management Module (M21)
+# Identity & Access Management Module (EPC-1)
 
 **Version:** 1.1.0
-**Module ID:** M21
+**Module ID:** M21 (code identifier for EPC-1)
 **Description:** Authentication and authorization gatekeeper for ZeroUI ecosystem with RBAC/ABAC evaluation, JWT token management, and policy enforcement
 
 ## Overview
@@ -94,8 +94,8 @@ Per IAM spec (section 1):
 
 ## Security
 
-- All receipts are Ed25519-signed via M27 (Evidence & Audit Ledger)
-- Receipts stored in M27 (Audit Ledger)
+- All receipts are Ed25519-signed via PM-7 (Evidence & Receipt Indexing Service / ERIS)
+- Receipts stored in PM-7 (ERIS)
 - JWT tokens: RS256 (RSA-2048), 1h expiry, refresh at 55m
 - Token revocation: jti denylist with TTL=exp, propagate within 5s
 - Rate limiting: 50 RPS/client, burst 200 for 10s
@@ -106,11 +106,11 @@ Per IAM spec (section 1):
 
 This module depends on:
 
-- **M27 (Evidence Ledger)**: Receipt storage and signing (mock implementation)
-- **M29 (Data Plane)**: Policy storage and caching (mock implementation)
-- **M32 (Trust Plane)**: Device posture and service identity (mock implementation)
+- **PM-7 (ERIS)**: Receipt storage and signing (mock implementation)
+- **CCP-6 (Data Plane)**: Policy storage and caching (mock implementation)
+- **CCP-1 (Trust Plane)**: Device posture and service identity (mock implementation)
 
-**Note:** Mock dependencies are used for development. Production deployments require real implementations of M27, M29, and M32.
+**Note:** Mock dependencies are used for development. Production deployments require real implementations of PM-7, CCP-6, and CCP-1.
 
 ## Configuration
 
@@ -158,7 +158,7 @@ python -m pytest tests/test_identity_access_management_*.py -v --cov=identity_ac
 ```
 identity-access-management/
 ├── __init__.py
-├── dependencies.py      # Mock dependencies (M27, M29, M32)
+├── dependencies.py      # Mock dependencies (PM-7, CCP-6, CCP-1)
 ├── main.py             # FastAPI application entry point
 ├── middleware.py       # Request logging, rate limiting, idempotency
 ├── models.py           # Pydantic models
@@ -183,7 +183,7 @@ Per IAM spec:
 
 - **Compute**: Minimum 2 vCPU, 512 MB RAM
 - **Networking**: TLS 1.3, service mesh integration
-- **Storage**: Receipt storage via M27, policy storage via M29
+- **Storage**: Receipt storage via PM-7, policy storage via CCP-6
 
 ### Deployment Steps
 
@@ -260,9 +260,9 @@ Monitor the following metrics:
 
 ### With Other Modules
 
-- **M23 (Configuration & Policy Management)**: Uses IAM for access control
-- **M33 (Key Management)**: Uses IAM for authentication
-- **M34 (Schema Registry)**: Uses IAM for access control
+- **EPC-3 (Configuration & Policy Management)**: Uses IAM for access control
+- **EPC-11 (Key Management)**: Uses IAM for authentication
+- **EPC-12 (Schema Registry)**: Uses IAM for access control
 
 ### API Client Example
 

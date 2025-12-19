@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Database tests for Configuration & Policy Management (M23).
+Database tests for Configuration & Policy Management (EPC-3).
 
 WHAT: Complete test coverage for database models, constraints, indexes, migrations
 WHY: Ensure database schema matches PRD exactly and all operations work correctly
@@ -24,14 +24,14 @@ sys.path.insert(0, str(project_root))
 # Import using direct file path
 import importlib.util
 
-m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
+epc3_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('configuration_policy_management')
 sys.modules['configuration_policy_management'] = parent_pkg
 
 # Load database models
-database_models_path = m23_dir / "database" / "models.py"
+database_models_path = epc3_dir / "database" / "models.py"
 spec_models = importlib.util.spec_from_file_location("configuration_policy_management.database.models", database_models_path)
 models_module = importlib.util.module_from_spec(spec_models)
 sys.modules['configuration_policy_management.database'] = type(sys)('configuration_policy_management.database')

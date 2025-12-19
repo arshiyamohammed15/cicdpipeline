@@ -1,5 +1,5 @@
 """
-Event Subscription Service for M35.
+Event Subscription Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 What: Manages CRUD operations for event subscriptions.
 Why: Supports Event Subscription API per PRD.

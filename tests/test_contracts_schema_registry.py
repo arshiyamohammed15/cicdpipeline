@@ -1,5 +1,5 @@
 """
-Unit tests for Contracts & Schema Registry Module (M34).
+Unit tests for Contracts & Schema Registry Module (EPC-12).
 
 What: Tests for validators, services, and API endpoints per PRD
 Why: Ensures correctness and performance targets are met

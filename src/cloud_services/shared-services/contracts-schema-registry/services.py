@@ -1,5 +1,5 @@
 """
-Service layer for Contracts & Schema Registry (M34).
+Service layer for Contracts & Schema Registry (EPC-12).
 
 What: Business logic for schema management, validation, contract enforcement per PRD v1.2.0
 Why: Encapsulates registry logic, provides abstraction for route handlers
@@ -27,7 +27,7 @@ from .validators.custom_validator import CustomValidator
 from .compatibility.checker import CompatibilityChecker, CompatibilityMode
 from .compatibility.transformer import DataTransformer
 from .cache.manager import CacheManager
-from .dependencies import MockM33KMS, MockM27EvidenceLedger, MockM29DataPlane, MockM21IAM
+from .dependencies import MockM33KMS, MockM27EvidenceLedger, MockM29DataPlane, MockM21IAM  # EPC-11, PM-7, CCP-6, EPC-1
 from .errors import ErrorCode, create_error_response, get_http_status
 from .models import (
     SchemaMetadata, ContractDefinition, ValidationResult, ValidationError,

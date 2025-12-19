@@ -1,8 +1,8 @@
 """
-Main FastAPI application for Budgeting, Rate-Limiting & Cost Observability (M35).
+Main FastAPI application for Budgeting, Rate-Limiting & Cost Observability (EPC-13).
 
 What: FastAPI application entry point with middleware, routes, and health checks per PRD v3.0.0
-Why: Orchestrates service components, provides HTTP server for M35 operations
+Why: Orchestrates service components, provides HTTP server for EPC-13 operations
 Reads/Writes: Reads configuration, writes HTTP responses
 Contracts: FastAPI application contract, CORS middleware, request logging middleware
 Risks: Service unavailability if dependencies fail, CORS misconfiguration, middleware errors

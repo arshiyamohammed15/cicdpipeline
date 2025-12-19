@@ -306,7 +306,7 @@ class EventEnvelope(BaseModel):
     tenant_id: str = Field(..., description="Tenant identifier")
     environment: str = Field(..., description="Environment", pattern="^(dev|staging|prod)$")
     plane: str = Field(..., description="Plane", pattern="^(laptop|tenant|product|shared)$")
-    source_module: str = Field(default="M33", description="Source module ID")
+    source_module: str = Field(default="EPC-11", description="Source module ID (EPC-11)")
     payload: Dict[str, Any] = Field(..., description="Event-specific payload")
 
 

@@ -1,10 +1,10 @@
-# Budgeting, Rate-Limiting & Cost Observability Module (M35)
+# Budgeting, Rate-Limiting & Cost Observability Module (EPC-13)
 
 Enterprise-grade resource budgeting, rate-limiting enforcement, and cost transparency for ZeroUI ecosystem.
 
 ## Module Information
 
-- **Module ID**: M35
+- **Module ID**: M35 (code identifier for EPC-13)
 - **Version**: 1.0.0
 - **PRD Version**: 3.0.0
 - **Status**: ✅ Ready for Implementation
@@ -40,16 +40,16 @@ curl http://localhost:8000/budget/v1/health
 2. **Rate-Limiting Framework**: Multiple algorithms (token bucket, leaky bucket, fixed window, sliding window log)
 3. **Cost Calculation Engine**: Real-time metering, attribution, aggregation, anomaly detection
 4. **Quota Management System**: Allocation strategies, enforcement, renewal automation
-5. **Receipt Service**: Canonical M27 receipt generation for all operations
-6. **Event Service**: Event publishing to M31 using common envelope pattern
+5. **Receipt Service**: Canonical PM-7 (ERIS) receipt generation for all operations
+6. **Event Service**: Event publishing to EPC-4 (Alerting & Notification Service) using common envelope pattern
 
 ### Dependencies
 
-- **M21 (IAM)**: Authentication and authorization
-- **M27 (Audit Ledger)**: Receipt storage and signing
-- **M29 (Data Plane)**: Persistent storage
-- **M31 (Notification Engine)**: Event delivery
-- **M33 (Key Management)**: Receipt signing
+- **EPC-1 (IAM)**: Authentication and authorization
+- **PM-7 (ERIS)**: Receipt storage and signing
+- **CCP-6 (Data Plane)**: Persistent storage
+- **EPC-4 (Alerting & Notification Service)**: Event delivery
+- **EPC-11 (Key Management)**: Receipt signing
 
 ## API Endpoints
 

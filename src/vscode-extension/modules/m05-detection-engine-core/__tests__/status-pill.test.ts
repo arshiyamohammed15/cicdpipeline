@@ -1,5 +1,5 @@
 /**
- * Status Pill Provider Tests for Detection Engine Core Module (M05)
+ * Status Pill Provider Tests for Detection Engine Core Module (PM-4)
  * 
  * Tests status pill provider per PRD §3.8
  * Coverage: 100% of status pill functionality

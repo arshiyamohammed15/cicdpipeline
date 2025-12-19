@@ -1,5 +1,5 @@
 /**
- * Commands Tests for Detection Engine Core Module (M05)
+ * Commands Tests for Detection Engine Core Module (PM-4)
  * 
  * Tests command handlers per PRD §3.8
  * Coverage: 100% of command handlers

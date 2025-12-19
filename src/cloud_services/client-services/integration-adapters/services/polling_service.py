@@ -72,7 +72,7 @@ class PollingService:
     - Polling with configured intervals
     - Pagination handling
     - Cursor management
-    - Integration with M35 for rate/budget limits
+    - Integration with EPC-13 (Budgeting, Rate-Limiting & Cost Observability) for rate/budget limits
     - Idempotency enforcement
     """
 

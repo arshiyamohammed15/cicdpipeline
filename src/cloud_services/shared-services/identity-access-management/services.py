@@ -3,7 +3,7 @@ Service layer for Identity & Access Management (IAM).
 
 What: Business logic for authentication, authorization, policy management per IAM spec v1.1.0
 Why: Encapsulates IAM logic, provides abstraction for route handlers, implements RBAC/ABAC evaluation
-Reads/Writes: Reads policies, tokens, writes receipts, audit logs via mock dependencies (M27, M29, M32)
+Reads/Writes: Reads policies, tokens, writes receipts, audit logs via mock dependencies (PM-7, CCP-6, CCP-1)
 Contracts: IAM API contract (verify, decision, policies endpoints), receipt schema per spec section 7
 Risks: Security vulnerabilities if tokens/policies mishandled, performance degradation under load, key compromise
 """
@@ -22,7 +22,7 @@ from .models import (
     PolicyBundle, Policy,
     Subject, DecisionContext, ElevationRequest, BreakGlassRequest
 )
-from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane
+from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane  # Legacy class names: PM-7, CCP-6, CCP-1
 
 logger = logging.getLogger(__name__)
 

@@ -1,12 +1,14 @@
 """
-Mock dependencies for M35 service (M27, M29, M31, M33, M21).
+Mock dependencies for EPC-13 (Budgeting, Rate-Limiting & Cost Observability) service (PM-7, CCP-6, EPC-4, EPC-11, EPC-1).
 
-What: Mock implementations of Evidence & Audit Ledger (M27), Data & Memory Plane (M29),
-      Notification Engine (M31), Key Management (M33), and IAM (M21)
-Why: Enables M35 implementation before dependencies are available, will be replaced with real implementations
+What: Mock implementations of Evidence & Receipt Indexing Service (PM-7 / ERIS), Data & Memory Plane (CCP-6),
+      Alerting & Notification Service (EPC-4), Key & Trust Management (EPC-11), and IAM (EPC-1)
+Why: Enables EPC-13 implementation before dependencies are available, will be replaced with real implementations
 Reads/Writes: Mock storage (in-memory), mock signing (Ed25519), mock event publishing
-Contracts: Interface contracts for M27, M29, M31, M33, M21 integration
+Contracts: Interface contracts for PM-7, CCP-6, EPC-4, EPC-11, EPC-1 integration
 Risks: Mock implementations not production-ready, must be replaced before production deployment
+
+Note: Class names use legacy M27/M29/M31/M33/M21 identifiers for backward compatibility. Comments reference new module IDs (PM-7, CCP-6, EPC-4, EPC-11, EPC-1).
 """
 
 import hashlib
@@ -23,9 +25,10 @@ logger = logging.getLogger(__name__)
 
 class MockM27EvidenceLedger:
     """
-    Mock Evidence & Audit Ledger (M27) for receipt signing and storage.
+    Mock Evidence & Receipt Indexing Service (PM-7 / ERIS) for receipt signing and storage.
 
-    Per M35 PRD: Receipts are Ed25519-signed, stored in audit ledger using canonical M27 schema.
+    Per EPC-13 PRD: Receipts are Ed25519-signed, stored in audit ledger using canonical receipt schema.
+    Note: Class name uses legacy M27 identifier for backward compatibility. Module is PM-7 (ERIS).
     """
 
     def __init__(self):
@@ -87,9 +90,10 @@ class MockM27EvidenceLedger:
 
 class MockM29DataPlane:
     """
-    Mock Data & Memory Plane (M29) for persistent storage.
+    Mock Data & Memory Plane (CCP-6) for persistent storage.
 
-    Per M35 PRD: Persistent storage for budgets, rate limits, costs, and quotas.
+    Per EPC-13 PRD: Persistent storage for budgets, rate limits, costs, and quotas.
+    Note: Class name uses legacy M29 identifier for backward compatibility. Module is CCP-6 (Data & Memory Plane).
     """
 
     def __init__(self):
@@ -159,9 +163,10 @@ class MockM29DataPlane:
 
 class MockM31NotificationEngine:
     """
-    Mock Notification Engine (M31) for event delivery.
+    Mock Alerting & Notification Service (EPC-4) for event delivery.
 
-    Per M35 PRD: M35 emits logical alert events for M31 to deliver.
+    Per EPC-13 PRD: EPC-13 emits logical alert events for EPC-4 to deliver.
+    Note: Class name uses legacy M31 identifier for backward compatibility. Module is EPC-4 (Alerting & Notification Service).
     """
 
     def __init__(self):
@@ -206,9 +211,10 @@ class MockM31NotificationEngine:
 
 class MockM33KeyManagement:
     """
-    Mock Key Management (M33) for receipt signing.
+    Mock Key & Trust Management (EPC-11) for receipt signing.
 
-    Per M35 PRD: Receipts are signed with Ed25519 via M33.
+    Per EPC-13 PRD: Receipts are signed with Ed25519 via EPC-11.
+    Note: Class name uses legacy M33 identifier for backward compatibility. Module is EPC-11 (Key & Trust Management).
     """
 
     def __init__(self):
@@ -239,9 +245,10 @@ class MockM33KeyManagement:
 
 class MockM21IAM:
     """
-    Mock IAM Module (M21) for access control.
+    Mock IAM Module (EPC-1) for access control.
 
-    Per M35 PRD: JWT verification for authentication and authorization.
+    Per EPC-13 PRD: JWT verification for authentication and authorization.
+    Note: Class name uses legacy M21 identifier for backward compatibility. Module is EPC-1 (Identity & Access Management).
     """
 
     def __init__(self):

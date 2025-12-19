@@ -1,7 +1,7 @@
 from __future__ import annotations
 #!/usr/bin/env python3
 """
-Comprehensive tests for Data Governance & Privacy Module (M22) services.
+Comprehensive tests for Data Governance & Privacy Module (EPC-2) services.
 
 Test design principles:
     - Hermetic (no external resources)

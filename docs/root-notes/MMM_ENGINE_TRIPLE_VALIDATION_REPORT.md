@@ -348,7 +348,7 @@ This report provides a comprehensive triple validation of the MMM Engine impleme
 - Grafana dashboard specifications
 - Distributed tracing setup
 
-**Evidence**: `docs/architecture/modules/MMM_Engine_Monitoring.md`
+**Evidence**: `docs/architecture/modules/MMM_Engine_PRD.md` (Section 17.4)
 
 ---
 

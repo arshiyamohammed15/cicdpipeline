@@ -66,7 +66,7 @@ class IdentityService:
             # CR-022: Check cache TTL
             if time.time() - cache_timestamp < self._cache_ttl_seconds:
                 if cached_block.session_id != context_copy.session_id:
-                self._queue_epc1_call(context_copy, "update_session")
+                    self._queue_epc1_call(context_copy, "update_session")
                 return cached_block
             else:
                 # Cache expired, remove it
@@ -80,17 +80,14 @@ class IdentityService:
 
     def _resolve_online(self, context: ActorContext) -> ActorBlock:
         """Performs an EPC-1 call outside of the request path."""
-        # CR-018: Reuse event loop instead of creating new one
+        # CR-018: Avoid leaking event loops created for synchronous execution.
         try:
-            loop = asyncio.get_event_loop()
-            if loop.is_closed():
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
+            running_loop = asyncio.get_running_loop()
         except RuntimeError:
-            # No event loop exists, create new one
+            running_loop = None
+        if running_loop is not None:
+            raise RuntimeError("Cannot resolve actor from a running event loop")
         loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-        
         try:
             actor = loop.run_until_complete(self._resolve_actor_async(context))
         except ActorUnavailableError:
@@ -104,6 +101,8 @@ class IdentityService:
             logger = logging.getLogger(__name__)
             logger.error(f"Unexpected error in identity resolution: {type(exc).__name__}: {exc}", exc_info=True)
             raise ActorUnavailableError(f"Identity resolution failed: {exc}") from exc
+        finally:
+            loop.close()
         
         # CR-022: Store with timestamp for TTL
         cache_key = self._cache_key(context)
@@ -161,7 +160,7 @@ class IdentityService:
             logger = logging.getLogger(__name__)
             logger.error(f"Unexpected error in WAL entry processing: {type(exc).__name__}: {exc}", exc_info=True)
             if not self._config.fallback_enabled:
-            raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
+                raise ActorUnavailableError(f"EPC-1 refresh failed: {exc}") from exc
 
     def _cache_key(self, context: ActorContext) -> str:
         # CR-020: Include session_id in cache key to prevent stale data

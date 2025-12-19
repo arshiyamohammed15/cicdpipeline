@@ -1,7 +1,7 @@
-# Configuration & Policy Management Module (M23)
+# Configuration & Policy Management Module (EPC-3)
 
 **Version:** 1.1.0
-**Module ID:** M23
+**Module ID:** M23 (code identifier for EPC-3)
 **Description:** Enterprise-grade policy lifecycle management, configuration enforcement, and gold standards compliance for ZeroUI ecosystem
 
 ## Overview
@@ -129,8 +129,8 @@ Per PRD (lines 924-952):
 
 ## Security
 
-- All receipts are Ed25519-signed via M33 (Key Management Service)
-- Receipts stored in M27 (Audit Ledger)
+- All receipts are Ed25519-signed via EPC-11 (Key Management Service)
+- Receipts stored in PM-7 (ERIS)
 - Tenant isolation enforced at database level
 - Input validation via Pydantic models
 
@@ -138,12 +138,12 @@ Per PRD (lines 924-952):
 
 This module depends on:
 
-- **M21 (IAM)**: Access control and authentication
-- **M27 (Evidence Ledger)**: Receipt storage and signing
-- **M29 (Data Plane)**: Policy storage and caching
-- **M33 (Key Management)**: Receipt signing
-- **M34 (Schema Registry)**: Schema validation
-- **M32 (Trust Plane)**: Identity enrichment
+- **EPC-1 (IAM)**: Access control and authentication
+- **PM-7 (ERIS)**: Receipt storage and signing
+- **CCP-6 (Data Plane)**: Policy storage and caching
+- **EPC-11 (Key Management)**: Receipt signing
+- **EPC-12 (Schema Registry)**: Schema validation
+- **CCP-1 (Trust Plane)**: Identity enrichment
 
 ## Testing
 

@@ -59,7 +59,8 @@ class OfflineCourier:
         """Drain WAL entries to sink with optional receipt emitter for dead_letter receipts."""
         drained = self._wal.drain(
             lambda payload: sink(payload["payload"]),
-            receipt_emitter=receipt_emitter
+            receipt_emitter=receipt_emitter,
+            entry_filter=lambda entry: entry.entry_type == "receipt",
         )
         return [entry.sequence for entry in drained]
 
@@ -128,17 +129,21 @@ class ReceiptService:
         return await self._signing_adapter.sign_receipt(payload, self._config.epc11_key_id)
 
     def _sign(self, payload: Dict[str, Any]) -> str:
-        # CR-018: Reuse event loop instead of creating new one
+        return self._run_async(self._sign_async(payload))
+
+    def _run_async(self, coro):
+        # CR-018: Avoid leaking event loops created for synchronous execution.
         try:
-            loop = asyncio.get_event_loop()
-            if loop.is_closed():
-        loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
+            running_loop = asyncio.get_running_loop()
         except RuntimeError:
-            # No event loop exists, create new one
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            return loop.run_until_complete(self._sign_async(payload))
+            running_loop = None
+        if running_loop is not None:
+            raise RuntimeError("Cannot run async operation from a running event loop")
+        loop = asyncio.new_event_loop()
+        try:
+            return loop.run_until_complete(coro)
+        finally:
+            loop.close()
 
     def _validate(self, receipt: Dict[str, Any]) -> None:
         missing = self.REQUIRED_FIELDS - receipt.keys()
@@ -228,18 +233,8 @@ class ReceiptService:
         courier_meta = self._courier.enqueue(copy.deepcopy(receipt))
 
         if self._pm7_adapter:
-            # CR-018: Reuse event loop
             try:
-                loop = asyncio.get_event_loop()
-                if loop.is_closed():
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-            except RuntimeError:
-            loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-            
-            try:
-                loop.run_until_complete(self._pm7_adapter.index_receipt(copy.deepcopy(receipt)))
+                self._run_async(self._pm7_adapter.index_receipt(copy.deepcopy(receipt)))
             except Exception as e:
                 # CR-026: Improved error handling and reporting
                 import logging

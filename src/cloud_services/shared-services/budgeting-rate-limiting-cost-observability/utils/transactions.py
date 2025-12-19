@@ -1,5 +1,5 @@
 """
-Transaction isolation utilities for M35 per PRD lines 512-534.
+Transaction isolation utilities for EPC-13 per PRD lines 512-534.
 
 What: Transaction isolation and concurrency control helpers
 Why: Ensures data consistency and prevents race conditions

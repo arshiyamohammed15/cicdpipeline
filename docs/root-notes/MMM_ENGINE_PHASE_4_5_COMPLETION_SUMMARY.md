@@ -133,7 +133,7 @@ This document summarizes the completion of Phase 4 (Testing) and Phase 5 (Deploy
 
 ### 5.2 Monitoring Documentation
 
-**File**: `docs/architecture/modules/MMM_Engine_Monitoring.md`
+**File**: `docs/architecture/modules/MMM_Engine_PRD.md` (Section 17)
 
 **Sections Created**:
 
@@ -220,7 +220,7 @@ deploy/k8s/
     └── ConfigMap (environment variables)
 
 docs/architecture/modules/
-└── MMM_Engine_Monitoring.md
+└── MMM_Engine_PRD.md (Section 17)
     ├── Prometheus Metrics
     ├── Alert Rules
     ├── Grafana Dashboards

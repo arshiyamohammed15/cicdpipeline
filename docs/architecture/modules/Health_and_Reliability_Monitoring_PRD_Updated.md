@@ -1,10 +1,22 @@
 
-Health & Reliability Monitoring - PRD
-1. Module Overview
-Name: Health & Reliability Monitoring
-Code: Health & Reliability Monitoring
-Type: Embedded Platform Capability
-Module ID: Health & Reliability Monitoring will follow the standard M-number mapping pattern (EPC-1 -> M21, EPC-3 -> M23, EPC-11 -> M33, EPC-12 -> M34). The specific M-number assignment will be determined during implementation to maintain consistency with the established naming convention. EPC-8 remains the sole exception using "EPC-8" directly due to its infrastructure classification and historical implementation timing.
+# Health & Reliability Monitoring - Product Requirements Document (PRD)
+
+**Product:** ZeroUI  
+**Module:** Health & Reliability Monitoring  
+**Document Type:** Implementation-Ready PRD  
+**Version:** v1.0  
+**Status:** Validated  
+**Last Updated:** 2025-01-27  
+**Validation Status:** ✅ PRD validated and aligned with ZeroUI architecture standards (2025-11-23)
+
+---
+
+## 1. Module Overview
+
+**Name:** Health & Reliability Monitoring  
+**Code:** Health & Reliability Monitoring  
+**Type:** Embedded Platform Capability  
+**Module ID:** Health & Reliability Monitoring will follow the standard M-number mapping pattern (EPC-1 -> M21, EPC-3 -> M23, EPC-11 -> M33, EPC-12 -> M34). The specific M-number assignment will be determined during implementation to maintain consistency with the established naming convention. EPC-8 remains the sole exception using "EPC-8" directly due to its infrastructure classification and historical implementation timing.
 Primary Planes:
 CCP-1 - Identity & Trust Plane
 CCP-2 - Policy & Configuration Plane
@@ -381,3 +393,69 @@ Safe-to-Act API is integrated into at least one critical gate (e.g., deployment 
 Multi-tenant isolation is enforced, tested, and meta-audited.
 Health & Reliability Monitoring is fully observable (metrics, logs, traces) and passes resilience tests (telemetry outages, restarts).
 This PRD is complete and internally consistent and can be used as the single source of truth for implementing the Health & Reliability Monitoring module in the ZeroUI platform.
+
+---
+
+## 14. Implementation Status
+
+**Status**: ⚠️ **PARTIAL** - Implementation in progress
+
+### 14.1 Acceptance Checklist
+
+| Item | Description | Status | Notes |
+| --- | --- | --- | --- |
+| FR Coverage | FR-1..FR-11 implemented and tested | ☐ | |
+| Registry Seed | All P0 modules registered with SLO profiles | ☐ | |
+| Telemetry Ingestion | Metrics/probes/heartbeats flowing via OTEL collector | ☐ | |
+| Evaluation Engine | Health snapshots persisted with anti-flapping policies | ☐ | |
+| Roll-Up Views | Tenant + plane APIs returning expected aggregation | ☐ | |
+| Safe-to-Act | Endpoint integrated with EPC-8 & Edge Agent fallback | ☐ | |
+| Events & Receipts | EPC-4 alerts and ERIS receipts emitted for transitions | ☐ | |
+| Observability | `/metrics` exposed, dashboards updated, alerts defined | ☐ | |
+| Tests | Unit, integration, load, resilience suites executed in CI | ☐ | Load/perf k6 harness failed (service not listening) |
+| Resilience | Telemetry outage + service restart scenarios validated | ☑ | `python -m pytest tests/health_reliability_monitoring/resilience -q` (2025-11-24) |
+| Load / Performance | k6 telemetry scenario targeting `/v1/health/telemetry` | ☐ | Connection refused on `localhost:8095` - service not running |
+
+### 14.2 Test Execution Status
+
+**Resilience Tests**: ✅ **PASSING**
+- Resilience suite passed (2025-11-24)
+- Confirms Safe-to-Act returns configured degraded response when telemetry is stale
+
+**Load/Performance Tests**: ⚠️ **BLOCKED**
+- k6 load test failed: connection refused on `http://localhost:8095/v1/health/telemetry`
+- Requires Health & Reliability Monitoring instance running on port 8095
+
+---
+
+## 15. Migration Guide (EPC-5 to Health & Reliability Monitoring)
+
+The EPC-5 to Health & Reliability Monitoring rename changed database objects, environment variables, scopes, and repository paths. Follow these steps before rolling out the renamed service:
+
+### 15.1 Database Schema
+
+Existing deployments that used the old `epc5_*` tables must either:
+
+1. **Run the new migration** `db/migrations/health_reliability_monitoring/001_initial.sql` against the target database (preferred).  
+2. **Or manually rename** the tables and indexes:
+   - `epc5_components` → `health_reliability_monitoring_components`
+   - `epc5_component_dependencies` → `health_reliability_monitoring_component_dependencies`
+   - `epc5_health_snapshots` → `health_reliability_monitoring_health_snapshots`
+   - `epc5_slo_status` → `health_reliability_monitoring_slo_status`
+   - Update any `idx_epc5_*` indexes to the new `idx_health_reliability_monitoring_*` names.
+
+### 15.2 Environment Variables & Secrets
+
+Replace all legacy `EPC5_*` variables with the new `HEALTH_RELIABILITY_MONITORING_*` equivalents (see service README). Update CI pipelines, Kubernetes secrets, Helm charts, and any automation that injects these values.
+
+### 15.3 IAM Scopes
+
+Tokens and policy bindings must grant `health_reliability_monitoring.read` / `health_reliability_monitoring.write` (plus `.cross_tenant` / `.admin` where applicable). Regenerate service tokens for agents or components that previously used `epc5.*` scopes.
+
+### 15.4 Kubernetes & OTEL Manifests
+
+Ensure the renamed manifests under `deploy/k8s/health_reliability_monitoring-deployment.yaml` and `deploy/otel/health_reliability_monitoring-collector.yaml` are applied. Images now live at `ghcr.io/zeroui/health-reliability-monitoring`.
+
+### 15.5 Source Control Hygiene
+
+Stage and commit all renamed directories/files (`.github`, `contracts/health/...`, `db/migrations/health_reliability_monitoring/...`, `deploy/...`, `docs/runbooks/...`, `tests/health_reliability_monitoring/...`, etc.) so downstream consumers pull the new structure.

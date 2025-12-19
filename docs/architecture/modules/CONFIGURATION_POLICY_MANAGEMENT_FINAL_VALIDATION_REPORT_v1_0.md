@@ -244,9 +244,9 @@ The PRD is **complete, consistent, and implementation-ready**. All critical gaps
 The following items are **not blocking** implementation but should be addressed during implementation:
 
 1. **Dependency Module Validation** ⚠️
-   - M27 (Audit Ledger) PRD validation - Not blocking (interim strategy provided)
-   - M29 (Data & Memory Plane) PRD validation - Not blocking (interim strategy provided)
-   - M32 (Identity & Trust Plane) PRD validation - Not blocking (integration contract specified)
+   - PM-7 (Evidence & Receipt Indexing Service, also known as ERIS) PRD validation - Not blocking (interim strategy provided)
+   - CCP-6 (Data & Memory Plane) PRD validation - Not blocking (interim strategy provided)
+   - CCP-1 (Identity & Trust Plane, implemented through EPC-1/M21) PRD validation - Not blocking (integration contract specified)
    - **Action:** Validate during implementation when dependencies are available
 
 2. **Algorithm Implementation Details** ⚠️
@@ -268,7 +268,7 @@ The following items are **not blocking** implementation but should be addressed 
 
 2. **Dependency Integration:**
    - Start with interim implementation (PostgreSQL/Redis)
-   - Implement adapter interfaces for M27/M29
+   - Implement adapter interfaces for PM-7 (ERIS) and CCP-6 (Data & Memory Plane)
    - Migrate to dedicated modules when available
 
 3. **Testing Strategy:**
@@ -307,9 +307,9 @@ The Configuration & Policy Management Module (M23) PRD v1.1.0 demonstrates:
 ### 5.3 Comparison to Other Modules
 
 The M23 PRD now matches or exceeds the quality standards of:
-- ✅ M21 (IAM Module) - Comparable completeness and detail
-- ✅ M33 (KMS Module) - Comparable algorithm specifications
-- ✅ M34 (Schema Registry Module) - Comparable API contract detail
+- ✅ EPC-1/M21 (Identity & Access Management) - Comparable completeness and detail
+- ✅ EPC-11/M33 (Key & Trust Management) - Comparable algorithm specifications
+- ✅ EPC-12/M34 (Contracts & Schema Registry) - Comparable API contract detail
 
 ---
 

@@ -2,7 +2,7 @@
 # Execute all IAM test suites
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "IAM Module (M21) Test Execution" -ForegroundColor Cyan
+Write-Host "IAM Module (EPC-1) Test Execution" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 

@@ -1,5 +1,5 @@
 /**
- * Diagnostics Provider Tests for Detection Engine Core Module (M05)
+ * Diagnostics Provider Tests for Detection Engine Core Module (PM-4)
  * 
  * Tests diagnostics provider per PRD §3.8
  * Coverage: 100% of diagnostics functionality

@@ -1,5 +1,5 @@
 """
-Pydantic models for Contracts & Schema Registry (M34).
+Pydantic models for Contracts & Schema Registry (EPC-12).
 
 What: Defines Pydantic v2 models for request/response validation per PRD v1.2.0
 Why: Ensures type safety, input validation, and standardized API contracts

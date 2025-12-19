@@ -1,5 +1,5 @@
 """
-Middleware for Contracts & Schema Registry (M34).
+Middleware for Contracts & Schema Registry (EPC-12).
 
 What: FastAPI middleware for request logging, rate limiting, tenant isolation, idempotency per PRD
 Why: Enables observability, prevents abuse, ensures tenant isolation per Rule 173, Rule 4083
@@ -295,7 +295,7 @@ class TenantIsolationMiddleware(BaseHTTPMiddleware):
         # Set tenant context in request state
         request.state.tenant_id = tenant_id
         request.state.user_id = request.headers.get("X-User-ID", "unknown")
-        request.state.module_id = request.headers.get("X-Module-ID", "M34")
+        request.state.module_id = request.headers.get("X-Module-ID", "M34")  # Code identifier for EPC-12
 
         return await call_next(request)
 

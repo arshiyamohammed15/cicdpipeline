@@ -1,12 +1,14 @@
 """
-Mock dependencies for SIN service (M21, M32, M35, M29, M34, API Gateway).
+Mock dependencies for SIN service (EPC-1, CCP-1, EPC-13, EPC-2, EPC-12, API Gateway).
 
-What: Mock implementations of IAM (M21), Trust (M32), Budgeting & Rate-Limiting (M35),
-      Data Governance (M29), Contracts Schema Registry (M34), and API Gateway
+What: Mock implementations of IAM (EPC-1), Trust (CCP-1), Budgeting & Rate-Limiting (EPC-13),
+      Data Governance (EPC-2), Contracts Schema Registry (EPC-12), and API Gateway
 Why: Enables SIN implementation before dependencies are available, will be replaced with real implementations
 Reads/Writes: Mock storage (in-memory), mock signing (Ed25519), mock event publishing
-Contracts: Interface contracts for M21, M32, M35, M29, M34, API Gateway integration
+Contracts: Interface contracts for EPC-1, CCP-1, EPC-13, EPC-2, EPC-12, API Gateway integration
 Risks: Mock implementations not production-ready, must be replaced before production deployment
+
+Note: Class names use legacy M21/M32/M35/M29/M34 identifiers for backward compatibility.
 """
 
 import hashlib
@@ -22,7 +24,8 @@ logger = logging.getLogger(__name__)
 
 class MockM21IAM:
     """
-    Mock IAM (M21) for authentication and authorization.
+    Mock IAM (EPC-1) for authentication and authorization.
+    Note: Class name uses legacy M21 identifier for backward compatibility.
 
     Per PRD: All ingestion endpoints require valid tenant/producer credentials.
     """
@@ -84,7 +87,8 @@ class MockM21IAM:
 
 class MockM32Trust:
     """
-    Mock Trust (M32) for DecisionReceipt emission.
+    Mock Trust (CCP-1) for DecisionReceipt emission.
+    Note: Class name uses legacy M32 identifier for backward compatibility.
 
     Per PRD F8: SIN SHALL emit DecisionReceipts for governance violations and DLQ threshold crossings.
     """
@@ -138,7 +142,8 @@ class MockM32Trust:
 
 class MockM35Budgeting:
     """
-    Mock Budgeting & Rate-Limiting (M35) for quota enforcement.
+    Mock Budgeting & Rate-Limiting (EPC-13) for quota enforcement.
+    Note: Class name uses legacy M35 identifier for backward compatibility.
 
     Per PRD F2.1: max_rate and quotas SHALL be sourced from Budgeting & Rate-Limiting configuration.
     """
@@ -192,7 +197,8 @@ class MockM35Budgeting:
 
 class MockM29DataGovernance:
     """
-    Mock Data Governance (M29) for privacy rules and redaction.
+    Mock Data Governance (EPC-2) for privacy rules and redaction.
+    Note: Class name uses legacy M29 identifier for backward compatibility (should be EPC-2, not CCP-6).
 
     Per PRD F10: Privacy rules, redaction policies, classification.
     """
@@ -261,7 +267,8 @@ class MockM29DataGovernance:
 
 class MockM34SchemaRegistry:
     """
-    Mock Contracts Schema Registry (M34) for schema storage and retrieval.
+    Mock Contracts Schema Registry (EPC-12) for schema storage and retrieval.
+    Note: Class name uses legacy M34 identifier for backward compatibility.
 
     Per PRD F2.2: SignalEnvelope and data contracts SHALL be stored in shared schema registry.
     """

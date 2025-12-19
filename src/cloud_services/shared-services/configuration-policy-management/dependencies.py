@@ -19,7 +19,8 @@ logger = logging.getLogger(__name__)
 
 class MockM21IAM:
     """
-    Mock Identity & Access Management (M21) for access control.
+    Mock Identity & Access Management (EPC-1) for access control.
+    Note: Class name uses legacy M21 identifier for backward compatibility.
 
     Per PRD: JWT token validation, access decision evaluation, policy bundles.
     """
@@ -83,7 +84,8 @@ class MockM21IAM:
 
 class MockM27EvidenceLedger:
     """
-    Mock Evidence & Audit Ledger (M27) for receipt signing and storage.
+    Mock Evidence & Receipt Indexing Service (PM-7 / ERIS) for receipt signing and storage.
+    Note: Class name uses legacy M27 identifier for backward compatibility.
 
     Per PRD: Receipts are Ed25519-signed, stored in audit ledger.
     """
@@ -191,7 +193,8 @@ class MockM27EvidenceLedger:
 
 class MockM29DataPlane:
     """
-    Mock Data & Memory Plane (M29) for policy storage and caches.
+    Mock Data & Memory Plane (CCP-6) for policy storage and caches.
+    Note: Class name uses legacy M29 identifier for backward compatibility.
 
     Per PRD: Policy store with versioning, immutable releases, SHA-256 snapshot_id.
     """
@@ -286,7 +289,8 @@ class MockM29DataPlane:
 
 class MockM33KeyManagement:
     """
-    Mock Key Management Service (M33) for cryptographic operations.
+    Mock Key Management Service (EPC-11) for cryptographic operations.
+    Note: Class name uses legacy M33 identifier for backward compatibility.
 
     Per PRD: Ed25519 signing for receipts, key rotation support.
     """
@@ -353,7 +357,8 @@ class MockM33KeyManagement:
 
 class MockM34SchemaRegistry:
     """
-    Mock Schema Registry (M34) for schema validation.
+    Mock Schema Registry (EPC-12) for schema validation.
+    Note: Class name uses legacy M34 identifier for backward compatibility.
 
     Per PRD: Schema validation for policies, configurations, compliance rules.
     """
@@ -405,7 +410,8 @@ class MockM34SchemaRegistry:
 
 class MockM32TrustPlane:
     """
-    Mock Identity & Trust Plane (M32) for device/service identities and mTLS.
+    Mock Identity & Trust Plane (CCP-1) for device/service identities and mTLS.
+    Note: Class name uses legacy M32 identifier for backward compatibility.
 
     Per PRD: mTLS between internal services, device/service identities.
     """

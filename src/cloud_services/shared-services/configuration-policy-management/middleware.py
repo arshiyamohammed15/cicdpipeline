@@ -1,5 +1,5 @@
 """
-Middleware for Configuration & Policy Management (M23).
+Middleware for Configuration & Policy Management (EPC-3).
 
 What: FastAPI middleware for request logging, rate limiting per PRD v1.1.0
 Why: Enables observability, prevents abuse per Rule 173, Rule 4083

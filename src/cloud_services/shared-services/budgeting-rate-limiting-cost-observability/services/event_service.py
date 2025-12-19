@@ -1,7 +1,7 @@
 """
-Event Service for M35.
+Event Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
-What: Publishes events to M31 Notification Engine using common event envelope
+What: Publishes events to EPC-4 (Alerting & Notification Service) using common event envelope
 Why: Provides alerting and notification integration per PRD
 Reads/Writes: Publishes events to M31 via dependencies
 Contracts: Event contracts per PRD lines 2706-2803

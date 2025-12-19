@@ -23,7 +23,8 @@ logger = logging.getLogger(__name__)
 
 class MockM21IAM:
     """
-    Mock Identity & Access Management (M21) module.
+    Mock Identity & Access Management (EPC-1) module.
+    Note: Class name uses legacy M21 identifier for backward compatibility.
 
     Responsibilities:
         - Token verification

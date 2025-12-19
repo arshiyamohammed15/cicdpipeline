@@ -1,7 +1,7 @@
-# Key Management Service Module (M33)
+# Key Management Service Module (EPC-11)
 
 **Version:** 0.1.0
-**Module ID:** M33
+**Module ID:** M33 (code identifier for EPC-11)
 **Description:** Cryptographic foundation and trust anchor for ZeroUI ecosystem
 
 ## Overview
@@ -101,8 +101,8 @@ Per KMS spec:
 
 ## Security
 
-- All receipts are Ed25519-signed via M27 (Evidence & Audit Ledger)
-- Receipts stored in M27 (Audit Ledger)
+- All receipts are Ed25519-signed via PM-7 (Evidence & Receipt Indexing Service / ERIS)
+- Receipts stored in PM-7 (ERIS)
 - mTLS validation required for all requests
 - JWT validation optional but recommended
 - Dual authorization required for key lifecycle operations
@@ -115,12 +115,12 @@ Per KMS spec:
 
 This module depends on:
 
-- **M21 (IAM)**: Authentication and authorization (mock implementation)
-- **M27 (Evidence Ledger)**: Receipt storage and signing (mock implementation)
-- **M29 (Data Plane)**: Key metadata storage (mock implementation)
-- **M32 (Trust Plane)**: Certificate validation and mTLS (mock implementation)
+- **EPC-1 (IAM)**: Authentication and authorization (mock implementation)
+- **PM-7 (ERIS)**: Receipt storage and signing (mock implementation)
+- **CCP-6 (Data Plane)**: Key metadata storage (mock implementation)
+- **CCP-1 (Trust Plane)**: Certificate validation and mTLS (mock implementation)
 
-**Note:** Mock dependencies are used for development. Production deployments require real implementations of M21, M27, M29, and M32.
+**Note:** Mock dependencies are used for development. Production deployments require real implementations of EPC-1, PM-7, CCP-6, and CCP-1.
 
 ## Configuration
 
@@ -182,7 +182,7 @@ python -m pytest tests/test_key_management_service_*.py -v --cov=key_management_
 ```
 key-management-service/
 ├── __init__.py
-├── dependencies.py      # Mock dependencies (M21, M27, M29, M32)
+├── dependencies.py      # Mock dependencies (EPC-1, PM-7, CCP-6, CCP-1)
 ├── hsm/
 │   ├── __init__.py
 │   ├── interface.py    # HSM interface abstraction
@@ -220,7 +220,7 @@ Per KMS spec:
 - **Compute**: Minimum 4 vCPU, 2 GB RAM
 - **HSM**: Hardware Security Module (AWS CloudHSM, Azure Dedicated HSM, etc.)
 - **Networking**: TLS 1.3, mTLS required, service mesh integration
-- **Storage**: Key metadata storage via M29, receipt storage via M27
+- **Storage**: Key metadata storage via CCP-6, receipt storage via PM-7
 
 ### Deployment Steps
 
@@ -298,16 +298,16 @@ Monitor the following metrics:
 # mTLS middleware validates client certificates
 
 # Check trust store
-# Certificates must be in trust store (M32)
+# Certificates must be in trust store (CCP-1)
 ```
 
 ## Integration
 
 ### With Other Modules
 
-- **M21 (IAM)**: Uses KMS for receipt signing
-- **M23 (Configuration & Policy Management)**: Uses KMS for receipt signing
-- **M34 (Schema Registry)**: Uses KMS for schema signing
+- **EPC-1 (IAM)**: Uses KMS for receipt signing
+- **EPC-3 (Configuration & Policy Management)**: Uses KMS for receipt signing
+- **EPC-12 (Schema Registry)**: Uses KMS for schema signing
 
 ### API Client Example
 

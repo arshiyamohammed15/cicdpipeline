@@ -1,5 +1,5 @@
 """
-Service layer for Detection Engine Core Module (M05).
+Service layer for Detection Engine Core Module (PM-4).
 
 What: Main orchestration service for detection logic and decision calculation
 Why: Encapsulates business logic per PRD §3.9

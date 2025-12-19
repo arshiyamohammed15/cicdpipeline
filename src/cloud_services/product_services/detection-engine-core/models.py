@@ -1,5 +1,5 @@
 """
-Domain models for Detection Engine Core Module (M05).
+Domain models for Detection Engine Core Module (PM-4).
 
 What: Pydantic models for decision requests, responses, receipts, and related data structures
 Why: Type safety, validation, and standardized data contracts per PRD v1.0

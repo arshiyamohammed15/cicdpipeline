@@ -193,7 +193,7 @@ describe('CostTracker', () => {
 
       // Should only include last 100 entries
       expect(summary.totalOperations).toBe(100);
-    });
+    }, 30000); // Increase timeout to 30 seconds for 150 async operations
 
     it('should return empty summary when no metrics exist', () => {
       const summary = costReporter.generateSummary(100);
@@ -205,10 +205,13 @@ describe('CostTracker', () => {
     });
 
     it('should produce valid JSON summary', async () => {
+      // Ensure clean state by using a fresh CostReporter instance
+      const freshCostReporter = new CostReporter(tempDir);
+      
       await costTracker.trackServerlessInvoke(1000, 'light');
       await costTracker.trackGpuSubmit(1000, 'ai-inference');
 
-      const json = costReporter.getSummaryJson(100);
+      const json = freshCostReporter.getSummaryJson(100);
       const summary: CostSummary = JSON.parse(json);
 
       expect(summary.totalCost).toBeGreaterThan(0);

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Security tests for Configuration & Policy Management (M23).
+Security tests for Configuration & Policy Management (EPC-3).
 
 WHAT: Security validation tests per PRD security requirements
 WHY: Ensure security controls are properly implemented
@@ -30,14 +30,14 @@ sys.path.insert(0, str(project_root))
 # Import using direct file path
 import importlib.util
 
-m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
+epc3_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure for relative imports
 parent_pkg = type(sys)('configuration_policy_management')
 sys.modules['configuration_policy_management'] = parent_pkg
 
 # Load database models first (needed by services)
-database_models_path = m23_dir / "database" / "models.py"
+database_models_path = epc3_dir / "database" / "models.py"
 spec_db_models = importlib.util.spec_from_file_location("configuration_policy_management.database.models", database_models_path)
 db_models_module = importlib.util.module_from_spec(spec_db_models)
 sys.modules['configuration_policy_management.database'] = type(sys)('configuration_policy_management.database')
@@ -45,28 +45,28 @@ sys.modules['configuration_policy_management.database.models'] = db_models_modul
 spec_db_models.loader.exec_module(db_models_module)
 
 # Load database connection
-database_connection_path = m23_dir / "database" / "connection.py"
+database_connection_path = epc3_dir / "database" / "connection.py"
 spec_db_conn = importlib.util.spec_from_file_location("configuration_policy_management.database.connection", database_connection_path)
 db_conn_module = importlib.util.module_from_spec(spec_db_conn)
 sys.modules['configuration_policy_management.database.connection'] = db_conn_module
 spec_db_conn.loader.exec_module(db_conn_module)
 
 # Load models
-models_path = m23_dir / "models.py"
+models_path = epc3_dir / "models.py"
 spec_models = importlib.util.spec_from_file_location("configuration_policy_management.models", models_path)
 models_module = importlib.util.module_from_spec(spec_models)
 sys.modules['configuration_policy_management.models'] = models_module
 spec_models.loader.exec_module(models_module)
 
 # Load dependencies
-dependencies_path = m23_dir / "dependencies.py"
+dependencies_path = epc3_dir / "dependencies.py"
 spec_deps = importlib.util.spec_from_file_location("configuration_policy_management.dependencies", dependencies_path)
 deps_module = importlib.util.module_from_spec(spec_deps)
 sys.modules['configuration_policy_management.dependencies'] = deps_module
 spec_deps.loader.exec_module(deps_module)
 
 # Load services
-services_path = m23_dir / "services.py"
+services_path = epc3_dir / "services.py"
 spec_services = importlib.util.spec_from_file_location("configuration_policy_management.services", services_path)
 services_module = importlib.util.module_from_spec(spec_services)
 sys.modules['configuration_policy_management.services'] = services_module

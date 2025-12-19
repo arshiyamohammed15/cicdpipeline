@@ -1,5 +1,5 @@
 /**
- * Extension Interface for Configuration & Policy Management (M23).
+ * Extension Interface for Configuration & Policy Management (EPC-3).
  *
  * Per PRD: Registers VS Code commands and integrates with Edge Agent for receipt consumption.
  */

@@ -1,5 +1,5 @@
 """
-Business logic layer for Data Governance & Privacy Module (M22).
+Business logic layer for Data Governance & Privacy Module (EPC-2).
 
 Architecture:
     - DataClassificationEngine: Automated data discovery & classification
@@ -23,11 +23,11 @@ from typing import Any, Dict, List, Optional, Tuple
 from uuid import uuid4
 
 from .dependencies import (
-    MockM21IAM,
-    MockM23PolicyManagement,
-    MockM27EvidenceLedger,
-    MockM29DataPlane,
-    MockM33KeyManagement,
+    MockM21IAM,  # EPC-1 (Identity & Access Management)
+    MockM23PolicyManagement,  # EPC-3 (Configuration & Policy Management)
+    MockM27EvidenceLedger,  # PM-7 (Evidence & Receipt Indexing Service / ERIS)
+    MockM29DataPlane,  # CCP-6 (Data & Memory Plane)
+    MockM33KeyManagement,  # EPC-11 (Key & Trust Management)
 )
 
 # --------------------------------------------------------------------------- #

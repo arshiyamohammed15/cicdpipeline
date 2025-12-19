@@ -71,7 +71,7 @@ export class DecisionCardSectionProvider {
                'gate_id' in receipt &&
                (receipt.gate_id?.includes('detection-engine') || 
                 receipt.gate_id?.includes('m05') ||
-                receipt.policy_version_ids?.some((id: string) => id.includes('M05')));
+                receipt.policy_version_ids?.some((id: string) => id.includes('M05') || id.includes('PM-4')));
     }
 
     async renderOverview(webview: vscode.Webview, panel: vscode.WebviewPanel): Promise<void> {

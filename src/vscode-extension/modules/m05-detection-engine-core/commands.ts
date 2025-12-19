@@ -48,7 +48,7 @@ export function registerCommands(context: vscode.ExtensionContext): void {
             // Read latest receipts
             const receipts = await reader.readReceipts(repoId, year, month);
             
-            // Find latest M05 decision receipt
+            // Find latest PM-4 (Detection Engine Core) decision receipt
             const latestReceipt = receipts
                 .filter(r => 'evaluation_point' in r && 'gate_id' in r)
                 .filter(r => (r as any).gate_id?.includes('detection-engine') || (r as any).gate_id?.includes('m05'))
@@ -93,7 +93,7 @@ export function registerCommands(context: vscode.ExtensionContext): void {
             // Read latest receipts
             const receipts = await reader.readReceipts(repoId, year, month);
             
-            // Find latest M05 decision receipt
+            // Find latest PM-4 (Detection Engine Core) decision receipt
             const latestReceipt = receipts
                 .filter(r => 'evaluation_point' in r && 'gate_id' in r)
                 .filter(r => (r as any).gate_id?.includes('detection-engine') || (r as any).gate_id?.includes('m05'))

@@ -93,7 +93,7 @@ This report provides a comprehensive validation of all 133 .md files in the Zero
    - Status: Conditionally ready, identifies gaps
    - **KEEP** - Initial validation with gaps
 
-2. **`docs/architecture/modules/M23_CONFIGURATION_POLICY_MANAGEMENT_FINAL_VALIDATION_REPORT_v1_0.md`**
+2. **`docs/architecture/modules/CONFIGURATION_POLICY_MANAGEMENT_FINAL_VALIDATION_REPORT_v1_0.md`**
    - Status: Ready for implementation, all gaps resolved
    - **DUPLICATE** - Supersedes REPORT_v1_0.md
    - **RECOMMENDATION:** ❌ **DELETE** REPORT_v1_0.md (superseded)

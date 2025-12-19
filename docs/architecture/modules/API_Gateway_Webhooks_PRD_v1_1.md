@@ -172,6 +172,8 @@ All receipts emitted by this module:
   - Optional Ed25519 signing according to global receipts configuration.
 - This module **must not** introduce new receipt sinks or formats; it only calls the shared receipts API.
 
+**Implementation Note:** The `evaluation_point` field is required by the TypeScript schema (`src/edge-agent/shared/receipt-types.ts`) and GSMD schema (`gsmd/schema/receipt.schema.json`). While some Python implementations (M35, CCCS) currently do not include this field, M36 implementation **must** include `evaluation_point` to ensure consistency across the platform and alignment with schema requirements.
+
 ---
 
 ## 4. Functional Requirements

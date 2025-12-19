@@ -209,19 +209,20 @@ class PolicyRuntime:
         input_keys = set(inputs.keys())
         
         # Get rules that match input keys
-        matched_rules = set()
+        # Use dict with rule_id as key since PolicyRule contains unhashable dict field
+        matched_rules_dict: dict[str, PolicyRule] = {}
         for key in input_keys:
             if key in self._rule_index:
                 for rule in self._rule_index[key]:
-                    matched_rules.add(rule)
+                    matched_rules_dict[rule.rule_id] = rule
         
         # Add rules with no conditions (match everything)
         if "__no_conditions__" in self._rule_index:
             for rule in self._rule_index["__no_conditions__"]:
-                matched_rules.add(rule)
+                matched_rules_dict[rule.rule_id] = rule
         
         # Sort by priority (highest first) as rules are already sorted
-        candidate_rules = sorted(matched_rules, key=lambda r: r.priority, reverse=True)
+        candidate_rules = sorted(matched_rules_dict.values(), key=lambda r: r.priority, reverse=True)
         
         # Fallback to all rules if index is empty (shouldn't happen, but defensive)
         if not candidate_rules and self._snapshot:

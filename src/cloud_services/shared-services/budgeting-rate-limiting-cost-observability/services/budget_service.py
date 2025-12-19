@@ -1,5 +1,5 @@
 """
-Budget Management Service for M35.
+Budget Management Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 What: Manages budget definitions, period calculations, utilization tracking, and enforcement
 Why: Provides real-time budget controls per PRD lines 72-122

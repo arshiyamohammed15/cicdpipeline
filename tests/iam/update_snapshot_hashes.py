@@ -10,7 +10,7 @@ import hashlib
 from pathlib import Path
 
 project_root = Path(__file__).parent.parent.parent
-gsmd_dir = project_root / "gsmd" / "gsmd" / "modules" / "M21"
+gsmd_dir = project_root / "gsmd" / "gsmd" / "modules" / "EPC-1"
 
 snapshot_files = [
     "messages/v1/snapshot.json",

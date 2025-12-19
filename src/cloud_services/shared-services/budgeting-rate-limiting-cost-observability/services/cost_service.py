@@ -1,5 +1,5 @@
 """
-Cost Calculation Service for M35.
+Cost Calculation Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 What: Manages cost recording, attribution, aggregation, and anomaly detection
 Why: Provides cost transparency per PRD lines 189-245

@@ -99,7 +99,7 @@ class TestReceiptService:
         assert receipt["signature"] is not None
 
     def test_receipt_schema_compliance(self, receipt_service):
-        """Test that receipts conform to canonical M27 schema."""
+        """Test that receipts conform to canonical PM-7 schema."""
         receipt = receipt_service.generate_budget_check_receipt(
             tenant_id=str(uuid.uuid4()),
             resource_type="api_calls",

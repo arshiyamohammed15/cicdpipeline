@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Integration tests for Configuration & Policy Management (M23) API routes.
+Integration tests for Configuration & Policy Management (EPC-3) API routes.
 
 WHAT: Complete test coverage for all API endpoints (8 endpoints per PRD)
 WHY: Ensure API endpoints work correctly with proper error handling and response formats
@@ -29,14 +29,14 @@ sys.path.insert(0, str(project_root))
 import importlib.util
 
 # Setup module path for relative imports
-m23_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
+epc3_dir = project_root / "src" / "cloud_services" / "shared-services" / "configuration-policy-management"
 
 # Create parent package structure
 parent_pkg = type(sys)('configuration_policy_management')
 sys.modules['configuration_policy_management'] = parent_pkg
 
 # Load database models first (needed by services)
-database_models_path = m23_dir / "database" / "models.py"
+database_models_path = epc3_dir / "database" / "models.py"
 spec_db_models = importlib.util.spec_from_file_location("configuration_policy_management.database.models", database_models_path)
 db_models_module = importlib.util.module_from_spec(spec_db_models)
 sys.modules['configuration_policy_management.database'] = type(sys)('configuration_policy_management.database')
@@ -44,42 +44,42 @@ sys.modules['configuration_policy_management.database.models'] = db_models_modul
 spec_db_models.loader.exec_module(db_models_module)
 
 # Load database connection
-database_connection_path = m23_dir / "database" / "connection.py"
+database_connection_path = epc3_dir / "database" / "connection.py"
 spec_db_conn = importlib.util.spec_from_file_location("configuration_policy_management.database.connection", database_connection_path)
 db_conn_module = importlib.util.module_from_spec(spec_db_conn)
 sys.modules['configuration_policy_management.database.connection'] = db_conn_module
 spec_db_conn.loader.exec_module(db_conn_module)
 
 # Load dependencies first
-dependencies_path = m23_dir / "dependencies.py"
+dependencies_path = epc3_dir / "dependencies.py"
 spec_deps = importlib.util.spec_from_file_location("configuration_policy_management.dependencies", dependencies_path)
 deps_module = importlib.util.module_from_spec(spec_deps)
 sys.modules['configuration_policy_management.dependencies'] = deps_module
 spec_deps.loader.exec_module(deps_module)
 
 # Load models
-models_path = m23_dir / "models.py"
+models_path = epc3_dir / "models.py"
 spec_models = importlib.util.spec_from_file_location("configuration_policy_management.models", models_path)
 models_module = importlib.util.module_from_spec(spec_models)
 sys.modules['configuration_policy_management.models'] = models_module
 spec_models.loader.exec_module(models_module)
 
 # Load services
-services_path = m23_dir / "services.py"
+services_path = epc3_dir / "services.py"
 spec_services = importlib.util.spec_from_file_location("configuration_policy_management.services", services_path)
 services_module = importlib.util.module_from_spec(spec_services)
 sys.modules['configuration_policy_management.services'] = services_module
 spec_services.loader.exec_module(services_module)
 
 # Load middleware
-middleware_path = m23_dir / "middleware.py"
+middleware_path = epc3_dir / "middleware.py"
 spec_middleware = importlib.util.spec_from_file_location("configuration_policy_management.middleware", middleware_path)
 middleware_module = importlib.util.module_from_spec(spec_middleware)
 sys.modules['configuration_policy_management.middleware'] = middleware_module
 spec_middleware.loader.exec_module(middleware_module)
 
 # Load routes
-routes_path = m23_dir / "routes.py"
+routes_path = epc3_dir / "routes.py"
 spec_routes = importlib.util.spec_from_file_location("configuration_policy_management.routes", routes_path)
 routes_module = importlib.util.module_from_spec(spec_routes)
 sys.modules['configuration_policy_management.routes'] = routes_module
@@ -160,7 +160,7 @@ _module_level_engine_patcher.start()
 _module_level_session_factory_patcher.start()
 
 # Load main
-main_path = m23_dir / "main.py"
+main_path = epc3_dir / "main.py"
 spec_main = importlib.util.spec_from_file_location("configuration_policy_management.main", main_path)
 main_module = importlib.util.module_from_spec(spec_main)
 sys.modules['configuration_policy_management.main'] = main_module

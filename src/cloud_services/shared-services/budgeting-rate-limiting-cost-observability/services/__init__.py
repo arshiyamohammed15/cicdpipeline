@@ -1,5 +1,5 @@
 """
-Service layer for Budgeting, Rate-Limiting & Cost Observability (M35).
+Service layer for Budgeting, Rate-Limiting & Cost Observability (EPC-13).
 
 Business logic for budget management, rate limiting, cost calculation, and quota management.
 """
@@ -41,10 +41,10 @@ class M35ServiceFactory:
 
         Args:
             db_session: Database session
-            evidence_ledger: M27 evidence ledger
-            key_management: M33 key management
-            notification_engine: M31 notification engine
-            data_plane: M29 data plane
+            evidence_ledger: PM-7 (ERIS) evidence ledger
+            key_management: EPC-11 (Key & Trust Management) key management
+            notification_engine: EPC-4 (Alerting & Notification Service) notification engine
+            data_plane: CCP-6 (Data & Memory Plane) data plane
             redis_client: Redis client (optional)
         """
         # Create CacheManager with Redis client

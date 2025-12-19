@@ -1,5 +1,5 @@
 """
-API routes for Configuration & Policy Management (M23).
+API routes for Configuration & Policy Management (EPC-3).
 
 What: FastAPI route handlers for all endpoints per PRD v1.1.0
 Why: Provides HTTP API endpoints for policy, configuration, compliance operations
@@ -31,7 +31,7 @@ from .services import (
 from .dependencies import (
     MockM21IAM, MockM27EvidenceLedger, MockM29DataPlane,
     MockM33KeyManagement, MockM34SchemaRegistry, MockM32TrustPlane
-)
+)  # EPC-1, PM-7, CCP-6, EPC-11, EPC-12, CCP-1 (legacy class names)
 
 logger = logging.getLogger(__name__)
 

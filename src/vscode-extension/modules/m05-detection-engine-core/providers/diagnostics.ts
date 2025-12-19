@@ -53,7 +53,7 @@ export class DetectionEngineDiagnosticsProvider {
                'gate_id' in receipt &&
                (receipt.gate_id?.includes('detection-engine') || 
                 receipt.gate_id?.includes('m05') ||
-                receipt.policy_version_ids?.some((id: string) => id.includes('M05')));
+                receipt.policy_version_ids?.some((id: string) => id.includes('M05') || id.includes('PM-4')));
     }
 
     async computeDiagnostics(): Promise<readonly vscode.Diagnostic[]> {
@@ -96,9 +96,9 @@ export class DetectionEngineDiagnosticsProvider {
                         severity
                     );
 
-                    diagnostic.source = 'Detection Engine Core (M05)';
+                    diagnostic.source = 'Detection Engine Core (PM-4)';
                     diagnostic.code = {
-                        value: `M05-${receipt.decision.status.toUpperCase()}`,
+                        value: `PM-4-${receipt.decision.status.toUpperCase()}`,
                         target: vscode.Uri.parse(`zeroui://receipt/${receipt.receipt_id}`)
                     };
 
@@ -125,7 +125,7 @@ export class DetectionEngineDiagnosticsProvider {
                 `[Detection Engine] Error reading receipts: ${error instanceof Error ? error.message : 'Unknown error'}`,
                 vscode.DiagnosticSeverity.Warning
             );
-            errorDiagnostic.source = 'Detection Engine Core (M05)';
+            errorDiagnostic.source = 'Detection Engine Core (PM-4)';
             this.diagnostics.push(errorDiagnostic);
         }
 

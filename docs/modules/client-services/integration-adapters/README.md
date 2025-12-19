@@ -189,8 +189,7 @@ pytest tests/ -v --cov=. --cov-report=html --cov-fail-under=100
 
 ## References
 
-- **PRD**: `docs/architecture/modules/Integration_Adapters_Module_Patched.md`
-- **Validation Report**: `docs/architecture/modules/Integration_Adapters_Module_FINAL_VALIDATION_REPORT.md`
+- **PRD**: `docs/architecture/modules/Integration_Adapters_Module_Patched.md` (includes validation status and implementation readiness)
 - **Implementation Guide**: `docs/architecture/MODULE_IMPLEMENTATION_GUIDE.md`
 - **Source Code**: `src/cloud_services/client-services/integration-adapters/`
 - **Tests**: `tests/cloud_services/client_services/integration_adapters/`

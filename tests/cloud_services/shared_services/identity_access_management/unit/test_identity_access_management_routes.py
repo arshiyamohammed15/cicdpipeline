@@ -44,7 +44,7 @@ class TestIAMRoutes:
         response = client.get("/iam/v1/config")
         assert response.status_code == 200
         data = response.json()
-        assert data["module_id"] == "M21"
+        assert data["module_id"] == "EPC-1"
         assert data["version"] == "1.1.0"
 
     def test_verify_endpoint_invalid_token(self, client):

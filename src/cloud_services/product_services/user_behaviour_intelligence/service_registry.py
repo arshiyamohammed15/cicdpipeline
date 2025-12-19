@@ -11,13 +11,13 @@ Risks: Global state must be initialized before production usage
 import logging
 from typing import Optional
 
-from .dependencies import MockM21IAM, MockM7ERIS, MockM22DataGovernance
+from .dependencies import MockM21IAM, MockM7ERIS, MockM22DataGovernance  # EPC-1, PM-7, EPC-2 (legacy class names)
 
 logger = logging.getLogger(__name__)
 
-_iam: Optional[MockM21IAM] = None
-_eris: Optional[MockM7ERIS] = None
-_data_governance: Optional[MockM22DataGovernance] = None
+_iam: Optional[MockM21IAM] = None  # EPC-1 (Identity & Access Management)
+_eris: Optional[MockM7ERIS] = None  # PM-7 (Evidence & Receipt Indexing Service / ERIS)
+_data_governance: Optional[MockM22DataGovernance] = None  # EPC-2 (Data Governance & Privacy)
 
 
 def initialize_services() -> None:

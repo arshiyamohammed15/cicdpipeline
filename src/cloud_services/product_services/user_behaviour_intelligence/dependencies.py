@@ -148,9 +148,10 @@ class MockM7ERIS:
         self.available = available
 
 
-class MockM22DataGovernance:
+class MockM22DataGovernance:  # EPC-2 (Data Governance & Privacy) - legacy class name
     """
     Mock Data Governance & Privacy (EPC-2) for retention policies and data deletion.
+    Note: Class name uses legacy M22 identifier for backward compatibility.
 
     Per UBI PRD FR-8: Retention policy query and data deletion callbacks
     """

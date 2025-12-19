@@ -358,7 +358,7 @@ describe('Detection Engine Diagnostics Provider - Unit Tests', () => {
             mockReadReceipts.mockResolvedValue([receipt]);
             const diagnostics = await provider.computeDiagnostics();
             
-            expect(diagnostics[0].source).toBe('Detection Engine Core (M05)');
+            expect(diagnostics[0].source).toBe('Detection Engine Core (PM-4)');
         });
 
         it('should set diagnostic code', async () => {
@@ -386,7 +386,7 @@ describe('Detection Engine Diagnostics Provider - Unit Tests', () => {
             const diagnostics = await provider.computeDiagnostics();
             
             expect(diagnostics[0].code).toBeDefined();
-            expect(diagnostics[0].code?.value).toBe('M05-WARN');
+            expect(diagnostics[0].code?.value).toBe('PM-4-WARN');
         });
 
         it('should add related information for evaluation_point', async () => {

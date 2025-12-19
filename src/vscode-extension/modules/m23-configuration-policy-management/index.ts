@@ -1,5 +1,5 @@
 /**
- * Module entry point for Configuration & Policy Management (M23).
+ * Module entry point for Configuration & Policy Management (EPC-3).
  *
  * Per PRD: Registers module with VS Code extension.
  */

@@ -16,7 +16,7 @@ The module implements a ports-and-adapters (anti-corruption layer) architecture:
 - **Provider Adapters**: Provider-specific implementations (GitHub, GitLab, Jira, etc.)
 - **SignalEnvelope Mapping**: Transforms provider events to canonical PM-3 format
 - **Integration Services**: Orchestrates webhooks, polling, and outbound actions
-- **External Service Clients**: Integrates with PM-3, M33 (KMS), M35 (Budgeting), ERIS, IAM
+- **External Service Clients**: Integrates with PM-3, EPC-11 (KMS), EPC-13 (Budgeting), PM-7 (ERIS), EPC-1 (IAM)
 
 ## Features
 

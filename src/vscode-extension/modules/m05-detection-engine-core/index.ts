@@ -1,5 +1,5 @@
 /**
- * Detection Engine Core Module (M05)
+ * Detection Engine Core Module (PM-4)
  * 
  * Implements the Detection Engine Core module per PRD v1.0
  * Module ID: m05 (lowercase per architecture contract)

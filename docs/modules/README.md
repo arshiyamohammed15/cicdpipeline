@@ -3,11 +3,15 @@
 **Last Updated**: 2025-01-27  
 **Status**: ✅ **CONSOLIDATED AND ORGANIZED**
 
+> **⚠️ SINGLE SOURCE OF TRUTH**: Module categorization and implementation locations are defined in **[ZeroUI Module Categories V 3.0](../architecture/ZeroUI%20Module%20Categories%20V%203.0.md)**. That document contains the complete mapping of all modules (FM/PM/EPC/CCP) to their actual implementation paths. This directory contains module-specific documentation only.
+
 ---
 
 ## Overview
 
 This directory contains consolidated, comprehensive documentation for all implemented modules in the ZeroUI 2.0 project. Each module has a single `README.md` file that consolidates all relevant information from multiple scattered documentation files.
+
+**For module categorization and implementation paths, see [ZeroUI Module Categories V 3.0](../architecture/ZeroUI%20Module%20Categories%20V%203.0.md)**.
 
 ---
 

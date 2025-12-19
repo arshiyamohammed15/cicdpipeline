@@ -1,5 +1,5 @@
 """
-M21 (Identity & Access Management) client for Integration Adapters Module.
+EPC-1 (Identity & Access Management) client for Integration Adapters Module.
 
 What: Client for IAM token validation per PRD Section 11
 Why: Authenticate and authorize API requests
@@ -17,7 +17,7 @@ import httpx
 
 
 class IAMClient:
-    """Client for Identity & Access Management service (M21)."""
+    """Client for Identity & Access Management service (EPC-1)."""
 
     def __init__(self, base_url: Optional[str] = None):
         """

@@ -3,7 +3,7 @@ REM IAM Module Test Execution Batch Script
 REM Execute all IAM test suites
 
 echo ========================================
-echo IAM Module (M21) Test Execution
+echo IAM Module (EPC-1) Test Execution
 echo ========================================
 echo.
 

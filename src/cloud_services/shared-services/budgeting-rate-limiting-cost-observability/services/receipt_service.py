@@ -1,11 +1,11 @@
 """
-Receipt generation service for M35.
+Receipt generation service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
-What: Generates canonical M27 receipts for all budget, rate limit, cost, and quota operations
+What: Generates canonical PM-7 (ERIS) receipts for all budget, rate limit, cost, and quota operations
 Why: Provides audit trail and compliance evidence per PRD
-Reads/Writes: Reads operation data, writes receipts to M27 via dependencies
-Contracts: Canonical M27 receipt schema per PRD lines 3345-3563
-Risks: Receipt schema mismatch, signature failures, M27 unavailability
+Reads/Writes: Reads operation data, writes receipts to PM-7 via dependencies
+Contracts: Canonical PM-7 receipt schema per PRD lines 3345-3563
+Risks: Receipt schema mismatch, signature failures, PM-7 unavailability
 """
 
 import hashlib
@@ -17,16 +17,16 @@ from datetime import datetime
 from typing import Dict, Any, Optional
 from decimal import Decimal
 
-from ..dependencies import MockM27EvidenceLedger, MockM33KeyManagement
+from ..dependencies import MockM27EvidenceLedger, MockM33KeyManagement  # PM-7, EPC-11 (legacy class names)
 
 logger = logging.getLogger(__name__)
 
 
 class ReceiptService:
     """
-    Receipt generation service per M35 PRD Audit Integration section.
+    Receipt generation service per EPC-13 PRD Audit Integration section.
 
-    Generates receipts conforming to canonical M27 receipt schema.
+    Generates receipts conforming to canonical PM-7 (ERIS) receipt schema.
     """
 
     def __init__(
@@ -38,8 +38,8 @@ class ReceiptService:
         Initialize receipt service.
 
         Args:
-            evidence_ledger: M27 evidence ledger for receipt storage
-            key_management: M33 key management for receipt signing
+            evidence_ledger: PM-7 (ERIS) evidence ledger for receipt storage
+            key_management: EPC-11 (Key & Trust Management) key management for receipt signing
         """
         self.evidence_ledger = evidence_ledger
         self.key_management = key_management

@@ -20,7 +20,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routes import router
 from .models import HealthResponse
 from .middleware import RequestLoggingMiddleware, RateLimitingMiddleware, mTLSValidationMiddleware, JWTValidationMiddleware
-from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane, MockM21IAM
+from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane, MockM21IAM  # Legacy class names: PM-7, CCP-6, CCP-1, EPC-1
 
 # Service metadata per Rule 62
 SERVICE_NAME = "key-management-service"

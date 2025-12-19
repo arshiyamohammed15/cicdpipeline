@@ -1,11 +1,13 @@
 """
-Mock dependencies for IAM service (M27, M29, M32).
+Mock dependencies for IAM service (PM-7, CCP-6, CCP-1).
 
-What: Mock implementations of Evidence & Audit Ledger (M27), Data & Memory Plane (M29), Identity & Trust Plane (M32)
+What: Mock implementations of Evidence & Receipt Indexing Service (PM-7 / ERIS), Data & Memory Plane (CCP-6), Identity & Trust Plane (CCP-1)
 Why: Enables IAM implementation before dependencies are available, will be replaced with real implementations
 Reads/Writes: Mock storage (in-memory), mock signing (Ed25519), mock trust verification
-Contracts: Interface contracts for M27, M29, M32 integration
+Contracts: Interface contracts for PM-7, CCP-6, CCP-1 integration
 Risks: Mock implementations not production-ready, must be replaced before production deployment
+
+Note: Class names use legacy M27/M29/M32 identifiers for backward compatibility. Comments reference new module IDs (PM-7, CCP-6, CCP-1).
 """
 
 import hashlib
@@ -19,9 +21,10 @@ logger = logging.getLogger(__name__)
 
 class MockM27EvidenceLedger:
     """
-    Mock Evidence & Audit Ledger (M27) for receipt signing and verification.
+    Mock Evidence & Receipt Indexing Service (PM-7 / ERIS) for receipt signing and verification.
 
     Per IAM spec: Receipts are Ed25519-signed, verification public keys distributed via trust store.
+    Note: Class name uses legacy M27 identifier for backward compatibility. Module is PM-7 (ERIS).
     """
 
     def __init__(self):
@@ -119,9 +122,10 @@ class MockM27EvidenceLedger:
 
 class MockM29DataPlane:
     """
-    Mock Data & Memory Plane (M29) for policy storage and caches.
+    Mock Data & Memory Plane (CCP-6) for policy storage and caches.
 
     Per IAM spec: Policy store with versioning, immutable releases, SHA-256 snapshot_id.
+    Note: Class name uses legacy M29 identifier for backward compatibility. Module is CCP-6 (Data & Memory Plane).
     """
 
     def __init__(self):
@@ -223,9 +227,10 @@ class MockM29DataPlane:
 
 class MockM32TrustPlane:
     """
-    Mock Identity & Trust Plane (M32) for device/service identities and mTLS.
+    Mock Identity & Trust Plane (CCP-1) for device/service identities and mTLS.
 
     Per IAM spec: mTLS between internal services, device/service identities.
+    Note: Class name uses legacy M32 identifier for backward compatibility. Module is CCP-1 (Identity & Trust Plane).
     """
 
     def __init__(self):

@@ -177,7 +177,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
     def test_generate_key_with_custom_policy(self):
         """Test generate_key with custom access policy."""
         custom_policy = AccessPolicy(
-            allowed_modules=["M21"],
+            allowed_modules=["EPC-1"],
             requires_approval=True,
             max_usage_per_day=500
         )
@@ -192,7 +192,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         )
 
         metadata = self.lifecycle_manager.retrieve_key_metadata(key_id)
-        self.assertEqual(metadata.access_policy.allowed_modules, ["M21"])
+        self.assertEqual(metadata.access_policy.allowed_modules, ["EPC-1"])
         self.assertTrue(metadata.access_policy.requires_approval)
         self.assertEqual(metadata.access_policy.max_usage_per_day, 500)
 
@@ -639,7 +639,7 @@ class TestPolicyEnforcer(unittest.TestCase):
             valid_until=datetime.utcnow() + timedelta(days=90),
             rotation_count=0,
             access_policy=AccessPolicy(
-                allowed_modules=["M21"],
+                allowed_modules=["EPC-1"],
                 requires_approval=False,
                 max_usage_per_day=1000
             )
@@ -647,7 +647,7 @@ class TestPolicyEnforcer(unittest.TestCase):
 
         is_allowed, error = self.policy_enforcer.evaluate_access_policy(
             key_metadata=key_metadata,
-            module_id="M21",
+            module_id="EPC-1",
             operation="sign"
         )
 
@@ -670,7 +670,7 @@ class TestPolicyEnforcer(unittest.TestCase):
             valid_until=datetime.utcnow() + timedelta(days=90),
             rotation_count=0,
             access_policy=AccessPolicy(
-                allowed_modules=["M21"],
+                allowed_modules=["EPC-1"],
                 requires_approval=False,
                 max_usage_per_day=1000
             )
@@ -678,7 +678,7 @@ class TestPolicyEnforcer(unittest.TestCase):
 
         is_allowed, error = self.policy_enforcer.evaluate_access_policy(
             key_metadata=key_metadata,
-            module_id="M27",  # Not in allowed list
+            module_id="PM-7",  # Not in allowed list
             operation="sign"
         )
 
@@ -702,7 +702,7 @@ class TestPolicyEnforcer(unittest.TestCase):
             valid_until=datetime.utcnow() + timedelta(days=90),
             rotation_count=0,
             access_policy=AccessPolicy(
-                allowed_modules=["M21"],
+                allowed_modules=["EPC-1"],
                 requires_approval=False,
                 max_usage_per_day=5
             )
@@ -715,7 +715,7 @@ class TestPolicyEnforcer(unittest.TestCase):
 
         is_allowed, error = self.policy_enforcer.evaluate_access_policy(
             key_metadata=key_metadata,
-            module_id="M21",
+            module_id="EPC-1",
             operation="sign"
         )
 
@@ -739,7 +739,7 @@ class TestPolicyEnforcer(unittest.TestCase):
             valid_until=datetime.utcnow() + timedelta(days=90),
             rotation_count=0,
             access_policy=AccessPolicy(
-                allowed_modules=["M21"],
+                allowed_modules=["EPC-1"],
                 requires_approval=False,
                 max_usage_per_day=1000
             )
@@ -747,7 +747,7 @@ class TestPolicyEnforcer(unittest.TestCase):
 
         is_allowed, error = self.policy_enforcer.evaluate_access_policy(
             key_metadata=key_metadata,
-            module_id="M21",
+            module_id="EPC-1",
             operation="sign"
         )
 
@@ -826,7 +826,7 @@ class TestEventPublisher(unittest.TestCase):
         event = self.event_publisher.events[0]
         self.assertEqual(event.event_type, "key_generated")
         self.assertEqual(event.tenant_id, "test-tenant")
-        self.assertEqual(event.source_module, "M33")
+        self.assertEqual(event.source_module, "EPC-11")
 
     def test_publish_event_key_rotated(self):
         """Test publish_event for key_rotated."""
@@ -919,14 +919,14 @@ class TestReceiptGenerator(unittest.TestCase):
             plane="laptop",
             operation="signature_created",
             kms_context=kms_context,
-            requesting_module="M21"
+            requesting_module="EPC-1"
         )
 
         self.assertIsNotNone(receipt)
         self.assertEqual(receipt.tenant_id, "test-tenant")
         self.assertEqual(receipt.module, "KMS")
         self.assertEqual(receipt.operation, "signature_created")
-        self.assertEqual(receipt.requesting_module, "M21")
+        self.assertEqual(receipt.requesting_module, "EPC-1")
         self.assertIsNotNone(receipt.signature)
 
     def test_generate_receipt_with_error(self):
@@ -946,7 +946,7 @@ class TestReceiptGenerator(unittest.TestCase):
             plane="laptop",
             operation="signature_created",
             kms_context=kms_context,
-            requesting_module="M21"
+            requesting_module="EPC-1"
         )
 
         self.assertFalse(receipt.kms_context.success)

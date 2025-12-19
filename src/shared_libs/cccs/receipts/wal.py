@@ -97,12 +97,18 @@ class WALQueue:
             # CR-028: Atomic rename after fsync
             temp_path.replace(self._path)
             # CR-028: Ensure directory is synced for metadata
+            # On Windows, directory fsync may fail with permission errors, so we handle it gracefully
             if self._path.parent.exists():
-                dir_fd = os.open(self._path.parent, os.O_RDONLY)
                 try:
-                    os.fsync(dir_fd)
-                finally:
-                    os.close(dir_fd)
+                    dir_fd = os.open(self._path.parent, os.O_RDONLY)
+                    try:
+                        os.fsync(dir_fd)
+                    finally:
+                        os.close(dir_fd)
+                except (PermissionError, OSError):
+                    # On Windows, directory fsync may not be supported or may require admin privileges
+                    # File fsync above is sufficient for data integrity
+                    pass
         except Exception:
             # If temp file exists, clean it up
             if temp_path.exists():
@@ -136,20 +142,20 @@ class WALQueue:
         
         # CR-029: Use lock for thread-safe access
         with self._lock:
-        self._sequence += 1
-        # Deep copy payload to prevent mutation
-        payload_copy = copy.deepcopy(payload)
-        entry = WALEntry(
-            sequence=self._sequence,
-            payload=payload_copy,
-            state="pending",
-            entry_type=entry_type,
-        )
-        self._entries.append(entry)
+            self._sequence += 1
+            # Deep copy payload to prevent mutation
+            payload_copy = copy.deepcopy(payload)
+            entry = WALEntry(
+                sequence=self._sequence,
+                payload=payload_copy,
+                state="pending",
+                entry_type=entry_type,
+            )
+            self._entries.append(entry)
             # CR-030: Cleanup old entries if deque grows too large
             if len(self._entries) > MAX_ENTRIES_BEFORE_CLEANUP:
                 self._cleanup_old_entries()
-        self._persist()
+            self._persist()
         return entry
 
     def append_budget_snapshot(self, budget_data: Dict[str, Any]) -> WALEntry:
@@ -186,75 +192,81 @@ class WALQueue:
         """
         # CR-029: Use lock for thread-safe access
         with self._lock:
-        for entry in self._entries:
-            if entry.sequence == sequence:
-                entry.state = state
-                break
-        self._persist()
+            for entry in self._entries:
+                if entry.sequence == sequence:
+                    entry.state = state
+                    break
+            self._persist()
 
     def drain(
-        self, sink: Callable[[Dict[str, Any]], None], receipt_emitter: Optional[Callable[[Dict[str, Any]], None]] = None
+        self,
+        sink: Callable[[Dict[str, Any]], None],
+        receipt_emitter: Optional[Callable[[Dict[str, Any]], None]] = None,
+        entry_filter: Optional[Callable[[WALEntry], bool]] = None,
     ) -> Iterable[WALEntry]:
         """
         Drain pending entries to sink, emitting receipts for failures.
 
-        Per PRD §7.1: Nothing is dropped without an explicit dead_letter receipt.
+        Per PRD ??7.1: Nothing is dropped without an explicit dead_letter receipt.
 
         Args:
             sink: Callback to process entries
             receipt_emitter: Optional callback to emit dead_letter receipts
+            entry_filter: Optional predicate to select entries for draining
 
         Returns:
             Iterable of drained entries
         """
-        # CR-029: Use lock for thread-safe access
-        with self._lock:
         drained: list[WALEntry] = []
-        pending_entries = [e for e in self._entries if e.state == "pending"]
+        # Mark entries as processing under lock to avoid duplicate drains.
+        with self._lock:
+            pending_entries = [e for e in self._entries if e.state == "pending"]
+            if entry_filter:
+                pending_entries = [e for e in pending_entries if entry_filter(e)]
+            for entry in pending_entries:
+                entry.state = "processing"
+            if pending_entries:
+                self._persist()
 
         for entry in pending_entries:
-                old_state = entry.state
+            error: Optional[Exception] = None
             try:
                 # Deep copy payload before passing to sink
                 payload_copy = copy.deepcopy(entry.payload)
                 sink(payload_copy)
-                    # CR-031: Atomic state update
-                entry.state = "acked"
+                new_state = "acked"
                 drained.append(entry)
             except Exception as e:
-                    # CR-031: Ensure atomic state update even on error
-                entry.state = "dead_letter"
+                new_state = "dead_letter"
+                error = e
                 logger.error(f"WAL drain failed for entry {entry.sequence}: {e}")
-                
-                # Emit dead_letter receipt per PRD §7.1
-                if receipt_emitter:
-                    try:
-                        dead_letter_receipt = {
-                            "receipt_type": "dead_letter",
-                            "wal_sequence": entry.sequence,
-                            "entry_type": entry.entry_type,
-                            "error": str(e),
-                            "payload": entry.payload,
-                            "timestamp": datetime.now(timezone.utc).isoformat(),
-                        }
-                        receipt_emitter(dead_letter_receipt)
-                    except Exception as emit_error:
-                            # CR-031: If receipt emitter fails, log but don't change state
-                        logger.error(f"Failed to emit dead_letter receipt: {emit_error}")
-                            # Keep state as dead_letter even if receipt emission fails
-                    else:
-                        # If no receipt emitter, ensure state is still updated
-                        entry.state = "dead_letter"
-            finally:
-                    # CR-031: Persist after each entry to ensure consistency
+
+            # Update state under lock; do not call receipt_emitter while holding the lock.
+            with self._lock:
+                entry.state = new_state
                 self._persist()
 
-        # Remove only acked entries from queue, keep pending and dead_letter
-        self._entries = deque(e for e in self._entries if e.state != "acked")
+            if error and receipt_emitter:
+                try:
+                    dead_letter_receipt = {
+                        "receipt_type": "dead_letter",
+                        "wal_sequence": entry.sequence,
+                        "entry_type": entry.entry_type,
+                        "error": str(error),
+                        "payload": entry.payload,
+                        "timestamp": datetime.now(timezone.utc).isoformat(),
+                    }
+                    receipt_emitter(dead_letter_receipt)
+                except Exception as emit_error:
+                    # CR-031: If receipt emitter fails, log but don't change state
+                    logger.error(f"Failed to emit dead_letter receipt: {emit_error}")
+
+        with self._lock:
+            # Remove only acked entries from queue, keep pending and dead_letter
+            self._entries = deque(e for e in self._entries if e.state != "acked")
             # CR-030: Cleanup old dead_letter entries
             self._cleanup_old_entries()
         return drained
-
     def get_pending_sync_entries(self) -> Iterable[WALEntry]:
         """Get entries marked as pending_sync."""
         return [e for e in self._entries if e.state == "pending_sync"]

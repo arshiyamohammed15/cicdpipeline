@@ -1,5 +1,5 @@
 """
-API endpoint tests for Contracts & Schema Registry Module (M34).
+API endpoint tests for Contracts & Schema Registry Module (EPC-12).
 
 What: Tests for FastAPI endpoints per PRD
 Why: Ensures API contracts are met
@@ -267,7 +267,7 @@ class TestHealthEndpoints(unittest.TestCase):
         response = self.client.get("/registry/v1/config")
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(data["module_id"], "M34")
+        self.assertEqual(data["module_id"], "EPC-12")
         self.assertEqual(data["version"], "1.2.0")
 
 

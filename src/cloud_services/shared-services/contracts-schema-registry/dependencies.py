@@ -1,11 +1,13 @@
 """
-Mock dependencies for Contracts & Schema Registry (M33, M27, M29, M21).
+Mock dependencies for Contracts & Schema Registry (EPC-11, PM-7, CCP-6, EPC-1).
 
-What: Mock implementations of KMS (M33), Evidence Ledger (M27), Data Plane (M29), IAM (M21)
+What: Mock implementations of KMS (EPC-11), Evidence Ledger (PM-7), Data Plane (CCP-6), IAM (EPC-1)
 Why: Enables implementation before dependencies are available, will be replaced with real implementations
 Reads/Writes: Mock storage (in-memory), mock signing (Ed25519), mock access control
-Contracts: Interface contracts for M33, M27, M29, M21 integration
+Contracts: Interface contracts for EPC-11, PM-7, CCP-6, EPC-1 integration
 Risks: Mock implementations not production-ready, must be replaced before production deployment
+
+Note: Class names use legacy M33/M27/M29/M21 identifiers for backward compatibility.
 """
 
 import hashlib
@@ -20,7 +22,8 @@ logger = logging.getLogger(__name__)
 
 class MockM33KMS:
     """
-    Mock Key Management Service (M33) for schema signing.
+    Mock Key Management Service (EPC-11) for schema signing.
+    Note: Class name uses legacy M33 identifier for backward compatibility.
 
     Per PRD: Schema signing via KMS, signature verification.
     """
@@ -86,7 +89,8 @@ class MockM33KMS:
 
 class MockM27EvidenceLedger:
     """
-    Mock Evidence & Audit Ledger (M27) for receipt storage.
+    Mock Evidence & Receipt Indexing Service (PM-7 / ERIS) for receipt storage.
+    Note: Class name uses legacy M27 identifier for backward compatibility.
 
     Per PRD: Receipt storage, receipt signing, audit trail.
     """
@@ -150,7 +154,8 @@ class MockM27EvidenceLedger:
 
 class MockM29DataPlane:
     """
-    Mock Data & Memory Plane (M29) for schema storage and caching.
+    Mock Data & Memory Plane (CCP-6) for schema storage and caching.
+    Note: Class name uses legacy M29 identifier for backward compatibility.
 
     Per PRD: Schema storage (fallback), cache management, analytics storage.
     """
@@ -223,7 +228,8 @@ class MockM29DataPlane:
 
 class MockM21IAM:
     """
-    Mock IAM Module (M21) for access control.
+    Mock IAM Module (EPC-1) for access control.
+    Note: Class name uses legacy M21 identifier for backward compatibility.
 
     Per PRD: Access control decisions, permission checking, tenant context validation.
     """

@@ -58,7 +58,7 @@ def run_test_suite(module_name, suite_name):
 
 def main():
     """Main execution."""
-    print_header("IAM Module (M21) Test Execution")
+    print_header("IAM Module (EPC-1) Test Execution")
     print(f"Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Project root: {project_root}")
 

@@ -1,5 +1,5 @@
 """
-API routes for Detection Engine Core Module (M05).
+API routes for Detection Engine Core Module (PM-4).
 
 What: FastAPI route handlers for decision evaluation, feedback submission, evidence links
 Why: Expose Detection Engine Core functionality via REST API per PRD §3.7

@@ -1,5 +1,5 @@
 """
-Quota Management Service for M35.
+Quota Management Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 What: Manages quota allocations, enforcement, renewal, and usage tracking
 Why: Provides resource quota controls per PRD lines 246-300
@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 class QuotaService:
     """
-    Quota Management Service per M35 PRD Functional Components section 4.
+    Quota Management Service per EPC-13 PRD Functional Components section 4.
 
     Handles: Quota CRUD, allocation strategies, enforcement, renewal automation.
     """

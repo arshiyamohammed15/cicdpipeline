@@ -3,7 +3,7 @@ Service layer for Key Management Service (KMS).
 
 What: Business logic for key lifecycle, cryptographic operations, trust store management per KMS spec v0.1.0
 Why: Encapsulates KMS logic, provides abstraction for route handlers, implements cryptographic operations
-Reads/Writes: Reads key metadata, writes receipts, audit logs via mock dependencies (M27, M29, M32)
+Reads/Writes: Reads key metadata, writes receipts, audit logs via mock dependencies (PM-7, CCP-6, CCP-1)
 Contracts: KMS API contract (keys, sign, verify, encrypt, decrypt endpoints), receipt schema per spec
 Risks: Security vulnerabilities if keys mishandled, performance degradation under load, key compromise
 """
@@ -23,7 +23,7 @@ from .models import (
     EventEnvelope, KeyGeneratedPayload, KeyRotatedPayload, KeyRevokedPayload,
     SignatureCreatedPayload, SignatureVerifiedPayload, TrustAnchorUpdatedPayload
 )
-from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane, MockM21IAM
+from .dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM32TrustPlane, MockM21IAM  # Legacy class names: PM-7, CCP-6, CCP-1, EPC-1
 from .hsm import HSMInterface, MockHSM
 
 logger = logging.getLogger(__name__)
@@ -92,7 +92,7 @@ class KeyLifecycleManager:
         # Default access policy
         if not access_policy:
             access_policy = AccessPolicy(
-                allowed_modules=["M21", "M27", "M29"],
+                allowed_modules=["M21", "M27", "M29"],  # M21=EPC-1, M27=PM-7, M29=CCP-6 (code identifiers)
                 requires_approval=False,
                 max_usage_per_day=DEFAULT_MAX_USAGE_PER_DAY
             )
@@ -684,7 +684,7 @@ class EventPublisher:
             tenant_id=tenant_id,
             environment=environment,
             plane=plane,
-            source_module="M33",
+            source_module="EPC-11",
             payload=payload
         )
         self.events.append(event)
@@ -775,10 +775,10 @@ class KMSService:
 
         Args:
             hsm: HSM interface (defaults to MockHSM)
-            evidence_ledger: M27 evidence ledger (defaults to MockM27EvidenceLedger)
-            data_plane: M29 data plane (defaults to MockM29DataPlane)
-            trust_plane: M32 trust plane (defaults to MockM32TrustPlane)
-            iam: M21 IAM (defaults to MockM21IAM)
+            evidence_ledger: PM-7 (ERIS) evidence ledger (defaults to MockM27EvidenceLedger)
+            data_plane: CCP-6 (Data & Memory Plane) data plane (defaults to MockM29DataPlane)
+            trust_plane: CCP-1 (Identity & Trust Plane) trust plane (defaults to MockM32TrustPlane)
+            iam: EPC-1 (Identity & Access Management) IAM (defaults to MockM21IAM)
         """
         self.hsm = hsm or MockHSM()
         self.evidence_ledger = evidence_ledger or MockM27EvidenceLedger()

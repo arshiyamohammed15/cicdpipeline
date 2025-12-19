@@ -268,7 +268,7 @@ class mTLSValidationMiddleware(BaseHTTPMiddleware):
             request.state.tenant_id = "dev-tenant"
             request.state.environment = "dev"
             request.state.plane = "laptop"
-            request.state.module_id = "M21"
+            request.state.module_id = "M21"  # Code identifier for EPC-1 (Identity & Access Management)
             return await call_next(request)
 
         if not client_cert:
@@ -332,7 +332,7 @@ class mTLSValidationMiddleware(BaseHTTPMiddleware):
             request.state.tenant_id = "dev-tenant"
             request.state.environment = "dev"
             request.state.plane = "laptop"
-            request.state.module_id = "M21"
+            request.state.module_id = "M21"  # Code identifier for EPC-1 (Identity & Access Management)
 
         return await call_next(request)
 
@@ -350,7 +350,7 @@ class JWTValidationMiddleware(BaseHTTPMiddleware):
 
         Args:
             app: ASGI application
-            iam: MockM21IAM instance for JWT verification
+            iam: MockM21IAM instance (EPC-1) for JWT verification
         """
         super().__init__(app)
         self.iam = iam

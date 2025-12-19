@@ -1,5 +1,5 @@
 /**
- * Integration Tests for Detection Engine Core Module (M05)
+ * Integration Tests for Detection Engine Core Module (PM-4)
  * 
  * Tests end-to-end workflows per PRD §3.8, §3.9
  * Coverage: Critical integration paths

@@ -1,5 +1,5 @@
 """
-Utility modules for M35.
+Utility modules for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 Caching, transaction isolation, and other cross-cutting utilities.
 """

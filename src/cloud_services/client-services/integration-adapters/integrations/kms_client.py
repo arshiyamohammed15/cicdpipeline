@@ -1,5 +1,5 @@
 """
-M33 (Key Management Service) client for Integration Adapters Module.
+EPC-11 (Key & Trust Management) client for Integration Adapters Module.
 
 What: Client for retrieving secrets from KMS per FR-3
 Why: Secure secret management without storing secrets in code
@@ -17,7 +17,7 @@ import httpx
 
 
 class KMSClient:
-    """Client for Key Management Service (M33)."""
+    """Client for Key Management Service (EPC-11)."""
 
     def __init__(self, base_url: Optional[str] = None):
         """

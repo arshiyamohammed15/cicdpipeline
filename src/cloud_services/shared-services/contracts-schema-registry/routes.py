@@ -1,5 +1,5 @@
 """
-API routes for Contracts & Schema Registry (M34).
+API routes for Contracts & Schema Registry (EPC-12).
 
 What: FastAPI route handlers for all endpoints per PRD v1.2.0
 Why: Provides HTTP API endpoints for schema and contract operations
@@ -32,7 +32,7 @@ from .services import (
     CompatibilityService, TransformationService
 )
 from .errors import ErrorCode, create_error_response, get_http_status
-from .dependencies import MockM21IAM
+from .dependencies import MockM21IAM  # EPC-1 (Identity & Access Management) - legacy class name
 from .services import _metrics_collector
 from .templates.manager import TemplateManager
 
@@ -162,7 +162,7 @@ async def get_metrics():
 async def get_config():
     """Get effective configuration."""
     return ConfigResponse(
-        module_id="M34",
+        module_id="EPC-12",
         version="1.2.0",
         api_endpoints={
             "health": "/registry/v1/health",

@@ -35,7 +35,7 @@ class MetricsResponse(BaseModel):
 class ConfigResponse(BaseModel):
     """Module configuration response model."""
 
-    module_id: str = Field(..., description="Module identifier (e.g., M23)")
+    module_id: str = Field(..., description="Module identifier (e.g., M23 for EPC-3)")
     module_name: str = Field(..., description="Human-readable module name")
     version: str = Field(..., description="Module semantic version")
     config: Dict[str, Any] = Field(..., description="Effective module configuration")

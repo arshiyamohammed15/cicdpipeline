@@ -1,5 +1,5 @@
 """
-Detection Engine Core Module (M05)
+Detection Engine Core Module (PM-4)
 
 Product service implementing detection engine core functionality per PRD v1.0.
 """

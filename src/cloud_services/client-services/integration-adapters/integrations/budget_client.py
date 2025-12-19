@@ -1,9 +1,9 @@
 """
-M35 (Budgeting, Rate-Limiting & Cost Observability) client for Integration Adapters Module.
+EPC-13 (Budgeting, Rate-Limiting & Cost Observability) client for Integration Adapters Module.
 
 What: Client for budget checking and rate limit enforcement per FR-9
 Why: Enforce budgets and rate limits before making API calls
-Reads/Writes: M35 API
+Reads/Writes: EPC-13 API
 Contracts: PRD FR-9 (Rate Limiting & Budgeting Integration)
 Risks: Budget API failures, rate limit violations
 """
@@ -17,14 +17,14 @@ import httpx
 
 
 class BudgetClient:
-    """Client for Budgeting & Rate-Limiting service (M35)."""
+    """Client for Budgeting & Rate-Limiting service (EPC-13)."""
 
     def __init__(self, base_url: Optional[str] = None):
         """
         Initialize budget client.
         
         Args:
-            base_url: M35 service base URL (defaults to environment variable)
+            base_url: EPC-13 service base URL (defaults to environment variable)
         """
         self.base_url = base_url or os.getenv(
             "BUDGET_SERVICE_URL",

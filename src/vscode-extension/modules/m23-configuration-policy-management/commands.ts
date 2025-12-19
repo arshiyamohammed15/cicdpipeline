@@ -1,5 +1,5 @@
 /**
- * Commands for Configuration & Policy Management (M23).
+ * Commands for Configuration & Policy Management (EPC-3).
  *
  * Per PRD: Registers VS Code commands for module operations.
  */

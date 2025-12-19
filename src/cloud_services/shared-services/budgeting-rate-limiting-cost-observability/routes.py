@@ -1,10 +1,10 @@
 """
-API routes for Budgeting, Rate-Limiting & Cost Observability (M35).
+API routes for Budgeting, Rate-Limiting & Cost Observability (EPC-13).
 
-What: FastAPI route handlers for all M35 operations per PRD v3.0.0
+What: FastAPI route handlers for all EPC-13 operations per PRD v3.0.0
 Why: Provides HTTP API endpoints for budget, rate limit, cost, and quota operations
 Reads/Writes: Reads HTTP request bodies, writes HTTP responses
-Contracts: M35 API contract per PRD lines 622-2617
+Contracts: EPC-13 API contract per PRD lines 622-2617
 Risks: Input validation failures, service unavailability, error message exposure
 """
 

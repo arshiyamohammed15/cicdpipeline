@@ -20,7 +20,7 @@ class ConfigService:
         self._config_cache: dict[str, ConfigResult] = {}
         self._cache_max_size = 1000
 
-    def _compute_hash(self) -> str:
+    def _compute_hash(self, force: bool = False) -> str:
         """
         CR-041: Compute hash lazily and cache it.
         
@@ -30,16 +30,16 @@ class ConfigService:
         Returns:
             SHA-256 hash string prefixed with "sha256:"
         """
-        if self._hash is None:
-        blob = json.dumps(
-            {
-                "local": self._layers.local,
-                "tenant": self._layers.tenant,
-                "product": self._layers.product,
-            },
-            sort_keys=True,
-        ).encode()
-        digest = hashlib.sha256(blob).hexdigest()
+        if self._hash is None or force:
+            blob = json.dumps(
+                {
+                    "local": self._layers.local,
+                    "tenant": self._layers.tenant,
+                    "product": self._layers.product,
+                },
+                sort_keys=True,
+            ).encode()
+            digest = hashlib.sha256(blob).hexdigest()
             self._hash = f"sha256:{digest}"
         return self._hash
 
@@ -49,6 +49,11 @@ class ConfigService:
         
         Merge precedence: local → tenant → product (first match wins).
         """
+        # CR-072: Invalidate cache when layer content changes.
+        previous_hash = self._hash
+        current_hash = self._compute_hash(force=True)
+        if previous_hash is not None and previous_hash != current_hash:
+            self._config_cache.clear()
         # CR-072: Check cache first
         cache_key = f"{key}:{scope}:{json.dumps(overrides or {}, sort_keys=True)}"
         if cache_key in self._config_cache:
@@ -83,7 +88,7 @@ class ConfigService:
         result = ConfigResult(
             value=value,
             source_layers=tuple(source_layers),
-            config_snapshot_hash=self._compute_hash(),  # CR-041: Use lazy hash computation
+            config_snapshot_hash=current_hash,
             warnings=tuple(warnings),
         )
         

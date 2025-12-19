@@ -1,5 +1,5 @@
 """
-Rate-Limiting Service for M35.
+Rate-Limiting Service for EPC-13 (Budgeting, Rate-Limiting & Cost Observability).
 
 What: Implements rate limiting with multiple algorithms (token bucket, leaky bucket, fixed window, sliding window log)
 Why: Provides dynamic rate limiting per PRD lines 123-188

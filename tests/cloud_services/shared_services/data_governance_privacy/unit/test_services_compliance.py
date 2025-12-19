@@ -1,6 +1,6 @@
 from __future__ import annotations
 """
-Comprehensive tests for Data Governance & Privacy (M22) services.
+Comprehensive tests for Data Governance & Privacy (EPC-2) services.
 
 These tests are derived from the acceptance criteria and test cases defined in
 `docs/architecture/modules/DATA_GOVERNANCE_AND_PRIVACY_MODULE.md`, covering:

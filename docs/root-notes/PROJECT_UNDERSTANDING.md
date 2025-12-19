@@ -688,36 +688,7 @@ Uses Alembic for migrations:
 
 ### 8.1 Module Categories
 
-**Client Services** (Company-owned, Private Data):
-- M06: Legacy Systems Safety
-- M07: Technical Debt Accumulation
-- M08: Merge Conflicts & Delays
-- M09: Compliance & Security Challenges
-- M11: Feature Development Blind Spots
-- M12: Knowledge Silo Prevention
-- M13: Monitoring & Observability Gaps
-- M03: Release Failures & Rollbacks
-- M02: Cross-Cutting Concern Services
-
-**Product Services** (ZeroUI-owned, Cross-Tenant):
-- M01: MMM Engine
-- M04: Signal Ingestion & Normalization
-- M05: Detection Engine Core
-- M18: Knowledge Integrity & Discovery
-- EPC-9: User Behaviour Intelligence
-
-**Shared Services** (ZeroUI-owned, Infrastructure):
-- M21: Identity & Access Management
-- M22: Data Governance & Privacy
-- M23: Configuration & Policy Management
-- M27: Evidence Receipt Indexing Service
-- M29: Data Plane
-- M31: Alerting & Notification Service
-- M33: Key Management Service
-- M34: Contracts & Schema Registry
-- M35: Budgeting, Rate-Limiting & Cost Observability
-- EPC-5: Health & Reliability Monitoring
-- EPC-8: Deployment Infrastructure
+> **⚠️ SINGLE SOURCE OF TRUTH**: Module categorization and implementation locations are defined in **[ZeroUI Module Categories V 3.0](../architecture/ZeroUI%20Module%20Categories%20V%203.0.md)**. That document contains the complete mapping of all modules (FM/PM/EPC/CCP) to their actual implementation paths. Do not duplicate this information here.
 
 ### 8.2 Integration Adapters Module (PM-5 / M10)
 
@@ -855,9 +826,7 @@ When implementing a new module:
 ## 12. Documentation References
 
 ### Architecture Documents
-- `docs/architecture/zeroui-hla.md` - High-level architecture
-- `docs/architecture/zeroui-lla.md` - Low-level implementation patterns
-- `docs/architecture/MODULE_IMPLEMENTATION_GUIDE.md` - Implementation guide
+- `docs/architecture/zeroui-architecture.md` - Complete architecture (single source of truth)
 - `docs/architecture/modules-mapping-and-gsmd-guide.md` - Module mappings
 
 ### Module PRDs

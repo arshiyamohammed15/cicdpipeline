@@ -1,4 +1,4 @@
-# IAM Module (M21) Test Suite
+# IAM Module (EPC-1) Test Suite
 
 ## Test Files
 
@@ -54,7 +54,7 @@ python -m pytest tests/test_iam_service.py --cov=src/cloud-services/shared-servi
 
 ## Notes
 
-- All tests use mocks for external dependencies (M27, M29, M32)
+- All tests use mocks for external dependencies (PM-7, CCP-6, CCP-1)
 - Tests are hermetic (no network, no file system)
 - Tests follow deterministic principles (fixed seeds, controlled time)
 - Performance tests use scaled-down iterations for test speed

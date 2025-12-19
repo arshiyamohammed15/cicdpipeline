@@ -2,6 +2,8 @@
 
 > **Scope:** This file maps **module codes** (M01–M20) to their **VS Code extension folders** and **GSMD snapshot folders**, and records verifiable facts about `gsmd/`. It incorporates the validated architectural rules from `architecture-vscode-modular-extension.md` and the strictly factual review of `ZeroUI2.0/gsmd`.
 >
+> **⚠️ IMPORTANT**: The authoritative module categorization system is defined in **[ZeroUI Module Categories V 3.0](./ZeroUI%20Module%20Categories%20V%203.0.md)**. This mapping document provides technical folder mappings for implementation purposes, but module categories (FM/PM/EPC/CCP) are defined in the V 3.0 document.
+>
 > **No assumptions.** Everything here is derived from the attached architecture document and the contents of `ZeroUI2.0.zip` exactly as inspected.
 
 ---
@@ -20,33 +22,35 @@ Re-running the same scan over the same archive yields the same values.
 
 ## 2) Canonical module mapping (codes → names → folders)
 
-**Single extension artifact** with per-module folders under `src/modules/` (from the architecture file).
+> **⚠️ SINGLE SOURCE OF TRUTH**: Module categorization and implementation locations are defined in **[ZeroUI Module Categories V 3.0](./ZeroUI%20Module%20Categories%20V%203.0.md)**. This section provides only GSMD folder mappings for the legacy M01-M20 codes used in GSMD snapshots.
+
+**Single extension artifact** with per-module folders under `src/vscode-extension/modules/` (verified file system paths).
 **GSMD module snapshots** live under `gsmd/gsmd/modules/` (from the archive layout).
 
-| Code | Module name | VS Code folder (authoritative slug) | GSMD folder |
+| Code | Module name | VS Code folder (verified path) | GSMD folder |
 |---|---|---|---|
-| M01 | MMM Engine | `src/modules/m01-mmm-engine/` | `gsmd/gsmd/modules/M01/` |
-| M02 | Cross-Cutting Concern Services | `src/modules/m02-cross-cutting-concern-services/` | `gsmd/gsmd/modules/M02/` |
-| M03 | Release Failures & Rollbacks | `src/modules/m03-release-failures-rollbacks/` | `gsmd/gsmd/modules/M03/` |
-| M04 | Signal Ingestion & Normalization | `src/modules/m04-signal-ingestion-normalization/` | `gsmd/gsmd/modules/M04/` |
-| M05 | Detection Engine Core | `src/modules/m05-detection-engine-core/` | `gsmd/gsmd/modules/M05/` |
-| M06 | Working Safely with Legacy Systems | `src/modules/m06-legacy-systems-safety/` | `gsmd/gsmd/modules/M06/` |
-| M07 | Technical Debt Accumulation | `src/modules/m07-technical-debt-accumulation/` | `gsmd/gsmd/modules/M07/` |
-| M08 | Merge Conflicts & Delays | `src/modules/m08-merge-conflicts-delays/` | `gsmd/gsmd/modules/M08/` |
-| M09 | Compliance & Security Challenges | `src/modules/m09-compliance-security-challenges/` | `gsmd/gsmd/modules/M09/` |
-| M10 | Integration Adapters | `src/modules/m10-integration-adapters/` | `gsmd/gsmd/modules/M10/` |
-| M11 | Feature Development Blind Spots | `src/modules/m11-feature-dev-blind-spots/` | `gsmd/gsmd/modules/M11/` |
-| M12 | Knowledge Silo Prevention | `src/modules/m12-knowledge-silo-prevention/` | `gsmd/gsmd/modules/M12/` |
-| M13 | Monitoring & Observability Gaps | `src/modules/m13-monitoring-observability-gaps/` | `gsmd/gsmd/modules/M13/` |
-| M14 | Client Admin Dashboard | `src/modules/m14-client-admin-dashboard/` | `gsmd/gsmd/modules/M14/` |
-| M15 | Product Success Monitoring | `src/modules/m15-product-success-monitoring/` | `gsmd/gsmd/modules/M15/` |
-| M16 | ROI Dashboard | `src/modules/m16-roi-dashboard/` | `gsmd/gsmd/modules/M16/` |
-| M17 | Gold Standards | `src/modules/m17-gold-standards/` | `gsmd/gsmd/modules/M17/` |
-| M18 | Knowledge Integrity & Discovery | `src/modules/m18-knowledge-integrity-discovery/` | `gsmd/gsmd/modules/M18/` |
-| M19 | Reporting | `src/modules/m19-reporting/` | `gsmd/gsmd/modules/M19/` |
-| M20 | QA & Testing Deficiencies | `src/modules/m20-qa-testing-deficiencies/` | `gsmd/gsmd/modules/M20/` |
+| M01 | MMM Engine | `src/vscode-extension/modules/m01-mmm-engine/` | `gsmd/gsmd/modules/M01/` |
+| M02 | Cross-Cutting Concern Services | `src/vscode-extension/modules/m02-cross-cutting-concern-services/` | `gsmd/gsmd/modules/M02/` |
+| M03 | Release Failures & Rollbacks | `src/vscode-extension/modules/m03-release-failures-rollbacks/` | `gsmd/gsmd/modules/M03/` |
+| M04 | Signal Ingestion & Normalization | `src/vscode-extension/modules/m04-signal-ingestion-normalization/` | `gsmd/gsmd/modules/M04/` |
+| M05 | Detection Engine Core | `src/vscode-extension/modules/m05-detection-engine-core/` | `gsmd/gsmd/modules/M05/` |
+| M06 | Working Safely with Legacy Systems | `src/vscode-extension/modules/m06-legacy-systems-safety/` | `gsmd/gsmd/modules/M06/` |
+| M07 | Technical Debt Accumulation | `src/vscode-extension/modules/m07-technical-debt-accumulation/` | `gsmd/gsmd/modules/M07/` |
+| M08 | Merge Conflicts & Delays | `src/vscode-extension/modules/m08-merge-conflicts-delays/` | `gsmd/gsmd/modules/M08/` |
+| M09 | Compliance & Security Challenges | `src/vscode-extension/modules/m09-compliance-security-challenges/` | `gsmd/gsmd/modules/M09/` |
+| M10 | Integration Adapters | `src/vscode-extension/modules/m10-integration-adapters/` | `gsmd/gsmd/modules/M10/` |
+| M11 | Feature Development Blind Spots | `src/vscode-extension/modules/m11-feature-dev-blind-spots/` | `gsmd/gsmd/modules/M11/` |
+| M12 | Knowledge Silo Prevention | `src/vscode-extension/modules/m12-knowledge-silo-prevention/` | `gsmd/gsmd/modules/M12/` |
+| M13 | Monitoring & Observability Gaps | `src/vscode-extension/modules/m13-monitoring-observability-gaps/` | `gsmd/gsmd/modules/M13/` |
+| M14 | Client Admin Dashboard | `src/vscode-extension/modules/m14-client-admin-dashboard/` | `gsmd/gsmd/modules/M14/` |
+| M15 | Product Success Monitoring | `src/vscode-extension/modules/m15-product-success-monitoring/` | `gsmd/gsmd/modules/M15/` |
+| M16 | ROI Dashboard | `src/vscode-extension/modules/m16-roi-dashboard/` | `gsmd/gsmd/modules/M16/` |
+| M17 | Gold Standards | `src/vscode-extension/modules/m17-gold-standards/` | `gsmd/gsmd/modules/M17/` |
+| M18 | Knowledge Integrity & Discovery | `src/vscode-extension/modules/m18-knowledge-integrity-discovery/` | `gsmd/gsmd/modules/M18/` |
+| M19 | Reporting | `src/vscode-extension/modules/m19-reporting/` | `gsmd/gsmd/modules/M19/` |
+| M20 | QA & Testing Deficiencies | `src/vscode-extension/modules/m20-qa-testing-deficiencies/` | `gsmd/gsmd/modules/M20/` |
 
-**Rule:** These mappings are authoritative. The module **code** (M01…M20) is the primary key binding the extension module folder and the GSMD module folder.
+**Rule:** These mappings are for GSMD folder navigation only. For module categorization (FM/PM/EPC/CCP) and cloud service implementations, see **[ZeroUI Module Categories V 3.0](./ZeroUI%20Module%20Categories%20V%203.0.md)**.
 
 ---
 

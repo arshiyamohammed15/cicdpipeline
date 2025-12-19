@@ -52,7 +52,7 @@ export class DetectionEngineStatusPillProvider {
 
             const receipts = await this.receiptReader.readReceipts(repoId, year, month);
             
-            // Find latest M05 decision receipt
+            // Find latest PM-4 (Detection Engine Core) decision receipt
             const latestReceipt = receipts
                 .filter(r => this.isDetectionEngineReceipt(r))
                 .sort((a, b) => {
@@ -82,7 +82,7 @@ export class DetectionEngineStatusPillProvider {
                'gate_id' in receipt &&
                (receipt.gate_id?.includes('detection-engine') || 
                 receipt.gate_id?.includes('m05') ||
-                receipt.policy_version_ids?.some((id: string) => id.includes('M05')));
+                receipt.policy_version_ids?.some((id: string) => id.includes('M05') || id.includes('PM-4')));
     }
 
     private getWorkspaceRepoId(): string {

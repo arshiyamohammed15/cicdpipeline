@@ -3,12 +3,12 @@ import os
 import jwt
 import pytest
 
-from budgeting_rate_limiting_cost_observability.dependencies import MockM21IAM
+from budgeting_rate_limiting_cost_observability.dependencies import MockM21IAM  # EPC-1 (Identity & Access Management) - legacy class name
 
 
 @pytest.fixture(autouse=True)
 def set_secret(monkeypatch):
-    monkeypatch.setenv("M35_JWT_SECRET", "test-secret")
+    monkeypatch.setenv("M35_JWT_SECRET", "test-secret")  # Environment variable name kept for backward compatibility (EPC-13)
     yield
 
 
@@ -36,7 +36,7 @@ def test_verify_jwt_rejects_bad_signature():
 
 
 def test_verify_jwt_rejects_missing_secret(monkeypatch):
-    monkeypatch.delenv("M35_JWT_SECRET", raising=False)
+    monkeypatch.delenv("M35_JWT_SECRET", raising=False)  # Environment variable name kept for backward compatibility (EPC-13)
     iam = MockM21IAM()
     token = _token("user-1", "tenant-1")
     ok, claims, err = iam.verify_jwt(token)

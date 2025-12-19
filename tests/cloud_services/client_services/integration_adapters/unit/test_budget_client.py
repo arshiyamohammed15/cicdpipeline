@@ -3,7 +3,7 @@ from __future__ import annotations
 Unit tests for budget client.
 
 What: Test budget checking, rate limit checking, usage recording
-Why: Ensure M35 integration works correctly
+Why: Ensure EPC-13 integration works correctly
 Coverage Target: 100%
 """
 

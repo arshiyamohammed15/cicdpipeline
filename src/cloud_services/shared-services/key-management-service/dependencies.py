@@ -1,12 +1,14 @@
 """
-Mock dependencies for KMS service (M27, M29, M32, M21).
+Mock dependencies for KMS service (PM-7, CCP-6, CCP-1, EPC-1).
 
-What: Mock implementations of Evidence & Audit Ledger (M27), Data & Memory Plane (M29),
-      Identity & Trust Plane (M32), and IAM (M21)
+What: Mock implementations of Evidence & Receipt Indexing Service (PM-7 / ERIS), Data & Memory Plane (CCP-6),
+      Identity & Trust Plane (CCP-1), and IAM (EPC-1)
 Why: Enables KMS implementation before dependencies are available, will be replaced with real implementations
 Reads/Writes: Mock storage (in-memory), mock signing (Ed25519), mock trust verification
-Contracts: Interface contracts for M27, M29, M32, M21 integration
+Contracts: Interface contracts for PM-7, CCP-6, CCP-1, EPC-1 integration
 Risks: Mock implementations not production-ready, must be replaced before production deployment
+
+Note: Class names use legacy M27/M29/M32/M21 identifiers for backward compatibility. Comments reference new module IDs (PM-7, CCP-6, CCP-1, EPC-1).
 """
 
 import hashlib
@@ -20,9 +22,10 @@ logger = logging.getLogger(__name__)
 
 class MockM27EvidenceLedger:
     """
-    Mock Evidence & Audit Ledger (M27) for receipt signing and verification.
+    Mock Evidence & Receipt Indexing Service (PM-7 / ERIS) for receipt signing and verification.
 
     Per KMS spec: Receipts are Ed25519-signed, verification public keys distributed via trust store.
+    Note: Class name uses legacy M27 identifier for backward compatibility. Module is PM-7 (ERIS).
     """
 
     def __init__(self):
@@ -122,9 +125,10 @@ class MockM27EvidenceLedger:
 
 class MockM29DataPlane:
     """
-    Mock Data & Memory Plane (M29) for key metadata storage and caches.
+    Mock Data & Memory Plane (CCP-6) for key metadata storage and caches.
 
     Per KMS spec: Key metadata storage with versioning, immutable releases, SHA-256 snapshot_id.
+    Note: Class name uses legacy M29 identifier for backward compatibility. Module is CCP-6 (Data & Memory Plane).
     """
 
     def __init__(self):
@@ -277,9 +281,10 @@ class MockM29DataPlane:
 
 class MockM32TrustPlane:
     """
-    Mock Identity & Trust Plane (M32) for certificate validation and service identity verification.
+    Mock Identity & Trust Plane (CCP-1) for certificate validation and service identity verification.
 
     Per KMS spec: mTLS between internal services, device/service identities, certificate validation.
+    Note: Class name uses legacy M32 identifier for backward compatibility. Module is CCP-1 (Identity & Trust Plane).
     """
 
     def __init__(self):
@@ -321,7 +326,7 @@ class MockM32TrustPlane:
             'tenant_id': 'mock-tenant',
             'environment': 'dev',
             'plane': 'shared',
-            'module_id': 'M21'
+            'module_id': 'M21'  # Code identifier for EPC-1 (Identity & Access Management)
         }
         return True, None, identity_info
 
@@ -373,9 +378,10 @@ class MockM32TrustPlane:
 
 class MockM21IAM:
     """
-    Mock IAM Module (M21) for JWT verification.
+    Mock IAM Module (EPC-1) for JWT verification.
 
     Per KMS spec: JWT verification for optional authentication augmentation.
+    Note: Class name uses legacy M21 identifier for backward compatibility. Module is EPC-1 (Identity & Access Management).
     """
 
     def __init__(self):

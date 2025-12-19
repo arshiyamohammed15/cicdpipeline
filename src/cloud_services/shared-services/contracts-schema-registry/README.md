@@ -1,7 +1,7 @@
-# Contracts & Schema Registry Module (M34)
+# Contracts & Schema Registry Module (EPC-12)
 
 **Version:** 1.2.0
-**Module ID:** M34
+**Module ID:** M34 (code identifier for EPC-12)
 **Description:** Centralized schema management, validation, and contract enforcement for ZeroUI ecosystem
 
 ## Overview
@@ -311,7 +311,7 @@ python -m contracts_schema_registry.main 2>&1 | tee app.log
 
 ## Integration
 
-### With IAM Module (M21)
+### With IAM Module (EPC-1)
 
 The module integrates with IAM for access control. Configure:
 
@@ -319,7 +319,7 @@ The module integrates with IAM for access control. Configure:
 IAM_SERVICE_URL=http://iam-service:8001
 ```
 
-### With Key Management Service (M33)
+### With Key Management Service (EPC-11)
 
 For schema signing, configure:
 

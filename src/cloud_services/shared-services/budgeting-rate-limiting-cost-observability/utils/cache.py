@@ -1,5 +1,5 @@
 """
-Caching utilities for M35 per PRD lines 536-560.
+Caching utilities for EPC-13 per PRD lines 536-560.
 
 What: Redis-based caching layer with TTLs and invalidation
 Why: Performance optimization for frequently accessed data
@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 class CacheManager:
     """
-    Cache manager for M35 per PRD caching strategy.
+    Cache manager for EPC-13 per PRD caching strategy.
 
     Handles: Rate limit data, budget definitions, cost aggregations.
     """

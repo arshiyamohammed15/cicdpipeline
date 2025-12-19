@@ -1,10 +1,10 @@
 """
-Pydantic models for Budgeting, Rate-Limiting & Cost Observability (M35).
+Pydantic models for Budgeting, Rate-Limiting & Cost Observability (EPC-13).
 
 What: Defines Pydantic v2 models for request/response validation per PRD v3.0.0
 Why: Ensures type safety, input validation, and standardized API contracts
 Reads/Writes: Reads request data, writes response data (no file I/O)
-Contracts: M35 API contract (all endpoints), receipt schemas per PRD
+Contracts: EPC-13 API contract (all endpoints), receipt schemas per PRD
 Risks: Model validation failures may expose internal error details if not handled properly
 """
 

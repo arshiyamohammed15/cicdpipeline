@@ -25,7 +25,6 @@ The following files were moved from the project root to `docs/root-notes/` durin
 | File | Purpose |
 | --- | --- |
 | `ALERTING_SERVICE_TRIPLE_VALIDATION_REPORT.md` | Alerting service validation report |
-| `DEVELOPMENT_ENVIRONMENT_READY.md` | Development environment setup completion |
 | `HEALTH_RELIABILITY_MONITORING_TEST_IMPLEMENTATION_COMPLETE.md` | Health monitoring test implementation summary |
 | `IMPLEMENTATION_SUMMARY.md` | General implementation summary |
 | `MMM_ENGINE_CIRCUIT_BREAKER_IMPLEMENTATION_SUMMARY.md` | MMM engine circuit breaker implementation |
@@ -42,10 +41,7 @@ The following files were moved from the project root to `docs/root-notes/` durin
 | `REMAINING_WORK_IMPLEMENTATION_SUMMARY.md` | Remaining work implementation summary |
 | `STORAGE_GOVERNANCE_VALIDATION_REPORT.md` | Storage governance validation report |
 | `TEST_DOCUMENTATION_REORGANIZATION_COMPLETE.md` | Test documentation reorganization completion |
-| `VENV_SETUP.md` | Virtual environment setup guide |
-| `VENV_VERIFICATION_REPORT.md` | Virtual environment verification report |
 | `CODE_REVIEW_REPORT.md` | Triple code review report for tools/ and validator/ directories |
 | `VALIDATOR_FOLDER_ANALYSIS.md` | Validator folder analysis report |
 | `ROOT_DIRECTORY_REORGANIZATION_REPORT.md` | Root directory reorganization analysis and zero-risk file identification |
-| `ROOT_REORGANIZATION_COMPLETE.md` | Root directory reorganization completion summary |
 

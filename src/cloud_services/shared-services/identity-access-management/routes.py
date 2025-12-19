@@ -418,7 +418,7 @@ def get_config() -> ConfigResponse:
         Config response with module identity and performance requirements
     """
     return ConfigResponse(
-        module_id="M21",
+        module_id="EPC-1",
         version="1.1.0",
         api_endpoints={
             "health": "/iam/v1/health",

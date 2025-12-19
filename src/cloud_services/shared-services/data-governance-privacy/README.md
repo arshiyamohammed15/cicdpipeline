@@ -1,4 +1,4 @@
-# Data Governance & Privacy Module (M22)
+# Data Governance & Privacy Module (EPC-2)
 
 Enterprise-grade data classification, privacy enforcement, consent management, lineage tracking, retention automation, and rights orchestration for the ZeroUI platform.
 
@@ -18,7 +18,7 @@ Enterprise-grade data classification, privacy enforcement, consent management, l
 - **Language:** Python 3.11+
 - **Framework:** FastAPI (Tier 3 business logic only)
 - **Data Layer:** PostgreSQL schema defined in `database/schema.sql` with SQLAlchemy ORM models
-- **Dependencies:** Mock integrations for M21 (IAM), M23 (Policy), M27 (Evidence Ledger), M29 (Data Plane), M33 (KMS)
+- **Dependencies:** Mock integrations for EPC-1 (IAM), EPC-3 (Policy), PM-7 (ERIS), CCP-6 (Data Plane), EPC-11 (KMS)
 - **Entry Point:** `main.py` (`uvicorn src.cloud-services.shared-services.data-governance-privacy.main:app --reload`)
 
 ## Quick Start

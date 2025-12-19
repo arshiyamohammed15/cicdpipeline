@@ -83,7 +83,7 @@ def get_tenant_context(request: Request) -> Dict[str, str]:
         "tenant_id": getattr(request.state, "tenant_id", "dev-tenant"),
         "environment": getattr(request.state, "environment", "dev"),
         "plane": getattr(request.state, "plane", "laptop"),
-        "module_id": getattr(request.state, "module_id", "M21")
+        "module_id": getattr(request.state, "module_id", "M21")  # Code identifier for EPC-1 (Identity & Access Management)
     }
 
 

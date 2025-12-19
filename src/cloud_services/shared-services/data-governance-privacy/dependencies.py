@@ -24,7 +24,8 @@ logger = logging.getLogger(__name__)
 
 class MockM21IAM:
     """
-    Mock Identity & Access Management (M21) module.
+    Mock Identity & Access Management (EPC-1) module.
+    Note: Class name uses legacy M21 identifier for backward compatibility.
 
     Responsibilities:
         - Permission checks for privacy operations
@@ -235,7 +236,8 @@ class MockM29DataPlane:
 
 class MockM33KeyManagement:
     """
-    Mock Key Management Service (M33).
+    Mock Key Management Service (EPC-11).
+    Note: Class name uses legacy M33 identifier for backward compatibility.
 
     Provides deterministic encryption/decryption/tokenization using symmetric secrets.
     """
