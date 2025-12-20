@@ -64,11 +64,11 @@ jest.mock('../../../ui/decision-card/DecisionCardManager', () => {
 });
 
 // Mock ReceiptViewerManager
-const mockShowReceipt = jest.fn();
+const mockShowReceiptViewer = jest.fn();
 jest.mock('../../../ui/receipt-viewer/ReceiptViewerManager', () => {
     return {
         ReceiptViewerManager: jest.fn().mockImplementation(() => ({
-            showReceipt: mockShowReceipt
+            showReceiptViewer: mockShowReceiptViewer
         }))
     };
 });
@@ -434,7 +434,7 @@ describe('Detection Engine Core Commands - Unit Tests', () => {
             mockReadReceipts.mockResolvedValue(receipts);
             await handler();
             
-            expect(mockShowReceipt).toHaveBeenCalledWith(receipts[0]);
+            expect(mockShowReceiptViewer).toHaveBeenCalledWith(receipts[0]);
         });
 
         it('should show message when no receipts found', async () => {
@@ -448,7 +448,7 @@ describe('Detection Engine Core Commands - Unit Tests', () => {
             expect(mockShowInformationMessage).toHaveBeenCalledWith(
                 'No decision receipts found for Detection Engine Core'
             );
-            expect(mockShowReceipt).not.toHaveBeenCalled();
+            expect(mockShowReceiptViewer).not.toHaveBeenCalled();
         });
 
         it('should handle error when reading receipts fails', async () => {
@@ -475,4 +475,3 @@ describe('Detection Engine Core Commands - Unit Tests', () => {
         });
     });
 });
-

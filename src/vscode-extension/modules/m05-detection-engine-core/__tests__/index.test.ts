@@ -187,6 +187,9 @@ describe('Detection Engine Core Module Index', () => {
         it('should provide decisionCard sections', () => {
             const module = registerModule(mockContext, mockDeps);
             const sections = module.decisionCard?.();
+            if (!sections) {
+                throw new Error('Expected decision card sections');
+            }
             expect(Array.isArray(sections)).toBe(true);
             expect(sections.length).toBe(2);
             expect(sections[0]).toHaveProperty('id');
@@ -198,6 +201,9 @@ describe('Detection Engine Core Module Index', () => {
         it('should have correct decisionCard section IDs', () => {
             const module = registerModule(mockContext, mockDeps);
             const sections = module.decisionCard?.();
+            if (!sections) {
+                throw new Error('Expected decision card sections');
+            }
             expect(sections[0].id).toBe('m05-detection-overview');
             expect(sections[1].id).toBe('m05-detection-details');
         });
@@ -205,6 +211,9 @@ describe('Detection Engine Core Module Index', () => {
         it('should call decisionCard renderOverview', async () => {
             const module = registerModule(mockContext, mockDeps);
             const sections = module.decisionCard?.();
+            if (!sections) {
+                throw new Error('Expected decision card sections');
+            }
             const mockWebview = { postMessage: jest.fn() } as any;
             const mockPanel = { webview: mockWebview } as any;
             await sections[0].render(mockWebview, mockPanel);
@@ -214,6 +223,9 @@ describe('Detection Engine Core Module Index', () => {
         it('should call decisionCard renderDetails', async () => {
             const module = registerModule(mockContext, mockDeps);
             const sections = module.decisionCard?.();
+            if (!sections) {
+                throw new Error('Expected decision card sections');
+            }
             const mockWebview = { postMessage: jest.fn() } as any;
             const mockPanel = { webview: mockWebview } as any;
             await sections[1].render(mockWebview, mockPanel);
@@ -251,6 +263,9 @@ describe('Detection Engine Core Module Index', () => {
         it('should provide quickActions', () => {
             const module = registerModule(mockContext, mockDeps);
             const quickActions = module.quickActions?.();
+            if (!quickActions) {
+                throw new Error('Expected quick actions');
+            }
             expect(Array.isArray(quickActions)).toBe(true);
             expect(quickActions.length).toBeGreaterThan(0);
         });
@@ -286,4 +301,3 @@ describe('Detection Engine Core Module Index', () => {
         });
     });
 });
-

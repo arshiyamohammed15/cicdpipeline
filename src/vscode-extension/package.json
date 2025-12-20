@@ -183,7 +183,7 @@
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "test": "node ./out/test/runTest.js",
+    "test": "node -e \"delete process.env.ELECTRON_RUN_AS_NODE; require('./out/test/runTest');\"",
     "test:validate-hermetic": "node test/validate-hermetic.js"
   },
   "devDependencies": {

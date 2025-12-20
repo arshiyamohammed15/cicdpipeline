@@ -76,7 +76,12 @@ export class DecisionCardManager implements vscode.Disposable {
             }
         }
 
-        const messageSubscription = this.webviewPanel.webview.onDidReceiveMessage(message => {
+        const panel = this.webviewPanel;
+        if (!panel) {
+            return;
+        }
+
+        const messageSubscription = panel.webview.onDidReceiveMessage(message => {
             switch (message.command) {
                 case 'showEvidence':
                     this.currentActions?.onShowEvidence?.();
@@ -96,7 +101,7 @@ export class DecisionCardManager implements vscode.Disposable {
         });
         this.disposables.push(messageSubscription);
 
-        this.webviewPanel.onDidDispose(() => {
+        panel.onDidDispose(() => {
             this.webviewPanel = undefined;
             this.disposeSubscriptions();
         });

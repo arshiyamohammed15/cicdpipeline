@@ -11,10 +11,28 @@ A Python-based automated code review tool that validates code against the ZeroUI
 - **Three-Tier Architecture**: 
   - **Tier 1**: VS Code Extension (TypeScript) - 20 modules + 6 core UI components
   - **Tier 2**: Edge Agent (TypeScript) - 6 delegation modules with orchestration
-  - **Tier 3**: Cloud Services (Python/FastAPI) - 15 fully implemented production-ready microservices + 8 structured services
+  - **Tier 3**: Cloud Services (Python/FastAPI) - 11 shared services, 4 product services, 1 client service, plus the LLM Gateway (see Module Implementation Status)
 - **Comprehensive Testing**: 100+ test files covering unit, integration, security, performance, resilience, and load tests
 - **Hybrid Database System**: SQLite (primary) and JSON (fallback) storage for all 415 rules
 - **Storage Governance**: 4-plane storage architecture (IDE, Tenant, Product, Shared) with strict data governance. All storage lives outside the repository under `${ZU_ROOT}`.
+
+## Recent Updates (Repo Snapshot)
+
+The items below reflect code and test changes currently present in this repository.
+
+- Security: Configuration Policy Management evaluates policy conditions with a tokenizer/parser instead of eval; Contracts Schema Registry enforces `validate_function`, applies a memory budget (MAX_MEMORY_MB), and bounds the JS context cache.
+- Reliability: CCCS receipts WAL drain marks entries as processing under lock and emits dead-letter receipts without holding the lock; receipt signing/indexing closes per-call event loops; config cache invalidates when layer content changes; Identity Service closes event loops after online resolution.
+- Performance/Test: Data Governance consent caching to stabilize latency tests; pytest-only localhost fast paths in MMM clients (Policy, ERIS, Data Governance, UBI), LLM Gateway clients (Budget, ERIS), Budget service, and alerting IAM expansion; alert stream heartbeat re-reads its env override per iteration; LLM Gateway avoids `anyio.to_thread` for in-process calls during pytest.
+- Consistency: Module IDs updated in IAM config response (EPC-1), Data Governance default model (EPC-2), Contracts Schema Registry config response (EPC-12), and KMS source_module (EPC-11).
+- Testing controls: LLM Gateway security regression supports full corpus, subset, and parallel execution via environment variables.
+- Documentation: Architecture docs added under `docs/architecture/` (`zeroui-hla.md`, `zeroui-lla.md`, `ZeroUI_Architecture_V0_converted.md`).
+
+## Verification Snapshot (Local)
+
+Most recent runs executed in this workspace (all passed):
+- `python -m pytest tests -q --durations=25`
+- `python -m pytest tests/llm_gateway/test_security_regression.py -q` with `LLM_GATEWAY_SECURITY_FULL_CORPUS=true`
+- `python -m pytest tests/llm_gateway/test_security_regression.py -q` with `LLM_GATEWAY_SECURITY_FULL_CORPUS=true` and `LLM_GATEWAY_SECURITY_PARALLEL=true`
 
 ## Repository Layout
 
@@ -468,6 +486,15 @@ cd src/vscode-extension && npm test
 npm run test:storage
 ```
 
+### LLM Gateway Security Regression Controls
+
+The adversarial corpus test `tests/llm_gateway/test_security_regression.py` supports:
+- `LLM_GATEWAY_SECURITY_FULL_CORPUS=true` to run the full corpus.
+- `LLM_GATEWAY_SECURITY_ENTRY_IDS=ADV-001,ADV-003` to run a specific subset.
+- `LLM_GATEWAY_SECURITY_PARALLEL=true` to run entries concurrently.
+- `LLM_GATEWAY_SECURITY_CONCURRENCY=8` to cap concurrency.
+
+
 ### Test Coverage
 
 - **Total Test Files**: 100+ test files across Python and TypeScript
@@ -552,9 +579,17 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
    - ✅ KMS with HSM integration
    - ✅ Service, routes, and performance tests
 
+10. **Alerting & Notification Service** (`src/cloud_services/shared-services/alerting-notification-service/`)
+   - FastAPI routes/services/models with ingestion, routing, and streaming endpoints
+   - Unit, integration, security, performance, and resilience tests under `tests/cloud_services/shared_services/alerting_notification_service/`
+
+11. **Ollama AI Agent** (`src/cloud_services/shared-services/ollama-ai-agent/`)
+   - FastAPI service with routes, models, services, and LLM manager
+   - Unit, integration, and security tests under `tests/cloud_services/shared_services/ollama_ai_agent/`
+
 **Product Services (ZeroUI-owned, Cross-Tenant):**
 
-10. **MMM Engine (M01)** (`src/cloud_services/product_services/mmm_engine/`)
+12. **MMM Engine (M01)** (`src/cloud_services/product_services/mmm_engine/`)
     - ✅ Complete FastAPI service with decision routing, action delivery, and fatigue management
     - ✅ Integration with IAM, ERIS, LLM Gateway, Policy, Data Governance, UBI
     - ✅ Circuit breakers, degraded modes, and resilience patterns
@@ -564,16 +599,16 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
     - ✅ Production monitoring documentation (Prometheus, Grafana, OpenTelemetry)
     - ✅ **Status**: Phase 4 & 5 complete, production-ready
 
-11. **Signal Ingestion & Normalization (M04)** (`src/cloud_services/product_services/signal-ingestion-normalization/`)
+13. **Signal Ingestion & Normalization (M04)** (`src/cloud_services/product_services/signal-ingestion-normalization/`)
     - ✅ Signal ingestion pipeline with deduplication, normalization, routing
     - ✅ Producer registry, governance, DLQ, observability
     - ✅ Comprehensive unit and integration tests
 
-12. **Detection Engine Core (M05)** (`src/cloud_services/product_services/detection-engine-core/`)
+14. **Detection Engine Core (M05)** (`src/cloud_services/product_services/detection-engine-core/`)
     - ✅ Detection engine with FastAPI routes and services
     - ✅ Models and test suite
 
-13. **User Behaviour Intelligence (EPC-9/UBI)** (`src/cloud_services/product_services/user_behaviour_intelligence/`)
+15. **User Behaviour Intelligence (EPC-9/UBI)** (`src/cloud_services/product_services/user_behaviour_intelligence/`)
     - ✅ Production-ready implementation with PostgreSQL connection pooling
     - ✅ Event bus integration (Kafka/RabbitMQ/In-Memory)
     - ✅ Feature computation engine (Activity, Flow, Collaboration, Agent Usage)
@@ -585,7 +620,7 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 
 **Client Services (Company-owned, Private Data):**
 
-14. **Integration Adapters (M10)** (`src/cloud_services/client-services/integration-adapters/`)
+16. **Integration Adapters (M10)** (`src/cloud_services/client-services/integration-adapters/`)
     - ✅ Core implementation complete per PRD v2.0
     - ✅ Database models (6 tables), repositories, Pydantic models
     - ✅ Adapter SPI with BaseAdapter interface
@@ -597,17 +632,16 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 
 **LLM Gateway:**
 
-15. **LLM Gateway** (`src/cloud_services/llm_gateway/`)
+17. **LLM Gateway** (`src/cloud_services/llm_gateway/`)
     - ✅ Safety pipeline with policy enforcement
     - ✅ Provider client abstraction (OpenAI, Anthropic, etc.)
     - ✅ Integration with Alerting, Budget, Data Governance, ERIS, IAM, Policy
     - ✅ Telemetry emission and incident store
     - ✅ Comprehensive test suite (unit, integration, real services, performance, observability)
 
-#### Structured Services (Minimal Implementation)
+#### Structured Services (Contracts-Only / Not Implemented as Services)
 
-- **Client Services**: Additional modules with structure defined (compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, knowledge-silo-prevention, legacy-systems-safety, merge-conflicts-delays, monitoring-observability-gaps, release-failures-rollbacks, technical-debt-accumulation)
-- **Ollama AI Agent**: LLM manager and service structure
+- **Client Service Domains**: No additional client-service module directories beyond `integration-adapters` under `src/cloud_services/client-services/`; other domains are represented as contracts under `contracts/`.
 
 ### Edge Agent (TypeScript)
 
@@ -703,12 +737,12 @@ ZeroUI 2.0 implements a **three-tier hybrid architecture** with strict separatio
 #### **TIER 3: BUSINESS LOGIC LAYER**
 - **Cloud Services**: All business logic implementation (Python/FastAPI)
 - **Architecture**: Service-oriented with clear boundaries
-- **Services**: 
-  - **Client Services**: 9 modules (1 fully implemented: integration-adapters; 8 structured: compliance-security-challenges, cross-cutting-concerns, feature-development-blind-spots, knowledge-silo-prevention, legacy-systems-safety, merge-conflicts-delays, monitoring-observability-gaps, release-failures-rollbacks, technical-debt-accumulation)
-  - **Product Services**: 4 modules (all fully implemented: mmm-engine, signal-ingestion-normalization, detection-engine-core, user-behaviour-intelligence)
-  - **Shared Services**: 10 modules (all fully implemented: health-reliability-monitoring, budgeting-rate-limiting-cost-observability, configuration-policy-management, contracts-schema-registry, data-governance-privacy, deployment-infrastructure, evidence-receipt-indexing-service, identity-access-management, key-management-service, ollama-ai-agent)
-  - **LLM Gateway**: Fully implemented with safety pipeline and provider abstraction
-- **Status**: ✅ 15 fully implemented production-ready services with FastAPI routes, services, models, comprehensive tests, and deployment configurations
+- **Services**:
+  - **Client Services**: 1 module in `src/cloud_services/client-services/` (`integration-adapters`); other domains are represented as contracts under `contracts/`.
+  - **Product Services**: 4 modules (`mmm_engine`, `signal-ingestion-normalization`, `detection-engine-core`, `user_behaviour_intelligence`).
+  - **Shared Services**: 11 modules (`alerting-notification-service`, `budgeting-rate-limiting-cost-observability`, `configuration-policy-management`, `contracts-schema-registry`, `data-governance-privacy`, `deployment-infrastructure`, `evidence-receipt-indexing-service`, `health-reliability-monitoring`, `identity-access-management`, `key-management-service`, `ollama-ai-agent`).
+  - **LLM Gateway**: Implemented under `src/cloud_services/llm_gateway/`.
+- **Status**: Repository contains the service directories listed above; implementation depth varies by service.
 
 ### Validator Architecture
 
@@ -2584,6 +2618,16 @@ def test_no_any_violation():
 - ✅ **Documentation**: Complete examples and migration guide
 
 ## Changelog
+
+### Unreleased (Repo Snapshot)
+- Configuration Policy Management: policy condition evaluation uses a tokenizer/parser instead of eval.
+- Contracts Schema Registry: custom JS validator enforces validate_function, applies a memory budget (MAX_MEMORY_MB), and bounds the context cache.
+- CCCS receipts: WAL drain marks entries as processing under lock and emits dead-letter receipts outside the lock; sync signing/indexing closes event loops.
+- Data Governance & Privacy: consent caching for latency tests; module_id defaults updated to EPC-2.
+- LLM Gateway: pytest fast paths for Budget/ERIS and in-process sync execution; security regression supports corpus subset/parallel env controls.
+- MMM Engine: pytest localhost fast paths for Policy/ERIS/Data Governance/UBI clients.
+- Alerting: pytest IAM expansion stubs; stream heartbeat env override is re-read per iteration.
+- Docs: architecture docs added under docs/architecture.
 
 ### v1.1.2 (December 2025) - JSON Corpus Bootstrap Hardening
 - **Extractor Fallback**: `ConstitutionRuleExtractor` now loads directly from `docs/constitution/*.json` when the Markdown master file is missing.

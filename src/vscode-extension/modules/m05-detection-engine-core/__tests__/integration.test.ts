@@ -141,10 +141,7 @@ describe('Detection Engine Core Integration Tests', () => {
     };
 
     const writeReceiptToStorage = async (receipt: DecisionReceipt): Promise<void> => {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = now.getMonth() + 1;
-        await receiptService.writeDecisionReceipt(receipt, repoId, year, month);
+        await receiptService.storeDecisionReceipt(receipt, repoId);
     };
 
     describe('Module Registration Integration', () => {
@@ -534,4 +531,3 @@ describe('Detection Engine Core Integration Tests', () => {
         });
     });
 });
-

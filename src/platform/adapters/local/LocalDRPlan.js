@@ -215,12 +215,14 @@ class LocalDRPlan {
                 if (record.planId !== planId) {
                     continue;
                 }
+                const startedAt = new Date(record.startedAt);
+                const completedAt = record.completedAt ? new Date(record.completedAt) : undefined;
                 // Filter by start time
-                if (options?.startTime && record.startedAt < options.startTime) {
+                if (options?.startTime && startedAt < options.startTime) {
                     continue;
                 }
                 // Filter by end time
-                if (options?.endTime && record.startedAt > options.endTime) {
+                if (options?.endTime && startedAt > options.endTime) {
                     continue;
                 }
                 // Filter by status
@@ -231,8 +233,8 @@ class LocalDRPlan {
                     executionId: record.executionId,
                     planId: record.planId,
                     status: record.status,
-                    startedAt: record.startedAt,
-                    completedAt: record.completedAt,
+                    startedAt,
+                    completedAt,
                     durationSeconds: record.durationSeconds,
                 });
             }
@@ -307,13 +309,16 @@ class LocalDRPlan {
         // Drill: queue-drain
         const queueName = step.config.queueName;
         if (queueName) {
-            // Drain queue
-            let messages = await this.queuePort.receive(queueName, 10);
+            // Drain queue efficiently: use larger batch size to reduce file I/O operations
+            const batchSize = 50; // Increased from 10 to reduce number of receive operations
+            let messages = await this.queuePort.receive(queueName, batchSize);
             while (messages.length > 0) {
+                // Delete messages immediately to free up queue space
                 for (const message of messages) {
                     await this.queuePort.delete(queueName, message.receiptHandle);
                 }
-                messages = await this.queuePort.receive(queueName, 10);
+                // Receive next batch
+                messages = await this.queuePort.receive(queueName, batchSize);
             }
         }
     }

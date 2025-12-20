@@ -10,7 +10,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { BaseStoragePathResolver, StoragePlane } from '../../../shared/storage/BaseStoragePathResolver';
+import { BaseStoragePathResolver, StoragePlane } from './BaseStoragePathResolver';
 
 export type { StoragePlane };
 

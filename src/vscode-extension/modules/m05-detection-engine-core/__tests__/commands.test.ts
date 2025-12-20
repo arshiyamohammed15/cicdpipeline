@@ -60,7 +60,7 @@ jest.mock('../../../ui/decision-card/DecisionCardManager', () => {
 jest.mock('../../../ui/receipt-viewer/ReceiptViewerManager', () => {
     return {
         ReceiptViewerManager: jest.fn().mockImplementation(() => ({
-            showReceipt: jest.fn()
+            showReceiptViewer: jest.fn()
         }))
     };
 });

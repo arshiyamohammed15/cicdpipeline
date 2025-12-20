@@ -104,7 +104,7 @@ export interface PolicyEvaluationDecisionReceipt {
         readonly evaluation_result: {
             readonly decision: 'allow' | 'deny' | 'transform';
             readonly reason: string;
-            readonly violations: readonly Array<{
+            readonly violations: ReadonlyArray<{
                 readonly rule_id: string;
                 readonly policy_id: string;
                 readonly violation_type: string;
@@ -145,7 +145,7 @@ export interface ComplianceCheckReceipt {
             readonly compliant: boolean;
             readonly score: number;
             readonly missing_controls: readonly string[];
-            readonly evidence_gaps: readonly Array<{
+            readonly evidence_gaps: ReadonlyArray<{
                 readonly control_id: string;
                 readonly evidence_type: string;
                 readonly gap_description: string;

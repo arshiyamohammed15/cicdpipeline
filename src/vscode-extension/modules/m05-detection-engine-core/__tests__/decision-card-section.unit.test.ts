@@ -7,8 +7,8 @@
 
 import * as vscode from 'vscode';
 import { DecisionCardSectionProvider } from '../views/decision-card-sections/DecisionCardSectionProvider';
-import { ReceiptStorageReader } from '../../../../shared/storage/ReceiptStorageReader';
-import { DecisionReceipt, EvidenceHandle } from '../../../../shared/receipt-parser/ReceiptParser';
+import { ReceiptStorageReader } from '../../../shared/storage/ReceiptStorageReader';
+import { DecisionReceipt, EvidenceHandle } from '../../../shared/receipt-parser/ReceiptParser';
 
 // Mock vscode
 const mockPostMessage = jest.fn();
@@ -44,7 +44,7 @@ jest.mock('vscode', () => ({
 
 // Mock ReceiptStorageReader
 const mockReadReceipts = jest.fn();
-jest.mock('../../../../shared/storage/ReceiptStorageReader', () => {
+jest.mock('../../../shared/storage/ReceiptStorageReader', () => {
     return {
         ReceiptStorageReader: jest.fn().mockImplementation(() => ({
             readReceipts: mockReadReceipts
@@ -719,4 +719,3 @@ describe('Decision Card Section Provider - Unit Tests', () => {
         });
     });
 });
-

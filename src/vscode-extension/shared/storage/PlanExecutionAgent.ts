@@ -7,7 +7,6 @@ import { ReceiptGenerator } from './ReceiptGenerator';
 import { Ed25519ReceiptSigner } from './ReceiptSigner';
 import { ReceiptStorageService } from './ReceiptStorageService';
 import { StoragePathResolver } from './StoragePathResolver';
-import { WorkloadRouter } from '../../../platform/router/WorkloadRouter';
 
 type EvaluationPoint = 'pre-commit' | 'pre-merge' | 'pre-deploy' | 'post-deploy';
 
@@ -35,6 +34,44 @@ const sanitizeRepoId = (value: string): string =>
 
 const isPlaceholderDigest = (value: string | undefined): boolean =>
     !value || value.trim() === '' || value.trim().toUpperCase() === '<TBD>';
+
+type WorkloadRouterCtor = new (baseDir: string, envName?: string) => {
+    decide: (plan: BuildPlan) => { route: string; adapter: string };
+};
+
+type InfraRoutingDecision = {
+    route: 'serverless' | 'gpu-queue' | 'batch';
+    adapter: 'serverless' | 'gpu-pool' | 'queue';
+};
+
+const loadWorkloadRouter = (): WorkloadRouterCtor | undefined => {
+    try {
+        const module = require('../../../platform/router/WorkloadRouter');
+        if (module && typeof module.WorkloadRouter === 'function') {
+            return module.WorkloadRouter as WorkloadRouterCtor;
+        }
+    } catch {
+        // Optional dependency not available in extension build.
+    }
+    return undefined;
+};
+
+const mapCostProfileToDecision = (costProfile?: string): InfraRoutingDecision | undefined => {
+    if (!costProfile) {
+        return undefined;
+    }
+
+    switch (costProfile.trim().toLowerCase()) {
+        case 'light':
+            return { route: 'serverless', adapter: 'serverless' };
+        case 'ai-inference':
+            return { route: 'gpu-queue', adapter: 'gpu-pool' };
+        case 'batch':
+            return { route: 'batch', adapter: 'queue' };
+        default:
+            return undefined;
+    }
+};
 
 export class PlanExecutionAgent {
     private readonly workspaceRoot: string;
@@ -208,24 +245,37 @@ export class PlanExecutionAgent {
         // If schema forbids labels and they don't exist, we would STOP here, but since
         // inputs is Record<string, any>, labels are allowed
         if (buildPlan) {
-            try {
-                const routerBaseDir = path.join(this.zuRoot, 'ide', 'router');
-                const router = new WorkloadRouter(routerBaseDir, 'development');
-                const routingDecision = router.decide(buildPlan);
+            const directDecision = mapCostProfileToDecision(costProfile);
+            const routingDecision = directDecision ?? (() => {
+                const WorkloadRouterCtor = loadWorkloadRouter();
+                if (!WorkloadRouterCtor) {
+                    return undefined;
+                }
+                try {
+                    const routerBaseDir = path.join(this.zuRoot, 'ide', 'router');
+                    const router = new WorkloadRouterCtor(routerBaseDir, 'development');
+                    return router.decide(buildPlan);
+                } catch {
+                    return undefined;
+                }
+            })();
 
-                // Generate decision ID (deterministic based on timestamp and routing)
-                const decisionId = `infra-${Date.now()}-${routingDecision.route}-${routingDecision.adapter}`;
+            if (routingDecision) {
+                try {
+                    // Generate decision ID (deterministic based on timestamp and routing)
+                    const decisionId = `infra-${Date.now()}-${routingDecision.route}-${routingDecision.adapter}`;
 
-                // Extend existing labels object (labels already exists from above)
-                labels.infra_route = routingDecision.route;
-                labels.infra_cost_profile = costProfile || (typeof buildPlan.cost_profile === 'string' ? buildPlan.cost_profile : 'default');
-                labels.infra_adapter = routingDecision.adapter;
-                labels.infra_decision_id = decisionId;
-            } catch (error) {
-                // If WorkloadRouter fails, continue without infra labels
-                // This is a non-blocking enhancement
-                // In production, this would be logged but not block receipt generation
-                // Error might be: infra config not found, adapters disabled, etc.
+                    // Extend existing labels object (labels already exists from above)
+                    labels.infra_route = routingDecision.route;
+                    labels.infra_cost_profile = costProfile || (typeof buildPlan.cost_profile === 'string' ? buildPlan.cost_profile : 'default');
+                    labels.infra_adapter = routingDecision.adapter;
+                    labels.infra_decision_id = decisionId;
+                } catch (error) {
+                    // If WorkloadRouter fails, continue without infra labels
+                    // This is a non-blocking enhancement
+                    // In production, this would be logged but not block receipt generation
+                    // Error might be: infra config not found, adapters disabled, etc.
+                }
             }
         }
 

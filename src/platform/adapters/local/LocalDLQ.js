@@ -62,7 +62,7 @@ class LocalDLQ {
         const content = fs.readFileSync(dlqFile, 'utf-8');
         const lines = content.split('\n').filter((line) => line.trim());
         const messages = [];
-        const receiptHandles = [];
+        const updatedRecords = [];
         const now = this.getMonotonicTime();
         for (const line of lines) {
             if (messages.length >= maxMessages) {
@@ -70,34 +70,39 @@ class LocalDLQ {
             }
             try {
                 const record = JSON.parse(line);
-                // Skip if already received (has receipt handle)
+                // If already has a receipt handle, keep as-is and skip for delivery
                 if (record.receiptHandle) {
+                    updatedRecords.push(record);
                     continue;
                 }
-                const receiptHandle = this.generateReceiptHandle();
-                receiptHandles.push(receiptHandle);
-                record.receiptHandle = receiptHandle;
-                record.receivedAt = now;
-                const msgStr = typeof record.originalMessage === 'string' ? record.originalMessage : record.originalMessage.toString();
-                const originalMessage = msgStr.startsWith('base64:')
-                    ? Buffer.from(msgStr.substring(7), 'base64')
-                    : msgStr;
-                messages.push({
-                    id: record.id,
-                    receiptHandle,
-                    originalMessage,
-                    error: record.error,
-                    metadata: record.metadata,
-                });
+                if (messages.length < maxMessages) {
+                    const receiptHandle = this.generateReceiptHandle();
+                    record.receiptHandle = receiptHandle;
+                    record.receivedAt = now;
+                    const msgStr = typeof record.originalMessage === 'string'
+                        ? record.originalMessage
+                        : record.originalMessage.toString();
+                    const originalMessage = msgStr.startsWith('base64:')
+                        ? Buffer.from(msgStr.substring(7), 'base64')
+                        : msgStr;
+                    messages.push({
+                        id: record.id,
+                        receiptHandle,
+                        originalMessage,
+                        error: record.error,
+                        metadata: record.metadata,
+                    });
+                }
+                updatedRecords.push(record);
             }
             catch (error) {
                 // Skip invalid lines
                 continue;
             }
         }
-        // Update DLQ file with receipt handles
-        if (receiptHandles.length > 0) {
-            await this.updateDLQFile(dlqFile, lines);
+        // Update DLQ file with receipt handles persisted
+        if (messages.length > 0) {
+            await this.rewriteDLQFile(dlqFile, updatedRecords);
         }
         return messages;
     }
@@ -180,19 +185,6 @@ class LocalDLQ {
         finally {
             await handle.close();
         }
-    }
-    async updateDLQFile(filePath, lines) {
-        const updatedRecords = [];
-        for (const line of lines) {
-            try {
-                updatedRecords.push(JSON.parse(line));
-            }
-            catch (error) {
-                // Keep invalid lines
-                continue;
-            }
-        }
-        await this.rewriteDLQFile(filePath, updatedRecords);
     }
     async rewriteDLQFile(filePath, records) {
         const lines = records.map((record) => JSON.stringify(record));

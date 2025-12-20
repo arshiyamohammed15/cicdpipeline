@@ -65,7 +65,8 @@ export function registerCommands(context: vscode.ExtensionContext): void {
                     timestampUtc: latestReceipt.timestamp_utc,
                     moduleId: 'm05',
                     evaluationPoint: latestReceipt.evaluation_point,
-                    evidenceHandles: latestReceipt.evidence_handles || []
+                    evidenceHandles: latestReceipt.evidence_handles || [],
+                    mismatches: []
                 };
                 
                 await decisionCardManager.showDecisionCard(decisionData);
@@ -104,7 +105,7 @@ export function registerCommands(context: vscode.ExtensionContext): void {
                 })[0];
 
             if (latestReceipt) {
-                await receiptViewerManager.showReceipt(latestReceipt);
+                await receiptViewerManager.showReceiptViewer(latestReceipt);
             } else {
                 await vscode.window.showInformationMessage('No decision receipts found for Detection Engine Core');
             }

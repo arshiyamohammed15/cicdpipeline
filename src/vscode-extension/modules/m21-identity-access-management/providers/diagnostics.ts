@@ -2,7 +2,7 @@
 
 import * as vscode from 'vscode';
 
-export class IAMDiagnosticsProvider implements vscode.DiagnosticProvider {
+export class IAMDiagnosticsProvider {
   provideDiagnostics(): vscode.Diagnostic[] {
     return [];
   }

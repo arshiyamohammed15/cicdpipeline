@@ -386,7 +386,10 @@ describe('Detection Engine Diagnostics Provider - Unit Tests', () => {
             const diagnostics = await provider.computeDiagnostics();
             
             expect(diagnostics[0].code).toBeDefined();
-            expect(diagnostics[0].code?.value).toBe('PM-4-WARN');
+            const code = diagnostics[0].code;
+            const codeValue =
+                typeof code === 'object' && code !== null ? code.value : code;
+            expect(codeValue).toBe('PM-4-WARN');
         });
 
         it('should add related information for evaluation_point', async () => {
@@ -503,4 +506,3 @@ describe('Detection Engine Diagnostics Provider - Unit Tests', () => {
         });
     });
 });
-

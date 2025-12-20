@@ -17,7 +17,6 @@ export declare class LocalDLQ implements DLQPort {
     private getDLQFile;
     private ensureDirectory;
     private appendToJsonl;
-    private updateDLQFile;
     private rewriteDLQFile;
     private generateMessageId;
     private generateReceiptHandle;
