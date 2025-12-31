@@ -9,8 +9,10 @@ from __future__ import annotations
 
 import os
 import time
-from dataclasses import dataclass
-from typing import Dict, List, Optional
+from dataclasses import dataclass, field
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Mapping, Optional
 
 import httpx
 
@@ -26,6 +28,93 @@ class PolicySnapshot:
     degradation_mode: str
     fetched_at: float
     bounds: Dict[str, int]
+    recovery: Dict[str, int] = field(default_factory=dict)
+
+
+_DEFAULT_LOCAL_POLICY_PATH = Path("config/policies/platform_policy.json")
+
+
+def _resolve_local_policy_path() -> Path:
+    env_path = os.getenv("LLM_GATEWAY_POLICY_PATH")
+    if env_path:
+        return Path(env_path)
+    return _DEFAULT_LOCAL_POLICY_PATH
+
+
+def _load_local_policy() -> Dict[str, Any]:
+    policy_path = _resolve_local_policy_path()
+    if not policy_path.is_file():
+        return {}
+    try:
+        with policy_path.open("r", encoding="utf-8") as handle:
+            data = json.load(handle)
+    except (OSError, json.JSONDecodeError):
+        return {}
+    if not isinstance(data, Mapping):
+        return {}
+    return dict(data)
+
+
+def _coerce_positive_int(value: Any) -> Optional[int]:
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return None
+    return parsed if parsed > 0 else None
+
+
+def _extract_section(policy: Mapping[str, Any], key: str) -> Mapping[str, Any]:
+    candidate = policy.get(key)
+    if isinstance(candidate, Mapping):
+        return candidate
+    definition = policy.get("policy_definition")
+    if isinstance(definition, Mapping):
+        nested = definition.get(key)
+        if isinstance(nested, Mapping):
+            return nested
+    return {}
+
+
+def _extract_token_bounds(policy: Mapping[str, Any]) -> Dict[str, int]:
+    token_budgets = _extract_section(policy, "token_budgets")
+    bounds_section = _extract_section(policy, "bounds")
+    bounds: Dict[str, int] = {}
+
+    for key in (
+        "max_input_tokens",
+        "max_output_tokens",
+        "max_total_tokens",
+        "max_tokens",
+        "max_concurrent",
+    ):
+        value = _coerce_positive_int(token_budgets.get(key))
+        if value is not None:
+            bounds[key] = value
+
+    for key, raw in bounds_section.items():
+        if key in bounds:
+            continue
+        value = _coerce_positive_int(raw)
+        if value is not None:
+            bounds[key] = value
+
+    return bounds
+
+
+def _extract_recovery(policy: Mapping[str, Any]) -> Dict[str, int]:
+    recovery_section = _extract_section(policy, "recovery")
+    recovery: Dict[str, int] = {}
+    for key in ("max_attempts", "base_delay_ms", "max_delay_ms", "timeout_ms"):
+        value = _coerce_positive_int(recovery_section.get(key))
+        if value is not None:
+            recovery[key] = value
+    return recovery
+
+
+def _merge_int_maps(base: Dict[str, int], override: Dict[str, int]) -> Dict[str, int]:
+    merged = dict(base)
+    merged.update(override)
+    return merged
 
 
 class PolicyClientError(RuntimeError):
@@ -69,6 +158,9 @@ class PolicyClient:
         Raises PolicyClientError if fetch fails or exceeds latency budget.
         """
         start = time.time()
+        local_policy = _load_local_policy()
+        local_bounds = _extract_token_bounds(local_policy)
+        local_recovery = _extract_recovery(local_policy)
 
         try:
             with httpx.Client(timeout=self.timeout) as client:
@@ -83,6 +175,7 @@ class PolicyClient:
 
                 # Extract policy snapshot metadata
                 items = data.get("items", [])
+                policy_payload: Mapping[str, Any] = {}
                 if not items:
                     # Fallback: use default policy
                     version_id = f"pol-{tenant_id[:4]}-v1"
@@ -91,9 +184,22 @@ class PolicyClient:
                 else:
                     # Use first matching standard
                     policy = items[0]
-                    version_id = policy.get("version", f"pol-{tenant_id[:4]}-v1")
-                    snapshot_id = policy.get("standard_id", f"{tenant_id}-snapshot")
-                    fail_open_allowed = policy.get("fail_open_allowed", False)
+                    if isinstance(policy, Mapping):
+                        policy_payload = policy
+                        version_id = policy.get("version", f"pol-{tenant_id[:4]}-v1")
+                        snapshot_id = policy.get("standard_id", f"{tenant_id}-snapshot")
+                        fail_open_allowed = policy.get("fail_open_allowed", False)
+                    else:
+                        policy_payload = {}
+                        version_id = f"pol-{tenant_id[:4]}-v1"
+                        snapshot_id = f"{tenant_id}-snapshot-default"
+                        fail_open_allowed = tenant_id.endswith("sandbox")
+                bounds = _merge_int_maps(
+                    local_bounds, _extract_token_bounds(policy_payload)
+                )
+                recovery = _merge_int_maps(
+                    local_recovery, _extract_recovery(policy_payload)
+                )
 
                 # Check latency budget
                 elapsed_ms = (time.time() - start) * 1000
@@ -109,7 +215,8 @@ class PolicyClient:
                     fail_open_allowed=fail_open_allowed,
                     degradation_mode="prefer_backup",
                     fetched_at=time.time(),
-                    bounds={"max_tokens": 2048, "max_concurrent": 5},
+                    bounds=bounds,
+                    recovery=recovery,
                 )
 
         except httpx.TimeoutException as exc:
@@ -131,7 +238,8 @@ class PolicyClient:
                 fail_open_allowed=tenant_id.endswith("sandbox"),
                 degradation_mode="prefer_backup",
                 fetched_at=time.time(),
-                bounds={"max_tokens": 2048, "max_concurrent": 5},
+                bounds=local_bounds,
+                recovery=local_recovery,
             )
         except httpx.RequestError as exc:
             raise PolicyClientError(f"Policy service connection failed: {exc}") from exc
@@ -177,6 +285,6 @@ class PolicyCache:
                         degradation_mode="fail_open",
                         fetched_at=snapshot.fetched_at,
                         bounds=snapshot.bounds,
+                        recovery=snapshot.recovery,
                     )
             raise exc
-

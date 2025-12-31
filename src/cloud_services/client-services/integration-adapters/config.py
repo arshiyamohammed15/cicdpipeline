@@ -55,6 +55,12 @@ class Config:
         self.HTTP_TIMEOUT: float = float(os.getenv("HTTP_TIMEOUT", "30.0"))
         self.HTTP_MAX_RETRIES: int = int(os.getenv("HTTP_MAX_RETRIES", "3"))
 
+        # Tool schema registry
+        self.TOOL_SCHEMA_REGISTRY_PATH: str = os.getenv(
+            "INTEGRATION_ADAPTERS_TOOL_SCHEMA_REGISTRY_PATH",
+            "config/policies/platform_policy.json",
+        )
+
         # Circuit Breaker
         self.CIRCUIT_BREAKER_FAILURE_THRESHOLD: int = int(
             os.getenv("CIRCUIT_BREAKER_FAILURE_THRESHOLD", "5")
@@ -86,4 +92,3 @@ class Config:
 
 # Global config instance
 config = Config()
-

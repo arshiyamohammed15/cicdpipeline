@@ -177,6 +177,15 @@ def test_eris_client_emits_receipt_payload(patch_httpx_client: _CaptureClient) -
         "fail_open": False,
         "tenant_id": "tenantA",
         "timestamp_utc": "2025-11-26T00:00:00Z",
+        "recovery": {
+            "primary": {
+                "recovery_applied": False,
+                "attempts_made": 1,
+                "final_outcome": "success",
+                "last_error_code": None,
+                "timeout_applied_ms": 1500,
+            }
+        },
     }
 
     client.emit_receipt(payload)
@@ -189,6 +198,7 @@ def test_eris_client_emits_receipt_payload(patch_httpx_client: _CaptureClient) -
     assert body["gate_id"] == "llm_gateway"
     assert body["tenant_id"] == "tenantA"
     assert body["inputs"]["request_id"] == "req-1"
+    assert body["result"]["recovery"]["primary"]["attempts_made"] == 1
 
 
 def test_alerting_client_emits_alert_payload(patch_httpx_client: _CaptureClient) -> None:

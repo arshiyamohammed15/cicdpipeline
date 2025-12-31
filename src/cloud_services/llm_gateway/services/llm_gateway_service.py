@@ -13,6 +13,15 @@ from typing import Dict, Optional, Tuple
 import anyio
 from fastapi import HTTPException, status
 
+from shared_libs.error_recovery import (
+    ErrorClassifier,
+    RecoveryReport,
+    RetryPolicy,
+    call_with_recovery_async,
+)
+from shared_libs.token_budget import BudgetManager, BudgetSpec
+from shared_libs.token_counter import ConservativeTokenEstimator, TokenCounter
+
 from ..clients import (
     AlertingClient,
     BudgetClient,
@@ -25,6 +34,11 @@ from ..clients import (
     PolicySnapshot,
     ProviderClient,
     ProviderUnavailableError,
+)
+from ..clients.policy_client import (
+    _extract_recovery,
+    _extract_token_bounds,
+    _load_local_policy,
 )
 from ..models import (
     Decision,
@@ -40,6 +54,8 @@ from ..models import (
 from ..telemetry.emitter import TelemetryEmitter
 from .incident_store import SafetyIncidentStore
 from .safety_pipeline import SafetyPipeline
+
+_DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
 
 
 class LLMGatewayService:
@@ -59,6 +75,7 @@ class LLMGatewayService:
         incident_store: SafetyIncidentStore,
         alerting_client: AlertingClient,
         eris_client: ErisClient,
+        token_counter: TokenCounter,
     ) -> None:
         self.iam_client = iam_client
         self.policy_cache = policy_cache
@@ -71,6 +88,7 @@ class LLMGatewayService:
         self.incident_store = incident_store
         self.alerting_client = alerting_client
         self.eris_client = eris_client
+        self.token_counter = token_counter
 
     async def handle_chat(self, request: LLMRequest) -> LLMResponse | DryRunDecision:
         return await self._process(request)
@@ -108,11 +126,66 @@ class LLMGatewayService:
         )
         pipeline_result = self.safety_pipeline.run_input_checks(request)
 
-        estimated_tokens = min(len(sanitized_prompt.split()) * 4, request.budget.max_tokens)
+        # Meta-prompt enforcement (FR-6): prepend a policy/system prompt so
+        # user content cannot overwrite core safety instructions.
+        meta_prefix = f"[META:{request.system_prompt_id}][TENANT:{request.tenant.tenant_id}] "
+        effective_prompt = f"{meta_prefix}{sanitized_prompt}"
+
+        estimated_input_tokens = self.token_counter.count_input(effective_prompt)
+        requested_output_tokens = request.budget.max_tokens
+        estimated_output_tokens = self.token_counter.estimate_output(
+            requested_output_tokens
+        )
+        budget_spec = self._resolve_budget_spec(request, policy_snapshot)
+        budget_spec_payload = {
+            "max_input_tokens": budget_spec.max_input_tokens,
+            "max_output_tokens": budget_spec.max_output_tokens,
+            "max_total_tokens": budget_spec.max_total_tokens,
+            "max_tool_tokens_optional": budget_spec.max_tool_tokens_optional,
+        }
+        budget_decision = BudgetManager(
+            estimated_input_tokens,
+            estimated_output_tokens,
+            budget_spec,
+        )
+        event_type = "llm_gateway_decision"
+        trace_id = (
+            request.telemetry_context.trace_id
+            if request.telemetry_context is not None
+            else None
+        )
+        if budget_decision.decision == "DENY":
+            receipt_payload = {
+                "receipt_id": f"rcpt-{request.request_id}",
+                "request_id": request.request_id,
+                "event_type": event_type,
+                "decision": "deny",
+                "reason_code": budget_decision.reason_code,
+                "policy_snapshot_id": policy_snapshot.snapshot_id,
+                "policy_version_ids": policy_snapshot.version_ids,
+                "fail_open": policy_snapshot.fail_open_allowed,
+                "tenant_id": request.tenant.tenant_id,
+                "timestamp_utc": datetime.now(tz=timezone.utc).isoformat(),
+                "estimated_input_tokens": estimated_input_tokens,
+                "requested_output_tokens": requested_output_tokens,
+                "budget_spec": budget_spec_payload,
+            }
+            if trace_id:
+                receipt_payload["trace_id"] = trace_id
+            self.eris_client.emit_receipt(receipt_payload)
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail={
+                    "decision": "deny",
+                    "reason_code": budget_decision.reason_code,
+                    "message": budget_decision.human_message,
+                },
+            )
+
         await self._run_sync(
             self.budget_client.assert_within_budget,
             request.tenant.tenant_id,
-            estimated_tokens,
+            estimated_input_tokens,
             request.workspace_id,
             request.actor.actor_id,
         )
@@ -125,23 +198,23 @@ class LLMGatewayService:
                 policy_snapshot.version_ids,
             )
 
-        # Meta‑prompt enforcement (FR‑6): prepend a policy/system prompt so
-        # user content cannot overwrite core safety instructions. At this
-        # layer we operate on an abstract meta‑prompt derived from the
-        # system_prompt_id and tenant; the concrete text is owned by the
-        # policy plane.
-        meta_prefix = f"[META:{request.system_prompt_id}][TENANT:{request.tenant.tenant_id}] "
-        effective_prompt = f"{meta_prefix}{sanitized_prompt}"
 
-        provider_response, degradation_stage, fallback_chain = self._call_provider(
-            request, effective_prompt
-        )
+        (
+            provider_response,
+            degradation_stage,
+            fallback_chain,
+            recovery_info,
+        ) = await self._call_provider(request, effective_prompt, policy_snapshot)
         pipeline_result = self.safety_pipeline.run_output_checks(
             provider_response["content"], pipeline_result
         )
         decision = self.safety_pipeline.final_decision(pipeline_result)
 
-        tokens = Tokens(tokens_in=estimated_tokens, tokens_out=estimated_tokens // 2, model_cost_estimate=0.0001 * estimated_tokens)
+        tokens = Tokens(
+            tokens_in=estimated_input_tokens,
+            tokens_out=estimated_input_tokens // 2,
+            model_cost_estimate=0.0001 * estimated_input_tokens,
+        )
         output = (
             ResponseOutput(
                 content=provider_response["content"] if decision != Decision.BLOCKED else None,
@@ -192,19 +265,26 @@ class LLMGatewayService:
             )
             self.alerting_client.emit_alert(incident.alert_payload)
 
-        self.eris_client.emit_receipt(
-            {
-                "receipt_id": response.receipt_id,
-                "request_id": request.request_id,
-                "decision": response.decision.value,
-                "policy_snapshot_id": response.policy_snapshot_id,
-                "policy_version_ids": response.policy_version_ids,
-                "risk_flags": [flag.model_dump() for flag in response.risk_flags],
-                "fail_open": response.fail_open,
-                "tenant_id": request.tenant.tenant_id,
-                "timestamp_utc": response.timestamp_utc.isoformat(),
-            }
-        )
+        receipt_payload = {
+            "receipt_id": response.receipt_id,
+            "request_id": request.request_id,
+            "event_type": event_type,
+            "decision": response.decision.value,
+            "reason_code": budget_decision.reason_code,
+            "policy_snapshot_id": response.policy_snapshot_id,
+            "policy_version_ids": response.policy_version_ids,
+            "risk_flags": [flag.model_dump() for flag in response.risk_flags],
+            "fail_open": response.fail_open,
+            "tenant_id": request.tenant.tenant_id,
+            "timestamp_utc": response.timestamp_utc.isoformat(),
+            "estimated_input_tokens": estimated_input_tokens,
+            "requested_output_tokens": requested_output_tokens,
+            "budget_spec": budget_spec_payload,
+            "recovery": recovery_info,
+        }
+        if trace_id:
+            receipt_payload["trace_id"] = trace_id
+        self.eris_client.emit_receipt(receipt_payload)
 
         return response
 
@@ -215,18 +295,39 @@ class LLMGatewayService:
             return func(*args, **kwargs)
         return await anyio.to_thread.run_sync(func, *args, **kwargs)
 
-    def _call_provider(
-        self, request: LLMRequest, sanitized_prompt: str
-    ) -> Tuple[Dict[str, str], Optional[str], Optional[list]]:
+    async def _call_provider(
+        self,
+        request: LLMRequest,
+        sanitized_prompt: str,
+        policy_snapshot: PolicySnapshot,
+    ) -> Tuple[Dict[str, str], Optional[str], Optional[list], Dict[str, dict]]:
         fallback_chain = []
-        try:
-            result = self.provider_client.invoke(
+        primary_report = RecoveryReport()
+        recovery_policy = self._resolve_recovery_policy(policy_snapshot)
+        recovery_timeout_ms = self._resolve_recovery_timeout_ms(
+            request,
+            policy_snapshot,
+        )
+
+        async def invoke_primary() -> Dict[str, str]:
+            return await anyio.to_thread.run_sync(
+                self.provider_client.invoke,
                 request.tenant.tenant_id,
                 request.logical_model_id,
                 sanitized_prompt,
                 request.operation_type.value,
             )
-            return result, "NONE", fallback_chain
+
+        try:
+            result = await call_with_recovery_async(
+                invoke_primary,
+                policy=recovery_policy,
+                classifier=_DEFAULT_ERROR_CLASSIFIER,
+                timeout_ms=recovery_timeout_ms,
+                report=primary_report,
+            )
+            recovery_info = {"primary": primary_report.to_receipt_fields()}
+            return result, "NONE", fallback_chain, recovery_info
         except ProviderUnavailableError:
             self.telemetry.record_degradation("DETECTED", request.tenant.tenant_id)
             fallback_chain.append(
@@ -241,12 +342,24 @@ class LLMGatewayService:
                 if request.operation_type is OperationType.EMBEDDING
                 else "fallback_chat"
             )
-            fallback_result = self.provider_client.invoke(
-                request.tenant.tenant_id,
-                fallback_logical_model,
-                sanitized_prompt,
-                request.operation_type.value,
-                fallback=True,
+            fallback_report = RecoveryReport()
+
+            async def invoke_fallback() -> Dict[str, str]:
+                return await anyio.to_thread.run_sync(
+                    self.provider_client.invoke,
+                    request.tenant.tenant_id,
+                    fallback_logical_model,
+                    sanitized_prompt,
+                    request.operation_type.value,
+                    fallback=True,
+                )
+
+            fallback_result = await call_with_recovery_async(
+                invoke_fallback,
+                policy=recovery_policy,
+                classifier=_DEFAULT_ERROR_CLASSIFIER,
+                timeout_ms=recovery_timeout_ms,
+                report=fallback_report,
             )
             fallback_chain.append(
                 {
@@ -255,7 +368,11 @@ class LLMGatewayService:
                     "reason": "fallback_invoked",
                 }
             )
-            return fallback_result, "REROUTED", fallback_chain
+            recovery_info = {
+                "primary": primary_report.to_receipt_fields(),
+                "fallback": fallback_report.to_receipt_fields(),
+            }
+            return fallback_result, "REROUTED", fallback_chain, recovery_info
 
     def _build_redaction_summary(self, counts: Dict[str, int]) -> Optional[str]:
         if not counts:
@@ -301,6 +418,67 @@ class LLMGatewayService:
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
                 detail=str(exc),
             ) from exc
+
+    def _resolve_budget_spec(
+        self, request: LLMRequest, policy_snapshot: PolicySnapshot
+    ) -> BudgetSpec:
+        fallback_tokens = request.budget.max_tokens
+        policy_max_tokens = policy_snapshot.bounds.get("max_tokens", fallback_tokens)
+        max_input_tokens = policy_snapshot.bounds.get(
+            "max_input_tokens", policy_max_tokens
+        )
+        max_output_tokens = policy_snapshot.bounds.get(
+            "max_output_tokens", policy_max_tokens
+        )
+        max_total_tokens = policy_snapshot.bounds.get(
+            "max_total_tokens", max_input_tokens + max_output_tokens
+        )
+        return BudgetSpec(
+            max_input_tokens=max_input_tokens,
+            max_output_tokens=max_output_tokens,
+            max_total_tokens=max_total_tokens,
+        )
+
+    def _resolve_recovery_policy(self, policy_snapshot: PolicySnapshot) -> RetryPolicy:
+        recovery = policy_snapshot.recovery
+        max_attempts = recovery.get("max_attempts")
+        base_delay_ms = recovery.get("base_delay_ms")
+        max_delay_ms = recovery.get("max_delay_ms")
+        if not (
+            isinstance(max_attempts, int)
+            and isinstance(base_delay_ms, int)
+            and isinstance(max_delay_ms, int)
+        ):
+            local_policy = _load_local_policy()
+            fallback = _extract_recovery(local_policy)
+            max_attempts = fallback.get("max_attempts")
+            base_delay_ms = fallback.get("base_delay_ms")
+            max_delay_ms = fallback.get("max_delay_ms")
+            if not (
+                isinstance(max_attempts, int)
+                and isinstance(base_delay_ms, int)
+                and isinstance(max_delay_ms, int)
+            ):
+                return RetryPolicy(max_attempts=1, base_delay_ms=0, max_delay_ms=0)
+        return RetryPolicy(
+            max_attempts=max_attempts,
+            base_delay_ms=base_delay_ms,
+            max_delay_ms=max_delay_ms,
+        )
+
+    def _resolve_recovery_timeout_ms(
+        self,
+        request: LLMRequest,
+        policy_snapshot: PolicySnapshot,
+    ) -> int:
+        policy_timeout = policy_snapshot.recovery.get("timeout_ms")
+        if not isinstance(policy_timeout, int):
+            local_policy = _load_local_policy()
+            fallback = _extract_recovery(local_policy)
+            policy_timeout = fallback.get("timeout_ms")
+        if isinstance(policy_timeout, int):
+            return min(request.budget.timeout_ms, policy_timeout)
+        return request.budget.timeout_ms
 
     def _record_observability(
         self,
@@ -388,6 +566,9 @@ def build_default_service() -> LLMGatewayService:
         """Local policy snapshot provider for unit tests (no HTTP)."""
 
         def fetch_snapshot(self, tenant_id: str, actor=None):  # type: ignore[override]
+            local_policy = _load_local_policy()
+            bounds = _extract_token_bounds(local_policy)
+            recovery = _extract_recovery(local_policy)
             # Minimal snapshot satisfying FR‑3 contract for tests.
             return PolicySnapshot(
                 snapshot_id=f"{tenant_id}-snapshot-test",
@@ -396,7 +577,8 @@ def build_default_service() -> LLMGatewayService:
                 fail_open_allowed=False,
                 degradation_mode="prefer_backup",
                 fetched_at=0.0,
-                bounds={"max_tokens": 2048, "max_concurrent": 5},
+                bounds=bounds,
+                recovery=recovery,
             )
 
     class _TestDataGovernanceClient:
@@ -421,6 +603,7 @@ def build_default_service() -> LLMGatewayService:
         incident_store=SafetyIncidentStore(),
         alerting_client=AlertingClient(),
         eris_client=ErisClient(),
+        token_counter=ConservativeTokenEstimator(),
     )
 
 
@@ -477,4 +660,5 @@ def build_service_with_real_clients(
         incident_store=SafetyIncidentStore(),
         alerting_client=AlertingClient(base_url=alerting_url, timeout_seconds=2.0),
         eris_client=ErisClient(base_url=eris_url, timeout_seconds=2.0),
+        token_counter=ConservativeTokenEstimator(),
     )

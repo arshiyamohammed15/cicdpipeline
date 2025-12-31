@@ -1,0 +1,39 @@
+name: Platform Gate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+env:
+  PYTHON_VERSION: "3.11"
+  PYTHONHASHSEED: "0"
+
+jobs:
+  platform_gate:
+    name: Platform Gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Run boundary check
+        if: github.event_name == 'pull_request'
+        run: |
+          python scripts/boundary_check.py --diff-range ${{ github.event.pull_request.base.sha }}...${{ github.sha }} --strict
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+          pip install -r requirements-api.txt
+          pip install -r src/cloud-services/llm_gateway/requirements.txt
+          pip install -r src/cloud-services/client-services/integration-adapters/requirements.txt
+          pip install sqlmodel
+      - name: Run platform smoke tests
+        run: |
+          python -m pytest tests/platform_smoke/

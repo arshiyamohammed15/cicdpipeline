@@ -7,6 +7,7 @@ alerting_notification_service tests can run without external services.
 from __future__ import annotations
 
 import asyncio
+import importlib.util
 import os
 import sys
 import warnings
@@ -19,10 +20,17 @@ import pytest
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlmodel import SQLModel
 
-# Ensure package path is present
-MODULE_ROOT = Path(__file__).resolve().parents[3] / "src" / "cloud_services" / "shared-services" / "alerting-notification-service"
-if str(MODULE_ROOT) not in sys.path:
-    sys.path.insert(0, str(MODULE_ROOT))
+REPO_ROOT = Path(__file__).resolve().parents[4]
+SRC_ROOT = REPO_ROOT / "src"
+if str(SRC_ROOT) not in sys.path:
+    sys.path.insert(0, str(SRC_ROOT))
+
+# Ensure package path is present for the hyphenated service directory
+MODULE_ROOT = SRC_ROOT / "cloud_services" / "shared-services" / "alerting-notification-service"
+spec = importlib.util.spec_from_loader("alerting_notification_service", loader=None, is_package=True)
+module = importlib.util.module_from_spec(spec)
+module.__path__ = [str(MODULE_ROOT)]
+sys.modules["alerting_notification_service"] = module
 
 pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
 
@@ -59,7 +67,22 @@ def alerting_engine(tmp_path_factory: pytest.TempPathFactory):
             await conn.run_sync(SQLModel.metadata.create_all)
 
     asyncio.run(init_models())
-    return engine, session_factory
+    default_loop = None
+    try:
+        default_loop = asyncio.get_event_loop_policy().get_event_loop()
+    except RuntimeError:
+        default_loop = None
+
+    yield engine, session_factory
+
+    async def dispose_engine():
+        await engine.dispose()
+
+    asyncio.run(dispose_engine())
+    if default_loop is not None and not default_loop.is_running():
+        if not default_loop.is_closed():
+            default_loop.close()
+    asyncio.set_event_loop(None)
 
 
 @pytest.fixture

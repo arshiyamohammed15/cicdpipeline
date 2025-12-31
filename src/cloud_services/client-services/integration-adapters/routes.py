@@ -34,7 +34,7 @@ from .models import (
     ErrorResponse,
     WebhookPayload,
 )
-from .services.integration_service import IntegrationService
+from .services.integration_service import IntegrationService, ToolOutputSchemaViolation
 
 logger = logging.getLogger(__name__)
 
@@ -247,7 +247,23 @@ async def execute_action(
         )
     
     action_dict = action_data.model_dump()
-    action = service.execute_action(tenant_id, action_dict)
+    try:
+        action = service.execute_action(tenant_id, action_dict)
+    except ToolOutputSchemaViolation as exc:
+        error_payload = {
+            "code": exc.reason_code,
+            "message": "Tool output schema validation failed",
+            "details": {
+                "tool_id": exc.tool_id,
+                "validation_summary": exc.validation_summary,
+                "schema_version": exc.schema_version,
+            },
+            "timestamp": datetime.utcnow().isoformat() + "Z",
+        }
+        return JSONResponse(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            content={"error": error_payload},
+        )
     
     if not action:
         raise HTTPException(
@@ -291,4 +307,3 @@ async def get_connection_health(
         error_count=0,  # Would be tracked in practice
         rate_limit_state=None,  # Would be tracked in practice
     )
-

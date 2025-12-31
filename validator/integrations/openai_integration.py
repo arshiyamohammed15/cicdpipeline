@@ -3,9 +3,25 @@ OpenAI API Integration with Pre-Implementation Hooks
 """
 
 import os
-import openai
 from typing import Dict, Any
+
+import openai
+
+from shared_libs.error_recovery import (
+    ErrorClassifier,
+    RetryPolicy,
+    call_with_recovery,
+)
 from .ai_service_wrapper import AIServiceIntegration
+
+_DEFAULT_RECOVERY_POLICY = RetryPolicy(
+    max_attempts=2,
+    base_delay_ms=50,
+    max_delay_ms=200,
+)
+_DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
+_DEFAULT_TIMEOUT_MS = 30_000
+
 
 class OpenAIIntegration(AIServiceIntegration):
     """OpenAI API integration with constitution validation."""
@@ -76,14 +92,19 @@ class OpenAIIntegration(AIServiceIntegration):
         system_message = self._build_system_message(context)
         user_message = self._build_user_message(prompt, context)
 
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": system_message},
-                {"role": "user", "content": user_message}
-            ],
-            temperature=context.get('temperature', 0.3),
-            max_tokens=context.get('max_tokens', 2000)
+        response = call_with_recovery(
+            lambda: self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": system_message},
+                    {"role": "user", "content": user_message}
+                ],
+                temperature=context.get('temperature', 0.3),
+                max_tokens=context.get('max_tokens', 2000),
+            ),
+            policy=_DEFAULT_RECOVERY_POLICY,
+            classifier=_DEFAULT_ERROR_CLASSIFIER,
+            timeout_ms=_DEFAULT_TIMEOUT_MS,
         )
 
         return response.choices[0].message.content

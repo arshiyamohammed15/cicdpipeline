@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "token_budgets": {
+    "max_input_tokens": 2048,
+    "max_output_tokens": 2048,
+    "max_total_tokens": 4096
+  },
+  "sse_limits": {
+    "max_events": 1000,
+    "max_bytes": 1048576,
+    "max_duration_ms": 60000
+  },
+  "recovery": {
+    "max_attempts": 2,
+    "base_delay_ms": 50,
+    "max_delay_ms": 200,
+    "timeout_ms": 1500
+  },
+  "tool_schema_registry": {
+    "default_schema_version": "1.0.0",
+    "tools": {
+      "example.provider.post_chat_message": {
+        "schema_version": "1.0.0"
+      }
+    }
+  },
+  "mcp_registry": {
+    "servers": [
+      {
+        "server_id": "mcp.example",
+        "display_name": "Example MCP",
+        "endpoint": "https://mcp.example/api",
+        "enabled": true,
+        "pinned_version": "1.0.0",
+        "capabilities": [
+          "tools.execute"
+        ]
+      }
+    ]
+  }
+}

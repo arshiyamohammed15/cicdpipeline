@@ -12,6 +12,7 @@ import types
 import warnings
 from pathlib import Path
 import pytest
+import asyncio
 
 from tools.test_registry.path_normalizer import setup_path_normalization, pin_repo_config
 from data_governance_privacy.services import DataGovernanceService
@@ -19,6 +20,31 @@ from data_governance_privacy.services import DataGovernanceService
 # Project root - conftest.py is in tests/, so go up one level
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 setup_path_normalization(PROJECT_ROOT)
+
+_TRACKED_EVENT_LOOPS: list[asyncio.AbstractEventLoop] = []
+_ORIGINAL_NEW_EVENT_LOOP = asyncio.new_event_loop
+_ORIGINAL_GET_EVENT_LOOP = asyncio.get_event_loop
+
+
+def _track_loop(loop: asyncio.AbstractEventLoop) -> None:
+    if loop not in _TRACKED_EVENT_LOOPS:
+        _TRACKED_EVENT_LOOPS.append(loop)
+
+
+def _tracked_new_event_loop() -> asyncio.AbstractEventLoop:
+    loop = _ORIGINAL_NEW_EVENT_LOOP()
+    _track_loop(loop)
+    return loop
+
+
+def _tracked_get_event_loop() -> asyncio.AbstractEventLoop:
+    loop = _ORIGINAL_GET_EVENT_LOOP()
+    _track_loop(loop)
+    return loop
+
+
+asyncio.new_event_loop = _tracked_new_event_loop  # type: ignore[assignment]
+asyncio.get_event_loop = _tracked_get_event_loop  # type: ignore[assignment]
 
 # Suppress expected setup warnings for optional modules that are not present in this harness.
 warnings.filterwarnings(
@@ -372,6 +398,14 @@ def pytest_configure(config):
     config.addinivalue_line("markers", "llm_gateway_security: llm gateway security tests")
 
 
+def pytest_sessionfinish(session, exitstatus):  # type: ignore[override]
+    for loop in list(_TRACKED_EVENT_LOOPS):
+        if loop.is_running() or loop.is_closed():
+            continue
+        loop.close()
+    asyncio.set_event_loop(None)
+
+
 def pytest_ignore_collect(collection_path: Path, config):  # type: ignore[override]
     # Avoid duplicate MMM Engine tests under two hierarchies; prefer cloud_services path.
     path_str = str(collection_path)
@@ -382,6 +416,20 @@ def pytest_ignore_collect(collection_path: Path, config):  # type: ignore[overri
 # Shared performance runner fixture for performance suites.
 from tests.shared_harness import PerfRunner
 from tests.shared_harness import TenantFactory, BudgetFixtureFactory
+
+
+@pytest.fixture
+def event_loop():
+    import asyncio
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    try:
+        yield loop
+    finally:
+        if not loop.is_closed():
+            loop.run_until_complete(loop.shutdown_asyncgens())
+            loop.close()
+        asyncio.set_event_loop(None)
 
 
 @pytest.fixture

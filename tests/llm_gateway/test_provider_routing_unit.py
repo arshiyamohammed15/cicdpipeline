@@ -4,10 +4,18 @@ Unit tests for ProviderClient multi-tenant routing (FR-10).
 """
 
 
+import pytest
+
 from cloud_services.llm_gateway.clients import ProviderClient  # type: ignore  # pylint: disable=import-error
 
 
-def test_provider_routing_is_tenant_specific() -> None:
+def test_provider_routing_is_tenant_specific(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        "cloud_services.llm_gateway.clients.provider_client.random.random",
+        lambda: 1.0,
+    )
     client = ProviderClient()
 
     # Register explicit routes for tenantA and tenantB
@@ -34,5 +42,4 @@ def test_provider_routing_is_tenant_specific() -> None:
     # Ensure responses contain their own tenant-specific model id
     assert "provider/model-A" in resp_a["content"]
     assert "provider/model-B" in resp_b["content"]
-
 

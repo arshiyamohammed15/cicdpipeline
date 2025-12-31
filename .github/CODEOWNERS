@@ -1,0 +1,6 @@
+/src/cloud_services/llm_gateway/ team@zeroui.com
+/src/shared_libs/error_recovery/ team@zeroui.com
+/src/shared_libs/sse_guard/ team@zeroui.com
+/src/cloud_services/shared-services/alerting-notification-service/ team@zeroui.com
+/src/shared_libs/tool_schema_validation/ team@zeroui.com
+/src/shared_libs/mcp_server_registry/ team@zeroui.com

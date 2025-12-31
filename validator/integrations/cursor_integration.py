@@ -5,7 +5,20 @@ Cursor IDE Integration with Pre-Implementation Hooks
 import os
 import json
 from typing import Dict, Any, Optional
+from shared_libs.error_recovery import (
+    ErrorClassifier,
+    RetryPolicy,
+    call_with_recovery,
+)
 from .ai_service_wrapper import AIServiceIntegration
+
+_DEFAULT_RECOVERY_POLICY = RetryPolicy(
+    max_attempts=2,
+    base_delay_ms=50,
+    max_delay_ms=200,
+)
+_DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
+
 
 class CursorIntegration(AIServiceIntegration):
     """Cursor IDE integration with constitution validation."""
@@ -84,11 +97,15 @@ class CursorIntegration(AIServiceIntegration):
             'max_tokens': context.get('max_tokens', 2000)
         }
 
-        response = requests.post(
-            f"{self.base_url}/v1/generate",
-            headers=headers,
-            json=payload,
-            timeout=30
+        response = call_with_recovery(
+            lambda: requests.post(
+                f"{self.base_url}/v1/generate",
+                headers=headers,
+                json=payload,
+                timeout=30,
+            ),
+            policy=_DEFAULT_RECOVERY_POLICY,
+            classifier=_DEFAULT_ERROR_CLASSIFIER,
         )
 
         response.raise_for_status()

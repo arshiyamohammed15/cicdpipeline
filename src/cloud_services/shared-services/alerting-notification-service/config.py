@@ -35,6 +35,24 @@ class NotificationSettings(BaseSettings):
     max_retry_attempts: int = Field(default=5, ge=1)
     retry_backoff_seconds: int = Field(default=30, ge=1)
     agent_stream_buffer: int = Field(default=1024, ge=1)
+    agent_stream_max_duration_ms: Optional[int] = Field(
+        default=None,
+        ge=1,
+        description="Maximum SSE stream duration in ms (set via AGENT_STREAM_MAX_DURATION_MS).",
+        validation_alias="AGENT_STREAM_MAX_DURATION_MS",
+    )
+    agent_stream_max_events: Optional[int] = Field(
+        default=None,
+        ge=1,
+        description="Maximum SSE events per stream (set via AGENT_STREAM_MAX_EVENTS).",
+        validation_alias="AGENT_STREAM_MAX_EVENTS",
+    )
+    agent_stream_max_bytes: Optional[int] = Field(
+        default=None,
+        ge=1,
+        description="Maximum SSE bytes per stream (set via AGENT_STREAM_MAX_BYTES).",
+        validation_alias="AGENT_STREAM_MAX_BYTES",
+    )
 
 
 class DatabaseSettings(BaseSettings):

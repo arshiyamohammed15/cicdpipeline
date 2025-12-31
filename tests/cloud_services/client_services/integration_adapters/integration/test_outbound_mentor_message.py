@@ -87,7 +87,7 @@ class TestOutboundMentorMessage:
         if hasattr(services, "__path__") and str(svc_root) not in services.__path__:
             services.__path__.append(str(svc_root))
         sys.modules["services"] = services
-        from services.adapter_registry import get_adapter_registry
+        from integration_adapters.services.adapter_registry import get_adapter_registry
 
         class DummyAdapter:
             def __init__(self, *args, **kwargs):
@@ -133,4 +133,3 @@ class TestOutboundMentorMessage:
         action = integration_service.execute_action(sample_tenant_id, action_data)
         # Result depends on adapter implementation
         assert action is None or isinstance(action, object)
-

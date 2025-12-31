@@ -10,6 +10,7 @@ Risks: Service orchestration errors, tenant isolation violations
 
 from __future__ import annotations
 
+import json
 import logging
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -46,6 +47,7 @@ try:
     from ..integrations.eris_client import ERISClient
     from ..observability.metrics import get_metrics_registry
     from ..observability.audit import get_audit_logger
+    from ..config import config as app_config
 except ImportError:
     # Fallback for direct imports (e.g., in tests)
     import sys
@@ -85,6 +87,7 @@ except ImportError:
         from integration_adapters.integrations.eris_client import ERISClient
         from integration_adapters.observability.metrics import get_metrics_registry
         from integration_adapters.observability.audit import get_audit_logger
+        from integration_adapters.config import config as app_config
     except ImportError:
         # Fallback to relative imports if package not installed
         from database.models import (
@@ -115,11 +118,32 @@ except ImportError:
         from integrations.eris_client import ERISClient
         from observability.metrics import get_metrics_registry
         from observability.audit import get_audit_logger
+        from config import config as app_config
 
 from .adapter_registry import get_adapter_registry
 from .signal_mapper import SignalMapper
+from shared_libs.tool_schema_validation import ToolOutputValidator, ToolSchemaRegistry
 
 logger = logging.getLogger(__name__)
+
+TOOL_OUTPUT_SCHEMA_VIOLATION = "TOOL_OUTPUT_SCHEMA_VIOLATION"
+DEFAULT_TOOL_SCHEMA_VERSION = "1.0.0"
+
+
+class ToolOutputSchemaViolation(Exception):
+    """Raised when a tool output fails schema validation."""
+
+    def __init__(
+        self,
+        tool_id: str,
+        validation_summary: dict[str, list[str]],
+        schema_version: Optional[str],
+    ):
+        super().__init__(f"Tool output schema violation for {tool_id}")
+        self.tool_id = tool_id
+        self.reason_code = TOOL_OUTPUT_SCHEMA_VIOLATION
+        self.validation_summary = validation_summary
+        self.schema_version = schema_version
 
 
 class IntegrationService:
@@ -179,6 +203,104 @@ class IntegrationService:
         self.signal_mapper = SignalMapper()
         self.metrics = get_metrics_registry()
         self.audit = get_audit_logger()
+        self._tool_schema_registry = ToolSchemaRegistry()
+        self._tool_output_validator = ToolOutputValidator(self._tool_schema_registry)
+        self._default_tool_schema_version = DEFAULT_TOOL_SCHEMA_VERSION
+        self._load_tool_schema_registry_config()
+
+    def register_tool_output_schema(
+        self,
+        tool_id: str,
+        schema_or_model: object,
+        schema_version: str,
+    ) -> None:
+        """Register a tool output schema for validation."""
+        self._tool_schema_registry.register(tool_id, schema_or_model, schema_version)
+
+    def _tool_id_for_action(self, provider_id: str, canonical_type: str) -> str:
+        return f"{provider_id}.{canonical_type}"
+
+    def _ensure_tool_schema(self, tool_id: str) -> None:
+        if self._tool_schema_registry.get(tool_id) is None:
+            from ..models import NormalisedActionResponse
+            self._tool_schema_registry.register(
+                tool_id,
+                NormalisedActionResponse,
+                self._default_tool_schema_version,
+            )
+
+    def _load_tool_schema_registry_config(self) -> None:
+        path = getattr(app_config, "TOOL_SCHEMA_REGISTRY_PATH", None)
+        if not path:
+            return
+        try:
+            with open(path, "r", encoding="utf-8") as handle:
+                data = json.load(handle)
+        except (OSError, json.JSONDecodeError):
+            return
+        if not isinstance(data, dict):
+            return
+        registry = data.get("tool_schema_registry")
+        if not isinstance(registry, dict):
+            return
+        default_version = registry.get("default_schema_version")
+        if isinstance(default_version, str) and default_version:
+            self._default_tool_schema_version = default_version
+        tools = registry.get("tools")
+        if not isinstance(tools, dict):
+            return
+        from ..models import NormalisedActionResponse
+        for tool_id, entry in tools.items():
+            if not isinstance(tool_id, str) or not tool_id:
+                continue
+            if isinstance(entry, str):
+                version = entry
+            elif isinstance(entry, dict):
+                version = entry.get("schema_version")
+            else:
+                version = None
+            if isinstance(version, str) and version:
+                self._tool_schema_registry.register(
+                    tool_id,
+                    NormalisedActionResponse,
+                    version,
+                )
+
+    def _handle_tool_output_violation(
+        self,
+        *,
+        tenant_id: str,
+        connection_id: UUID,
+        action_data: Dict[str, Any],
+        action: NormalisedAction,
+        tool_id: str,
+        validation_summary: dict[str, list[str]],
+        schema_version: Optional[str],
+    ) -> None:
+        action.status = "failed"
+        action.payload = {"error": "tool output schema violation"}
+        self.action_repo.update(action)
+
+        self.eris_client.emit_receipt(
+            tenant_id=tenant_id,
+            connection_id=str(connection_id),
+            provider_id=action_data["provider_id"],
+            operation_type=(
+                f"integration.action.{action_data['provider_id']}."
+                f"{action_data['canonical_type']}.output_validation"
+            ),
+            request_metadata={},
+            result={
+                "tool_id": tool_id,
+                "reason_code": TOOL_OUTPUT_SCHEMA_VIOLATION,
+                "validation_summary": validation_summary,
+                "schema_version": schema_version,
+                "outcome": "blocked",
+                "timestamp": datetime.utcnow().isoformat(),
+            },
+            correlation_id=action_data.get("correlation_id"),
+        )
+        self.metrics.increment_action_error(action_data["provider_id"], connection_id)
 
     # FR-1: Provider & Adapter Registry
     def create_provider(
@@ -480,14 +602,46 @@ class IntegrationService:
             from ..models import NormalisedActionCreate
             action_create = NormalisedActionCreate(**action_data)
             result = adapter.execute_action(action_create)
+        except Exception as e:
+            logger.error(f"Action execution failed: {e}")
+            action.status = "failed"
+            action.payload = {"error": str(e)}
+            self.action_repo.update(action)
             
+            self.metrics.increment_action_error(action_data["provider_id"], connection_id)
+            return action
+
+        tool_id = self._tool_id_for_action(
+            action_data["provider_id"],
+            action_data["canonical_type"],
+        )
+        self._ensure_tool_schema(tool_id)
+        validation = self._tool_output_validator.validate(tool_id, result)
+        if not validation.ok:
+            summary = validation.details or {"errors": ["Tool output schema validation failed."]}
+            self._handle_tool_output_violation(
+                tenant_id=tenant_id,
+                connection_id=connection_id,
+                action_data=action_data,
+                action=action,
+                tool_id=tool_id,
+                validation_summary=summary,
+                schema_version=validation.schema_version,
+            )
+            raise ToolOutputSchemaViolation(
+                tool_id,
+                summary,
+                validation.schema_version,
+            )
+
+        try:
             # Update action status
             action.status = result.status.value
             action.payload = result.payload
             if result.completed_at:
                 action.completed_at = result.completed_at
             self.action_repo.update(action)
-            
+
             # Emit ERIS receipt (FR-13)
             self.eris_client.emit_receipt(
                 tenant_id=tenant_id,
@@ -498,17 +652,16 @@ class IntegrationService:
                 result={"status": result.status.value, "payload": result.payload},
                 correlation_id=action_data.get("correlation_id"),
             )
-            
+
             # Record metrics (FR-12)
             self.metrics.increment_action_executed(action_data["provider_id"], connection_id)
-            
+
             return action
         except Exception as e:
             logger.error(f"Action execution failed: {e}")
             action.status = "failed"
             action.payload = {"error": str(e)}
             self.action_repo.update(action)
-            
+
             self.metrics.increment_action_error(action_data["provider_id"], connection_id)
             return action
-

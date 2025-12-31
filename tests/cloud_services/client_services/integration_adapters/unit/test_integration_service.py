@@ -235,11 +235,27 @@ class TestIntegrationService:
     def test_verify_connection(self, integration_service, sample_tenant_id, mock_kms_client):
         """Test connection verification (FR-2, FR-3)."""
         # Register GitHub adapter
-        from services.adapter_registry import get_adapter_registry
+        from integration_adapters.services.adapter_registry import get_adapter_registry
+        from integration_adapters.adapters.base import BaseAdapter
 
-        class DummyAdapter:
+        class DummyAdapter(BaseAdapter):
             def __init__(self, *args, **kwargs):
                 pass
+
+            def process_webhook(self, payload, headers):
+                return {}
+
+            def poll_events(self, cursor=None):
+                return [], cursor
+
+            def execute_action(self, action):
+                return None
+
+            def verify_connection(self):
+                return True
+
+            def get_capabilities(self):
+                return {}
         registry = get_adapter_registry()
         registry.register_adapter("github", DummyAdapter)
 
@@ -261,4 +277,3 @@ class TestIntegrationService:
         )
         # Result depends on adapter implementation
         assert isinstance(is_valid, bool)
-

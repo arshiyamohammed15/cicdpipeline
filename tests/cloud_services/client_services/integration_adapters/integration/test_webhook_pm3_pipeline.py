@@ -130,7 +130,7 @@ class TestWebhookPM3Pipeline:
         if hasattr(services, "__path__") and str(svc_root) not in services.__path__:
             services.__path__.append(str(svc_root))
         sys.modules["services"] = services
-        from services.adapter_registry import get_adapter_registry
+        from integration_adapters.services.adapter_registry import get_adapter_registry
 
         class DummyAdapter:
             def __init__(self, *args, **kwargs):
@@ -214,4 +214,3 @@ class TestWebhookPM3Pipeline:
         assert signal.resource is not None
         assert signal.resource.repository == "org/repo"
         assert signal.resource.pr_id == 123
-

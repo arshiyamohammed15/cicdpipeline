@@ -17,6 +17,18 @@ import re
 from pathlib import Path
 from typing import Optional, Dict, Any
 import requests
+from shared_libs.error_recovery import (
+    ErrorClassifier,
+    RetryPolicy,
+    call_with_recovery,
+)
+
+_DEFAULT_RECOVERY_POLICY = RetryPolicy(
+    max_attempts=2,
+    base_delay_ms=50,
+    max_delay_ms=200,
+)
+_DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
 
 logger = logging.getLogger(__name__)
 
@@ -117,7 +129,11 @@ def _is_ollama_running(base_url: str = "http://localhost:11434") -> bool:
         tags_path = api_endpoints.get("tags", "/api/tags")
         tags_endpoint = f"{base_url}{tags_path}"
 
-        response = requests.get(tags_endpoint, timeout=2)
+        response = call_with_recovery(
+            lambda: requests.get(tags_endpoint, timeout=2),
+            policy=_DEFAULT_RECOVERY_POLICY,
+            classifier=_DEFAULT_ERROR_CLASSIFIER,
+        )
         return response.status_code == 200
     except Exception:
         return False

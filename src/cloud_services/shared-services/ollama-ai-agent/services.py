@@ -14,7 +14,19 @@ from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
 import requests
+from shared_libs.error_recovery import (
+    ErrorClassifier,
+    RetryPolicy,
+    call_with_recovery,
+)
 from .models import PromptRequest, PromptResponse
+
+_DEFAULT_RECOVERY_POLICY = RetryPolicy(
+    max_attempts=2,
+    base_delay_ms=50,
+    max_delay_ms=200,
+)
+_DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
 
 
 def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
@@ -102,7 +114,11 @@ class OllamaAIService:
             tags_path = api_endpoints.get("tags", "/api/tags")
             tags_endpoint = f"{self.base_url}{tags_path}"
 
-            response = requests.get(tags_endpoint, timeout=5)
+            response = call_with_recovery(
+                lambda: requests.get(tags_endpoint, timeout=5),
+                policy=_DEFAULT_RECOVERY_POLICY,
+                classifier=_DEFAULT_ERROR_CLASSIFIER,
+            )
             return response.status_code == 200
         except Exception:
             return False
@@ -142,10 +158,14 @@ class OllamaAIService:
             payload["options"] = model_options
 
         try:
-            response = requests.post(
-                self.generate_endpoint,
-                json=payload,
-                timeout=self.timeout
+            response = call_with_recovery(
+                lambda: requests.post(
+                    self.generate_endpoint,
+                    json=payload,
+                    timeout=self.timeout,
+                ),
+                policy=_DEFAULT_RECOVERY_POLICY,
+                classifier=_DEFAULT_ERROR_CLASSIFIER,
             )
             response.raise_for_status()
 

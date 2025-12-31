@@ -18,6 +18,7 @@ from .evidence import EvidencePackBuilder
 from .alerting_fixtures import AlertFixtureFactory, AlertEvent
 from .budgeting_fixtures import BudgetFixtureFactory, BudgetFixture, RateLimitFixture
 from .deployment_fixtures import DeploymentFixtureFactory, EnvironmentConfig, DeploymentManifest
+from .receipt_assertions import assert_enforcement_receipt_fields
 
 __all__ = [
     "TenantFactory",
@@ -34,5 +35,5 @@ __all__ = [
     "DeploymentFixtureFactory",
     "EnvironmentConfig",
     "DeploymentManifest",
+    "assert_enforcement_receipt_fields",
 ]
-

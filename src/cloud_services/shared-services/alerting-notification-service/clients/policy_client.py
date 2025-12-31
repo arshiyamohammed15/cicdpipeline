@@ -6,7 +6,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Mapping, Optional
 
 from ..config import get_settings
 
@@ -254,6 +254,39 @@ class PolicyClient:
             "suppress_followup_during_incident": suppression.get("suppress_followup_during_incident", True),
             "suppress_window_minutes": suppression.get("suppress_window_minutes", 15),
         }
+
+    def get_stream_limits(self) -> Dict[str, Optional[int]]:
+        """Get optional SSE stream limits from policy bundle."""
+        bundle = self._get_bundle()
+        limits: Mapping[str, Any]
+        limits = bundle.get("stream_limits")
+        if not isinstance(limits, Mapping):
+            limits = bundle.get("sse_limits")
+        if not isinstance(limits, Mapping):
+            limits = {}
+
+        def _coerce_limit(value: Any) -> Optional[int]:
+            if value is None:
+                return None
+            try:
+                parsed = int(value)
+            except (TypeError, ValueError):
+                return None
+            return parsed if parsed > 0 else None
+
+        return {
+            "max_duration_ms": _coerce_limit(limits.get("max_duration_ms")),
+            "max_events": _coerce_limit(limits.get("max_events")),
+            "max_bytes": _coerce_limit(limits.get("max_bytes")),
+        }
+
+    def get_policy_reference(self) -> Optional[str]:
+        """Return policy schema version for receipts when available."""
+        bundle = self._get_bundle()
+        schema_version = bundle.get("schema_version")
+        if isinstance(schema_version, str) and schema_version:
+            return schema_version
+        return str(self._policy_path) if self._policy_path else None
 
 
 class IAMClient:
