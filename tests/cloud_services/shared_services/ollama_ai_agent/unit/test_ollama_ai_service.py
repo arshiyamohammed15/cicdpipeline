@@ -35,22 +35,28 @@ import importlib.util
 ollama_ai_agent_dir = project_root / "src" / "cloud_services" / "shared-services" / "ollama-ai-agent"
 
 # Create parent package structure for relative imports
-parent_pkg = type(sys)('ollama_ai_agent')
-sys.modules['ollama_ai_agent'] = parent_pkg
+parent_pkg = sys.modules.get('ollama_ai_agent')
+if parent_pkg is None:
+    parent_pkg = type(sys)('ollama_ai_agent')
+    sys.modules['ollama_ai_agent'] = parent_pkg
 
 # Load models module first (needed by services)
-models_path = ollama_ai_agent_dir / "models.py"
-spec_models = importlib.util.spec_from_file_location("ollama_ai_agent.models", models_path)
-models_module = importlib.util.module_from_spec(spec_models)
-sys.modules['ollama_ai_agent.models'] = models_module
-spec_models.loader.exec_module(models_module)
+models_module = sys.modules.get('ollama_ai_agent.models')
+if models_module is None:
+    models_path = ollama_ai_agent_dir / "models.py"
+    spec_models = importlib.util.spec_from_file_location("ollama_ai_agent.models", models_path)
+    models_module = importlib.util.module_from_spec(spec_models)
+    sys.modules['ollama_ai_agent.models'] = models_module
+    spec_models.loader.exec_module(models_module)
 
 # Load services module
-services_path = ollama_ai_agent_dir / "services.py"
-spec_services = importlib.util.spec_from_file_location("ollama_ai_agent.services", services_path)
-services_module = importlib.util.module_from_spec(spec_services)
-sys.modules['ollama_ai_agent.services'] = services_module
-spec_services.loader.exec_module(services_module)
+services_module = sys.modules.get('ollama_ai_agent.services')
+if services_module is None:
+    services_path = ollama_ai_agent_dir / "services.py"
+    spec_services = importlib.util.spec_from_file_location("ollama_ai_agent.services", services_path)
+    services_module = importlib.util.module_from_spec(spec_services)
+    sys.modules['ollama_ai_agent.services'] = services_module
+    spec_services.loader.exec_module(services_module)
 
 # Import the classes
 OllamaAIService = services_module.OllamaAIService
