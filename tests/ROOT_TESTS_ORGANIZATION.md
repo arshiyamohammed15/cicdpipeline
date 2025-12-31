@@ -4,26 +4,40 @@
 
 Tests in the root `tests/` directory that don't belong to specific cloud service modules.
 
-**Total Root-Level Test Files**: 46 files
+**Note**: This document has been updated to reflect the reorganization completed on 2025-01-27. Service-specific tests have been moved to `cloud_services/`, system-level tests to `system/`, and infrastructure tests to `infrastructure/`.
 
 ---
 
 ## Test Categories
 
-### 1. Validator Tests (`tests/test_*.py`)
+### 1. System-Level Tests (`tests/system/`)
 
-**Purpose**: System-level tests for the validator/constitution system
+**Purpose**: System-level tests for validators, constitution, and enforcement
 
-**Files**:
-- `test_constitution_*.py` - Constitution rules validation
-- `test_rule_*.py` - Rule validation logic
-- `test_pre_implementation_*.py` - Pre-implementation hooks
-- `test_post_generation_*.py` - Post-generation validation
-- `test_enforcement_*.py` - Enforcement flow tests
-- `test_deterministic_*.py` - Deterministic enforcement tests
-- `constitution_positive_negative/test_constitution_positive_negative.py` - Table-driven positive/negative invariants for all 415 constitution rules (controlled mutations; no overlap with existing suites)
+**Structure**:
+```
+tests/system/
+├── constitution/          # Constitution rule validation tests
+│   ├── test_constitution_all_files.py
+│   ├── test_constitution_comprehensive_runner.py
+│   ├── test_constitution_coverage_analysis.py
+│   ├── test_constitution_rule_semantics.py
+│   ├── test_constitution_rule_specific_coverage.py
+│   └── test_master_generic_rules_all.py
+├── validators/            # Validator tests
+│   ├── test_pre_implementation_artifacts.py
+│   ├── test_pre_implementation_hooks_comprehensive.py
+│   ├── test_post_generation_validator.py
+│   ├── test_receipt_validator.py
+│   └── test_receipt_invariants_end_to_end.py
+├── enforcement/           # Enforcement flow tests
+│   ├── test_enforcement_flow.py
+│   └── test_deterministic_enforcement.py
+├── test_architecture_artifacts_validation.py
+└── test_cursor_testing_rules.py
+```
 
-**Organization**: Keep in root `tests/` directory (system-level, not module-specific)
+**Constitution Positive/Negative Suite** (`tests/constitution_positive_negative/`): Table-driven positive/negative invariants for all 415 constitution rules using controlled mutations (designed to avoid overlap with existing suites)
 
 ### 2. LLM Gateway Tests (`tests/llm_gateway/`)
 
@@ -95,39 +109,83 @@ Tests in the root `tests/` directory that don't belong to specific cloud service
 - **Option 2**: Migrate remaining tests to new structure
 - **Recommendation**: Keep for now, migrate later if needed
 
-### 6. Other Test Directories
+### 6. Infrastructure Tests (`tests/infrastructure/`)
+
+**Purpose**: Infrastructure and platform-level tests
+
+**Structure**:
+```
+tests/infrastructure/
+├── health/                # Health check and monitoring tests
+│   ├── test_health.py
+│   └── test_health_endpoints.py
+├── api/                   # API service and endpoint tests
+│   ├── test_api_endpoints.py
+│   ├── test_api_service.py
+│   └── test_api_service_end_to_end.py
+├── openapi/               # OpenAPI infrastructure service tests
+│   └── test_openapi_infrastructure_services.py
+├── test_errors.py
+├── test_integration.py
+├── test_logging_config.py
+└── test_service_integration_smoke.py
+```
+
+### 7. Other Test Directories
 
 - **`tests/manual/`**: Manual test cases
-- **`tests/health_reliability_monitoring/`**: Health monitoring tests (may need migration)
-- **`tests/mmm_engine/`**: MMM Engine tests (may need migration)
-- **`tests/platform/`**: Platform tests
-- **`tests/shared_harness/`**: Shared test utilities
+- **`tests/health_reliability_monitoring/`**: Health monitoring tests (legacy, may need migration to cloud_services)
+- **`tests/mmm_engine/`**: MMM Engine tests (legacy, may need migration to cloud_services)
+- **`tests/platform/`**: Platform tests (TypeScript)
+- **`tests/shared_harness/`**: Shared test utilities and fixtures
 - **`tests/vscode-extension/`**: VS Code Extension tests (TypeScript)
+- **`tests/contracts/`**: Contract validation tests
 
 ---
 
 ## Organization Strategy
 
-### Keep in Root `tests/` Directory
+### Service Tests → Cloud Services
 
-**Reason**: System-level or cross-cutting tests
+**Moved to `tests/cloud_services/`**:
+- IAM tests → `shared_services/identity_access_management/`
+- KMS tests → `shared_services/key_management_service/`
+- Configuration Policy Management tests → `shared_services/configuration_policy_management/`
+- Data Governance Privacy tests → `shared_services/data_governance_privacy/`
+- Contracts Schema Registry tests → `shared_services/contracts_schema_registry/`
+- Ollama AI Agent tests → `shared_services/ollama_ai_agent/`
 
-1. **Validator Tests** (`test_*.py`): System-level constitution/rule validation
-2. **Service-Specific Directories**: Keep organized by service (`llm_gateway/`, `bdr/`, `cccs/`, etc.)
+### System Tests → System Directory
 
-### Potential Migrations
+**Moved to `tests/system/`**:
+- Constitution tests → `system/constitution/`
+- Validator tests → `system/validators/`
+- Enforcement tests → `system/enforcement/`
+
+### Infrastructure Tests → Infrastructure Directory
+
+**Moved to `tests/infrastructure/`**:
+- Health tests → `infrastructure/health/`
+- API tests → `infrastructure/api/`
+- OpenAPI tests → `infrastructure/openapi/`
+
+### Keep As-Is
+
+**Service-Specific Directories**:
+- LLM Gateway tests (`tests/llm_gateway/`)
+- BDR tests (`tests/bdr/`)
+- CCCS tests (`tests/cccs/`)
+- SIN tests (`tests/sin/`) - legacy
+- Manual tests (`tests/manual/`)
+- Platform tests (`tests/platform/`) - TypeScript
+- VS Code Extension tests (`tests/vscode-extension/`) - TypeScript
+
+### Potential Future Migrations
 
 **Consider Migrating**:
 - `tests/health_reliability_monitoring/` → `tests/cloud_services/shared_services/health_reliability_monitoring/`
 - `tests/mmm_engine/` → `tests/cloud_services/product_services/mmm_engine/`
-
-**Keep As-Is**:
-- Validator tests (system-level)
-- LLM Gateway tests (service-specific directory)
-- BDR tests (service-specific directory)
-- CCCS tests (service-specific directory)
-- Manual tests (manual test cases)
-- VS Code Extension tests (TypeScript, different structure)
+- `tests/sin/` → `tests/cloud_services/product_services/signal_ingestion_normalization/`
 
 ---
 
@@ -150,12 +208,14 @@ Tests in the root `tests/` directory that don't belong to specific cloud service
 
 ## Test Discovery
 
-### Running Root-Level Tests
+### Running Tests
 
 ```bash
-# Run validator tests
-pytest tests/test_constitution*.py
-pytest tests/test_rule*.py
+# Run system tests
+pytest tests/system/
+
+# Run infrastructure tests
+pytest tests/infrastructure/
 
 # Run LLM Gateway tests
 pytest tests/llm_gateway/
@@ -166,13 +226,26 @@ pytest tests/bdr/
 # Run CCCS tests
 pytest tests/cccs/
 
-# Run all root-level tests
-pytest tests/ -k "not cloud_services"
+# Run constitution positive/negative tests
+pytest tests/constitution_positive_negative/
 ```
 
 ---
 
-**Status**: ✅ **ORGANIZED AND DOCUMENTED**
+**Status**: ✅ **REORGANIZED FOR MAINTAINABILITY**
 
 **Last Updated**: 2025-01-27
+
+## Reorganization Summary (2025-01-27)
+
+**Service Tests Moved**:
+- ✅ IAM, KMS, Configuration Policy Management, Data Governance Privacy, Contracts Schema Registry, Ollama AI Agent → `cloud_services/shared_services/`
+
+**System Tests Organized**:
+- ✅ Constitution, validators, enforcement → `system/`
+
+**Infrastructure Tests Organized**:
+- ✅ Health, API, OpenAPI → `infrastructure/`
+
+**Result**: Improved maintainability with clear separation of concerns and consistent organization patterns.
 

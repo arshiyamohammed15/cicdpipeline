@@ -17,6 +17,7 @@
   },
   "include": [
     "src/edge-agent/shared/storage/**/*.ts",
+    "src/edge-agent/shared/metrics/**/*.ts",
     "src/vscode-extension/shared/storage/**/*.ts",
     "tests/**/*.ts"
   ],

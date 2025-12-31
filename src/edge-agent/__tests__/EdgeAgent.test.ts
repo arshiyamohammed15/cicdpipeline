@@ -203,7 +203,7 @@ describe('EdgeAgent', () => {
 
             const override = {
                 reason: 'Emergency override',
-                approver: 'lead@example.com',
+                approver: 'lead-user-id-12345',
                 timestamp: new Date().toISOString(),
                 override_id: 'ovr-1'
             };

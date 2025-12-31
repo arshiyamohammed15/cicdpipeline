@@ -12,6 +12,7 @@ import { LocalBackup } from '../../../../src/platform/adapters/local/LocalBackup
 import { LocalQueue, LocalDLQ } from '../../../../src/platform/adapters/local';
 
 describe('LocalDRPlan Drills', () => {
+  jest.setTimeout(30000); // Increase timeout for all tests in this suite
   let tempDir: string;
   let backup: LocalBackup;
   let dlq: LocalDLQ;

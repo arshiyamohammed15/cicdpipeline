@@ -44,6 +44,10 @@ describe('ReceiptStorageService', () => {
         if (fs.existsSync(testZuRoot)) {
             fs.rmSync(testZuRoot, { recursive: true, force: true });
         }
+        // Recreate for next test
+        if (!fs.existsSync(testZuRoot)) {
+            fs.mkdirSync(testZuRoot, { recursive: true });
+        }
     });
 
     describe('Store Decision Receipt (Rule 219: JSONL)', () => {

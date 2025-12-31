@@ -15,7 +15,7 @@ const mockPostMessage = jest.fn();
 const mockOpenExternal = jest.fn();
 const mockShowInformationMessage = jest.fn();
 const mockGetConfiguration = jest.fn();
-const mockWorkspaceFolders = [
+let mockWorkspaceFolders: Array<{ name: string; uri: { fsPath: string } }> | undefined = [
     {
         name: 'test-repo',
         uri: {
@@ -60,8 +60,11 @@ describe('Decision Card Section Provider - Unit Tests', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+        mockReadReceipts.mockReset();
         provider = new DecisionCardSectionProvider();
-        mockReceiptReader = new ReceiptStorageReader() as jest.Mocked<ReceiptStorageReader>;
+        mockReceiptReader = {
+            readReceipts: mockReadReceipts
+        } as any;
         
         mockWebview = {
             postMessage: mockPostMessage
@@ -109,16 +112,16 @@ describe('Decision Card Section Provider - Unit Tests', () => {
     describe('getWorkspaceRepoId', () => {
         it('should return default-repo when no workspace folder', () => {
             const originalFolders = mockWorkspaceFolders;
-            (vscode.workspace as any).workspaceFolders = undefined;
+            mockWorkspaceFolders = undefined;
             
             const repoId = (provider as any).getWorkspaceRepoId();
             expect(repoId).toBe('default-repo');
             
-            (vscode.workspace as any).workspaceFolders = originalFolders;
+            mockWorkspaceFolders = originalFolders;
         });
 
         it('should convert workspace folder name to kebab-case', () => {
-            (vscode.workspace as any).workspaceFolders = [
+            mockWorkspaceFolders = [
                 {
                     name: 'My Test Repo',
                     uri: { fsPath: '/test' }
@@ -203,9 +206,11 @@ describe('Decision Card Section Provider - Unit Tests', () => {
         it('should return false for non-detection engine receipt', () => {
             const receipt = {
                 gate_id: 'other-gate',
-                evaluation_point: 'pre-commit'
+                evaluation_point: 'pre-commit',
+                policy_version_ids: []
             };
-            expect((provider as any).isDetectionEngineReceipt(receipt)).toBe(false);
+            const result = (provider as any).isDetectionEngineReceipt(receipt);
+            expect(result).toBe(false);
         });
     });
 
@@ -239,7 +244,7 @@ describe('Decision Card Section Provider - Unit Tests', () => {
                 signature: 'test'
             };
 
-            mockReadReceipts.mockResolvedValue([receipt]);
+            mockReadReceipts.mockResolvedValueOnce([receipt]);
             await provider.renderOverview(mockWebview, mockPanel);
             
             expect(mockPostMessage).toHaveBeenCalled();
@@ -353,7 +358,7 @@ describe('Decision Card Section Provider - Unit Tests', () => {
                 signature: 'test'
             };
 
-            mockReadReceipts.mockResolvedValue([receipt]);
+            mockReadReceipts.mockResolvedValueOnce([receipt]);
             await provider.renderDetails(mockWebview, mockPanel);
             
             expect(mockPostMessage).toHaveBeenCalled();

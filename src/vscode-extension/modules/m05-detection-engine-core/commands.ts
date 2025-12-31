@@ -23,6 +23,11 @@ function getReceiptReader(): ReceiptStorageReader {
     return receiptReader;
 }
 
+// Export reset function for testing
+export function resetReceiptReader(): void {
+    receiptReader = undefined;
+}
+
 function getWorkspaceRepoId(): string {
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {

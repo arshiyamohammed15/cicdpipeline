@@ -18,6 +18,7 @@ export interface CoreDeps {
 export class DetectionEngineDiagnosticsProvider {
     private receiptReader?: ReceiptStorageReader;
     private diagnostics: vscode.Diagnostic[] = [];
+    private updateTimer?: NodeJS.Timeout;
 
     async initialize(deps: CoreDeps): Promise<void> {
         if (deps.receiptReader) {
@@ -33,9 +34,16 @@ export class DetectionEngineDiagnosticsProvider {
         await this.computeDiagnostics();
         
         // Set up periodic updates (every 60 seconds)
-        setInterval(() => {
+        if (this.updateTimer) {
+            clearInterval(this.updateTimer);
+        }
+        this.updateTimer = setInterval(() => {
             void this.computeDiagnostics();
         }, 60000);
+
+        if (deps.context?.subscriptions) {
+            deps.context.subscriptions.push({ dispose: () => this.dispose() });
+        }
     }
 
     private getWorkspaceRepoId(): string {
@@ -47,9 +55,10 @@ export class DetectionEngineDiagnosticsProvider {
     }
 
     private isDetectionEngineReceipt(receipt: any): boolean {
-        return receipt &&
-               typeof receipt === 'object' &&
-               'evaluation_point' in receipt &&
+        if (!receipt || typeof receipt !== 'object') {
+            return false;
+        }
+        return 'evaluation_point' in receipt &&
                'gate_id' in receipt &&
                (receipt.gate_id?.includes('detection-engine') || 
                 receipt.gate_id?.includes('m05') ||
@@ -65,7 +74,7 @@ export class DetectionEngineDiagnosticsProvider {
             const year = now.getFullYear();
             const month = now.getMonth() + 1;
             
-            if (!this.receiptReader) {
+            if (!this.receiptReader || typeof this.receiptReader.readReceipts !== 'function') {
                 return this.diagnostics;
             }
 
@@ -130,6 +139,13 @@ export class DetectionEngineDiagnosticsProvider {
         }
 
         return this.diagnostics;
+    }
+
+    dispose(): void {
+        if (this.updateTimer) {
+            clearInterval(this.updateTimer);
+            this.updateTimer = undefined;
+        }
     }
 }
 

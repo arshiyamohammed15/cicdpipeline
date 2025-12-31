@@ -11,12 +11,13 @@ import * as path from 'path';
 import * as crypto from 'crypto';
 import * as vscode from 'vscode';
 import { registerModule } from '../index';
-import { registerCommands } from '../commands';
+import { registerCommands, resetReceiptReader } from '../commands';
 import { DetectionEngineStatusPillProvider } from '../providers/status-pill';
 import { DetectionEngineDiagnosticsProvider } from '../providers/diagnostics';
 import { DecisionCardSectionProvider } from '../views/decision-card-sections/DecisionCardSectionProvider';
 import { ReceiptStorageReader } from '../../../shared/storage/ReceiptStorageReader';
-import { ReceiptStorageService } from '../../../shared/storage/ReceiptStorageService';
+import { ReceiptStorageService } from '../../../../edge-agent/shared/storage/ReceiptStorageService';
+import { ReceiptGenerator } from '../../../../edge-agent/shared/storage/ReceiptGenerator';
 import { DecisionReceipt } from '../../../shared/receipt-parser/ReceiptParser';
 
 // Mock vscode
@@ -82,17 +83,54 @@ describe('Detection Engine Core Integration Tests', () => {
     let mockContext: vscode.ExtensionContext;
     let receiptReader: ReceiptStorageReader;
     let receiptService: ReceiptStorageService;
+    let receiptGenerator: ReceiptGenerator;
+    let privatePem: string;
+    let publicPem: string;
+    let keyId: string;
+
+    beforeAll(() => {
+        // Generate key pair for signing receipts
+        const { privateKey, publicKey } = crypto.generateKeyPairSync('ed25519');
+        privatePem = privateKey.export({ format: 'pem', type: 'pkcs8' }).toString();
+        publicPem = publicKey.export({ format: 'pem', type: 'spki' }).toString();
+        keyId = 'test-integration-kid';
+    });
 
     beforeEach(() => {
+        resetReceiptReader();
         // Create temporary directories
         zuRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'zeroui-m05-integration-zu-'));
         workspaceRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'zeroui-m05-integration-ws-'));
         repoId = 'test-repo';
         process.env.ZU_ROOT = zuRoot;
+        (vscode.Diagnostic as jest.Mock).mockImplementation((range, message, severity) => ({
+            range,
+            message,
+            severity
+        }));
+        (vscode.Range as jest.Mock).mockImplementation((startLine, startChar, endLine, endChar) => ({
+            start: { line: startLine, character: startChar },
+            end: { line: endLine, character: endChar }
+        }));
+        (vscode.Location as jest.Mock).mockImplementation((uri, range) => ({
+            uri,
+            range
+        }));
+        (vscode.DiagnosticRelatedInformation as jest.Mock).mockImplementation((location, message) => ({
+            location,
+            message
+        }));
+        (vscode.Uri.parse as jest.Mock).mockImplementation((uri) => ({ fsPath: uri }));
+
+        // Set up trust store with public key
+        const trustStoreDir = path.join(zuRoot, 'product', 'policy', 'trust', 'pubkeys');
+        fs.mkdirSync(trustStoreDir, { recursive: true });
+        fs.writeFileSync(path.join(trustStoreDir, keyId), publicPem);
 
         // Initialize receipt services
         receiptReader = new ReceiptStorageReader(zuRoot);
-        receiptService = new ReceiptStorageService(zuRoot);
+        receiptService = new ReceiptStorageService(zuRoot, { verificationKey: publicPem });
+        receiptGenerator = new ReceiptGenerator({ privateKey: privatePem, keyId });
 
         // Mock extension context
         mockContext = {
@@ -101,6 +139,11 @@ describe('Detection Engine Core Integration Tests', () => {
     });
 
     afterEach(() => {
+        for (const subscription of mockContext.subscriptions) {
+            if (subscription && typeof subscription.dispose === 'function') {
+                subscription.dispose();
+            }
+        }
         delete process.env.ZU_ROOT;
         if (fs.existsSync(zuRoot)) {
             fs.rmSync(zuRoot, { recursive: true, force: true });
@@ -112,32 +155,53 @@ describe('Detection Engine Core Integration Tests', () => {
     });
 
     const createTestReceipt = (overrides: Partial<DecisionReceipt> = {}): DecisionReceipt => {
-        const base: DecisionReceipt = {
-            receipt_id: crypto.randomUUID(),
-            gate_id: 'detection-engine-core',
-            policy_version_ids: ['POL-INIT'],
-            snapshot_hash: 'sha256:' + '0'.repeat(64),
-            timestamp_utc: new Date().toISOString(),
-            timestamp_monotonic_ms: Date.now(),
-            evaluation_point: 'pre-commit',
-            inputs: {
+        const receipt = receiptGenerator.generateDecisionReceipt(
+            overrides.gate_id || 'detection-engine-core',
+            overrides.policy_version_ids || ['POL-INIT'],
+            overrides.snapshot_hash || 'sha256:' + '0'.repeat(64),
+            overrides.inputs || {
                 risk_score: 0.1,
                 file_count: 5
             },
-            decision: {
+            overrides.decision || {
                 status: 'pass',
                 rationale: 'No significant risks detected',
                 badges: ['has-tests']
             },
-            evidence_handles: [],
-            actor: {
+            overrides.evidence_handles || [],
+            overrides.actor || {
                 repo_id: repoId
             },
-            degraded: false,
-            signature: 'base64:test-signature',
-            ...overrides
-        };
-        return base;
+            overrides.degraded !== undefined ? overrides.degraded : false,
+            overrides.evaluation_point || 'pre-commit',
+            overrides.context,
+            overrides.override,
+            overrides.data_category,
+            overrides.timestamp_utc ? { utc: overrides.timestamp_utc } : undefined
+        );
+        
+        // Apply any remaining overrides that aren't handled by generateDecisionReceipt
+        if (overrides.receipt_id) {
+            receipt.receipt_id = overrides.receipt_id;
+            // Re-sign with new receipt_id
+            return receiptGenerator.generateDecisionReceipt(
+                receipt.gate_id,
+                receipt.policy_version_ids,
+                receipt.snapshot_hash,
+                receipt.inputs,
+                receipt.decision,
+                receipt.evidence_handles,
+                receipt.actor,
+                receipt.degraded,
+                receipt.evaluation_point,
+                (receipt as any).context,
+                (receipt as any).override,
+                (receipt as any).data_category,
+                { utc: receipt.timestamp_utc, monotonicMs: receipt.timestamp_monotonic_ms }
+            );
+        }
+        
+        return receipt;
     };
 
     const writeReceiptToStorage = async (receipt: DecisionReceipt): Promise<void> => {
@@ -248,8 +312,10 @@ describe('Detection Engine Core Integration Tests', () => {
                 receiptReader
             });
 
+            // getText() calls updateStatus() which reads receipts
             const text = await provider.getText();
-            expect(text).toContain('⚠');
+            // Should show warn status
+            expect(text).toBe('⚠ Detection');
         });
 
         it('should update status when receipt changes', async () => {
@@ -269,9 +335,10 @@ describe('Detection Engine Core Integration Tests', () => {
             });
 
             const text1 = await provider.getText();
+            expect(text1).toBe('✓ Detection');
 
+            // Create a new receipt with different status
             const receipt2 = createTestReceipt({
-                receipt_id: crypto.randomUUID(),
                 decision: {
                     status: 'hard_block',
                     rationale: 'Blocked',
@@ -280,9 +347,10 @@ describe('Detection Engine Core Integration Tests', () => {
             });
             await writeReceiptToStorage(receipt2);
 
+            // getText() calls updateStatus() which should read the new receipt
             const text2 = await provider.getText();
             expect(text2).not.toBe(text1);
-            expect(text2).toContain('Blocked');
+            expect(text2).toBe('✗ Detection (Blocked)');
         });
     });
 
@@ -303,9 +371,15 @@ describe('Detection Engine Core Integration Tests', () => {
                 receiptReader
             });
 
+            // computeDiagnostics reads receipts and creates diagnostics
+            // Note: initialize() already calls computeDiagnostics(), so we call it again to ensure we get the latest
             const diagnostics = await provider.computeDiagnostics();
-            expect(diagnostics.length).toBeGreaterThan(0);
-            expect(diagnostics[0].message).toContain('Warning detected');
+            expect(diagnostics.length).toBeGreaterThanOrEqual(1);
+            const warnDiagnostic = diagnostics.find(d => d.message && typeof d.message === 'string' && d.message.includes('Warning detected'));
+            expect(warnDiagnostic).toBeDefined();
+            if (warnDiagnostic) {
+                expect(warnDiagnostic.severity).toBe(vscode.DiagnosticSeverity.Information);
+            }
         });
 
         it('should create error diagnostics from hard_block receipts', async () => {
@@ -325,8 +399,12 @@ describe('Detection Engine Core Integration Tests', () => {
             });
 
             const diagnostics = await provider.computeDiagnostics();
-            expect(diagnostics.length).toBeGreaterThan(0);
-            expect(diagnostics[0].severity).toBe(vscode.DiagnosticSeverity.Error);
+            expect(diagnostics.length).toBeGreaterThanOrEqual(1);
+            const errorDiagnostic = diagnostics.find(d => d.message && typeof d.message === 'string' && d.message.includes('Hard block detected'));
+            expect(errorDiagnostic).toBeDefined();
+            if (errorDiagnostic) {
+                expect(errorDiagnostic.severity).toBe(vscode.DiagnosticSeverity.Error);
+            }
         });
 
         it('should not create diagnostics from pass receipts', async () => {

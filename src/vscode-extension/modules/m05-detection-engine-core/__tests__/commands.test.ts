@@ -6,8 +6,10 @@
  */
 
 import * as vscode from 'vscode';
-import { registerCommands } from '../commands';
+import { registerCommands, resetReceiptReader } from '../commands';
 import { ReceiptStorageReader } from '../../../shared/storage/ReceiptStorageReader';
+import { DecisionCardManager } from '../../../ui/decision-card/DecisionCardManager';
+import { ReceiptViewerManager } from '../../../ui/receipt-viewer/ReceiptViewerManager';
 import { DecisionReceipt } from '../../../shared/receipt-parser/ReceiptParser';
 
 // Mock vscode
@@ -29,9 +31,14 @@ jest.mock('vscode', () => ({
                 }
             }
         ],
-        getConfiguration: jest.fn(() => ({
-            get: jest.fn(() => undefined)
-        }))
+        getConfiguration: jest.fn((section?: string) => {
+            const config = {
+                get: jest.fn((key?: string) => {
+                    return undefined;
+                })
+            };
+            return config;
+        })
     },
     env: {
         openExternal: jest.fn()
@@ -39,44 +46,66 @@ jest.mock('vscode', () => ({
 }));
 
 // Mock ReceiptStorageReader
+const mockReadReceipts = jest.fn();
 jest.mock('../../../shared/storage/ReceiptStorageReader', () => {
     return {
         ReceiptStorageReader: jest.fn().mockImplementation(() => ({
-            readReceipts: jest.fn()
+            readReceipts: mockReadReceipts
         }))
     };
 });
 
 // Mock DecisionCardManager
+const mockShowDecisionCard = jest.fn();
 jest.mock('../../../ui/decision-card/DecisionCardManager', () => {
     return {
         DecisionCardManager: jest.fn().mockImplementation(() => ({
-            showDecisionCard: jest.fn()
+            showDecisionCard: mockShowDecisionCard
         }))
     };
 });
 
 // Mock ReceiptViewerManager
+const mockShowReceiptViewer = jest.fn();
 jest.mock('../../../ui/receipt-viewer/ReceiptViewerManager', () => {
     return {
         ReceiptViewerManager: jest.fn().mockImplementation(() => ({
-            showReceiptViewer: jest.fn()
+            showReceiptViewer: mockShowReceiptViewer
         }))
     };
 });
 
 describe('Detection Engine Core Commands', () => {
     let mockContext: vscode.ExtensionContext;
-    let mockReceiptReader: jest.Mocked<ReceiptStorageReader>;
+    let mockReceiptReader: ReceiptStorageReader;
 
     beforeEach(() => {
         jest.clearAllMocks();
-        
+        mockReadReceipts.mockReset();
+        resetReceiptReader();
+
+        (ReceiptStorageReader as jest.Mock).mockImplementation(() => ({
+            readReceipts: mockReadReceipts
+        }));
+        (DecisionCardManager as jest.Mock).mockImplementation(() => ({
+            showDecisionCard: mockShowDecisionCard
+        }));
+        (ReceiptViewerManager as jest.Mock).mockImplementation(() => ({
+            showReceiptViewer: mockShowReceiptViewer
+        }));
+        (vscode.workspace.getConfiguration as jest.Mock).mockImplementation(() => ({
+            get: jest.fn(() => undefined)
+        }));
+
         mockContext = {
             subscriptions: []
         } as any;
 
-        mockReceiptReader = new ReceiptStorageReader() as jest.Mocked<ReceiptStorageReader>;
+        mockReceiptReader = {
+            readReceipts: mockReadReceipts,
+            readReceiptsInRange: jest.fn(),
+            readLatestReceipts: jest.fn()
+        } as unknown as ReceiptStorageReader;
     });
 
     describe('registerCommands', () => {
@@ -129,7 +158,8 @@ describe('Detection Engine Core Commands', () => {
                 signature: 'test-signature'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
+            jest.clearAllMocks();
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;
@@ -138,12 +168,12 @@ describe('Detection Engine Core Commands', () => {
 
             await handler();
 
-            expect(mockReceiptReader.readReceipts).toHaveBeenCalled();
+            expect(mockReadReceipts).toHaveBeenCalled();
         });
 
         it('should handle error when reading receipts fails', async () => {
             const error = new Error('Read error');
-            (mockReceiptReader.readReceipts as jest.Mock).mockRejectedValue(error);
+            mockReadReceipts.mockRejectedValue(error);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;
@@ -156,7 +186,8 @@ describe('Detection Engine Core Commands', () => {
         });
 
         it('should show message when no receipts found', async () => {
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([]);
+            jest.clearAllMocks();
+            mockReadReceipts.mockResolvedValue([]);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;
@@ -195,7 +226,8 @@ describe('Detection Engine Core Commands', () => {
                 signature: 'test-signature'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
+            jest.clearAllMocks();
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;
@@ -204,12 +236,12 @@ describe('Detection Engine Core Commands', () => {
 
             await handler();
 
-            expect(mockReceiptReader.readReceipts).toHaveBeenCalled();
+            expect(mockReadReceipts).toHaveBeenCalled();
         });
 
         it('should handle error when reading receipts fails', async () => {
             const error = new Error('Read error');
-            (mockReceiptReader.readReceipts as jest.Mock).mockRejectedValue(error);
+            mockReadReceipts.mockRejectedValue(error);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;
@@ -222,7 +254,8 @@ describe('Detection Engine Core Commands', () => {
         });
 
         it('should show message when no receipts found', async () => {
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([]);
+            jest.clearAllMocks();
+            mockReadReceipts.mockResolvedValue([]);
 
             registerCommands(mockContext);
             const calls = (vscode.commands.registerCommand as jest.Mock).mock.calls;

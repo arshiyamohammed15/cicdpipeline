@@ -82,7 +82,10 @@ export function registerModule(context: vscode.ExtensionContext, deps: CoreDeps)
             computeDiagnostics: async () => diagnosticsProvider.computeDiagnostics()
         }),
 
-        quickActions: () => getQuickActions(),
+        quickActions: () => {
+            const actions = getQuickActions();
+            return actions ? actions.map(action => ({ id: action.id, label: action.label })) : [];
+        },
 
         activate: async (ctx: vscode.ExtensionContext, deps: CoreDeps) => {
             // Register commands
@@ -98,7 +101,8 @@ export function registerModule(context: vscode.ExtensionContext, deps: CoreDeps)
         },
 
         deactivate: async () => {
-            // Cleanup if needed
+            statusPillProvider.dispose();
+            diagnosticsProvider.dispose();
         }
     };
 

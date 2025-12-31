@@ -17,6 +17,7 @@ export interface CoreDeps {
 
 export class DetectionEngineStatusPillProvider {
     private receiptReader?: ReceiptStorageReader;
+    private updateTimer?: NodeJS.Timeout;
     private lastStatus: 'pass' | 'warn' | 'soft_block' | 'hard_block' = 'pass';
     private lastTooltip: string = 'Detection Engine Core: No data';
 
@@ -34,9 +35,16 @@ export class DetectionEngineStatusPillProvider {
         await this.updateStatus();
         
         // Set up periodic updates (every 30 seconds)
-        setInterval(() => {
+        if (this.updateTimer) {
+            clearInterval(this.updateTimer);
+        }
+        this.updateTimer = setInterval(() => {
             void this.updateStatus();
         }, 30000);
+
+        if (deps.context?.subscriptions) {
+            deps.context.subscriptions.push({ dispose: () => this.dispose() });
+        }
     }
 
     private async updateStatus(): Promise<void> {
@@ -46,7 +54,7 @@ export class DetectionEngineStatusPillProvider {
             const year = now.getFullYear();
             const month = now.getMonth() + 1;
             
-            if (!this.receiptReader) {
+            if (!this.receiptReader || typeof this.receiptReader.readReceipts !== 'function') {
                 return;
             }
 
@@ -76,9 +84,10 @@ export class DetectionEngineStatusPillProvider {
     }
 
     private isDetectionEngineReceipt(receipt: any): boolean {
-        return receipt &&
-               typeof receipt === 'object' &&
-               'evaluation_point' in receipt &&
+        if (!receipt || typeof receipt !== 'object') {
+            return false;
+        }
+        return 'evaluation_point' in receipt &&
                'gate_id' in receipt &&
                (receipt.gate_id?.includes('detection-engine') || 
                 receipt.gate_id?.includes('m05') ||
@@ -94,6 +103,7 @@ export class DetectionEngineStatusPillProvider {
     }
 
     async getText(): Promise<string> {
+        // Update status from receipts before returning
         await this.updateStatus();
         
         // Map status to display text per GSMD messages.status_pill
@@ -112,8 +122,16 @@ export class DetectionEngineStatusPillProvider {
     }
 
     async getTooltip(): Promise<string> {
+        // Update status from receipts before returning
         await this.updateStatus();
         return this.lastTooltip;
+    }
+
+    dispose(): void {
+        if (this.updateTimer) {
+            clearInterval(this.updateTimer);
+            this.updateTimer = undefined;
+        }
     }
 }
 

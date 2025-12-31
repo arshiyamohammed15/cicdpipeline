@@ -46,28 +46,37 @@ jest.mock('../commands', () => ({
     registerCommands: jest.fn()
 }));
 
+// Create mock provider instances
+const mockStatusPillProviderInstance = {
+    initialize: jest.fn().mockResolvedValue(undefined),
+    getText: jest.fn().mockResolvedValue('✓ Detection'),
+    getTooltip: jest.fn().mockResolvedValue('Detection Engine Core: pass'),
+    dispose: jest.fn()
+};
+
+const mockDiagnosticsProviderInstance = {
+    initialize: jest.fn().mockResolvedValue(undefined),
+    computeDiagnostics: jest.fn().mockResolvedValue([]),
+    dispose: jest.fn()
+};
+
+const mockDecisionCardProviderInstance = {
+    initialize: jest.fn().mockResolvedValue(undefined),
+    renderOverview: jest.fn().mockResolvedValue(undefined),
+    renderDetails: jest.fn().mockResolvedValue(undefined),
+    listEvidenceItems: jest.fn().mockResolvedValue([])
+};
+
 jest.mock('../providers/status-pill', () => ({
-    DetectionEngineStatusPillProvider: jest.fn().mockImplementation(() => ({
-        initialize: jest.fn().mockResolvedValue(undefined),
-        getText: jest.fn().mockResolvedValue('✓ Detection'),
-        getTooltip: jest.fn().mockResolvedValue('Detection Engine Core: pass')
-    }))
+    DetectionEngineStatusPillProvider: jest.fn().mockImplementation(() => mockStatusPillProviderInstance)
 }));
 
 jest.mock('../providers/diagnostics', () => ({
-    DetectionEngineDiagnosticsProvider: jest.fn().mockImplementation(() => ({
-        initialize: jest.fn().mockResolvedValue(undefined),
-        computeDiagnostics: jest.fn().mockResolvedValue([])
-    }))
+    DetectionEngineDiagnosticsProvider: jest.fn().mockImplementation(() => mockDiagnosticsProviderInstance)
 }));
 
 jest.mock('../views/decision-card-sections/DecisionCardSectionProvider', () => ({
-    DecisionCardSectionProvider: jest.fn().mockImplementation(() => ({
-        initialize: jest.fn().mockResolvedValue(undefined),
-        renderOverview: jest.fn().mockResolvedValue(undefined),
-        renderDetails: jest.fn().mockResolvedValue(undefined),
-        listEvidenceItems: jest.fn().mockResolvedValue([])
-    }))
+    DecisionCardSectionProvider: jest.fn().mockImplementation(() => mockDecisionCardProviderInstance)
 }));
 
 jest.mock('../actions/quick-actions', () => ({
@@ -82,6 +91,23 @@ describe('Detection Engine Core Module Index', () => {
 
     beforeEach(() => {
         jest.clearAllMocks();
+
+        (DetectionEngineStatusPillProvider as jest.Mock).mockImplementation(() => mockStatusPillProviderInstance);
+        (DetectionEngineDiagnosticsProvider as jest.Mock).mockImplementation(() => mockDiagnosticsProviderInstance);
+        (DecisionCardSectionProvider as jest.Mock).mockImplementation(() => mockDecisionCardProviderInstance);
+        (getQuickActions as jest.Mock).mockReturnValue([
+            { id: 'test-action', label: 'Test Action' }
+        ]);
+
+        mockStatusPillProviderInstance.initialize.mockResolvedValue(undefined);
+        mockStatusPillProviderInstance.getText.mockResolvedValue('✓ Detection');
+        mockStatusPillProviderInstance.getTooltip.mockResolvedValue('Detection Engine Core: pass');
+        mockDiagnosticsProviderInstance.initialize.mockResolvedValue(undefined);
+        mockDiagnosticsProviderInstance.computeDiagnostics.mockResolvedValue([]);
+        mockDecisionCardProviderInstance.initialize.mockResolvedValue(undefined);
+        mockDecisionCardProviderInstance.renderOverview.mockResolvedValue(undefined);
+        mockDecisionCardProviderInstance.renderDetails.mockResolvedValue(undefined);
+        mockDecisionCardProviderInstance.listEvidenceItems.mockResolvedValue([]);
         
         mockContext = {
             subscriptions: []
@@ -175,6 +201,7 @@ describe('Detection Engine Core Module Index', () => {
             const statusPill = module.statusPill?.();
             const text = await statusPill?.getText();
             expect(text).toBe('✓ Detection');
+            expect(mockStatusPillProviderInstance.getText).toHaveBeenCalled();
         });
 
         it('should call statusPill getTooltip', async () => {
@@ -182,6 +209,7 @@ describe('Detection Engine Core Module Index', () => {
             const statusPill = module.statusPill?.();
             const tooltip = await statusPill?.getTooltip();
             expect(tooltip).toBe('Detection Engine Core: pass');
+            expect(mockStatusPillProviderInstance.getTooltip).toHaveBeenCalled();
         });
 
         it('should provide decisionCard sections', () => {
@@ -217,7 +245,7 @@ describe('Detection Engine Core Module Index', () => {
             const mockWebview = { postMessage: jest.fn() } as any;
             const mockPanel = { webview: mockWebview } as any;
             await sections[0].render(mockWebview, mockPanel);
-            expect(DecisionCardSectionProvider.prototype.renderOverview).toHaveBeenCalled();
+            expect(mockDecisionCardProviderInstance.renderOverview).toHaveBeenCalledWith(mockWebview, mockPanel);
         });
 
         it('should call decisionCard renderDetails', async () => {
@@ -229,7 +257,7 @@ describe('Detection Engine Core Module Index', () => {
             const mockWebview = { postMessage: jest.fn() } as any;
             const mockPanel = { webview: mockWebview } as any;
             await sections[1].render(mockWebview, mockPanel);
-            expect(DecisionCardSectionProvider.prototype.renderDetails).toHaveBeenCalled();
+            expect(mockDecisionCardProviderInstance.renderDetails).toHaveBeenCalledWith(mockWebview, mockPanel);
         });
 
         it('should provide evidenceDrawer', () => {
@@ -244,6 +272,7 @@ describe('Detection Engine Core Module Index', () => {
             const evidenceDrawer = module.evidenceDrawer?.();
             const items = await evidenceDrawer?.listItems();
             expect(Array.isArray(items)).toBe(true);
+            expect(mockDecisionCardProviderInstance.listEvidenceItems).toHaveBeenCalled();
         });
 
         it('should provide problems provider', () => {
@@ -258,6 +287,7 @@ describe('Detection Engine Core Module Index', () => {
             const problems = module.problems?.();
             const diagnostics = await problems?.computeDiagnostics();
             expect(Array.isArray(diagnostics)).toBe(true);
+            expect(mockDiagnosticsProviderInstance.computeDiagnostics).toHaveBeenCalled();
         });
 
         it('should provide quickActions', () => {
@@ -283,14 +313,16 @@ describe('Detection Engine Core Module Index', () => {
             const { registerCommands } = require('../commands');
             expect(registerCommands).toHaveBeenCalledWith(mockContext);
             expect(vscode.commands.executeCommand).toHaveBeenCalledWith('setContext', 'zeroui.module', 'm05');
-            expect(DetectionEngineStatusPillProvider.prototype.initialize).toHaveBeenCalled();
-            expect(DetectionEngineDiagnosticsProvider.prototype.initialize).toHaveBeenCalled();
-            expect(DecisionCardSectionProvider.prototype.initialize).toHaveBeenCalled();
+            expect(mockStatusPillProviderInstance.initialize).toHaveBeenCalledWith(mockDeps);
+            expect(mockDiagnosticsProviderInstance.initialize).toHaveBeenCalledWith(mockDeps);
+            expect(mockDecisionCardProviderInstance.initialize).toHaveBeenCalledWith(mockDeps);
         });
 
         it('should deactivate module without error', async () => {
             const module = registerModule(mockContext, mockDeps);
             await expect(module.deactivate?.()).resolves.not.toThrow();
+            expect(mockStatusPillProviderInstance.dispose).toHaveBeenCalled();
+            expect(mockDiagnosticsProviderInstance.dispose).toHaveBeenCalled();
         });
 
         it('should create new provider instances on each call', () => {

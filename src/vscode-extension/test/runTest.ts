@@ -22,6 +22,8 @@ async function main(): Promise<void> {
     try {
         const extensionDevelopmentPath = path.resolve(__dirname, '../../');
         const extensionTestsPath = path.resolve(__dirname, './suite/index');
+        const requestedVersion = process.env.VSCODE_VERSION?.trim() || undefined;
+        const explicitExecutable = resolveExecutable(process.env.VSCODE_TEST_PATH);
 
         const candidates = [
             process.env.VSCODE_TEST_PATH,
@@ -39,10 +41,24 @@ async function main(): Promise<void> {
         const options = {
             extensionDevelopmentPath,
             extensionTestsPath,
-            ...(cachedExecutable ? { vscodeExecutablePath: cachedExecutable } : {})
+            ...(
+                explicitExecutable
+                    ? { vscodeExecutablePath: explicitExecutable }
+                    : requestedVersion
+                    ? { version: requestedVersion }
+                    : cachedExecutable
+                    ? { vscodeExecutablePath: cachedExecutable }
+                    : {}
+            )
         };
 
-        if (cachedExecutable) {
+        if (process.env.VSCODE_TEST_PATH && !explicitExecutable) {
+            console.warn(`VSCODE_TEST_PATH was set but no executable was found at ${process.env.VSCODE_TEST_PATH}`);
+        } else if (explicitExecutable) {
+            console.log(`Using VS Code executable from VSCODE_TEST_PATH: ${explicitExecutable}`);
+        } else if (requestedVersion) {
+            console.log(`Using VS Code version from VSCODE_VERSION: ${requestedVersion}`);
+        } else if (cachedExecutable) {
             console.log(`Using cached VS Code executable: ${cachedExecutable}`);
         } else {
             console.warn('VS Code executable not cached locally; falling back to remote download.');

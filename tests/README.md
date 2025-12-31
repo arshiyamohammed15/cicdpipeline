@@ -47,20 +47,46 @@ tests/cloud_services/{category}/{module_name}/
 └── resilience/              # Resilience tests (circuit breakers, degradation modes)
 ```
 
-### Root-Level Tests
+### System-Level Tests
+
+**Location**: `tests/system/`
+
+System-level tests that validate cross-cutting concerns and platform functionality:
+
+```
+tests/system/
+├── constitution/          # Constitution rule validation tests
+├── validators/           # Pre/post-generation validators, receipt validators
+└── enforcement/          # Enforcement flow and deterministic enforcement tests
+```
+
+### Infrastructure Tests
+
+**Location**: `tests/infrastructure/`
+
+Infrastructure and platform-level tests:
+
+```
+tests/infrastructure/
+├── health/               # Health check and monitoring tests
+├── api/                  # API service and endpoint tests
+└── openapi/              # OpenAPI infrastructure service tests
+```
+
+### Service-Specific Test Directories
 
 **Location**: `tests/` (root level)
 
-Tests that don't belong to specific cloud service modules:
+Tests for services that have their own dedicated directories:
 
-- **Validator Tests** (`tests/test_*.py`): Constitution rules, rule validation, system-level tests
 - **Constitution Positive/Negative Suite** (`tests/constitution_positive_negative/`): Table-driven positive/negative invariants for all 415 constitution rules using controlled mutations (designed to avoid overlap with existing constitution suites)
 - **LLM Gateway Tests** (`tests/llm_gateway/`): LLM Gateway service tests
 - **BDR Tests** (`tests/bdr/`): Backup & Disaster Recovery tests
 - **CCCS Tests** (`tests/cccs/`): Cross-Cutting Concern Services tests
 - **SIN Tests** (`tests/sin/`): Signal Ingestion Normalization tests (legacy)
 - **Manual Tests** (`tests/manual/`): Manual test cases
-- **Other System Tests**: Platform, health, contracts, etc.
+- **Platform Tests** (`tests/platform/`): Platform-specific tests (TypeScript)
+- **Shared Harness** (`tests/shared_harness/`): Shared test utilities and fixtures
 
 ---
 
@@ -100,17 +126,49 @@ pytest tests/cloud_services/ -m security
 pytest tests/cloud_services/ -m performance
 ```
 
-### Run Root-Level Tests
+### Run System-Level Tests
 
 ```bash
-# Run validator tests
-pytest tests/test_constitution*.py
+# Run all system tests
+pytest tests/system/
 
+# Run constitution tests
+pytest tests/system/constitution/
+
+# Run validator tests
+pytest tests/system/validators/
+
+# Run enforcement tests
+pytest tests/system/enforcement/
+```
+
+### Run Infrastructure Tests
+
+```bash
+# Run all infrastructure tests
+pytest tests/infrastructure/
+
+# Run health tests
+pytest tests/infrastructure/health/
+
+# Run API tests
+pytest tests/infrastructure/api/
+```
+
+### Run Service-Specific Tests
+
+```bash
 # Run LLM Gateway tests
 pytest tests/llm_gateway/
 
 # Run BDR tests
 pytest tests/bdr/
+
+# Run CCCS tests
+pytest tests/cccs/
+
+# Run constitution positive/negative tests
+pytest tests/constitution_positive_negative/
 ```
 
 ### Using Test Registry Framework
@@ -240,4 +298,24 @@ Module-specific markers:
 ---
 
 **Last Updated**: 2025-01-27  
-**Status**: ✅ **MIGRATION COMPLETE**
+**Status**: ✅ **REORGANIZED FOR MAINTAINABILITY**
+
+## Recent Reorganization (2025-01-27)
+
+**Service Tests Moved to Cloud Services**:
+- IAM tests → `cloud_services/shared_services/identity_access_management/`
+- KMS tests → `cloud_services/shared_services/key_management_service/`
+- Configuration Policy Management tests → `cloud_services/shared_services/configuration_policy_management/`
+- Data Governance Privacy tests → `cloud_services/shared_services/data_governance_privacy/`
+- Contracts Schema Registry tests → `cloud_services/shared_services/contracts_schema_registry/`
+- Ollama AI Agent tests → `cloud_services/shared_services/ollama_ai_agent/`
+
+**System Tests Organized**:
+- Constitution tests → `system/constitution/`
+- Validator tests → `system/validators/`
+- Enforcement tests → `system/enforcement/`
+
+**Infrastructure Tests Organized**:
+- Health tests → `infrastructure/health/`
+- API tests → `infrastructure/api/`
+- OpenAPI tests → `infrastructure/openapi/`

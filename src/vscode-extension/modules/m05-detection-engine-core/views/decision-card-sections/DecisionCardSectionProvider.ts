@@ -131,8 +131,8 @@ export class DecisionCardSectionProvider {
                         <div><strong>Actor:</strong> ${receipt.actor.repo_id}${receipt.actor.type ? ` (${receipt.actor.type})` : ''}</div>
                         ${receipt.context ? `
                             <div><strong>Context:</strong> ${receipt.context.surface || 'N/A'}</div>
-                            ${receipt.context.branch ? `<div><strong>Branch:</strong> ${receipt.context.branch}</div>` : ''}
-                            ${receipt.context.commit ? `<div><strong>Commit:</strong> ${receipt.context.commit.substring(0, 8)}</div>` : ''}
+                            ${receipt.context.branch ? `<div><strong>Branch:</strong> ${receipt.context.branch}</div>` : `<div><strong>Branch:</strong> N/A</div>`}
+                            ${receipt.context.commit ? `<div><strong>Commit:</strong> ${receipt.context.commit.substring(0, 8)}</div>` : `<div><strong>Commit:</strong> N/A</div>`}
                         ` : ''}
                         ${receipt.override ? `
                             <div class="override-info">

@@ -5,11 +5,13 @@
  * Coverage: 100% of status pill functionality
  */
 
+import type { ExtensionContext } from 'vscode';
 import { DetectionEngineStatusPillProvider } from '../providers/status-pill';
 import { ReceiptStorageReader } from '../../../shared/storage/ReceiptStorageReader';
 import { DecisionReceipt } from '../../../shared/receipt-parser/ReceiptParser';
 
 // Mock vscode
+const mockGetConfiguration = jest.fn();
 jest.mock('vscode', () => ({
     workspace: {
         workspaceFolders: [
@@ -20,17 +22,16 @@ jest.mock('vscode', () => ({
                 }
             }
         ],
-        getConfiguration: jest.fn(() => ({
-            get: jest.fn(() => undefined)
-        }))
+        getConfiguration: (...args: any[]) => mockGetConfiguration(...args)
     }
 }));
 
 // Mock ReceiptStorageReader
+const mockReadReceipts = jest.fn();
 jest.mock('../../../shared/storage/ReceiptStorageReader', () => {
     return {
         ReceiptStorageReader: jest.fn().mockImplementation(() => ({
-            readReceipts: jest.fn()
+            readReceipts: mockReadReceipts
         }))
     };
 });
@@ -38,25 +39,42 @@ jest.mock('../../../shared/storage/ReceiptStorageReader', () => {
 describe('Detection Engine Status Pill Provider', () => {
     let provider: DetectionEngineStatusPillProvider;
     let mockReceiptReader: jest.Mocked<ReceiptStorageReader>;
+    let mockContext: ExtensionContext;
 
     beforeEach(() => {
         jest.clearAllMocks();
+        mockGetConfiguration.mockReturnValue({
+            get: jest.fn(() => undefined)
+        });
+        mockReadReceipts.mockReset();
         provider = new DetectionEngineStatusPillProvider();
-        mockReceiptReader = new ReceiptStorageReader() as jest.Mocked<ReceiptStorageReader>;
+        mockReceiptReader = {
+            readReceipts: mockReadReceipts
+        } as any;
+        mockContext = {
+            subscriptions: []
+        } as unknown as ExtensionContext;
+    });
+
+    afterEach(() => {
+        for (const subscription of mockContext.subscriptions) {
+            subscription.dispose();
+        }
     });
 
     describe('initialize', () => {
         it('should initialize without error', async () => {
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await expect(provider.initialize(deps)).resolves.not.toThrow();
         });
 
         it('should create ReceiptStorageReader if not provided', async () => {
+            mockReadReceipts.mockResolvedValue([]);
             const deps = {
-                context: {} as any
+                context: mockContext
             };
             await expect(provider.initialize(deps)).resolves.not.toThrow();
         });
@@ -84,10 +102,10 @@ describe('Detection Engine Status Pill Provider', () => {
                 signature: 'test'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
             
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
@@ -117,10 +135,10 @@ describe('Detection Engine Status Pill Provider', () => {
                 signature: 'test'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
             
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
@@ -150,23 +168,25 @@ describe('Detection Engine Status Pill Provider', () => {
                 signature: 'test'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
-            
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
+            
+            // Clear the mock to avoid interference from initialize's updateStatus call
+            mockReadReceipts.mockClear();
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
             
             const text = await provider.getText();
             expect(text).toContain('Blocked');
         });
 
         it('should return default text when no receipts', async () => {
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([]);
+            mockReadReceipts.mockResolvedValue([]);
             
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
@@ -176,10 +196,10 @@ describe('Detection Engine Status Pill Provider', () => {
         });
 
         it('should handle errors gracefully', async () => {
-            (mockReceiptReader.readReceipts as jest.Mock).mockRejectedValue(new Error('Test error'));
+            mockReadReceipts.mockRejectedValue(new Error('Test error'));
             
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
@@ -211,23 +231,25 @@ describe('Detection Engine Status Pill Provider', () => {
                 signature: 'test'
             };
 
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([mockReceipt]);
-            
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
+            
+            // Clear the mock to avoid interference from initialize's updateStatus call
+            mockReadReceipts.mockClear();
+            mockReadReceipts.mockResolvedValue([mockReceipt]);
             
             const tooltip = await provider.getTooltip();
             expect(tooltip).toContain('Test rationale');
         });
 
         it('should return default tooltip when no receipts', async () => {
-            (mockReceiptReader.readReceipts as jest.Mock).mockResolvedValue([]);
+            mockReadReceipts.mockResolvedValue([]);
             
             const deps = {
-                context: {} as any,
+                context: mockContext,
                 receiptReader: mockReceiptReader
             };
             await provider.initialize(deps);
