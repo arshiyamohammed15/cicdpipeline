@@ -9,7 +9,6 @@ from src.shared_libs.error_recovery import (
     ErrorClassifier,
     RetryPolicy,
     call_with_recovery,
-    call_with_recovery_async,
     exponential_backoff_schedule,
 )
 
@@ -144,7 +143,7 @@ async def test_call_with_recovery_async_retries_until_success() -> None:
 
     policy = RetryPolicy(max_attempts=2, base_delay_ms=1, max_delay_ms=1)
 
-    result = await call_with_recovery_async(
+    result = await call_with_recovery(
         flaky,
         policy=policy,
         classifier=ErrorClassifier(),

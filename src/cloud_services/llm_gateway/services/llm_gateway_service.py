@@ -17,7 +17,7 @@ from shared_libs.error_recovery import (
     ErrorClassifier,
     RecoveryReport,
     RetryPolicy,
-    call_with_recovery_async,
+    call_with_recovery,
 )
 from shared_libs.token_budget import BudgetManager, BudgetSpec
 from shared_libs.token_counter import ConservativeTokenEstimator, TokenCounter
@@ -319,7 +319,7 @@ class LLMGatewayService:
             )
 
         try:
-            result = await call_with_recovery_async(
+            result = await call_with_recovery(
                 invoke_primary,
                 policy=recovery_policy,
                 classifier=_DEFAULT_ERROR_CLASSIFIER,
@@ -354,7 +354,7 @@ class LLMGatewayService:
                     fallback=True,
                 )
 
-            fallback_result = await call_with_recovery_async(
+            fallback_result = await call_with_recovery(
                 invoke_fallback,
                 policy=recovery_policy,
                 classifier=_DEFAULT_ERROR_CLASSIFIER,

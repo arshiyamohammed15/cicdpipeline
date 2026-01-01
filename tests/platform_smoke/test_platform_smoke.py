@@ -239,14 +239,14 @@ async def test_recovery_retry_emits_receipt_fields(monkeypatch) -> None:
     from cloud_services.llm_gateway.services import llm_gateway_service
 
     recovery_calls = {"count": 0}
-    original_recovery = llm_gateway_service.call_with_recovery_async
+    original_recovery = llm_gateway_service.call_with_recovery
 
-    async def _call_with_recovery_async(*args, **kwargs):
+    async def _call_with_recovery(*args, **kwargs):
         recovery_calls["count"] += 1
         return await original_recovery(*args, **kwargs)
 
     monkeypatch.setattr(
-        llm_gateway_service, "call_with_recovery_async", _call_with_recovery_async
+        llm_gateway_service, "call_with_recovery", _call_with_recovery
     )
     service = build_default_service()
     provider = _ProviderRetrySpy()

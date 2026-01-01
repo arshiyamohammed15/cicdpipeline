@@ -6,8 +6,9 @@ from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor, TimeoutError as FutureTimeoutError
 from dataclasses import dataclass
+import inspect
 import time
-from typing import Awaitable, Callable, FrozenSet, Optional, TypeVar
+from typing import Awaitable, Callable, FrozenSet, Optional, TypeVar, overload
 
 import httpx
 from fastapi import HTTPException
@@ -126,7 +127,21 @@ class RecoveryReport:
         }
 
 
-def call_with_recovery(
+def _is_async_callable(func: object) -> bool:
+    if func is None:
+        return False
+    if inspect.iscoroutinefunction(func):
+        return True
+    call_attr = getattr(func, "__call__", None)
+    if call_attr is not None and inspect.iscoroutinefunction(call_attr):
+        return True
+    underlying = getattr(func, "func", None)
+    if underlying is not None and inspect.iscoroutinefunction(underlying):
+        return True
+    return False
+
+
+def _call_with_recovery_sync(
     func: Callable[[], T],
     *,
     policy: RetryPolicy,
@@ -135,7 +150,7 @@ def call_with_recovery(
     report: Optional[RecoveryReport] = None,
     sleep: Callable[[float], None] = time.sleep,
 ) -> T:
-    """Call a function with deterministic retries and optional timeout enforcement."""
+    """Sync implementation for call_with_recovery."""
     if policy.max_attempts < 1:
         raise ValueError("max_attempts must be >= 1")
     if timeout_ms is not None and timeout_ms <= 0:
@@ -169,7 +184,7 @@ def call_with_recovery(
             attempt += 1
 
 
-async def call_with_recovery_async(
+async def _call_with_recovery_async(
     func: Callable[[], Awaitable[T]],
     *,
     policy: RetryPolicy,
@@ -178,7 +193,7 @@ async def call_with_recovery_async(
     report: Optional[RecoveryReport] = None,
     sleep: Optional[Callable[[float], Awaitable[None]]] = None,
 ) -> T:
-    """Async variant of call_with_recovery using anyio for timeouts and backoff."""
+    """Async implementation for call_with_recovery using anyio for timeouts and backoff."""
     if policy.max_attempts < 1:
         raise ValueError("max_attempts must be >= 1")
     if timeout_ms is not None and timeout_ms <= 0:
@@ -217,6 +232,89 @@ async def call_with_recovery_async(
             if delay_ms > 0:
                 await sleep_func(delay_ms / 1000)
             attempt += 1
+
+
+@overload
+def call_with_recovery(
+    func: Callable[[], T],
+    *,
+    policy: RetryPolicy,
+    classifier: ErrorClassifier,
+    timeout_ms: Optional[int] = None,
+    report: Optional[RecoveryReport] = None,
+    sleep: Callable[[float], None] = time.sleep,
+) -> T:
+    ...
+
+
+@overload
+def call_with_recovery(
+    func: Callable[[], Awaitable[T]],
+    *,
+    policy: RetryPolicy,
+    classifier: ErrorClassifier,
+    timeout_ms: Optional[int] = None,
+    report: Optional[RecoveryReport] = None,
+    sleep: Optional[Callable[[float], Awaitable[None]]] = None,
+) -> Awaitable[T]:
+    ...
+
+
+def call_with_recovery(
+    func: Callable[[], T] | Callable[[], Awaitable[T]],
+    *,
+    policy: RetryPolicy,
+    classifier: ErrorClassifier,
+    timeout_ms: Optional[int] = None,
+    report: Optional[RecoveryReport] = None,
+    sleep: Optional[Callable[[float], object]] = time.sleep,
+) -> T | Awaitable[T]:
+    """
+    Call a sync or async function with deterministic retries and optional timeout enforcement.
+    """
+    if _is_async_callable(func):
+        async_sleep = sleep if _is_async_callable(sleep) else None
+        return _call_with_recovery_async(
+            func,  # type: ignore[arg-type]
+            policy=policy,
+            classifier=classifier,
+            timeout_ms=timeout_ms,
+            report=report,
+            sleep=async_sleep,  # type: ignore[arg-type]
+        )
+    return _call_with_recovery_sync(
+        func,  # type: ignore[arg-type]
+        policy=policy,
+        classifier=classifier,
+        timeout_ms=timeout_ms,
+        report=report,
+        sleep=sleep or time.sleep,
+    )
+
+
+async def call_with_recovery_async(
+    func: Callable[[], Awaitable[T]],
+    *,
+    policy: RetryPolicy,
+    classifier: ErrorClassifier,
+    timeout_ms: Optional[int] = None,
+    report: Optional[RecoveryReport] = None,
+    sleep: Optional[Callable[[float], Awaitable[None]]] = None,
+) -> T:
+    """
+    Compatibility wrapper for async call sites. Prefer call_with_recovery.
+    """
+    result = call_with_recovery(
+        func,
+        policy=policy,
+        classifier=classifier,
+        timeout_ms=timeout_ms,
+        report=report,
+        sleep=sleep,
+    )
+    if inspect.isawaitable(result):
+        return await result
+    return result
 
 
 def _call_with_timeout(func: Callable[[], T], timeout_ms: Optional[int]) -> T:

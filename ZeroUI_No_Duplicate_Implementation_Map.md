@@ -50,10 +50,14 @@ Do NOT Touch modules:
 Owner Module: `src/shared_libs/error_recovery/`
 
 Enforcement Choke-Point(s):
-- `src/cloud_services/llm_gateway/services/llm_gateway_service.py::LLMGatewayService._call_provider`
+- Primary: `src/cloud_services/llm_gateway/services/llm_gateway_service.py::LLMGatewayService._call_provider`
+
+Helpers / Invokers (NOT choke-points):
 - `src/cloud_services/shared-services/ollama-ai-agent/services.py::OllamaAIService.check_ollama_available`
 - `src/cloud_services/shared-services/ollama-ai-agent/services.py::OllamaAIService.process_prompt`
 - `src/cloud_services/shared-services/ollama-ai-agent/llm_manager.py::_is_ollama_running`
+
+Retry/backoff enforcement MUST occur only at the Primary choke-point; helper/invoker functions must not implement independent retry rules.
 
 Allowed Repo Paths (ONLY these):
 - `src/shared_libs/error_recovery/`
@@ -90,12 +94,14 @@ Do NOT Touch modules:
 - `src/cloud_services/shared-services/budgeting-rate-limiting-cost-observability/`
 
 ## PH-C5 SSE Stream Limits
-Scope: Outbound SSE/tool streams only. Inbound SSE endpoints are tracked under "Inbound SSE limits" below.
+Scope: Outbound SSE/tool streams only. Inbound SSE endpoints are tracked under "PH-C5A Inbound SSE Endpoint Limits (Server-Side)" below.
 
 Owner Module (outbound SSE/tool streams): `src/shared_libs/sse_guard/`
 
 Enforcement Choke-Point(s):
-- TODO: No outbound SSE/tool stream enforcement found as of 2026-01-01. Search: `rg -n "event-stream|EventSourceResponse|EventSource" -S .`
+- Primary: `src/shared_libs/sse_guard/__init__.py::SSEGuard.wrap`
+
+Outbound SSE enforcement MUST occur only at the Primary choke-point.
 
 Allowed Repo Paths (ONLY these):
 - `src/shared_libs/sse_guard/`
@@ -122,8 +128,9 @@ Do NOT Touch modules:
 - `src/cloud_services/client-services/integration-adapters/`
 - `src/cloud_services/shared-services/ollama-ai-agent/`
 
-### Inbound SSE limits
+## PH-C5A Inbound SSE Endpoint Limits (Server-Side)
 Owner Module: `src/cloud_services/shared-services/alerting-notification-service/`
+Calls shared SSE guard from PH-C5; must not implement SSE limit logic locally.
 
 Enforcement Choke-Point(s):
 - `src/cloud_services/shared-services/alerting-notification-service/routes/v1.py::stream_alerts`
@@ -204,7 +211,10 @@ Owner Module: `src/shared_libs/mcp_server_registry/`
 
 Enforcement Choke-Point(s):
 - `src/shared_libs/mcp_server_registry/__init__.py::MCPClientFactory.create_client`
+
+Internal Helper (NOT a choke-point):
 - `src/shared_libs/mcp_server_registry/__init__.py::MCPVerifier.verify`
+- MCPVerifier.verify must only be invoked by MCPClientFactory.create_client (no direct external calls).
 
 Allowed Repo Paths (ONLY these):
 - `src/shared_libs/mcp_server_registry/`
