@@ -1,8 +1,14 @@
 {
-  "receipt_id": "TEMPLATE-0001",
+  "receipt_id": "receipt-1733452800000-det-000",
+  "gate_id": "edge-agent",
+  "evaluation_point": "pre-commit",
+  "decision": {
+    "status": "pass",
+    "rationale": "Detection engine evaluation passed."
+  },
   "issued_at": "2025-01-01T00:00:00Z",
-  "signature": "ed25519:REPLACE",
+  "signature": "ed25519:det-000",
   "payload": {
-    "note": "template receipt payload"
+    "note": "detection engine receipt payload"
   }
 }

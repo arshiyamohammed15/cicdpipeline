@@ -19,6 +19,9 @@ class HealthChecker:
 
     def __init__(self, constitution_dir: str = "docs/constitution"):
         self.constitution_dir = Path(constitution_dir)
+        if not self.constitution_dir.is_absolute():
+            repo_root = Path(__file__).resolve().parents[1]
+            self.constitution_dir = (repo_root / self.constitution_dir).resolve()
         self.hook_manager = PreImplementationHookManager(constitution_dir)
 
     def check_rule_count_consistency(self) -> Dict[str, Any]:

@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Iterable, List, Optional
 
 
-MAP_FILENAME = "ZeroUI_No_Duplicate_Implementation_Map.md"
+MAP_FILENAME = "docs/architecture/ZeroUI_No_Duplicate_Implementation_Map.md"
 
 
 @dataclass

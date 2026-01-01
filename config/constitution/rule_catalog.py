@@ -20,12 +20,13 @@ from typing import Dict, List, Optional, Any
 
 logger = logging.getLogger(__name__)
 
-CONFIG_CONSTITUTION_JSON = Path("config/constitution_rules.json")
+REPO_ROOT = Path(__file__).resolve().parents[2]
+CONFIG_CONSTITUTION_JSON = REPO_ROOT / "config" / "constitution_rules.json"
 
 # Candidate locations for constitution JSON sources, in priority order.
 CANDIDATE_CONSTITUTION_DIRS = [
-    Path("docs/architecture/constitution"),
-    Path("docs/constitution"),
+    REPO_ROOT / "docs" / "architecture" / "constitution",
+    REPO_ROOT / "docs" / "constitution",
 ]
 
 

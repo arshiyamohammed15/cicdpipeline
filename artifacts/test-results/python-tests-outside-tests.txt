@@ -1,0 +1,9 @@
+conftest.py
+src\cloud_services\client-services\integration-adapters\tests\test_security_and_polling.py
+src\cloud_services\shared-services\alerting-notification-service\tests\test_auth.py
+src\cloud_services\shared-services\budgeting-rate-limiting-cost-observability\tests\test_auth.py
+tools\analyze_constitution_test_coverage.py
+tools\run_tests.py
+tools\test_automatic_enforcement.py
+tools\test_registry\test_runner.py
+validator\rules\tests\test_legacy_path.py

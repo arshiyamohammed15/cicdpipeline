@@ -80,6 +80,25 @@ DEFAULT_POLICY_BUNDLE: Dict[str, Any] = {
 }
 
 
+def _merge_bundle(defaults: Dict[str, Any], override: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(override, dict):
+        return defaults
+    merged: Dict[str, Any] = {}
+    for key, default_value in defaults.items():
+        if key in override:
+            override_value = override[key]
+            if isinstance(default_value, dict) and isinstance(override_value, dict):
+                merged[key] = _merge_bundle(default_value, override_value)
+            else:
+                merged[key] = override_value
+        else:
+            merged[key] = default_value
+    for key, value in override.items():
+        if key not in merged:
+            merged[key] = value
+    return merged
+
+
 @dataclass
 class _CacheEntry:
     expires_at: datetime
@@ -98,7 +117,9 @@ class PolicyClient:
         if self._policy_path.is_file():
             try:
                 with self._policy_path.open("r", encoding="utf-8") as handle:
-                    return json.load(handle)
+                    payload = json.load(handle)
+                    if isinstance(payload, dict):
+                        return _merge_bundle(DEFAULT_POLICY_BUNDLE, payload)
             except (json.JSONDecodeError, OSError):
                 return DEFAULT_POLICY_BUNDLE
         return DEFAULT_POLICY_BUNDLE
@@ -116,7 +137,10 @@ class PolicyClient:
                     headers={"Accept": "application/json"},
                 )
                 response.raise_for_status()
-                return response.json()
+                payload = response.json()
+                if isinstance(payload, dict):
+                    return _merge_bundle(DEFAULT_POLICY_BUNDLE, payload)
+                return DEFAULT_POLICY_BUNDLE
         except Exception as exc:
             import logging
             logger = logging.getLogger(__name__)

@@ -1,10 +1,10 @@
 # Platform Audit Evidence Pack
 
 ## A) Canonical Map Reference
-- Path: `ZeroUI_No_Duplicate_Implementation_Map.md`
+- Path: `docs/architecture/ZeroUI_No_Duplicate_Implementation_Map.md`
 - Git blob hash (command + output):
 ```bash
-git hash-object ZeroUI_No_Duplicate_Implementation_Map.md
+git hash-object docs/architecture/ZeroUI_No_Duplicate_Implementation_Map.md
 ```
 ```
 34658246837e1adf37c825e96d92fff1df86a522
@@ -84,7 +84,7 @@ Final summary line:
 ```
 .....                                                                    [100%]
 ```
-Results file: `platform_smoke_results.txt`
+Results file: `artifacts/test-results/platform_smoke_results.txt`
 
 ## E) Receipts Proof
 Receipt assertion logic (required fields):

@@ -94,6 +94,8 @@ async def test_stream_guard_limits_from_policy_bundle(session, monkeypatch, tmp_
     from alerting_notification_service.routes import v1 as v1_routes
     from alerting_notification_service.clients import policy_client as policy_module
 
+    original_policy_path = policy_module.settings.policy.policy_bundle_path
+
     async def _run_with_limit(max_events: int) -> int:
         policy_path = tmp_path / f"policy_{max_events}.json"
         policy_path.write_text(
@@ -101,7 +103,6 @@ async def test_stream_guard_limits_from_policy_bundle(session, monkeypatch, tmp_
             encoding="utf-8",
         )
         monkeypatch.setenv("ALERT_STREAM_HEARTBEAT_SECONDS", "0.01")
-        get_settings.cache_clear()
         settings = get_settings()
         settings.policy.policy_bundle_path = policy_path
         policy_module.settings = settings
@@ -135,7 +136,8 @@ async def test_stream_guard_limits_from_policy_bundle(session, monkeypatch, tmp_
             aclose = getattr(response.body_iterator, "aclose", None)
             if callable(aclose):
                 await aclose()
-            get_settings.cache_clear()
+            settings.policy.policy_bundle_path = original_policy_path
+            policy_module.settings = settings
 
         receipt = next(item for item in receipts if item.get("type") == "sse_guard_terminated")
         observed = receipt.get("metadata", {}).get("observed", {}).get("events", 0)

@@ -10,9 +10,12 @@ The ZeroUI 2.0 repository keeps historical analyses, validation reports, and imp
 | `IMPLEMENTATION_SUMMARY.md` | Detailed summary of CCCS runtime changes (offline-first, WAL coverage, etc.). |
 | `IMPROVEMENTS_VERIFICATION.md` | Line-referenced verification of the improvements listed above. |
 | `MARKDOWN_FILES_VALIDATION_REPORT.md` | Audit of Markdown redundancy/duplication with cleanup recommendations. |
+| `MODULE_REFERENCE_ANALYSIS_REPORT.md` | Analysis of legacy M## module references and migration targets. |
 | `MODULE_ID_NAMING_RATIONALE.md` | Rationale for EPC vs. M-number module identifiers. |
 | `PRE_COMMIT_FIX_SUMMARY.md` | Explanation of the non-blocking pre-commit hook workflow. |
 | `REPOSITORY_VALIDATION_REPORT.md` | Cross-module health review (structure, dependencies, security, documentation). |
+| `Platform_Audit_Evidence.md` | Platform audit evidence pack (map reference, choke-point proof, smoke results, CI gate). |
+| `TRIPLE_ANALYSIS_VERIFICATION_REPORT.md` | Comprehensive triple analysis/review/verification report. |
 | `VALIDATION_REPORT_RESUMED.md` | Latest full constitution validation output (large; keep outside the repo root). |
 | `Trust_as_a_Capability_VALIDATION_REPORT_FINAL.md` | Historical validation report identifying gaps in Trust as a Capability implementation (all gaps resolved). |
 
@@ -44,4 +47,3 @@ The following files were moved from the project root to `docs/root-notes/` durin
 | `CODE_REVIEW_REPORT.md` | Triple code review report for tools/ and validator/ directories |
 | `VALIDATOR_FOLDER_ANALYSIS.md` | Validator folder analysis report |
 | `ROOT_DIRECTORY_REORGANIZATION_REPORT.md` | Root directory reorganization analysis and zero-risk file identification |
-

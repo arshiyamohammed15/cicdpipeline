@@ -63,9 +63,9 @@ def main():
     print(f"Project root: {project_root}")
 
     test_suites = [
-        ('tests.test_iam_service', 'Unit Tests'),
-        ('tests.test_iam_routes', 'Integration Tests'),
-        ('tests.test_iam_performance', 'Performance Tests'),
+        ('tests.cloud_services.shared_services.identity_access_management.unit.test_iam_service', 'Unit Tests'),
+        ('tests.cloud_services.shared_services.identity_access_management.integration.test_iam_routes', 'Integration Tests'),
+        ('tests.cloud_services.shared_services.identity_access_management.performance.test_iam_performance', 'Performance Tests'),
     ]
 
     results = []

@@ -20,6 +20,7 @@ from pathlib import Path
 
 # Module setup handled by root conftest.py
 
+from integration_adapters.adapters.base import BaseAdapter
 from integration_adapters.database.models import IntegrationConnection, WebhookRegistration
 from integration_adapters.services.integration_service import IntegrationService
 from integration_adapters.models import IntegrationConnectionCreate
@@ -132,12 +133,25 @@ class TestWebhookPM3Pipeline:
         sys.modules["services"] = services
         from integration_adapters.services.adapter_registry import get_adapter_registry
 
-        class DummyAdapter:
-            def __init__(self, *args, **kwargs):
-                pass
+        class DummyAdapter(BaseAdapter):
+            def process_webhook(self, payload, headers):
+                return payload
+
+            def poll_events(self, cursor=None):
+                return [], None
 
             def execute_action(self, action):
                 return {"status": "ok"}
+
+            def verify_connection(self):
+                return True
+
+            def get_capabilities(self):
+                return {
+                    "webhook_supported": True,
+                    "polling_supported": True,
+                    "outbound_actions_supported": True,
+                }
 
         registry = get_adapter_registry()
         registry.register_adapter("github", DummyAdapter)

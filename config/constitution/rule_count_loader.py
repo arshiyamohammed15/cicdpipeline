@@ -31,6 +31,9 @@ class RuleCountLoader:
             constitution_dir: Path to directory containing constitution JSON files
         """
         self.constitution_dir = Path(constitution_dir)
+        if not self.constitution_dir.is_absolute():
+            repo_root = Path(__file__).resolve().parents[2]
+            self.constitution_dir = (repo_root / self.constitution_dir).resolve()
         self._cached_counts: Dict[str, Any] = {}
         self._cache_valid = False
 

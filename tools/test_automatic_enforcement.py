@@ -14,6 +14,9 @@ from pathlib import Path
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
+src_root = project_root / "src"
+if str(src_root) not in sys.path:
+    sys.path.insert(0, str(src_root))
 
 import requests
 import json
@@ -39,6 +42,15 @@ def test_automatic_enforcement():
     logger.info("before any AI code generation occurs.")
     logger.info("")
 
+    invalid_blocked = False
+    valid_passed = False
+    generation_success = False
+    generation_config_error = False
+    generation_error = None
+    stats_total_rules = None
+    stats_enforcement_active = None
+    stats_integrations = []
+
     # Test 1: Invalid prompt (should be blocked)
     logger.info("🧪 Test 1: Invalid Prompt (Should Be Blocked)")
     logger.info("-" * 40)
@@ -63,6 +75,7 @@ def test_automatic_enforcement():
             result = response.json()
             logger.info(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
 
+            invalid_blocked = not result['valid']
             if not result['valid']:
                 logger.info(f"   Violations found: {len(result['violations'])}")
                 for violation in result['violations'][:3]:  # Show first 3 violations
@@ -77,6 +90,20 @@ def test_automatic_enforcement():
         else:
             logger.error(f"❌ HTTP Error: {response.status_code}")
             logger.error(f"Response: {response.text}")
+            try:
+                error_body = response.json()
+                generation_error = error_body.get('error')
+                if generation_error in {"OPENAI_NOT_CONFIGURED", "INTEGRATION_NOT_FOUND"}:
+                    generation_config_error = True
+            except Exception:
+                pass
+            try:
+                error_body = response.json()
+                generation_error = error_body.get('error')
+                if generation_error in {"OPENAI_NOT_CONFIGURED", "INTEGRATION_NOT_FOUND"}:
+                    generation_config_error = True
+            except Exception:
+                pass
 
     except requests.exceptions.ConnectionError:
         logger.error("❌ Validation service not running. Start with: python tools/start_validation_service.py")
@@ -87,14 +114,14 @@ def test_automatic_enforcement():
 
     logger.info("")
 
-    # Test 2: Valid prompt (should pass)
-    logger.info("🧪 Test 2: Valid Prompt (Should Pass)")
+    # Test 2: Prompt Validation (Example)
+    logger.info("🧪 Test 2: Prompt Validation (Example)")
     logger.info("-" * 40)
 
     valid_prompt = "create a function that validates user input using settings files"
 
     logger.info(f"Prompt: '{valid_prompt}'")
-    logger.info("Expected: Should pass validation")
+    logger.info("Expected: Passes only if no rule violations are detected")
 
     try:
         response = requests.post(
@@ -102,7 +129,7 @@ def test_automatic_enforcement():
             json={
                 "prompt": valid_prompt,
                 "file_type": "python",
-                "task_type": "validation"
+                "task_type": "general"
             },
             timeout=10
         )
@@ -111,6 +138,7 @@ def test_automatic_enforcement():
             result = response.json()
             logger.info(f"✅ Validation Result: {'PASSED' if result['valid'] else 'BLOCKED'}")
 
+            valid_passed = result['valid']
             if result['valid']:
                 logger.info(f"   Rules checked: {result['total_rules_checked']}")
                 logger.info(f"   Categories validated: {', '.join(result['relevant_categories'])}")
@@ -136,7 +164,7 @@ def test_automatic_enforcement():
     generation_prompt = "create a simple function that adds two numbers"
 
     logger.info(f"Prompt: '{generation_prompt}'")
-    logger.info("Expected: Should generate code after validation")
+    logger.info("Expected: Generates code only when validation passes and integration is configured")
 
     try:
         response = requests.post(
@@ -145,7 +173,7 @@ def test_automatic_enforcement():
                 "prompt": generation_prompt,
                 "service": "openai",
                 "file_type": "python",
-                "task_type": "utility"
+                "task_type": "general"
             },
             timeout=30
         )
@@ -154,6 +182,7 @@ def test_automatic_enforcement():
             result = response.json()
             logger.info(f"✅ Generation Result: {'SUCCESS' if result['success'] else 'BLOCKED'}")
 
+            generation_success = result.get('success', False)
             if result['success']:
                 logger.info(f"   Generated code length: {len(result['generated_code'])} characters")
                 logger.info(f"   Validation info: {result['validation_info']['rules_checked']} rules checked")
@@ -169,15 +198,25 @@ def test_automatic_enforcement():
                     logger.info(f"   ... ({len(generated_lines) - 10} more lines)")
                 logger.info("-" * 30)
             else:
-                logger.error(f"   Error: {result.get('error', 'Unknown error')}")
+                generation_error = result.get('error', 'Unknown error')
+                logger.error(f"   Error: {generation_error}")
                 if 'violations' in result:
                     logger.error(f"   Violations: {len(result['violations'])}")
                     for violation in result['violations'][:2]:
                         logger.error(f"   - {violation.get('rule_id', 'Unknown')}: {violation.get('message', 'No message')}")
+                if generation_error in {"OPENAI_NOT_CONFIGURED", "INTEGRATION_NOT_FOUND"}:
+                    generation_config_error = True
 
         else:
             logger.error(f"❌ HTTP Error: {response.status_code}")
             logger.error(f"Response: {response.text}")
+            try:
+                error_body = response.json()
+                generation_error = error_body.get('error')
+                if generation_error in {"OPENAI_NOT_CONFIGURED", "INTEGRATION_NOT_FOUND"}:
+                    generation_config_error = True
+            except Exception:
+                pass
 
     except Exception as e:
         logger.error(f"❌ Error: {e}", exc_info=True)
@@ -196,8 +235,11 @@ def test_automatic_enforcement():
             health_data = health_response.json()
             logger.info("✅ Service Health: OK")
             logger.info(f"   Status: {health_data.get('status', 'unknown')}")
-            logger.info(f"   Total rules: {health_data.get('total_rules', 'unknown')}")
-            logger.info(f"   Enforcement: {health_data.get('enforcement', 'unknown')}")
+            rule_counts = health_data.get('rule_counts', {})
+            if not rule_counts:
+                rule_counts = health_data.get('summary', {})
+            logger.info(f"   Total rules: {rule_counts.get('total_rules', 'unknown')}")
+            logger.info(f"   Backend synchronized: {health_data.get('backend', {}).get('synchronized', 'unknown')}")
             logger.info(f"   Available integrations: {', '.join(health_data.get('integrations', []))}")
 
         # Stats
@@ -205,9 +247,12 @@ def test_automatic_enforcement():
         if stats_response.status_code == 200:
             stats_data = stats_response.json()
             logger.info("✅ Service Statistics:")
-            logger.info(f"   Total rules enforced: {stats_data.get('total_rules', 'unknown')}")
-            logger.info(f"   Enforcement active: {stats_data.get('constitution_enforcement', 'unknown')}")
-            logger.info(f"   Available integrations: {len(stats_data.get('integration_status', {}))}")
+            stats_total_rules = stats_data.get('total_rules', 'unknown')
+            stats_enforcement_active = stats_data.get('enforcement_active', 'unknown')
+            stats_integrations = stats_data.get('available_integrations', [])
+            logger.info(f"   Total rules enforced: {stats_total_rules}")
+            logger.info(f"   Enforcement active: {stats_enforcement_active}")
+            logger.info(f"   Available integrations: {', '.join(stats_integrations) if stats_integrations else 'none'}")
 
     except Exception as e:
         logger.error(f"❌ Health check error: {e}", exc_info=True)
@@ -218,14 +263,17 @@ def test_automatic_enforcement():
     logger.info("=" * 60)
     logger.info("")
     logger.info("🎯 Key Results:")
-    logger.info("✅ Invalid prompts are automatically blocked")
-    logger.info("✅ Valid prompts pass validation and proceed to generation")
-    logger.info("✅ All 293 constitution rules are enforced")
-    logger.info("✅ Zero violations reach the AI services")
-    logger.info("✅ Complete audit trail of validation decisions")
-    logger.info("")
-    logger.info("🚀 The system now provides 100% automatic enforcement of all")
-    logger.info("   ZeroUI constitution rules before any AI code generation occurs!")
+    logger.info(f"Result: invalid prompt blocked = {invalid_blocked}")
+    logger.info(f"Result: valid prompt passed = {valid_passed}")
+    if generation_success:
+        logger.info("Result: code generation succeeded after validation")
+    elif generation_config_error:
+        logger.info("Result: code generation unavailable (integration not configured)")
+    else:
+        logger.info(f"Result: code generation failed ({generation_error or 'unknown error'})")
+    rules_reported = stats_total_rules if stats_total_rules is not None else total_rules
+    logger.info(f"Result: rules enforced (reported) = {rules_reported}")
+    logger.info(f"Result: integrations available = {', '.join(stats_integrations) if stats_integrations else 'none'}")
 
     return True
 

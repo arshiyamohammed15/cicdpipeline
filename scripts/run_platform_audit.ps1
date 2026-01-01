@@ -18,7 +18,9 @@ if (-not $pythonCmd) {
     exit 1
 }
 
-$smokeResults = Join-Path $repoRoot "platform_smoke_results.txt"
+$resultsDir = Join-Path $repoRoot "artifacts\test-results"
+New-Item -ItemType Directory -Force -Path $resultsDir | Out-Null
+$smokeResults = Join-Path $resultsDir "platform_smoke_results.txt"
 Write-Host "Running platform smoke tests..."
 python -m pytest -q tests/platform_smoke/ 2>&1 | Tee-Object -FilePath $smokeResults
 $smokeExit = $LASTEXITCODE

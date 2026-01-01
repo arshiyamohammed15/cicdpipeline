@@ -13,6 +13,9 @@ from pathlib import Path
 # Add project root to path
 project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
+src_root = project_root / "src"
+if str(src_root) not in sys.path:
+    sys.path.insert(0, str(src_root))
 
 import logging
 from validator.integrations.api_service import app

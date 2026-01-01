@@ -20,6 +20,8 @@ from unittest.mock import patch, MagicMock
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from validator.health import HealthChecker, get_health_endpoint
+REPO_ROOT = Path(__file__).resolve().parents[3]
+CONSTITUTION_DIR = REPO_ROOT / "docs" / "constitution"
 
 
 class TestHealthChecker(unittest.TestCase):
@@ -33,7 +35,7 @@ class TestHealthChecker(unittest.TestCase):
         """Test HealthChecker initializes correctly."""
         self.assertIsNotNone(self.checker.constitution_dir)
         self.assertIsNotNone(self.checker.hook_manager)
-        self.assertEqual(self.checker.constitution_dir, Path("docs/constitution"))
+        self.assertEqual(self.checker.constitution_dir, CONSTITUTION_DIR)
 
     def test_check_rule_count_consistency(self):
         """Test rule count consistency check."""
@@ -177,7 +179,7 @@ class TestHealthCheckerEdgeCases(unittest.TestCase):
         """Test initialization with custom constitution directory."""
         # Use actual constitution dir for this test
         checker = HealthChecker(constitution_dir="docs/constitution")
-        self.assertEqual(checker.constitution_dir, Path("docs/constitution"))
+        self.assertEqual(checker.constitution_dir, CONSTITUTION_DIR)
 
     def test_check_hook_manager_with_exception(self):
         """Test hook manager check handles exceptions."""

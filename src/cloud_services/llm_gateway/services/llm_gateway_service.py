@@ -8,6 +8,7 @@ from __future__ import annotations
 import os
 import time
 from datetime import datetime, timezone
+from functools import partial
 from typing import Dict, Optional, Tuple
 
 import anyio
@@ -289,11 +290,13 @@ class LLMGatewayService:
         return response
 
     async def _run_sync(self, func, *args, **kwargs):
+        if kwargs:
+            func = partial(func, **kwargs)
         if os.getenv("PYTEST_CURRENT_TEST") and os.getenv(
             "USE_REAL_SERVICES", "false"
         ).lower() != "true":
-            return func(*args, **kwargs)
-        return await anyio.to_thread.run_sync(func, *args, **kwargs)
+            return func(*args)
+        return await anyio.to_thread.run_sync(func, *args)
 
     async def _call_provider(
         self,
@@ -345,7 +348,7 @@ class LLMGatewayService:
             fallback_report = RecoveryReport()
 
             async def invoke_fallback() -> Dict[str, str]:
-                return await anyio.to_thread.run_sync(
+                return await self._run_sync(
                     self.provider_client.invoke,
                     request.tenant.tenant_id,
                     fallback_logical_model,
