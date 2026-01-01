@@ -1823,7 +1823,7 @@ class EnhancedCLI:
 
             safe_print(f"Starting Constitution Validation Service on port {args.service_port}...")
             counts = get_catalog_counts()
-            total_rules = counts.get("total_rules", "all")
+            total_rules = counts.get("enabled_rules", counts.get("total_rules", "all"))
             safe_print(f"This service enforces all {total_rules} ZeroUI constitution rules before AI code generation.")
             safe_print("Press Ctrl+C to stop the service.")
 

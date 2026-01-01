@@ -200,7 +200,7 @@ def get_catalog_counts() -> Dict[str, int]:
     """Return total/enabled/disabled counts derived from docs/constitution."""
     catalog = load_catalog()
     enabled = sum(1 for rule in catalog if rule.enabled)
-    total = enabled
+    total = len(catalog)
     return {
         "total_rules": total,
         "enabled_rules": enabled,

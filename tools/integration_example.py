@@ -30,7 +30,8 @@ def demonstrate_integration() -> None:
     logger.info("=" * 60)
     logger.info("INTEGRATION EXAMPLE: AUTOMATIC CONSTITUTION ENFORCEMENT")
     logger.info("=" * 60)
-    total_rules = get_catalog_counts().get("total_rules", "all")
+    counts = get_catalog_counts()
+    total_rules = counts.get("enabled_rules", counts.get("total_rules", "all"))
     logger.info(f"This shows how to integrate automatic enforcement of all {total_rules} rules into your workflow.")
     logger.info("")
 

@@ -641,7 +641,7 @@ class PreImplementationHookManager:
         self.rule_loader = ConstitutionRuleLoader(constitution_dir)
         self.validator = PromptValidator(self.rule_loader)
         counts = get_catalog_counts()
-        self.total_rules = counts.get("total_rules", self.rule_loader.get_total_rule_count())
+        self.total_rules = counts.get("enabled_rules", self.rule_loader.get_total_rule_count())
 
     def validate_before_generation(self, prompt: str, file_type: str = None,
                                  task_type: str = None) -> Dict[str, Any]:

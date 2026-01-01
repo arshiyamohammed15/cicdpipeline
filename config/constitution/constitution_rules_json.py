@@ -340,11 +340,12 @@ class ConstitutionRulesJSON:
             # Add rules
             for idx, rule_data in enumerate(rules_data, start=1):
                 rule_number = str(idx)
+                category_name = rule_data.get("category", "unknown")
 
                 self.data["rules"][rule_number] = {
                     "rule_number": idx,
                     "title": rule_data['title'],
-                    "category": rule_data['category'],
+                    "category": category_name,
                     "priority": rule_data['priority'],
                     "content": rule_data['content'],
                     "enabled": rule_data.get("enabled", True),
@@ -363,8 +364,14 @@ class ConstitutionRulesJSON:
                 }
 
                 # Add to category
-                if rule_data['category'] in self.data["categories"]:
-                    self.data["categories"][rule_data['category']]["rules"].append(rule_data['rule_number'])
+                if category_name not in self.data["categories"]:
+                    self.data["categories"][category_name] = {
+                        "description": "",
+                        "priority": "unknown",
+                        "rule_count": 0,
+                        "rules": []
+                    }
+                self.data["categories"][category_name]["rules"].append(idx)
 
             # Update statistics
             self._update_statistics()
@@ -396,26 +403,47 @@ class ConstitutionRulesJSON:
             {"name": "other", "description": "Miscellaneous rules", "priority": "important", "rule_count": 0}  # Calculated dynamically
         ]
 
+    def _rebuild_categories_from_rules(self) -> Dict[str, int]:
+        """Rebuild categories mapping from the current rules."""
+        categories: Dict[str, Dict[str, Any]] = {}
+        existing_categories = self.data.get("categories", {})
+
+        for rule in self.data.get("rules", {}).values():
+            category = rule.get("category", "unknown")
+            previous = existing_categories.get(category, {})
+            entry = categories.setdefault(
+                category,
+                {
+                    "description": previous.get("description", ""),
+                    "priority": previous.get("priority", "unknown"),
+                    "rule_count": 0,
+                    "rules": []
+                },
+            )
+            entry["rules"].append(rule.get("rule_number"))
+
+        for entry in categories.values():
+            entry["rule_count"] = len(entry["rules"])
+
+        self.data["categories"] = categories
+        return {name: entry["rule_count"] for name, entry in categories.items()}
+
     def _update_statistics(self):
         """Update database statistics."""
         total_rules = len(self.data["rules"])
         enabled_rules = sum(1 for rule in self.data["rules"].values() if rule["enabled"])
         disabled_rules = total_rules - enabled_rules
 
+        self.data["total_rules"] = total_rules
+
         # Category counts
-        category_counts = {}
-        for category_name, category_data in self.data["categories"].items():
-            category_counts[category_name] = len(category_data["rules"])
+        category_counts = self._rebuild_categories_from_rules()
 
         # Priority counts
         priority_counts = {}
         for rule in self.data["rules"].values():
             priority = rule["priority"]
             priority_counts[priority] = priority_counts.get(priority, 0) + 1
-
-        # Update category rule_count fields dynamically
-        for category_name, category_data in self.data["categories"].items():
-            category_data["rule_count"] = category_counts.get(category_name, 0)
 
         self.data["statistics"] = {
             "total_rules": total_rules,

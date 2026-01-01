@@ -34,7 +34,7 @@ def test_automatic_enforcement():
     logger.info("TESTING AUTOMATIC CONSTITUTION ENFORCEMENT")
     logger.info("=" * 60)
     counts = get_catalog_counts()
-    total_rules = counts.get("total_rules", "all")
+    total_rules = counts.get("enabled_rules", counts.get("total_rules", "all"))
     logger.info(f"This demonstrates automatic enforcement of all {total_rules} ZeroUI constitution rules")
     logger.info("before any AI code generation occurs.")
     logger.info("")

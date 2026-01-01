@@ -7,9 +7,8 @@ rule checking across different categories and generates compliance reports.
 
 import ast
 import json
-import re
-import os
 import time
+import logging
 from typing import Dict, List, Tuple, Any, Optional, Union
 from pathlib import Path
 
@@ -17,6 +16,10 @@ from .models import Violation, ValidationResult, Severity
 from .analyzer import CodeAnalyzer
 from .reporter import ReportGenerator
 from .factories import get_validator_factory
+from .rules.exception_handling import ExceptionHandlingValidator
+from .rules.performance import PerformanceValidator
+from .rules.quality import QualityValidator
+from .rules.teamwork import TeamworkValidator
 
 # Import enhanced configuration manager
 import sys
@@ -55,6 +58,7 @@ class ConstitutionValidator:
         """
         self.config_path = config_path
         self.config = self._load_config()
+        self._logger = logging.getLogger(__name__)
         
         # Dependency injection - use provided instances or create defaults
         self.analyzer = analyzer or CodeAnalyzer()
@@ -260,47 +264,8 @@ class ConstitutionValidator:
 
     def _check_performance_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check performance rules (8, 67)."""
-        violations = []
-
-        # Check if validation_patterns exists in config
-        if "validation_patterns" not in self.config:
-            return violations
-
-        if "performance" not in self.config["validation_patterns"]:
-            return violations
-
-        patterns = self.config["validation_patterns"]["performance"]["patterns"]
-
-        # Check for wildcard imports
-        wildcard_pattern = patterns["large_imports"]["regex"]
-        for match in re.finditer(wildcard_pattern, content):
-            violations.append(Violation(
-                rule_name="Make Things Fast",
-                severity=Severity.WARNING,
-                message=patterns["large_imports"]["message"],
-                file_path=file_path,
-                line_number=content[:match.start()].count('\n') + 1,
-                column_number=match.start() - content.rfind('\n', 0, match.start()) - 1,
-                code_snippet=match.group(),
-                fix_suggestion="Use specific imports instead of wildcard imports"
-            ))
-
-        # Check for blocking operations
-        for keyword in patterns["blocking_operations"]["keywords"]:
-            if keyword in content:
-                line_num = content.find(keyword)
-                violations.append(Violation(
-                    rule_name="Respect People's Time",
-                    severity=Severity.WARNING,
-                    message=patterns["blocking_operations"]["message"],
-                    file_path=file_path,
-                    line_number=content[:line_num].count('\n') + 1,
-                    column_number=line_num - content.rfind('\n', 0, line_num) - 1,
-                    code_snippet=keyword,
-                    fix_suggestion="Consider async alternatives for better performance"
-                ))
-
-        return violations
+        validator = PerformanceValidator()
+        return validator.validate_all(tree, content, file_path)
 
     def _check_architecture_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check architecture rules (19, 21, 23, 24, 28)."""
@@ -314,22 +279,16 @@ class ConstitutionValidator:
         """Check testing and safety rules (7, 14, 59, 69)."""
         violations = []
 
-        # Check if validation_patterns exists in config
-        if "validation_patterns" not in self.config:
+        if tree is None:
             return violations
-
-        if "testing_safety" not in self.config["validation_patterns"]:
-            return violations
-
-        patterns = self.config["validation_patterns"]["testing_safety"]["patterns"]
 
         # Check for error handling
-        has_try_catch = any(keyword in content for keyword in patterns["error_handling"]["keywords"])
+        has_try_catch = any(isinstance(node, ast.Try) for node in ast.walk(tree))
         if not has_try_catch and self._has_risky_operations(content):
             violations.append(Violation(
                 rule_name="Handle Edge Cases Gracefully",
                 severity=Severity.WARNING,
-                message=patterns["missing_error_handling"]["message"],
+                message="Risky operations without error handling",
                 file_path=file_path,
                 line_number=1,
                 column_number=0,
@@ -347,48 +306,8 @@ class ConstitutionValidator:
 
     def _check_code_quality_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check code quality rules (15, 18, 68)."""
-        violations = []
-
-        # Check if validation_patterns exists in config
-        if "validation_patterns" not in self.config:
-            return violations
-
-        if "code_quality" not in self.config["validation_patterns"]:
-            return violations
-
-        patterns = self.config["validation_patterns"]["code_quality"]["patterns"]
-
-        # Check function length
-        for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef):
-                func_lines = node.end_lineno - node.lineno if hasattr(node, 'end_lineno') else 10
-                if func_lines > patterns["function_length"]["threshold"]:
-                    violations.append(Violation(
-                        rule_name="Write Clean, Readable Code",
-                        severity=Severity.WARNING,
-                        message=patterns["function_length"]["message"],
-                        file_path=file_path,
-                        line_number=node.lineno,
-                        column_number=node.col_offset,
-                        code_snippet=node.name,
-                        fix_suggestion="Break function into smaller, focused functions"
-                    ))
-
-        # Check for missing docstrings
-        for node in ast.walk(tree):
-            if isinstance(node, ast.FunctionDef) and not ast.get_docstring(node):
-                violations.append(Violation(
-                    rule_name="Write Good Instructions",
-                    severity=Severity.WARNING,
-                    message=patterns["missing_docstring"]["message"],
-                    file_path=file_path,
-                    line_number=node.lineno,
-                    column_number=node.col_offset,
-                    code_snippet=node.name,
-                    fix_suggestion="Add docstring explaining function purpose and parameters"
-                ))
-
-        return violations
+        validator = QualityValidator()
+        return validator.validate_all(tree, content, file_path)
 
     def _has_risky_operations(self, content: str) -> bool:
         """Check if code contains risky operations that need error handling."""
@@ -425,7 +344,6 @@ class ConstitutionValidator:
     def _check_teamwork_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check teamwork rules (58)."""
         violations = []
-        validator = self.validator_factory.create('teamwork')
         teamwork_validator = TeamworkValidator()
 
         # Run all teamwork validations
@@ -503,7 +421,6 @@ class ConstitutionValidator:
     def _check_exception_handling_rules(self, tree: ast.AST, file_path: str, content: str) -> List[Violation]:
         """Check exception handling rules (150-181)."""
         violations = []
-        validator = self.validator_factory.create('exception_handling')
         exception_validator = ExceptionHandlingValidator()
 
         # Run all exception handling validations

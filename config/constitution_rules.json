@@ -1,94 +1,729 @@
 {
   "constitution_version": "2.0",
-  "total_rules": 0,
-  "last_updated": "2025-11-22T00:36:23.637241",
+  "total_rules": 415,
+  "last_updated": "2026-01-01T17:33:31.367451",
   "database_info": {
     "format": "json",
     "schema_version": "1.0",
     "created_at": "2025-11-22T00:36:23.627872",
-    "last_updated": "2025-11-22T00:36:23.637241"
+    "last_updated": "2026-01-01T17:33:31.367451"
   },
   "categories": {
-    "basic_work": {
-      "description": "Core principles for all development work",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "process_control": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 7,
+      "rules": [
+        1,
+        2,
+        3,
+        25,
+        26,
+        28,
+        30
+      ]
     },
-    "system_design": {
-      "description": "System architecture and design principles",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "documentation": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 11,
+      "rules": [
+        4,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        27,
+        29
+      ]
     },
-    "problem_solving": {
-      "description": "Problem-solving methodologies and approaches",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "readability": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 8,
+      "rules": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        224,
+        257,
+        258
+      ]
     },
-    "platform": {
-      "description": "Platform-specific rules and guidelines",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "observability": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 43,
+      "rules": [
+        18,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        77,
+        80,
+        95,
+        111,
+        113,
+        117,
+        118,
+        153,
+        154,
+        170,
+        171,
+        172,
+        173,
+        179,
+        206,
+        211,
+        230,
+        231,
+        232,
+        234,
+        235,
+        236,
+        237,
+        243,
+        244,
+        248,
+        252,
+        260,
+        276,
+        280,
+        284
+      ]
     },
-    "teamwork": {
-      "description": "Collaboration and team dynamics",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "audit": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        19,
+        23
+      ]
+    },
+    "data_management": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 3,
+      "rules": [
+        20,
+        21,
+        22
+      ]
+    },
+    "security": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 14,
+      "rules": [
+        24,
+        66,
+        107,
+        109,
+        158,
+        174,
+        176,
+        202,
+        214,
+        222,
+        226,
+        227,
+        228,
+        247
+      ]
+    },
+    "testing_philosophy": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 8,
+      "rules": [
+        31,
+        32,
+        33,
+        34,
+        384,
+        385,
+        386,
+        387
+      ]
+    },
+    "project_structure": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 4,
+      "rules": [
+        35,
+        36,
+        388,
+        389
+      ]
+    },
+    "cache_management": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 4,
+      "rules": [
+        37,
+        38,
+        390,
+        391
+      ]
+    },
+    "test_design": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 10,
+      "rules": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        392,
+        393,
+        394,
+        395,
+        396
+      ]
+    },
+    "determinism": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 4,
+      "rules": [
+        44,
+        45,
+        397,
+        398
+      ]
+    },
+    "test_data": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        46,
+        399
+      ]
+    },
+    "reporting": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        47,
+        400
+      ]
+    },
+    "ai_generation": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 6,
+      "rules": [
+        48,
+        49,
+        50,
+        401,
+        402,
+        403
+      ]
+    },
+    "quality_assurance": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        51,
+        404
+      ]
     },
     "code_review": {
       "description": "Code review processes and standards",
       "priority": "critical",
       "rule_count": 2,
       "rules": [
-        405,
+        52,
         405
       ]
     },
-    "coding_standards": {
-      "description": "Technical coding standards and best practices",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "basic_work_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 28,
+      "rules": [
+        64,
+        65,
+        67,
+        68,
+        69,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        78,
+        79,
+        81,
+        160,
+        161,
+        175,
+        177,
+        180,
+        181,
+        182,
+        183,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193
+      ]
     },
-    "comments": {
-      "description": "Documentation and commenting standards",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "performance": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 4,
+      "rules": [
+        70,
+        103,
+        136,
+        409
+      ]
     },
-    "api_contracts": {
-      "description": "API design, contracts, and governance",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "system_design_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 10,
+      "rules": [
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        91,
+        92
+      ]
     },
-    "logging": {
-      "description": "Logging and troubleshooting standards",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "error_handling": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 32,
+      "rules": [
+        90,
+        120,
+        125,
+        128,
+        140,
+        147,
+        150,
+        152,
+        155,
+        156,
+        157,
+        159,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        178,
+        184,
+        185,
+        186,
+        187,
+        201,
+        203,
+        204,
+        217,
+        255,
+        262,
+        267
+      ]
     },
-    "exception_handling": {
-      "description": "Exception handling, timeouts, retries, and error recovery",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "problem_solving_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 8,
+      "rules": [
+        93,
+        94,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101
+      ]
     },
-    "typescript": {
-      "description": "TypeScript coding standards, type safety, and best practices",
-      "priority": "critical",
-      "rule_count": 0,
-      "rules": []
+    "platform_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 6,
+      "rules": [
+        102,
+        104,
+        105,
+        106,
+        108,
+        110
+      ]
     },
-    "other": {
-      "description": "Miscellaneous rules",
-      "priority": "important",
-      "rule_count": 0,
-      "rules": []
+    "teamwork_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 28,
+      "rules": [
+        112,
+        114,
+        115,
+        116,
+        119,
+        121,
+        122,
+        123,
+        124,
+        126,
+        127,
+        129,
+        130,
+        131,
+        132,
+        133,
+        134,
+        135,
+        137,
+        138,
+        139,
+        141,
+        142,
+        143,
+        144,
+        146,
+        148,
+        149
+      ]
+    },
+    "docs": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 14,
+      "rules": [
+        145,
+        151,
+        218,
+        219,
+        223,
+        225,
+        238,
+        239,
+        240,
+        249,
+        250,
+        251,
+        254,
+        287
+      ]
+    },
+    "type_system_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 14,
+      "rules": [
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200,
+        205,
+        207,
+        208,
+        209,
+        210,
+        212,
+        213
+      ]
+    },
+    "ai___code_generation_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 12,
+      "rules": [
+        215,
+        216,
+        220,
+        221,
+        229,
+        233,
+        241,
+        242,
+        245,
+        246,
+        253,
+        256
+      ]
+    },
+    "basic_readability_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 17,
+      "rules": [
+        259,
+        261,
+        263,
+        264,
+        265,
+        266,
+        268,
+        269,
+        270,
+        271,
+        272,
+        273,
+        274,
+        275,
+        277,
+        278,
+        279
+      ]
+    },
+    "storage_scripts_enforcement": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 25,
+      "rules": [
+        281,
+        282,
+        283,
+        285,
+        286,
+        288,
+        289,
+        290,
+        291,
+        292,
+        293,
+        343,
+        344,
+        345,
+        346,
+        347,
+        348,
+        349,
+        350,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356
+      ]
+    },
+    "gsmd__cursor_enforcement_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 21,
+      "rules": [
+        294,
+        295,
+        296,
+        297,
+        298,
+        299,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313,
+        314
+      ]
+    },
+    "simple_code_readability_rules": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 28,
+      "rules": [
+        315,
+        316,
+        317,
+        318,
+        319,
+        320,
+        321,
+        322,
+        323,
+        324,
+        325,
+        326,
+        327,
+        328,
+        329,
+        330,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        342
+      ]
+    },
+    "testing_governance": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 4,
+      "rules": [
+        357,
+        358,
+        362,
+        363
+      ]
+    },
+    "testing_infrastructure": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        359,
+        360
+      ]
+    },
+    "testing_process": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        361,
+        364
+      ]
+    },
+    "lifecycle_management": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        365,
+        366
+      ]
+    },
+    "schema_requirements": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 6,
+      "rules": [
+        367,
+        368,
+        369,
+        370,
+        371,
+        372
+      ]
+    },
+    "structural_mapping": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 3,
+      "rules": [
+        373,
+        375,
+        376
+      ]
+    },
+    "identifier_authority": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 1,
+      "rules": [
+        374
+      ]
+    },
+    "ci___automated_validation": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 7,
+      "rules": [
+        377,
+        378,
+        379,
+        380,
+        381,
+        382,
+        383
+      ]
+    },
+    "architecture": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 5,
+      "rules": [
+        406,
+        407,
+        408,
+        410,
+        414
+      ]
+    },
+    "ui": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 1,
+      "rules": [
+        411
+      ]
+    },
+    "distribution": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 1,
+      "rules": [
+        412
+      ]
+    },
+    "file_structure": {
+      "description": "",
+      "priority": "unknown",
+      "rule_count": 2,
+      "rules": [
+        413,
+        415
+      ]
     }
   },
   "rules": {
@@ -8399,19 +9034,49 @@
     "disabled_rules": 1,
     "enabled_percentage": 99.75903614457832,
     "category_counts": {
-      "basic_work": 0,
-      "system_design": 0,
-      "problem_solving": 0,
-      "platform": 0,
-      "teamwork": 0,
+      "process_control": 7,
+      "documentation": 11,
+      "readability": 8,
+      "observability": 43,
+      "audit": 2,
+      "data_management": 3,
+      "security": 14,
+      "testing_philosophy": 8,
+      "project_structure": 4,
+      "cache_management": 4,
+      "test_design": 10,
+      "determinism": 4,
+      "test_data": 2,
+      "reporting": 2,
+      "ai_generation": 6,
+      "quality_assurance": 2,
       "code_review": 2,
-      "coding_standards": 0,
-      "comments": 0,
-      "api_contracts": 0,
-      "logging": 0,
-      "exception_handling": 0,
-      "typescript": 0,
-      "other": 0
+      "basic_work_rules": 28,
+      "performance": 4,
+      "system_design_rules": 10,
+      "error_handling": 32,
+      "problem_solving_rules": 8,
+      "platform_rules": 6,
+      "teamwork_rules": 28,
+      "docs": 14,
+      "type_system_rules": 14,
+      "ai___code_generation_rules": 12,
+      "basic_readability_rules": 17,
+      "storage_scripts_enforcement": 25,
+      "gsmd__cursor_enforcement_rules": 21,
+      "simple_code_readability_rules": 28,
+      "testing_governance": 4,
+      "testing_infrastructure": 2,
+      "testing_process": 2,
+      "lifecycle_management": 2,
+      "schema_requirements": 6,
+      "structural_mapping": 3,
+      "identifier_authority": 1,
+      "ci___automated_validation": 7,
+      "architecture": 5,
+      "ui": 1,
+      "distribution": 1,
+      "file_structure": 2
     },
     "priority_counts": {
       "major": 320,

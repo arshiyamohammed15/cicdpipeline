@@ -35,7 +35,7 @@ def main():
     logger = logging.getLogger(__name__)
 
     counts = get_catalog_counts()
-    total_rules = counts.get("total_rules", 0)
+    total_rules = counts.get("enabled_rules", counts.get("total_rules", 0))
 
     logger.info("=" * 60)
     logger.info("STARTING CONSTITUTION VALIDATION SERVICE")
