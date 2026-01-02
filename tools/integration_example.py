@@ -43,11 +43,13 @@ def demonstrate_integration() -> None:
     logger.info("""
 def generate_code_old(prompt: str) -> str:
     # This goes directly to AI without validation
-    response = openai.Completion.create(
-        model="gpt-4",
-        prompt=prompt
+    from openai import OpenAI
+    client = OpenAI()
+    response = client.responses.create(
+        model=os.getenv("OPENAI_MODEL"),
+        input=prompt
     )
-    return response.choices[0].text
+    return response.output_text
 """)
 
     logger.info("Code after integration:")

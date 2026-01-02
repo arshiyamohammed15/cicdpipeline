@@ -5,13 +5,12 @@ OpenAI API Integration with Pre-Implementation Hooks
 import os
 from typing import Dict, Any
 
-import openai
-
 from shared_libs.error_recovery import (
     ErrorClassifier,
     RetryPolicy,
     call_with_recovery,
 )
+from shared_libs.openai_adapter import llm_generate_text
 from .ai_service_wrapper import AIServiceIntegration
 
 _DEFAULT_RECOVERY_POLICY = RetryPolicy(
@@ -30,10 +29,15 @@ class OpenAIIntegration(AIServiceIntegration):
         super().__init__("openai")
         self.client = None
         self.model = None
+        self.use_real_services = os.getenv("USE_REAL_SERVICES", "").lower() == "true"
         self._initialize_client()
 
     def _initialize_client(self):
         """Initialize OpenAI client."""
+        if not self.use_real_services:
+            self.logger.info("USE_REAL_SERVICES is false; OpenAI client disabled")
+            return
+
         api_key = os.getenv('OPENAI_API_KEY')
         
         # Validate API key: check not None, not empty, proper format
@@ -52,14 +56,15 @@ class OpenAIIntegration(AIServiceIntegration):
             return
 
         try:
-            self.client = openai.OpenAI(api_key=api_key)
-            self.model = os.getenv('OPENAI_MODEL', 'gpt-4')
-            
+            from openai import OpenAI
+
+            self.client = OpenAI(api_key=api_key)
+            self.model = os.getenv('OPENAI_MODEL', None)
+
             # Validate model name format
             if not self.model or not isinstance(self.model, str) or len(self.model.strip()) == 0:
-                self.logger.warning(f"Invalid model name '{self.model}', using default 'gpt-4'")
-                self.model = 'gpt-4'
-            
+                raise ValueError("OPENAI_MODEL must be set when USE_REAL_SERVICES=true")
+
             self.logger.info(f"OpenAI client initialized with model: {self.model}")
         except Exception as e:
             self.logger.error(f"Failed to initialize OpenAI client: {e}", exc_info=True)
@@ -67,24 +72,7 @@ class OpenAIIntegration(AIServiceIntegration):
 
     def generate_code(self, prompt: str, context: Dict[str, Any]) -> Dict[str, Any]:
         """Generate code through OpenAI with validation."""
-        # Always validate first, regardless of API key status
-        validation_result = self._validate_and_generate(prompt, context)
-
-        # If validation failed, return the violation result
-        if not validation_result['success']:
-            return validation_result
-
-        # If validation passed but no API key, return configuration error
-        if not self.client:
-            return {
-                'success': False,
-                'error': 'OPENAI_NOT_CONFIGURED',
-                'message': 'OpenAI API key not configured',
-                'validation_passed': True
-            }
-
-        # Validation passed and API key available, return the validated result
-        return validation_result
+        return self._validate_and_generate(prompt, context)
 
     def _call_ai_service(self, prompt: str, context: Dict[str, Any]) -> str:
         """Call OpenAI API."""
@@ -93,12 +81,10 @@ class OpenAIIntegration(AIServiceIntegration):
         user_message = self._build_user_message(prompt, context)
 
         response = call_with_recovery(
-            lambda: self.client.chat.completions.create(
+            lambda: llm_generate_text(
+                prompt=user_message,
+                system_message=system_message,
                 model=self.model,
-                messages=[
-                    {"role": "system", "content": system_message},
-                    {"role": "user", "content": user_message}
-                ],
                 temperature=context.get('temperature', 0.3),
                 max_tokens=context.get('max_tokens', 2000),
             ),
@@ -107,7 +93,7 @@ class OpenAIIntegration(AIServiceIntegration):
             timeout_ms=_DEFAULT_TIMEOUT_MS,
         )
 
-        return response.choices[0].message.content
+        return response["output_text"]
 
     def _build_system_message(self, context: Dict[str, Any]) -> str:
         """Build system message with constitution context."""
