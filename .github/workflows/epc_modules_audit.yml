@@ -1,0 +1,49 @@
+name: EPC Modules Audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'scripts/audit/**'
+      - 'tests/epc_audit/**'
+      - 'artifacts/audit/**'
+      - '.github/workflows/epc_modules_audit.yml'
+      - 'src/**'
+      - 'contracts/**'
+      - 'config/**'
+
+env:
+  PYTHON_VERSION: '3.11'
+  USE_REAL_SERVICES: 'false'
+
+jobs:
+  epc-modules-audit:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest
+      - name: Run EPC audit tests
+        shell: pwsh
+        run: |
+          $env:USE_REAL_SERVICES='false'
+          python -m pytest --import-mode=importlib tests/epc_audit -q
+      - name: Run EPC audit runner
+        shell: pwsh
+        run: |
+          $env:USE_REAL_SERVICES='false'
+          powershell -ExecutionPolicy Bypass -File scripts/audit/run_epc_audit_all.ps1
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: epc-modules-audit
+          path: artifacts/audit_runs/epc_audit_*
+          retention-days: 30
