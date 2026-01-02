@@ -1,0 +1,29 @@
+{
+  "request_id": "req_smoke_001234",
+  "schema_version": "v1",
+  "actor": {
+    "actor_id": "actor-123",
+    "actor_type": "human",
+    "roles": ["developer"],
+    "capabilities": ["llm.invoke"],
+    "scopes": ["llm.chat"]
+  },
+  "tenant": {
+    "tenant_id": "tenant-1",
+    "region": "us-east-1"
+  },
+  "logical_model_id": "default_chat",
+  "operation_type": "chat",
+  "system_prompt_id": "sys-default",
+  "user_prompt": "Hello from audit",
+  "context_segments": [],
+  "policy_snapshot_id": "snap-1",
+  "policy_version_ids": ["pol-1"],
+  "sensitivity_level": "medium",
+  "budget": {
+    "max_tokens": 256,
+    "timeout_ms": 2000,
+    "priority": "normal"
+  },
+  "safety_overrides": {}
+}

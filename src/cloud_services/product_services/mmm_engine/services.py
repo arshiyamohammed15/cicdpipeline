@@ -432,7 +432,7 @@ class MMMService:
 
         try:
             # Generate receipt ID
-            receipt_id = f"mmm-{decision.decision_id}"
+            receipt_id = str(uuid.uuid4())
 
             # Get policy metadata
             policy_version_ids = (
@@ -446,13 +446,14 @@ class MMMService:
 
             # Build receipt payload
             now_utc = datetime.now(timezone.utc)
+            timestamp_utc = now_utc.isoformat().replace("+00:00", "Z")
             receipt = {
                 "receipt_id": receipt_id,
                 "gate_id": "mmm",
                 "schema_version": "v1",
                 "policy_version_ids": policy_version_ids,
                 "snapshot_hash": snapshot_hash,
-                "timestamp_utc": now_utc.isoformat() + "Z",
+                "timestamp_utc": timestamp_utc,
                 "timestamp_monotonic_ms": int(time.perf_counter() * 1000),
                 "evaluation_point": "pre-commit",  # Default, could be from context
                 "inputs": {
@@ -787,13 +788,13 @@ class MMMService:
         """Emit admin configuration receipt via ERIS."""
         try:
             receipt = {
-                "receipt_id": f"admin-{uuid.uuid4().hex[:16]}",
+                "receipt_id": str(uuid.uuid4()),
                 "gate_id": "mmm",
                 "schema_version": "v1",
                 "admin_action": action,
                 "tenant_id": tenant_id,
                 "resource_id": getattr(resource, "policy_id", None) or getattr(resource, "playbook_id", None),
-                "timestamp_utc": datetime.now(timezone.utc).isoformat() + "Z",
+                "timestamp_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             }
             asyncio.run(self.eris.emit_receipt(receipt))
         except Exception as exc:
@@ -802,10 +803,10 @@ class MMMService:
     def _emit_outcome_receipt(self, outcome: MMMOutcome) -> None:
         try:
             payload = {
-                "receipt_id": f"outcome-{outcome.decision_id}-{outcome.action_id}",
+                "receipt_id": str(uuid.uuid4()),
                 "tenant_id": outcome.tenant_id,
                 "gate_id": "mmm",
-                "timestamp_utc": datetime.now(timezone.utc).isoformat(),
+                "timestamp_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 "decision": {
                     "status": "pass",
                     "rationale": f"Outcome recorded: {outcome.result}",

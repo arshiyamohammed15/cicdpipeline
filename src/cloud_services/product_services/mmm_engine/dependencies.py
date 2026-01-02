@@ -8,6 +8,7 @@ to enable development before real integrations are wired up.
 from __future__ import annotations
 
 import logging
+import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, Optional, Tuple
 
@@ -44,7 +45,7 @@ class MockERISClient:
     async def emit_receipt(self, receipt: Dict[str, Any]) -> str:
         if not self.available:
             raise RuntimeError("ERIS unavailable")
-        receipt_id = receipt.get("receipt_id") or f"receipt-{len(self.receipts)+1}"
+        receipt_id = receipt.get("receipt_id") or str(uuid.uuid4())
         self.receipts[receipt_id] = receipt
         logger.debug("Mock ERIS stored receipt %s", receipt_id)
         return receipt_id
@@ -88,5 +89,4 @@ class MockUBISignalService:
                 "created_at": datetime.utcnow().isoformat(),
             }
         ]
-
 
