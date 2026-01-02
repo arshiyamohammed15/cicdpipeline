@@ -1,0 +1,73 @@
+name: PM Modules Audit
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'contracts/**'
+      - 'scripts/audit/**'
+      - 'scripts/ci/**'
+      - 'docs/architecture/ZeroUI Module Categories V 3.0.md'
+      - '.github/workflows/pm_modules_audit.yml'
+  push:
+    branches: [main, master]
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'contracts/**'
+      - 'scripts/audit/**'
+      - 'scripts/ci/**'
+      - 'docs/architecture/ZeroUI Module Categories V 3.0.md'
+      - '.github/workflows/pm_modules_audit.yml'
+
+env:
+  PYTHON_VERSION: '3.11'
+  USE_REAL_SERVICES: 'false'
+
+jobs:
+  pm-modules-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ".[dev]"
+          pip install -r requirements-api.txt
+          pip install -r src/cloud_services/llm_gateway/requirements.txt
+          pip install -r src/cloud_services/client-services/integration-adapters/requirements.txt
+      - name: PASS 1 & 2 - Inventory and Allowed Paths
+        run: |
+          python scripts/audit/pm_inventory_allowed_paths.py --out-dir artifacts/audit
+      - name: PASS 3 - Contract Tests
+        run: |
+          python -m pytest --import-mode=importlib \
+            tests/contracts/mmm_engine/validate_examples.py \
+            tests/contracts/cross_cutting_concern_services/validate_examples.py \
+            tests/contracts/signal_ingestion_and_normalization/validate_examples.py \
+            tests/contracts/detection_engine_core/validate_examples.py \
+            tests/contracts/integration_adaptors/validate_examples.py \
+            tests/contracts/llm_gateway/validate_examples.py \
+            tests/contracts/evidence_receipt_indexing_service/validate_examples.py -q
+      - name: PASS 3 - LLM Gateway Schema Validation
+        run: |
+          python scripts/ci/validate_llm_gateway_schemas.py
+      - name: PASS 4 - Smoke Tests
+        run: |
+          python -m pytest --import-mode=importlib tests/pm_audit/test_pm_smoke.py -q
+      - name: PASS 5 - Golden Path
+        run: |
+          python -m pytest --import-mode=importlib tests/pm_audit/test_pm_e2e_golden_path.py -q
+      - name: Upload audit artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: pm-modules-audit
+          path: artifacts/audit
+          retention-days: 30

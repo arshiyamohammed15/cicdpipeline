@@ -1,0 +1,19 @@
+{
+  "response_id": "resp_smoke_001234",
+  "schema_version": "v1",
+  "request_id": "req_smoke_001234",
+  "decision": "ALLOWED",
+  "receipt_id": "rcpt-req_smoke_001234",
+  "tokens": {
+    "tokens_in": 120,
+    "tokens_out": 64,
+    "model_cost_estimate": 0.02
+  },
+  "risk_flags": [],
+  "policy_snapshot_id": "snap-1",
+  "policy_version_ids": ["pol-1"],
+  "timestamp_utc": "2024-01-01T00:00:00Z",
+  "output": {
+    "content": "Hello from audit response"
+  }
+}

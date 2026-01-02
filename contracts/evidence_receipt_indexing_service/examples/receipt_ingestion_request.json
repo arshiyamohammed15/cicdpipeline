@@ -1,0 +1,28 @@
+{
+  "receipt_id": "00000000-0000-0000-0000-000000000007",
+  "gate_id": "pm7-audit",
+  "policy_version_ids": ["pol-1"],
+  "snapshot_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "timestamp_utc": "2024-01-01T00:00:00Z",
+  "timestamp_monotonic_ms": 123456,
+  "evaluation_point": "pre-commit",
+  "inputs": {
+    "request_id": "req-audit-001"
+  },
+  "decision": {
+    "status": "pass",
+    "rationale": "audit fixture",
+    "badges": ["pm7"]
+  },
+  "result": {
+    "outcome": "accepted"
+  },
+  "actor": {
+    "repo_id": "repo-1",
+    "type": "service"
+  },
+  "evidence_handles": [],
+  "degraded": false,
+  "signature": "base64:fixed-signature",
+  "schema_version": "v1"
+}
