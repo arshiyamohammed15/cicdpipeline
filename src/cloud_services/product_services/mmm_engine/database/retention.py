@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import uuid
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -198,15 +199,14 @@ class RetentionService:
             try:
                 import asyncio
                 receipt = {
-                    "receipt_id": f"deletion-{hash_value}",
+                    "receipt_id": str(uuid.uuid4()),
                     "gate_id": "mmm",
                     "schema_version": "v1",
                     "admin_action": "actor_data_deletion",
                     "tenant_id": tenant_id,
                     "anonymized_actor_id": anonymized_id,
-                    "timestamp_utc": datetime.utcnow().isoformat() + "Z",
+                    "timestamp_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
                 }
                 asyncio.run(eris_client.emit_receipt(receipt))
             except Exception as exc:
                 logger.warning("Failed to emit deletion receipt: %s", exc)
-
