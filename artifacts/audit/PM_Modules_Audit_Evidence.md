@@ -35,6 +35,31 @@ Invariants validated by PASS 4/5:
 - receipt_id UUID invariant validated by `artifacts/audit/logs/pm_smoke_receipts.jsonl` and `artifacts/audit/logs/pm_e2e_receipts.jsonl` (PM-1 receipt_id values are UUIDs).
 - timestamp_utc single UTC format validated by PASS 5 ingestion success for PM-1 receipt in `artifacts/audit/logs/pm_e2e_receipts.jsonl`.
 
+## Rerun Freshness (Local)
+
+Run the full audit locally:
+- `powershell -ExecutionPolicy Bypass -File scripts/audit/run_pm_audit_all.ps1`
+
+Notes:
+- The script prints `RUN_DIR=...` and sets `USE_REAL_SERVICES=false`.
+- Evidence pack files in RUN_DIR:
+  - `pm_module_inventory.md`
+  - `pm_allowed_paths.md`
+  - `pass1_2_inventory_allowed_paths.log`
+  - `pass3_contracts.log`
+  - `pass3_llm_gateway_schema_validation.log`
+  - `pass4_smoke.log`
+  - `pass5_e2e_golden_path.log`
+  - `RUN_SUMMARY.md`
+
+## Verify GitHub Actions without gh
+
+If a token is available, use:
+- `powershell -ExecutionPolicy Bypass -File scripts/ci/verify_workflow_run.ps1`
+
+Token env vars supported (first found wins): `GITHUB_TOKEN`, `GH_TOKEN`, `GITHUB_PAT`.
+If no token is present, the script prints manual steps for checking the Actions UI.
+
 Pass results:
 - PASS 1 (Inventory): `artifacts/audit/pm_module_inventory.md`
 - PASS 2 (Allowed paths): `artifacts/audit/pm_allowed_paths.md`
