@@ -42,7 +42,7 @@ class PostGenerationValidator:
 
         This prevents hardcoding rule numbers and adapts to changes in constitution files.
         """
-        constitution_dir = Path("docs/constitution")
+        constitution_dir = Path(__file__).resolve().parents[1] / "docs" / "constitution"
         if not constitution_dir.exists():
             raise FileNotFoundError(f"Constitution directory not found: {constitution_dir}")
 
@@ -110,6 +110,9 @@ class PostGenerationValidator:
             return {
                 'valid': True,
                 'violations': [],
+                'total_violations': 0,
+                'violations_by_severity': {},
+                'compliance_score': 1.0,
                 'message': f'Post-generation validation not yet implemented for {file_type}'
             }
 

@@ -2,6 +2,7 @@
 HTTP API Service for Pre-Implementation Hooks
 """
 
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from .integration_registry import IntegrationRegistry
@@ -27,6 +28,8 @@ MAX_PROMPT_LENGTH = 100000  # 100k characters
 ALLOWED_FILE_TYPES = {'python', 'typescript', 'javascript', 'java', 'cpp', 'c', 'go', 'rust', 'general'}
 ALLOWED_TASK_TYPES = {'general', 'api', 'database', 'ui', 'security', 'performance', 'testing'}
 VALID_SERVICE_NAMES = {'openai', 'cursor'}
+if os.getenv("ZEROUI_ENABLE_LOCAL_INTEGRATION", "false").lower() == "true":
+    VALID_SERVICE_NAMES.add('local')
 
 
 def validate_prompt(prompt: Any) -> Tuple[bool, Optional[str]]:

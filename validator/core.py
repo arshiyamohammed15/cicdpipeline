@@ -56,7 +56,11 @@ class ConstitutionValidator:
             config_manager: Optional EnhancedConfigManager instance (injected dependency)
             validator_factory: Optional ValidatorFactory instance (injected dependency)
         """
-        self.config_path = config_path
+        config_path_obj = Path(config_path)
+        if not config_path_obj.is_absolute():
+            repo_root = Path(__file__).resolve().parents[1]
+            config_path_obj = (repo_root / config_path_obj).resolve()
+        self.config_path = config_path_obj
         self.config = self._load_config()
         self._logger = logging.getLogger(__name__)
         

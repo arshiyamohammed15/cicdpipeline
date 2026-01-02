@@ -3,6 +3,7 @@ Integration Registry for AI Services
 """
 
 import logging
+import os
 from typing import Dict, Type, Optional, List, Any
 from .ai_service_wrapper import AIServiceIntegration
 
@@ -35,6 +36,17 @@ class IntegrationRegistry:
             self.logger.warning(f"Cursor integration not available: {e}")
         except Exception as e:
             self.logger.error(f"Error loading Cursor integration: {e}")
+
+        # Load Local integration (optional, for offline demos/tests)
+        if os.getenv("ZEROUI_ENABLE_LOCAL_INTEGRATION", "false").lower() == "true":
+            try:
+                from .local_integration import LocalIntegration
+                self.integrations['local'] = LocalIntegration()
+                self.logger.info("Local integration loaded successfully")
+            except ImportError as e:
+                self.logger.warning(f"Local integration not available: {e}")
+            except Exception as e:
+                self.logger.error(f"Error loading Local integration: {e}")
 
         # Load other integrations as they become available
         # Future: Add Claude, local models, etc.
