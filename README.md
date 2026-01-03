@@ -6,13 +6,13 @@ A Python-based automated code review tool that validates code against the ZeroUI
 
 **ZeroUI 2.0** is a comprehensive enterprise-grade code validation and development platform implementing a three-tier hybrid architecture:
 
-- **415 Constitution Rules**: Comprehensive rule set covering requirements, privacy & security, performance, architecture, system design, problem-solving, platform, teamwork, testing, code quality, exception handling (31 rules), TypeScript (34 rules), storage governance (13 rules), and more. Rule counts are dynamically calculated from `docs/constitution/*.json` files (single source of truth).
-- **22 Rule Validators**: Category-specific validators implementing AST-based code analysis
+- **415 Constitution Rules**: Comprehensive rule set covering requirements, privacy & security, performance, architecture, system design, problem-solving, platform, teamwork, testing, code quality, exception handling (31 rules), TypeScript (34 rules), storage governance (13 rules), and more. Rule counts are dynamically calculated from `docs/constitution/*.json` files (single source of truth). Current status: 414 enabled, 1 disabled.
+- **20 Rule Validators**: Category-specific validators implementing AST-based code analysis (api_contracts, architecture, basic_work, code_review, coding_standards, comments, exception_handling, folder_standards, logging, performance, platform, privacy, problem_solving, quality, requirements, simple_code_readability, storage_governance, system_design, teamwork, typescript)
 - **Three-Tier Architecture**: 
   - **Tier 1**: VS Code Extension (TypeScript) - 20 modules + 6 core UI components
   - **Tier 2**: Edge Agent (TypeScript) - 6 delegation modules with orchestration
-  - **Tier 3**: Cloud Services (Python/FastAPI) - 11 shared services, 4 product services, 1 client service, plus the LLM Gateway (see Module Implementation Status)
-- **Comprehensive Testing**: 100+ test files covering unit, integration, security, performance, resilience, and load tests
+  - **Tier 3**: Cloud Services (Python/FastAPI) - 12 shared services, 4 product services, 1 client service, plus the LLM Gateway (see Module Implementation Status)
+- **Comprehensive Testing**: 331 test files covering unit, integration, security, performance, resilience, and load tests
 - **Hybrid Database System**: SQLite (primary) and JSON (fallback) storage for all 415 rules
 - **Storage Governance**: 4-plane storage architecture (IDE, Tenant, Product, Shared) with strict data governance. All storage lives outside the repository under `${ZU_ROOT}`.
 
@@ -42,8 +42,19 @@ Most recent runs executed in this workspace (all passed):
 - `src/`: Application sources (`cloud-services`, `edge-agent`, `vscode-extension`) spanning Python and TypeScript.
 - `storage-scripts/`: Authoritative automation for provisioning storage planes outside the repo. (All `product/`, `tenant/`, and `shared/` data now lives under `${ZU_ROOT}` and is never tracked here.)
 - `gsmd/`: Generated gold-standard metadata (JSON schemas plus PowerShell utilities).
-- `tests/`, `tools/`, `validator/`, `scripts/`, `db/`: Validator test suites, CLI helpers, rule engines, automation scripts, and database artifacts.
+- `tests/`: Test suites (331 test files) organized by service and test type
+- `tools/`: CLI helpers, test registry, and automation scripts
+- `validator/`: Rule engines with 20 category-specific validators
+- `scripts/`: Automation scripts for CI/CD, audits, and setup
+- `db/`: Database artifacts and migrations
+- `artifacts/`: Build artifacts, test results, coverage reports, and audit evidence
+  - `artifacts/test-results/`: Test execution results and coverage XML files
+  - `artifacts/coverage/`: Coverage cache files (`.coverage`)
+  - `artifacts/evidence/`: Test evidence packs and receipts
+  - `artifacts/audit/`: Audit reports and evidence
 - `node_modules/`: Checked-in JavaScript dependencies needed by the VS Code extension workspace.
+
+**Note**: The root directory has been reorganized to keep only essential configuration files. Build artifacts (coverage files, test results) have been moved to `artifacts/` to maintain a clean root directory structure.
 
 ## Storage Provisioning Workflow
 
@@ -497,10 +508,11 @@ The adversarial corpus test `tests/llm_gateway/test_security_regression.py` supp
 
 ### Test Coverage
 
-- **Total Test Files**: 100+ test files across Python and TypeScript
-- **Test Classes**: 1000+ test classes and methods
-- **Coverage Areas**: Unit, Integration, Security, Performance, Resilience, E2E
+- **Total Test Files**: 331 test files across Python and TypeScript
+- **Test Organization**: Tests organized by service category (cloud_services/, system/, infrastructure/, etc.) and test type (unit/, integration/, security/, performance/, resilience/)
+- **Coverage Areas**: Unit, Integration, Security, Performance, Resilience, E2E, Constitution validation
 - **Test Frameworks**: pytest (Python), Jest (TypeScript), unittest (Python)
+- **Test Artifacts**: Test results and coverage reports are stored in `artifacts/test-results/` and `artifacts/coverage/`
 
 ## Dynamic Testing
 
@@ -534,7 +546,11 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
 
 **Shared Services (Infrastructure):**
 
-1. **Health & Reliability Monitoring** (`src/cloud_services/shared-services/health-reliability-monitoring/`)
+1. **API Gateway Webhooks** (`src/cloud_services/shared-services/api-gateway-webhooks/`)
+   - ✅ Webhook signature verification and processing
+   - ✅ FastAPI service with webhook endpoints
+
+2. **Health & Reliability Monitoring** (`src/cloud_services/shared-services/health-reliability-monitoring/`)
    - ✅ FastAPI application with routes, services, models
    - ✅ Registry service, telemetry ingestion, health evaluation
    - ✅ SLO tracking, safe-to-act decisions, audit service
@@ -580,12 +596,16 @@ Key suites (invoked via `python -m pytest tests -k "constitution" -q`):
    - ✅ Service, routes, and performance tests
 
 10. **Alerting & Notification Service** (`src/cloud_services/shared-services/alerting-notification-service/`)
-   - FastAPI routes/services/models with ingestion, routing, and streaming endpoints
-   - Unit, integration, security, performance, and resilience tests under `tests/cloud_services/shared_services/alerting_notification_service/`
+   - ✅ FastAPI routes/services/models with ingestion, routing, and streaming endpoints
+   - ✅ Unit, integration, security, performance, and resilience tests under `tests/cloud_services/shared_services/alerting_notification_service/`
 
 11. **Ollama AI Agent** (`src/cloud_services/shared-services/ollama-ai-agent/`)
-   - FastAPI service with routes, models, services, and LLM manager
-   - Unit, integration, and security tests under `tests/cloud_services/shared_services/ollama_ai_agent/`
+   - ✅ FastAPI service with routes, models, services, and LLM manager
+   - ✅ Unit, integration, and security tests under `tests/cloud_services/shared_services/ollama_ai_agent/`
+
+12. **Trust as Capability** (`src/cloud_services/shared-services/trust-as-capability/`)
+   - ✅ Trust workspace validation and subject verification
+   - ✅ Health checks and integration tests
 
 **Product Services (ZeroUI-owned, Cross-Tenant):**
 
@@ -755,7 +775,7 @@ The core validation system consists of:
 - **Post-Generation Validator** (`validator/post_generation_validator.py`): Post-generation validation
 - **Rule Validators**: 22 category-specific validator files in `validator/rules/`
 
-### Rule Validators (22 Files)
+### Rule Validators (20 Validator Classes)
 
 1. `api_contracts.py` - API contract validation
 2. `architecture.py` - Architecture pattern validation
@@ -777,8 +797,8 @@ The core validation system consists of:
 18. `system_design.py` - System design principles
 19. `teamwork.py` - Teamwork and collaboration
 20. `typescript.py` - TypeScript rules (182-215, 34 rules)
-21. `tests/test_legacy_path.py` - Legacy path testing
-22. `__init__.py` - Validator package initialization
+
+Note: Additional files include `__init__.py` (package initialization) and `tests/test_legacy_path.py` (legacy path testing), but these are not validator classes.
 
 ## Rule Categories
 

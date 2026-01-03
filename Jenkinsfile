@@ -110,6 +110,7 @@ PY
                         sh '''
                             . venv/bin/activate
                             mkdir -p artifacts/evidence
+                            mkdir -p artifacts/test-results
                             # Use test runner for faster execution, fallback to pytest if needed
                             python tools/test_registry/test_runner.py --marker unit --parallel || \
                             pytest tests/cloud_services/ --cov=src/cloud_services --cov-report=html --cov-report=xml:artifacts/test-results/coverage.xml \
