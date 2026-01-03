@@ -1,0 +1,187 @@
+# ZeroUI 2.1 - Comprehensive Requirements
+# Generated from systematic analysis of all service requirements and codebase imports
+# All versions pinned for consistent team environment
+#
+# Version Selection Strategy:
+# 1. Primary source: pyproject.toml (root project configuration)
+# 2. Secondary source: requirements-api.txt (API service requirements)
+# 3. Service-specific: Individual service requirements.txt files
+# 4. Verified against: pip freeze output (actual working environment)
+#
+# Note: Some services (evidence-receipt-indexing-service, data-governance-privacy) 
+# previously used pydantic==1.10.14 but have been upgraded to pydantic==2.12.3 
+# for consistency with the rest of the codebase.
+#
+# Installation: pip install -r requirements.txt
+
+# ============================================================================
+# Core Framework Dependencies (from pyproject.toml - authoritative)
+# ============================================================================
+pydantic==2.12.3
+PyYAML==6.0.3
+jsonschema==4.25.1
+GitPython==3.1.45
+Jinja2==3.1.6
+psutil==7.1.1
+
+# ============================================================================
+# Web Framework & API (FastAPI, Flask, ASGI)
+# ============================================================================
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+starlette==0.38.6
+Flask==2.3.3
+Flask-Cors==4.0.0
+
+# ============================================================================
+# HTTP Clients & Requests
+# ============================================================================
+httpx==0.27.0
+requests==2.31.0
+aiohttp==3.13.2
+
+# ============================================================================
+# Database & ORM
+# ============================================================================
+SQLAlchemy==2.0.44
+sqlmodel==0.0.27
+alembic==1.13.1
+psycopg2-binary==2.9.9
+
+# ============================================================================
+# Authentication & Security
+# ============================================================================
+PyJWT==2.8.0
+cryptography==46.0.3
+python-jose[cryptography]==3.3.0
+
+# ============================================================================
+# Caching & Message Queues
+# ============================================================================
+redis==5.0.1
+hiredis==2.2.0
+aiokafka==0.10.0
+aio-pika==9.3.0
+
+# ============================================================================
+# Observability & Monitoring
+# ============================================================================
+opentelemetry-api==1.23.0
+opentelemetry-sdk==1.23.0
+opentelemetry-exporter-otlp==1.23.0
+opentelemetry-instrumentation-fastapi==0.42b0
+prometheus-client==0.23.1
+
+# ============================================================================
+# Data Processing & Serialization
+# ============================================================================
+orjson==3.9.10
+python-dateutil==2.9.0.post0
+pytz==2025.2
+pandas==2.3.3
+pyarrow==2.3.5
+fastavro==1.9.0
+protobuf==4.24.0
+
+# ============================================================================
+# Schema Validation & Versioning
+# ============================================================================
+semantic-version==2.10.0
+py-mini-racer==0.6.0
+
+# ============================================================================
+# LLM & AI Integration
+# ============================================================================
+openai[datalib]==1.3.0
+
+# ============================================================================
+# Configuration & Environment
+# ============================================================================
+python-dotenv==1.2.1
+pydantic-settings==2.12.0
+
+# ============================================================================
+# Testing Framework (Production dependencies - tests require these)
+# ============================================================================
+pytest==8.4.2
+pytest-asyncio==1.3.0
+pytest-cov==7.0.0
+pytest-xdist==3.8.0
+pytest-mock==3.12.0
+
+# ============================================================================
+# Performance Testing
+# ============================================================================
+locust==2.17.0
+
+# ============================================================================
+# Development Tools (included for team consistency)
+# ============================================================================
+black==25.9.0
+ruff==0.14.1
+mypy==1.18.2
+pylint==4.0.4
+flake8==7.3.0
+pre-commit==4.3.0
+types-PyYAML==6.0.12.20250915
+types-requests==2.32.4.20250913
+
+# ============================================================================
+# Additional Runtime Dependencies (from pip freeze analysis)
+# ============================================================================
+annotated-types==0.7.0
+anyio==3.7.1  # Required by fastapi<4.0.0
+attrs==25.4.0
+certifi==2025.11.12
+cffi==2.0.0
+charset-normalizer==3.4.4
+click==8.3.1
+coverage==7.12.0
+greenlet==3.3.0
+h11==0.16.0
+httpcore==1.0.9
+idna==3.11
+iniconfig==2.3.0
+jsonschema-specifications==2025.9.1
+markdown-it-py==4.0.0
+MarkupSafe==3.0.3
+mypy-extensions==1.1.0
+packaging==21.3
+pathspec==0.12.1
+pluggy==1.6.0
+pydantic-core==2.41.4
+pyparsing==3.3.1
+referencing==0.37.0
+regex==2025.11.3
+rpds-py==0.30.0
+six==1.17.0
+sniffio==1.3.1
+tenacity==9.1.2
+typing-extensions==4.15.0
+tzdata==2025.3
+urllib3==2.5.0
+Werkzeug==3.1.4
+yarl==1.22.0
+
+# ============================================================================
+# Optional Dependencies (install if needed for specific services)
+# ============================================================================
+# aiohappyeyeballs==2.6.1  # HTTP client optimization
+# aiosignal==1.4.0  # Signal handling
+# aiosqlite==0.21.0  # Async SQLite (if used)
+# Authlib==1.6.6  # OAuth library (if used)
+# blinker==1.9.0  # Signal support for Flask
+# dill==0.4.0  # Extended pickle (if used)
+# execnet==2.1.2  # Distributed testing (if used)
+# frozenlist==1.8.0  # Immutable lists
+# joblib==1.5.3  # Parallel processing
+# marshmallow==4.1.2  # Serialization (if used)
+# nltk==3.9.2  # NLP (if used)
+# numpy==2.3.5  # Numerical computing (dependency of pandas)
+# pytokens==0.3.0  # Token counting (if used)
+# rich==14.2.0  # Rich text formatting (if used)
+# ruamel.yaml==0.19.1  # YAML processing (if used)
+# safety==2.3.5  # Security scanning (if used)
+# tqdm==4.67.1  # Progress bars (if used)
+# typer==0.21.0  # CLI framework (if used)
+
