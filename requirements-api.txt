@@ -1,8 +1,18 @@
+# ZeroUI 2.1 - Automatic Enforcement Service API Dependencies
+# Minimal requirements for the Flask-based validation API service
+# Used by: validator/integrations/api_service.py and related integrations
+#
+# Installation: pip install -r requirements-api.txt
+#
+# Note: This is a minimal subset for the API service only.
+# For full development environment, use: pip install -r requirements.txt
+
+# Web Framework (Flask-based API service)
 Flask==2.3.3
-Flask-CORS==4.0.0
+Flask-Cors==4.0.0
+
+# HTTP Client (used by Cursor integration)
 requests==2.31.0
-openai==1.3.0
-fastapi==0.115.0
-uvicorn==0.32.0
-httpx==0.27.0
-PyJWT==2.8.0
+
+# LLM Integration (used by OpenAI integration)
+openai[datalib]==1.3.0
