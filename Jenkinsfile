@@ -112,7 +112,7 @@ PY
                             mkdir -p artifacts/evidence
                             # Use test runner for faster execution, fallback to pytest if needed
                             python tools/test_registry/test_runner.py --marker unit --parallel || \
-                            pytest tests/cloud_services/ --cov=src/cloud_services --cov-report=html --cov-report=xml \
+                            pytest tests/cloud_services/ --cov=src/cloud_services --cov-report=html --cov-report=xml:artifacts/test-results/coverage.xml \
                                 --junit-xml=artifacts/junit.xml \
                                 -v \
                                 -n auto \
@@ -127,7 +127,7 @@ PY
                                 reportName: 'Python Coverage Report'
                             ])
                             publishCoverage adapters: [
-                                coberturaAdapter('coverage.xml')
+                                coberturaAdapter('artifacts/test-results/coverage.xml')
                             ]
                             // Archive evidence packs
                             archiveArtifacts artifacts: 'artifacts/evidence/*.zip', allowEmptyArchive: true
