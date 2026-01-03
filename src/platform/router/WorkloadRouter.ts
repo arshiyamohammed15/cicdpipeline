@@ -118,6 +118,7 @@ class AdapterRegistry {
 export class WorkloadRouter {
   private registry: AdapterRegistry;
   private envName: string;
+  private infraConfig: InfraConfig;
 
   constructor(baseDir: string, envName: string = 'development') {
     this.registry = new AdapterRegistry(baseDir);
@@ -125,7 +126,8 @@ export class WorkloadRouter {
 
     // Load infra config and initialize adapters
     const infraResult = loadInfraConfig(envName);
-    this.registry.initialize(infraResult.config);
+    this.infraConfig = infraResult.config;
+    this.registry.initialize(this.infraConfig);
   }
 
   /**
@@ -136,15 +138,19 @@ export class WorkloadRouter {
 
     // If no cost_profile, use routing.default
     if (!costProfile || typeof costProfile !== 'string') {
-      const infraResult = loadInfraConfig(this.envName);
       return {
-        route: infraResult.config.routing.default,
-        adapter: this.mapRouteToAdapter(infraResult.config.routing.default),
+        route: this.infraConfig.routing.default,
+        adapter: this.mapRouteToAdapter(this.infraConfig.routing.default),
       };
     }
 
     // Normalize cost_profile
     const normalizedProfile = costProfile.trim().toLowerCase();
+
+    // Enforce configured cost profiles
+    if (!this.infraConfig.routing.cost_profiles.includes(normalizedProfile as 'light' | 'ai-inference' | 'batch')) {
+      throw new Error(`Unknown cost_profile "${costProfile}". Allowed: ${this.infraConfig.routing.cost_profiles.join(', ')}`);
+    }
 
     // Map cost_profile to route
     let route: 'serverless' | 'gpu-queue' | 'batch';
@@ -156,8 +162,7 @@ export class WorkloadRouter {
       route = 'batch';
     } else {
       // Fallback to routing.default
-      const infraResult = loadInfraConfig(this.envName);
-      route = infraResult.config.routing.default;
+      route = this.infraConfig.routing.default;
     }
 
     return {

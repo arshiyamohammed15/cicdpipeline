@@ -102,13 +102,18 @@ async def ingest_signals(
                 warnings=[],
             )
         results.append(result)
+    # Normalize all result objects into SignalIngestResult instances to satisfy response_model
+    normalized_results = [
+        result if isinstance(result, SignalIngestResult) else SignalIngestResult.model_validate(result)
+        for result in results
+    ]
     summary = {
-        "total": len(results),
-        "accepted": sum(1 for r in results if r.status == "accepted"),
-        "rejected": sum(1 for r in results if r.status == "rejected"),
-        "dlq": sum(1 for r in results if r.status == "dlq"),
+        "total": len(normalized_results),
+        "accepted": sum(1 for r in normalized_results if r.status == "accepted"),
+        "rejected": sum(1 for r in normalized_results if r.status == "rejected"),
+        "dlq": sum(1 for r in normalized_results if r.status == "dlq"),
     }
-    return IngestResponse(results=results, summary=summary)
+    return IngestResponse(results=normalized_results, summary=summary)
 
 
 @router.get("/signals/dlq", response_model=DLQInspectionResponse)

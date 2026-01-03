@@ -21,6 +21,20 @@ from data_governance_privacy.services import DataGovernanceService
 PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 setup_path_normalization(PROJECT_ROOT)
 
+import importlib
+
+# Standardize the health_reliability_monitoring models module across workers so
+# SafeToActResponse class identity remains stable even when different suites are
+# collected together.
+try:
+    hrm_models = importlib.import_module("health_reliability_monitoring.models")
+    sys.modules.setdefault(
+        "cloud_services.shared_services.health_reliability_monitoring.models",
+        hrm_models,
+    )
+except Exception:
+    hrm_models = None
+
 _TRACKED_EVENT_LOOPS: list[asyncio.AbstractEventLoop] = []
 _ORIGINAL_NEW_EVENT_LOOP = asyncio.new_event_loop
 _ORIGINAL_GET_EVENT_LOOP = asyncio.get_event_loop

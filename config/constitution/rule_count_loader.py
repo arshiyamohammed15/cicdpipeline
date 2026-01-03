@@ -99,15 +99,15 @@ class RuleCountLoader:
         if not self._cache_valid or force_reload:
             total, enabled, disabled, categories = self._load_rules_from_json_files()
             self._cached_counts = {
-                # Treat "total" as the active/enabled rule count to align with enforcement surfaces.
-                'total_rules': enabled,
+                'total_rules': total,
                 'enabled_rules': enabled,
                 'disabled_rules': disabled,
                 'category_counts': categories
             }
             self._cache_valid = True
 
-        return self._cached_counts.copy()
+        # Return cached object directly to preserve identity when cached
+        return self._cached_counts
 
     def get_total_rules(self) -> int:
         """Get total rule count."""
@@ -145,8 +145,16 @@ def get_rule_count_loader(constitution_dir: str = "docs/constitution") -> RuleCo
         RuleCountLoader instance
     """
     global _rule_count_loader
-    if _rule_count_loader is None:
-        _rule_count_loader = RuleCountLoader(constitution_dir)
+    desired_dir = Path(constitution_dir)
+    if not desired_dir.is_absolute():
+        repo_root = Path(__file__).resolve().parents[2]
+        desired_dir = (repo_root / desired_dir).resolve()
+
+    if (
+        _rule_count_loader is None
+        or Path(_rule_count_loader.constitution_dir).resolve() != desired_dir
+    ):
+        _rule_count_loader = RuleCountLoader(str(desired_dir))
     return _rule_count_loader
 
 

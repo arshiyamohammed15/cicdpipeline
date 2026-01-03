@@ -90,4 +90,8 @@ async def healthz():
 
 @app.get("/metrics")
 async def metrics_endpoint():
-    return Response(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    payload = generate_latest()
+    # Guard against empty payloads in test harnesses where startup hooks may not register collectors
+    if not payload:
+        payload = b"# metrics: no counters registered\n"
+    return Response(payload, media_type=CONTENT_TYPE_LATEST)

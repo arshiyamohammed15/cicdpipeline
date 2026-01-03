@@ -40,7 +40,7 @@ class UpdateSchemaRequest(BaseModel):
 class ValidateDataRequest(BaseModel):
     """Request model for data validation."""
 
-    schema_id: str = Field(..., description="Schema identifier (UUID)", pattern="^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+    schema_id: str = Field(..., description="Schema identifier (UUID or friendly key)", min_length=1)
     version: Optional[str] = Field(None, description="Schema version (optional)")
     data: Dict[str, Any] = Field(..., description="Data to validate")
 

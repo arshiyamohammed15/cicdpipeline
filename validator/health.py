@@ -41,9 +41,8 @@ class HealthChecker:
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     rules = data.get('constitution_rules', [])
-                    enabled_rules = [rule for rule in rules if rule.get("enabled", True)]
-                    expected_count += len(enabled_rules)
-                    file_counts[json_file.name] = len(enabled_rules)
+                    expected_count += len(rules)
+                    file_counts[json_file.name] = len(rules)
             except Exception as e:
                 return {
                     'healthy': False,

@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "zeroui-2.0": "file:../.."
+  }
+}

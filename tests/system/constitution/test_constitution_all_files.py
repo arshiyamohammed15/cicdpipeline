@@ -71,7 +71,7 @@ class ConstitutionRuleLoader:
             List of rule dictionaries
         """
         data = self.load_file(filename)
-        return [rule for rule in data.get('constitution_rules', []) if rule.get("enabled", True)]
+        return list(data.get('constitution_rules', []))
 
     def get_rule_by_id(self, filename: str, rule_id: str) -> Optional[Dict[str, Any]]:
         """

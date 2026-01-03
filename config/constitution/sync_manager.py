@@ -546,6 +546,8 @@ class ConstitutionSyncManager:
             json_manager.json_manager.data["rules"][str(rule_data["rule_number"])] = rule_data
             json_manager.json_manager._update_statistics()
             json_manager.json_manager._save_database()
+        except Exception as e:
+            logger.error(f"Failed to add rule to JSON backend: {e}")
         finally:
             json_manager.close()
 
@@ -559,8 +561,10 @@ class ConstitutionSyncManager:
                 rule_data["category"],
                 rule_data["priority"],
                 rule_data["content"],
-                rule_data["enabled"]
+                rule_data.get("enabled", True)
             )
+        except Exception as e:
+            logger.error(f"Failed to add rule to SQLite backend: {e}")
         finally:
             sqlite_manager.close()
 
@@ -585,8 +589,10 @@ class ConstitutionSyncManager:
                 rule_data["category"],
                 rule_data["priority"],
                 rule_data["content"],
-                rule_data["enabled"]
+                rule_data.get("enabled", True)
             )
+        except Exception as e:
+            logger.error(f"Failed to update rule in SQLite backend: {e}")
         finally:
             sqlite_manager.close()
 
@@ -607,6 +613,8 @@ class ConstitutionSyncManager:
         sqlite_manager = ConstitutionRuleManager(config_dir=self.config_dir)
         try:
             sqlite_manager.db_manager.delete_rule(rule_number)
+        except Exception as e:
+            logger.error(f"Failed to remove rule from SQLite backend: {e}")
         finally:
             sqlite_manager.close()
 

@@ -66,7 +66,12 @@ class ConstitutionLogger:
         root_logger = logging.getLogger()
         root_logger.setLevel(self.log_level)
 
-        # Clear existing handlers
+        # Close and clear existing handlers to avoid file descriptor leaks
+        for handler in list(root_logger.handlers):
+            try:
+                handler.close()
+            except Exception:
+                pass
         root_logger.handlers.clear()
 
         # Console handler
@@ -109,6 +114,12 @@ class ConstitutionLogger:
 
         # Create performance logger
         perf_logger = logging.getLogger('constitution.performance')
+        for handler in list(perf_logger.handlers):
+            try:
+                handler.close()
+            except Exception:
+                pass
+        perf_logger.handlers.clear()
         perf_logger.addHandler(perf_handler)
         perf_logger.setLevel(logging.INFO)
         perf_logger.propagate = False

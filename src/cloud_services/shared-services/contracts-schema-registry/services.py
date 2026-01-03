@@ -269,6 +269,13 @@ class SchemaService:
         Returns:
             SchemaMetadata or None
         """
+        try:
+            schema_uuid = uuid.UUID(schema_id)
+            tenant_uuid = uuid.UUID(tenant_id)
+        except ValueError:
+            logger.debug("Invalid schema_id or tenant_id format for schema lookup")
+            return None
+
         # Check cache first
         cached = self.cache_manager.get_schema(schema_id)
         if cached:
@@ -280,8 +287,8 @@ class SchemaService:
         try:
             query = db.query(Schema).filter(
                 and_(
-                    Schema.schema_id == uuid.UUID(schema_id),
-                    Schema.tenant_id == uuid.UUID(tenant_id)
+                    Schema.schema_id == schema_uuid,
+                    Schema.tenant_id == tenant_uuid
                 )
             )
 

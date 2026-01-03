@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Callable, List
@@ -29,6 +30,25 @@ EXCLUDE_DIRS = {
     ".idea",
     ".vscode",
 }
+
+def _walk_files(repo_root: Path):
+    """Yield files under repo_root while pruning excluded dirs and symlinks."""
+    for root, dirs, files in os.walk(
+        repo_root,
+        topdown=True,
+        onerror=lambda exc: None,
+        followlinks=False,
+    ):
+        root_path = Path(root)
+        dirs[:] = [
+            d for d in dirs
+            if d not in EXCLUDE_DIRS and not (root_path / d).is_symlink()
+        ]
+        for name in files:
+            path = root_path / name
+            if _is_excluded(path) or path.is_symlink():
+                continue
+            yield path
 
 
 @dataclass(frozen=True)
@@ -65,10 +85,8 @@ def _schema_violations(repo_root: Path) -> List[str]:
         repo_root / "gsmd",
     ]
     hits: List[str] = []
-    for path in repo_root.rglob("*.schema.json"):
-        if not path.is_file():
-            continue
-        if _is_excluded(path):
+    for path in _walk_files(repo_root):
+        if path.suffix != ".json" or not path.name.endswith(".schema.json"):
             continue
         if any(_is_under(path, allowed) for allowed in allowed_roots):
             continue
@@ -85,12 +103,8 @@ def _policy_violations(repo_root: Path) -> List[str]:
     ]
     hits: List[str] = []
     policy_extensions = {".json", ".yaml", ".yml"}
-    for path in repo_root.rglob("*"):
-        if not path.is_file():
-            continue
+    for path in _walk_files(repo_root):
         if path.suffix.lower() not in policy_extensions:
-            continue
-        if _is_excluded(path):
             continue
         name_lower = path.name.lower()
         if "policy" not in name_lower:
@@ -115,10 +129,8 @@ def _alerting_violations(repo_root: Path) -> List[str]:
     src_root = repo_root / "src"
     if not src_root.exists():
         return hits
-    for path in src_root.rglob("*.py"):
-        if not path.is_file():
-            continue
-        if _is_excluded(path):
+    for path in _walk_files(src_root):
+        if path.suffix != ".py":
             continue
         if path in allowed_clients:
             continue

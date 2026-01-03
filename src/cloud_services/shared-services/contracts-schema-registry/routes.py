@@ -92,7 +92,8 @@ def get_transformation_service() -> TransformationService:
 def get_tenant_context(request: Request) -> Dict[str, str]:
     """Extract tenant context from request."""
     return {
-        "tenant_id": getattr(request.state, "tenant_id", "dev-tenant"),
+        # Use a deterministic UUID for dev/test defaults to avoid UUID parsing errors
+        "tenant_id": getattr(request.state, "tenant_id", "00000000-0000-0000-0000-000000000000"),
         "user_id": getattr(request.state, "user_id", "unknown"),
         "module_id": getattr(request.state, "module_id", "M34")
     }

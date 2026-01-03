@@ -417,7 +417,13 @@ class ConstitutionRuleManagerJSON(BaseConstitutionManager):
         if not self._initialized:
             self.initialize()
 
-        db_health = self.json_manager.health_check()
+        try:
+            db_health = self.json_manager.health_check()
+        except Exception as e:
+            db_health = {
+                "healthy": False,
+                "error": str(e)
+            }
 
         # Add configuration health check
         config_health = {

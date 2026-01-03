@@ -14,7 +14,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Literal, Optional
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, Field, field_validator, model_validator, ConfigDict
 
 
 # ============================================================================
@@ -234,6 +234,8 @@ class IngestRequest(BaseModel):
 
 class SignalIngestResult(BaseModel):
     """Result for a single signal ingestion."""
+    # Allow construction from objects with attributes (e.g., service mocks)
+    model_config = ConfigDict(from_attributes=True)
     signal_id: str = Field(..., description="Signal ID")
     status: IngestStatus = Field(..., description="Ingestion status")
     error_code: Optional[ErrorCode] = Field(None, description="Error code if rejected")

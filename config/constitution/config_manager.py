@@ -7,12 +7,15 @@ management functionality with database integration.
 """
 
 import json
+import logging
 import os
 from pathlib import Path
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 
 from .database import ConstitutionRulesDB
+
+logger = logging.getLogger(__name__)
 from .rule_extractor import ConstitutionRuleExtractor
 from .path_utils import resolve_constitution_db_path
 from .rule_count_loader import get_rule_count_loader
@@ -66,8 +69,22 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
     def _load_constitution_config(self):
         """Load constitution configuration from file."""
         if self.constitution_config_file.exists():
-            with open(self.constitution_config_file, 'r', encoding='utf-8') as f:
-                self.constitution_config = json.load(f)
+            try:
+                with open(self.constitution_config_file, 'r', encoding='utf-8') as f:
+                    self.constitution_config = json.load(f)
+            except (json.JSONDecodeError, ValueError) as e:
+                # If config file is corrupted, create default config
+                logger.warning(f"Failed to load constitution config (corrupted JSON): {e}")
+                total_rules = self._derive_total_rules()
+                self.constitution_config = {
+                    "constitution_version": "2.0",
+                    "total_rules": total_rules,
+                    "default_enabled": True,
+                    "database_path": str(self.db_path),
+                    "last_updated": datetime.now().isoformat(),
+                    "rules": {}
+                }
+                self._save_constitution_config()
         else:
             # Create default configuration with dynamic total_rules derived from source of truth if available
             total_rules = self._derive_total_rules()
@@ -570,7 +587,11 @@ class ConstitutionRuleManager(EnhancedConfigManager, BaseConstitutionManager):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
+        try:
+            self.close()
+        except Exception as e:
+            logger.warning(f"Error closing constitution rule manager: {e}")
+            # Don't re-raise - context manager should handle exceptions gracefully
 
 
 # Convenience function to get a constitution rule manager instance

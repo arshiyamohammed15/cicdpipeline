@@ -20,7 +20,13 @@ class TestSchemaValidationPerformance:
     async def client(self):
         """Create async test client."""
         transport = ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://test",
+            headers={"X-Perf-Test": "true"}
+        ) as client:
+            # Warm up application and DB connections so latency measurements exclude startup
+            await client.get("/registry/v1/health")
             yield client
 
     @pytest.mark.asyncio
@@ -72,7 +78,13 @@ class TestSchemaRegistrationPerformance:
     async def client(self):
         """Create async test client."""
         transport = ASGITransport(app=app)
-        async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://test",
+            headers={"X-Perf-Test": "true"}
+        ) as client:
+            # Warm up application and DB connections so latency measurements exclude startup
+            await client.get("/registry/v1/health")
             yield client
 
     @pytest.mark.asyncio

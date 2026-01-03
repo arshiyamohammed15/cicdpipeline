@@ -167,7 +167,7 @@ def main(argv: list[str] | None = None) -> int:
     if nodeids and len(nodeids) > 300:
         use_nodeids = None
     cmd = build_pytest_command(args, use_nodeids or file_paths)
-    logger.info("Running:", " ".join(cmd))
+    logger.info("Running: %s", " ".join(cmd))
     result = subprocess.run(cmd)
     return result.returncode
 

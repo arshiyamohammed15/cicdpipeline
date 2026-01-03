@@ -11,6 +11,29 @@ def _run(cmd: list[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(cmd, cwd=REPO_ROOT, capture_output=True, text=True)
 
 
+def _extract_missing_modules(inventory_text: str) -> set[str]:
+    """Parse the PASS 1 inventory for the MISSING MODULE ROOTS section."""
+    missing: set[str] = set()
+    in_missing_section = False
+    for line in inventory_text.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("## ") and "MISSING MODULE ROOTS" in stripped:
+            in_missing_section = True
+            continue
+        if in_missing_section:
+            if stripped.startswith("## "):
+                break
+            if not stripped:
+                continue
+            if stripped.startswith("- none"):
+                return set()
+            if stripped.startswith("- "):
+                module_id = stripped.removeprefix("- ").split(":", 1)[0].strip()
+                if module_id:
+                    missing.add(module_id)
+    return missing
+
+
 def test_pass1_and_pass2(tmp_path: Path) -> None:
     run_dir = tmp_path / "run"
     run_dir.mkdir()
@@ -36,12 +59,11 @@ def test_pass1_and_pass2(tmp_path: Path) -> None:
     assert allowed_text.strip()
 
     unmapped_required = {"EPC-6", "EPC-7", "EPC-10", "EPC-14"}
+    missing_modules = _extract_missing_modules(inventory_text)
     if pass1.returncode != 0:
-        assert "MISSING MODULE ROOTS" in inventory_text
-        for module_id in unmapped_required:
-            assert module_id in inventory_text
+        assert unmapped_required.issubset(missing_modules)
     else:
-        assert all(module_id not in inventory_text for module_id in unmapped_required)
+        assert missing_modules == set()
 
     pass2 = _run(
         [

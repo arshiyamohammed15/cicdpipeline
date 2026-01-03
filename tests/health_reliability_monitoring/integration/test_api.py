@@ -20,7 +20,9 @@ app = create_app()
 
 
 @pytest.mark.integration
-def test_component_registry_and_status_flow():
+def test_component_registry_and_status_flow(hrm_test_db):
+    """Test component registry and status flow with database setup."""
+    # hrm_test_db fixture ensures database tables are created
     client = TestClient(app)
     headers = {"Authorization": "Bearer valid_epc1_test"}
     component = {

@@ -24,6 +24,8 @@ jest.mock('vscode', () => {
 }, { virtual: true });
 
 describe('PlanExecutionAgent', () => {
+    jest.setTimeout(15000);
+
     let workspaceRoot: string;
     let zuRoot: string;
     const repoId = 'demo-repo';

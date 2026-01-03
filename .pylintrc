@@ -1,0 +1,34 @@
+[MASTER]
+extension-pkg-allow-list=
+ignore=
+ignore-patterns=.*evidence-receipt-indexing-service.*
+ignore-paths=src/cloud_services/shared-services/evidence-receipt-indexing-service/.*
+
+[MESSAGES CONTROL]
+disable=
+    R0801,  # duplicate-code (noise in shared scaffolding)
+    R0401,  # cyclic-import (allowed in current package layout)
+    C0301,  # line-too-long
+    C0302,  # too-many-lines
+    C0303,  # trailing-whitespace
+    C0415,  # import-outside-toplevel
+    R0913,  # too-many-arguments
+    R0914,  # too-many-locals
+    R0917,  # too-many-positional-arguments
+    W0707,  # raise-missing-from
+    W0718,  # broad-exception-caught
+    E1123,  # unexpected-keyword-arg (noisy in dynamic endpoints)
+    W0611,  # unused-import
+    W0613,  # unused-argument
+    W0212,  # protected-access
+
+[REPORTS]
+output-format = text
+reports = no
+
+[BASIC]
+good-names = i,j,k,ex,Run,_
+
+[FORMAT]
+max-line-length = 120
+

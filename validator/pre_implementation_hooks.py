@@ -91,8 +91,9 @@ class ConstitutionRuleLoader:
         return self.rules_by_category.get(category, [])
 
     def get_total_rule_count(self) -> int:
-        """Get total number of loaded rules."""
-        return len(self.rules)
+        """Get total number of enabled rules loaded from JSON files."""
+        # Count enabled rules from the actual loaded rules (single source of truth)
+        return sum(1 for rule in self.rules if rule.get("enabled", True))
 
 
 class PromptValidator:
@@ -643,8 +644,9 @@ class PreImplementationHookManager:
         """
         self.rule_loader = ConstitutionRuleLoader(constitution_dir)
         self.validator = PromptValidator(self.rule_loader)
-        counts = get_catalog_counts()
-        self.total_rules = counts.get("enabled_rules", self.rule_loader.get_total_rule_count())
+        # Use rule_loader as single source of truth for rule count
+        # This ensures consistency with the constitution_dir parameter
+        self.total_rules = self.rule_loader.get_total_rule_count()
 
     def validate_before_generation(self, prompt: str, file_type: str = None,
                                  task_type: str = None) -> Dict[str, Any]:

@@ -485,6 +485,22 @@ class ConstitutionRulesJSON:
 
         return sorted(rules, key=lambda x: x["rule_number"])
 
+    def get_enabled_rules(self) -> List[Dict[str, Any]]:
+        """Get all enabled rules."""
+        return self.get_all_rules(enabled_only=True)
+
+    def get_disabled_rules(self) -> List[Dict[str, Any]]:
+        """Get all disabled rules."""
+        if not self._initialized:
+            self._init_database()
+
+        rules = []
+        for rule_data in self.data["rules"].values():
+            if not rule_data["enabled"]:
+                rules.append(rule_data)
+
+        return sorted(rules, key=lambda x: x["rule_number"])
+
     def enable_rule(self, rule_number: int, config_data: Optional[Dict[str, Any]] = None) -> bool:
         """Enable a rule."""
         if not self._initialized:
@@ -572,6 +588,52 @@ class ConstitutionRulesJSON:
         rules = self.get_all_rules(enabled_only=enabled_only)
         return json.dumps(rules, indent=2, ensure_ascii=False)
 
+    def import_rules_from_json(self, json_data: str) -> bool:
+        """Import rules from JSON format."""
+        try:
+            if not self._initialized:
+                self._init_database()
+
+            rules = json.loads(json_data)
+            if not isinstance(rules, list):
+                raise ValueError("JSON data must be a list of rules")
+
+            for rule in rules:
+                rule_number = rule.get("rule_number")
+                if rule_number is None:
+                    continue
+
+                rule_key = str(rule_number)
+                # Update or add rule
+                self.data["rules"][rule_key] = {
+                    "rule_number": rule_number,
+                    "title": rule.get("title", ""),
+                    "category": rule.get("category", "unknown"),
+                    "priority": rule.get("priority", "important"),
+                    "content": rule.get("content", ""),
+                    "enabled": rule.get("enabled", True),
+                    "config": rule.get("config", {"default_enabled": True}),
+                    "metadata": rule.get("metadata", {
+                        "created_at": datetime.now().isoformat(),
+                        "updated_at": datetime.now().isoformat(),
+                        "usage_count": 0,
+                        "last_used": None
+                    })
+                }
+
+            # Update statistics
+            self._update_statistics()
+
+            # Save database
+            self._save_database()
+
+            logger.info(f"Imported {len(rules)} rules from JSON")
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to import rules from JSON: {e}")
+            return False
+
     def search_rules(self, search_term: str, enabled_only: bool = False) -> List[Dict[str, Any]]:
         """Search rules by title or content."""
         if not self._initialized:
@@ -596,6 +658,26 @@ class ConstitutionRulesJSON:
             self._init_database()
 
         return self.data["categories"]
+
+    def get_category_statistics(self) -> Dict[str, Dict[str, Any]]:
+        """Get statistics for each category."""
+        if not self._initialized:
+            self._init_database()
+
+        # Calculate counts from actual rules
+        category_counts = {}
+        for rule_data in self.data.get("rules", {}).values():
+            category = rule_data.get("category", "unknown")
+            category_counts[category] = category_counts.get(category, 0) + 1
+
+        category_stats = {}
+        for category_name, category_data in self.data.get("categories", {}).items():
+            category_stats[category_name] = {
+                "count": category_counts.get(category_name, category_data.get("rule_count", 0)),
+                "description": category_data.get("description", ""),
+                "priority": category_data.get("priority", "unknown")
+            }
+        return category_stats
 
     def backup_database(self, backup_path: str) -> bool:
         """Create a backup of the database."""
@@ -661,11 +743,10 @@ class ConstitutionRulesJSON:
                 except:
                     pass
 
-            # Check data integrity
-            data_valid = True
+            # Check data integrity without mutating state
             try:
-                self._validate_database_structure()
-            except:
+                data_valid = self._validate_data_structure(self.data)
+            except Exception:
                 data_valid = False
 
             # Check rule count
