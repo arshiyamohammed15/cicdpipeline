@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BKG Edge Schema",
+  "description": "Background Knowledge Graph edge contract (Phase 0 stub). Connects entities (tenant, repo, actor, receipt, policy) to form knowledge graph.",
+  "type": "object",
+  "required": [
+    "edge_id",
+    "source_entity_type",
+    "source_entity_id",
+    "target_entity_type",
+    "target_entity_id",
+    "edge_type"
+  ],
+  "properties": {
+    "edge_id": {
+      "type": "string",
+      "description": "Unique identifier for the edge (UUID or deterministic hash)"
+    },
+    "source_entity_type": {
+      "type": "string",
+      "enum": ["tenant", "repo", "actor", "receipt", "policy", "gate", "signal", "event"],
+      "description": "Type of source entity"
+    },
+    "source_entity_id": {
+      "type": "string",
+      "description": "ID of source entity"
+    },
+    "target_entity_type": {
+      "type": "string",
+      "enum": ["tenant", "repo", "actor", "receipt", "policy", "gate", "signal", "event"],
+      "description": "Type of target entity"
+    },
+    "target_entity_id": {
+      "type": "string",
+      "description": "ID of target entity"
+    },
+    "edge_type": {
+      "type": "string",
+      "enum": ["owns", "contains", "triggers", "references", "depends_on", "belongs_to", "causes", "precedes"],
+      "description": "Type of edge relationship"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional edge-specific metadata (weight, confidence, etc.)",
+      "additionalProperties": true
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when edge was created"
+    }
+  }
+}
+

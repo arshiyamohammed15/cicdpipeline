@@ -7,7 +7,7 @@
   "properties": {
     "decision": {
       "type": "string",
-      "enum": ["ALLOW", "DENY", "ELEVATION_REQUIRED", "ELEVATION_GRANTED"],
+      "enum": ["ALLOW", "DENY", "ELEVATION_REQUIRED", "ELEVATION_GRANTED", "BREAK_GLASS_GRANTED"],
       "description": "Access decision"
     },
     "reason": {

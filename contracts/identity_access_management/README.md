@@ -13,6 +13,7 @@ This folder contains **OpenAPI**, **JSON Schemas**, and **example JSONs** for th
 
 - `/iam/v1/verify` - Verify identity/token (POST)
 - `/iam/v1/decision` - Evaluate access decision or JIT elevation (POST)
+- `/iam/v1/break-glass` - Trigger break-glass access (POST)
 - `/iam/v1/policies` - Upsert policy bundle (PUT)
 - `/iam/v1/health` - Health check (GET)
 - `/iam/v1/metrics` - Metrics endpoint (GET)

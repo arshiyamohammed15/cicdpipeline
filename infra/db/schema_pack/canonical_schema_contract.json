@@ -1,0 +1,116 @@
+{
+  "schema_pack_id": "zeroui_core_schema_pack",
+  "schema_version": "001",
+  "postgres": {
+    "schema": "core",
+    "tables": [
+      {
+        "name": "meta.schema_version",
+        "primary_key": ["schema_pack_id"],
+        "columns": ["schema_pack_id", "schema_version", "applied_at"]
+      },
+      {
+        "name": "core.tenant",
+        "primary_key": ["tenant_id"],
+        "columns": ["tenant_id", "created_at"]
+      },
+      {
+        "name": "core.repo",
+        "primary_key": ["repo_id"],
+        "columns": ["repo_id", "tenant_id", "created_at"]
+      },
+      {
+        "name": "core.actor",
+        "primary_key": ["actor_id"],
+        "columns": ["actor_id", "tenant_id", "created_at"]
+      },
+      {
+        "name": "core.receipt_index",
+        "primary_key": ["receipt_id"],
+        "columns": [
+          "receipt_id",
+          "tenant_id",
+          "repo_id",
+          "gate_id",
+          "receipt_type",
+          "outcome",
+          "policy_snapshot_hash",
+          "emitted_at",
+          "zu_root_relpath",
+          "payload_sha256",
+          "created_at"
+        ]
+      },
+      {
+        "name": "core.bkg_edge",
+        "primary_key": ["edge_id"],
+        "columns": [
+          "edge_id",
+          "source_entity_type",
+          "source_entity_id",
+          "target_entity_type",
+          "target_entity_id",
+          "edge_type",
+          "metadata",
+          "created_at"
+        ]
+      }
+    ]
+  },
+  "sqlite": {
+    "tables": [
+      {
+        "name": "meta__schema_version",
+        "primary_key": ["schema_pack_id"],
+        "columns": ["schema_pack_id", "schema_version", "applied_at"]
+      },
+      {
+        "name": "core__tenant",
+        "primary_key": ["tenant_id"],
+        "columns": ["tenant_id", "created_at"]
+      },
+      {
+        "name": "core__repo",
+        "primary_key": ["repo_id"],
+        "columns": ["repo_id", "tenant_id", "created_at"]
+      },
+      {
+        "name": "core__actor",
+        "primary_key": ["actor_id"],
+        "columns": ["actor_id", "tenant_id", "created_at"]
+      },
+      {
+        "name": "core__receipt_index",
+        "primary_key": ["receipt_id"],
+        "columns": [
+          "receipt_id",
+          "tenant_id",
+          "repo_id",
+          "gate_id",
+          "receipt_type",
+          "outcome",
+          "policy_snapshot_hash",
+          "emitted_at",
+          "zu_root_relpath",
+          "payload_sha256",
+          "created_at"
+        ]
+      },
+      {
+        "name": "core__bkg_edge",
+        "primary_key": ["edge_id"],
+        "columns": [
+          "edge_id",
+          "source_entity_type",
+          "source_entity_id",
+          "target_entity_type",
+          "target_entity_id",
+          "edge_type",
+          "metadata",
+          "created_at"
+        ]
+      }
+    ]
+  }
+}
+

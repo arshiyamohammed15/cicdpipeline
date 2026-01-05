@@ -21,7 +21,9 @@
 4. Scripts **must write** only to the external paths above (never inside the repo tree).
 
 **Version:** 2.0 • **Date:** 2025-11-05 (UTC)
-**Scope:** Authoritative placement rules for the **4 planes** (IDE Plane, Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v2.0 simplifies the structure with lazy creation (parent folders only), consolidation (unified telemetry pattern), and flattening (reduced nesting depth from 5 to 3 levels).
+**Scope:** Authoritative placement rules for the **4 planes** (IDE Plane (Laptop), Tenant, Product, Shared), with a **laptop‑first** layout and a **configurable local root** (`ZU_ROOT`). This v2.0 simplifies the structure with lazy creation (parent folders only), consolidation (unified telemetry pattern), and flattening (reduced nesting depth from 5 to 3 levels).
+
+> **Note:** "IDE Plane" and "IDE Plane (Laptop)" are equivalent terms. The "(Laptop)" suffix clarifies that this plane represents laptop-local storage. Legacy references to "IDE Plane" remain valid for compatibility.
 
 > **Principles**: JSONL receipts are the **legal truth**; policy snapshots are **signed**; privacy by default (**no code/PII** in stores); **no secrets/private keys** on disk; cloud buckets are represented locally under `ZU_ROOT` for development.
 
@@ -88,7 +90,7 @@ Use `storage-scripts/tools/config_manager.ps1` to:
 ### Plane Structure
 
 All four planes live under `ZU_ROOT`:
-- **IDE Plane** → `{ZU_ROOT}/ide/...`
+- **IDE Plane (Laptop)** → `{ZU_ROOT}/ide/...`
 - **Tenant** → `{ZU_ROOT}/tenant/...`
 - **Product** → `{ZU_ROOT}/product/...`
 - **Shared** → `{ZU_ROOT}/shared/...`
@@ -119,7 +121,7 @@ All four planes live under `ZU_ROOT`:
 
 ## 4) Per‑plane, per‑folder rules (aligned with scaffold)
 
-### 4.1 IDE (`{ZU_ROOT}/ide/…`)
+### 4.1 IDE Plane (Laptop) (`{ZU_ROOT}/ide/…`)
 - `receipts/{repo-id}/{yyyy}/{mm}/` — **Append‑only signed JSONL**. No code/PII.
   Aux: `index/`, `quarantine/`, `checkpoints/` created on-demand under the same repo path.
 - `policy/` — Signed snapshots + `current` pointer, cache, and `trust/pubkeys/` (public keys only).
@@ -132,7 +134,7 @@ All four planes live under `ZU_ROOT`:
 **Lazy creation:** Scaffold creates only parent folders; subfolders (like `receipts/{repo}/index/`, `llm/prompts/`) are created on-demand when needed.
 
 ### 4.2 Tenant (`{ZU_ROOT}/tenant/…`)
-- `evidence/data/` — Merged receipts, manifests, checksums (created on-demand with dt= partitions).
+- `evidence/data/` — Merged receipts, manifests, checksums (created on-demand with dt= partitions). **WORM semantics** (Write-Once-Read-Many).
 - `evidence/dlq/` — Dead letter queue.
 - `evidence/watermarks/{consumer-id}/` — Per-consumer watermarks (created on-demand).
 - `ingest/(staging|dlq)/` and `ingest/staging/unclassified/` — RFC fallback.
@@ -140,6 +142,12 @@ All four planes live under `ZU_ROOT`:
 - `adapters/(webhooks|gateway-logs)/dt=…/` — Created on-demand.
 - `reporting/marts/dt=…/` — Created on-demand.
 - `policy/(snapshots|trust/pubkeys)/` — Signed; public keys only.
+- `context/(identity|sso|scim|compliance)/` — Tenant context stores (created on-demand).
+  - **Allowed**: Exported/redacted context snapshots, indexes, metadata. **No code/PII**; use handles/IDs only. JSONL or structured JSON format.
+  - **Never**: Source code, raw PII, secrets, private keys, unredacted user data.
+  - **Writers**: Tenant context services, SSO/SCIM adapters, compliance hooks, data governance services.
+  - **Readers**: Policy evaluation services, access control services, audit/compliance services.
+  - **Note**: DB/vector/graph systems may exist for tenant context, but any file/object exports (snapshots, indexes, dumps) must land in `tenant/context/`. In-memory or ephemeral DB caches are exempt; persistent exports require this path.
 - `meta/schema/` — **Deprecated** legacy alias; created only with compatibility enabled.
 
 ### 4.3 Product (`{ZU_ROOT}/product/…`)
@@ -156,11 +164,34 @@ All four planes live under `ZU_ROOT`:
 - `siem/(detections|events/dt=…/)` — Flattened SIEM structure.
 - `bi-lake/curated/zero-ui/`.
 - `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools|ollama|tinyllama)/` — Flattened governance structure.
+- `provider-registry/` — Provider metadata, versions, allowlists (created on-demand).
+  - **Allowed**: Provider metadata (LLM providers, model versions, capabilities), allowlists/blocklists, version manifests, provider configuration snapshots. JSONL or structured JSON format.
+  - **Never**: Provider API keys, secrets, weights, model binaries, PII.
+  - **Writers**: Provider registry services, configuration management services, deployment services.
+  - **Readers**: LLM gateway services, routing services, policy evaluation services, deployment services.
+- `eval/(harness|results|cache)/` — Shared evaluation harness storage (created on-demand).
+  - **Allowed**: Evaluation harness inputs/outputs, fixtures, run results, test artifacts. **No code/PII**; use handles/IDs only. Format: JSONL or structured JSON.
+  - **Never**: Source code, raw PII, secrets, unredacted evaluation data.
+  - **Writers**: Evaluation harness services, testing services, policy evaluation services.
+  - **Readers**: Evaluation harness services, reporting services, audit services.
+  - **Access control**: Required; evaluation results may contain sensitive metadata.
+- `security/sbom/` — SBOM (Software Bill of Materials) outputs, attestations, provenance (created on-demand).
+  - **Allowed**: SBOM outputs (SPDX, CycloneDX), attestations, provenance metadata, signed artifacts. **Signed artifacts only**.
+  - **Never**: Unsigned SBOMs, unverified attestations, secrets, private keys.
+  - **Writers**: SBOM generation services, build services, supply chain verification services.
+  - **Readers**: Security services, compliance services, audit services, deployment services.
+  - **Retention**: Per compliance requirements; signed artifacts must be retained per policy.
+- `security/supply-chain/` — SLSA/provenance/verification artifacts (created on-demand).
+  - **Allowed**: SLSA provenance, supply chain verification artifacts, attestation evidence, signed verification results. **Signed artifacts only**.
+  - **Never**: Unsigned provenance, unverified attestations, secrets, private keys.
+  - **Writers**: Supply chain verification services, build services, deployment services.
+  - **Readers**: Security services, compliance services, audit services, deployment services.
+  - **Retention**: Per compliance requirements; signed artifacts must be retained per policy.
 
 ---
 
 ## 5) Fallbacks & RFC
-- **IDE**: `{ZU_ROOT}/ide/tmp/UNCLASSIFIED__{slug}`
+- **IDE Plane (Laptop)**: `{ZU_ROOT}/ide/tmp/UNCLASSIFIED__{slug}`
 - **Tenant/Product**: `.../ingest/staging/unclassified/{slug}`
 Resolve within **24h** with an RFC; move to canonical; add manifests/checksums for evidence.
 
@@ -174,13 +205,18 @@ Unchanged from v1.0; refer to sections 9–12 of v1.0 with the following additio
 ---
 
 ## 7) Path templates (cheat sheet, updated)
-- **IDE receipts**: `ide/receipts/{repo-id}/{yyyy}/{mm}/`
+- **IDE Plane (Laptop) receipts**: `ide/receipts/{repo-id}/{yyyy}/{mm}/`
 - **Telemetry (all planes)**: `{plane}/telemetry/(metrics|traces|logs)/dt={yyyy}-{mm}-{dd}/`
 - **Tenant Evidence**: `tenant/evidence/data/{repo-id}/dt={yyyy}-{mm}-{dd}/`
 - **Tenant Adapters**: `tenant/adapters/(webhooks/{source}|gateway-logs)/dt={yyyy}-{mm}-{dd}/`
 - **Tenant Reporting**: `tenant/reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`
+- **Tenant Context**: `tenant/context/(identity|sso|scim|compliance)/`
 - **Product Policy**: `product/policy/registry/(releases|templates|revocations)/`
 - **Product Reporting**: `product/reporting/tenants/{tenant-id}/{env}/aggregates/dt={yyyy}-{mm}-{dd}/`
+- **Shared Provider Registry**: `shared/provider-registry/`
+- **Shared Evaluation Harness**: `shared/eval/(harness|results|cache)/`
+- **Shared SBOM**: `shared/security/sbom/`
+- **Shared Supply Chain**: `shared/security/supply-chain/`
 - **Watermarks**: `*/evidence/watermarks/{consumer-id}/`
 - **Deprecated alias**: `tenant/.../meta/schema/` (opt‑in only)
 

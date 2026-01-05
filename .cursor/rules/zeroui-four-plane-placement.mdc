@@ -1,0 +1,32 @@
+---
+description: "ZeroUI: Four-Plane placement (consult Four Plane rules before creating files/folders)"
+alwaysApply: true
+---
+
+# ZeroUI Four-Plane Placement Rule (MANDATORY)
+
+## Sources of truth (read-only)
+- `storage-scripts/folder-business-rules.md`
+- `docs/architecture/four_plane_vs_7x4_triple_audit.md` (if present)
+- `docs/architecture/storage_fabric_four_plane.md` (if present)
+
+## Mandatory decision step (run BEFORE creating any file/folder)
+1) Classify the requested artifact:
+   - **Runtime Storage Artifact**: anything intended to live under ZU_ROOT Four-Plane paths (laptop/tenant/product/shared), such as receipts, caches, policy mirrors, evidence exports, eval outputs, sbom/provenance artifacts, telemetry exports.
+   - **Repo Source Artifact**: code/docs/scripts that live inside the repository.
+
+2) If **Runtime Storage Artifact**:
+   - Open `storage-scripts/folder-business-rules.md`.
+   - Determine the correct plane (IDE/Laptop, Tenant, Product, Shared) and select the exact canonical path family permitted.
+   - Create the folder/file ONLY under that canonical path family.
+   - If no canonical path family exists for the artifact: STOP and ask max 3 questions (do not guess).
+
+3) If **Repo Source Artifact**:
+   - Do NOT create new top-level plane roots inside the repository (no new `laptop/`, `tenant/`, `product/`, `shared/` unless explicitly working on storage-scripts scaffolding itself).
+   - Place files only under existing repo structure required by the task (e.g., `src/**`, `docs/**`, `storage-scripts/**`).
+   - If the correct repo location is ambiguous: STOP and ask max 3 questions (do not guess).
+
+## Hard constraints
+- Never invent new top-level folder families.
+- Never guess a plane/path.
+- If uncertain: STOP and ask.

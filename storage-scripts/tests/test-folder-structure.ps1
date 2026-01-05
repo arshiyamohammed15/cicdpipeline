@@ -157,6 +157,9 @@ function Test-TenantFolderStructure {
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "policy" "trust" "pubkeys") -Description "Public keys only")) { @{Result=$true; Path="tenant/policy/trust/pubkeys"} } else { @{Result=$false; Path="tenant/policy/trust/pubkeys"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context") -Description "Tenant context stores")) { @{Result=$true; Path="tenant/context"} } else { @{Result=$false; Path="tenant/context"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
     # Deprecated alias (only if -CompatAliases)
     if($CompatAliases) {
         $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "meta" "schema") -Description "Deprecated legacy alias")) { @{Result=$true; Path="tenant/meta/schema"} } else { @{Result=$false; Path="tenant/meta/schema"} }
@@ -240,6 +243,18 @@ function Test-SharedFolderStructure {
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "llm" "tools") -Description "LLM tools")) { @{Result=$true; Path="shared/llm/tools"} } else { @{Result=$false; Path="shared/llm/tools"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "provider-registry") -Description "Provider metadata, versions, allowlists")) { @{Result=$true; Path="shared/provider-registry"} } else { @{Result=$false; Path="shared/provider-registry"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "eval") -Description "Shared evaluation harness")) { @{Result=$true; Path="shared/eval"} } else { @{Result=$false; Path="shared/eval"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "security" "sbom") -Description "SBOM artifacts")) { @{Result=$true; Path="shared/security/sbom"} } else { @{Result=$false; Path="shared/security/sbom"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "security" "supply-chain") -Description "Supply chain attestation")) { @{Result=$true; Path="shared/security/supply-chain"} } else { @{Result=$false; Path="shared/security/supply-chain"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 }
 

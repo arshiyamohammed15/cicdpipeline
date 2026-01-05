@@ -88,6 +88,34 @@ paths:
           $ref: '#/components/responses/RateLimited'
         '5XX':
           $ref: '#/components/responses/ServerError'
+  /break-glass:
+    post:
+      operationId: triggerBreakGlass
+      summary: Trigger break-glass access
+      description: Trigger break-glass access per IAM spec section 3.3. Crisis mode access with minimal time-boxed admin (default 4h).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BreakGlassRequest'
+      responses:
+        '200':
+          description: Break-glass access granted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DecisionResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/AuthFailed'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '5XX':
+          $ref: '#/components/responses/ServerError'
   /policies:
     put:
       operationId: upsertPolicies
@@ -301,7 +329,7 @@ components:
       properties:
         decision:
           type: string
-          enum: [ALLOW, DENY, ELEVATION_REQUIRED, ELEVATION_GRANTED]
+          enum: [ALLOW, DENY, ELEVATION_REQUIRED, ELEVATION_GRANTED, BREAK_GLASS_GRANTED]
           description: Access decision
         reason:
           type: string
@@ -401,3 +429,38 @@ components:
           type: string
           format: date-time
           description: Config timestamp (ISO 8601)
+    BreakGlassRequest:
+      type: object
+      required: [subject, incident_id, justification]
+      properties:
+        subject:
+          type: object
+          required: [sub, roles]
+          properties:
+            sub:
+              type: string
+              description: Subject identifier
+            roles:
+              type: array
+              items:
+                type: string
+                enum: [admin, developer, viewer, ci_bot]
+              description: List of roles
+            attributes:
+              type: object
+              additionalProperties: true
+              description: Additional subject attributes
+        incident_id:
+          type: string
+          description: Incident identifier
+          minLength: 1
+        justification:
+          type: string
+          description: Justification text (non-PII)
+          minLength: 1
+        approver_identity:
+          type: string
+          description: Approver identity (optional)
+        resource:
+          type: string
+          description: Resource to access (optional)

@@ -1,0 +1,43 @@
+name: db-schema-equivalence
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install SQLite CLI
+        shell: pwsh
+        run: |
+          choco install sqlite -y
+        continue-on-error: true
+
+      - name: Start Postgres Docker containers
+        shell: pwsh
+        run: |
+          if (Test-Path "infra/docker/compose.yaml") {
+            cd infra/docker
+            docker compose -f compose.yaml up -d
+            Start-Sleep -Seconds 5
+            docker ps --filter "name=zeroui-postgres"
+          } else {
+            Write-Host "STOP: infra/docker/compose.yaml not found"
+            exit 1
+          }
+
+      - name: Set env vars and apply schema pack
+        shell: pwsh
+        run: |
+          $env:ZEROUI_IDE_SQLITE_PATH = "$env:RUNNER_TEMP\zeroui_local.db"
+          pwsh scripts/db/apply_schema_pack.ps1
+
+      - name: Verify schema equivalence
+        shell: pwsh
+        run: |
+          pwsh scripts/db/verify_schema_equivalence.ps1
+

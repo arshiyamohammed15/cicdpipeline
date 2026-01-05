@@ -108,6 +108,11 @@ function New-TenantFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $tenantPolicyPath "trust")) -or
                          -not (New-FolderStructure -Path (Join-Path (Join-Path $tenantPolicyPath "trust") "pubkeys") -Description "Public keys only")) { "tenant/policy/trust/pubkeys" }
 
+    # context/ - Tenant context stores (identity, SSO/SCIM, compliance)
+    $contextPath = Join-Path $tenantBase "context"
+    $Errors.Value += if(-not (New-FolderStructure -Path $contextPath -Description "Tenant context stores")) { "tenant/context" }
+    # identity/, sso/, scim/, compliance/ created on-demand
+
     # meta/schema/ - Deprecated alias (only with -CompatAliases)
     if($CompatAliases) {
         $metaPath = Join-Path $tenantBase "meta"
@@ -200,6 +205,20 @@ function New-SharedFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedLlmPath "guardrails") -Description "LLM guardrails")) { "shared/llm/guardrails" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedLlmPath "routing") -Description "LLM routing")) { "shared/llm/routing" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedLlmPath "tools") -Description "LLM tools")) { "shared/llm/tools" }
+
+    # provider-registry/ - Provider metadata, versions, allowlists
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedBase "provider-registry") -Description "Provider metadata, versions, allowlists")) { "shared/provider-registry" }
+
+    # eval/ - Shared evaluation harness
+    $evalPath = Join-Path $sharedBase "eval"
+    $Errors.Value += if(-not (New-FolderStructure -Path $evalPath -Description "Shared evaluation harness")) { "shared/eval" }
+    # harness/, results/, cache/ created on-demand
+
+    # security/ - SBOM and supply chain
+    $securityPath = Join-Path $sharedBase "security"
+    $Errors.Value += if(-not (New-FolderStructure -Path $securityPath -Description "Security artifacts")) { "shared/security" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $securityPath "sbom") -Description "SBOM artifacts")) { "shared/security/sbom" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $securityPath "supply-chain") -Description "Supply chain attestation")) { "shared/security/supply-chain" }
 }
 
 # Determine ZU_ROOT
