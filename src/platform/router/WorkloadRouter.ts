@@ -134,35 +134,22 @@ export class WorkloadRouter {
    * Decide routing based on BuildPlan.cost_profile and InfraConfig.routing
    */
   decide(buildPlan: BuildPlan): RoutingDecision {
-    const costProfile = buildPlan.cost_profile;
+    const costProfile = typeof buildPlan.cost_profile === 'string' ? buildPlan.cost_profile.trim().toLowerCase() : undefined;
 
-    // If no cost_profile, use routing.default
-    if (!costProfile || typeof costProfile !== 'string') {
-      return {
-        route: this.infraConfig.routing.default,
-        adapter: this.mapRouteToAdapter(this.infraConfig.routing.default),
-      };
-    }
+    // Default route when cost_profile is missing or invalid
+    let route: 'serverless' | 'gpu-queue' | 'batch' = this.infraConfig.routing.default;
 
-    // Normalize cost_profile
-    const normalizedProfile = costProfile.trim().toLowerCase();
-
-    // Enforce configured cost profiles
-    if (!this.infraConfig.routing.cost_profiles.includes(normalizedProfile as 'light' | 'ai-inference' | 'batch')) {
-      throw new Error(`Unknown cost_profile "${costProfile}". Allowed: ${this.infraConfig.routing.cost_profiles.join(', ')}`);
-    }
-
-    // Map cost_profile to route
-    let route: 'serverless' | 'gpu-queue' | 'batch';
-    if (normalizedProfile === 'light') {
-      route = 'serverless';
-    } else if (normalizedProfile === 'ai-inference') {
-      route = 'gpu-queue';
-    } else if (normalizedProfile === 'batch') {
-      route = 'batch';
-    } else {
-      // Fallback to routing.default
-      route = this.infraConfig.routing.default;
+    if (costProfile) {
+      // Only honor known cost profiles; otherwise fall back to routing.default
+      if (this.infraConfig.routing.cost_profiles.includes(costProfile as 'light' | 'ai-inference' | 'batch')) {
+        if (costProfile === 'light') {
+          route = 'serverless';
+        } else if (costProfile === 'ai-inference') {
+          route = 'gpu-queue';
+        } else if (costProfile === 'batch') {
+          route = 'batch';
+        }
+      }
     }
 
     return {
