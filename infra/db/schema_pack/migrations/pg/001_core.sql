@@ -3,6 +3,9 @@
 
 BEGIN;
 
+-- Ensure pgvector extension available across all planes
+CREATE EXTENSION IF NOT EXISTS vector WITH SCHEMA public;
+
 -- meta schema tracking (no schema namespace)
 CREATE SCHEMA IF NOT EXISTS meta;
 

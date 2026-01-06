@@ -6,38 +6,34 @@ on:
 
 jobs:
   verify:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    env:
+      ZEROUI_IDE_SQLITE_PATH: ${{ runner.temp }}/zeroui_local.db
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Install SQLite CLI
-        shell: pwsh
+        shell: bash
         run: |
-          choco install sqlite -y
-        continue-on-error: true
+          sudo apt-get update
+          sudo apt-get install -y sqlite3
 
       - name: Start Postgres Docker containers
-        shell: pwsh
+        shell: bash
         run: |
-          if (Test-Path "infra/docker/compose.yaml") {
-            cd infra/docker
-            docker compose -f compose.yaml up -d
-            Start-Sleep -Seconds 5
-            docker ps --filter "name=zeroui-postgres"
-          } else {
-            Write-Host "STOP: infra/docker/compose.yaml not found"
-            exit 1
-          }
+          cd infra/docker
+          docker compose -f compose.yaml up -d
+          sleep 5
+          docker ps --filter "name=zeroui-postgres"
 
-      - name: Set env vars and apply schema pack
-        shell: pwsh
+      - name: Apply schema pack
+        shell: bash
         run: |
-          $env:ZEROUI_IDE_SQLITE_PATH = "$env:RUNNER_TEMP\zeroui_local.db"
           pwsh scripts/db/apply_schema_pack.ps1
 
       - name: Verify schema equivalence
-        shell: pwsh
+        shell: bash
         run: |
           pwsh scripts/db/verify_schema_equivalence.ps1
 

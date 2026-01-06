@@ -1,6 +1,6 @@
 services:
   postgres_tenant:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     container_name: zeroui-postgres-tenant
     restart: unless-stopped
     environment:
@@ -44,7 +44,7 @@ services:
       - zeroui-runtime
 
   postgres_shared:
-    image: postgres:16
+    image: pgvector/pgvector:pg16
     container_name: zeroui-postgres-shared
     restart: unless-stopped
     environment:
