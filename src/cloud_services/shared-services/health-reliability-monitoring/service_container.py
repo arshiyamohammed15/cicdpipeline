@@ -71,7 +71,9 @@ def get_db_session() -> Generator[Session, None, None]:
     session = SessionLocal()
     try:
         yield session
-        session.commit()
+        # Commit only if a transaction was started; avoids sqlite "no transaction" errors
+        if session.in_transaction():
+            session.commit()
     except Exception:
         session.rollback()
         raise
