@@ -37,13 +37,23 @@ def get_database_url() -> str:
     """
     Get database URL from environment or use mock fallback.
 
+    Per DB Plane Contract Option A: Product Plane services use ZEROUI_PRODUCT_DB_URL.
+    Falls back to UBI_DATABASE_URL and DATABASE_URL for backward compatibility.
+
     Returns:
         Database connection string
     """
-    database_url = os.getenv("DATABASE_URL") or os.getenv("UBI_DATABASE_URL")
+    # Use canonical plane-specific env var per DB Plane Contract Option A
+    database_url = os.getenv("ZEROUI_PRODUCT_DB_URL")
+
+    # Fallback to legacy env vars for backward compatibility
+    if not database_url:
+        database_url = os.getenv("UBI_DATABASE_URL")
+    if not database_url:
+        database_url = os.getenv("DATABASE_URL")
 
     if not database_url:
-        logger.warning("DATABASE_URL not set, using in-memory SQLite mock")
+        logger.warning("ZEROUI_PRODUCT_DB_URL, UBI_DATABASE_URL, and DATABASE_URL not set, using in-memory SQLite mock")
         return "sqlite:///:memory:"
 
     return database_url

@@ -102,6 +102,7 @@ class Budget(BaseModel):
     temperature: Optional[float] = Field(default=0.0, ge=0.0, le=2.0)
     top_p: Optional[float] = Field(default=None, ge=0.0, le=1.0)
     tool_allowlist: Optional[List[str]] = None
+    seed: Optional[int] = Field(default=None, description="Deterministic seed for LLM invocation")
 
 
 class SafetyOverrides(BaseModel):
@@ -114,6 +115,32 @@ class TelemetryContext(BaseModel):
     trace_id: Optional[str] = None
     span_id: Optional[str] = None
     additional_attributes: Dict[str, Any] = Field(default_factory=dict)
+
+
+class MeasurableSignals(BaseModel):
+    """Measurable signals for task classification per LLM Strategy Directives Section 2."""
+    changed_files_count: int = Field(default=0, ge=0)
+    estimated_diff_loc: int = Field(default=0, ge=0)
+    rag_context_bytes: int = Field(default=0, ge=0)
+    tool_calls_planned: int = Field(default=0, ge=0)
+    high_stakes_flag: bool = Field(default=False, description="Release/rollback/policy/security/compliance flag")
+
+
+class TaskType(str, Enum):
+    """Task type classification per LLM Strategy Directives."""
+    CODE = "code"
+    TEXT = "text"
+    RETRIEVAL = "retrieval"
+    PLANNING = "planning"
+    SUMMARISE = "summarise"
+
+
+class Plane(str, Enum):
+    """Deployment plane identifier per ADR-LLM-001."""
+    IDE = "ide"
+    TENANT = "tenant"
+    PRODUCT = "product"
+    SHARED = "shared"
 
 
 class LLMRequest(BaseModel):
@@ -140,6 +167,12 @@ class LLMRequest(BaseModel):
     # execute. Used by the safety pipeline to enforce FR-8 (tool/action
     # safety) via IAM capabilities and policy constraints.
     proposed_tool_calls: Optional[List[str]] = None
+    # Measurable signals for task classification (LLM Strategy Directives Section 2)
+    measurable_signals: Optional[MeasurableSignals] = Field(default_factory=MeasurableSignals)
+    # Task type for routing (LLM Strategy Directives Section 1.2)
+    task_type: Optional[TaskType] = None
+    # Plane context (determined from request or configuration)
+    plane: Optional[Plane] = None
 
 
 class Tokens(BaseModel):
@@ -251,7 +284,9 @@ __all__ = [
     "DryRunDecision",
     "LLMRequest",
     "LLMResponse",
+    "MeasurableSignals",
     "OperationType",
+    "Plane",
     "RiskClass",
     "RiskFlag",
     "SafetyAssessment",
@@ -260,6 +295,7 @@ __all__ = [
     "SafetyCheck",
     "SafetyCheckStatus",
     "Severity",
+    "TaskType",
     "Tenant",
     "Tokens",
     "SafetyAction",

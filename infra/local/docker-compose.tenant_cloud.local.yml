@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  tenant_pg:
+    image: postgres:16
+    container_name: zeroui-tenant-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_TENANT_USER:-zeroui}
+      POSTGRES_PASSWORD: ${POSTGRES_TENANT_PASSWORD:-zeroui_dev_only}
+      POSTGRES_DB: ${POSTGRES_TENANT_DB:-zeroui_tenant}
+    ports:
+      - "5451:5432"
+    volumes:
+      - zeroui_tenant_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_TENANT_USER:-zeroui} -d ${POSTGRES_TENANT_DB:-zeroui_tenant}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_tenant_local
+
+  redis:
+    image: redis:7-alpine
+    container_name: zeroui-redis-tenant
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6381}:6379"
+    volumes:
+      - zeroui_tenant_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_tenant_local
+
+volumes:
+  zeroui_tenant_pg_data:
+  zeroui_tenant_redis_data:
+
+networks:
+  zeroui_tenant_local:
+    driver: bridge
+

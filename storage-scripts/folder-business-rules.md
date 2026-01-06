@@ -131,6 +131,11 @@ All four planes live under `ZU_ROOT`:
 - `llm/(prompts|tools|adapters|cache/token|cache/embedding|redaction|runs)/` — Sanitized; **no secrets/weights/PII** (created on-demand).
 - `fingerprint/` — Non‑secret device fingerprint.
 - `tmp/` — Temporary; also used by RFC stamping (`UNCLASSIFIED__<slug>`).
+- `evaluation/(dry-runs|results|cache)/` — **Optional** evaluation harness storage (created on-demand).
+  - **Allowed**: Evaluation harness inputs/outputs, fixtures, run results, test artifacts. **No code/PII**; use handles/IDs only. Format: JSONL or structured JSON.
+  - **Never**: Source code, raw PII, secrets, unredacted evaluation data.
+  - **Writers**: Evaluation harness services, testing services, policy evaluation services.
+  - **Readers**: Evaluation harness services, reporting services, audit services.
 **Lazy creation:** Scaffold creates only parent folders; subfolders (like `receipts/{repo}/index/`, `llm/prompts/`) are created on-demand when needed.
 
 ### 4.2 Tenant (`{ZU_ROOT}/tenant/…`)
@@ -157,18 +162,37 @@ All four planes live under `ZU_ROOT`:
 - `adapters/gateway-logs/dt=…/` — Created on-demand.
 - `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).
 - `policy/trust/pubkeys/` — Public keys (merged with policy structure).
+- `features/(store|metadata)/dt=…/` — Feature store and metadata (created on-demand).
+  - **Allowed**: Feature store artifacts, feature metadata, feature lineage. **No code/PII**; use handles/IDs only. JSONL or structured JSON format.
+  - **Never**: Source code, raw PII, secrets, unredacted feature data.
+  - **Writers**: Feature store services, ML pipeline services, data engineering services.
+  - **Readers**: ML services, analytics services, reporting services.
 
 ### 4.4 Shared (`{ZU_ROOT}/shared/…`)
 - `pki/` — All PKI files (trust-anchors, intermediate, CRL, key-rotation) in one folder (public only).
 - `telemetry/(metrics|traces|logs)/dt=…/` — Unified observability pattern (created on-demand).
 - `siem/(detections|events/dt=…/)` — Flattened SIEM structure.
 - `bi-lake/curated/zero-ui/`.
-- `governance/(controls|attestations)/`, `llm/(guardrails|routing|tools|ollama|tinyllama)/` — Flattened governance structure.
+- `governance/(controls|attestations|sbom|supply-chain)/` — Flattened governance structure.
+  - **Note**: `governance/sbom/` and `governance/supply-chain/` complement `security/sbom/` and `security/supply-chain/`. Use governance/ for policy/attestation artifacts; use security/ for raw SBOM/provenance files.
+  - **Allowed** (sbom|supply-chain): SBOM policy artifacts, supply chain attestations, governance metadata. **Signed artifacts only**.
+  - **Never** (sbom|supply-chain): Unsigned SBOMs, unverified attestations, secrets, private keys.
+- `llm/(guardrails|routing|tools|ollama|tinyllama)/` — Flattened governance structure (created on-demand).
 - `provider-registry/` — Provider metadata, versions, allowlists (created on-demand).
   - **Allowed**: Provider metadata (LLM providers, model versions, capabilities), allowlists/blocklists, version manifests, provider configuration snapshots. JSONL or structured JSON format.
   - **Never**: Provider API keys, secrets, weights, model binaries, PII.
   - **Writers**: Provider registry services, configuration management services, deployment services.
   - **Readers**: LLM gateway services, routing services, policy evaluation services, deployment services.
+- `registry/(artifacts|models|providers)/` — Registry for artifacts, models, and providers (created on-demand).
+  - **Allowed**: Artifact metadata, model metadata, provider metadata, version manifests, registry indexes. **No code/PII**; use handles/IDs only. JSONL or structured JSON format.
+  - **Never**: Source code, raw PII, secrets, model binaries, unredacted registry data.
+  - **Writers**: Registry services, artifact management services, model registry services.
+  - **Readers**: Deployment services, policy evaluation services, audit services.
+- `notifications/(queues|events)/dt=…/` — Notification queues and events (created on-demand).
+  - **Allowed**: Notification queue metadata, event metadata, delivery receipts. **No code/PII**; use handles/IDs only. JSONL or structured JSON format.
+  - **Never**: Source code, raw PII, secrets, unredacted notification content.
+  - **Writers**: Notification services, event bus services, alerting services.
+  - **Readers**: Notification services, audit services, monitoring services.
 - `eval/(harness|results|cache)/` — Shared evaluation harness storage (created on-demand).
   - **Allowed**: Evaluation harness inputs/outputs, fixtures, run results, test artifacts. **No code/PII**; use handles/IDs only. Format: JSONL or structured JSON.
   - **Never**: Source code, raw PII, secrets, unredacted evaluation data.
@@ -212,12 +236,27 @@ Unchanged from v1.0; refer to sections 9–12 of v1.0 with the following additio
 - **Tenant Reporting**: `tenant/reporting/marts/<table>/dt={yyyy}-{mm}-{dd}/`
 - **Tenant Context**: `tenant/context/(identity|sso|scim|compliance)/`
 - **Product Policy**: `product/policy/registry/(releases|templates|revocations)/`
+- **Product Features**: `product/features/(store|metadata)/dt={yyyy}-{mm}-{dd}/`
 - **Product Reporting**: `product/reporting/tenants/{tenant-id}/{env}/aggregates/dt={yyyy}-{mm}-{dd}/`
 - **Shared Provider Registry**: `shared/provider-registry/`
+- **Shared Registry**: `shared/registry/(artifacts|models|providers)/`
+- **Shared Notifications**: `shared/notifications/(queues|events)/dt={yyyy}-{mm}-{dd}/`
+- **Shared Governance SBOM/Supply Chain**: `shared/governance/(sbom|supply-chain)/`
 - **Shared Evaluation Harness**: `shared/eval/(harness|results|cache)/`
 - **Shared SBOM**: `shared/security/sbom/`
 - **Shared Supply Chain**: `shared/security/supply-chain/`
+- **IDE Evaluation** (optional): `ide/evaluation/(dry-runs|results|cache)/`
 - **Watermarks**: `*/evidence/watermarks/{consumer-id}/`
 - **Deprecated alias**: `tenant/.../meta/schema/` (opt‑in only)
 
 **End of file (v2.0).**
+
+---
+
+## 8) Audit Ledger Clarification
+
+**Audit ledger** may be under `shared/governance/` or `shared/siem/` depending on use case:
+- **Governance**: Policy-driven audit artifacts, attestations, compliance records
+- **SIEM**: Security event logs, detections, incident artifacts
+
+**Canonical spec**: See `docs/architecture/four_plane_folder_structure_v1.md` for complete path reference.

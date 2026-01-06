@@ -111,7 +111,11 @@ function New-TenantFolderStructure {
     # context/ - Tenant context stores (identity, SSO/SCIM, compliance)
     $contextPath = Join-Path $tenantBase "context"
     $Errors.Value += if(-not (New-FolderStructure -Path $contextPath -Description "Tenant context stores")) { "tenant/context" }
-    # identity/, sso/, scim/, compliance/ created on-demand
+    # Create sub-paths: identity/, sso/, scim/, compliance/
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $contextPath "identity") -Description "Identity context")) { "tenant/context/identity" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $contextPath "sso") -Description "SSO context")) { "tenant/context/sso" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $contextPath "scim") -Description "SCIM context")) { "tenant/context/scim" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $contextPath "compliance") -Description "Compliance context")) { "tenant/context/compliance" }
 
     # meta/schema/ - Deprecated alias (only with -CompatAliases)
     if($CompatAliases) {
@@ -162,6 +166,11 @@ function New-ProductFolderStructure {
     $productPolicyTrustPath = Join-Path $productPolicyPath "trust"
     $Errors.Value += if(-not (New-FolderStructure -Path $productPolicyTrustPath)) { "product/policy/trust" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $productPolicyTrustPath "pubkeys") -Description "Public keys")) { "product/policy/trust/pubkeys" }
+
+    # features/ - Feature store and metadata
+    $featuresPath = Join-Path $productBase "features"
+    $Errors.Value += if(-not (New-FolderStructure -Path $featuresPath -Description "Feature store and metadata")) { "product/features" }
+    # store/, metadata/ created on-demand with dt= partitions
 }
 
 # Function to create Shared Plane
@@ -198,6 +207,8 @@ function New-SharedFolderStructure {
     $Errors.Value += if(-not (New-FolderStructure -Path $governancePath -Description "Flattened governance structure")) { "shared/governance" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "controls") -Description "Governance controls")) { "shared/governance/controls" }
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "attestations") -Description "Governance attestations")) { "shared/governance/attestations" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "sbom") -Description "SBOM governance artifacts")) { "shared/governance/sbom" }
+    $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $governancePath "supply-chain") -Description "Supply chain governance artifacts")) { "shared/governance/supply-chain" }
 
     # llm/ - Flattened governance structure
     $sharedLlmPath = Join-Path $sharedBase "llm"
@@ -208,6 +219,16 @@ function New-SharedFolderStructure {
 
     # provider-registry/ - Provider metadata, versions, allowlists
     $Errors.Value += if(-not (New-FolderStructure -Path (Join-Path $sharedBase "provider-registry") -Description "Provider metadata, versions, allowlists")) { "shared/provider-registry" }
+
+    # registry/ - Registry for artifacts, models, and providers
+    $registryPath = Join-Path $sharedBase "registry"
+    $Errors.Value += if(-not (New-FolderStructure -Path $registryPath -Description "Registry for artifacts, models, and providers")) { "shared/registry" }
+    # artifacts/, models/, providers/ created on-demand
+
+    # notifications/ - Notification queues and events
+    $notificationsPath = Join-Path $sharedBase "notifications"
+    $Errors.Value += if(-not (New-FolderStructure -Path $notificationsPath -Description "Notification queues and events")) { "shared/notifications" }
+    # queues/, events/ created on-demand with dt= partitions
 
     # eval/ - Shared evaluation harness
     $evalPath = Join-Path $sharedBase "eval"

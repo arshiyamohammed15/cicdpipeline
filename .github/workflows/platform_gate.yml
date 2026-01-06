@@ -26,6 +26,15 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           python scripts/boundary_check.py --diff-range ${{ github.event.pull_request.base.sha }}...${{ github.sha }} --strict
+      - name: Check for direct Ollama usage in Functional Modules
+        run: |
+          pwsh scripts/ci/forbid_direct_ollama_in_fm.ps1
+      - name: Validate LLM Receipt Schema Compliance
+        run: |
+          pwsh scripts/ci/validate_receipt_schema.ps1
+      - name: Verify Database Environment Variables
+        run: |
+          pwsh scripts/ci/verify_database_env_vars.ps1
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip

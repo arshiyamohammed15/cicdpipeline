@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Any
 
 from sqlalchemy import select
 from sqlmodel.ext.asyncio.session import AsyncSession
@@ -16,6 +16,27 @@ class CorrelationService:
         self.session = session
         self.policy_client = PolicyClient()
         self.dependency_client = dependency_client or DependencyGraphClient()
+
+    @staticmethod
+    async def _exec_statement(session: AsyncSession, statement: Any):
+        """Use session.exec when available and fall back to execute otherwise."""
+        exec_method = getattr(session, "exec", None)
+        if callable(exec_method):
+            return await exec_method(statement)
+        return await session.execute(statement)
+
+    @staticmethod
+    def _all_scalars(result: Any) -> list[Any]:
+        """Return all scalar values regardless of Result/ScalarResult type."""
+        if hasattr(result, "scalars"):
+            try:
+                return list(result.scalars().all())
+            except AttributeError:
+                pass
+        if hasattr(result, "all"):
+            values = result.all()
+            return list(values if isinstance(values, list) else list(values))
+        return []
 
     async def correlate(self, alert: Alert) -> str:
         rules = self.policy_client.get_correlation_rules()
@@ -44,8 +65,8 @@ class CorrelationService:
             )
             .order_by(Incident.opened_at.desc())
         )
-        result = await self.session.execute(statement)
-        incidents = result.scalars().all()
+        result = await self._exec_statement(self.session, statement)
+        incidents = self._all_scalars(result)
         for incident in incidents:
             if await self._matches_rules(alert, incident, rules):
                 return incident

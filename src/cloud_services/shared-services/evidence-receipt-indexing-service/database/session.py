@@ -19,7 +19,9 @@ from .models import Base
 logger = logging.getLogger(__name__)
 
 # Database URL from environment
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/eris")
+# Per DB Plane Contract Option A: Tenant Plane services use ZEROUI_TENANT_DB_URL
+# Falls back to DATABASE_URL for backward compatibility
+DATABASE_URL = os.getenv("ZEROUI_TENANT_DB_URL") or os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/eris")
 
 # Create engine
 engine = create_engine(

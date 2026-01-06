@@ -5135,7 +5135,7 @@
       "rule_id": "R-230",
       "title": "(Deprecated) See Rule 228: Laptop Receipts Use YYYY/MM Partitioning",
       "category": "Storage Scripts Enforcement",
-      "enabled": false,
+      "enabled": true,
       "severity_level": "Major",
       "version": "1.0.0",
       "effective_date": "2024-01-01",

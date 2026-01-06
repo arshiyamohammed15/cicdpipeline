@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  tenant_pg:
+    image: postgres:16
+    container_name: zeroui-tenant-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zeroui
+      POSTGRES_PASSWORD: zeroui_dev_only
+      POSTGRES_DB: zeroui
+    ports:
+      - "5433:5432"
+    volumes:
+      - zeroui_tenant_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zeroui -d zeroui"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_local
+
+  zeroui_pg:
+    image: postgres:16
+    container_name: zeroui-zeroui-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zeroui
+      POSTGRES_PASSWORD: zeroui_dev_only
+      POSTGRES_DB: zeroui
+    ports:
+      - "5434:5432"
+    volumes:
+      - zeroui_zeroui_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zeroui -d zeroui"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_local
+
+  shared_pg:
+    image: postgres:16
+    container_name: zeroui-shared-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zeroui
+      POSTGRES_PASSWORD: zeroui_dev_only
+      POSTGRES_DB: zeroui
+    ports:
+      - "5435:5432"
+    volumes:
+      - zeroui_shared_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zeroui -d zeroui"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_local
+
+volumes:
+  zeroui_tenant_pg_data:
+  zeroui_zeroui_pg_data:
+  zeroui_shared_pg_data:
+
+networks:
+  zeroui_local:
+    driver: bridge
+

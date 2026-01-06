@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  shared_pg:
+    image: postgres:16
+    container_name: zeroui-shared-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_SHARED_USER:-zeroui}
+      POSTGRES_PASSWORD: ${POSTGRES_SHARED_PASSWORD:-zeroui_dev_only}
+      POSTGRES_DB: ${POSTGRES_SHARED_DB:-zeroui_shared}
+    ports:
+      - "5455:5432"
+    volumes:
+      - zeroui_shared_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_SHARED_USER:-zeroui} -d ${POSTGRES_SHARED_DB:-zeroui_shared}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_shared_local
+
+  redis:
+    image: redis:7-alpine
+    container_name: zeroui-redis-shared
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6382}:6379"
+    volumes:
+      - zeroui_shared_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_shared_local
+
+volumes:
+  zeroui_shared_pg_data:
+  zeroui_shared_redis_data:
+
+networks:
+  zeroui_shared_local:
+    driver: bridge
+

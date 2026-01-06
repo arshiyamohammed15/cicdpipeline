@@ -52,6 +52,8 @@ class RuleCountLoader:
         if not json_files:
             raise FileNotFoundError(f"No JSON files found in {self.constitution_dir}")
 
+        # Track all rules, not just enabled ones, so totals stay aligned with the
+        # single source of truth across the repo.
         total_rules = 0
         enabled_rules = 0
         disabled_rules = 0
@@ -65,14 +67,14 @@ class RuleCountLoader:
 
                     for rule in rules:
                         total_rules += 1
+
+                        category = rule.get('category', 'UNKNOWN')
+                        category_counts[category] = category_counts.get(category, 0) + 1
+
                         if rule.get('enabled', True):
                             enabled_rules += 1
                         else:
                             disabled_rules += 1
-
-                        # Count by category
-                        category = rule.get('category', 'UNKNOWN')
-                        category_counts[category] = category_counts.get(category, 0) + 1
 
             except Exception as e:
                 logger.warning(f"Could not load rules from {json_file}: {e}")

@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  product_pg:
+    image: pgvector/pgvector:pg16
+    container_name: zeroui-product-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_PRODUCT_USER:-zeroui}
+      POSTGRES_PASSWORD: ${POSTGRES_PRODUCT_PASSWORD:-zeroui_dev_only}
+      POSTGRES_DB: ${POSTGRES_PRODUCT_DB:-zeroui_product}
+    ports:
+      - "5444:5432"
+    volumes:
+      - zeroui_product_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_PRODUCT_USER:-zeroui} -d ${POSTGRES_PRODUCT_DB:-zeroui_product}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_cloud_local
+
+  shared_pg:
+    image: postgres:16
+    container_name: zeroui-shared-pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_SHARED_USER:-zeroui}
+      POSTGRES_PASSWORD: ${POSTGRES_SHARED_PASSWORD:-zeroui_dev_only}
+      POSTGRES_DB: ${POSTGRES_SHARED_DB:-zeroui_shared}
+    ports:
+      - "5445:5432"
+    volumes:
+      - zeroui_shared_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_SHARED_USER:-zeroui} -d ${POSTGRES_SHARED_DB:-zeroui_shared}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_cloud_local
+
+  redis:
+    image: redis:7-alpine
+    container_name: zeroui-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - zeroui_redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui_cloud_local
+
+volumes:
+  zeroui_product_pg_data:
+  zeroui_shared_pg_data:
+  zeroui_redis_data:
+
+networks:
+  zeroui_cloud_local:
+    driver: bridge
+

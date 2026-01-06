@@ -93,16 +93,81 @@
         "observability/metrics",
         "observability/traces",
         "observability/logs",
+        "telemetry/metrics",
+        "telemetry/traces",
+        "telemetry/logs",
         "adapters/webhooks",
         "adapters/gateway-logs",
         "reporting/marts",
-        "service-metrics"
+        "reporting/tenants",
+        "service-metrics",
+        "features/store",
+        "features/metadata",
+        "notifications/queues",
+        "notifications/events",
+        "siem/events"
       ],
       "description": "Paths that require dt= time partitions",
       "severity": "warning"
     },
+    "allowed_paths": {
+      "ide": [
+        "ide/receipts",
+        "ide/policy",
+        "ide/config",
+        "ide/queue",
+        "ide/logs",
+        "ide/db",
+        "ide/llm",
+        "ide/fingerprint",
+        "ide/tmp",
+        "ide/evaluation"
+      ],
+      "tenant": [
+        "tenant/evidence",
+        "tenant/ingest",
+        "tenant/telemetry",
+        "tenant/adapters",
+        "tenant/reporting",
+        "tenant/policy",
+        "tenant/context/identity",
+        "tenant/context/sso",
+        "tenant/context/scim",
+        "tenant/context/compliance"
+      ],
+      "product": [
+        "product/policy",
+        "product/evidence",
+        "product/reporting",
+        "product/adapters",
+        "product/telemetry",
+        "product/features"
+      ],
+      "shared": [
+        "shared/pki",
+        "shared/telemetry",
+        "shared/siem",
+        "shared/bi-lake",
+        "shared/governance/controls",
+        "shared/governance/attestations",
+        "shared/governance/sbom",
+        "shared/governance/supply-chain",
+        "shared/llm",
+        "shared/provider-registry",
+        "shared/registry/artifacts",
+        "shared/registry/models",
+        "shared/registry/providers",
+        "shared/notifications/queues",
+        "shared/notifications/events",
+        "shared/eval",
+        "shared/security/sbom",
+        "shared/security/supply-chain"
+      ],
+      "description": "Allowed paths in 4-plane storage architecture",
+      "severity": "error"
+    },
     "laptop_receipts": {
-      "structure": "ide/agent/receipts/{repo-id}/{YYYY}/{MM}/",
+      "structure": "ide/receipts/{repo-id}/{YYYY}/{MM}/",
       "description": "Laptop receipts month partition structure",
       "severity": "warning"
     }

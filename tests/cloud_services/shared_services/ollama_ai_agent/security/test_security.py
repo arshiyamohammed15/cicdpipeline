@@ -128,7 +128,7 @@ class TestRequestValidation:
         """Test handling of malformed JSON."""
         response = test_client.post(
             "/api/v1/prompt",
-            data="not json",
+            content="not json",
             headers={"Content-Type": "application/json"}
         )
 

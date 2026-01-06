@@ -176,7 +176,7 @@ def test_invalid_json(client, auth_token):
     """Test API with invalid JSON."""
     response = client.post(
         "/v1/signals/ingest",
-        data="invalid json",
+        content="invalid json",
         headers={"Authorization": f"Bearer {auth_token}", "Content-Type": "application/json"}
     )
     assert response.status_code == 422  # Unprocessable Entity

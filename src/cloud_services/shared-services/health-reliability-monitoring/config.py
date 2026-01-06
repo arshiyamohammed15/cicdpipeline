@@ -44,7 +44,7 @@ class DatabaseSettings:
     """Database configuration for component registry & health snapshots."""
 
     url: str = field(
-        default_factory=lambda: _env(
+        default_factory=lambda: os.getenv("ZEROUI_SHARED_DB_URL") or _env(
             "HEALTH_RELIABILITY_MONITORING_DATABASE_URL",
             f"sqlite:///{resolve_health_reliability_monitoring_db_path()}",
         )

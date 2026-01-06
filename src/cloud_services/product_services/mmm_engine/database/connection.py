@@ -28,9 +28,23 @@ IDLE_TIMEOUT = int(os.getenv("MMM_DB_IDLE_TIMEOUT", "600"))
 
 
 def get_database_url() -> str:
-    url = os.getenv("MMM_DATABASE_URL") or os.getenv("DATABASE_URL")
+    """
+    Get database URL from environment or use mock fallback.
+
+    Per DB Plane Contract Option A: Product Plane services use ZEROUI_PRODUCT_DB_URL.
+    Falls back to MMM_DATABASE_URL and DATABASE_URL for backward compatibility.
+    """
+    # Use canonical plane-specific env var per DB Plane Contract Option A
+    url = os.getenv("ZEROUI_PRODUCT_DB_URL")
+
+    # Fallback to legacy env vars for backward compatibility
     if not url:
-        logger.warning("MMM_DATABASE_URL not set, using in-memory SQLite")
+        url = os.getenv("MMM_DATABASE_URL")
+    if not url:
+        url = os.getenv("DATABASE_URL")
+
+    if not url:
+        logger.warning("ZEROUI_PRODUCT_DB_URL, MMM_DATABASE_URL, and DATABASE_URL not set, using in-memory SQLite")
         return "sqlite:///:memory:"
     return url
 

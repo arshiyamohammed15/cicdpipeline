@@ -168,8 +168,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--database-url",
-        default=os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/m22_privacy"),
-        help="PostgreSQL connection string",
+        default=os.environ.get("ZEROUI_SHARED_DB_URL") or os.environ.get("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/m22_privacy"),
+        help="PostgreSQL connection string (uses ZEROUI_SHARED_DB_URL per DB Plane Contract Option A)",
     )
     parser.add_argument(
         "--force",

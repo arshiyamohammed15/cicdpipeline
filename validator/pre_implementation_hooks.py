@@ -20,6 +20,7 @@ from config.constitution.rule_catalog import (
     get_rule_by_title,
     get_catalog_counts,
 )
+from config.constitution.rule_count_loader import get_rule_counts
 
 logger = logging.getLogger(__name__)
 
@@ -43,6 +44,7 @@ class ConstitutionRuleLoader:
         self.rules: List[Dict[str, Any]] = []
         self.rules_by_id: Dict[str, Dict[str, Any]] = {}
         self.rules_by_category: Dict[str, List[Dict[str, Any]]] = {}
+        self.disabled_rules_count: int = 0
         self._load_all_rules()
 
     def _load_all_rules(self) -> None:
@@ -55,6 +57,7 @@ class ConstitutionRuleLoader:
         if not json_files:
             raise FileNotFoundError(f"No JSON files found in {self.constitution_dir}")
 
+        disabled_seen = 0
         for json_file in json_files:
             try:
                 with open(json_file, 'r', encoding='utf-8') as f:
@@ -63,7 +66,7 @@ class ConstitutionRuleLoader:
 
                     for rule in rules:
                         if not rule.get("enabled", True):
-                            # Skip disabled rules entirely so validators and tests operate on active catalog only.
+                            disabled_seen += 1
                             continue
                         rule_id = rule.get('rule_id', '')
                         self.rules.append(rule)
@@ -78,6 +81,8 @@ class ConstitutionRuleLoader:
                 logger.warning(f"Warning: Could not load rules from {json_file}: {e}", exc_info=True)
                 continue
 
+        self.disabled_rules_count = disabled_seen
+
     def get_all_rules(self) -> List[Dict[str, Any]]:
         """Get all loaded rules."""
         return self.rules
@@ -91,9 +96,8 @@ class ConstitutionRuleLoader:
         return self.rules_by_category.get(category, [])
 
     def get_total_rule_count(self) -> int:
-        """Get total number of enabled rules loaded from JSON files."""
-        # Count enabled rules from the actual loaded rules (single source of truth)
-        return sum(1 for rule in self.rules if rule.get("enabled", True))
+        """Get total number of enabled rules from source of truth."""
+        return len(self.rules)
 
 
 class PromptValidator:
@@ -644,9 +648,11 @@ class PreImplementationHookManager:
         """
         self.rule_loader = ConstitutionRuleLoader(constitution_dir)
         self.validator = PromptValidator(self.rule_loader)
-        # Use rule_loader as single source of truth for rule count
-        # This ensures consistency with the constitution_dir parameter
-        self.total_rules = self.rule_loader.get_total_rule_count()
+        # Use rule_count_loader as single source of truth for totals (enabled + disabled)
+        counts = get_rule_counts(str(self.rule_loader.constitution_dir))
+        self.total_rules = counts.get('total_rules', len(self.rule_loader.rules) + self.rule_loader.disabled_rules_count)
+        self.enabled_rules = counts.get('enabled_rules', len(self.rule_loader.rules))
+        self.disabled_rules = counts.get('disabled_rules', self.rule_loader.disabled_rules_count)
 
     def validate_before_generation(self, prompt: str, file_type: str = None,
                                  task_type: str = None) -> Dict[str, Any]:

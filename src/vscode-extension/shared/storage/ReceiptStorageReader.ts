@@ -29,6 +29,13 @@ export class ReceiptStorageReader {
         this.receiptParser = new ReceiptParser();
     }
 
+    private emitSignatureWarning(message: string): void {
+        // Keep logs quiet by default; opt-in for debugging signature issues
+        if (process.env.RECEIPT_SIG_LOG_LEVEL?.toLowerCase() === "warn") {
+            console.warn(message);
+        }
+    }
+
     /**
      * Read receipts from storage
      *
@@ -210,13 +217,13 @@ export class ReceiptStorageReader {
     private validateReceiptSignature(receipt: DecisionReceipt | FeedbackReceipt): boolean {
         // CR-055: Distinguish between validation failure and error conditions
         if (!receipt.signature || receipt.signature.length === 0) {
-            console.warn('Receipt missing signature (Rule 224 violation)');
+            this.emitSignatureWarning('Receipt missing signature (Rule 224 violation)');
             return false; // Validation failure, not an error
         }
 
         const kid = extractKidFromSignature(receipt.signature);
         if (!kid) {
-            console.warn('Receipt signature missing key identifier (kid)');
+            this.emitSignatureWarning('Receipt signature missing key identifier (kid)');
             return false; // Validation failure, not an error
         }
 
@@ -224,7 +231,7 @@ export class ReceiptStorageReader {
             const { key } = resolvePublicKeyByKid(kid);
             const isValid = verifyReceiptSignature(receipt, key);
             if (!isValid) {
-                console.warn(`Receipt signature verification failed for kid "${kid}"`);
+                this.emitSignatureWarning(`Receipt signature verification failed for kid "${kid}"`);
                 return false; // Validation failure
             }
             return true; // Validation success
@@ -232,7 +239,7 @@ export class ReceiptStorageReader {
             // CR-055: Distinguish error conditions from validation failures
             const err = error as Error;
             if (err.name === 'PublicKeyNotFoundError') {
-                console.warn(`Public key not found for kid "${kid}": ${err.message}`);
+                this.emitSignatureWarning(`Public key not found for kid "${kid}": ${err.message}`);
                 return false; // Validation failure - key not found
             }
             // Unexpected error - log and treat as validation failure

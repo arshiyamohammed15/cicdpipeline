@@ -158,6 +158,8 @@ def hrm_test_db():
             session.close()
 
     # Override dependencies when app is available.
+    real_app = None
+    shim_app = None
     try:
         from health_reliability_monitoring.main_real import app as real_app
         real_app.dependency_overrides[sc.get_db_session] = get_test_session
@@ -165,6 +167,15 @@ def hrm_test_db():
             real_app.dependency_overrides[real_sc.get_db_session] = get_test_session
     except Exception:
         real_app = None
+    
+    # Also override dependencies on shim app if it exists
+    try:
+        import health_reliability_monitoring.main as shim_main
+        if hasattr(shim_main, 'app'):
+            shim_app = shim_main.app
+            shim_app.dependency_overrides[sc.get_db_session] = get_test_session
+    except Exception:
+        shim_app = None
 
     try:
         yield
@@ -173,6 +184,8 @@ def hrm_test_db():
             real_app.dependency_overrides.pop(sc.get_db_session, None)
             if real_sc:
                 real_app.dependency_overrides.pop(real_sc.get_db_session, None)
+        if shim_app:
+            shim_app.dependency_overrides.pop(sc.get_db_session, None)
         engine.dispose()
         try:
             db_path.unlink()

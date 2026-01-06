@@ -158,7 +158,7 @@ class TestInputValidation:
         """Test handling of malformed JSON."""
         response = test_client.post(
             "/v1/signals/ingest",
-            data="not json",
+            content="not json",
             headers={"Content-Type": "application/json", "Authorization": "Bearer valid_token_tenant-1"}
         )
 

@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, Any, List
 from .pre_implementation_hooks import PreImplementationHookManager
 from .shared_health_stats import get_shared_rule_counts, get_backend_status
+from config.constitution.rule_count_loader import get_rule_counts
 
 
 class HealthChecker:
@@ -41,8 +42,9 @@ class HealthChecker:
                 with open(json_file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
                     rules = data.get('constitution_rules', [])
-                    expected_count += len(rules)
-                    file_counts[json_file.name] = len(rules)
+                    total_rules_in_file = len(rules)
+                    expected_count += total_rules_in_file
+                    file_counts[json_file.name] = total_rules_in_file
             except Exception as e:
                 return {
                     'healthy': False,
@@ -52,21 +54,24 @@ class HealthChecker:
                     'json_files': []
                 }
 
-        # Get count from hook manager
-        actual_count = self.hook_manager.total_rules
+        # Use rule count loader as authoritative source
+        loader_counts = get_rule_counts(str(self.constitution_dir))
+        loader_total = loader_counts.get('total_rules', expected_count)
 
-        healthy = (expected_count == actual_count)
+        # Get count from hook manager (uses total rules including disabled for consistency)
+        actual_count = self.hook_manager.total_rules
+        healthy = (loader_total == actual_count)
 
         return {
             'healthy': healthy,
-            'expected_count': expected_count,
+            'expected_count': loader_total,
             'actual_count': actual_count,
             'json_files': {
                 'count': len(json_files),
                 'files': list(file_counts.keys()),
                 'rules_per_file': file_counts
             },
-            'message': 'Rule count matches JSON files' if healthy else f'Rule count mismatch: expected {expected_count}, got {actual_count}'
+            'message': 'Rule count matches JSON files' if healthy else f'Rule count mismatch: expected {loader_total}, got {actual_count}'
         }
 
     def check_json_files_accessible(self) -> Dict[str, Any]:

@@ -10,6 +10,7 @@ Risks: Network failures, timeout errors, invalid API responses, potential exposu
 
 import os
 import json
+import logging
 from pathlib import Path
 from datetime import datetime
 from typing import Optional, Dict, Any
@@ -21,12 +22,39 @@ from shared_libs.error_recovery import (
 )
 from .models import PromptRequest, PromptResponse
 
+logger = logging.getLogger(__name__)
+
+# Import endpoint resolver for topology-based endpoint resolution
+try:
+    import sys
+    from pathlib import Path
+    # Add parent paths to allow importing from llm_gateway
+    current_file = Path(__file__)
+    llm_gateway_path = current_file.parent.parent.parent.parent / "llm_gateway"
+    if llm_gateway_path.exists():
+        sys.path.insert(0, str(llm_gateway_path.parent))
+        from llm_gateway.clients.endpoint_resolver import (
+            LLMEndpointResolver,
+            Plane as EndpointPlane,
+            get_endpoint_resolver,
+        )
+        _ENDPOINT_RESOLVER_AVAILABLE = True
+    else:
+        _ENDPOINT_RESOLVER_AVAILABLE = False
+        EndpointPlane = None  # type: ignore
+except ImportError:
+    # Fallback if endpoint resolver not available (e.g., in isolated deployments)
+    _ENDPOINT_RESOLVER_AVAILABLE = False
+    EndpointPlane = None  # type: ignore
+
 _DEFAULT_RECOVERY_POLICY = RetryPolicy(
     max_attempts=2,
     base_delay_ms=50,
     max_delay_ms=200,
 )
 _DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
+
+logger = logging.getLogger(__name__)
 
 
 def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
@@ -64,23 +92,36 @@ def _load_shared_services_config(config_type: str) -> Dict[str, Any]:
 class OllamaAIService:
     """Service for interacting with Ollama LLM API using shared services configuration."""
 
-    def __init__(self, base_url: Optional[str] = None) -> None:
+    def __init__(
+        self,
+        base_url: Optional[str] = None,
+        plane: Optional[EndpointPlane] = None,
+    ) -> None:
         """
         Initialize the Ollama AI Service.
 
         Args:
             base_url: Base URL for Ollama API (overrides config if provided)
+            plane: Deployment plane for topology-based endpoint resolution
         """
         # Load configuration from shared services plane
         ollama_config = _load_shared_services_config("ollama")
         tinyllama_config = _load_shared_services_config("tinyllama")
 
-        # Use shared services config, fallback to environment, then default
-        self.base_url = (
-            base_url or
-            os.getenv("OLLAMA_BASE_URL") or
-            ollama_config.get("base_url", "http://localhost:11434")
-        )
+        # Determine base URL using topology resolution if available
+        if base_url:
+            # Explicit base_url provided, use it
+            self.base_url = base_url
+        elif _ENDPOINT_RESOLVER_AVAILABLE and plane:
+            # Use topology-based endpoint resolution
+            endpoint_resolver = get_endpoint_resolver()
+            self.base_url = endpoint_resolver.resolve_endpoint(plane)
+        else:
+            # Fallback to legacy resolution: shared services config, environment, then default
+            self.base_url = (
+                os.getenv("OLLAMA_BASE_URL") or
+                ollama_config.get("base_url", "http://localhost:11434")
+            )
 
         # Get API endpoints from config
         api_endpoints = ollama_config.get("api_endpoints", {})

@@ -20,7 +20,9 @@ from .models import Base
 logger = logging.getLogger(__name__)
 
 # Database URL from environment or default to in-memory SQLite for development
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///:memory:")
+# Per DB Plane Contract Option A: Shared Plane services use ZEROUI_SHARED_DB_URL
+# Falls back to DATABASE_URL for backward compatibility
+DATABASE_URL = os.getenv("ZEROUI_SHARED_DB_URL") or os.getenv("DATABASE_URL", "sqlite:///:memory:")
 
 # Create engine with appropriate configuration
 if DATABASE_URL.startswith("sqlite"):

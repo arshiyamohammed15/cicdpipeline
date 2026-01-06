@@ -31,6 +31,76 @@ This guide helps you get started with ZeroUI 2.0 development on Windows.
 - **Docker Desktop** (for containerized services)
 - **WSL2** (Windows Subsystem for Linux) - Optional but recommended
 
+## One-Command Bootstrap (Recommended)
+
+For a quick setup, use the automated bootstrap script that handles all setup steps:
+
+```powershell
+# Basic setup (manual prerequisites)
+powershell -ExecutionPolicy Bypass -File scripts/setup/zeroui_bootstrap_local.ps1 -Mode setup -RunTests
+
+# Full setup with auto-install + Docker + Ollama
+powershell -ExecutionPolicy Bypass -File scripts/setup/zeroui_bootstrap_local.ps1 -Mode setup -AutoInstallPrereqs -SetupDockerPlanePostgres -SetupOllama -PullSmallModels -RunTests
+```
+
+The script will:
+- Check/install prerequisites
+- Create folder structure
+- Install Python and Node dependencies
+- Optionally start Docker Postgres containers
+- Optionally pull Ollama models
+- Run unit tests to verify setup
+
+See [bootstrap_one_command.md](./bootstrap_one_command.md) for detailed documentation.
+
+## Run ZeroUI Cloud Locally (Product + Shared Dependencies)
+
+To run the ZeroUI Cloud plane stack (Product services + Shared dependencies) locally for Functional Module development:
+
+```powershell
+# Setup + start Docker dependencies
+powershell -ExecutionPolicy Bypass -File scripts/setup/zeroui_cloud_bootstrap_local.ps1 -Mode setup -StartDockerDeps
+
+# Start backend services
+powershell -ExecutionPolicy Bypass -File scripts/setup/zeroui_cloud_bootstrap_local.ps1 -Mode start
+```
+
+This starts:
+- Docker containers: Postgres (Product + Shared) and Redis
+- Backend services: Product services (MMM Engine, Signal Ingestion, etc.) and Shared services (IAM, Schema Registry, etc.)
+
+See [zeroui_cloud_local_bootstrap.md](./zeroui_cloud_local_bootstrap.md) for detailed documentation.
+
+## Run Tenant Cloud Locally
+
+To run the Tenant Cloud plane stack (tenant services + dependencies) locally for testing tenant-side ingestion/adapters/evidence/telemetry flows:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup/tenant_cloud_bootstrap_local.ps1 -Mode setup -StartDockerDeps
+```
+
+See [tenant_cloud_local_bootstrap.md](./tenant_cloud_local_bootstrap.md) for detailed documentation.
+
+## Run Shared Cloud Locally
+
+To run the Shared Cloud plane stack (shared services + dependencies) locally for running shared-plane capabilities (PKI/trust, registry, SIEM hooks, notifications, evaluation harness deps):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/setup/shared_cloud_bootstrap_local.ps1 -Mode setup -StartDockerDeps
+```
+
+This starts:
+- Docker containers: Postgres (Shared) and Redis
+- Shared services: Key Management, Schema Registry, IAM, Alerting, Budgeting, Policy Management, Data Governance, Evidence Indexing, Health Monitoring, Ollama AI Agent, Trust as a Capability
+
+See [shared_cloud_local_bootstrap.md](./shared_cloud_local_bootstrap.md) for detailed documentation.
+
+This starts:
+- Docker containers: Tenant Postgres and Redis
+- Tenant services: Integration Adapters (webhook receiver, ingestion, etc.)
+
+See [tenant_cloud_local_bootstrap.md](./tenant_cloud_local_bootstrap.md) for detailed documentation.
+
 ## Initial Setup
 
 ### 1. Clone Repository

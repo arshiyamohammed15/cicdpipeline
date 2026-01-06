@@ -58,6 +58,8 @@ class _ProviderSpy:
         prompt: str,
         operation_type: str,
         fallback: bool = False,
+        *args,
+        **kwargs,
     ) -> dict[str, str]:
         self.called = True
         return {
@@ -77,6 +79,8 @@ class _ProviderRetrySpy:
         prompt: str,
         operation_type: str,
         fallback: bool = False,
+        *args,
+        **kwargs,
     ) -> dict[str, str]:
         self.calls += 1
         if self.calls == 1:

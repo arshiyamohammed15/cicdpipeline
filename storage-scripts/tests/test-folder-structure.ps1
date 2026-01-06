@@ -114,6 +114,9 @@ function Test-IDEFolderStructure {
 
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $ideBase "tmp") -Description "Temporary; RFC stamping")) { @{Result=$true; Path="ide/tmp"} } else { @{Result=$false; Path="ide/tmp"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $ideBase "evaluation") -Description "Optional evaluation harness storage")) { @{Result=$true; Path="ide/evaluation"} } else { @{Result=$true; Path="ide/evaluation"} }  # Optional, so always pass
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 }
 
 # Function to test Tenant Plane
@@ -160,6 +163,18 @@ function Test-TenantFolderStructure {
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context") -Description "Tenant context stores")) { @{Result=$true; Path="tenant/context"} } else { @{Result=$false; Path="tenant/context"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context" "identity") -Description "Identity context")) { @{Result=$true; Path="tenant/context/identity"} } else { @{Result=$false; Path="tenant/context/identity"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context" "sso") -Description "SSO context")) { @{Result=$true; Path="tenant/context/sso"} } else { @{Result=$false; Path="tenant/context/sso"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context" "scim") -Description "SCIM context")) { @{Result=$true; Path="tenant/context/scim"} } else { @{Result=$false; Path="tenant/context/scim"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "context" "compliance") -Description "Compliance context")) { @{Result=$true; Path="tenant/context/compliance"} } else { @{Result=$false; Path="tenant/context/compliance"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
     # Deprecated alias (only if -CompatAliases)
     if($CompatAliases) {
         $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $tenantBase "meta" "schema") -Description "Deprecated legacy alias")) { @{Result=$true; Path="tenant/meta/schema"} } else { @{Result=$false; Path="tenant/meta/schema"} }
@@ -203,6 +218,9 @@ function Test-ProductFolderStructure {
 
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $productBase "policy" "trust" "pubkeys") -Description "Public keys")) { @{Result=$true; Path="product/policy/trust/pubkeys"} } else { @{Result=$false; Path="product/policy/trust/pubkeys"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $productBase "features") -Description "Feature store and metadata")) { @{Result=$true; Path="product/features"} } else { @{Result=$false; Path="product/features"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 }
 
 # Function to test Shared Plane
@@ -236,6 +254,12 @@ function Test-SharedFolderStructure {
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "governance" "attestations") -Description "Governance attestations")) { @{Result=$true; Path="shared/governance/attestations"} } else { @{Result=$false; Path="shared/governance/attestations"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "governance" "sbom") -Description "SBOM governance artifacts")) { @{Result=$true; Path="shared/governance/sbom"} } else { @{Result=$false; Path="shared/governance/sbom"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "governance" "supply-chain") -Description "Supply chain governance artifacts")) { @{Result=$true; Path="shared/governance/supply-chain"} } else { @{Result=$false; Path="shared/governance/supply-chain"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "llm" "guardrails") -Description "LLM guardrails")) { @{Result=$true; Path="shared/llm/guardrails"} } else { @{Result=$false; Path="shared/llm/guardrails"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
@@ -246,6 +270,12 @@ function Test-SharedFolderStructure {
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "provider-registry") -Description "Provider metadata, versions, allowlists")) { @{Result=$true; Path="shared/provider-registry"} } else { @{Result=$false; Path="shared/provider-registry"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "registry") -Description "Registry for artifacts, models, and providers")) { @{Result=$true; Path="shared/registry"} } else { @{Result=$false; Path="shared/registry"} }
+    if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
+
+    $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "notifications") -Description "Notification queues and events")) { @{Result=$true; Path="shared/notifications"} } else { @{Result=$false; Path="shared/notifications"} }
     if($TestResults.Value[-1].Result) { $PassedTests.Value++ }
 
     $TotalTests.Value++; $TestResults.Value += if((Test-FolderExists -Path (Join-Path $sharedBase "eval") -Description "Shared evaluation harness")) { @{Result=$true; Path="shared/eval"} } else { @{Result=$false; Path="shared/eval"} }

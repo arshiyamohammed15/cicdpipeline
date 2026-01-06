@@ -20,7 +20,11 @@ class Config:
     def __init__(self):
         """Initialize configuration from environment variables."""
         # Database
+        # Per DB Plane Contract Option A: Tenant Plane services use ZEROUI_TENANT_DB_URL
+        # Falls back to INTEGRATION_ADAPTERS_DATABASE_URL for backward compatibility
         self.DATABASE_URL: str = os.getenv(
+            "ZEROUI_TENANT_DB_URL"
+        ) or os.getenv(
             "INTEGRATION_ADAPTERS_DATABASE_URL",
             "sqlite:///./integration_adapters.db"
         )

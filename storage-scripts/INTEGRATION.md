@@ -280,8 +280,29 @@ Tests are located in `validator/rules/tests/test_storage_governance.py` covering
 - Edge cases and boundary conditions
 - Integration with core validator
 
+## New Paths (v1.0 Additions)
+
+The following paths have been added to the 4-plane storage structure:
+
+### IDE Plane
+- `ide/evaluation/(dry-runs|results|cache)/` — Optional evaluation harness storage
+
+### Tenant Plane
+- `tenant/context/(identity|sso|scim|compliance)/` — Sub-paths for tenant context stores (identity, SSO, SCIM, compliance)
+
+### Product Plane
+- `product/features/(store|metadata)/dt=.../` — Feature store and metadata with time partitions
+
+### Shared Plane
+- `shared/registry/(artifacts|models|providers)/` — Registry for artifacts, models, and providers
+- `shared/notifications/(queues|events)/dt=.../` — Notification queues and events with time partitions
+- `shared/governance/(sbom|supply-chain)/` — SBOM and supply chain governance artifacts (complements `shared/security/sbom/` and `shared/security/supply-chain/`)
+
+**Canonical Spec**: See `docs/architecture/four_plane_folder_structure_v1.md` for complete path reference and detailed documentation.
+
 ## Documentation References
 
+- **Canonical Specification**: `docs/architecture/four_plane_folder_structure_v1.md` (v1.0)
 - **Specification**: `storage-scripts/folder-business-rules.md` (v2.0)
 - **Scaffold README**: `storage-scripts/readme_scaffold.md` (includes quick start)
 - **Constitution**: `ZeroUI2.0_Master_Constitution.md` (Rules 216-228)

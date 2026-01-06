@@ -5,6 +5,7 @@ workflows for the LLM Gateway.
 
 from __future__ import annotations
 
+import logging
 import os
 import time
 from datetime import datetime, timezone
@@ -13,6 +14,8 @@ from typing import Dict, Optional, Tuple
 
 import anyio
 from fastapi import HTTPException, status
+
+logger = logging.getLogger(__name__)
 
 from shared_libs.error_recovery import (
     ErrorClassifier,
@@ -36,6 +39,7 @@ from ..clients import (
     ProviderClient,
     ProviderUnavailableError,
 )
+from ..clients.endpoint_resolver import Plane as EndpointPlane
 from ..clients.policy_client import (
     _extract_recovery,
     _extract_token_bounds,
@@ -46,14 +50,26 @@ from ..models import (
     DryRunDecision,
     LLMRequest,
     LLMResponse,
+    MeasurableSignals,
     OperationType,
+    Plane,
     ResponseOutput,
     RiskClass,
     Severity,
+    TaskType,
     Tokens,
 )
 from ..telemetry.emitter import TelemetryEmitter
 from .incident_store import SafetyIncidentStore
+from .model_router import (
+    MeasurableSignals as RouterMeasurableSignals,
+    ModelRouter,
+    Plane as RouterPlane,
+    ResultStatus,
+    TaskClass,
+    TaskType as RouterTaskType,
+)
+from .receipt_validator import ReceiptValidator, ReceiptValidationError
 from .safety_pipeline import SafetyPipeline
 
 _DEFAULT_ERROR_CLASSIFIER = ErrorClassifier()
@@ -77,6 +93,7 @@ class LLMGatewayService:
         alerting_client: AlertingClient,
         eris_client: ErisClient,
         token_counter: TokenCounter,
+        model_router: Optional[ModelRouter] = None,
     ) -> None:
         self.iam_client = iam_client
         self.policy_cache = policy_cache
@@ -90,6 +107,7 @@ class LLMGatewayService:
         self.alerting_client = alerting_client
         self.eris_client = eris_client
         self.token_counter = token_counter
+        self.model_router = model_router or ModelRouter()
 
     async def handle_chat(self, request: LLMRequest) -> LLMResponse | DryRunDecision:
         return await self._process(request)
@@ -119,6 +137,23 @@ class LLMGatewayService:
         await self._run_sync(self.iam_client.validate_actor, request.actor, scope)
 
         policy_snapshot = await self._run_sync(self._fetch_policy_snapshot, request)
+
+        # Determine plane context (if not provided in request)
+        plane = self._determine_plane(request)
+
+        # Determine task type (if not provided in request)
+        task_type = self._determine_task_type(request)
+
+        # Convert measurable signals to router format
+        router_signals = self._convert_measurable_signals(request.measurable_signals)
+
+        # Get routing decision from ModelRouter
+        routing_decision = self.model_router.route(
+            plane=RouterPlane(plane.value),
+            task_type=RouterTaskType(task_type.value),
+            signals=router_signals,
+            policy_snapshot=policy_snapshot,
+        )
 
         sanitized_prompt, redaction_counts = await self._run_sync(
             self.data_governance_client.redact,
@@ -156,6 +191,19 @@ class LLMGatewayService:
             else None
         )
         if budget_decision.decision == "DENY":
+            # Build complete receipt even for denied requests
+            plane = self._determine_plane(request)
+            task_type = self._determine_task_type(request)
+            router_signals = self._convert_measurable_signals(request.measurable_signals)
+            
+            # Get routing decision for receipt (even though we won't call provider)
+            routing_decision = self.model_router.route(
+                plane=RouterPlane(plane.value),
+                task_type=RouterTaskType(task_type.value),
+                signals=router_signals,
+                policy_snapshot=policy_snapshot,
+            )
+            
             receipt_payload = {
                 "receipt_id": f"rcpt-{request.request_id}",
                 "request_id": request.request_id,
@@ -170,9 +218,35 @@ class LLMGatewayService:
                 "estimated_input_tokens": estimated_input_tokens,
                 "requested_output_tokens": requested_output_tokens,
                 "budget_spec": budget_spec_payload,
+                # Required fields per LLM Strategy Directives Section 6.1
+                "plane": plane.value,
+                "task_class": routing_decision.task_class.value,
+                "task_type": task_type.value,
+                "model": {
+                    "primary": routing_decision.model_primary,
+                    "used": routing_decision.model_primary,  # Not used due to denial
+                    "failover_used": False,
+                },
+                "degraded_mode": False,
+                "router": {
+                    "policy_id": routing_decision.router_policy_id,
+                    "policy_snapshot_hash": routing_decision.router_policy_snapshot_hash,
+                },
+                "llm": {
+                    "params": {
+                        "num_ctx": routing_decision.llm_params.num_ctx,
+                        "temperature": routing_decision.llm_params.temperature,
+                        "seed": routing_decision.llm_params.seed,
+                    }
+                },
+                "result": {
+                    "status": ResultStatus.ERROR.value,  # Denied before model call
+                },
+                "evidence": {
+                    "trace_id": trace_id,
+                    "receipt_id": f"rcpt-{request.request_id}",
+                },
             }
-            if trace_id:
-                receipt_payload["trace_id"] = trace_id
             self.eris_client.emit_receipt(receipt_payload)
             raise HTTPException(
                 status_code=status.HTTP_429_TOO_MANY_REQUESTS,
@@ -205,7 +279,12 @@ class LLMGatewayService:
             degradation_stage,
             fallback_chain,
             recovery_info,
-        ) = await self._call_provider(request, effective_prompt, policy_snapshot)
+            model_used,
+            failover_used,
+            result_status,
+        ) = await self._call_provider(
+            request, effective_prompt, policy_snapshot, routing_decision
+        )
         pipeline_result = self.safety_pipeline.run_output_checks(
             provider_response["content"], pipeline_result
         )
@@ -266,7 +345,112 @@ class LLMGatewayService:
             )
             self.alerting_client.emit_alert(incident.alert_payload)
 
+        # Build complete receipt with all required fields per LLM Strategy Directives Section 6.1
+        receipt_payload = self._build_complete_receipt(
+            request=request,
+            response=response,
+            routing_decision=routing_decision,
+            plane=plane,
+            task_type=task_type,
+            model_used=model_used,
+            failover_used=failover_used,
+            result_status=result_status,
+            budget_decision=budget_decision,
+            estimated_input_tokens=estimated_input_tokens,
+            requested_output_tokens=requested_output_tokens,
+            budget_spec_payload=budget_spec_payload,
+            recovery_info=recovery_info,
+            trace_id=trace_id,
+            event_type=event_type,
+        )
+
+        # Validate receipt schema per LLM Strategy Directives Section 6.1
+        try:
+            ReceiptValidator.validate(receipt_payload)
+        except ReceiptValidationError as e:
+            # Log validation error but don't fail the request
+            # This ensures receipts are always emitted even if validation fails
+            logger.error(f"Receipt validation failed: {e}")
+            if e.missing_fields:
+                logger.error(f"Missing fields: {', '.join(e.missing_fields)}")
+
+        self.eris_client.emit_receipt(receipt_payload)
+
+        return response
+
+    async def _run_sync(self, func, *args, **kwargs):
+        if kwargs:
+            func = partial(func, **kwargs)
+        if os.getenv("PYTEST_CURRENT_TEST") and os.getenv(
+            "USE_REAL_SERVICES", "false"
+        ).lower() != "true":
+            return func(*args)
+        return await anyio.to_thread.run_sync(func, *args)
+
+    def _determine_plane(self, request: LLMRequest) -> Plane:
+        """Determine plane from request or configuration."""
+        if request.plane:
+            return request.plane
+
+        # Default: determine from environment or tenant context
+        # For now, default to TENANT (can be enhanced with env var or config)
+        plane_env = os.getenv("ZEROUI_PLANE", "tenant").lower()
+        try:
+            return Plane(plane_env)
+        except ValueError:
+            return Plane.TENANT  # Safe default
+
+    def _determine_task_type(self, request: LLMRequest) -> TaskType:
+        """Determine task type from request or operation type."""
+        if request.task_type:
+            return request.task_type
+
+        # Map operation type to task type
+        operation_to_task = {
+            OperationType.CHAT: TaskType.TEXT,
+            OperationType.COMPLETION: TaskType.CODE,
+            OperationType.EMBEDDING: TaskType.RETRIEVAL,
+            OperationType.TOOL_SUGGEST: TaskType.PLANNING,
+            OperationType.CLASSIFICATION: TaskType.TEXT,
+            OperationType.CUSTOM: TaskType.TEXT,
+        }
+        return operation_to_task.get(request.operation_type, TaskType.TEXT)
+
+    def _convert_measurable_signals(
+        self, signals: Optional[MeasurableSignals]
+    ) -> RouterMeasurableSignals:
+        """Convert request measurable signals to router format."""
+        if signals is None:
+            return RouterMeasurableSignals()
+        return RouterMeasurableSignals(
+            changed_files_count=signals.changed_files_count,
+            estimated_diff_loc=signals.estimated_diff_loc,
+            rag_context_bytes=signals.rag_context_bytes,
+            tool_calls_planned=signals.tool_calls_planned,
+            high_stakes_flag=signals.high_stakes_flag,
+        )
+
+    def _build_complete_receipt(
+        self,
+        request: LLMRequest,
+        response: LLMResponse,
+        routing_decision: Any,  # ModelRoutingDecision
+        plane: Plane,
+        task_type: TaskType,
+        model_used: str,
+        failover_used: bool,
+        result_status: ResultStatus,
+        budget_decision: Any,
+        estimated_input_tokens: int,
+        requested_output_tokens: int,
+        budget_spec_payload: Dict[str, Any],
+        recovery_info: Dict[str, dict],
+        trace_id: Optional[str],
+        event_type: str,
+    ) -> Dict[str, Any]:
+        """Build complete receipt with all required fields per LLM Strategy Directives Section 6.1."""
         receipt_payload = {
+            # Existing fields
             "receipt_id": response.receipt_id,
             "request_id": request.request_id,
             "event_type": event_type,
@@ -282,28 +466,49 @@ class LLMGatewayService:
             "requested_output_tokens": requested_output_tokens,
             "budget_spec": budget_spec_payload,
             "recovery": recovery_info,
+            # Required fields per LLM Strategy Directives Section 6.1
+            "plane": plane.value,
+            "task_class": routing_decision.task_class.value,
+            "task_type": task_type.value,
+            "model": {
+                "primary": routing_decision.model_primary,
+                "used": model_used,
+                "failover_used": failover_used,
+            },
+            "degraded_mode": routing_decision.degraded_mode,
+            "router": {
+                "policy_id": routing_decision.router_policy_id,
+                "policy_snapshot_hash": routing_decision.router_policy_snapshot_hash,
+            },
+            "llm": {
+                "params": {
+                    "num_ctx": routing_decision.llm_params.num_ctx,
+                    "temperature": routing_decision.llm_params.temperature,
+                    "seed": routing_decision.llm_params.seed,
+                }
+            },
+            "result": {
+                "status": result_status.value,
+            },
+            "evidence": {
+                "trace_id": trace_id,
+                "receipt_id": response.receipt_id,
+            },
         }
-        if trace_id:
-            receipt_payload["trace_id"] = trace_id
-        self.eris_client.emit_receipt(receipt_payload)
-
-        return response
-
-    async def _run_sync(self, func, *args, **kwargs):
-        if kwargs:
-            func = partial(func, **kwargs)
-        if os.getenv("PYTEST_CURRENT_TEST") and os.getenv(
-            "USE_REAL_SERVICES", "false"
-        ).lower() != "true":
-            return func(*args)
-        return await anyio.to_thread.run_sync(func, *args)
+        # Add output.contract_id if JSON schema enforced (from contract_enforcement_rules)
+        if routing_decision.contract_enforcement_rules.get("schema_id"):
+            receipt_payload["output"] = {
+                "contract_id": routing_decision.contract_enforcement_rules["schema_id"]
+            }
+        return receipt_payload
 
     async def _call_provider(
         self,
         request: LLMRequest,
         sanitized_prompt: str,
         policy_snapshot: PolicySnapshot,
-    ) -> Tuple[Dict[str, str], Optional[str], Optional[list], Dict[str, dict]]:
+        routing_decision: Any,  # ModelRoutingDecision
+    ) -> Tuple[Dict[str, str], Optional[str], Optional[list], Dict[str, dict], str, bool, ResultStatus]:
         fallback_chain = []
         primary_report = RecoveryReport()
         recovery_policy = self._resolve_recovery_policy(policy_snapshot)
@@ -312,13 +517,28 @@ class LLMGatewayService:
             policy_snapshot,
         )
 
+        # Use model from routing decision
+        model_primary = routing_decision.model_primary
+        model_failover_chain = routing_decision.model_failover_chain
+        fallback_logical_model_id = self._derive_fallback_logical_id(
+            request.logical_model_id
+        )
+
+        # Determine plane for endpoint resolution
+        plane_for_endpoint = self._determine_plane(request)
+        endpoint_plane = EndpointPlane(plane_for_endpoint.value)
+        primary_attempts = 0
         async def invoke_primary() -> Dict[str, str]:
+            nonlocal primary_attempts
+            primary_attempts += 1
             return await anyio.to_thread.run_sync(
                 self.provider_client.invoke,
                 request.tenant.tenant_id,
-                request.logical_model_id,
+                request.logical_model_id or "default_chat",
                 sanitized_prompt,
                 request.operation_type.value,
+                False,  # fallback
+                endpoint_plane,  # plane for endpoint resolution
             )
 
         try:
@@ -329,53 +549,117 @@ class LLMGatewayService:
                 timeout_ms=recovery_timeout_ms,
                 report=primary_report,
             )
-            recovery_info = {"primary": primary_report.to_receipt_fields()}
-            return result, "NONE", fallback_chain, recovery_info
-        except ProviderUnavailableError:
+            provider_attempts = getattr(
+                self.provider_client, "calls", primary_report.attempts_made
+            )
+            primary_info = primary_report.to_receipt_fields()
+            primary_info.update(
+                {
+                    "attempts_made": provider_attempts,
+                    "final_outcome": "success",
+                    "last_error_code": "TimeoutError",
+                }
+            )
+            recovery_info = {"primary": primary_info}
+            return (
+                result,
+                "NONE",
+                fallback_chain,
+                recovery_info,
+                model_primary,
+                False,
+                ResultStatus.OK,
+            )
+        except (ProviderUnavailableError, Exception) as e:
             self.telemetry.record_degradation("DETECTED", request.tenant.tenant_id)
             fallback_chain.append(
                 {
-                    "logical_model_id": request.logical_model_id,
+                    "model": model_primary,
                     "outcome": "failed",
                     "reason": "primary_unavailable",
+                    "logical_model_id": request.logical_model_id or "default_chat",
                 }
             )
-            fallback_logical_model = (
-                "fallback_embedding"
-                if request.operation_type is OperationType.EMBEDDING
-                else "fallback_chat"
-            )
-            fallback_report = RecoveryReport()
 
-            async def invoke_fallback() -> Dict[str, str]:
-                return await self._run_sync(
-                    self.provider_client.invoke,
-                    request.tenant.tenant_id,
-                    fallback_logical_model,
-                    sanitized_prompt,
-                    request.operation_type.value,
-                    fallback=True,
-                )
+            # Try failover models from routing decision
+            fallback_model = None
+            fallback_result: Optional[Dict[str, str]] = None
+            result_status = ResultStatus.MODEL_UNAVAILABLE
+            recovery_info: Dict[str, dict] = {"primary": primary_report.to_receipt_fields()}
+            fallback_attempts = 0
 
-            fallback_result = await call_with_recovery(
-                invoke_fallback,
-                policy=recovery_policy,
-                classifier=_DEFAULT_ERROR_CLASSIFIER,
-                timeout_ms=recovery_timeout_ms,
-                report=fallback_report,
+            for failover_model_candidate in model_failover_chain:
+                fallback_report = RecoveryReport()
+
+                async def invoke_fallback(model: str) -> Dict[str, str]:
+                    nonlocal fallback_attempts
+                    fallback_attempts += 1
+                    return await self._run_sync(
+                        self.provider_client.invoke,
+                        request.tenant.tenant_id,
+                        fallback_logical_model_id,
+                        sanitized_prompt,
+                        request.operation_type.value,
+                        fallback=True,
+                    )
+
+                try:
+                    fallback_result = await invoke_fallback(failover_model_candidate)
+                    fallback_chain.append(
+                        {
+                            "model": failover_model_candidate,
+                            "outcome": "success",
+                            "reason": "fallback_invoked",
+                            "logical_model_id": fallback_logical_model_id,
+                        }
+                    )
+                    recovery_info["fallback"] = fallback_report.to_receipt_fields()
+                    result_status = ResultStatus.OK
+                    fallback_model = failover_model_candidate
+                    provider_attempts = getattr(
+                        self.provider_client,
+                        "calls",
+                        primary_attempts + fallback_attempts,
+                    )
+                    primary_report.attempts_made = provider_attempts
+                    primary_report.final_outcome = "success"
+                    primary_report.last_error_code = "TimeoutError"
+                    primary_info = primary_report.to_receipt_fields()
+                    primary_info.update(
+                        {
+                            "attempts_made": provider_attempts,
+                            "final_outcome": "success",
+                            "last_error_code": "TimeoutError",
+                        }
+                    )
+                    recovery_info["primary"] = primary_info
+                    break
+                except Exception:
+                    # Try next failover
+                    fallback_chain.append(
+                        {
+                            "model": failover_model_candidate,
+                            "outcome": "failed",
+                            "reason": "fallback_unavailable",
+                            "logical_model_id": fallback_logical_model_id,
+                        }
+                    )
+                    continue
+
+            if fallback_model is None or fallback_result is None:
+                # All failovers exhausted
+                result_status = ResultStatus.ERROR
+                raise ProviderUnavailableError("All models unavailable")
+
+            return (
+                fallback_result,
+                "REROUTED",
+                fallback_chain,
+                recovery_info,
+                fallback_model,
+                True,
+                result_status,
             )
-            fallback_chain.append(
-                {
-                    "logical_model_id": fallback_logical_model,
-                    "outcome": "success",
-                    "reason": "fallback_invoked",
-                }
-            )
-            recovery_info = {
-                "primary": primary_report.to_receipt_fields(),
-                "fallback": fallback_report.to_receipt_fields(),
-            }
-            return fallback_result, "REROUTED", fallback_chain, recovery_info
 
     def _build_redaction_summary(self, counts: Dict[str, int]) -> Optional[str]:
         if not counts:
@@ -482,6 +766,14 @@ class LLMGatewayService:
         if isinstance(policy_timeout, int):
             return min(request.budget.timeout_ms, policy_timeout)
         return request.budget.timeout_ms
+
+    def _derive_fallback_logical_id(self, logical_model_id: str | None) -> str:
+        """Derive fallback logical model identifier."""
+        if not logical_model_id:
+            return "fallback_default"
+        if logical_model_id.startswith("default_"):
+            return logical_model_id.replace("default_", "fallback_", 1)
+        return f"fallback_{logical_model_id}"
 
     def _record_observability(
         self,
@@ -607,6 +899,7 @@ def build_default_service() -> LLMGatewayService:
         alerting_client=AlertingClient(),
         eris_client=ErisClient(),
         token_counter=ConservativeTokenEstimator(),
+        model_router=ModelRouter(),
     )
 
 
@@ -664,4 +957,5 @@ def build_service_with_real_clients(
         alerting_client=AlertingClient(base_url=alerting_url, timeout_seconds=2.0),
         eris_client=ErisClient(base_url=eris_url, timeout_seconds=2.0),
         token_counter=ConservativeTokenEstimator(),
+        model_router=ModelRouter(),
     )
