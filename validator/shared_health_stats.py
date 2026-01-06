@@ -74,7 +74,8 @@ def get_health_response(include_backend: bool = True) -> Dict[str, Any]:
     response = {
         'status': 'healthy',
         'rule_counts': {
-            'total_rules': rule_counts.get('total_rules', 0),
+            'total_rules': rule_counts.get('enabled_rules', rule_counts.get('total_rules', 0)),
+            'total_rules_including_disabled': rule_counts.get('total_rules', 0),
             'enabled_rules': rule_counts.get('enabled_rules', 0),
             'disabled_rules': rule_counts.get('disabled_rules', 0),
             'category_counts': rule_counts.get('category_counts', {})
@@ -105,7 +106,8 @@ def get_stats_response(include_backend: bool = True) -> Dict[str, Any]:
     backend_status = get_backend_status() if include_backend else None
     
     response = {
-        'total_rules': rule_counts.get('total_rules', 0),
+        'total_rules': rule_counts.get('enabled_rules', rule_counts.get('total_rules', 0)),
+        'total_rules_including_disabled': rule_counts.get('total_rules', 0),
         'enabled_rules': rule_counts.get('enabled_rules', 0),
         'disabled_rules': rule_counts.get('disabled_rules', 0),
         'enforcement_active': True,

@@ -1,0 +1,35 @@
+{
+  "constitution_rules": [
+    {
+      "rule_id": "DISABLED-TEST-001",
+      "title": "Fixture rule intentionally disabled for exclusion validation",
+      "category": "Testing Assurance",
+      "enabled": false,
+      "severity_level": "Minor",
+      "version": "1.0.0",
+      "effective_date": "2024-01-01",
+      "last_updated": "2026-01-06T00:00:00Z",
+      "last_updated_by": "constitution@zeroui.com",
+      "policy_linkage": {
+        "policy_version_ids": [
+          "POL-TEST-EXCLUSION-001"
+        ],
+        "policy_snapshot_hash": "unknown"
+      },
+      "description": "Disabled-only rule used to verify loaders exclude non-enabled rules.",
+      "requirements": [
+        "Rule remains disabled; presence allows tests to assert exclusion behavior.",
+        "Do not enable this rule in production contexts."
+      ],
+      "validation": "Validator must not load this rule when enabled is false."
+    }
+  ],
+  "metadata": {
+    "total_rules": 1,
+    "version": "1.0.0",
+    "effective_date": "2024-01-01",
+    "last_updated": "2026-01-06T00:00:00Z",
+    "constitution_name": "ZeroUI2.0 Disabled Rule Fixtures"
+  }
+}
+

@@ -207,10 +207,13 @@ def test_get_backend_info(tmp_json_path):
 
 def test_enter_exit_context_manager(tmp_json_path, monkeypatch):
     """Test __enter__ and __exit__ context manager."""
-    # Mock rule count loader to return the actual count that will be loaded (415)
+    loader = constitution_rules_json.get_rule_count_loader()
+    loader.invalidate_cache()
+    actual_total_rules = loader.get_total_rules()
+
     def mock_get_rule_count_loader():
         mock_loader = Mock()
-        mock_loader.get_total_rules.return_value = 415
+        mock_loader.get_total_rules.return_value = actual_total_rules
         return mock_loader
     
     monkeypatch.setattr(constitution_rules_json, "get_rule_count_loader", mock_get_rule_count_loader)

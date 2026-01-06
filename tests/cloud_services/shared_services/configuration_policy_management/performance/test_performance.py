@@ -31,6 +31,18 @@ class TestPolicyEvaluationPerformance:
             "environment": "dev"
         }
 
+        # Warm-up call to amortize application startup overhead before measuring
+        warmup_response = client.post(
+            "/policy/v1/policies/test-policy/evaluate",
+            json=request
+        )
+        assert warmup_response.status_code in [
+            status.HTTP_200_OK,
+            status.HTTP_404_NOT_FOUND,
+            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+        ]
+
         start_time = time.perf_counter()
         response = client.post(
             "/policy/v1/policies/test-policy/evaluate",

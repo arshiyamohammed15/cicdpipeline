@@ -34,7 +34,8 @@ class HealthChecker:
         """
         # Count from JSON files
         json_files = sorted(list(self.constitution_dir.glob("*.json")))
-        expected_count = 0
+        enabled_count = 0
+        disabled_count = 0
         file_counts = {}
 
         for json_file in json_files:
@@ -43,8 +44,16 @@ class HealthChecker:
                     data = json.load(f)
                     rules = data.get('constitution_rules', [])
                     total_rules_in_file = len(rules)
-                    expected_count += total_rules_in_file
-                    file_counts[json_file.name] = total_rules_in_file
+                    enabled_in_file = sum(1 for rule in rules if rule.get("enabled", True))
+                    disabled_in_file = total_rules_in_file - enabled_in_file
+
+                    enabled_count += enabled_in_file
+                    disabled_count += disabled_in_file
+                    file_counts[json_file.name] = {
+                        'total': total_rules_in_file,
+                        'enabled': enabled_in_file,
+                        'disabled': disabled_in_file,
+                    }
             except Exception as e:
                 return {
                     'healthy': False,
@@ -56,22 +65,29 @@ class HealthChecker:
 
         # Use rule count loader as authoritative source
         loader_counts = get_rule_counts(str(self.constitution_dir))
-        loader_total = loader_counts.get('total_rules', expected_count)
+        loader_enabled = loader_counts.get('enabled_rules', enabled_count)
+        loader_disabled = loader_counts.get('disabled_rules', disabled_count)
 
-        # Get count from hook manager (uses total rules including disabled for consistency)
-        actual_count = self.hook_manager.total_rules
-        healthy = (loader_total == actual_count)
+        # Get count from hook manager (enabled rules only)
+        actual_enabled = self.hook_manager.total_rules
+        healthy = (loader_enabled == actual_enabled)
 
         return {
             'healthy': healthy,
-            'expected_count': loader_total,
-            'actual_count': actual_count,
+            'expected_count': loader_enabled,
+            'actual_count': actual_enabled,
             'json_files': {
                 'count': len(json_files),
                 'files': list(file_counts.keys()),
                 'rules_per_file': file_counts
             },
-            'message': 'Rule count matches JSON files' if healthy else f'Rule count mismatch: expected {loader_total}, got {actual_count}'
+            'totals': {
+                'enabled': loader_enabled,
+                'disabled': loader_disabled,
+                'all_files_enabled': enabled_count,
+                'all_files_disabled': disabled_count,
+            },
+            'message': 'Rule count matches JSON files' if healthy else f'Rule count mismatch: expected {loader_enabled}, got {actual_enabled}'
         }
 
     def check_json_files_accessible(self) -> Dict[str, Any]:
@@ -168,6 +184,12 @@ class HealthChecker:
         shared_counts = get_shared_rule_counts()
         backend_status = get_backend_status()
 
+        summary_enabled = shared_counts.get('enabled_rules', self.hook_manager.total_rules)
+        summary_total = shared_counts.get(
+            'total_rules',
+            summary_enabled + shared_counts.get('disabled_rules', self.hook_manager.disabled_rules)
+        )
+
         overall_healthy = (
             rule_count_check['healthy'] and
             json_files_check['healthy'] and
@@ -184,9 +206,10 @@ class HealthChecker:
                 'backend_sync': backend_status
             },
             'summary': {
-                'total_rules': shared_counts.get('total_rules', self.hook_manager.total_rules),
-                'enabled_rules': shared_counts.get('enabled_rules', 0),
-                'disabled_rules': shared_counts.get('disabled_rules', 0),
+                'total_rules': summary_enabled,
+                'total_rules_including_disabled': summary_total,
+                'enabled_rules': summary_enabled,
+                'disabled_rules': shared_counts.get('disabled_rules', self.hook_manager.disabled_rules),
                 'json_files_count': json_files_check['total_files'],
                 'constitution_dir': str(self.constitution_dir),
                 'backend_synchronized': backend_status.get('synchronized', False)

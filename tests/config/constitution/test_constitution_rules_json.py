@@ -92,12 +92,14 @@ def test_json_manager_initialization(tmp_json_path):
 
 def test_init_database_new_file(tmp_json_path, monkeypatch):
     """Test initializing database with new file."""
-    # Mock rule count loader to return a value that matches what will be loaded
-    # The actual count is 415 based on the real data
+    # Mock rule count loader to return the current total from the source of truth
+    loader = constitution_rules_json.get_rule_count_loader()
+    loader.invalidate_cache()
+    actual_total_rules = loader.get_total_rules()
+
     def mock_get_rule_count_loader():
         mock_loader = Mock()
-        # Return the actual count that will be loaded (415)
-        mock_loader.get_total_rules.return_value = 415
+        mock_loader.get_total_rules.return_value = actual_total_rules
         return mock_loader
     
     monkeypatch.setattr(constitution_rules_json, "get_rule_count_loader", mock_get_rule_count_loader)
@@ -154,10 +156,13 @@ def test_load_database(tmp_json_path, sample_rules_data, monkeypatch):
 
 def test_load_database_corrupted_file(tmp_json_path, monkeypatch):
     """Test loading corrupted database file."""
-    # Mock rule count loader to return the actual count that will be loaded (415)
+    loader = constitution_rules_json.get_rule_count_loader()
+    loader.invalidate_cache()
+    actual_total_rules = loader.get_total_rules()
+
     def mock_get_rule_count_loader():
         mock_loader = Mock()
-        mock_loader.get_total_rules.return_value = 415
+        mock_loader.get_total_rules.return_value = actual_total_rules
         return mock_loader
     
     monkeypatch.setattr(constitution_rules_json, "get_rule_count_loader", mock_get_rule_count_loader)
@@ -407,10 +412,13 @@ def test_repair_corrupted_database(tmp_json_path, sample_rules_data, monkeypatch
 
 def test_repair_corrupted_database_corrupted(tmp_json_path, monkeypatch):
     """Test repairing actually corrupted database."""
-    # Mock rule count loader to return the actual count that will be loaded (415)
+    loader = constitution_rules_json.get_rule_count_loader()
+    loader.invalidate_cache()
+    actual_total_rules = loader.get_total_rules()
+
     def mock_get_rule_count_loader():
         mock_loader = Mock()
-        mock_loader.get_total_rules.return_value = 415
+        mock_loader.get_total_rules.return_value = actual_total_rules
         return mock_loader
     
     monkeypatch.setattr(constitution_rules_json, "get_rule_count_loader", mock_get_rule_count_loader)

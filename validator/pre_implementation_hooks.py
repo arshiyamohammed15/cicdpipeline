@@ -648,11 +648,17 @@ class PreImplementationHookManager:
         """
         self.rule_loader = ConstitutionRuleLoader(constitution_dir)
         self.validator = PromptValidator(self.rule_loader)
-        # Use rule_count_loader as single source of truth for totals (enabled + disabled)
+        # Use rule_count_loader as single source of truth for totals
         counts = get_rule_counts(str(self.rule_loader.constitution_dir))
-        self.total_rules = counts.get('total_rules', len(self.rule_loader.rules) + self.rule_loader.disabled_rules_count)
         self.enabled_rules = counts.get('enabled_rules', len(self.rule_loader.rules))
         self.disabled_rules = counts.get('disabled_rules', self.rule_loader.disabled_rules_count)
+        # total_rules reflects enabled rules checked by the validator
+        self.total_rules = self.enabled_rules
+        # Keep full count available for observability without affecting validation totals
+        self.total_rules_including_disabled = counts.get(
+            'total_rules',
+            self.enabled_rules + self.disabled_rules
+        )
 
     def validate_before_generation(self, prompt: str, file_type: str = None,
                                  task_type: str = None) -> Dict[str, Any]:

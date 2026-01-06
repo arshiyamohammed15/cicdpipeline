@@ -43,18 +43,27 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         from validator.shared_health_stats import get_shared_rule_counts
 
         # Get rule counts from all sources
-        api_rules = hook_manager.total_rules
+        api_enabled = hook_manager.total_rules
         loader_counts = get_rule_counts()
         shared_counts = get_shared_rule_counts()
 
-        # Verify all sources agree
-        self.assertEqual(api_rules, loader_counts.get('total_rules', 0),
-                        "API service rule count must match loader")
-        self.assertEqual(api_rules, shared_counts.get('total_rules', 0),
-                        "API service rule count must match shared helper")
-        self.assertEqual(loader_counts.get('total_rules', 0), 
-                        shared_counts.get('total_rules', 0),
-                        "Loader and shared helper must agree")
+        loader_enabled = loader_counts.get('enabled_rules', 0)
+        shared_enabled = shared_counts.get('enabled_rules', 0)
+
+        # Verify enabled rule counts agree
+        self.assertEqual(api_enabled, loader_enabled,
+                        "API service enabled rule count must match loader")
+        self.assertEqual(api_enabled, shared_enabled,
+                        "API service enabled rule count must match shared helper")
+        self.assertEqual(loader_enabled, shared_enabled,
+                        "Loader and shared helper enabled counts must agree")
+
+        # Verify totals including disabled are also aligned
+        api_total = getattr(hook_manager, "total_rules_including_disabled", api_enabled)
+        loader_total = loader_counts.get('total_rules', loader_enabled)
+        shared_total = shared_counts.get('total_rules', shared_enabled)
+        self.assertEqual(len(set([api_total, loader_total, shared_total])), 1,
+                        "Total rule counts (including disabled) must be synchronized")
 
     def test_validator_health_endpoint_parity(self):
         """Test that validator health endpoint uses shared helper."""
@@ -86,9 +95,13 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         # Verify rule counts match
         api_rules = stats_data.get('total_rules', 0)
         shared_rules = shared_stats.get('total_rules', 0)
+        api_total = stats_data.get('total_rules_including_disabled', api_rules)
+        shared_total = shared_stats.get('total_rules_including_disabled', shared_rules)
 
         self.assertEqual(api_rules, shared_rules,
                         "Stats endpoint rule count must match shared helper")
+        self.assertEqual(api_total, shared_total,
+                        "Stats endpoint total rules (including disabled) must match shared helper")
 
     def test_storage_resolver_contract(self):
         """Test that storage operations use BaseStoragePathResolver."""
@@ -181,19 +194,33 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         from validator.health import HealthChecker
 
         # Get counts from all sources
-        api_count = hook_manager.total_rules
-        loader_count = get_rule_counts().get('total_rules', 0)
-        shared_count = get_shared_rule_counts().get('total_rules', 0)
+        api_enabled = hook_manager.total_rules
+        loader_counts = get_rule_counts()
+        shared_counts = get_shared_rule_counts()
+
+        loader_enabled = loader_counts.get('enabled_rules', 0)
+        shared_enabled = shared_counts.get('enabled_rules', 0)
 
         checker = HealthChecker()
         health_status = checker.get_health_status()
-        health_count = health_status.get('summary', {}).get('total_rules', 0)
+        health_enabled = health_status.get('summary', {}).get('total_rules', 0)
 
-        # All must agree
-        counts = [api_count, loader_count, shared_count, health_count]
+        # All enabled counts must agree
+        counts = [api_enabled, loader_enabled, shared_enabled, health_enabled]
         self.assertEqual(len(set(counts)), 1,
-                        f"Rule counts must be consistent: API={api_count}, "
-                        f"Loader={loader_count}, Shared={shared_count}, Health={health_count}")
+                        f"Enabled rule counts must be consistent: API={api_enabled}, "
+                        f"Loader={loader_enabled}, Shared={shared_enabled}, Health={health_enabled}")
+
+        # Total (including disabled) counts should also agree for observability
+        api_total = getattr(hook_manager, "total_rules_including_disabled", api_enabled)
+        loader_total = loader_counts.get('total_rules', loader_enabled)
+        shared_total = shared_counts.get('total_rules', shared_enabled)
+        health_total = health_status.get('summary', {}).get('total_rules_including_disabled', health_enabled)
+
+        totals = [api_total, loader_total, shared_total, health_total]
+        self.assertEqual(len(set(totals)), 1,
+                        f"Total rule counts must be consistent: API={api_total}, "
+                        f"Loader={loader_total}, Shared={shared_total}, Health={health_total}")
 
 
 if __name__ == '__main__':

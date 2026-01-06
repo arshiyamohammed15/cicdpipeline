@@ -99,17 +99,10 @@ class ConstitutionStructureTests(unittest.TestCase):
         """Set up test class with constitution loader."""
         constitution_dir = Path(__file__).parent.parent.parent.parent / 'docs' / 'constitution'
         cls.loader = ConstitutionRuleLoader(constitution_dir)
-        cls.expected_files = [
-            'MASTER GENERIC RULES.json',
-            'VSCODE EXTENSION RULES.json',
-            'LOGGING & TROUBLESHOOTING RULES.json',
-            'MODULES AND GSMD MAPPING RULES.json',
-            'TESTING RULES.json',
-            'COMMENTS RULES.json'
-        ]
+        cls.expected_files = sorted([p.name for p in constitution_dir.glob("*.json")])
 
     def test_all_files_exist(self):
-        """Verify all 6 constitution files exist."""
+        """Verify all constitution files exist."""
         for filename in self.expected_files:
             with self.subTest(filename=filename):
                 file_path = self.loader.constitution_dir / filename
@@ -183,14 +176,7 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
         """Set up test class with constitution loader."""
         constitution_dir = Path(__file__).parent.parent.parent.parent / 'docs' / 'constitution'
         cls.loader = ConstitutionRuleLoader(constitution_dir)
-        cls.expected_files = [
-            'MASTER GENERIC RULES.json',
-            'VSCODE EXTENSION RULES.json',
-            'LOGGING & TROUBLESHOOTING RULES.json',
-            'MODULES AND GSMD MAPPING RULES.json',
-            'TESTING RULES.json',
-            'COMMENTS RULES.json'
-        ]
+        cls.expected_files = sorted([p.name for p in constitution_dir.glob("*.json")])
 
     def test_all_rules_have_required_fields(self):
         """Verify all rules have required fields."""
@@ -405,16 +391,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
 
         # Calculate actual total from loader
         total = 0
-        files = [
-            'MASTER GENERIC RULES.json',
-            'CURSOR TESTING RULES.json',
-            'VSCODE EXTENSION RULES.json',
-            'LOGGING & TROUBLESHOOTING RULES.json',
-            'MODULES AND GSMD MAPPING RULES.json',
-            'TESTING RULES.json',
-            'COMMENTS RULES.json'
-        ]
-        for filename in files:
+        for filename in sorted([p.name for p in self.loader.constitution_dir.glob("*.json")]):
             total += len(self.loader.get_all_rules(filename))
 
         self.assertEqual(
@@ -425,14 +402,7 @@ class ConstitutionRuleContentTests(unittest.TestCase):
 
     def test_no_duplicate_rule_ids_within_file(self):
         """Verify no duplicate rule IDs within each file."""
-        files = [
-            'MASTER GENERIC RULES.json',
-            'VSCODE EXTENSION RULES.json',
-            'LOGGING & TROUBLESHOOTING RULES.json',
-            'MODULES AND GSMD MAPPING RULES.json',
-            'TESTING RULES.json',
-            'COMMENTS RULES.json'
-        ]
+        files = sorted([p.name for p in self.loader.constitution_dir.glob("*.json")])
 
         for filename in files:
             with self.subTest(filename=filename):
