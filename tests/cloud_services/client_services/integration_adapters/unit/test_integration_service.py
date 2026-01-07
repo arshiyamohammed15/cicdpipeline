@@ -125,9 +125,11 @@ def mock_kms_client():
     return KMS()
 
 
+@pytest.mark.unit
 class TestIntegrationService:
     """Test IntegrationService."""
 
+    @pytest.mark.unit
     def test_create_provider(self, integration_service):
         """Test creating a provider (FR-1)."""
         provider_data = IntegrationProviderCreate(
@@ -142,6 +144,7 @@ class TestIntegrationService:
         assert provider.provider_id == "github"
         assert provider.name == "GitHub"
 
+    @pytest.mark.unit
     def test_get_provider(self, integration_service):
         """Test getting provider (FR-1)."""
         provider_data = IntegrationProviderCreate(
@@ -155,6 +158,7 @@ class TestIntegrationService:
         assert provider is not None
         assert provider.provider_id == "github"
 
+    @pytest.mark.unit
     def test_create_connection(self, integration_service, sample_tenant_id):
         """Test creating a connection (FR-2)."""
         connection_data = IntegrationConnectionCreate(
@@ -169,6 +173,7 @@ class TestIntegrationService:
         assert connection.provider_id == "github"
         assert connection.status == ConnectionStatus.PENDING_VERIFICATION.value
 
+    @pytest.mark.unit
     def test_get_connection_with_tenant_isolation(
         self, integration_service, sample_tenant_id
     ):
@@ -193,6 +198,7 @@ class TestIntegrationService:
         )
         assert retrieved2 is None
 
+    @pytest.mark.unit
     def test_list_connections(self, integration_service, sample_tenant_id):
         """Test listing connections (FR-2, FR-10)."""
         connection_data = IntegrationConnectionCreate(
@@ -211,6 +217,7 @@ class TestIntegrationService:
         connections2 = integration_service.list_connections("wrong-tenant")
         assert len(connections2) == 0
 
+    @pytest.mark.unit
     def test_update_connection(self, integration_service, sample_tenant_id):
         """Test updating connection (FR-2)."""
         connection_data = IntegrationConnectionCreate(
@@ -232,6 +239,7 @@ class TestIntegrationService:
         assert updated.display_name == "Updated"
         assert updated.status == ConnectionStatus.ACTIVE.value
 
+    @pytest.mark.unit
     def test_verify_connection(self, integration_service, sample_tenant_id, mock_kms_client):
         """Test connection verification (FR-2, FR-3)."""
         # Register GitHub adapter

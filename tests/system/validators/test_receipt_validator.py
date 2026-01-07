@@ -12,6 +12,7 @@ Tests validator/receipt_validator.py functionality:
 """
 
 import sys
+import pytest
 import unittest
 import json
 import tempfile
@@ -24,6 +25,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from validator.receipt_validator import ReceiptValidator
 
 
+@pytest.mark.unit
 class TestReceiptValidator(unittest.TestCase):
     """Test ReceiptValidator class."""
 
@@ -31,6 +33,7 @@ class TestReceiptValidator(unittest.TestCase):
         """Set up test fixtures."""
         self.validator = ReceiptValidator()
 
+    @pytest.mark.unit
     def test_initialization(self):
         """Test ReceiptValidator initializes correctly."""
         self.assertIsNotNone(self.validator)
@@ -54,6 +57,7 @@ class TestReceiptValidator(unittest.TestCase):
             'signature': 'test-signature-123'
         }
 
+    @pytest.mark.unit
     def test_validate_valid_receipt(self):
         """Test validation of valid receipt."""
         receipt = self.create_valid_receipt()
@@ -63,6 +67,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertEqual(len(result['errors']), 0)
         self.assertEqual(result['receipt_id'], 'test-receipt-123')
 
+    @pytest.mark.unit
     def test_validate_receipt_structure_missing_fields(self):
         """Test validation detects missing required fields."""
         receipt = {'receipt_id': 'test'}  # Missing most fields
@@ -72,6 +77,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('Missing required field', result[0])
 
+    @pytest.mark.unit
     def test_validate_timestamps_valid(self):
         """Test timestamp validation with valid timestamps."""
         receipt = {
@@ -82,6 +88,7 @@ class TestReceiptValidator(unittest.TestCase):
 
         self.assertEqual(len(result), 0)
 
+    @pytest.mark.unit
     def test_validate_timestamps_invalid_utc(self):
         """Test timestamp validation detects invalid UTC format."""
         receipt = {
@@ -93,6 +100,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('UTC', result[0])
 
+    @pytest.mark.unit
     def test_validate_timestamps_invalid_monotonic(self):
         """Test timestamp validation detects invalid monotonic time."""
         receipt = {
@@ -104,6 +112,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('monotonic', result[0].lower())
 
+    @pytest.mark.unit
     def test_validate_decision_status_valid(self):
         """Test decision status validation with valid status."""
         for status in ['pass', 'warn', 'soft_block', 'hard_block']:
@@ -111,6 +120,7 @@ class TestReceiptValidator(unittest.TestCase):
             result = self.validator.validate_decision_status(receipt)
             self.assertEqual(len(result), 0, f"Status {status} should be valid")
 
+    @pytest.mark.unit
     def test_validate_decision_status_invalid(self):
         """Test decision status validation detects invalid status."""
         receipt = {'decision': {'status': 'invalid_status'}}
@@ -119,6 +129,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('Invalid decision status', result[0])
 
+    @pytest.mark.unit
     def test_validate_decision_status_string_format(self):
         """Test decision status validation with string format."""
         receipt = {'decision': 'pass'}
@@ -126,6 +137,7 @@ class TestReceiptValidator(unittest.TestCase):
 
         self.assertEqual(len(result), 0)
 
+    @pytest.mark.unit
     def test_validate_policy_references_valid(self):
         """Test policy references validation with valid values."""
         receipt = {
@@ -136,6 +148,7 @@ class TestReceiptValidator(unittest.TestCase):
 
         self.assertEqual(len(result), 0)
 
+    @pytest.mark.unit
     def test_validate_policy_references_invalid_hash(self):
         """Test policy references validation detects invalid hash format."""
         receipt = {
@@ -147,6 +160,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('sha256', result[0])
 
+    @pytest.mark.unit
     def test_validate_policy_references_empty_version_ids(self):
         """Test policy references validation detects empty version IDs."""
         receipt = {
@@ -158,6 +172,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('empty', result[0])
 
+    @pytest.mark.unit
     def test_validate_signature_missing(self):
         """Test signature validation detects missing signature."""
         receipt = {}
@@ -166,6 +181,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('signature', result[0])
 
+    @pytest.mark.unit
     def test_validate_signature_empty(self):
         """Test signature validation detects empty signature."""
         receipt = {'signature': ''}
@@ -174,6 +190,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertGreater(len(result), 0)
         self.assertIn('empty', result[0])
 
+    @pytest.mark.unit
     def test_validate_jsonl_file_valid(self):
         """Test JSONL file validation with valid file."""
         with tempfile.NamedTemporaryFile(mode='w', suffix='.jsonl', delete=False) as f:
@@ -193,6 +210,7 @@ class TestReceiptValidator(unittest.TestCase):
             self.assertEqual(result['total_count'], 2)
             self.assertEqual(len(result['errors_by_line']), 0)
 
+    @pytest.mark.unit
     def test_validate_jsonl_file_invalid_json(self):
         """Test JSONL file validation detects invalid JSON."""
         with tempfile.NamedTemporaryFile(mode='w', suffix='.jsonl', delete=False) as f:
@@ -205,6 +223,7 @@ class TestReceiptValidator(unittest.TestCase):
             self.assertGreater(len(result['errors_by_line']), 0)
             self.assertIn('Invalid JSON', result['errors_by_line'][0]['errors'][0])
 
+    @pytest.mark.unit
     def test_validate_jsonl_file_missing_file(self):
         """Test JSONL file validation handles missing file."""
         result = self.validator.validate_jsonl_file(Path('/nonexistent/file.jsonl'))
@@ -213,6 +232,7 @@ class TestReceiptValidator(unittest.TestCase):
         self.assertIn('error', result)
 
 
+@pytest.mark.unit
 class TestReceiptValidatorEdgeCases(unittest.TestCase):
     """Test edge cases and error handling."""
 
@@ -220,6 +240,7 @@ class TestReceiptValidatorEdgeCases(unittest.TestCase):
         """Set up test fixtures."""
         self.validator = ReceiptValidator()
 
+    @pytest.mark.unit
     def test_validate_receipt_all_errors(self):
         """Test validation catches all types of errors."""
         receipt = {}  # Empty receipt - should have many errors
@@ -228,6 +249,7 @@ class TestReceiptValidatorEdgeCases(unittest.TestCase):
         self.assertFalse(result['valid'])
         self.assertGreater(len(result['errors']), 5)  # Should have multiple errors
 
+    @pytest.mark.unit
     def test_validate_timestamps_negative_monotonic(self):
         """Test timestamp validation detects negative monotonic time."""
         receipt = {

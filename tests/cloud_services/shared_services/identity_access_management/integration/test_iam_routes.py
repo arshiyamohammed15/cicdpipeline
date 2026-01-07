@@ -11,6 +11,7 @@ Risks: None - all tests are hermetic with mocked dependencies
 
 import sys
 import unittest
+import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from datetime import datetime, timedelta
@@ -122,6 +123,7 @@ sys.modules['identity-access-management.main'] = main_module
 app = main_module.app
 
 
+@pytest.mark.integration
 class TestVerifyEndpoint(unittest.TestCase):
     """Test /iam/v1/verify endpoint."""
 
@@ -130,6 +132,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_verify_success(self):
         """Test verify endpoint with valid token."""
         # Mock jwt in sys.modules
@@ -162,6 +165,7 @@ class TestVerifyEndpoint(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.integration
     def test_verify_invalid_token(self):
         """Test verify endpoint with invalid token."""
         # Mock jwt in sys.modules
@@ -187,6 +191,7 @@ class TestVerifyEndpoint(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.integration
     def test_verify_missing_token(self):
         """Test verify endpoint with missing token."""
         response = self.client.post(
@@ -197,6 +202,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
+@pytest.mark.integration
 class TestDecisionEndpoint(unittest.TestCase):
     """Test /iam/v1/decision endpoint."""
 
@@ -205,6 +211,7 @@ class TestDecisionEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_decision_allow(self):
         """Test decision endpoint returns ALLOW."""
         response = self.client.post(
@@ -225,6 +232,7 @@ class TestDecisionEndpoint(unittest.TestCase):
         self.assertIn("reason", data)
         self.assertIn("receipt_id", data)
 
+    @pytest.mark.integration
     def test_decision_deny(self):
         """Test decision endpoint returns DENY."""
         response = self.client.post(
@@ -243,6 +251,7 @@ class TestDecisionEndpoint(unittest.TestCase):
         data = response.json()
         self.assertEqual(data["decision"], "DENY")
 
+    @pytest.mark.integration
     def test_decision_elevation_required(self):
         """Test decision endpoint returns ELEVATION_REQUIRED."""
         response = self.client.post(
@@ -265,6 +274,7 @@ class TestDecisionEndpoint(unittest.TestCase):
         data = response.json()
         self.assertEqual(data["decision"], "ELEVATION_REQUIRED")
 
+    @pytest.mark.integration
     def test_decision_invalid_request(self):
         """Test decision endpoint with invalid request."""
         response = self.client.post(
@@ -279,6 +289,7 @@ class TestDecisionEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
+@pytest.mark.integration
 class TestPoliciesEndpoint(unittest.TestCase):
     """Test /iam/v1/policies endpoint."""
 
@@ -287,6 +298,7 @@ class TestPoliciesEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_policies_upsert_success(self):
         """Test policies endpoint upserts policy bundle."""
         response = self.client.put(
@@ -316,6 +328,7 @@ class TestPoliciesEndpoint(unittest.TestCase):
         self.assertIn("snapshot_id", data)
         self.assertEqual(data["status"], "accepted")
 
+    @pytest.mark.integration
     def test_policies_missing_idempotency_key(self):
         """Test policies endpoint requires X-Idempotency-Key."""
         response = self.client.put(
@@ -335,6 +348,7 @@ class TestPoliciesEndpoint(unittest.TestCase):
         self.assertIn("X-Idempotency-Key", data["error"]["message"])
 
 
+@pytest.mark.integration
 class TestHealthEndpoint(unittest.TestCase):
     """Test /iam/v1/health endpoint."""
 
@@ -343,6 +357,7 @@ class TestHealthEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_health_check(self):
         """Test health endpoint returns healthy status."""
         response = self.client.get("/iam/v1/health")
@@ -352,6 +367,7 @@ class TestHealthEndpoint(unittest.TestCase):
         self.assertEqual(data["status"], "healthy")
         self.assertIn("timestamp", data)
 
+    @pytest.mark.integration
     def test_root_health_check(self):
         """Test root /health endpoint."""
         response = self.client.get("/health")
@@ -361,6 +377,7 @@ class TestHealthEndpoint(unittest.TestCase):
         self.assertEqual(data["status"], "healthy")
 
 
+@pytest.mark.integration
 class TestMetricsEndpoint(unittest.TestCase):
     """Test /iam/v1/metrics endpoint."""
 
@@ -369,6 +386,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_metrics_endpoint(self):
         """Test metrics endpoint returns service metrics."""
         response = self.client.get("/iam/v1/metrics")
@@ -384,6 +402,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         self.assertIn("timestamp", data)
 
 
+@pytest.mark.integration
 class TestConfigEndpoint(unittest.TestCase):
     """Test /iam/v1/config endpoint."""
 
@@ -392,6 +411,7 @@ class TestConfigEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_config_endpoint(self):
         """Test config endpoint returns module configuration."""
         response = self.client.get("/iam/v1/config")
@@ -405,6 +425,7 @@ class TestConfigEndpoint(unittest.TestCase):
         self.assertIn("timestamp", data)
 
 
+@pytest.mark.integration
 class TestErrorHandling(unittest.TestCase):
     """Test error handling across endpoints."""
 
@@ -413,6 +434,7 @@ class TestErrorHandling(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_error_envelope_structure(self):
         """Test error responses follow IPC protocol envelope."""
         response = self.client.post(
@@ -431,6 +453,7 @@ class TestErrorHandling(unittest.TestCase):
                 # Some validation errors might have different structure
                 self.assertIsNotNone(data.get("detail"))
 
+    @pytest.mark.integration
     def test_correlation_headers(self):
         """Test responses include correlation headers."""
         response = self.client.get("/iam/v1/health")
@@ -440,6 +463,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertIn("X-Span-Id", response.headers)
 
 
+@pytest.mark.integration
 class TestBreakGlassEndpoint(unittest.TestCase):
     """Test /iam/v1/break-glass endpoint."""
 
@@ -448,6 +472,7 @@ class TestBreakGlassEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_break_glass_success(self):
         """Test break-glass grants access when policy enabled."""
         # First, enable break-glass policy via /policies endpoint
@@ -495,6 +520,7 @@ class TestBreakGlassEndpoint(unittest.TestCase):
         self.assertIn("incident", data["reason"].lower())
         self.assertIn("24h", data["reason"].lower())
 
+    @pytest.mark.integration
     def test_break_glass_policy_not_enabled(self):
         """Test break-glass fails when policy not enabled."""
         response = self.client.post(

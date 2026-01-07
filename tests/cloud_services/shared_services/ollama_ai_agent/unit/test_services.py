@@ -67,11 +67,13 @@ class TestLoadSharedServicesConfig:
         assert config["base_url"] == "http://localhost:11434"
         assert "api_endpoints" in config
 
+    @pytest.mark.unit
     def test_load_config_missing_file(self, zu_root_env):
         """Test loading config when file doesn't exist."""
         config = _load_shared_services_config("ollama")
         assert config == {}
 
+    @pytest.mark.unit
     def test_load_config_fallback_when_no_zu_root(self, monkeypatch):
         """Test fallback when ZU_ROOT is not set."""
         monkeypatch.delenv("ZU_ROOT", raising=False)
@@ -90,12 +92,14 @@ class TestOllamaAIService:
         assert service.timeout == 120
         assert service.llm_name == "Ollama"
 
+    @pytest.mark.unit
     def test_service_initialization_custom_base_url(self):
         """Test service initialization with custom base URL."""
         service = OllamaAIService(base_url="http://custom:8080")
         assert service.base_url == "http://custom:8080"
 
     @patch('requests.get')
+    @pytest.mark.unit
     def test_check_ollama_available_success(self, mock_get):
         """Test checking Ollama availability when service is available."""
         mock_response = Mock()
@@ -107,6 +111,7 @@ class TestOllamaAIService:
         assert result is True
 
     @patch('requests.get')
+    @pytest.mark.unit
     def test_check_ollama_available_failure(self, mock_get):
         """Test checking Ollama availability when service is unavailable."""
         mock_get.side_effect = requests.exceptions.ConnectionError()
@@ -116,6 +121,7 @@ class TestOllamaAIService:
         assert result is False
 
     @patch('requests.get')
+    @pytest.mark.unit
     def test_check_ollama_available_timeout(self, mock_get):
         """Test checking Ollama availability when request times out."""
         mock_get.side_effect = requests.exceptions.Timeout()
@@ -125,6 +131,7 @@ class TestOllamaAIService:
         assert result is False
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_success(self, mock_post, mock_ollama_response):
         """Test successful prompt processing."""
         mock_response = Mock()
@@ -143,6 +150,7 @@ class TestOllamaAIService:
         assert result.metadata is not None
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_with_custom_model(self, mock_post, mock_ollama_response):
         """Test prompt processing with custom model."""
         mock_response = Mock()
@@ -158,6 +166,7 @@ class TestOllamaAIService:
         assert result.model == "custom-model"
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_timeout(self, mock_post):
         """Test prompt processing when request times out."""
         mock_post.side_effect = requests.exceptions.Timeout()
@@ -170,6 +179,7 @@ class TestOllamaAIService:
         assert "timed out" in str(exc_info.value).lower()
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_connection_error(self, mock_post):
         """Test prompt processing when connection fails."""
         mock_post.side_effect = requests.exceptions.ConnectionError("Connection refused")
@@ -182,6 +192,7 @@ class TestOllamaAIService:
         assert "Failed to communicate" in str(exc_info.value)
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_http_error(self, mock_post):
         """Test prompt processing when HTTP error occurs."""
         mock_response = Mock()
@@ -198,6 +209,7 @@ class TestOllamaAIService:
         assert "Error processing prompt" in message or "Failed to communicate" in message
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_with_options(self, mock_post, mock_ollama_response):
         """Test prompt processing with custom options."""
         mock_response = Mock()
@@ -218,6 +230,7 @@ class TestOllamaAIService:
         assert call_args[1]["json"]["options"]["temperature"] == 0.9
 
     @patch('requests.post')
+    @pytest.mark.unit
     def test_process_prompt_with_stream(self, mock_post, mock_ollama_response):
         """Test prompt processing with streaming enabled."""
         mock_response = Mock()

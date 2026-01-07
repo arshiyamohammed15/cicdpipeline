@@ -17,20 +17,24 @@ from datetime import datetime
 
 from integration_adapters.integrations.pm3_client import PM3Client
 
+@pytest.mark.unit
 class TestPM3Client:
     """Test PM3Client."""
 
+    @pytest.mark.unit
     def test_pm3_client_initialization(self):
         """Test PM-3 client initialization."""
         client = PM3Client()
         assert client.base_url is not None
 
+    @pytest.mark.unit
     def test_pm3_client_custom_url(self):
         """Test PM-3 client with custom URL."""
         client = PM3Client(base_url="http://custom-pm3:8000")
         assert client.base_url == "http://custom-pm3:8000"
 
     @patch('integrations.pm3_client.httpx.Client')
+    @pytest.mark.unit
     def test_ingest_signal_success(self, mock_client_class):
         """Test successful signal ingestion."""
         mock_response = Mock()
@@ -53,6 +57,7 @@ class TestPM3Client:
         mock_client.post.assert_called_once()
 
     @patch('integrations.pm3_client.httpx.Client')
+    @pytest.mark.unit
     def test_ingest_signal_failure(self, mock_client_class):
         """Test signal ingestion failure."""
         mock_client = Mock()
@@ -69,6 +74,7 @@ class TestPM3Client:
         assert result is False
 
     @patch('integrations.pm3_client.httpx.Client')
+    @pytest.mark.unit
     def test_ingest_signals_batch(self, mock_client_class):
         """Test batch signal ingestion."""
         mock_response = Mock()

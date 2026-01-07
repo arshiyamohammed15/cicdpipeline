@@ -15,9 +15,11 @@ import pytest
 
 from integration_adapters.service_registry import ServiceRegistry, get_service_registry
 
+@pytest.mark.unit
 class TestServiceRegistry:
     """Test ServiceRegistry."""
 
+    @pytest.mark.unit
     def test_register_service(self):
         """Test registering a service."""
         registry = ServiceRegistry()
@@ -27,12 +29,14 @@ class TestServiceRegistry:
         assert registry.has("test_service") is True
         assert registry.get("test_service") is service
 
+    @pytest.mark.unit
     def test_get_unregistered_service(self):
         """Test getting unregistered service returns None."""
         registry = ServiceRegistry()
         service = registry.get("unknown")
         assert service is None
 
+    @pytest.mark.unit
     def test_has_service(self):
         """Test checking if service is registered."""
         registry = ServiceRegistry()
@@ -42,6 +46,7 @@ class TestServiceRegistry:
         registry.register("test", service)
         assert registry.has("test") is True
 
+    @pytest.mark.unit
     def test_get_global_registry(self):
         """Test getting global service registry."""
         registry1 = get_service_registry()

@@ -11,9 +11,11 @@ from user_behaviour_intelligence.services import UBIService
 from user_behaviour_intelligence.models import TenantConfigRequest, SignalType
 
 
+@pytest.mark.integration
 class TestConfigChange:
     """Test configuration change effects."""
 
+    @pytest.mark.integration
     def test_config_change_emits_receipt(self):
         """Test that configuration change emits receipt to ERIS."""
         service = UBIService()

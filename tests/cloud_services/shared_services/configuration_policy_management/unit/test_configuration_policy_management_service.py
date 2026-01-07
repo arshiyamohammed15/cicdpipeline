@@ -21,6 +21,7 @@ import unittest
 import json
 import uuid
 import os
+import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock, Mock
 from datetime import datetime
@@ -136,6 +137,7 @@ def adapt_models_for_sqlite(engine):
                     column.type = SQLiteJSON()
 
 
+@pytest.mark.unit
 class TestPolicyEvaluationEngine(unittest.TestCase):
     """Test PolicyEvaluationEngine class with 100% coverage per PRD algorithm (lines 1619-1692)."""
 
@@ -164,6 +166,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         if original_db_url:
             os.environ["DATABASE_URL"] = original_db_url
 
+    @pytest.mark.unit
     def test_evaluate_policy_allow_decision(self):
         """Test EvaluatePolicy with allow decision."""
         policy_id = str(uuid.uuid4())
@@ -219,6 +222,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
             self.assertIsNotNone(result)
             self.assertIn(result.decision, ["allow", "deny", "transform"])
 
+    @pytest.mark.unit
     def test_evaluate_policy_caching(self):
         """Test EvaluatePolicy caching behavior per PRD (lines 1630-1634)."""
         policy_id = str(uuid.uuid4())
@@ -279,6 +283,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
             self.assertIsNotNone(result1)
             self.assertIsNotNone(result2)
 
+    @pytest.mark.unit
     def test_resolve_policy_hierarchy(self):
         """Test ResolvePolicyHierarchy algorithm per PRD (lines 1694-1721)."""
         tenant_id = "tenant-123"
@@ -327,6 +332,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
 
             self.assertIsInstance(policies, list)
 
+    @pytest.mark.unit
     def test_evaluate_policy_rules_deny(self):
         """Test EvaluatePolicyRules with deny action per PRD (lines 1723-1782)."""
         policy = {
@@ -356,6 +362,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         self.assertEqual(result["decision"], "deny")
         self.assertGreater(len(result["violations"]), 0)
 
+    @pytest.mark.unit
     def test_evaluate_policy_rules_allow(self):
         """Test EvaluatePolicyRules with allow action."""
         policy = {
@@ -383,6 +390,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
 
         self.assertEqual(result["decision"], "allow")
 
+    @pytest.mark.unit
     def test_calculate_specificity(self):
         """Test CalculateSpecificity algorithm per PRD (lines 1848-1879)."""
         # User-level policy (most specific)
@@ -398,6 +406,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
         # User should be more specific than tenant
         self.assertGreater(user_specificity, tenant_specificity)
 
+    @pytest.mark.unit
     def test_deny_overrides_precedence(self):
         """Test deny-overrides precedence per PRD."""
         policy_id = str(uuid.uuid4())
@@ -476,6 +485,7 @@ class TestPolicyEvaluationEngine(unittest.TestCase):
             self.assertIn(result.decision, ["allow", "deny", "transform"])
 
 
+@pytest.mark.unit
 class TestConfigurationDriftDetector(unittest.TestCase):
     """Test ConfigurationDriftDetector class with 100% coverage per PRD algorithm (lines 1881-1991)."""
 
@@ -485,6 +495,7 @@ class TestConfigurationDriftDetector(unittest.TestCase):
         self.key_management = MockM33KeyManagement()
         self.detector = ConfigurationDriftDetector(self.evidence_ledger, self.key_management)
 
+    @pytest.mark.unit
     def test_detect_drift_value_change(self):
         """Test DetectConfigurationDrift with value change per PRD (lines 1896-1919)."""
         config_id = str(uuid.uuid4())
@@ -510,6 +521,7 @@ class TestConfigurationDriftDetector(unittest.TestCase):
         self.assertTrue(result.drift_detected)
         self.assertGreater(len(result.drift_details), 0)
 
+    @pytest.mark.unit
     def test_detect_drift_missing_field(self):
         """Test DetectConfigurationDrift with missing field per PRD (lines 1922-1933)."""
         config_id = str(uuid.uuid4())
@@ -535,26 +547,31 @@ class TestConfigurationDriftDetector(unittest.TestCase):
         self.assertTrue(result.drift_detected)
         self.assertEqual(result.drift_severity, "high")
 
+    @pytest.mark.unit
     def test_calculate_drift_severity_critical(self):
         """Test CalculateDriftSeverity for critical fields per PRD (lines 1975-1977)."""
         severity = self.detector._calculate_drift_severity("encryption", "AES256", "AES128")
         self.assertEqual(severity, "critical")
 
+    @pytest.mark.unit
     def test_calculate_drift_severity_high(self):
         """Test CalculateDriftSeverity for high severity fields per PRD (lines 1980-1982)."""
         severity = self.detector._calculate_drift_severity("timeout", 30, 60)
         self.assertEqual(severity, "high")
 
+    @pytest.mark.unit
     def test_calculate_drift_severity_medium(self):
         """Test CalculateDriftSeverity for medium severity fields per PRD (lines 1985-1987)."""
         severity = self.detector._calculate_drift_severity("feature_flags", {}, {"new_feature": True})
         self.assertEqual(severity, "medium")
 
+    @pytest.mark.unit
     def test_calculate_drift_severity_low(self):
         """Test CalculateDriftSeverity for low severity fields per PRD (line 1990)."""
         severity = self.detector._calculate_drift_severity("other_field", "value1", "value2")
         self.assertEqual(severity, "low")
 
+    @pytest.mark.unit
     def test_remediation_required(self):
         """Test remediation required flag per PRD (lines 1952-1954)."""
         config_id = str(uuid.uuid4())
@@ -578,6 +595,7 @@ class TestConfigurationDriftDetector(unittest.TestCase):
         self.assertTrue(result.remediation_required)
 
 
+@pytest.mark.unit
 class TestComplianceChecker(unittest.TestCase):
     """Test ComplianceChecker class with 100% coverage per PRD algorithm (lines 1993-2138)."""
 
@@ -588,6 +606,7 @@ class TestComplianceChecker(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.checker = ComplianceChecker(self.evidence_ledger, self.key_management, self.data_plane)
 
+    @pytest.mark.unit
     def test_check_compliance_soc2(self):
         """Test CheckCompliance with SOC2 framework per PRD (lines 1995-2073)."""
         framework = "soc2"
@@ -614,6 +633,7 @@ class TestComplianceChecker(unittest.TestCase):
             self.assertGreaterEqual(result.score, 0.0)
             self.assertLessEqual(result.score, 100.0)
 
+    @pytest.mark.unit
     def test_check_compliance_score_calculation(self):
         """Test compliance score calculation per PRD (lines 2045-2049)."""
         framework = "soc2"
@@ -653,6 +673,7 @@ class TestComplianceChecker(unittest.TestCase):
                 self.assertEqual(result.controls_passing, 1)
                 self.assertEqual(result.controls_failing, 1)
 
+    @pytest.mark.unit
     def test_evaluate_control_implemented(self):
         """Test EvaluateControl with implemented control per PRD (lines 2075-2113)."""
         control = {
@@ -667,6 +688,7 @@ class TestComplianceChecker(unittest.TestCase):
 
         self.assertTrue(result["implemented"])
 
+    @pytest.mark.unit
     def test_evaluate_compliance_rule(self):
         """Test EvaluateComplianceRule algorithm per PRD (lines 2115-2138)."""
         rule = {
@@ -682,6 +704,7 @@ class TestComplianceChecker(unittest.TestCase):
         self.assertTrue(result["success"])
 
 
+@pytest.mark.unit
 class TestPolicyService(unittest.TestCase):
     """Test PolicyService class with 100% coverage."""
 
@@ -710,6 +733,7 @@ class TestPolicyService(unittest.TestCase):
         if original_db_url:
             os.environ["DATABASE_URL"] = original_db_url
 
+    @pytest.mark.unit
     def test_create_policy(self):
         """Test create_policy with valid request."""
         request = CreatePolicyRequest(
@@ -755,6 +779,7 @@ class TestPolicyService(unittest.TestCase):
             self.assertEqual(result.status, "draft")
 
 
+@pytest.mark.unit
 class TestConfigurationService(unittest.TestCase):
     """Test ConfigurationService class with 100% coverage."""
 
@@ -784,6 +809,7 @@ class TestConfigurationService(unittest.TestCase):
         if original_db_url:
             os.environ["DATABASE_URL"] = original_db_url
 
+    @pytest.mark.unit
     def test_create_configuration(self):
         """Test create_configuration with valid request."""
         request = CreateConfigurationRequest(
@@ -827,6 +853,7 @@ class TestConfigurationService(unittest.TestCase):
             self.assertEqual(result.status, "draft")
 
 
+@pytest.mark.unit
 class TestGoldStandardService(unittest.TestCase):
     """Test GoldStandardService class with 100% coverage."""
 
@@ -852,6 +879,7 @@ class TestGoldStandardService(unittest.TestCase):
         if original_db_url:
             os.environ["DATABASE_URL"] = original_db_url
 
+    @pytest.mark.unit
     def test_list_gold_standards(self):
         """Test list_gold_standards."""
         framework = "soc2"
@@ -899,6 +927,7 @@ class TestGoldStandardService(unittest.TestCase):
             self.assertIsInstance(result, list)
 
 
+@pytest.mark.unit
 class TestReceiptGenerator(unittest.TestCase):
     """Test ReceiptGenerator class with 100% coverage."""
 
@@ -908,6 +937,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.key_management = MockM33KeyManagement()
         self.generator = ReceiptGenerator(self.evidence_ledger, self.key_management)
 
+    @pytest.mark.unit
     def test_generate_remediation_receipt(self):
         """Test generate_remediation_receipt per PRD schema (lines 862-904)."""
         receipt = self.generator.generate_remediation_receipt(

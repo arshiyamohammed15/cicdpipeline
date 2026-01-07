@@ -1,0 +1,125 @@
+================================================================================
+DRY RUN MODE - No files will be modified
+================================================================================
+
+Found 334 test files to process
+Processing files... (this may take a few minutes)
+  Processed 50/334 files... (modified: 0, skipped: 9)
+  Processed 100/334 files... (modified: 0, skipped: 25)
+  Processed 150/334 files... (modified: 0, skipped: 43)
+  Processed 200/334 files... (modified: 0, skipped: 56)
+  Processed 250/334 files... (modified: 0, skipped: 63)
+  Processed 300/334 files... (modified: 0, skipped: 80)
+  Completed processing 334 files
+  Files that would be modified: 0
+  Files skipped: 89
+  Errors: 2
+================================================================================
+TEST MARKER STANDARDIZATION REPORT
+================================================================================
+
+Files Modified: 0
+Files Skipped: 89
+Errors: 2
+
+
+FILES SKIPPED (showing first 100 of 89):
+--------------------------------------------------------------------------------
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_semantic_qa_cache_schema.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\src\cloud_services\shared-services\budgeting-rate-limiting-cost-observability\tests\test_auth.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_dr_and_verification.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_bkg_phase0_stub_documentation.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\test_cursor_testing_rules.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_bkg_edge_schema.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_token_counter.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\src\cloud_services\shared-services\alerting-notification-service\tests\test_auth.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_routes.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\load\test_throughput.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_webhook_missing_signature.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\manual\test_commit_consistency.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_observability.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\constitution_positive_negative\test_rule_positive_negative.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_trust_missing_subject.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_schema_pack_contract.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_deduplication.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\validators\test_receipt_validator.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\test_errors.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\test_integration.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\openapi\test_openapi_infrastructure_services.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\validator\rules\test_basic_work_validator.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\test_no_deprecated_openai_symbols.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_redaction.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_adapters.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_tool_schema_validation.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_powershell_scripts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_wal_durability.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_engine.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_governance.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_policy_config_budget_override.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_mcp_server_registry.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_policy.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_phase0_migrations.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_trust_workspace_untrusted.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\enforcement\test_enforcement_flow.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_models.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\src\cloud_services\client-services\integration-adapters\tests\test_security_and_polling.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\validator\rules\test_rule_validator_fixtures.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_policy_and_config.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_clients_contracts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_validation.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_tenant_policy.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_memory_model_documentation.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\health\test_health_endpoints.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_scheduler.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_integration.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_mcp_server_verifier.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_producer_registry.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_storage.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\test_logging_config.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_health.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\validator\test_rule_validator.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_observability.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_verification.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_receipts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\api\test_api_endpoints.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_webhook_accepts_with_signature.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_sse_guard.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\validators\test_post_generation_validator.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_experiments.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_rate_limiter.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_mcp_registry_cli.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_receipts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_identity.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_health.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_routing.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_token_budget.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\health\test_health.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\enforcement\test_deterministic_enforcement.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_security.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\system\validators\test_pre_implementation_hooks_comprehensive.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_service.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_dual_channel.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\shared_libs\test_error_recovery.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_schema_parse_library.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\data_governance_privacy\test_harness.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\db\test_integration_schema_application.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\key_management_service\test_shim_import.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_dr_module.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_catalog.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\reliability\test_circuit_breaker_thread_safety.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_actor_preferences.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_normalization.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_dlq.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_runtime.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\sin\test_models.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_security_regression.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\infrastructure\api\test_api_service.py: No clear marker pattern from path
+
+ERRORS:
+--------------------------------------------------------------------------------
+Error scanning for test_*.py: [WinError 1921] The name of the file cannot be resolved by the system: 'D:\\Projects\\ZeroUI2.1\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0'
+Error scanning for *_test.py: [WinError 1921] The name of the file cannot be resolved by the system: 'D:\\Projects\\ZeroUI2.1\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0'
+
+Report saved to: D:\Projects\ZeroUI2.1\artifacts\marker_standardization_report.txt
+
+[DRY RUN] Would modify 0 files

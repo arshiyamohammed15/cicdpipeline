@@ -24,9 +24,11 @@ from detection_engine_core.models import (
 )
 
 
+@pytest.mark.unit
 class TestDetectionEngineServiceInit:
     """Test service initialization"""
 
+    @pytest.mark.unit
     def test_init_sets_performance_budgets(self):
         """Test that __init__ sets performance budgets correctly"""
         service = DetectionEngineService()
@@ -38,9 +40,11 @@ class TestDetectionEngineServiceInit:
         assert service.performance_budgets[EvaluationPoint.POST_DEPLOY] == 0.200
 
 
+@pytest.mark.unit
 class TestPerformDetection:
     """Test _perform_detection method"""
 
+    @pytest.mark.unit
     def test_perform_detection_with_high_risk_score(self):
         """Test detection with risk_score > 0.8"""
         service = DetectionEngineService()
@@ -56,6 +60,7 @@ class TestPerformDetection:
         assert 'High risk detected' in result['rationale']
         assert result['risk_score'] == 0.9
 
+    @pytest.mark.unit
     def test_perform_detection_with_large_file_count_and_incidents(self):
         """Test detection with file_count > 50 and has_recent_incidents"""
         service = DetectionEngineService()
@@ -70,6 +75,7 @@ class TestPerformDetection:
         assert result['status'] == DecisionStatus.HARD_BLOCK
         assert 'recent incidents' in result['rationale']
 
+    @pytest.mark.unit
     def test_perform_detection_with_risk_score_0_5(self):
         """Test detection with risk_score > 0.5"""
         service = DetectionEngineService()
@@ -84,6 +90,7 @@ class TestPerformDetection:
         assert result['status'] == DecisionStatus.SOFT_BLOCK
         assert 'Moderate risk detected' in result['rationale']
 
+    @pytest.mark.unit
     def test_perform_detection_with_file_count_30(self):
         """Test detection with file_count > 30"""
         service = DetectionEngineService()
@@ -97,6 +104,7 @@ class TestPerformDetection:
 
         assert result['status'] == DecisionStatus.SOFT_BLOCK
 
+    @pytest.mark.unit
     def test_perform_detection_with_risk_score_0_3(self):
         """Test detection with risk_score > 0.3"""
         service = DetectionEngineService()
@@ -111,6 +119,7 @@ class TestPerformDetection:
         assert result['status'] == DecisionStatus.WARN
         assert 'Low risk detected' in result['rationale']
 
+    @pytest.mark.unit
     def test_perform_detection_with_file_count_20(self):
         """Test detection with file_count > 20"""
         service = DetectionEngineService()
@@ -124,6 +133,7 @@ class TestPerformDetection:
 
         assert result['status'] == DecisionStatus.WARN
 
+    @pytest.mark.unit
     def test_perform_detection_with_low_risk(self):
         """Test detection with low risk (pass)"""
         service = DetectionEngineService()
@@ -138,6 +148,7 @@ class TestPerformDetection:
         assert result['status'] == DecisionStatus.PASS
         assert 'No significant risks detected' in result['rationale']
 
+    @pytest.mark.unit
     def test_perform_detection_with_empty_inputs(self):
         """Test detection with empty inputs"""
         service = DetectionEngineService()
@@ -153,6 +164,7 @@ class TestPerformDetection:
         assert result['risk_score'] == 0.0
         assert result['file_count'] == 0
 
+    @pytest.mark.unit
     def test_perform_detection_with_none_inputs(self):
         """Test detection with None inputs - Pydantic validation prevents this"""
         # Pydantic validation prevents None for required dict fields
@@ -165,9 +177,11 @@ class TestPerformDetection:
             )
 
 
+@pytest.mark.unit
 class TestGenerateBadges:
     """Test _generate_badges method"""
 
+    @pytest.mark.unit
     def test_generate_badges_with_has_tests(self):
         """Test badge generation with has_tests"""
         service = DetectionEngineService()
@@ -177,6 +191,7 @@ class TestGenerateBadges:
 
         assert 'has-tests' in badges
 
+    @pytest.mark.unit
     def test_generate_badges_with_has_documentation(self):
         """Test badge generation with has_documentation"""
         service = DetectionEngineService()
@@ -186,6 +201,7 @@ class TestGenerateBadges:
 
         assert 'has-docs' in badges
 
+    @pytest.mark.unit
     def test_generate_badges_with_code_review_approved(self):
         """Test badge generation with code_review_approved"""
         service = DetectionEngineService()
@@ -195,6 +211,7 @@ class TestGenerateBadges:
 
         assert 'reviewed' in badges
 
+    @pytest.mark.unit
     def test_generate_badges_with_all_flags(self):
         """Test badge generation with all flags"""
         service = DetectionEngineService()
@@ -211,6 +228,7 @@ class TestGenerateBadges:
         assert 'has-docs' in badges
         assert 'reviewed' in badges
 
+    @pytest.mark.unit
     def test_generate_badges_with_no_flags(self):
         """Test badge generation with no flags"""
         service = DetectionEngineService()
@@ -220,6 +238,7 @@ class TestGenerateBadges:
 
         assert len(badges) == 0
 
+    @pytest.mark.unit
     def test_generate_badges_with_false_flags(self):
         """Test badge generation with false flags"""
         service = DetectionEngineService()
@@ -234,9 +253,11 @@ class TestGenerateBadges:
         assert len(badges) == 0
 
 
+@pytest.mark.unit
 class TestCalculateConfidence:
     """Test _calculate_confidence method"""
 
+    @pytest.mark.unit
     def test_calculate_confidence_high_risk(self):
         """Test confidence calculation for high risk (> 0.7)"""
         service = DetectionEngineService()
@@ -251,6 +272,7 @@ class TestCalculateConfidence:
 
         assert confidence == 0.85
 
+    @pytest.mark.unit
     def test_calculate_confidence_moderate_risk(self):
         """Test confidence calculation for moderate risk (> 0.4)"""
         service = DetectionEngineService()
@@ -265,6 +287,7 @@ class TestCalculateConfidence:
 
         assert confidence == 0.75
 
+    @pytest.mark.unit
     def test_calculate_confidence_low_risk(self):
         """Test confidence calculation for low risk (> 0.1)"""
         service = DetectionEngineService()
@@ -279,6 +302,7 @@ class TestCalculateConfidence:
 
         assert confidence == 0.90
 
+    @pytest.mark.unit
     def test_calculate_confidence_very_low_risk(self):
         """Test confidence calculation for very low risk (<= 0.1)"""
         service = DetectionEngineService()
@@ -293,6 +317,7 @@ class TestCalculateConfidence:
 
         assert confidence == 0.95
 
+    @pytest.mark.unit
     def test_calculate_confidence_with_missing_risk_score(self):
         """Test confidence calculation with missing risk_score"""
         service = DetectionEngineService()
@@ -308,9 +333,11 @@ class TestCalculateConfidence:
         assert confidence == 0.95  # Defaults to very low risk
 
 
+@pytest.mark.unit
 class TestCalculateAccuracyMetrics:
     """Test _calculate_accuracy_metrics method"""
 
+    @pytest.mark.unit
     def test_calculate_accuracy_metrics_returns_dict(self):
         """Test that accuracy metrics returns a dictionary"""
         service = DetectionEngineService()
@@ -331,6 +358,7 @@ class TestCalculateAccuracyMetrics:
         assert 'false_negative_rate' in metrics
         assert 'error_rate' in metrics
 
+    @pytest.mark.unit
     def test_calculate_accuracy_metrics_values(self):
         """Test that accuracy metrics have expected values"""
         service = DetectionEngineService()
@@ -351,9 +379,11 @@ class TestCalculateAccuracyMetrics:
         assert metrics['error_rate'] == 0.18
 
 
+@pytest.mark.unit
 class TestGenerateReceipt:
     """Test _generate_receipt method"""
 
+    @pytest.mark.unit
     def test_generate_receipt_creates_receipt(self):
         """Test that receipt is generated correctly"""
         service = DetectionEngineService()
@@ -378,6 +408,7 @@ class TestGenerateReceipt:
         assert receipt.decision['status'] == 'pass'
         assert receipt.degraded is False
 
+    @pytest.mark.unit
     def test_generate_receipt_with_default_policy_version_ids(self):
         """Test receipt generation with default policy version IDs"""
         service = DetectionEngineService()
@@ -396,6 +427,7 @@ class TestGenerateReceipt:
 
         assert receipt.policy_version_ids == ['POL-INIT']
 
+    @pytest.mark.unit
     def test_generate_receipt_with_degraded_flag(self):
         """Test receipt generation with degraded flag"""
         service = DetectionEngineService()
@@ -414,6 +446,7 @@ class TestGenerateReceipt:
 
         assert receipt.degraded is True
 
+    @pytest.mark.unit
     def test_generate_receipt_with_actor_type_from_inputs(self):
         """Test receipt generation with actor.type from inputs"""
         service = DetectionEngineService()
@@ -432,6 +465,7 @@ class TestGenerateReceipt:
 
         assert receipt.actor['type'] == 'ai'
 
+    @pytest.mark.unit
     def test_generate_receipt_with_evidence_urls(self):
         """Test receipt generation with evidence URLs"""
         service = DetectionEngineService()
@@ -452,6 +486,7 @@ class TestGenerateReceipt:
         assert receipt.evidence_handles[0].url == 'https://example.com/evidence1'
         assert receipt.evidence_handles[0].type == 'artifact'
 
+    @pytest.mark.unit
     def test_generate_receipt_with_multiple_evidence_urls(self):
         """Test receipt generation with multiple evidence URLs"""
         service = DetectionEngineService()
@@ -470,6 +505,7 @@ class TestGenerateReceipt:
 
         assert len(receipt.evidence_handles) == 2
 
+    @pytest.mark.unit
     def test_generate_receipt_with_context(self):
         """Test receipt generation with context"""
         service = DetectionEngineService()
@@ -491,6 +527,7 @@ class TestGenerateReceipt:
         assert receipt.context['surface'] == 'ide'
         assert receipt.context['branch'] == 'main'
 
+    @pytest.mark.unit
     def test_generate_receipt_with_decision_status_enum(self):
         """Test receipt generation with DecisionStatus enum"""
         service = DetectionEngineService()
@@ -509,6 +546,7 @@ class TestGenerateReceipt:
 
         assert receipt.decision['status'] == 'warn'
 
+    @pytest.mark.unit
     def test_generate_receipt_with_decision_status_string(self):
         """Test receipt generation with decision status as string"""
         service = DetectionEngineService()
@@ -527,6 +565,7 @@ class TestGenerateReceipt:
 
         assert receipt.decision['status'] == 'warn'
 
+    @pytest.mark.unit
     def test_generate_receipt_with_badges(self):
         """Test receipt generation with badges"""
         service = DetectionEngineService()
@@ -545,6 +584,7 @@ class TestGenerateReceipt:
 
         assert receipt.decision['badges'] == ['has-tests', 'has-docs']
 
+    @pytest.mark.unit
     def test_generate_receipt_with_missing_badges(self):
         """Test receipt generation with missing badges"""
         service = DetectionEngineService()
@@ -563,9 +603,11 @@ class TestGenerateReceipt:
         assert receipt.decision['badges'] == []
 
 
+@pytest.mark.unit
 class TestEvaluateDecision:
     """Test evaluate_decision method"""
 
+    @pytest.mark.unit
     def test_evaluate_decision_returns_response(self):
         """Test that evaluate_decision returns DecisionResponse"""
         service = DetectionEngineService()
@@ -584,6 +626,7 @@ class TestEvaluateDecision:
         assert response.confidence is not None
         assert response.accuracy_metrics is not None
 
+    @pytest.mark.unit
     def test_evaluate_decision_sets_degraded_when_budget_exceeded(self):
         """Test that degraded flag is set when budget is exceeded"""
         service = DetectionEngineService()
@@ -599,6 +642,7 @@ class TestEvaluateDecision:
 
         assert response.receipt.degraded is True
 
+    @pytest.mark.unit
     def test_evaluate_decision_does_not_set_degraded_when_within_budget(self):
         """Test that degraded flag is not set when within budget"""
         service = DetectionEngineService()
@@ -614,6 +658,7 @@ class TestEvaluateDecision:
 
         assert response.receipt.degraded is False
 
+    @pytest.mark.unit
     def test_evaluate_decision_uses_default_budget_for_unknown_evaluation_point(self):
         """Test that default budget (200ms) is used for unknown evaluation point"""
         service = DetectionEngineService()
@@ -632,6 +677,7 @@ class TestEvaluateDecision:
 
         assert response.receipt.degraded is True
 
+    @pytest.mark.unit
     def test_evaluate_decision_handles_exception(self):
         """Test that evaluate_decision handles exceptions"""
         service = DetectionEngineService()
@@ -647,9 +693,11 @@ class TestEvaluateDecision:
             assert 'Test error' in str(exc_info.value)
 
 
+@pytest.mark.unit
 class TestSubmitFeedback:
     """Test submit_feedback method"""
 
+    @pytest.mark.unit
     def test_submit_feedback_returns_response(self):
         """Test that submit_feedback returns FeedbackResponse"""
         service = DetectionEngineService()
@@ -667,6 +715,7 @@ class TestSubmitFeedback:
         assert response.status == 'accepted'
         assert 'Feedback submitted successfully' in response.message
 
+    @pytest.mark.unit
     def test_submit_feedback_generates_unique_feedback_id(self):
         """Test that submit_feedback generates unique feedback IDs"""
         service = DetectionEngineService()
@@ -683,6 +732,7 @@ class TestSubmitFeedback:
 
         assert response1.feedback_id != response2.feedback_id
 
+    @pytest.mark.unit
     def test_submit_feedback_preserves_request_data(self):
         """Test that submit_feedback preserves request data"""
         service = DetectionEngineService()

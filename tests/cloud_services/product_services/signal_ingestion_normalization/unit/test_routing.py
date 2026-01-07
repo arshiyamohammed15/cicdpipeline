@@ -55,6 +55,7 @@ class TestRoutingEngine:
         assert engine is not None
         assert RoutingClass.REALTIME_DETECTION in engine.routing_rules
 
+    @pytest.mark.unit
     def test_register_rule(self):
         """Test registering a routing rule."""
         engine = RoutingEngine()
@@ -71,6 +72,7 @@ class TestRoutingEngine:
         engine.register_rule(RoutingClass.REALTIME_DETECTION, rule)
         assert len(engine.routing_rules[RoutingClass.REALTIME_DETECTION]) == 1
 
+    @pytest.mark.unit
     def test_route_signal(self):
         """Test routing a signal."""
         engine = RoutingEngine()
@@ -92,6 +94,7 @@ class TestRoutingEngine:
         destinations = engine.route_signal(signal)
         assert isinstance(destinations, list)
 
+    @pytest.mark.unit
     def test_route_with_tenant_awareness(self):
         """Test routing with tenant awareness."""
         engine = RoutingEngine()

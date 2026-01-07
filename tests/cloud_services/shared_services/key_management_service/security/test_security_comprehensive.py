@@ -59,6 +59,7 @@ class TestTenantIsolationSecurity:
             status.HTTP_401_UNAUTHORIZED
         ]
 
+    @pytest.mark.security
     def test_tenant_context_validation(self):
         """Test that tenant context is validated."""
         # Request with mismatched tenant context
@@ -80,6 +81,7 @@ class TestTenantIsolationSecurity:
             status.HTTP_401_UNAUTHORIZED
         ]
 
+    @pytest.mark.security
     def test_tenant_id_injection_prevented(self):
         """Test that tenant ID injection attempts are prevented."""
         malicious_tenant_id = "tenant-1'; DROP TABLE keys; --"
@@ -102,6 +104,7 @@ class TestTenantIsolationSecurity:
             status.HTTP_403_FORBIDDEN
         ]
 
+    @pytest.mark.security
     def test_cross_tenant_key_enumeration_prevented(self):
         """Test that cross-tenant key enumeration is prevented."""
         # Note: GET /keys endpoint may not exist - testing via key access instead
@@ -152,6 +155,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_403_FORBIDDEN  # If dual authorization required
         ]
 
+    @pytest.mark.security
     def test_key_rotation_requires_authorization(self):
         """Test that key rotation requires authorization."""
         response = test_client.post(
@@ -171,6 +175,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_key_revocation_requires_authorization(self):
         """Test that key revocation requires authorization."""
         response = test_client.post(
@@ -191,6 +196,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_key_deletion_requires_dual_authorization(self):
         """Test that key deletion requires dual authorization."""
         response = test_client.delete(
@@ -212,6 +218,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_key_export_prevented(self):
         """Test that private key export is prevented."""
         # Note: Key export endpoint may not exist - testing that private keys are not exposed
@@ -254,6 +261,7 @@ class TestCryptographicOperationsSecurity:
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
+    @pytest.mark.security
     def test_revoked_key_cannot_be_used(self):
         """Test that revoked keys cannot be used for operations."""
         # First create a key, then revoke it, then try to use it
@@ -276,6 +284,7 @@ class TestCryptographicOperationsSecurity:
             status.HTTP_409_CONFLICT  # KEY_REVOKED
         ]
 
+    @pytest.mark.security
     def test_invalid_algorithm_rejected(self):
         """Test that invalid algorithms are rejected."""
         response = test_client.post(
@@ -296,6 +305,7 @@ class TestCryptographicOperationsSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_algorithm_key_type_mismatch_prevented(self):
         """Test that algorithm-key type mismatches are prevented."""
         # Attempt to use Ed25519 algorithm with RSA key
@@ -318,6 +328,7 @@ class TestCryptographicOperationsSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_key_usage_restriction_enforced(self):
         """Test that key usage restrictions are enforced."""
         # Attempt to sign with key that only allows verify
@@ -340,6 +351,7 @@ class TestCryptographicOperationsSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_large_data_rejected(self):
         """Test that excessively large data is rejected."""
         # Attempt to sign very large data
@@ -394,6 +406,7 @@ class TestInputValidationSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_oversized_payload_rejected(self):
         """Test that oversized payloads are rejected."""
         # Use base64 encoded data for plaintext
@@ -421,6 +434,7 @@ class TestInputValidationSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_malformed_certificate_rejected(self):
         """Test that malformed certificates are rejected."""
         response = test_client.post(
@@ -440,6 +454,7 @@ class TestInputValidationSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_sql_injection_in_key_id_prevented(self):
         """Test that SQL injection in key_id is prevented."""
         malicious_key_id = "'; DROP TABLE keys; --"
@@ -463,6 +478,7 @@ class TestInputValidationSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_path_traversal_in_key_id_prevented(self):
         """Test that path traversal in key_id is prevented."""
         malicious_key_id = "../../etc/passwd"
@@ -509,6 +525,7 @@ class TestAccessPolicySecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_usage_limit_enforced(self):
         """Test that usage limits are enforced."""
         # Attempt to exceed daily usage limit
@@ -533,6 +550,7 @@ class TestAccessPolicySecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_module_restriction_enforced(self):
         """Test that module restrictions are enforced."""
         # Attempt to use key from unauthorized module
@@ -585,6 +603,7 @@ class TestTrustAnchorSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_trust_anchor_authorization_required(self):
         """Test that trust anchor updates require authorization."""
         response = test_client.post(
@@ -605,6 +624,7 @@ class TestTrustAnchorSecurity:
             status.HTTP_403_FORBIDDEN  # If authorization required
         ]
 
+    @pytest.mark.security
     def test_self_signed_certificate_rejected(self):
         """Test that self-signed certificates are rejected for CA anchors."""
         # Attempt to add self-signed certificate as CA
@@ -657,6 +677,7 @@ class TestAuditLoggingSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_cryptographic_operations_audit_logged(self):
         """Test that cryptographic operations are audit logged."""
         # Note: Mocking at service level doesn't work with TestClient

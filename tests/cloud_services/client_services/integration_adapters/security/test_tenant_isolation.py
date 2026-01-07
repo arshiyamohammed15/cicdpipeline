@@ -44,9 +44,11 @@ def connection_repo():
     return Repo()
 
 
+@pytest.mark.security
 class TestTenantIsolation:
     """Test tenant isolation."""
 
+    @pytest.mark.security
     def test_connection_tenant_isolation(self, connection_repo):
         """Test that connections are isolated by tenant."""
         tenant1 = "tenant-1"
@@ -83,6 +85,7 @@ class TestTenantIsolation:
         retrieved2 = connection_repo.get_by_id(created2.connection_id, tenant2)
         assert retrieved2 is not None
 
+    @pytest.mark.security
     def test_list_connections_tenant_isolation(self, connection_repo):
         """Test that listing connections respects tenant isolation."""
         tenant1 = "tenant-1"

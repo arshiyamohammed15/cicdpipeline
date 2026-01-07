@@ -118,6 +118,7 @@ def manager(tmp_config_dir, fake_db_manager, monkeypatch):
         return mgr
 
 
+@pytest.mark.constitution
 def test_config_manager_initialization(manager, tmp_config_dir):
     """Test config manager initialization."""
     assert manager.config_dir == Path(tmp_config_dir)
@@ -125,12 +126,14 @@ def test_config_manager_initialization(manager, tmp_config_dir):
     assert manager.db_manager is not None
 
 
+@pytest.mark.constitution
 def test_is_rule_enabled_from_database(manager):
     """Test checking if rule is enabled from database."""
     assert manager.is_rule_enabled(1) is True
     assert manager.is_rule_enabled(2) is False
 
 
+@pytest.mark.constitution
 def test_is_rule_enabled_from_config_fallback(manager, tmp_config_dir):
     """Test checking if rule is enabled from config file fallback."""
     # Rule not in database, check config
@@ -146,6 +149,7 @@ def test_is_rule_enabled_from_config_fallback(manager, tmp_config_dir):
     assert manager.is_rule_enabled(3) is True
 
 
+@pytest.mark.constitution
 def test_enable_rule(manager, tmp_config_dir):
     """Test enabling a rule."""
     result = manager.enable_rule(2, {"test": "data"})
@@ -159,6 +163,7 @@ def test_enable_rule(manager, tmp_config_dir):
     assert config["rules"]["2"]["config"] == {"test": "data"}
 
 
+@pytest.mark.constitution
 def test_disable_rule(manager, tmp_config_dir):
     """Test disabling a rule."""
     result = manager.disable_rule(1, "Testing disable")
@@ -172,6 +177,7 @@ def test_disable_rule(manager, tmp_config_dir):
     assert config["rules"]["1"]["reason"] == "Testing disable"
 
 
+@pytest.mark.constitution
 def test_get_rule_config(manager, tmp_config_dir):
     """Test getting rule configuration."""
     # Enable a rule first
@@ -182,6 +188,7 @@ def test_get_rule_config(manager, tmp_config_dir):
     assert config["config"] == {"threshold": 5}
 
 
+@pytest.mark.constitution
 def test_get_all_rule_configs(manager):
     """Test getting all rule configurations."""
     # Enable and disable some rules
@@ -193,6 +200,7 @@ def test_get_all_rule_configs(manager):
     assert "2" in configs
 
 
+@pytest.mark.constitution
 def test_get_enabled_rules(manager):
     """Test getting all enabled rules."""
     enabled = manager.get_enabled_rules()
@@ -200,6 +208,7 @@ def test_get_enabled_rules(manager):
     assert enabled[0]["rule_number"] == 1
 
 
+@pytest.mark.constitution
 def test_get_disabled_rules(manager):
     """Test getting all disabled rules."""
     disabled = manager.get_disabled_rules()
@@ -207,6 +216,7 @@ def test_get_disabled_rules(manager):
     assert disabled[0]["rule_number"] == 2
 
 
+@pytest.mark.constitution
 def test_get_rules_by_category(manager):
     """Test getting rules by category."""
     rules = manager.get_rules_by_category("basic_work")
@@ -214,6 +224,7 @@ def test_get_rules_by_category(manager):
     assert rules[0]["rule_number"] == 1
 
 
+@pytest.mark.constitution
 def test_get_rules_by_category_enabled_only(manager):
     """Test getting enabled rules by category."""
     rules = manager.get_rules_by_category("basic_work", enabled_only=True)
@@ -221,6 +232,7 @@ def test_get_rules_by_category_enabled_only(manager):
     assert rules[0]["enabled"] is True
 
 
+@pytest.mark.constitution
 def test_get_rule_by_number(manager):
     """Test getting a specific rule by number."""
     rule = manager.get_rule_by_number(1)
@@ -229,6 +241,7 @@ def test_get_rule_by_number(manager):
     assert rule["title"] == "Rule 1"
 
 
+@pytest.mark.constitution
 def test_get_rule_statistics(manager):
     """Test getting rule statistics."""
     stats = manager.get_rule_statistics()
@@ -237,6 +250,7 @@ def test_get_rule_statistics(manager):
     assert stats["disabled_rules"] == 1
 
 
+@pytest.mark.constitution
 def test_get_all_rules(manager):
     """Test getting all rules."""
     all_rules = manager.get_all_rules()
@@ -246,6 +260,7 @@ def test_get_all_rules(manager):
     assert len(enabled_only) == 1
 
 
+@pytest.mark.constitution
 def test_search_rules(manager, monkeypatch):
     """Test searching rules."""
     # Mock the queries module - patch where it's imported (inside the method)
@@ -257,6 +272,7 @@ def test_search_rules(manager, monkeypatch):
         assert len(results) == 1
 
 
+@pytest.mark.constitution
 def test_backup_database(manager, tmp_path):
     """Test backing up database."""
     backup_path = tmp_path / "backup.db"
@@ -266,6 +282,7 @@ def test_backup_database(manager, tmp_path):
     assert backup_path.exists()
 
 
+@pytest.mark.constitution
 def test_restore_database(manager, tmp_path):
     """Test restoring database from backup."""
     # Create a backup first
@@ -276,6 +293,7 @@ def test_restore_database(manager, tmp_path):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_sync_with_database(manager, tmp_config_dir):
     """Test syncing configuration with database."""
     manager.sync_with_database()
@@ -287,6 +305,7 @@ def test_sync_with_database(manager, tmp_config_dir):
     assert "2" in config["rules"]
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json(manager):
     """Test exporting rules to JSON."""
     json_data = manager.export_rules_to_json()
@@ -296,6 +315,7 @@ def test_export_rules_to_json(manager):
     assert isinstance(parsed, list)
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json_enabled_only(manager):
     """Test exporting only enabled rules."""
     json_data = manager.export_rules_to_json(enabled_only=True)
@@ -303,6 +323,7 @@ def test_export_rules_to_json_enabled_only(manager):
     assert all(rule["enabled"] for rule in parsed)
 
 
+@pytest.mark.constitution
 def test_import_rules_from_json(manager):
     """Test importing rules from JSON."""
     json_data = json.dumps([{"rule_number": 3, "title": "Rule 3"}])
@@ -310,12 +331,14 @@ def test_import_rules_from_json(manager):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_log_validation(manager):
     """Test logging validation result."""
     manager.log_validation(1, "passed", "Test details")
     # Just verify it doesn't raise an exception
 
 
+@pytest.mark.constitution
 def test_get_categories(manager, monkeypatch):
     """Test getting all categories."""
     mock_extractor = Mock()
@@ -329,6 +352,7 @@ def test_get_categories(manager, monkeypatch):
         assert len(categories) == 2
 
 
+@pytest.mark.constitution
 def test_get_category_info(manager, monkeypatch):
     """Test getting category information."""
     mock_extractor = Mock()
@@ -341,6 +365,7 @@ def test_get_category_info(manager, monkeypatch):
         assert info["description"] == "Basic work rules"
 
 
+@pytest.mark.constitution
 def test_reset_all_rules_to_enabled(manager):
     """Test resetting all rules to enabled."""
     manager.reset_all_rules_to_enabled()
@@ -351,6 +376,7 @@ def test_reset_all_rules_to_enabled(manager):
     assert len(manager.db_manager.enable_called) >= 0
 
 
+@pytest.mark.constitution
 def test_reset_all_rules_to_disabled(manager):
     """Test resetting all rules to disabled."""
     manager.reset_all_rules_to_disabled()
@@ -359,6 +385,7 @@ def test_reset_all_rules_to_disabled(manager):
     assert (1, "") in manager.db_manager.disable_called or len(manager.db_manager.disable_called) > 0
 
 
+@pytest.mark.constitution
 def test_get_constitution_config(manager):
     """Test getting constitution configuration."""
     config = manager.get_constitution_config()
@@ -366,6 +393,7 @@ def test_get_constitution_config(manager):
     assert "rules" in config
 
 
+@pytest.mark.constitution
 def test_update_constitution_config(manager, tmp_config_dir):
     """Test updating constitution configuration."""
     updates = {"new_field": "new_value"}
@@ -375,17 +403,20 @@ def test_update_constitution_config(manager, tmp_config_dir):
     assert config["new_field"] == "new_value"
 
 
+@pytest.mark.constitution
 def test_initialize(manager):
     """Test initializing the manager."""
     result = manager.initialize()
     assert result is True
 
 
+@pytest.mark.constitution
 def test_get_backend_type(manager):
     """Test getting backend type."""
     assert manager.get_backend_type() == "sqlite"
 
 
+@pytest.mark.constitution
 def test_get_backend_info(manager):
     """Test getting backend information."""
     info = manager.get_backend_info()
@@ -394,6 +425,7 @@ def test_get_backend_info(manager):
     assert "database_exists" in info
 
 
+@pytest.mark.constitution
 def test_health_check(manager, monkeypatch):
     """Test health check."""
     # Mock the database connection
@@ -408,12 +440,14 @@ def test_health_check(manager, monkeypatch):
         assert "database_exists" in health
 
 
+@pytest.mark.constitution
 def test_close(manager):
     """Test closing the manager."""
     manager.close()
     assert manager.db_manager.close_called is True
 
 
+@pytest.mark.constitution
 def test_context_manager(manager):
     """Test using manager as context manager."""
     with manager:

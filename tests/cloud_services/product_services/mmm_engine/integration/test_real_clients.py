@@ -127,6 +127,7 @@ def patch_httpx_async_client(monkeypatch: pytest.MonkeyPatch) -> _CaptureAsyncCl
     return capture
 
 
+@pytest.mark.integration
 def test_iam_client_verify_token(patch_httpx_client: _CaptureClient) -> None:
     """Test IAM client token verification."""
     client = IAMClient(base_url="http://iam.test/v1", timeout_seconds=2.0)
@@ -144,6 +145,7 @@ def test_iam_client_verify_token(patch_httpx_client: _CaptureClient) -> None:
     assert req["json"]["token"] == "test-token"
 
 
+@pytest.mark.integration
 def test_iam_client_validate_actor(patch_httpx_client: _CaptureClient) -> None:
     """Test IAM client actor validation."""
     client = IAMClient(base_url="http://iam.test/v1", timeout_seconds=2.0)
@@ -160,6 +162,7 @@ def test_iam_client_validate_actor(patch_httpx_client: _CaptureClient) -> None:
     assert body["action"] == "mmm.decide"
 
 
+@pytest.mark.integration
 def test_iam_client_circuit_breaker() -> None:
     """Test IAM client circuit breaker behavior."""
     client = IAMClient(base_url="http://iam.test/v1", timeout_seconds=0.1)
@@ -275,6 +278,7 @@ async def test_llm_gateway_client_safety_failure(patch_httpx_async_client: _Capt
         )
 
 
+@pytest.mark.integration
 def test_policy_client_evaluate(patch_httpx_client: _CaptureClient) -> None:
     """Test Policy client evaluation."""
     client = PolicyClient(base_url="http://policy.test", timeout_seconds=0.5)
@@ -292,6 +296,7 @@ def test_policy_client_evaluate(patch_httpx_client: _CaptureClient) -> None:
     assert len(patch_httpx_client.requests) > 0
 
 
+@pytest.mark.integration
 def test_policy_cache_fail_open(patch_httpx_client: _CaptureClient) -> None:
     """Test Policy cache fail-open behavior."""
     client = PolicyClient(base_url="http://policy.test", timeout_seconds=0.5)
@@ -319,6 +324,7 @@ def test_policy_cache_fail_open(patch_httpx_client: _CaptureClient) -> None:
     assert snapshot2.snapshot_id == snapshot1.snapshot_id
 
 
+@pytest.mark.integration
 def test_data_governance_client_get_tenant_config(patch_httpx_client: _CaptureClient) -> None:
     """Test Data Governance client tenant config retrieval."""
     client = DataGovernanceClient(base_url="http://dg.test", timeout_seconds=0.5)
@@ -338,6 +344,7 @@ def test_data_governance_client_get_tenant_config(patch_httpx_client: _CaptureCl
     assert "/v1/data-governance/tenants/tenant-1/config" in req["url"]
 
 
+@pytest.mark.integration
 def test_data_governance_client_redact(patch_httpx_client: _CaptureClient) -> None:
     """Test Data Governance client content redaction."""
     client = DataGovernanceClient(base_url="http://dg.test", timeout_seconds=0.5)
@@ -353,6 +360,7 @@ def test_data_governance_client_redact(patch_httpx_client: _CaptureClient) -> No
     assert len(patch_httpx_client.requests) == 1
 
 
+@pytest.mark.integration
 def test_ubi_client_get_recent_signals(patch_httpx_client: _CaptureClient) -> None:
     """Test UBI client recent signals retrieval."""
     client = UBIClient(base_url="http://ubi.test", timeout_seconds=1.0)

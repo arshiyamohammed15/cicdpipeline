@@ -21,9 +21,11 @@ from detection_engine_core.models import EvaluationPoint
 client = TestClient(app)
 
 
+@pytest.mark.unit
 class TestRoutes:
     """Test API routes"""
 
+    @pytest.mark.unit
     def test_health_check(self):
         """Test health check endpoint"""
         response = client.get("/v1/health")
@@ -32,6 +34,7 @@ class TestRoutes:
         assert data["status"] == "healthy"
         assert "timestamp" in data
 
+    @pytest.mark.unit
     def test_readiness_check(self):
         """Test readiness check endpoint"""
         response = client.get("/v1/ready")
@@ -40,6 +43,7 @@ class TestRoutes:
         assert "ready" in data
         assert "checks" in data
 
+    @pytest.mark.unit
     def test_evaluate_decision_success(self):
         """Test decision evaluation endpoint - success"""
         request_data = {
@@ -65,6 +69,7 @@ class TestRoutes:
         assert "confidence" in data
         assert "accuracy_metrics" in data
 
+    @pytest.mark.unit
     def test_evaluate_decision_unauthorized(self):
         """Test decision evaluation endpoint - unauthorized"""
         request_data = {
@@ -82,6 +87,7 @@ class TestRoutes:
 
         assert response.status_code == 401
 
+    @pytest.mark.unit
     def test_submit_feedback_success(self):
         """Test feedback submission endpoint - success"""
         request_data = {
@@ -105,6 +111,7 @@ class TestRoutes:
         assert "feedback_id" in data
         assert data["status"] == "accepted"
 
+    @pytest.mark.unit
     def test_submit_feedback_unauthorized(self):
         """Test feedback submission endpoint - unauthorized"""
         request_data = {

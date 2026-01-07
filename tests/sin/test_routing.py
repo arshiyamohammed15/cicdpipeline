@@ -6,6 +6,7 @@ from datetime import datetime
 from tests.sin.conftest import SignalEnvelope, SignalKind, Environment, RoutingClass
 
 
+@pytest.mark.unit
 def test_routing_classification(routing_engine):
     """Test routing class classification."""
     signal = SignalEnvelope(
@@ -25,6 +26,7 @@ def test_routing_classification(routing_engine):
     assert RoutingClass.REALTIME_DETECTION in routing_classes
 
 
+@pytest.mark.unit
 def test_tenant_aware_routing(routing_engine):
     """Test tenant-aware routing."""
     signal = SignalEnvelope(

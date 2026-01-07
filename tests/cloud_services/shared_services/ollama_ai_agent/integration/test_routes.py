@@ -70,6 +70,7 @@ else:
 
 
 @pytest.fixture(scope="module")
+@pytest.mark.integration
 def test_client():
     """Lightweight FastAPI test client for Ollama routes."""
     app = FastAPI()
@@ -153,6 +154,7 @@ class TestPromptEndpoint:
         assert "model" in data
 
     @patch('ollama_ai_agent.routes.OllamaAIService')
+    @pytest.mark.integration
     def test_process_prompt_with_model(self, mock_service_class, test_client):
         """Test prompt processing with custom model."""
         mock_service = Mock()
@@ -175,6 +177,7 @@ class TestPromptEndpoint:
         assert data["model"] == "custom-model"
 
     @patch('ollama_ai_agent.routes.OllamaAIService')
+    @pytest.mark.integration
     def test_process_prompt_error_handling(self, mock_service_class, test_client):
         """Test error handling in prompt endpoint."""
         mock_service = Mock()
@@ -192,6 +195,7 @@ class TestPromptEndpoint:
         assert error_data is not None
         assert error_data.get("code") == "OLLAMA_SERVICE_ERROR"
 
+    @pytest.mark.integration
     def test_process_prompt_validation_error(self, test_client):
         """Test validation error for invalid request."""
         response = test_client.post(
@@ -201,6 +205,7 @@ class TestPromptEndpoint:
 
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
+    @pytest.mark.integration
     def test_process_prompt_empty_prompt(self, test_client):
         """Test validation error for empty prompt."""
         response = test_client.post(
@@ -232,6 +237,7 @@ class TestHealthEndpoint:
         assert data["ollama_available"] is True
 
     @patch('ollama_ai_agent.routes.OllamaAIService')
+    @pytest.mark.integration
     def test_health_check_degraded(self, mock_service_class, test_client):
         """Test health check when Ollama is unavailable."""
         mock_service = Mock()

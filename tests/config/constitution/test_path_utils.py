@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import os
 from pathlib import Path
@@ -6,6 +7,7 @@ from pathlib import Path
 from config.constitution import path_utils
 
 
+@pytest.mark.constitution
 def test_env_override_resolves_and_creates_parent(tmp_path, monkeypatch):
     target = tmp_path / "custom" / "constitution_rules.db"
     monkeypatch.setenv("CONSTITUTION_DB_PATH", str(target))
@@ -16,6 +18,7 @@ def test_env_override_resolves_and_creates_parent(tmp_path, monkeypatch):
     assert resolved.parent.exists()
 
 
+@pytest.mark.constitution
 def test_inside_repo_candidate_redirects_to_storage(tmp_path, monkeypatch):
     storage_dir = tmp_path / "ide" / "db"
     monkeypatch.setattr(path_utils, "_default_storage_dir", lambda: storage_dir)
@@ -32,6 +35,7 @@ def test_inside_repo_candidate_redirects_to_storage(tmp_path, monkeypatch):
     assert not resolved.is_relative_to(path_utils.REPO_ROOT)
 
 
+@pytest.mark.constitution
 def test_relative_candidate_drops_parents_and_uses_storage_dir(tmp_path, monkeypatch):
     storage_dir = tmp_path / "ide" / "db"
     monkeypatch.setattr(path_utils, "_default_storage_dir", lambda: storage_dir)

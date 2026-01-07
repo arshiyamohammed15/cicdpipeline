@@ -24,6 +24,7 @@ main_spec.loader.exec_module(main_module)
 app = main_module.app
 
 
+@pytest.mark.unit
 class TestIAMRoutes:
     """Test IAM API routes."""
 
@@ -32,6 +33,7 @@ class TestIAMRoutes:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.unit
     def test_health_check(self, client):
         """Test health check endpoint."""
         response = client.get("/health")
@@ -39,6 +41,7 @@ class TestIAMRoutes:
         data = response.json()
         assert data["status"] == "healthy"
 
+    @pytest.mark.unit
     def test_config_endpoint(self, client):
         """Test config endpoint."""
         response = client.get("/iam/v1/config")
@@ -47,6 +50,7 @@ class TestIAMRoutes:
         assert data["module_id"] == "EPC-1"
         assert data["version"] == "1.1.0"
 
+    @pytest.mark.unit
     def test_verify_endpoint_invalid_token(self, client):
         """Test verify endpoint with invalid token."""
         response = client.post(
@@ -55,6 +59,7 @@ class TestIAMRoutes:
         )
         assert response.status_code == 401
 
+    @pytest.mark.unit
     def test_decision_endpoint_missing_fields(self, client):
         """Test decision endpoint with missing fields."""
         response = client.post(

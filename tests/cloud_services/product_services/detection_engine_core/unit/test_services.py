@@ -22,6 +22,7 @@ from detection_engine_core.models import (
 )
 
 
+@pytest.mark.unit
 class TestDetectionEngineService:
     """Test DetectionEngineService"""
 
@@ -29,6 +30,7 @@ class TestDetectionEngineService:
         """Set up test fixtures"""
         self.service = DetectionEngineService()
 
+    @pytest.mark.unit
     def test_evaluate_decision_pass(self):
         """Test decision evaluation with pass status"""
         request = DecisionRequest(
@@ -49,6 +51,7 @@ class TestDetectionEngineService:
         assert response.confidence is not None
         assert response.accuracy_metrics is not None
 
+    @pytest.mark.unit
     def test_evaluate_decision_warn(self):
         """Test decision evaluation with warn status"""
         request = DecisionRequest(
@@ -66,6 +69,7 @@ class TestDetectionEngineService:
 
         assert response.receipt.decision['status'] == DecisionStatus.WARN.value
 
+    @pytest.mark.unit
     def test_evaluate_decision_soft_block(self):
         """Test decision evaluation with soft_block status"""
         request = DecisionRequest(
@@ -83,6 +87,7 @@ class TestDetectionEngineService:
 
         assert response.receipt.decision['status'] == DecisionStatus.SOFT_BLOCK.value
 
+    @pytest.mark.unit
     def test_evaluate_decision_hard_block(self):
         """Test decision evaluation with hard_block status"""
         request = DecisionRequest(
@@ -101,6 +106,7 @@ class TestDetectionEngineService:
 
         assert response.receipt.decision['status'] == DecisionStatus.HARD_BLOCK.value
 
+    @pytest.mark.unit
     def test_evaluate_decision_performance_budget(self):
         """Test that decision evaluation respects performance budgets"""
         request = DecisionRequest(
@@ -119,6 +125,7 @@ class TestDetectionEngineService:
         # Should complete within budget (degraded flag indicates if exceeded)
         assert response.receipt.degraded is not None
 
+    @pytest.mark.unit
     def test_evaluate_decision_receipt_fields(self):
         """Test that receipt contains all required fields per PRD §3.2"""
         request = DecisionRequest(
@@ -149,6 +156,7 @@ class TestDetectionEngineService:
         assert receipt.degraded is not None
         assert receipt.signature is not None
 
+    @pytest.mark.unit
     def test_evaluate_decision_confidence_calculation(self):
         """Test confidence calculation per PRD §3.3"""
         request = DecisionRequest(
@@ -166,6 +174,7 @@ class TestDetectionEngineService:
         assert response.confidence is not None
         assert 0.0 <= response.confidence <= 1.0
 
+    @pytest.mark.unit
     def test_evaluate_decision_accuracy_metrics(self):
         """Test accuracy metrics calculation per PRD §3.3"""
         request = DecisionRequest(
@@ -188,6 +197,7 @@ class TestDetectionEngineService:
         assert 'false_negative_rate' in response.accuracy_metrics
         assert 'error_rate' in response.accuracy_metrics
 
+    @pytest.mark.unit
     def test_submit_feedback(self):
         """Test feedback submission per PRD §3.6"""
         request = FeedbackRequest(
@@ -206,6 +216,7 @@ class TestDetectionEngineService:
         assert response.status == 'accepted'
         assert response.message is not None
 
+    @pytest.mark.unit
     def test_submit_feedback_all_patterns(self):
         """Test feedback submission with all pattern IDs"""
         patterns = ['FB-01', 'FB-02', 'FB-03', 'FB-04']
@@ -226,6 +237,7 @@ class TestDetectionEngineService:
                 response = self.service.submit_feedback(request)
                 assert response.feedback_id is not None
 
+    @pytest.mark.unit
     def test_evaluate_decision_all_evaluation_points(self):
         """Test decision evaluation for all evaluation points"""
         evaluation_points = [

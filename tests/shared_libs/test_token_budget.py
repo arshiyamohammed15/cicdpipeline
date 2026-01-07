@@ -20,6 +20,7 @@ from src.shared_libs.token_budget import (
         (60, 60, BudgetSpec(max_input_tokens=100, max_output_tokens=100, max_total_tokens=120)),
     ],
 )
+@pytest.mark.unit
 def test_budget_manager_allows_at_limits(
     estimated_input_tokens: int,
     requested_output_tokens: int,
@@ -58,6 +59,7 @@ def test_budget_manager_allows_at_limits(
         ),
     ],
 )
+@pytest.mark.unit
 def test_budget_manager_denies_over_limits(
     estimated_input_tokens: int,
     requested_output_tokens: int,
@@ -74,6 +76,7 @@ def test_budget_manager_denies_over_limits(
     assert decision.reason_code == expected_reason_code
 
 
+@pytest.mark.unit
 def test_budget_manager_missing_output_treated_as_zero_allows_at_limit() -> None:
     spec = BudgetSpec(max_input_tokens=5, max_output_tokens=0, max_total_tokens=5)
 
@@ -87,6 +90,7 @@ def test_budget_manager_missing_output_treated_as_zero_allows_at_limit() -> None
     assert decision.reason_code == TOK_BUDGET_OK
 
 
+@pytest.mark.unit
 def test_budget_manager_missing_output_treated_as_zero_denies_when_input_exceeded() -> None:
     spec = BudgetSpec(max_input_tokens=4, max_output_tokens=0, max_total_tokens=4)
 

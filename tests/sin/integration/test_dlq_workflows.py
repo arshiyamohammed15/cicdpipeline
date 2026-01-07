@@ -81,6 +81,7 @@ def dlq_setup(client, auth_token, app_schema_registry, app_routing_engine):
     return invalid_signals
 
 
+@pytest.mark.integration
 def test_dlq_inspection_basic(client, auth_token, dlq_setup):
     """Test basic DLQ inspection."""
     response = client.get(
@@ -96,6 +97,7 @@ def test_dlq_inspection_basic(client, auth_token, dlq_setup):
     assert isinstance(data["total"], int)
 
 
+@pytest.mark.integration
 def test_dlq_inspection_with_filters(client, auth_token, dlq_setup):
     """Test DLQ inspection with various filters."""
     # Filter by tenant
@@ -127,6 +129,7 @@ def test_dlq_inspection_with_filters(client, auth_token, dlq_setup):
     assert response.status_code == 200
 
 
+@pytest.mark.integration
 def test_dlq_inspection_pagination(client, auth_token, dlq_setup):
     """Test DLQ inspection with pagination."""
     # First page
@@ -151,6 +154,7 @@ def test_dlq_inspection_pagination(client, auth_token, dlq_setup):
     assert data1["total"] == data2["total"]
 
 
+@pytest.mark.integration
 def test_dlq_entry_structure(client, auth_token, dlq_setup):
     """Test DLQ entry structure."""
     response = client.get(
@@ -174,6 +178,7 @@ def test_dlq_entry_structure(client, auth_token, dlq_setup):
         assert "created_at" in entry
 
 
+@pytest.mark.integration
 def test_dlq_inspection_empty(client, auth_token):
     """Test DLQ inspection when empty."""
     response = client.get(
@@ -187,6 +192,7 @@ def test_dlq_inspection_empty(client, auth_token):
     assert len(data["entries"]) == 0
 
 
+@pytest.mark.integration
 def test_dlq_inspection_invalid_limit(client, auth_token):
     """Test DLQ inspection with invalid limit."""
     # Limit too high - check that it's handled gracefully
@@ -207,6 +213,7 @@ def test_dlq_inspection_invalid_limit(client, auth_token):
     assert response.status_code in [200, 422]
 
 
+@pytest.mark.integration
 def test_dlq_inspection_invalid_offset(client, auth_token):
     """Test DLQ inspection with invalid offset."""
     response = client.get(
@@ -218,6 +225,7 @@ def test_dlq_inspection_invalid_offset(client, auth_token):
     assert response.status_code in [200, 422]
 
 
+@pytest.mark.integration
 def test_dlq_stats_via_inspection(client, auth_token, dlq_setup):
     """Test that DLQ inspection provides useful statistics."""
     response = client.get(
@@ -237,6 +245,7 @@ def test_dlq_stats_via_inspection(client, auth_token, dlq_setup):
         assert all(code is not None for code in error_codes if code)
 
 
+@pytest.mark.integration
 def test_dlq_filtering_accuracy(client, auth_token, dlq_setup):
     """Test that DLQ filtering returns accurate results."""
     # Get all entries

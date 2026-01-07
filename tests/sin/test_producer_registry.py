@@ -7,6 +7,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_producer_registration(producer_registry, sample_producer, sample_contract, mock_schema_registry):
     """Test producer registration."""
     # Register contract first
@@ -39,12 +40,14 @@ def test_producer_registration(producer_registry, sample_producer, sample_contra
     assert retrieved.producer_id == sample_producer.producer_id
 
 
+@pytest.mark.unit
 def test_producer_not_found(producer_registry):
     """Test getting non-existent producer."""
     producer = producer_registry.get_producer("nonexistent")
     assert producer is None
 
 
+@pytest.mark.unit
 def test_signal_type_allowed(producer_registry, registered_producer):
     """Test signal type allowance check."""
     assert producer_registry.is_signal_type_allowed(

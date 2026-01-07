@@ -45,6 +45,7 @@ def _patch_requests(monkeypatch):
     monkeypatch.setattr(requests, "post", _stub_post)
     yield
 
+@pytest.mark.unit
 def test_health_endpoint():
     """Test health endpoint."""
     print("Testing health endpoint...")
@@ -60,6 +61,7 @@ def test_health_endpoint():
     except Exception as e:
         pytest.fail(f'Health check error: {e}')
 
+@pytest.mark.unit
 def test_validate_endpoint():
     """Test validate endpoint."""
     print("\nTesting validate endpoint...")
@@ -81,6 +83,7 @@ def test_validate_endpoint():
     except Exception as e:
         pytest.fail(f'Validation error: {e}')
 
+@pytest.mark.unit
 def test_integrations_endpoint():
     """Test integrations endpoint."""
     print("\nTesting integrations endpoint...")
@@ -95,6 +98,7 @@ def test_integrations_endpoint():
     except Exception as e:
         pytest.fail(f'Integrations error: {e}')
 
+@pytest.mark.unit
 def test_valid_prompt():
     """Test with a valid prompt."""
     print("\nTesting valid prompt...")

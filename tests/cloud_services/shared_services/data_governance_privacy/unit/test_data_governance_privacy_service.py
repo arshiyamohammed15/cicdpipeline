@@ -24,6 +24,7 @@ def service() -> DataGovernanceService:
     return DataGovernanceService()
 
 
+@pytest.mark.unit
 def test_classification_detects_pii(service: DataGovernanceService) -> None:
     payload = service.classify_data(
         tenant_id="tenant-alpha",
@@ -36,6 +37,7 @@ def test_classification_detects_pii(service: DataGovernanceService) -> None:
     assert payload["classification_confidence"] >= 0.7
 
 
+@pytest.mark.unit
 def test_consent_grant_and_check(service: DataGovernanceService) -> None:
     grant = service.consent_service.grant_consent(
         tenant_id="tenant-alpha",
@@ -58,6 +60,7 @@ def test_consent_grant_and_check(service: DataGovernanceService) -> None:
     assert check["allowed"] is True
 
 
+@pytest.mark.unit
 def test_privacy_enforcement_denies_without_permission(service: DataGovernanceService) -> None:
     # No permission granted yet, should be denied
     consent = service.check_consent(
@@ -81,6 +84,7 @@ def test_privacy_enforcement_denies_without_permission(service: DataGovernanceSe
     assert "iam_permission_denied" in decision["violations"]
 
 
+@pytest.mark.unit
 def test_lineage_record_and_query(service: DataGovernanceService) -> None:
     record = service.record_lineage(
         tenant_id="tenant-lineage",
@@ -98,6 +102,7 @@ def test_lineage_record_and_query(service: DataGovernanceService) -> None:
     assert query["entries"][0]["transformation_type"] == "aggregation"
 
 
+@pytest.mark.unit
 def test_retention_policy_enforcement(service: DataGovernanceService) -> None:
     service.data_plane.store_retention_policy(
         {
@@ -115,6 +120,7 @@ def test_retention_policy_enforcement(service: DataGovernanceService) -> None:
     assert result["policy_id"] == "policy-retain"
 
 
+@pytest.mark.unit
 def test_rights_request_submission_generates_receipt(service: DataGovernanceService) -> None:
     response = service.submit_rights_request(
         tenant_id="tenant-rights",

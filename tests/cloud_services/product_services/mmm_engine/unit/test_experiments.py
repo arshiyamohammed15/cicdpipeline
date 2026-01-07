@@ -25,6 +25,7 @@ def client() -> TestClient:
         yield TestClient(app)
 
 
+@pytest.mark.unit
 def test_experiments_api_list(client: TestClient) -> None:
     """Test GET /v1/mmm/experiments endpoint."""
     with patch(
@@ -53,6 +54,7 @@ def test_experiments_api_list(client: TestClient) -> None:
                 assert data[0]["experiment_id"] == "exp-1"
 
 
+@pytest.mark.unit
 def test_experiments_api_create(client: TestClient) -> None:
     """Test POST /v1/mmm/experiments endpoint."""
     with patch(
@@ -79,6 +81,7 @@ def test_experiments_api_create(client: TestClient) -> None:
             assert data["name"] == "New Experiment"
 
 
+@pytest.mark.unit
 def test_experiments_api_activate(client: TestClient) -> None:
     """Test POST /v1/mmm/experiments/{experiment_id}/activate endpoint."""
     with patch(
@@ -105,6 +108,7 @@ def test_experiments_api_activate(client: TestClient) -> None:
                 assert data["status"] == "active"
 
 
+@pytest.mark.unit
 def test_experiments_api_deactivate(client: TestClient) -> None:
     """Test POST /v1/mmm/experiments/{experiment_id}/deactivate endpoint."""
     with patch(

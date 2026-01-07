@@ -10,6 +10,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_tc_sin_001_valid_ingestion(ingestion_service, registered_producer, sample_signal, routing_engine):
     """TC-SIN-001: Valid signal ingestion and normalization."""
     # Register a consumer for routing
@@ -33,6 +34,7 @@ def test_tc_sin_001_valid_ingestion(ingestion_service, registered_producer, samp
     assert result.error_code is None
 
 
+@pytest.mark.unit
 def test_tc_sin_006_transient_failure_retry(ingestion_service, registered_producer, routing_engine, sample_signal):
     """TC-SIN-006: Transient downstream failure triggers retry."""
     # Register a consumer that fails first time, succeeds second time

@@ -10,9 +10,11 @@ import pytest
 from user_behaviour_intelligence.baselines.computation import BaselineComputation
 
 
+@pytest.mark.unit
 class TestBaselineComputation:
     """Test baseline computation correctness."""
 
+    @pytest.mark.unit
     def test_baseline_computation_known_values(self):
         """Test baseline computation with known mean=50, std_dev=10."""
         service = BaselineComputation(alpha=0.1)
@@ -30,6 +32,7 @@ class TestBaselineComputation:
         assert abs(std_dev - 10) < 4  # Within tolerance
         assert confidence >= 0.5  # Normal confidence with sufficient data
 
+    @pytest.mark.unit
     def test_insufficient_data_low_confidence(self):
         """Test baseline with insufficient data (< 7 days) marked as low confidence."""
         service = BaselineComputation()
@@ -41,6 +44,7 @@ class TestBaselineComputation:
         assert mean is not None
         assert confidence < 0.5  # Low confidence during warm-up
 
+    @pytest.mark.unit
     def test_outlier_exclusion(self):
         """Test outliers beyond 3 standard deviations are excluded."""
         service = BaselineComputation(outlier_std_dev=3.0)

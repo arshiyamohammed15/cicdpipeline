@@ -33,6 +33,7 @@ def _make_validator(monkeypatch: pytest.MonkeyPatch, rules: list[dict], total: i
     return rule_validator.RuleNumberValidator()
 
 
+@pytest.mark.unit
 def test_validate_and_lookup_rule_number(monkeypatch: pytest.MonkeyPatch) -> None:
     rules = [
         {"rule_number": 1, "title": "Rule One"},
@@ -46,6 +47,7 @@ def test_validate_and_lookup_rule_number(monkeypatch: pytest.MonkeyPatch) -> Non
     assert validator.get_rule_number_by_title("Two") == 2
 
 
+@pytest.mark.unit
 def test_out_of_range_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     rules = [{"rule_number": 1, "title": "Rule One"}]
     validator = _make_validator(monkeypatch, rules, total=1)
@@ -56,6 +58,7 @@ def test_out_of_range_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     assert "out of valid range" in str(exc.value)
 
 
+@pytest.mark.unit
 def test_rule_number_mismatch_raises(monkeypatch: pytest.MonkeyPatch) -> None:
     class _MismatchRules:
         def get_all_rules(self) -> list[dict]:

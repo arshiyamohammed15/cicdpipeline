@@ -11,6 +11,7 @@ This test suite verifies that pre-implementation hooks:
 """
 
 import sys
+import pytest
 import unittest
 import json
 from pathlib import Path
@@ -20,9 +21,11 @@ from typing import List, Dict, Any
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+@pytest.mark.unit
 class TestDeterministicRuleLoading(unittest.TestCase):
     """Test that rules are loaded deterministically."""
 
+    @pytest.mark.unit
     def test_file_loading_order(self):
         """Verify JSON files are loaded in deterministic order."""
         from validator.pre_implementation_hooks import ConstitutionRuleLoader
@@ -44,6 +47,7 @@ class TestDeterministicRuleLoading(unittest.TestCase):
         self.assertEqual(len(rules1), len(rules2), "Should load same number of rules")
         self.assertEqual(len(rules2), len(rules3), "Should load same number of rules")
 
+    @pytest.mark.unit
     def test_rule_count_consistency(self):
         """Verify rule count is consistent across multiple loads."""
         from validator.pre_implementation_hooks import ConstitutionRuleLoader
@@ -61,6 +65,7 @@ class TestDeterministicRuleLoading(unittest.TestCase):
         expected_count = hook_manager.total_rules
         self.assertEqual(counts[0], expected_count, f"Should always load {expected_count} rules from JSON files")
 
+    @pytest.mark.unit
     def test_rule_ids_consistency(self):
         """Verify rule IDs are consistent across multiple loads."""
         from validator.pre_implementation_hooks import ConstitutionRuleLoader
@@ -76,6 +81,7 @@ class TestDeterministicRuleLoading(unittest.TestCase):
         self.assertEqual(rule_ids_sets[1], rule_ids_sets[2], "Rule IDs should be consistent")
 
 
+@pytest.mark.unit
 class TestDeterministicValidation(unittest.TestCase):
     """Test that validation results are deterministic."""
 
@@ -84,6 +90,7 @@ class TestDeterministicValidation(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
         self.hook_manager = PreImplementationHookManager()
 
+    @pytest.mark.unit
     def test_same_prompt_same_result(self):
         """Verify same prompt produces same result every time."""
         prompt = "create a function with hardcoded password = 'secret123'"
@@ -122,6 +129,7 @@ class TestDeterministicValidation(unittest.TestCase):
                 f"Result {i+1} violation IDs differ from first result"
             )
 
+    @pytest.mark.unit
     def test_violation_order_consistency(self):
         """Verify violation order is consistent."""
         prompt = "create a function with hardcoded password and also add logging"
@@ -136,6 +144,7 @@ class TestDeterministicValidation(unittest.TestCase):
         self.assertEqual(results[0], results[1], "Violation order should be consistent")
         self.assertEqual(results[1], results[2], "Violation order should be consistent")
 
+    @pytest.mark.unit
     def test_rule_checking_order(self):
         """Verify rules are checked in consistent order."""
         prompt = "test prompt"
@@ -162,6 +171,7 @@ class TestDeterministicValidation(unittest.TestCase):
             )
 
 
+@pytest.mark.unit
 class TestConsistentBehavior(unittest.TestCase):
     """Test consistent behavior across different scenarios."""
 
@@ -170,6 +180,7 @@ class TestConsistentBehavior(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
         self.hook_manager = PreImplementationHookManager()
 
+    @pytest.mark.unit
     def test_empty_prompt_consistency(self):
         """Verify empty prompt produces consistent results."""
         results = []
@@ -184,6 +195,7 @@ class TestConsistentBehavior(unittest.TestCase):
         # All should be identical
         self.assertEqual(len(set(str(r) for r in results)), 1, "Empty prompt results should be consistent")
 
+    @pytest.mark.unit
     def test_whitespace_handling(self):
         """Verify whitespace handling is consistent."""
         prompts = [
@@ -211,6 +223,7 @@ class TestConsistentBehavior(unittest.TestCase):
                 "Normalized prompts should produce same results"
             )
 
+    @pytest.mark.unit
     def test_case_sensitivity_consistency(self):
         """Verify case handling is consistent."""
         prompts = [
@@ -241,9 +254,11 @@ class TestConsistentBehavior(unittest.TestCase):
         )
 
 
+@pytest.mark.unit
 class TestRepeatableResults(unittest.TestCase):
     """Test that results are repeatable across different executions."""
 
+    @pytest.mark.unit
     def test_isolation_between_instances(self):
         """Verify different manager instances produce same results."""
         from validator.pre_implementation_hooks import PreImplementationHookManager
@@ -293,6 +308,7 @@ class TestRepeatableResults(unittest.TestCase):
             f"Should always check {expected_rules} rules from JSON files"
         )
 
+    @pytest.mark.unit
     def test_rule_processing_order(self):
         """Verify rules are processed in consistent order."""
         from validator.pre_implementation_hooks import PreImplementationHookManager

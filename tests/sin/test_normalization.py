@@ -6,6 +6,7 @@ from datetime import datetime
 from tests.sin.conftest import SignalEnvelope, SignalKind, Environment
 
 
+@pytest.mark.unit
 def test_field_mapping(normalization_engine, mock_schema_registry):
     """Test field name mapping."""
     # Register transformation rules
@@ -35,6 +36,7 @@ def test_field_mapping(normalization_engine, mock_schema_registry):
     assert "buildTimeMs" not in normalized.payload
 
 
+@pytest.mark.unit
 def test_unit_normalization(normalization_engine):
     """Test unit normalization."""
     value, converted = normalization_engine.normalize_units(1.0, "s", "ms")

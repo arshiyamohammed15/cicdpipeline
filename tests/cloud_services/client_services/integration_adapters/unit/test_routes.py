@@ -53,9 +53,11 @@ def client():
     """Test client fixture."""
     return TestClient(app)
 
+@pytest.mark.unit
 class TestHealthEndpoint:
     """Test health check endpoint."""
 
+    @pytest.mark.unit
     def test_health_check(self, client):
         """Test health check endpoint."""
         response = client.get("/health")
@@ -64,9 +66,11 @@ class TestHealthEndpoint:
         assert data["status"] == "healthy"
         assert "version" in data
 
+@pytest.mark.unit
 class TestConnectionEndpoints:
     """Test connection management endpoints."""
 
+    @pytest.mark.unit
     def test_create_connection_requires_auth(self, client):
         """Test creating connection requires authentication."""
         connection_data = {
@@ -78,17 +82,20 @@ class TestConnectionEndpoints:
         response = client.post("/v1/integrations/connections", json=connection_data)
         assert response.status_code == 401
 
+    @pytest.mark.unit
     def test_list_connections_requires_auth(self, client):
         """Test listing connections requires authentication."""
         response = client.get("/v1/integrations/connections")
         assert response.status_code == 401
 
+    @pytest.mark.unit
     def test_verify_connection_requires_auth(self, client):
         """Test verifying connection requires authentication."""
         connection_id = uuid4()
         response = client.post(f"/v1/integrations/connections/{connection_id}/verify")
         assert response.status_code == 401
 
+    @pytest.mark.unit
     def test_update_connection_requires_auth(self, client):
         """Test updating connection requires authentication."""
         connection_id = uuid4()
@@ -100,9 +107,11 @@ class TestConnectionEndpoints:
         )
         assert response.status_code == 401
 
+@pytest.mark.unit
 class TestWebhookEndpoint:
     """Test webhook endpoint."""
 
+    @pytest.mark.unit
     def test_receive_webhook(self, client):
         """Test receiving webhook (no auth required)."""
         payload = {"action": "opened", "pull_request": {"number": 123}}

@@ -24,9 +24,11 @@ def receipt_service():
     )
 
 
+@pytest.mark.unit
 class TestReceiptService:
     """Test suite for ReceiptService."""
 
+    @pytest.mark.unit
     def test_generate_budget_check_receipt(self, receipt_service):
         """Test budget check receipt generation."""
         receipt = receipt_service.generate_budget_check_receipt(
@@ -45,6 +47,7 @@ class TestReceiptService:
         assert receipt["decision"]["status"] == "pass"
         assert receipt["signature"] is not None
 
+    @pytest.mark.unit
     def test_generate_rate_limit_check_receipt(self, receipt_service):
         """Test rate limit check receipt generation."""
         receipt = receipt_service.generate_rate_limit_check_receipt(
@@ -63,6 +66,7 @@ class TestReceiptService:
         assert receipt["decision"]["status"] == "pass"
         assert receipt["signature"] is not None
 
+    @pytest.mark.unit
     def test_generate_cost_recording_receipt(self, receipt_service):
         """Test cost recording receipt generation."""
         receipt = receipt_service.generate_cost_recording_receipt(
@@ -79,6 +83,7 @@ class TestReceiptService:
         assert receipt["decision"]["status"] == "pass"
         assert receipt["signature"] is not None
 
+    @pytest.mark.unit
     def test_generate_quota_allocation_receipt(self, receipt_service):
         """Test quota allocation receipt generation."""
         receipt = receipt_service.generate_quota_allocation_receipt(
@@ -98,6 +103,7 @@ class TestReceiptService:
         assert receipt["decision"]["status"] == "pass"
         assert receipt["signature"] is not None
 
+    @pytest.mark.unit
     def test_receipt_schema_compliance(self, receipt_service):
         """Test that receipts conform to canonical PM-7 schema."""
         receipt = receipt_service.generate_budget_check_receipt(

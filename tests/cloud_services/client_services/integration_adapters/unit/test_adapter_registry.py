@@ -18,9 +18,11 @@ from integration_adapters.services.adapter_registry import AdapterRegistry, get_
 from integration_adapters.adapters.base import BaseAdapter
 from integration_adapters.adapters.github.adapter import GitHubAdapter
 
+@pytest.mark.unit
 class TestAdapterRegistry:
     """Test AdapterRegistry."""
 
+    @pytest.mark.unit
     def test_register_adapter(self):
         """Test registering an adapter."""
         registry = AdapterRegistry()
@@ -29,6 +31,7 @@ class TestAdapterRegistry:
         assert registry.is_registered("github") is True
         assert registry.get_adapter_class("github") == GitHubAdapter
 
+    @pytest.mark.unit
     def test_register_invalid_adapter(self):
         """Test registering invalid adapter raises error."""
         registry = AdapterRegistry()
@@ -39,6 +42,7 @@ class TestAdapterRegistry:
         with pytest.raises(ValueError, match="must inherit from BaseAdapter"):
             registry.register_adapter("invalid", NotAnAdapter)
 
+    @pytest.mark.unit
     def test_get_adapter_creates_instance(self):
         """Test getting adapter creates new instance."""
         registry = AdapterRegistry()
@@ -51,6 +55,7 @@ class TestAdapterRegistry:
         assert isinstance(adapter, GitHubAdapter)
         assert adapter.get_connection_id() == connection_id
 
+    @pytest.mark.unit
     def test_get_adapter_returns_existing_instance(self):
         """Test getting adapter returns existing instance."""
         registry = AdapterRegistry()
@@ -62,12 +67,14 @@ class TestAdapterRegistry:
 
         assert adapter1 is adapter2
 
+    @pytest.mark.unit
     def test_get_adapter_returns_none_for_unregistered(self):
         """Test getting unregistered adapter returns None."""
         registry = AdapterRegistry()
         adapter = registry.get_adapter("unknown", uuid4(), "tenant-123")
         assert adapter is None
 
+    @pytest.mark.unit
     def test_list_providers(self):
         """Test listing registered providers."""
         registry = AdapterRegistry()
@@ -79,6 +86,7 @@ class TestAdapterRegistry:
         assert "gitlab" in providers
         assert len(providers) == 2
 
+    @pytest.mark.unit
     def test_remove_adapter_instance(self):
         """Test removing adapter instance."""
         registry = AdapterRegistry()
@@ -93,6 +101,7 @@ class TestAdapterRegistry:
         removed_again = registry.remove_adapter_instance("github", connection_id)
         assert removed_again is False
 
+    @pytest.mark.unit
     def test_get_global_registry(self):
         """Test getting global registry instance."""
         registry1 = get_adapter_registry()

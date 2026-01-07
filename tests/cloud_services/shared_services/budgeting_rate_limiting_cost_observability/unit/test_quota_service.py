@@ -39,9 +39,11 @@ def quota_service(db_session):
     return QuotaService(db_session)
 
 
+@pytest.mark.unit
 class TestQuotaService:
     """Test suite for QuotaService."""
 
+    @pytest.mark.unit
     def test_allocate_quota(self, quota_service):
         """Test quota allocation."""
         tenant_id = str(uuid.uuid4())
@@ -58,6 +60,7 @@ class TestQuotaService:
         assert quota.used_amount == Decimal("0")
         assert quota.auto_renew is True
 
+    @pytest.mark.unit
     def test_check_quota_allowed(self, quota_service):
         """Test quota check when quota is available."""
         tenant_id = str(uuid.uuid4())
@@ -78,6 +81,7 @@ class TestQuotaService:
         assert result["allowed"] is True
         assert result["remaining_amount"] < Decimal("1000")
 
+    @pytest.mark.unit
     def test_check_quota_exhausted(self, quota_service):
         """Test quota check when quota is exhausted."""
         tenant_id = str(uuid.uuid4())
@@ -105,6 +109,7 @@ class TestQuotaService:
         )
         assert result["allowed"] is False
 
+    @pytest.mark.unit
     def test_renew_expired_quotas(self, quota_service):
         """Test quota renewal automation."""
         tenant_id = str(uuid.uuid4())
@@ -126,6 +131,7 @@ class TestQuotaService:
         quotas, _ = quota_service.list_quotas(tenant_id=tenant_id, active_only=True)
         assert len(quotas) > 0
 
+    @pytest.mark.unit
     def test_list_quotas(self, quota_service):
         """Test quota listing."""
         tenant_id = str(uuid.uuid4())
@@ -148,6 +154,7 @@ class TestQuotaService:
         assert total_count == 3
         assert len(quotas) == 3
 
+    @pytest.mark.unit
     def test_update_quota(self, quota_service):
         """Test quota update."""
         tenant_id = str(uuid.uuid4())
@@ -168,6 +175,7 @@ class TestQuotaService:
         assert updated.allocated_amount == Decimal("2000")
         assert updated.auto_renew is False
 
+    @pytest.mark.unit
     def test_delete_quota(self, quota_service):
         """Test quota deletion."""
         tenant_id = str(uuid.uuid4())

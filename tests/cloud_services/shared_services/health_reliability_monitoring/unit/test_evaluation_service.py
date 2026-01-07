@@ -15,6 +15,7 @@ except ImportError:
     db_models = None  # Database module not implemented
 
 
+@pytest.mark.unit
 class TestHealthEvaluationService:
     """Test HealthEvaluationService."""
 

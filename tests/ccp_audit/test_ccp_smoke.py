@@ -8,6 +8,8 @@ import pytest
 os.environ.setdefault("USE_REAL_SERVICES", "false")
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_identity_and_policy_imports() -> None:
     from identity_access_management.services import (
         IAMService,
@@ -24,6 +26,8 @@ def test_ccp_identity_and_policy_imports() -> None:
     assert PolicyService is not None
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_schema_validation_smoke() -> None:
     from shared_libs.tool_schema_validation import ToolOutputValidator, ToolSchemaRegistry
 
@@ -44,6 +48,8 @@ def test_ccp_schema_validation_smoke() -> None:
     assert result.schema_version == "1.0.0"
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_governed_memory_emits_receipts() -> None:
     from data_governance_privacy.services import DataGovernanceService
 
@@ -62,6 +68,8 @@ def test_ccp_governed_memory_emits_receipts() -> None:
     assert receipt.get("operation", "").startswith("rights_")
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_external_tool_reliability_owner() -> None:
     from integration_adapters.reliability.circuit_breaker import CircuitBreaker, CircuitState
 
@@ -72,6 +80,8 @@ def test_ccp_external_tool_reliability_owner() -> None:
     assert breaker.state == CircuitState.CLOSED
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_llm_gateway_budget_owner() -> None:
     from cloud_services.llm_gateway.services import llm_gateway_service
     from shared_libs.token_budget import BudgetManager
@@ -79,6 +89,8 @@ def test_ccp_llm_gateway_budget_owner() -> None:
     assert llm_gateway_service.BudgetManager is BudgetManager
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_ccp_observability_settings_smoke() -> None:
     from health_reliability_monitoring.config import Settings
 

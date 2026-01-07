@@ -12,6 +12,7 @@ import sys
 from pathlib import Path
 import importlib.util
 import uuid
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).resolve().parents[5]
@@ -228,6 +229,7 @@ def setup_test_database():
 setup_test_database()
 
 
+@pytest.mark.integration
 class TestHealthEndpoints(unittest.TestCase):
     """Test health check endpoints."""
 
@@ -235,6 +237,7 @@ class TestHealthEndpoints(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_health_check(self):
         """Test /health endpoint."""
         response = self.client.get("/health")
@@ -243,17 +246,20 @@ class TestHealthEndpoints(unittest.TestCase):
         self.assertIn("status", data)
         self.assertIn("timestamp", data)
 
+    @pytest.mark.integration
     def test_liveness_probe(self):
         """Test /health/live endpoint."""
         response = self.client.get("/registry/v1/health/live")
         self.assertEqual(response.status_code, 200)
 
+    @pytest.mark.integration
     def test_readiness_probe(self):
         """Test /health/ready endpoint."""
         response = self.client.get("/registry/v1/health/ready")
         # May return 200 or 503 depending on DB connection
         self.assertIn(response.status_code, [200, 503])
 
+    @pytest.mark.integration
     def test_metrics_endpoint(self):
         """Test /metrics endpoint."""
         response = self.client.get("/registry/v1/metrics")
@@ -262,6 +268,7 @@ class TestHealthEndpoints(unittest.TestCase):
         self.assertIn("schema_validation_count", data)
         self.assertIn("timestamp", data)
 
+    @pytest.mark.integration
     def test_config_endpoint(self):
         """Test /config endpoint."""
         response = self.client.get("/registry/v1/config")
@@ -271,6 +278,7 @@ class TestHealthEndpoints(unittest.TestCase):
         self.assertEqual(data["version"], "1.2.0")
 
 
+@pytest.mark.integration
 class TestSchemaEndpoints(unittest.TestCase):
     """Test schema management endpoints."""
 
@@ -286,6 +294,7 @@ class TestSchemaEndpoints(unittest.TestCase):
         self.test_user_id = str(uuid.uuid4())
         self.headers = {"X-Tenant-ID": self.test_tenant_id, "X-User-ID": self.test_user_id}
 
+    @pytest.mark.integration
     def test_list_schemas(self):
         """Test GET /schemas endpoint."""
         response = self.client.get("/registry/v1/schemas", headers=self.headers)
@@ -296,6 +305,7 @@ class TestSchemaEndpoints(unittest.TestCase):
             self.assertIn("schemas", data)
             self.assertIn("total", data)
 
+    @pytest.mark.integration
     def test_register_schema(self):
         """Test POST /schemas endpoint."""
         request_data = {
@@ -320,6 +330,7 @@ class TestSchemaEndpoints(unittest.TestCase):
         self.assertIn(response.status_code, [201, 400, 500])
 
 
+@pytest.mark.integration
 class TestValidationEndpoints(unittest.TestCase):
     """Test validation endpoints."""
 
@@ -334,6 +345,7 @@ class TestValidationEndpoints(unittest.TestCase):
         self.test_tenant_id = str(uuid.uuid4())
         self.headers = {"X-Tenant-ID": self.test_tenant_id}
 
+    @pytest.mark.integration
     def test_validate_endpoint_structure(self):
         """Test POST /validate endpoint structure."""
         request_data = {
@@ -349,6 +361,7 @@ class TestValidationEndpoints(unittest.TestCase):
         self.assertIn(response.status_code, [200, 400, 404, 500])
 
 
+@pytest.mark.integration
 class TestCompatibilityEndpoints(unittest.TestCase):
     """Test compatibility endpoints."""
 
@@ -356,6 +369,7 @@ class TestCompatibilityEndpoints(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_compatibility_check(self):
         """Test POST /compatibility endpoint."""
         request_data = {

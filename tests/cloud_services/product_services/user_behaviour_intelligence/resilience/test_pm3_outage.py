@@ -11,9 +11,11 @@ from datetime import datetime, timedelta
 from user_behaviour_intelligence.reliability.degradation import DegradationService
 
 
+@pytest.mark.integration
 class TestPM3Outage:
     """Test PM-3 outage handling."""
 
+    @pytest.mark.integration
     def test_stale_data_detection(self):
         """Test that stale data is detected and marked."""
         degradation_service = DegradationService(stale_threshold_hours=1.0)
@@ -27,6 +29,7 @@ class TestPM3Outage:
         
         assert is_stale is True
 
+    @pytest.mark.integration
     def test_graceful_recovery(self):
         """Test that service recovers gracefully when PM-3 recovers."""
         degradation_service = DegradationService()

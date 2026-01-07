@@ -48,6 +48,7 @@ def _inject_dummy_modules(monkeypatch):
             sys.modules["validator.integrations.integration_registry"] = orig_registry
         else:
             sys.modules.pop("validator.integrations.integration_registry", None)
+@pytest.mark.unit
 def test_api_routes():
     """Test API service routes."""
     from validator.integrations.api_service import app
@@ -58,6 +59,7 @@ def test_api_routes():
 
     assert len(routes) >= 2
 
+@pytest.mark.unit
 def test_registry_validation():
     """Test validation through registry."""
     from validator.integrations.integration_registry import IntegrationRegistry

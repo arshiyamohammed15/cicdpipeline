@@ -19,6 +19,7 @@ class TestPolicyLifecycle:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.integration
     def test_create_and_evaluate_policy(self, client):
         """Test creating and evaluating a policy."""
         # Create policy
@@ -59,6 +60,7 @@ class TestPolicyLifecycle:
                 status.HTTP_404_NOT_FOUND
             ]
 
+    @pytest.mark.integration
     def test_configuration_creation_and_retrieval(self, client):
         """Test configuration creation and retrieval."""
         create_response = client.post(
@@ -86,6 +88,7 @@ class TestComplianceFlow:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.integration
     def test_compliance_check_flow(self, client):
         """Test compliance check workflow."""
         response = client.post(
@@ -103,6 +106,7 @@ class TestComplianceFlow:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.integration
     def test_audit_summary_retrieval(self, client):
         """Test audit summary retrieval."""
         response = client.get(

@@ -66,6 +66,7 @@ test_client = TestClient(app)
 
 
 @pytest.fixture
+@pytest.mark.security
 def test_client():
     return TestClient(app)
 
@@ -101,6 +102,7 @@ class TestTenantIsolation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_unauthorized_access(self, test_client):
         """Test that requests without authorization are rejected."""
         response = test_client.post(
@@ -110,6 +112,7 @@ class TestTenantIsolation:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_invalid_token(self, test_client):
         """Test that invalid tokens are rejected."""
         response = test_client.post(
@@ -154,6 +157,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_malformed_json(self, test_client):
         """Test handling of malformed JSON."""
         response = test_client.post(
@@ -167,6 +171,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_sql_injection_attempt(self, test_client):
         """Test handling of SQL injection attempts in payload."""
         malicious_payload = {"query": "'; DROP TABLE signals; --"}

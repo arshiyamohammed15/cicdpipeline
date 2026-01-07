@@ -14,6 +14,7 @@ from health_reliability_monitoring.services.telemetry_ingestion_service import T
 from health_reliability_monitoring.dependencies import DeploymentClient, PolicyClient
 
 
+@pytest.mark.unit
 class TestSafeToActService:
     """Test SafeToActService."""
 

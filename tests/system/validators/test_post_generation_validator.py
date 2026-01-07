@@ -13,6 +13,7 @@ Uses dynamic rule lookup from JSON files, not hardcoded values.
 """
 
 import sys
+import pytest
 import json
 import unittest
 from pathlib import Path
@@ -22,6 +23,7 @@ from typing import Dict, Any, List
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+@pytest.mark.unit
 class TestPostGenerationValidatorInitialization(unittest.TestCase):
     """Test that post-generation validator initializes correctly."""
 
@@ -30,12 +32,14 @@ class TestPostGenerationValidatorInitialization(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_validator_initializes(self):
         """Verify validator initializes without errors."""
         self.assertIsNotNone(self.validator)
         self.assertIsNotNone(self.validator.code_validator)
         self.assertIsNotNone(self.validator.rule_validator)
 
+    @pytest.mark.unit
     def test_rules_loaded_dynamically(self):
         """Verify rules are loaded dynamically from JSON files."""
         # Check that rule references are loaded (may be None if rules don't exist)
@@ -48,6 +52,7 @@ class TestPostGenerationValidatorInitialization(unittest.TestCase):
         self.assertTrue(hasattr(self.validator, 'rule_error_envelope'))
         self.assertTrue(hasattr(self.validator, 'rule_trace_context'))
 
+    @pytest.mark.unit
     def test_rule_lookup_method(self):
         """Verify rule lookup by keywords works."""
         # Load rules from JSON files
@@ -69,6 +74,7 @@ class TestPostGenerationValidatorInitialization(unittest.TestCase):
             self.assertIn('title', rule)
 
 
+@pytest.mark.unit
 class TestFileHeaderValidation(unittest.TestCase):
     """Test file header validation."""
 
@@ -77,6 +83,7 @@ class TestFileHeaderValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_missing_file_header_detected(self):
         """Test detection of missing file header."""
         code_without_header = """def my_function():
@@ -89,6 +96,7 @@ class TestFileHeaderValidation(unittest.TestCase):
         self.assertIn('valid', result)
         self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_comprehensive_header_passes(self):
         """Test that code with comprehensive header passes."""
         code_with_header = '''"""
@@ -109,6 +117,7 @@ def my_function():
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestAsyncAwaitValidation(unittest.TestCase):
     """Test async/await validation."""
 
@@ -117,6 +126,7 @@ class TestAsyncAwaitValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_async_function_detected(self):
         """Test detection of async function usage."""
         async_code = """async def my_function():
@@ -131,6 +141,7 @@ class TestAsyncAwaitValidation(unittest.TestCase):
             self.assertIn('violations', result)
             # May have violations for async usage
 
+    @pytest.mark.unit
     def test_framework_required_async_allowed(self):
         """Test that framework-required async is allowed."""
         middleware_code = """class MyMiddleware(BaseHTTPMiddleware):
@@ -144,6 +155,7 @@ class TestAsyncAwaitValidation(unittest.TestCase):
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestDecoratorValidation(unittest.TestCase):
     """Test decorator validation."""
 
@@ -152,6 +164,7 @@ class TestDecoratorValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_custom_decorator_detected(self):
         """Test detection of custom decorator usage."""
         code_with_decorator = """@my_custom_decorator
@@ -165,6 +178,7 @@ def my_function():
             self.assertIn('valid', result)
             self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_framework_decorator_allowed(self):
         """Test that framework-required decorators are allowed."""
         fastapi_code = """@router.post("/endpoint")
@@ -178,6 +192,7 @@ def my_endpoint():
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestLoggingValidation(unittest.TestCase):
     """Test logging format validation."""
 
@@ -186,6 +201,7 @@ class TestLoggingValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_unstructured_logging_detected(self):
         """Test detection of unstructured logging."""
         code_with_logging = """import logging
@@ -199,6 +215,7 @@ logger.info("This is a log message")"""
             self.assertIn('valid', result)
             self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_structured_logging_passes(self):
         """Test that structured JSON logging passes."""
         code_with_structured = """import json
@@ -219,6 +236,7 @@ logger.info(log_data)"""
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestErrorEnvelopeValidation(unittest.TestCase):
     """Test error envelope validation."""
 
@@ -227,6 +245,7 @@ class TestErrorEnvelopeValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_missing_error_envelope_detected(self):
         """Test detection of missing error envelope."""
         code_with_exception = """from fastapi import HTTPException
@@ -239,6 +258,7 @@ raise HTTPException(status_code=400, detail="Error message")"""
             self.assertIn('valid', result)
             self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_error_envelope_passes(self):
         """Test that error envelope structure passes."""
         code_with_envelope = """error_response = {
@@ -256,6 +276,7 @@ raise HTTPException(status_code=400, detail="Error message")"""
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestTraceContextValidation(unittest.TestCase):
     """Test trace context validation."""
 
@@ -264,6 +285,7 @@ class TestTraceContextValidation(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_missing_trace_context_detected(self):
         """Test detection of missing trace context."""
         code_with_logging = """request.start()
@@ -277,6 +299,7 @@ request.end()"""
             self.assertIn('valid', result)
             self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_trace_context_passes(self):
         """Test that trace context passes."""
         code_with_trace = """trace_id = "123456"
@@ -291,6 +314,7 @@ request.start(trace_id=trace_id, span_id=span_id, parent_span_id=parent_span_id)
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestEdgeCases(unittest.TestCase):
     """Test edge cases and error handling."""
 
@@ -299,6 +323,7 @@ class TestEdgeCases(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_empty_code(self):
         """Test handling of empty code."""
         result = self.validator.validate_generated_code("")
@@ -306,6 +331,7 @@ class TestEdgeCases(unittest.TestCase):
         self.assertIn('valid', result)
         self.assertIn('violations', result)
 
+    @pytest.mark.unit
     def test_syntax_error_handling(self):
         """Test handling of syntax errors."""
         invalid_code = """def my_function(
@@ -320,6 +346,7 @@ class TestEdgeCases(unittest.TestCase):
         if result['violations']:
             self.assertIsInstance(result['violations'], list)
 
+    @pytest.mark.unit
     def test_non_python_file_type(self):
         """Test handling of non-Python file types."""
         result = self.validator.validate_generated_code("code", file_type="typescript")
@@ -329,6 +356,7 @@ class TestEdgeCases(unittest.TestCase):
         self.assertTrue(result['valid'])
         self.assertIn('message', result)
 
+    @pytest.mark.unit
     def test_very_long_code(self):
         """Test handling of very long code."""
         long_code = "def func():\n    pass\n" * 1000
@@ -338,6 +366,7 @@ class TestEdgeCases(unittest.TestCase):
         self.assertIn('violations', result)
 
 
+@pytest.mark.unit
 class TestViolationStructure(unittest.TestCase):
     """Test that violations have correct structure."""
 
@@ -346,6 +375,7 @@ class TestViolationStructure(unittest.TestCase):
         from validator.post_generation_validator import PostGenerationValidator
         self.validator = PostGenerationValidator()
 
+    @pytest.mark.unit
     def test_violation_structure(self):
         """Test that violations have correct structure."""
         code_with_issues = """async def my_function():
@@ -362,6 +392,7 @@ class TestViolationStructure(unittest.TestCase):
             self.assertIn('message', violation)
             self.assertIn('file_path', violation)
 
+    @pytest.mark.unit
     def test_violation_severity_counts(self):
         """Test that severity counts are calculated correctly."""
         code_with_issues = """async def my_function():

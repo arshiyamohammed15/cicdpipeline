@@ -15,14 +15,17 @@ import pytest
 
 from integration_adapters.observability.audit import AuditLogger, get_audit_logger
 
+@pytest.mark.unit
 class TestAuditLogger:
     """Test AuditLogger."""
 
+    @pytest.mark.unit
     def test_audit_logger_initialization(self):
         """Test audit logger initialization."""
         logger = AuditLogger()
         assert logger is not None
 
+    @pytest.mark.unit
     def test_redact_secrets_password(self):
         """Test redacting password from logs."""
         logger = AuditLogger()
@@ -33,6 +36,7 @@ class TestAuditLogger:
         assert "secret123" not in redacted
         assert "***REDACTED***" in redacted
 
+    @pytest.mark.unit
     def test_redact_secrets_token(self):
         """Test redacting token from logs."""
         logger = AuditLogger()
@@ -42,6 +46,7 @@ class TestAuditLogger:
 
         assert "abc123" not in redacted
 
+    @pytest.mark.unit
     def test_redact_secrets_api_key(self):
         """Test redacting API key from logs."""
         logger = AuditLogger()
@@ -51,6 +56,7 @@ class TestAuditLogger:
 
         assert "key456" not in redacted
 
+    @pytest.mark.unit
     def test_preserve_non_secrets(self):
         """Test preserving non-secret data."""
         logger = AuditLogger()
@@ -61,6 +67,7 @@ class TestAuditLogger:
         assert "john" in redacted
         assert "create" in redacted
 
+    @pytest.mark.unit
     def test_log_webhook_received(self):
         """Test logging webhook received event."""
         logger = AuditLogger()
@@ -74,6 +81,7 @@ class TestAuditLogger:
             "correlation-456",
         )
 
+    @pytest.mark.unit
     def test_log_event_normalized(self):
         """Test logging event normalization."""
         logger = AuditLogger()
@@ -86,6 +94,7 @@ class TestAuditLogger:
             "signal-789",
         )
 
+    @pytest.mark.unit
     def test_log_action_executed(self):
         """Test logging action execution."""
         logger = AuditLogger()
@@ -100,6 +109,7 @@ class TestAuditLogger:
             "correlation-456",
         )
 
+    @pytest.mark.unit
     def test_log_error(self):
         """Test logging error event."""
         logger = AuditLogger()
@@ -113,6 +123,7 @@ class TestAuditLogger:
             "correlation-456",
         )
 
+    @pytest.mark.unit
     def test_get_global_logger(self):
         """Test getting global audit logger."""
         logger1 = get_audit_logger()

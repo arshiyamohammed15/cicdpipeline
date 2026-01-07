@@ -7,6 +7,7 @@ canonical JSON/signature compatibility across tiers.
 """
 
 import unittest
+import pytest
 import json
 import tempfile
 import shutil
@@ -51,6 +52,7 @@ def generate_mock_receipt(repo_id: str, gate_id: str, decision: str = 'pass') ->
     return receipt
 
 
+@pytest.mark.integration
 class TestReceiptInvariantsEndToEnd(unittest.TestCase):
     """Test receipt invariants across edge agent, validator, and VS Code resolver."""
 
@@ -80,6 +82,7 @@ class TestReceiptInvariantsEndToEnd(unittest.TestCase):
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
+    @pytest.mark.integration
     def test_receipt_flow_edge_to_validator_to_resolver(self):
         """
         Test complete receipt flow:
@@ -140,6 +143,7 @@ class TestReceiptInvariantsEndToEnd(unittest.TestCase):
         self.assertTrue(revalidation_result['valid'],
                                             f"Re-validation failed: {revalidation_result.get('errors', [])}")
 
+    @pytest.mark.integration
     def test_receipt_jsonl_format(self):
         """Test receipt in JSONL format (append-only)."""
         from validator.receipt_validator import ReceiptValidator
@@ -174,6 +178,7 @@ class TestReceiptInvariantsEndToEnd(unittest.TestCase):
         self.assertEqual(jsonl_result['valid_count'], 3)
         self.assertEqual(jsonl_result['total_count'], 3)
 
+    @pytest.mark.integration
     def test_receipt_signature_consistency(self):
         """Test that receipt signatures are consistent across reads."""
         import sys

@@ -17,6 +17,7 @@ Plane = conftest.Plane
 DataContract = conftest.DataContract
 
 
+@pytest.mark.unit
 def test_signal_envelope_creation(sample_signal):
     """Test SignalEnvelope creation."""
     assert sample_signal.signal_id == "signal_123"
@@ -24,6 +25,7 @@ def test_signal_envelope_creation(sample_signal):
     assert sample_signal.signal_kind == SignalKind.EVENT
 
 
+@pytest.mark.unit
 def test_signal_envelope_validation():
     """Test SignalEnvelope validation."""
     # Valid signal
@@ -56,6 +58,7 @@ def test_signal_envelope_validation():
         )
 
 
+@pytest.mark.unit
 def test_producer_registration():
     """Test ProducerRegistration model."""
     producer = ProducerRegistration(
@@ -71,6 +74,7 @@ def test_producer_registration():
     assert producer.plane == Plane.EDGE
 
 
+@pytest.mark.unit
 def test_data_contract():
     """Test DataContract model."""
     contract = DataContract(

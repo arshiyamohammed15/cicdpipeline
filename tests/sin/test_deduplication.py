@@ -8,6 +8,7 @@ from datetime import datetime
 from tests.sin.conftest import SignalEnvelope, SignalKind, Environment
 
 
+@pytest.mark.unit
 def test_tc_sin_004_duplicate_idempotency(deduplication_store):
     """TC-SIN-004: Duplicate signals are idempotent."""
     signal = SignalEnvelope(
@@ -31,6 +32,7 @@ def test_tc_sin_004_duplicate_idempotency(deduplication_store):
     assert deduplication_store.is_duplicate(signal)
 
 
+@pytest.mark.unit
 def test_tc_sin_005_ordering_semantics(deduplication_store):
     """TC-SIN-005: Ordering semantics per producer."""
     signal1 = SignalEnvelope(

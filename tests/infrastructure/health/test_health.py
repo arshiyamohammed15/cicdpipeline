@@ -10,6 +10,7 @@ Tests validator/health.py functionality:
 """
 
 import sys
+import pytest
 import unittest
 import json
 import tempfile
@@ -24,6 +25,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 CONSTITUTION_DIR = REPO_ROOT / "docs" / "constitution"
 
 
+@pytest.mark.unit
 class TestHealthChecker(unittest.TestCase):
     """Test HealthChecker class."""
 
@@ -31,12 +33,14 @@ class TestHealthChecker(unittest.TestCase):
         """Set up test fixtures."""
         self.checker = HealthChecker()
 
+    @pytest.mark.unit
     def test_initialization(self):
         """Test HealthChecker initializes correctly."""
         self.assertIsNotNone(self.checker.constitution_dir)
         self.assertIsNotNone(self.checker.hook_manager)
         self.assertEqual(self.checker.constitution_dir, CONSTITUTION_DIR)
 
+    @pytest.mark.unit
     def test_check_rule_count_consistency(self):
         """Test rule count consistency check."""
         result = self.checker.check_rule_count_consistency()
@@ -52,6 +56,7 @@ class TestHealthChecker(unittest.TestCase):
         self.assertEqual(result['expected_count'], result['actual_count'])
         self.assertGreater(result['expected_count'], 0)
 
+    @pytest.mark.unit
     def test_check_json_files_accessible(self):
         """Test JSON files accessibility check."""
         result = self.checker.check_json_files_accessible()
@@ -67,6 +72,7 @@ class TestHealthChecker(unittest.TestCase):
         self.assertEqual(len(result['missing_files']), 0)
         self.assertGreater(result['total_files'], 0)
 
+    @pytest.mark.unit
     def test_check_hook_manager_functional(self):
         """Test hook manager functionality check."""
         result = self.checker.check_hook_manager_functional()
@@ -85,6 +91,7 @@ class TestHealthChecker(unittest.TestCase):
         self.assertIn('violations_count', test_result)
         self.assertIn('rules_checked', test_result)
 
+    @pytest.mark.unit
     def test_get_health_status(self):
         """Test comprehensive health status."""
         result = self.checker.get_health_status()
@@ -116,6 +123,7 @@ class TestHealthChecker(unittest.TestCase):
         self.assertGreater(summary['total_rules'], 0)
         self.assertGreater(summary['json_files_count'], 0)
 
+    @pytest.mark.unit
     def test_check_rule_count_consistency_with_missing_file(self):
         """Test rule count check handles missing files gracefully."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -135,6 +143,7 @@ class TestHealthChecker(unittest.TestCase):
                 # Expected when no valid JSON files exist
                 pass
 
+    @pytest.mark.unit
     def test_check_json_files_accessible_with_invalid_json(self):
         """Test JSON files check handles invalid JSON gracefully."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -150,9 +159,11 @@ class TestHealthChecker(unittest.TestCase):
             self.assertGreater(len(result['missing_files']), 0)
 
 
+@pytest.mark.unit
 class TestHealthEndpoint(unittest.TestCase):
     """Test get_health_endpoint function."""
 
+    @pytest.mark.unit
     def test_get_health_endpoint(self):
         """Test health endpoint function."""
         result = get_health_endpoint()
@@ -172,15 +183,18 @@ class TestHealthEndpoint(unittest.TestCase):
         self.assertIn('hook_manager_functional', checks)
 
 
+@pytest.mark.unit
 class TestHealthCheckerEdgeCases(unittest.TestCase):
     """Test edge cases and error handling."""
 
+    @pytest.mark.unit
     def test_initialization_with_custom_dir(self):
         """Test initialization with custom constitution directory."""
         # Use actual constitution dir for this test
         checker = HealthChecker(constitution_dir="docs/constitution")
         self.assertEqual(checker.constitution_dir, CONSTITUTION_DIR)
 
+    @pytest.mark.unit
     def test_check_hook_manager_with_exception(self):
         """Test hook manager check handles exceptions."""
         checker = HealthChecker()

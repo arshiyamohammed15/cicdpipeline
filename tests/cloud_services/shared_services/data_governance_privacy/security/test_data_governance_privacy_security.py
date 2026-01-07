@@ -4,13 +4,15 @@ from __future__ import annotations
 Security-focused tests validating tenant isolation and breach prevention.
 """
 
-
+import pytest
 from tests.privacy_imports import import_module
 
 services_module = import_module("services")
 DataGovernanceService = services_module.DataGovernanceService
 
 
+@pytest.mark.dgp_security
+@pytest.mark.security
 def test_tenant_isolation_enforced() -> None:
     service = DataGovernanceService()
 
@@ -35,6 +37,8 @@ def test_tenant_isolation_enforced() -> None:
     assert "iam_permission_denied" in decision["violations"]
 
 
+@pytest.mark.dgp_security
+@pytest.mark.security
 def test_receipts_not_visible_cross_tenant() -> None:
     service = DataGovernanceService()
     service.submit_rights_request(

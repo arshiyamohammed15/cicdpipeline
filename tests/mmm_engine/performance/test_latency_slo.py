@@ -19,6 +19,7 @@ from cloud_services.product_services.mmm_engine.models import DecideRequest, Act
 from cloud_services.product_services.mmm_engine.services import MMMService
 
 
+@pytest.mark.performance
 def test_latency_slo_ide_calls() -> None:
     """Test latency SLO for IDE calls (150ms p95)."""
     service = MMMService()
@@ -49,6 +50,7 @@ def test_latency_slo_ide_calls() -> None:
     assert p95_latency <= 150, f"IDE latency p95 {p95_latency}ms exceeds 150ms SLO"
 
 
+@pytest.mark.performance
 def test_latency_slo_ci_calls() -> None:
     """Test latency SLO for CI calls (500ms p95)."""
     service = MMMService()
@@ -79,6 +81,7 @@ def test_latency_slo_ci_calls() -> None:
     assert p95_latency <= 500, f"CI latency p95 {p95_latency}ms exceeds 500ms SLO"
 
 
+@pytest.mark.performance
 def test_parallel_service_calls_optimization() -> None:
     """Test parallel service calls optimization."""
     import asyncio
@@ -109,6 +112,7 @@ def test_parallel_service_calls_optimization() -> None:
     assert parallel_time < 100, f"Parallel calls took {parallel_time}ms, expected < 100ms"
 
 
+@pytest.mark.performance
 def test_caching_effectiveness() -> None:
     """Test caching effectiveness for policy snapshots."""
     from cloud_services.product_services.mmm_engine.integrations.policy_client import (

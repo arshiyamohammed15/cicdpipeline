@@ -11,6 +11,7 @@ from health_reliability_monitoring.services.telemetry_worker import TelemetryWor
 from health_reliability_monitoring.models import TelemetryPayload
 
 
+@pytest.mark.unit
 class TestTelemetryWorker:
     """Test TelemetryWorker."""
 

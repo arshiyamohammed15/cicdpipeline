@@ -227,6 +227,7 @@ def queries_instance(db_manager):
     return queries.ConstitutionQueries(db_manager)
 
 
+@pytest.mark.constitution
 def test_get_rules_by_priority(queries_instance):
     """Test getting rules by priority."""
     results = queries_instance.get_rules_by_priority("critical")
@@ -234,6 +235,7 @@ def test_get_rules_by_priority(queries_instance):
     assert results[0]["priority"] == "critical"
 
 
+@pytest.mark.constitution
 def test_get_rules_by_priority_enabled_only(queries_instance):
     """Test getting enabled rules by priority."""
     results = queries_instance.get_rules_by_priority("critical", enabled_only=True)
@@ -241,6 +243,7 @@ def test_get_rules_by_priority_enabled_only(queries_instance):
     assert all(r["enabled"] for r in results)
 
 
+@pytest.mark.constitution
 def test_search_rules(queries_instance):
     """Test searching rules."""
     results = queries_instance.search_rules("Security")
@@ -248,6 +251,7 @@ def test_search_rules(queries_instance):
     assert "Security" in results[0]["title"]
 
 
+@pytest.mark.constitution
 def test_search_rules_enabled_only(queries_instance):
     """Test searching only enabled rules."""
     results = queries_instance.search_rules("Rule", enabled_only=True)
@@ -255,6 +259,7 @@ def test_search_rules_enabled_only(queries_instance):
     assert all(r["enabled"] for r in results)
 
 
+@pytest.mark.constitution
 def test_get_rules_in_range(queries_instance):
     """Test getting rules in range."""
     results = queries_instance.get_rules_in_range(1, 2)
@@ -262,6 +267,7 @@ def test_get_rules_in_range(queries_instance):
     assert all(1 <= r["rule_number"] <= 2 for r in results)
 
 
+@pytest.mark.constitution
 def test_get_rules_in_range_enabled_only(queries_instance):
     """Test getting enabled rules in range."""
     results = queries_instance.get_rules_in_range(1, 3, enabled_only=True)
@@ -269,6 +275,7 @@ def test_get_rules_in_range_enabled_only(queries_instance):
     assert all(r["enabled"] for r in results)
 
 
+@pytest.mark.constitution
 def test_get_recently_modified_rules(queries_instance):
     """Test getting recently modified rules."""
     results = queries_instance.get_recently_modified_rules(limit=5)
@@ -276,6 +283,7 @@ def test_get_recently_modified_rules(queries_instance):
     assert isinstance(results, list)
 
 
+@pytest.mark.constitution
 def test_get_rules_by_usage_count(queries_instance):
     """Test getting rules by usage count."""
     results = queries_instance.get_rules_by_usage_count(limit=5)
@@ -283,6 +291,7 @@ def test_get_rules_by_usage_count(queries_instance):
     assert isinstance(results, list)
 
 
+@pytest.mark.constitution
 def test_get_validation_summary_all_rules(queries_instance):
     """Test getting validation summary for all rules."""
     summary = queries_instance.get_validation_summary()
@@ -290,6 +299,7 @@ def test_get_validation_summary_all_rules(queries_instance):
     assert "results" in summary
 
 
+@pytest.mark.constitution
 def test_get_validation_summary_specific_rule(queries_instance):
     """Test getting validation summary for specific rule."""
     summary = queries_instance.get_validation_summary(rule_number=1)
@@ -297,6 +307,7 @@ def test_get_validation_summary_specific_rule(queries_instance):
     assert "results" in summary
 
 
+@pytest.mark.constitution
 def test_get_category_statistics(queries_instance):
     """Test getting category statistics."""
     stats = queries_instance.get_category_statistics()
@@ -305,6 +316,7 @@ def test_get_category_statistics(queries_instance):
     assert len(stats) > 0
 
 
+@pytest.mark.constitution
 def test_get_rule_dependencies(queries_instance, db_manager):
     """Test getting rule dependencies."""
     # Mock get_rule_by_number and get_rules_by_category
@@ -323,6 +335,7 @@ def test_get_rule_dependencies(queries_instance, db_manager):
     assert all(r["rule_number"] != 1 for r in dependencies)
 
 
+@pytest.mark.constitution
 def test_get_rule_dependencies_not_found(queries_instance, db_manager):
     """Test getting dependencies for non-existent rule."""
     db_manager.get_rule_by_number.return_value = None
@@ -331,6 +344,7 @@ def test_get_rule_dependencies_not_found(queries_instance, db_manager):
     assert dependencies == []
 
 
+@pytest.mark.constitution
 def test_get_enterprise_critical_rules(queries_instance, db_manager):
     """Test getting enterprise critical rules."""
     db_manager.get_rules_by_category.return_value = [
@@ -341,6 +355,7 @@ def test_get_enterprise_critical_rules(queries_instance, db_manager):
     assert isinstance(critical_rules, list)
 
 
+@pytest.mark.constitution
 def test_get_rule_usage_history(queries_instance, fake_db):
     """Test getting rule usage history."""
     # Mock cursor for usage history query
@@ -356,6 +371,7 @@ def test_get_rule_usage_history(queries_instance, fake_db):
         assert len(history) == 2
 
 
+@pytest.mark.constitution
 def test_get_validation_history(queries_instance, fake_db):
     """Test getting validation history."""
     # Mock cursor for validation history query
@@ -371,6 +387,7 @@ def test_get_validation_history(queries_instance, fake_db):
         assert len(history) == 2
 
 
+@pytest.mark.constitution
 def test_get_rule_analytics(queries_instance, fake_db):
     """Test getting comprehensive rule analytics."""
     # Mock cursor for analytics queries
@@ -405,6 +422,7 @@ def test_get_rule_analytics(queries_instance, fake_db):
                     assert "total_validations" in analytics
 
 
+@pytest.mark.constitution
 def test_create_queries(tmp_path):
     """Test creating queries instance."""
     with patch('config.constitution.queries.ConstitutionRulesDB') as mock_db_class:

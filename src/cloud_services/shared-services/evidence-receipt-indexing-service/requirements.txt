@@ -1,9 +1,13 @@
-fastapi==0.110.0
-uvicorn==0.30.0
-pydantic==1.10.14
-sqlalchemy==2.0.30
+# Evidence Receipt Indexing Service - Updated to match root requirements.txt
+# Compatible with pydantic v2 for consistency across codebase
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+starlette==0.38.6
+pydantic==2.12.3
+pydantic-settings==2.12.0
+sqlalchemy==2.0.44
 psycopg2-binary==2.9.9
-python-dotenv==1.0.1
-pytest==8.2.1
+python-dotenv==1.2.1
+pytest==8.4.2
 httpx==0.27.0
 

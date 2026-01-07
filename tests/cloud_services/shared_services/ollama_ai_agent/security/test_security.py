@@ -36,6 +36,7 @@ class TestInputValidation:
             # Service should handle the request (validation happens at service layer)
             assert response.status_code in [status.HTTP_200_OK, status.HTTP_400_BAD_REQUEST]
 
+    @pytest.mark.security
     def test_oversized_prompt(self, test_client):
         """Test handling of oversized prompts."""
         oversized_prompt = "A" * 100000  # Very large prompt
@@ -53,6 +54,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_sql_injection_in_prompt(self, test_client):
         """Test handling of SQL injection attempts in prompt."""
         sql_injection = "'; DROP TABLE users; --"
@@ -103,6 +105,7 @@ class TestErrorHandling:
         assert error_data is not None
 
     @patch('ollama_ai_agent.routes.OllamaAIService')
+    @pytest.mark.security
     def test_timeout_error_handling(self, mock_service_class, test_client):
         """Test handling of timeout errors."""
         mock_service = Mock()
@@ -134,6 +137,7 @@ class TestRequestValidation:
 
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
+    @pytest.mark.security
     def test_missing_required_fields(self, test_client):
         """Test validation of required fields."""
         response = test_client.post(
@@ -143,6 +147,7 @@ class TestRequestValidation:
 
         assert response.status_code == status.HTTP_422_UNPROCESSABLE_ENTITY
 
+    @pytest.mark.security
     def test_invalid_model_name(self, test_client):
         """Test validation of model name."""
         # Model validation depends on implementation

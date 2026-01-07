@@ -545,6 +545,7 @@ def problem_solving_validator_fixtures():
 # Test Functions Using Fixtures
 # ============================================================================
 
+@pytest.mark.unit
 def test_code_review_validator(code_review_validator_fixtures):
     """Test code_review validator with fixtures."""
     valid = code_review_validator_fixtures["valid_pr"]
@@ -555,6 +556,7 @@ def test_code_review_validator(code_review_validator_fixtures):
     assert invalid["has_tests"] is False
 
 
+@pytest.mark.unit
 def test_coding_standards_validator(coding_standards_validator_fixtures):
     """Test coding_standards validator with fixtures."""
     valid = coding_standards_validator_fixtures["valid_code"]
@@ -565,6 +567,7 @@ def test_coding_standards_validator(coding_standards_validator_fixtures):
     assert '"""' not in invalid
 
 
+@pytest.mark.unit
 def test_comments_validator(comments_validator_fixtures):
     """Test comments validator with fixtures."""
     valid = comments_validator_fixtures["valid_comments"]
@@ -574,6 +577,7 @@ def test_comments_validator(comments_validator_fixtures):
     assert "#" not in invalid or invalid.count("#") < 2
 
 
+@pytest.mark.unit
 def test_logging_validator(logging_validator_fixtures):
     """Test logging validator with fixtures."""
     valid = logging_validator_fixtures["valid_logging"]
@@ -584,6 +588,7 @@ def test_logging_validator(logging_validator_fixtures):
     assert "logger" not in invalid
 
 
+@pytest.mark.unit
 def test_requirements_validator(requirements_validator_fixtures):
     """Test requirements validator with fixtures."""
     valid = requirements_validator_fixtures["valid_requirements"]
@@ -592,6 +597,7 @@ def test_requirements_validator(requirements_validator_fixtures):
     assert valid["tested"] is True
 
 
+@pytest.mark.unit
 def test_simple_code_readability_validator(simple_code_readability_validator_fixtures):
     """Test simple_code_readability validator with fixtures."""
     valid = simple_code_readability_validator_fixtures["valid_readable"]
@@ -602,6 +608,7 @@ def test_simple_code_readability_validator(simple_code_readability_validator_fix
     assert "calc" in invalid  # Abbreviated names
 
 
+@pytest.mark.unit
 def test_storage_governance_validator(storage_governance_validator_fixtures):
     """Test storage_governance validator with fixtures."""
     valid = storage_governance_validator_fixtures["valid_storage"]
@@ -609,6 +616,7 @@ def test_storage_governance_validator(storage_governance_validator_fixtures):
     assert valid["backed_up"] is True
 
 
+@pytest.mark.unit
 def test_api_contracts_validator(api_contracts_validator_fixtures):
     """Test api_contracts validator with fixtures."""
     valid = api_contracts_validator_fixtures["valid_contract"]
@@ -616,6 +624,7 @@ def test_api_contracts_validator(api_contracts_validator_fixtures):
     assert valid["versioned"] is True
 
 
+@pytest.mark.unit
 def test_platform_validator(platform_validator_fixtures):
     """Test platform validator with fixtures."""
     valid = platform_validator_fixtures["valid_platform"]
@@ -623,6 +632,7 @@ def test_platform_validator(platform_validator_fixtures):
     assert len(valid["tested_on"]) > 1
 
 
+@pytest.mark.unit
 def test_system_design_validator(system_design_validator_fixtures):
     """Test system_design validator with fixtures."""
     valid = system_design_validator_fixtures["valid_design"]
@@ -630,6 +640,7 @@ def test_system_design_validator(system_design_validator_fixtures):
     assert valid["scalable"] is True
 
 
+@pytest.mark.unit
 def test_exception_handling_validator(exception_handling_validator_fixtures):
     """Test exception_handling validator with fixtures."""
     valid = exception_handling_validator_fixtures["valid_exception_handling"]
@@ -641,6 +652,7 @@ def test_exception_handling_validator(exception_handling_validator_fixtures):
     assert "except:" in invalid  # Bare except
 
 
+@pytest.mark.unit
 def test_performance_validator(performance_validator_fixtures):
     """Test performance validator with fixtures."""
     valid = performance_validator_fixtures["valid_performance"]
@@ -648,6 +660,7 @@ def test_performance_validator(performance_validator_fixtures):
     assert valid["indexed"] is True
 
 
+@pytest.mark.unit
 def test_privacy_validator(privacy_validator_fixtures):
     """Test privacy validator with fixtures."""
     valid = privacy_validator_fixtures["valid_privacy"]
@@ -655,6 +668,7 @@ def test_privacy_validator(privacy_validator_fixtures):
     assert valid["gdpr_compliant"] is True
 
 
+@pytest.mark.unit
 def test_quality_validator(quality_validator_fixtures):
     """Test quality validator with fixtures."""
     valid = quality_validator_fixtures["valid_quality"]
@@ -662,6 +676,7 @@ def test_quality_validator(quality_validator_fixtures):
     assert valid["code_reviewed"] is True
 
 
+@pytest.mark.unit
 def test_teamwork_validator(teamwork_validator_fixtures):
     """Test teamwork validator with fixtures."""
     valid = teamwork_validator_fixtures["valid_teamwork"]
@@ -669,6 +684,7 @@ def test_teamwork_validator(teamwork_validator_fixtures):
     assert valid["collaborative"] is True
 
 
+@pytest.mark.unit
 def test_typescript_validator(typescript_validator_fixtures):
     """Test typescript validator with fixtures."""
     valid = typescript_validator_fixtures["valid_typescript"]
@@ -679,6 +695,7 @@ def test_typescript_validator(typescript_validator_fixtures):
     assert ": any" in invalid
 
 
+@pytest.mark.unit
 def test_architecture_validator(architecture_validator_fixtures):
     """Test architecture validator with fixtures."""
     valid = architecture_validator_fixtures["valid_architecture"]
@@ -686,6 +703,7 @@ def test_architecture_validator(architecture_validator_fixtures):
     assert valid["dependency_injection"] is True
 
 
+@pytest.mark.unit
 def test_problem_solving_validator(problem_solving_validator_fixtures):
     """Test problem_solving validator with fixtures."""
     valid = problem_solving_validator_fixtures["valid_problem_solving"]

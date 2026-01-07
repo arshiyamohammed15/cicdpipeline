@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import pytest
 
 from config.constitution import config_manager_json
 
@@ -85,6 +86,7 @@ def _make_manager(tmp_path, monkeypatch) -> config_manager_json.ConstitutionRule
     return manager
 
 
+@pytest.mark.constitution
 def test_initialize_syncs_rules_and_creates_config(tmp_path, monkeypatch):
     manager = _make_manager(tmp_path, monkeypatch)
 
@@ -97,6 +99,7 @@ def test_initialize_syncs_rules_and_creates_config(tmp_path, monkeypatch):
     assert "1" in configs and "2" in configs
 
 
+@pytest.mark.constitution
 def test_enable_disable_and_health_check(tmp_path, monkeypatch):
     manager = _make_manager(tmp_path, monkeypatch)
     manager.initialize()
@@ -117,6 +120,7 @@ def test_enable_disable_and_health_check(tmp_path, monkeypatch):
     assert health["configuration"]["config_valid"] is True
 
 
+@pytest.mark.constitution
 def test_backup_and_restore(tmp_path, monkeypatch):
     manager = _make_manager(tmp_path, monkeypatch)
     manager.initialize()

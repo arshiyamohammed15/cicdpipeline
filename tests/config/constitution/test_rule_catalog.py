@@ -49,6 +49,7 @@ def _write_config(tmp_file: Path) -> None:
     tmp_file.write_text(json.dumps(payload), encoding="utf-8")
 
 
+@pytest.mark.constitution
 def test_catalog_loads_from_docs_and_config(tmp_path, monkeypatch):
     docs_dir = tmp_path / "docs"
     docs_dir.mkdir()

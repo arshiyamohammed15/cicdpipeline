@@ -13,6 +13,7 @@ except ImportError:
     db_models = None  # Database module not implemented
 
 
+@pytest.mark.unit
 class TestRollupService:
     """Test RollupService."""
 
@@ -57,6 +58,7 @@ class TestRollupService:
         db_session.commit()
         return snapshots
 
+    @pytest.mark.unit
     def test_latest_component_states_empty(self, rollup_service):
         """Test latest component states with no snapshots."""
         states = rollup_service.latest_component_states()
@@ -64,6 +66,7 @@ class TestRollupService:
         assert isinstance(states, dict)
         assert len(states) == 0
 
+    @pytest.mark.unit
     def test_latest_component_states_with_snapshots(self, rollup_service, sample_snapshots):
         """Test latest component states with snapshots."""
         states = rollup_service.latest_component_states()
@@ -72,6 +75,7 @@ class TestRollupService:
         assert "test-component-1" in states
         assert states["test-component-1"].state == "OK"
 
+    @pytest.mark.unit
     def test_tenant_view(self, rollup_service, sample_snapshots):
         """Test tenant view generation."""
         view = rollup_service.tenant_view("test-tenant")
@@ -80,6 +84,7 @@ class TestRollupService:
         assert "Product" in view.plane_states
         assert view.counts["OK"] >= 0
 
+    @pytest.mark.unit
     def test_tenant_view_empty(self, rollup_service):
         """Test tenant view with no snapshots."""
         view = rollup_service.tenant_view("nonexistent-tenant")
@@ -88,6 +93,7 @@ class TestRollupService:
         assert len(view.plane_states) == 0
         assert view.counts["OK"] == 0
 
+    @pytest.mark.unit
     def test_plane_view(self, rollup_service, sample_snapshots):
         """Test plane view generation."""
         view = rollup_service.plane_view("Product", "prod")
@@ -96,6 +102,7 @@ class TestRollupService:
         assert view.environment == "prod"
         assert view.state in ["OK", "DEGRADED", "FAILED", "UNKNOWN"]
 
+    @pytest.mark.unit
     def test_plane_view_empty(self, rollup_service):
         """Test plane view with no snapshots."""
         view = rollup_service.plane_view("Product", "prod")
@@ -104,6 +111,7 @@ class TestRollupService:
         assert view.environment == "prod"
         assert view.state == "UNKNOWN"
 
+    @pytest.mark.unit
     def test_dependency_penalties(self, db_session, rollup_service):
         """Test dependency penalty application."""
         # Create parent component

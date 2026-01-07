@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 from pathlib import Path
 
@@ -78,6 +79,7 @@ def _iter_python_files(repo_root: Path):
         return
 
 
+@pytest.mark.unit
 def test_no_deprecated_openai_symbols():
     repo_root = Path(__file__).resolve().parents[2]
     hits = []

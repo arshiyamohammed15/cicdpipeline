@@ -16,6 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 
+@pytest.mark.unit
 def test_imports():
     """Verify critical validator/tool modules import cleanly."""
     imports_to_test = [
@@ -42,6 +43,7 @@ def test_imports():
     assert errors == []
 
 
+@pytest.mark.unit
 def test_basic_functionality():
     """Exercise PreImplementationHookManager end-to-end."""
     from validator.pre_implementation_hooks import PreImplementationHookManager
@@ -52,6 +54,7 @@ def test_basic_functionality():
     assert "valid" in result and "violations" in result
 
 
+@pytest.mark.unit
 def test_json_files():
     """Ensure key JSON config files are well-formed."""
     json_files = [
@@ -80,6 +83,7 @@ def test_json_files():
         print(f"  OK {path}")
 
 
+@pytest.mark.unit
 def test_vs_code_files():
     """Ensure VS Code extension metadata and code are present."""
     pkg = PROJECT_ROOT / "src" / "vscode-extension" / "package.json"

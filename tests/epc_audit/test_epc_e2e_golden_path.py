@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import os
 import subprocess
@@ -7,6 +8,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
+@pytest.mark.integration
 def test_runner_outputs_summary() -> None:
     env = os.environ.copy()
     env.setdefault("USE_REAL_SERVICES", "false")

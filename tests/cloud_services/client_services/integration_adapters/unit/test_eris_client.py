@@ -16,15 +16,18 @@ from unittest.mock import Mock, patch
 
 from integration_adapters.integrations.eris_client import ERISClient
 
+@pytest.mark.unit
 class TestERISClient:
     """Test ERISClient."""
 
+    @pytest.mark.unit
     def test_eris_client_initialization(self):
         """Test ERIS client initialization."""
         client = ERISClient()
         assert client.base_url is not None
 
     @patch('integrations.eris_client.httpx.Client')
+    @pytest.mark.unit
     def test_emit_receipt_success(self, mock_client_class):
         """Test successful receipt emission."""
         mock_response = Mock()
@@ -50,6 +53,7 @@ class TestERISClient:
         assert result is True
 
     @patch('integrations.eris_client.httpx.Client')
+    @pytest.mark.unit
     def test_emit_receipt_failure(self, mock_client_class):
         """Test receipt emission failure."""
         mock_client = Mock()
@@ -70,6 +74,7 @@ class TestERISClient:
         assert result is False
 
     @patch('integrations.eris_client.httpx.Client')
+    @pytest.mark.unit
     def test_emit_receipts_batch(self, mock_client_class):
         """Test batch receipt emission."""
         mock_response = Mock()

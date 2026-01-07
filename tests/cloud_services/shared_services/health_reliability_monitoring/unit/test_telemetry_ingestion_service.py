@@ -10,6 +10,7 @@ from health_reliability_monitoring.services.telemetry_ingestion_service import T
 from health_reliability_monitoring.models import TelemetryPayload
 
 
+@pytest.mark.unit
 class TestTelemetryIngestionService:
     """Test TelemetryIngestionService."""
 
@@ -88,6 +89,7 @@ class TestTelemetryIngestionService:
         remaining = await telemetry_service.drain()
         assert len(remaining) > 0 or len(batch) == 20
 
+    @pytest.mark.unit
     def test_last_ingest_age_no_ingests(self, telemetry_service):
         """Test last ingest age with no ingests."""
         age = telemetry_service.last_ingest_age()

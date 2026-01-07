@@ -12,6 +12,7 @@ Risks: None - all tests use in-memory database
 import sys
 import unittest
 import uuid
+import pytest
 from pathlib import Path
 from datetime import datetime
 from sqlalchemy import create_engine, String
@@ -62,6 +63,7 @@ class UUIDString(TypeDecorator):
         return uuid.UUID(value) if isinstance(value, str) else value
 
 
+@pytest.mark.unit
 class TestDatabaseModels(unittest.TestCase):
     """Test database models with 100% coverage."""
 
@@ -86,6 +88,7 @@ class TestDatabaseModels(unittest.TestCase):
         self.session.close()
         Base.metadata.drop_all(self.engine)
 
+    @pytest.mark.unit
     def test_create_policy(self):
         """Test creating a policy per PRD (lines 218-233)."""
         policy = Policy(
@@ -110,6 +113,7 @@ class TestDatabaseModels(unittest.TestCase):
         self.assertEqual(retrieved.name, "Test Policy")
         self.assertEqual(retrieved.policy_type, "security")
 
+    @pytest.mark.unit
     def test_policy_constraints(self):
         """Test policy constraints per PRD."""
         # Test invalid policy_type
@@ -129,6 +133,7 @@ class TestDatabaseModels(unittest.TestCase):
             self.session.add(policy)
             self.session.commit()
 
+    @pytest.mark.unit
     def test_create_configuration(self):
         """Test creating a configuration per PRD (lines 236-247)."""
         config = Configuration(
@@ -149,6 +154,7 @@ class TestDatabaseModels(unittest.TestCase):
         self.assertIsNotNone(retrieved)
         self.assertEqual(retrieved.name, "Test Config")
 
+    @pytest.mark.unit
     def test_create_gold_standard(self):
         """Test creating a gold standard per PRD (lines 250-259)."""
         standard = GoldStandard(
@@ -169,6 +175,7 @@ class TestDatabaseModels(unittest.TestCase):
         self.assertIsNotNone(retrieved)
         self.assertEqual(retrieved.framework, "soc2")
 
+    @pytest.mark.unit
     def test_policy_to_dict(self):
         """Test Policy.to_dict() method."""
         policy = Policy(

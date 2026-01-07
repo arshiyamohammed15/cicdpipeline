@@ -17,9 +17,11 @@ from unittest.mock import Mock, patch
 
 from integration_adapters.adapters.http_client import HTTPClient, ErrorType
 
+@pytest.mark.unit
 class TestHTTPClient:
     """Test HTTP client."""
 
+    @pytest.mark.unit
     def test_http_client_initialization(self):
         """Test HTTP client initialization."""
         client = HTTPClient(base_url="https://api.example.com")
@@ -27,6 +29,7 @@ class TestHTTPClient:
         assert client.max_retries == 3
         assert client.initial_backoff == 1.0
 
+    @pytest.mark.unit
     def test_backoff_calculation(self):
         """Test exponential backoff calculation."""
         client = HTTPClient(base_url="https://api.example.com")
@@ -39,6 +42,7 @@ class TestHTTPClient:
         assert backoff1 >= client.initial_backoff
         assert backoff3 <= client.max_backoff
 
+    @pytest.mark.unit
     def test_backoff_with_jitter(self):
         """Test backoff includes jitter."""
         client = HTTPClient(base_url="https://api.example.com", jitter=True)
@@ -47,6 +51,7 @@ class TestHTTPClient:
         # Jitter should add variation
         assert len(set(backoffs)) > 1
 
+    @pytest.mark.unit
     def test_backoff_without_jitter(self):
         """Test backoff without jitter is deterministic."""
         client = HTTPClient(base_url="https://api.example.com", jitter=False)
@@ -56,6 +61,7 @@ class TestHTTPClient:
 
         assert backoff1 == backoff2
 
+    @pytest.mark.unit
     def test_parse_retry_after_header(self):
         """Test parsing Retry-After header."""
         client = HTTPClient(base_url="https://api.example.com")
@@ -68,6 +74,7 @@ class TestHTTPClient:
         retry_after = client._parse_retry_after(headers_no_retry)
         assert retry_after is None
 
+    @pytest.mark.unit
     def test_error_classification(self):
         """Test error classification."""
         client = HTTPClient(base_url="https://api.example.com")
@@ -80,6 +87,7 @@ class TestHTTPClient:
         assert client._classify_error(503) == ErrorType.SERVER
 
     @patch('adapters.http_client.httpx.Client')
+    @pytest.mark.unit
     def test_request_success(self, mock_client_class):
         """Test successful request."""
         mock_response = Mock()
@@ -98,6 +106,7 @@ class TestHTTPClient:
         mock_client.request.assert_called_once()
 
     @patch('adapters.http_client.httpx.Client')
+    @pytest.mark.unit
     def test_request_retry_on_server_error(self, mock_client_class):
         """Test retry on server error."""
         mock_response_500 = Mock()
@@ -120,6 +129,7 @@ class TestHTTPClient:
             assert mock_client.request.call_count == 2
 
     @patch('adapters.http_client.httpx.Client')
+    @pytest.mark.unit
     def test_request_no_retry_on_client_error(self, mock_client_class):
         """Test no retry on client error (4xx)."""
         mock_response = Mock()
@@ -137,6 +147,7 @@ class TestHTTPClient:
         mock_client.request.assert_called_once()
 
     @patch('adapters.http_client.httpx.Client')
+    @pytest.mark.unit
     def test_request_idempotency_key(self, mock_client_class):
         """Test idempotency key injection."""
         mock_response = Mock()

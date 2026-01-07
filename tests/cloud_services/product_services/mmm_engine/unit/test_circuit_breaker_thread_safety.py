@@ -21,12 +21,14 @@ from mmm_engine.reliability.circuit_breaker import (
 )
 
 
+@pytest.mark.unit
 def test_circuit_breaker_thread_safety():
     """Test that circuit breaker is thread-safe under concurrent access."""
     cb = CircuitBreaker("test", failure_threshold=5, recovery_timeout=1.0)
     results = []
     errors = []
 
+    @pytest.mark.unit
     def test_call(i: int) -> None:
         """Test function that may succeed or fail."""
         try:
@@ -65,6 +67,7 @@ def test_circuit_breaker_thread_safety():
     assert state["state"] in ["CLOSED", "OPEN", "HALF_OPEN"]
 
 
+@pytest.mark.unit
 def test_circuit_breaker_concurrent_state_access():
     """Test that get_state() is thread-safe."""
     cb = CircuitBreaker("test", failure_threshold=3, recovery_timeout=1.0)
@@ -113,12 +116,14 @@ def test_circuit_breaker_concurrent_state_access():
         assert state["state"] in ["CLOSED", "OPEN", "HALF_OPEN"]
 
 
+@pytest.mark.unit
 def test_circuit_breaker_fallback_thread_safety():
     """Test that fallback mechanism works correctly in concurrent scenarios."""
     cb = CircuitBreaker("test", failure_threshold=2, recovery_timeout=0.5)
     results = []
     results_lock = threading.Lock()
 
+    @pytest.mark.unit
     def test_with_fallback(i: int) -> None:
         """Test function with fallback."""
         if i < 2:
@@ -161,6 +166,7 @@ def test_circuit_breaker_fallback_thread_safety():
     assert len(results) <= 5  # At most 5 results
 
 
+@pytest.mark.unit
 def test_circuit_breaker_reset_thread_safety():
     """Test that reset() is thread-safe."""
     cb = CircuitBreaker("test", failure_threshold=2, recovery_timeout=1.0)

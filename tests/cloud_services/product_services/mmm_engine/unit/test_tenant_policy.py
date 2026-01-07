@@ -54,6 +54,7 @@ def db_session():
     session.close()
 
 
+@pytest.mark.unit
 def test_tenant_policy_enabled_action_types_filtering(db_session) -> None:
     """Test enabled_action_types filters actions."""
     service = MMMService()
@@ -87,6 +88,7 @@ def test_tenant_policy_enabled_action_types_filtering(db_session) -> None:
         assert action.type.value == "mirror"
 
 
+@pytest.mark.unit
 def test_tenant_policy_enabled_surfaces_filtering(db_session) -> None:
     """Test enabled_surfaces filters action surfaces."""
     service = MMMService()
@@ -122,6 +124,7 @@ def test_tenant_policy_enabled_surfaces_filtering(db_session) -> None:
                 assert surface.value == "ide"
 
 
+@pytest.mark.unit
 def test_tenant_policy_quiet_hours_override(db_session) -> None:
     """Test tenant policy quiet_hours override Data Governance config."""
     service = MMMService()
@@ -156,6 +159,7 @@ def test_tenant_policy_quiet_hours_override(db_session) -> None:
     assert response.decision.context.quiet_hours["end"] == 8
 
 
+@pytest.mark.unit
 def test_tenant_policy_api_get(client: TestClient) -> None:
     """Test GET /v1/mmm/tenants/{tenant_id}/policy endpoint."""
     with patch(
@@ -184,6 +188,7 @@ def test_tenant_policy_api_get(client: TestClient) -> None:
                 assert data["enabled_surfaces"] == ["ide"]
 
 
+@pytest.mark.unit
 def test_tenant_policy_api_update(client: TestClient) -> None:
     """Test PUT /v1/mmm/tenants/{tenant_id}/policy endpoint."""
     with patch(

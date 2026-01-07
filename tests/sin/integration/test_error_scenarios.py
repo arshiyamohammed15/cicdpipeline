@@ -52,6 +52,7 @@ def registered_producer_setup(client, auth_token, app_schema_registry):
     return producer
 
 
+@pytest.mark.integration
 def test_unregistered_producer(client, auth_token):
     """Test ingestion with unregistered producer."""
     signal = {
@@ -79,6 +80,7 @@ def test_unregistered_producer(client, auth_token):
     assert "PRODUCER_NOT_REGISTERED" in data["results"][0].get("error_code", "")
 
 
+@pytest.mark.integration
 def test_invalid_signal_type(client, auth_token, registered_producer_setup):
     """Test ingestion with signal type not allowed for producer."""
     signal = {
@@ -106,6 +108,7 @@ def test_invalid_signal_type(client, auth_token, registered_producer_setup):
     assert "SIGNAL_TYPE_NOT_ALLOWED" in data["results"][0].get("error_code", "")
 
 
+@pytest.mark.integration
 def test_missing_required_fields(client, auth_token, registered_producer_setup):
     """Test ingestion with missing required fields."""
     signal = {
@@ -135,6 +138,7 @@ def test_missing_required_fields(client, auth_token, registered_producer_setup):
         assert data["results"][0].get("dlq_id") is not None
 
 
+@pytest.mark.integration
 def test_governance_violation(client, auth_token, registered_producer_setup, app_data_governance, app_routing_engine):
     """Test governance violation detection."""
     # Set disallowed field
@@ -172,6 +176,7 @@ def test_governance_violation(client, auth_token, registered_producer_setup, app
         assert "GOVERNANCE" in data["results"][0]["error_code"]
 
 
+@pytest.mark.integration
 def test_invalid_json(client, auth_token):
     """Test API with invalid JSON."""
     response = client.post(
@@ -182,6 +187,7 @@ def test_invalid_json(client, auth_token):
     assert response.status_code == 422  # Unprocessable Entity
 
 
+@pytest.mark.integration
 def test_empty_signals_array(client, auth_token):
     """Test API with empty signals array."""
     response = client.post(
@@ -192,6 +198,7 @@ def test_empty_signals_array(client, auth_token):
     assert response.status_code == 422  # Validation error
 
 
+@pytest.mark.integration
 def test_large_batch(client, auth_token, registered_producer_setup):
     """Test API with batch exceeding max size."""
     # Create 1001 signals (max is 1000)
@@ -219,6 +226,7 @@ def test_large_batch(client, auth_token, registered_producer_setup):
     assert response.status_code == 422  # Validation error for exceeding max
 
 
+@pytest.mark.integration
 def test_expired_token(client, app_iam):
     """Test with expired authentication token."""
     expired_token = "expired_token"
@@ -249,6 +257,7 @@ def test_expired_token(client, app_iam):
     assert response.status_code == 401  # Unauthorized
 
 
+@pytest.mark.integration
 def test_malformed_signal(client, auth_token, registered_producer_setup):
     """Test with malformed signal data."""
     signal = {

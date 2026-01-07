@@ -10,6 +10,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_tc_sin_002_schema_violation_dlq(ingestion_service, registered_producer, sample_signal):
     """TC-SIN-002: Schema violation routes to DLQ."""
     # Create signal with missing required field
@@ -43,6 +44,7 @@ def test_tc_sin_002_schema_violation_dlq(ingestion_service, registered_producer,
     assert result.dlq_id is not None
 
 
+@pytest.mark.unit
 def test_validation_producer_not_registered(ingestion_service, sample_signal):
     """Test validation fails for unregistered producer."""
     result = ingestion_service.ingest_signal(sample_signal)

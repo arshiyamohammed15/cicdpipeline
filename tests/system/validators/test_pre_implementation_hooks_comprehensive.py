@@ -16,6 +16,7 @@ Uses actual rule count from JSON files, not hardcoded values.
 """
 
 import sys
+import pytest
 import json
 import unittest
 from pathlib import Path
@@ -25,6 +26,7 @@ from typing import Dict, Any, List
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
+@pytest.mark.unit
 class TestRuleLoading(unittest.TestCase):
     """Test that all rules are loaded correctly."""
 
@@ -33,6 +35,7 @@ class TestRuleLoading(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
         self.hook_manager = PreImplementationHookManager()
 
+    @pytest.mark.unit
     def test_total_rules_loaded(self):
         """Verify all enabled rules are loaded from JSON files (single source of truth)."""
         # Get actual count from JSON files
@@ -51,6 +54,7 @@ class TestRuleLoading(unittest.TestCase):
             f"Expected {expected_rules} enabled rules from {len(json_files)} files, got {self.hook_manager.total_rules}"
         )
 
+    @pytest.mark.unit
     def test_rules_from_all_files(self):
         """Verify rules are loaded from all JSON files in docs/constitution."""
         constitution_dir = Path("docs/constitution")
@@ -77,6 +81,7 @@ class TestRuleLoading(unittest.TestCase):
             f"Expected rules from multiple categories, found {len(categories)}"
         )
 
+    @pytest.mark.unit
     def test_disabled_rule_excluded(self):
         """Verify disabled rules are not loaded."""
         # Find a disabled rule dynamically from JSON files
@@ -111,6 +116,7 @@ class TestRuleLoading(unittest.TestCase):
         else:
             self.skipTest(f"Disabled rule {disabled_rule_id} currently loaded for auditing")
 
+    @pytest.mark.unit
     def test_rule_loader_initialization(self):
         """Test rule loader initializes correctly."""
         from validator.pre_implementation_hooks import ConstitutionRuleLoader
@@ -123,6 +129,7 @@ class TestRuleLoading(unittest.TestCase):
         self.assertIsNotNone(rule_loader.rules_by_category)
 
 
+@pytest.mark.unit
 class TestViolationDetection(unittest.TestCase):
     """Test that violations are detected correctly."""
 
@@ -131,6 +138,7 @@ class TestViolationDetection(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
         self.hook_manager = PreImplementationHookManager()
 
+    @pytest.mark.unit
     def test_hardcoded_password_detection(self):
         """Test detection of hardcoded password violation."""
         prompt = "create a function with hardcoded password = 'secret123'"
@@ -153,6 +161,7 @@ class TestViolationDetection(unittest.TestCase):
             f"Should check all {expected_rules} rules from JSON files"
         )
 
+    @pytest.mark.unit
     def test_assumption_detection(self):
         """Test detection of assumption violations."""
         prompt = "assume the user wants X and create a function"
@@ -168,6 +177,7 @@ class TestViolationDetection(unittest.TestCase):
             "Should detect violations for assumptions"
         )
 
+    @pytest.mark.unit
     def test_scope_creep_detection(self):
         """Test detection of scope creep violations."""
         prompt = "create a function and also add logging and also include error handling"
@@ -183,6 +193,7 @@ class TestViolationDetection(unittest.TestCase):
             "Should detect violations for scope creep"
         )
 
+    @pytest.mark.unit
     def test_valid_prompt_passes(self):
         """Test that valid prompts pass validation."""
         prompt = "create a Python function that calculates the sum of two numbers"
@@ -197,6 +208,7 @@ class TestViolationDetection(unittest.TestCase):
         expected_rules = self.hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_violation_structure(self):
         """Test that violations have correct structure."""
         prompt = "create function with hardcoded password"
@@ -217,6 +229,7 @@ class TestViolationDetection(unittest.TestCase):
         )
 
 
+@pytest.mark.unit
 class TestBlockingBehavior(unittest.TestCase):
     """Test that code generation is blocked when violations are found."""
 
@@ -226,6 +239,7 @@ class TestBlockingBehavior(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
 
         # Create a test integration
+        @pytest.mark.unit
         class TestIntegration(AIServiceIntegration):
             def generate_code(self, prompt: str, context: Dict[str, Any]) -> Dict[str, Any]:
                 return self._validate_and_generate(prompt, context)
@@ -235,6 +249,7 @@ class TestBlockingBehavior(unittest.TestCase):
 
         self.integration = TestIntegration("test")
 
+    @pytest.mark.unit
     def test_blocking_on_violations(self):
         """Test that generation is blocked when violations are found."""
         invalid_prompt = "create function with hardcoded password = 'secret'"
@@ -257,6 +272,7 @@ class TestBlockingBehavior(unittest.TestCase):
         self.assertIn('violations', result)
         self.assertGreater(len(result['violations']), 0)
 
+    @pytest.mark.unit
     def test_allowing_on_no_violations(self):
         """Test that generation proceeds when no violations are found."""
         # Note: This will still fail if AI service is not configured
@@ -282,9 +298,11 @@ class TestBlockingBehavior(unittest.TestCase):
             self.assertIn('success', result)
 
 
+@pytest.mark.unit
 class TestIntegrationPoints(unittest.TestCase):
     """Test all integration points work correctly."""
 
+    @pytest.mark.unit
     def test_integration_registry(self):
         """Test integration registry uses hooks."""
         from validator.integrations.integration_registry import IntegrationRegistry
@@ -306,6 +324,7 @@ class TestIntegrationPoints(unittest.TestCase):
         expected_rules = hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_openai_integration(self):
         """Test OpenAI integration uses hooks."""
         from validator.integrations.openai_integration import OpenAIIntegration
@@ -322,6 +341,7 @@ class TestIntegrationPoints(unittest.TestCase):
         self.assertFalse(result['success'])
         self.assertEqual(result.get('error'), 'CONSTITUTION_VIOLATION')
 
+    @pytest.mark.unit
     def test_cursor_integration(self):
         """Test Cursor integration uses hooks."""
         from validator.integrations.cursor_integration import CursorIntegration
@@ -338,6 +358,7 @@ class TestIntegrationPoints(unittest.TestCase):
         self.assertFalse(result['success'])
         self.assertEqual(result.get('error'), 'CONSTITUTION_VIOLATION')
 
+    @pytest.mark.unit
     def test_api_service_endpoints(self):
         """Test API service endpoints use hooks."""
         from validator.integrations.api_service import app
@@ -350,6 +371,7 @@ class TestIntegrationPoints(unittest.TestCase):
         self.assertIn('/health', routes)
 
 
+@pytest.mark.unit
 class TestEdgeCases(unittest.TestCase):
     """Test edge cases and error handling."""
 
@@ -358,6 +380,7 @@ class TestEdgeCases(unittest.TestCase):
         from validator.pre_implementation_hooks import PreImplementationHookManager
         self.hook_manager = PreImplementationHookManager()
 
+    @pytest.mark.unit
     def test_empty_prompt(self):
         """Test handling of empty prompt."""
         result = self.hook_manager.validate_before_generation("")
@@ -367,6 +390,7 @@ class TestEdgeCases(unittest.TestCase):
         expected_rules = self.hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_very_long_prompt(self):
         """Test handling of very long prompt."""
         long_prompt = "create a function " * 1000
@@ -377,6 +401,7 @@ class TestEdgeCases(unittest.TestCase):
         expected_rules = self.hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_special_characters(self):
         """Test handling of special characters in prompt."""
         special_prompt = "create function with @#$%^&*() characters"
@@ -387,6 +412,7 @@ class TestEdgeCases(unittest.TestCase):
         expected_rules = self.hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_missing_file_type(self):
         """Test handling of missing file_type parameter."""
         result = self.hook_manager.validate_before_generation(
@@ -400,6 +426,7 @@ class TestEdgeCases(unittest.TestCase):
         expected_rules = self.hook_manager.total_rules
         self.assertEqual(result['total_rules_checked'], expected_rules)
 
+    @pytest.mark.unit
     def test_invalid_json_file_handling(self):
         """Test that missing JSON files are handled gracefully."""
         # This would require mocking or temporary file manipulation
@@ -411,9 +438,11 @@ class TestEdgeCases(unittest.TestCase):
             ConstitutionRuleLoader("nonexistent/directory")
 
 
+@pytest.mark.unit
 class TestRuleCountAccuracy(unittest.TestCase):
     """Test that rule counts are accurate."""
 
+    @pytest.mark.unit
     def test_rule_count_from_json_files(self):
         """Verify rule count matches JSON files (single source of truth)."""
         constitution_dir = Path("docs/constitution")
@@ -436,6 +465,7 @@ class TestRuleCountAccuracy(unittest.TestCase):
             f"JSON files have {total_enabled} enabled rules, hook manager reports {hook_manager.total_rules}"
         )
 
+    @pytest.mark.unit
     def test_hook_manager_rule_count(self):
         """Verify hook manager reports rule count from JSON files."""
         from validator.pre_implementation_hooks import PreImplementationHookManager
@@ -458,6 +488,7 @@ class TestRuleCountAccuracy(unittest.TestCase):
             f"Hook manager reports {hook_manager.total_rules} rules, JSON files have {expected_rules}"
         )
 
+    @pytest.mark.unit
     def test_validation_result_rule_count(self):
         """Verify validation results report rule count from JSON files."""
         from validator.pre_implementation_hooks import PreImplementationHookManager

@@ -23,9 +23,11 @@ from detection_engine_core.models import (
 )
 
 
+@pytest.mark.unit
 class TestEnums:
     """Test enum classes"""
 
+    @pytest.mark.unit
     def test_decision_status_values(self):
         """Test DecisionStatus enum values"""
         assert DecisionStatus.PASS == "pass"
@@ -33,6 +35,7 @@ class TestEnums:
         assert DecisionStatus.SOFT_BLOCK == "soft_block"
         assert DecisionStatus.HARD_BLOCK == "hard_block"
 
+    @pytest.mark.unit
     def test_evaluation_point_values(self):
         """Test EvaluationPoint enum values"""
         assert EvaluationPoint.PRE_COMMIT == "pre-commit"
@@ -40,12 +43,14 @@ class TestEnums:
         assert EvaluationPoint.PRE_DEPLOY == "pre-deploy"
         assert EvaluationPoint.POST_DEPLOY == "post-deploy"
 
+    @pytest.mark.unit
     def test_actor_type_values(self):
         """Test ActorType enum values"""
         assert ActorType.HUMAN == "human"
         assert ActorType.AI == "ai"
         assert ActorType.AUTOMATED == "automated"
 
+    @pytest.mark.unit
     def test_data_category_values(self):
         """Test DataCategory enum values"""
         assert DataCategory.PUBLIC == "public"
@@ -53,6 +58,7 @@ class TestEnums:
         assert DataCategory.CONFIDENTIAL == "confidential"
         assert DataCategory.RESTRICTED == "restricted"
 
+    @pytest.mark.unit
     def test_surface_values(self):
         """Test Surface enum values"""
         assert Surface.IDE == "ide"
@@ -60,9 +66,11 @@ class TestEnums:
         assert Surface.CI == "ci"
 
 
+@pytest.mark.unit
 class TestEvidenceHandle:
     """Test EvidenceHandle model"""
 
+    @pytest.mark.unit
     def test_evidence_handle_creation(self):
         """Test EvidenceHandle creation with required fields"""
         handle = EvidenceHandle(
@@ -76,6 +84,7 @@ class TestEvidenceHandle:
         assert handle.description == "Test evidence"
         assert handle.expires_at is None
 
+    @pytest.mark.unit
     def test_evidence_handle_with_expires_at(self):
         """Test EvidenceHandle with expires_at"""
         handle = EvidenceHandle(
@@ -87,6 +96,7 @@ class TestEvidenceHandle:
 
         assert handle.expires_at == "2025-12-31T23:59:59Z"
 
+    @pytest.mark.unit
     def test_evidence_handle_missing_required_fields(self):
         """Test EvidenceHandle validation with missing fields"""
         with pytest.raises(ValidationError):
@@ -96,9 +106,11 @@ class TestEvidenceHandle:
             )
 
 
+@pytest.mark.unit
 class TestDecisionReceiptModel:
     """Test DecisionReceiptModel"""
 
+    @pytest.mark.unit
     def test_decision_receipt_creation(self):
         """Test DecisionReceiptModel creation"""
         receipt = DecisionReceiptModel(
@@ -120,6 +132,7 @@ class TestDecisionReceiptModel:
         assert receipt.gate_id == "detection-engine-core"
         assert receipt.degraded is False
 
+    @pytest.mark.unit
     def test_decision_receipt_with_optional_fields(self):
         """Test DecisionReceiptModel with optional fields"""
         receipt = DecisionReceiptModel(
@@ -147,9 +160,11 @@ class TestDecisionReceiptModel:
         assert receipt.degraded is True
 
 
+@pytest.mark.unit
 class TestDecisionRequest:
     """Test DecisionRequest model"""
 
+    @pytest.mark.unit
     def test_decision_request_creation(self):
         """Test DecisionRequest creation"""
         request = DecisionRequest(
@@ -164,6 +179,7 @@ class TestDecisionRequest:
         assert request.context is None
         assert request.policy_version_ids is None
 
+    @pytest.mark.unit
     def test_decision_request_with_optional_fields(self):
         """Test DecisionRequest with optional fields"""
         request = DecisionRequest(
@@ -178,9 +194,11 @@ class TestDecisionRequest:
         assert request.policy_version_ids == ["POL-001"]
 
 
+@pytest.mark.unit
 class TestDecisionResponse:
     """Test DecisionResponse model"""
 
+    @pytest.mark.unit
     def test_decision_response_creation(self):
         """Test DecisionResponse creation"""
         receipt = DecisionReceiptModel(
@@ -208,6 +226,7 @@ class TestDecisionResponse:
         assert response.confidence == 0.95
         assert response.accuracy_metrics == {"precision": 0.85}
 
+    @pytest.mark.unit
     def test_decision_response_with_optional_fields(self):
         """Test DecisionResponse with optional fields"""
         receipt = DecisionReceiptModel(
@@ -230,6 +249,7 @@ class TestDecisionResponse:
         assert response.confidence is None
         assert response.accuracy_metrics is None
 
+    @pytest.mark.unit
     def test_decision_response_confidence_validation(self):
         """Test DecisionResponse confidence validation"""
         receipt = DecisionReceiptModel(
@@ -260,9 +280,11 @@ class TestDecisionResponse:
             DecisionResponse(receipt=receipt, confidence=-0.1)
 
 
+@pytest.mark.unit
 class TestDecisionResponseError:
     """Test DecisionResponseError model"""
 
+    @pytest.mark.unit
     def test_decision_response_error_creation(self):
         """Test DecisionResponseError creation"""
         error = DecisionResponseError(
@@ -275,6 +297,7 @@ class TestDecisionResponseError:
         assert error.error_message == "Test error message"
         assert error.degraded is True
 
+    @pytest.mark.unit
     def test_decision_response_error_default_degraded(self):
         """Test DecisionResponseError with default degraded"""
         error = DecisionResponseError(
@@ -285,9 +308,11 @@ class TestDecisionResponseError:
         assert error.degraded is False
 
 
+@pytest.mark.unit
 class TestFeedbackReceiptModel:
     """Test FeedbackReceiptModel"""
 
+    @pytest.mark.unit
     def test_feedback_receipt_creation(self):
         """Test FeedbackReceiptModel creation"""
         receipt = FeedbackReceiptModel(
@@ -305,6 +330,7 @@ class TestFeedbackReceiptModel:
         assert receipt.pattern_id == "FB-01"
         assert receipt.choice == "worked"
 
+    @pytest.mark.unit
     def test_feedback_receipt_pattern_id_validation(self):
         """Test FeedbackReceiptModel pattern_id validation"""
         # Valid pattern IDs
@@ -334,6 +360,7 @@ class TestFeedbackReceiptModel:
                 signature="test-signature"
             )
 
+    @pytest.mark.unit
     def test_feedback_receipt_choice_validation(self):
         """Test FeedbackReceiptModel choice validation"""
         # Valid choices
@@ -364,9 +391,11 @@ class TestFeedbackReceiptModel:
             )
 
 
+@pytest.mark.unit
 class TestFeedbackRequest:
     """Test FeedbackRequest model"""
 
+    @pytest.mark.unit
     def test_feedback_request_creation(self):
         """Test FeedbackRequest creation"""
         request = FeedbackRequest(
@@ -382,6 +411,7 @@ class TestFeedbackRequest:
         assert request.choice == "worked"
         assert request.tags == ["positive"]
 
+    @pytest.mark.unit
     def test_feedback_request_default_tags(self):
         """Test FeedbackRequest with default tags"""
         request = FeedbackRequest(
@@ -394,9 +424,11 @@ class TestFeedbackRequest:
         assert request.tags == []
 
 
+@pytest.mark.unit
 class TestFeedbackResponse:
     """Test FeedbackResponse model"""
 
+    @pytest.mark.unit
     def test_feedback_response_creation(self):
         """Test FeedbackResponse creation"""
         response = FeedbackResponse(
@@ -409,6 +441,7 @@ class TestFeedbackResponse:
         assert response.status == "accepted"
         assert response.message == "Success"
 
+    @pytest.mark.unit
     def test_feedback_response_optional_message(self):
         """Test FeedbackResponse with optional message"""
         response = FeedbackResponse(
@@ -419,9 +452,11 @@ class TestFeedbackResponse:
         assert response.message is None
 
 
+@pytest.mark.unit
 class TestEvidenceLink:
     """Test EvidenceLink model"""
 
+    @pytest.mark.unit
     def test_evidence_link_creation(self):
         """Test EvidenceLink creation"""
         link = EvidenceLink(
@@ -435,6 +470,7 @@ class TestEvidenceLink:
         assert link.label == "Test evidence"
         assert link.expires_at is None
 
+    @pytest.mark.unit
     def test_evidence_link_with_expires_at(self):
         """Test EvidenceLink with expires_at"""
         link = EvidenceLink(
@@ -447,9 +483,11 @@ class TestEvidenceLink:
         assert link.expires_at == "2025-12-31T23:59:59Z"
 
 
+@pytest.mark.unit
 class TestHealthResponse:
     """Test HealthResponse model"""
 
+    @pytest.mark.unit
     def test_health_response_creation(self):
         """Test HealthResponse creation"""
         response = HealthResponse(status="healthy")
@@ -459,9 +497,11 @@ class TestHealthResponse:
         assert isinstance(response.timestamp, datetime)
 
 
+@pytest.mark.unit
 class TestReadinessResponse:
     """Test ReadinessResponse model"""
 
+    @pytest.mark.unit
     def test_readiness_response_creation(self):
         """Test ReadinessResponse creation"""
         response = ReadinessResponse(
@@ -473,6 +513,7 @@ class TestReadinessResponse:
         assert response.checks == {"service": True, "detection_engine": True}
         assert response.timestamp is None
 
+    @pytest.mark.unit
     def test_readiness_response_with_timestamp(self):
         """Test ReadinessResponse with timestamp"""
         timestamp = datetime.utcnow()

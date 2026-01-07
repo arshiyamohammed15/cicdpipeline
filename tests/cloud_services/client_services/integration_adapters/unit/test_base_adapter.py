@@ -72,15 +72,18 @@ class ConcreteAdapter(BaseAdapter):
             "outbound_actions_supported": True,
         }
 
+@pytest.mark.unit
 class TestBaseAdapter:
     """Test BaseAdapter interface."""
 
+    @pytest.mark.unit
     def test_adapter_initialization(self):
         """Test adapter initialization."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
         assert adapter.provider_id == "github"
         assert adapter.tenant_id == "tenant-123"
 
+    @pytest.mark.unit
     def test_adapter_getters(self):
         """Test adapter getter methods."""
         connection_id = uuid4()
@@ -89,12 +92,14 @@ class TestBaseAdapter:
         assert adapter.get_connection_id() == connection_id
         assert adapter.get_tenant_id() == "tenant-123"
 
+    @pytest.mark.unit
     def test_adapter_process_webhook(self):
         """Test webhook processing."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
         result = adapter.process_webhook({"test": "data"}, {"header": "value"})
         assert result["event_type"] == "test"
 
+    @pytest.mark.unit
     def test_adapter_poll_events(self):
         """Test event polling."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
@@ -102,6 +107,7 @@ class TestBaseAdapter:
         assert events == []
         assert cursor == "new-cursor"
 
+    @pytest.mark.unit
     def test_adapter_execute_action(self):
         """Test action execution."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
@@ -117,11 +123,13 @@ class TestBaseAdapter:
         assert result.status.value == "completed"
         assert result.idempotency_key == "key-123"
 
+    @pytest.mark.unit
     def test_adapter_verify_connection(self):
         """Test connection verification."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
         assert adapter.verify_connection() is True
 
+    @pytest.mark.unit
     def test_adapter_get_capabilities(self):
         """Test capability reporting."""
         adapter = ConcreteAdapter("github", uuid4(), "tenant-123")
@@ -130,6 +138,7 @@ class TestBaseAdapter:
         assert capabilities["polling_supported"] is True
         assert capabilities["outbound_actions_supported"] is True
 
+    @pytest.mark.unit
     def test_abstract_adapter_cannot_instantiate(self):
         """Test that BaseAdapter cannot be instantiated directly."""
         with pytest.raises(TypeError):

@@ -12,9 +12,11 @@ from user_behaviour_intelligence.config import ConfigurationManager
 from user_behaviour_intelligence.models import BehaviouralEvent, ActorType
 
 
+@pytest.mark.unit
 class TestPrivacyFiltering:
     """Test privacy filtering correctness."""
 
+    @pytest.mark.unit
     def test_sensitive_properties_filtered(self):
         """Test that sensitive properties are filtered from events."""
         config_manager = ConfigurationManager()

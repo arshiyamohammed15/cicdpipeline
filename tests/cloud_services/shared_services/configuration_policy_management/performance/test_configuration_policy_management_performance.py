@@ -18,6 +18,7 @@ import sys
 import unittest
 import time
 import uuid
+import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from statistics import mean, median
@@ -75,6 +76,7 @@ from configuration_policy_management.services import PolicyEvaluationEngine
 from configuration_policy_management.dependencies import MockM27EvidenceLedger, MockM29DataPlane, MockM33KeyManagement
 
 
+@pytest.mark.performance
 class TestPolicyEvaluationPerformance(unittest.TestCase):
     """Test policy evaluation meets ≤50ms p95 latency requirement per PRD (TC-PERF-POLICY-001)."""
 
@@ -85,6 +87,7 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
         self.key_management = MockM33KeyManagement()
         self.engine = PolicyEvaluationEngine(self.data_plane, self.evidence_ledger, self.key_management)
 
+    @pytest.mark.performance
     def test_policy_evaluation_latency_p95(self):
         """Test policy evaluation completes within 50ms p95 per PRD."""
         policy_id = str(uuid.uuid4())
@@ -114,6 +117,7 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
 
             self.assertLess(p95_latency, 50.0, f"Policy evaluation p95 latency: {p95_latency:.2f}ms, expected <50ms")
 
+    @pytest.mark.performance
     def test_policy_evaluation_throughput(self):
         """Test policy evaluation throughput: 10,000 RPS per PRD."""
         policy_id = str(uuid.uuid4())
@@ -139,15 +143,18 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
             self.assertGreater(rps, 1000, f"Throughput: {rps:.2f} RPS, expected >1000 RPS")
 
 
+@pytest.mark.performance
 class TestConfigurationRetrievalPerformance(unittest.TestCase):
     """Test configuration retrieval meets ≤20ms p95 latency requirement per PRD."""
 
+    @pytest.mark.performance
     def test_configuration_retrieval_latency(self):
         """Test configuration retrieval completes within 20ms p95."""
         # TODO: Implement when ConfigurationService has retrieval method
         pass
 
 
+@pytest.mark.performance
 class TestComplianceCheckPerformance(unittest.TestCase):
     """Test compliance check meets ≤100ms p95 latency requirement per PRD."""
 
@@ -161,6 +168,7 @@ class TestComplianceCheckPerformance(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.checker = ComplianceChecker(self.evidence_ledger, self.key_management, self.data_plane)
 
+    @pytest.mark.performance
     def test_compliance_check_latency_p95(self):
         """Test compliance check completes within 100ms p95 per PRD."""
         framework = "soc2"

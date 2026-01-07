@@ -55,6 +55,7 @@ def db_session():
     session.close()
 
 
+@pytest.mark.unit
 def test_preference_opt_out_categories_filtering(db_session) -> None:
     """Test opt-out categories filter actions."""
     service = MMMService()
@@ -89,6 +90,7 @@ def test_preference_opt_out_categories_filtering(db_session) -> None:
         assert action.type.value not in ["mentor", "multiplier"]
 
 
+@pytest.mark.unit
 def test_preference_snooze_blocks_all_actions(db_session) -> None:
     """Test snooze_until blocks all actions if in future."""
     service = MMMService()
@@ -122,6 +124,7 @@ def test_preference_snooze_blocks_all_actions(db_session) -> None:
     assert len(response.decision.actions) == 0
 
 
+@pytest.mark.unit
 def test_preference_preferred_surfaces_filtering(db_session) -> None:
     """Test preferred_surfaces filters action surfaces."""
     service = MMMService()
@@ -156,6 +159,7 @@ def test_preference_preferred_surfaces_filtering(db_session) -> None:
             assert surface.value == "ide"
 
 
+@pytest.mark.unit
 def test_actor_preferences_api_get(client: TestClient) -> None:
     """Test GET /v1/mmm/actors/{actor_id}/preferences endpoint."""
     # Mock authentication
@@ -186,6 +190,7 @@ def test_actor_preferences_api_get(client: TestClient) -> None:
                 assert "mentor" in data["opt_out_categories"]
 
 
+@pytest.mark.unit
 def test_actor_preferences_api_update(client: TestClient) -> None:
     """Test PUT /v1/mmm/actors/{actor_id}/preferences endpoint."""
     with patch(
@@ -215,6 +220,7 @@ def test_actor_preferences_api_update(client: TestClient) -> None:
                 assert "multiplier" in data["opt_out_categories"]
 
 
+@pytest.mark.unit
 def test_actor_preferences_api_snooze(client: TestClient) -> None:
     """Test POST /v1/mmm/actors/{actor_id}/preferences/snooze endpoint."""
     with patch(

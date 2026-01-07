@@ -28,15 +28,18 @@ from health_reliability_monitoring.models import ComponentDefinition
 test_client = TestClient(app)
 
 
+@pytest.mark.security
 class TestAuthentication:
     """Test authentication requirements."""
 
+    @pytest.mark.security
     def test_endpoint_requires_authentication(self):
         """Test that endpoints require authentication."""
         response = test_client.get("/v1/health/components")
 
         assert response.status_code in [status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
+    @pytest.mark.security
     def test_invalid_token_rejected(self):
         """Test that invalid tokens are rejected."""
         response = test_client.get(
@@ -46,6 +49,7 @@ class TestAuthentication:
 
         assert response.status_code in [status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
+    @pytest.mark.security
     def test_valid_token_accepted(self):
         """Test that valid tokens are accepted."""
         response = test_client.get(
@@ -57,9 +61,11 @@ class TestAuthentication:
         assert response.status_code != status.HTTP_401_UNAUTHORIZED
 
 
+@pytest.mark.security
 class TestAuthorization:
     """Test authorization and scope enforcement."""
 
+    @pytest.mark.security
     def test_write_scope_required_for_registration(self):
         """Test that write scope is required for component registration."""
         component = ComponentDefinition(
@@ -81,9 +87,11 @@ class TestAuthorization:
         assert response.status_code in [status.HTTP_403_FORBIDDEN, status.HTTP_401_UNAUTHORIZED]
 
 
+@pytest.mark.security
 class TestTenantIsolation:
     """Test tenant isolation."""
 
+    @pytest.mark.security
     def test_tenant_access_restriction(self):
         """Test that tenants can only access their own data."""
         # Request tenant health for different tenant
@@ -95,6 +103,7 @@ class TestTenantIsolation:
         # Should be restricted unless cross-tenant scope
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_403_FORBIDDEN, status.HTTP_401_UNAUTHORIZED]
 
+    @pytest.mark.security
     def test_cross_tenant_access_with_scope(self):
         """Test that cross-tenant scope allows access."""
         # This test assumes a token with cross_tenant scope
@@ -108,9 +117,11 @@ class TestTenantIsolation:
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
 
 
+@pytest.mark.security
 class TestCrossPlaneAccess:
     """Test cross-plane access restrictions."""
 
+    @pytest.mark.security
     def test_plane_access_requires_privilege(self):
         """Test that plane-level access requires privileged scope."""
         response = test_client.get(
@@ -121,6 +132,7 @@ class TestCrossPlaneAccess:
         # Should require cross_tenant or admin scope
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_403_FORBIDDEN, status.HTTP_401_UNAUTHORIZED]
 
+    @pytest.mark.security
     def test_plane_access_with_admin_scope(self):
         """Test that admin scope allows plane access."""
         response = test_client.get(
@@ -132,9 +144,11 @@ class TestCrossPlaneAccess:
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
 
 
+@pytest.mark.security
 class TestInputValidation:
     """Test input validation and sanitization."""
 
+    @pytest.mark.security
     def test_component_id_validation(self):
         """Test that component_id is validated."""
         component = {
@@ -154,6 +168,7 @@ class TestInputValidation:
         # Should fail validation
         assert response.status_code in [status.HTTP_422_UNPROCESSABLE_ENTITY, status.HTTP_401_UNAUTHORIZED]
 
+    @pytest.mark.security
     def test_telemetry_label_cardinality(self):
         """Test that telemetry label cardinality is enforced."""
         from health_reliability_monitoring.models import TelemetryPayload

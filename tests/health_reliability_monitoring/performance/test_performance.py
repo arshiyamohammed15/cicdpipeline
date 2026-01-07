@@ -87,6 +87,7 @@ class TestComponentRegistryPerformance:
         finally:
             app.dependency_overrides.pop(get_db_session, None)
 
+    @pytest.mark.performance
     def test_component_list_performance(self):
         """Test that component listing meets latency requirements."""
         app = _get_app()
@@ -133,6 +134,7 @@ class TestComponentRegistryPerformance:
         finally:
             app.dependency_overrides.pop(get_db_session, None)
 
+    @pytest.mark.performance
     def test_concurrent_registrations(self):
         """Test performance under concurrent registrations."""
         app = _get_app()

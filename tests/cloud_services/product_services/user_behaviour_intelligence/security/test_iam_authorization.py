@@ -11,9 +11,11 @@ from fastapi.testclient import TestClient
 from user_behaviour_intelligence.main import app
 
 
+@pytest.mark.security
 class TestIAMAuthorization:
     """Test IAM authorization."""
 
+    @pytest.mark.security
     def test_actor_profile_access_control(self):
         """Test that actor profile requires ubi:read:actor permission (ST-UBI-01)."""
         client = TestClient(app)
@@ -27,6 +29,7 @@ class TestIAMAuthorization:
         # Should be rejected (401 or 403)
         assert response.status_code in [401, 403]
 
+    @pytest.mark.security
     def test_cross_tenant_access_control(self):
         """Test that cross-tenant access is rejected (ST-UBI-03)."""
         client = TestClient(app)

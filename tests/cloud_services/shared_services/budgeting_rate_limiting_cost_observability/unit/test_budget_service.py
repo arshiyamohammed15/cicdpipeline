@@ -72,6 +72,7 @@ def budget_service(db_session):
     return BudgetService(db_session, MockM29DataPlane(), DummyEventService())
 
 
+@pytest.mark.unit
 class TestBudgetService:
     """Test suite for BudgetService."""
 
@@ -96,6 +97,7 @@ class TestBudgetService:
         assert budget.budget_name == "Test Budget"
         assert budget.budget_amount == Decimal("1000.00")
 
+    @pytest.mark.unit
     def test_get_budget(self, budget_service):
         """Test getting budget by ID."""
         budget = budget_service.create_budget(
@@ -115,6 +117,7 @@ class TestBudgetService:
         assert retrieved is not None
         assert retrieved.budget_id == budget.budget_id
 
+    @pytest.mark.unit
     def test_list_budgets(self, budget_service):
         """Test listing budgets."""
         tenant_id = str(uuid.uuid4())
@@ -136,6 +139,7 @@ class TestBudgetService:
         assert total_count == 5
         assert len(budgets) == 5
 
+    @pytest.mark.unit
     def test_check_budget_allowed(self, budget_service):
         """Test budget check when budget allows operation."""
         tenant_id = str(uuid.uuid4())
@@ -163,6 +167,7 @@ class TestBudgetService:
         assert result["allowed"] is True
         assert result["remaining_budget"] < Decimal("1000.00")
 
+    @pytest.mark.unit
     def test_check_budget_exceeded(self, budget_service):
         """Test budget check when budget is exceeded."""
         tenant_id = str(uuid.uuid4())
@@ -199,6 +204,7 @@ class TestBudgetService:
         )
         assert result2["allowed"] is False
 
+    @pytest.mark.unit
     def test_update_budget(self, budget_service):
         """Test budget update."""
         budget = budget_service.create_budget(
@@ -222,6 +228,7 @@ class TestBudgetService:
         assert updated is not None
         assert updated.budget_amount == Decimal("2000.00")
 
+    @pytest.mark.unit
     def test_delete_budget(self, budget_service):
         """Test budget deletion."""
         budget = budget_service.create_budget(
@@ -245,6 +252,7 @@ class TestBudgetService:
         retrieved = budget_service.get_budget(budget_id)
         assert retrieved is None
 
+    @pytest.mark.unit
     def test_period_calculation_monthly(self, budget_service):
         """Test monthly period calculation."""
         start_date = datetime.utcnow()
@@ -257,6 +265,7 @@ class TestBudgetService:
         assert period_start == start_date
         assert (period_end - period_start).days == 30
 
+    @pytest.mark.unit
     def test_resolve_overlapping_budgets(self, budget_service):
         """Test overlapping budget resolution."""
         tenant_id = str(uuid.uuid4())
@@ -284,6 +293,7 @@ class TestBudgetService:
         assert resolved.budget_type == "feature"
         assert resolved.budget_amount == Decimal("200")
 
+    @pytest.mark.unit
     def test_check_budget_escalate_creates_approval(self, budget_service):
         """Escalation enforcement should trigger approval workflow."""
         tenant_id = str(uuid.uuid4())
@@ -316,6 +326,7 @@ class TestBudgetService:
         assert approval_record is not None
         assert approval_record["status"] == "pending"
 
+    @pytest.mark.unit
     def test_threshold_event_emitted_once(self, budget_service):
         """Threshold events must emit only once per period."""
         tenant_id = str(uuid.uuid4())

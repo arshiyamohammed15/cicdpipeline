@@ -18,9 +18,11 @@ import hashlib
 
 from integration_adapters.adapters.github.webhook_verifier import GitHubWebhookVerifier
 
+@pytest.mark.integration
 class TestWebhookSignatureVerification:
     """Test webhook signature verification."""
 
+    @pytest.mark.integration
     def test_github_signature_verification_valid(self):
         """Test GitHub signature verification with valid signature."""
         secret = "test-secret"
@@ -40,6 +42,7 @@ class TestWebhookSignatureVerification:
         )
         assert is_valid is True
 
+    @pytest.mark.integration
     def test_github_signature_verification_invalid(self):
         """Test GitHub signature verification with invalid signature."""
         secret = "test-secret"
@@ -52,6 +55,7 @@ class TestWebhookSignatureVerification:
         )
         assert is_valid is False
 
+    @pytest.mark.integration
     def test_github_signature_verification_wrong_secret(self):
         """Test GitHub signature verification with wrong secret."""
         correct_secret = "correct-secret"

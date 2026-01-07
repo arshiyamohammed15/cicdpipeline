@@ -49,17 +49,20 @@ for module_name, file_path in modules_to_load:
 
 from integration_adapters.main import app
 
+@pytest.mark.unit
 class TestMainApp:
     """Test FastAPI main app."""
 
     pytestmark = [pytest.mark.asyncio, pytest.mark.filterwarnings("ignore::ResourceWarning")]
 
+    @pytest.mark.unit
     async def test_app_initialization(self):
         """Test app initialization."""
         assert app is not None
         assert app.title == "ZeroUI Integration Adapters Service"
         assert app.version == "2.0.0"
 
+    @pytest.mark.unit
     async def test_health_endpoint(self):
         """Test health check endpoint."""
         transport = httpx.ASGITransport(app=app)
@@ -69,6 +72,7 @@ class TestMainApp:
             data = response.json()
             assert data["status"] == "healthy"
 
+    @pytest.mark.unit
     async def test_docs_endpoint(self):
         """Test OpenAPI docs endpoint."""
         transport = httpx.ASGITransport(app=app)
@@ -76,6 +80,7 @@ class TestMainApp:
             response = await client.get("/docs")
             assert response.status_code in (200, 401)
 
+    @pytest.mark.unit
     async def test_redoc_endpoint(self):
         """Test ReDoc endpoint."""
         transport = httpx.ASGITransport(app=app)

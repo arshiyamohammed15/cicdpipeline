@@ -15,9 +15,11 @@ def client():
     return TestClient(app)
 
 
+@pytest.mark.unit
 class TestDeployEndpoint:
     """Test deploy endpoint."""
 
+    @pytest.mark.unit
     def test_deploy_development_local(self, client):
         """Test deploy to development/local."""
         response = client.post(
@@ -34,6 +36,7 @@ class TestDeployEndpoint:
         assert data["environment"] == "development"
         assert data["target"] == "local"
 
+    @pytest.mark.unit
     def test_deploy_staging_cloud(self, client):
         """Test deploy to staging/cloud."""
         response = client.post(
@@ -48,6 +51,7 @@ class TestDeployEndpoint:
         assert data["environment"] == "staging"
         assert data["target"] == "cloud"
 
+    @pytest.mark.unit
     def test_deploy_with_service(self, client):
         """Test deploy with specific service."""
         response = client.post(
@@ -62,6 +66,7 @@ class TestDeployEndpoint:
         data = response.json()
         assert data["environment"] == "development"
 
+    @pytest.mark.unit
     def test_deploy_invalid_environment(self, client):
         """Test deploy with invalid environment."""
         response = client.post(
@@ -73,6 +78,7 @@ class TestDeployEndpoint:
         )
         assert response.status_code == 422  # Validation error
 
+    @pytest.mark.unit
     def test_deploy_invalid_target(self, client):
         """Test deploy with invalid target."""
         response = client.post(
@@ -85,9 +91,11 @@ class TestDeployEndpoint:
         assert response.status_code == 422  # Validation error
 
 
+@pytest.mark.unit
 class TestParityEndpoint:
     """Test parity endpoint."""
 
+    @pytest.mark.unit
     def test_verify_parity(self, client):
         """Test verify environment parity."""
         response = client.post(
@@ -105,6 +113,7 @@ class TestParityEndpoint:
         assert "differences" in data
         assert "checked_at" in data
 
+    @pytest.mark.unit
     def test_verify_parity_with_resources(self, client):
         """Test verify parity with specific resources."""
         response = client.post(
@@ -120,9 +129,11 @@ class TestParityEndpoint:
         assert data["parity_status"] in ["match", "mismatch", "partial"]
 
 
+@pytest.mark.unit
 class TestStatusEndpoint:
     """Test status endpoint."""
 
+    @pytest.mark.unit
     def test_get_status(self, client):
         """Test get infrastructure status."""
         response = client.get("/deploy/v1/status")
@@ -133,6 +144,7 @@ class TestStatusEndpoint:
         assert "status_summary" in data
         assert "checked_at" in data
 
+    @pytest.mark.unit
     def test_get_status_with_environment(self, client):
         """Test get status with environment parameter."""
         response = client.get("/deploy/v1/status?environment=production")
@@ -140,6 +152,7 @@ class TestStatusEndpoint:
         data = response.json()
         assert data["environment"] == "production"
 
+    @pytest.mark.unit
     def test_get_status_with_resource_type(self, client):
         """Test get status with resource type parameter."""
         response = client.get("/deploy/v1/status?resource_type=database")
@@ -148,9 +161,11 @@ class TestStatusEndpoint:
         assert all(r["resource_type"] == "database" for r in data["resources"])
 
 
+@pytest.mark.unit
 class TestHealthEndpoint:
     """Test health endpoint."""
 
+    @pytest.mark.unit
     def test_health_check(self, client):
         """Test health check endpoint."""
         response = client.get("/health")

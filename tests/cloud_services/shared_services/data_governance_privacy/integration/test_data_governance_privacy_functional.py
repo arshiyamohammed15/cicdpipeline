@@ -4,13 +4,14 @@ from __future__ import annotations
 Functional test cases mapped to PRD TC-FUNC scenarios.
 """
 
-
+import pytest
 from tests.privacy_imports import import_module
 
 services_module = import_module("services")
 DataGovernanceService = services_module.DataGovernanceService
 
 
+@pytest.mark.integration
 def test_func_classification_workflow() -> None:
     service = DataGovernanceService()
     result = service.classify_data(
@@ -23,6 +24,7 @@ def test_func_classification_workflow() -> None:
     assert isinstance(result["performance"]["latency_ms"], float)
 
 
+@pytest.mark.integration
 def test_func_consent_lifecycle() -> None:
     service = DataGovernanceService()
     grant = service.consent_service.grant_consent(
@@ -46,6 +48,7 @@ def test_func_consent_lifecycle() -> None:
     assert service.consent_service.withdraw_consent(grant["consent_id"], reason="requested") is True
 
 
+@pytest.mark.integration
 def test_func_right_to_erasure_flow() -> None:
     service = DataGovernanceService()
     response = service.submit_rights_request(
@@ -66,6 +69,7 @@ def test_func_right_to_erasure_flow() -> None:
     assert updated and updated["status"] == "completed"
 
 
+@pytest.mark.integration
 def test_func_lineage_tracking() -> None:
     service = DataGovernanceService()
     service.record_lineage(

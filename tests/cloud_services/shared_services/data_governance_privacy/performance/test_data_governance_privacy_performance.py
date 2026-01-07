@@ -4,13 +4,15 @@ from __future__ import annotations
 Performance-focused tests validating latency targets using hermetic execution.
 """
 
-
+import pytest
 from tests.privacy_imports import import_module
 
 services_module = import_module("services")
 DataGovernanceService = services_module.DataGovernanceService
 
 
+@pytest.mark.dgp_performance
+@pytest.mark.performance
 def test_latency_targets_within_budget() -> None:
     service = DataGovernanceService()
 

@@ -63,6 +63,7 @@ def registered_producer_setup(client, auth_token, app_schema_registry):
     return producer
 
 
+@pytest.mark.integration
 def test_health_endpoint(client):
     """Test health check endpoint."""
     response = client.get("/v1/health")
@@ -72,6 +73,7 @@ def test_health_endpoint(client):
     assert "timestamp" in data
 
 
+@pytest.mark.integration
 def test_readiness_endpoint(client):
     """Test readiness check endpoint."""
     response = client.get("/v1/ready")
@@ -82,6 +84,7 @@ def test_readiness_endpoint(client):
     assert "timestamp" in data
 
 
+@pytest.mark.integration
 def test_ingest_signals_unauthorized(client):
     """Test signal ingestion without authentication."""
     signal = {
@@ -104,6 +107,7 @@ def test_ingest_signals_unauthorized(client):
     assert response.status_code == 401
 
 
+@pytest.mark.integration
 def test_ingest_signals_authorized(client, auth_token, registered_producer_setup):
     """Test signal ingestion with authentication."""
     signal = {
@@ -133,6 +137,7 @@ def test_ingest_signals_authorized(client, auth_token, registered_producer_setup
     assert data["summary"]["total"] == 1
 
 
+@pytest.mark.integration
 def test_ingest_signals_batch(client, auth_token, registered_producer_setup):
     """Test batch signal ingestion."""
     signals = [
@@ -162,6 +167,7 @@ def test_ingest_signals_batch(client, auth_token, registered_producer_setup):
     assert data["summary"]["total"] == 5
 
 
+@pytest.mark.integration
 def test_register_producer(client, auth_token, app_schema_registry):
     """Test producer registration."""
     # Register contract first
@@ -198,6 +204,7 @@ def test_register_producer(client, auth_token, app_schema_registry):
     assert data["status"] == "registered"
 
 
+@pytest.mark.integration
 def test_get_producer(client, auth_token, registered_producer_setup):
     """Test get producer endpoint."""
     response = client.get(
@@ -209,6 +216,7 @@ def test_get_producer(client, auth_token, registered_producer_setup):
     assert data["producer"]["producer_id"] == "producer_1"
 
 
+@pytest.mark.integration
 def test_update_producer(client, auth_token, registered_producer_setup):
     """Test update producer endpoint."""
     producer = {
@@ -231,6 +239,7 @@ def test_update_producer(client, auth_token, registered_producer_setup):
     assert data["status"] == "updated"
 
 
+@pytest.mark.integration
 def test_dlq_inspection_empty(client, auth_token):
     """Test DLQ inspection with no entries."""
     response = client.get(
@@ -243,6 +252,7 @@ def test_dlq_inspection_empty(client, auth_token):
     assert len(data["entries"]) == 0
 
 
+@pytest.mark.integration
 def test_dlq_inspection_with_filters(client, auth_token, registered_producer_setup):
     """Test DLQ inspection with filters."""
     # First, create a signal that will fail validation and go to DLQ
@@ -277,6 +287,7 @@ def test_dlq_inspection_with_filters(client, auth_token, registered_producer_set
     assert data["total"] >= 0  # May have entries if retries exhausted
 
 
+@pytest.mark.integration
 def test_tenant_isolation(client, auth_token, registered_producer_setup, app_iam):
     """Test tenant isolation enforcement."""
     # Create token for different tenant
@@ -314,6 +325,7 @@ def test_tenant_isolation(client, auth_token, registered_producer_setup, app_iam
         assert "TENANT_ISOLATION" in data["results"][0]["error_code"]
 
 
+@pytest.mark.integration
 def test_dlq_cross_tenant_access_denied(client, auth_token, registered_producer_setup, app_iam):
     """Test that tenants cannot access other tenants' DLQ entries."""
     # Create token for tenant_2

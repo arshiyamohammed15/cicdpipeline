@@ -21,9 +21,11 @@ from health_reliability_monitoring.models import (
 )
 
 
+@pytest.mark.unit
 class TestComponentDefinition:
     """Test ComponentDefinition model."""
 
+    @pytest.mark.unit
     def test_valid_component_definition(self):
         """Test creating valid component definition."""
         component = ComponentDefinition(
@@ -39,6 +41,7 @@ class TestComponentDefinition:
         assert component.plane == "Product"
         assert component.tenant_scope == "tenant"
 
+    @pytest.mark.unit
     def test_component_with_dependencies(self):
         """Test component with dependencies."""
         deps = [
@@ -57,6 +60,7 @@ class TestComponentDefinition:
         assert component.dependencies[0].component_id == "dep-1"
         assert component.dependencies[0].critical is True
 
+    @pytest.mark.unit
     def test_component_with_slo(self):
         """Test component with SLO target."""
         component = ComponentDefinition(
@@ -71,6 +75,7 @@ class TestComponentDefinition:
         assert component.slo_target == 99.5
         assert component.error_budget_minutes == 216
 
+    @pytest.mark.unit
     def test_component_id_validation(self):
         """Test component_id validation (min length)."""
         with pytest.raises(ValidationError):
@@ -83,9 +88,11 @@ class TestComponentDefinition:
             )
 
 
+@pytest.mark.unit
 class TestTelemetryPayload:
     """Test TelemetryPayload model."""
 
+    @pytest.mark.unit
     def test_valid_telemetry_payload(self):
         """Test creating valid telemetry payload."""
         payload = TelemetryPayload(
@@ -103,6 +110,7 @@ class TestTelemetryPayload:
         assert payload.telemetry_type == "metrics"
         assert payload.metrics["latency_p95_ms"] == 150.0
 
+    @pytest.mark.unit
     def test_telemetry_payload_without_tenant(self):
         """Test telemetry payload without tenant_id."""
         payload = TelemetryPayload(
@@ -114,6 +122,7 @@ class TestTelemetryPayload:
         )
         assert payload.tenant_id is None
 
+    @pytest.mark.unit
     def test_label_cardinality_limit(self):
         """Test label cardinality limit enforcement."""
         # Create too many labels (assuming default limit is reasonable)
@@ -132,9 +141,11 @@ class TestTelemetryPayload:
         assert payload.labels is not None
 
 
+@pytest.mark.unit
 class TestHealthSnapshot:
     """Test HealthSnapshot model."""
 
+    @pytest.mark.unit
     def test_valid_health_snapshot(self):
         """Test creating valid health snapshot."""
         snapshot = HealthSnapshot(
@@ -152,6 +163,7 @@ class TestHealthSnapshot:
         assert snapshot.reason_code == "healthy"
         assert snapshot.slo_state is None
 
+    @pytest.mark.unit
     def test_health_snapshot_with_slo(self):
         """Test health snapshot with SLO state."""
         snapshot = HealthSnapshot(
@@ -168,9 +180,11 @@ class TestHealthSnapshot:
         assert snapshot.slo_state == "within_budget"
 
 
+@pytest.mark.unit
 class TestSafeToActRequest:
     """Test SafeToActRequest model."""
 
+    @pytest.mark.unit
     def test_valid_safe_to_act_request(self):
         """Test creating valid safe-to-act request."""
         request = SafeToActRequest(
@@ -182,6 +196,7 @@ class TestSafeToActRequest:
         assert request.action_type == "standard_action"
         assert request.component_scope is None
 
+    @pytest.mark.unit
     def test_safe_to_act_request_with_scope(self):
         """Test safe-to-act request with component scope."""
         request = SafeToActRequest(
@@ -193,9 +208,11 @@ class TestSafeToActRequest:
         assert len(request.component_scope) == 2
 
 
+@pytest.mark.unit
 class TestSafeToActResponse:
     """Test SafeToActResponse model."""
 
+    @pytest.mark.unit
     def test_valid_safe_to_act_response(self):
         """Test creating valid safe-to-act response."""
         response = SafeToActResponse(
@@ -209,9 +226,11 @@ class TestSafeToActResponse:
         assert "healthy" in response.reason_codes
 
 
+@pytest.mark.unit
 class TestSLOStatus:
     """Test SLOStatus model."""
 
+    @pytest.mark.unit
     def test_valid_slo_status(self):
         """Test creating valid SLO status."""
         slo = SLOStatus(
@@ -229,9 +248,11 @@ class TestSLOStatus:
         assert slo.burn_rate == 0.046
 
 
+@pytest.mark.unit
 class TestTenantHealthView:
     """Test TenantHealthView model."""
 
+    @pytest.mark.unit
     def test_valid_tenant_health_view(self):
         """Test creating valid tenant health view."""
         view = TenantHealthView(
@@ -245,9 +266,11 @@ class TestTenantHealthView:
         assert view.counts["OK"] == 10
 
 
+@pytest.mark.unit
 class TestPlaneHealthView:
     """Test PlaneHealthView model."""
 
+    @pytest.mark.unit
     def test_valid_plane_health_view(self):
         """Test creating valid plane health view."""
         view = PlaneHealthView(

@@ -6,6 +6,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
 from shared_libs.cccs import CCCSConfig, CCCSRuntime
 from shared_libs.cccs.errors.taxonomy import TaxonomyEntry
 from shared_libs.cccs.exceptions import BudgetExceededError
@@ -73,6 +75,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
     return runtime
 
 
+@pytest.mark.integration
 def test_ccp_e2e_golden_path(tmp_path: Path) -> None:
     runtime = _runtime(tmp_path)
 

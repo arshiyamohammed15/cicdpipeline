@@ -20,6 +20,8 @@ import uuid
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
+import pytest
+
 # Add project root to path
 project_root = Path(__file__).resolve().parents[5]
 sys.path.insert(0, str(project_root))
@@ -122,6 +124,7 @@ def reset_database_state():
     db_conn._ensure_tables = ensure_tables
 
 
+@pytest.mark.integration
 class TestPolicyLifecycleFunctional(unittest.TestCase):
     """Test policy lifecycle functional requirements (TC-FUNC-POLICY-001)."""
 
@@ -165,6 +168,7 @@ class TestPolicyLifecycleFunctional(unittest.TestCase):
         self.patcher4.stop()
         reset_database_state()
 
+    @pytest.mark.integration
     def test_policy_lifecycle_create(self):
         """Test policy creation workflow."""
         from configuration_policy_management.models import CreatePolicyRequest
@@ -185,6 +189,7 @@ class TestPolicyLifecycleFunctional(unittest.TestCase):
         self.assertEqual(result.status, "draft")
 
 
+@pytest.mark.integration
 class TestConfigurationDriftFunctional(unittest.TestCase):
     """Test configuration drift detection functional requirements (TC-FUNC-CONFIG-001)."""
 
@@ -194,6 +199,7 @@ class TestConfigurationDriftFunctional(unittest.TestCase):
         self.key_management = MockM33KeyManagement()
         self.detector = ConfigurationDriftDetector(self.evidence_ledger, self.key_management)
 
+    @pytest.mark.integration
     def test_configuration_drift_detection(self):
         """Test configuration drift detection workflow."""
         config_id = str(uuid.uuid4())
@@ -221,6 +227,7 @@ class TestConfigurationDriftFunctional(unittest.TestCase):
         self.assertTrue(result.remediation_required)
 
 
+@pytest.mark.integration
 class TestComplianceFunctional(unittest.TestCase):
     """Test gold standards compliance functional requirements (TC-FUNC-COMPLIANCE-001)."""
 
@@ -231,6 +238,7 @@ class TestComplianceFunctional(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.checker = ComplianceChecker(self.evidence_ledger, self.key_management, self.data_plane)
 
+    @pytest.mark.integration
     def test_compliance_check_soc2(self):
         """Test SOC2 compliance check workflow."""
         framework = "soc2"

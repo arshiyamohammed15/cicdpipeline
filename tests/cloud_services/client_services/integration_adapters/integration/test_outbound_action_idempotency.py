@@ -46,9 +46,11 @@ def sample_tenant_id():
     return "tenant-default"
 
 
+@pytest.mark.integration
 class TestOutboundActionIdempotency:
     """Test outbound action idempotency."""
 
+    @pytest.mark.integration
     def test_idempotency_key_deduplication(self, action_repo, sample_tenant_id):
         """Test that idempotency keys prevent duplicate actions."""
         idempotency_key = "unique-key-123"
@@ -85,6 +87,7 @@ class TestOutboundActionIdempotency:
         # Should return the first one (or latest, depending on implementation)
         assert retrieved.idempotency_key == idempotency_key
 
+    @pytest.mark.integration
     def test_different_idempotency_keys_allowed(self, action_repo, sample_tenant_id):
         """Test that different idempotency keys create separate actions."""
         action1 = NormalisedAction(

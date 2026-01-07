@@ -52,6 +52,7 @@ def create_policy(service, tenant_id, algorithm, overrides=None, burst_capacity=
     )
 
 
+@pytest.mark.unit
 class TestRateLimitService:
     """Test suite for RateLimitService."""
 
@@ -89,6 +90,7 @@ class TestRateLimitService:
             request_count=1
         )["allowed"] is True
 
+    @pytest.mark.unit
     def test_sliding_window_enforces_limit(self, rate_limit_service):
         tenant_id = str(uuid.uuid4())
         policy = create_policy(rate_limit_service, tenant_id, "sliding_window_log", limit_value=3, window_seconds=60)
@@ -119,6 +121,7 @@ class TestRateLimitService:
             request_count=1
         )["allowed"] is True
 
+    @pytest.mark.unit
     def test_usage_pattern_adjustment_scales_down_limit(self, rate_limit_service, db_session):
         tenant_id = str(uuid.uuid4())
         overrides = {

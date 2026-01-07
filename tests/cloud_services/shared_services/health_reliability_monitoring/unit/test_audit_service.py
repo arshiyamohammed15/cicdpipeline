@@ -10,6 +10,7 @@ from health_reliability_monitoring.services.audit_service import AuditService
 from health_reliability_monitoring.services.event_bus_service import EventBusService
 
 
+@pytest.mark.unit
 class TestAuditService:
     """Test AuditService."""
 

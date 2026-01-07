@@ -83,6 +83,7 @@ def json_manager(tmp_json_path, sample_rules_data, monkeypatch):
     return manager
 
 
+@pytest.mark.constitution
 def test_json_manager_initialization(tmp_json_path):
     """Test JSON manager initialization."""
     manager = constitution_rules_json.ConstitutionRulesJSON(json_path=str(tmp_json_path))
@@ -90,6 +91,7 @@ def test_json_manager_initialization(tmp_json_path):
     assert manager._initialized is False
 
 
+@pytest.mark.constitution
 def test_init_database_new_file(tmp_json_path, monkeypatch):
     """Test initializing database with new file."""
     # Mock rule count loader to return the current total from the source of truth
@@ -116,6 +118,7 @@ def test_init_database_new_file(tmp_json_path, monkeypatch):
     assert "database_info" in data
 
 
+@pytest.mark.constitution
 def test_init_database_existing_file(tmp_json_path, sample_rules_data, monkeypatch):
     """Test initializing database with existing file."""
     # Mock rule count loader to match the sample data (2 rules)
@@ -135,6 +138,7 @@ def test_init_database_existing_file(tmp_json_path, sample_rules_data, monkeypat
     assert manager.data["rules"]["1"]["title"] == "Rule 1"
 
 
+@pytest.mark.constitution
 def test_load_database(tmp_json_path, sample_rules_data, monkeypatch):
     """Test loading database from file."""
     # Mock rule count loader to match the sample data (2 rules)
@@ -154,6 +158,7 @@ def test_load_database(tmp_json_path, sample_rules_data, monkeypatch):
     assert "1" in manager.data["rules"]
 
 
+@pytest.mark.constitution
 def test_load_database_corrupted_file(tmp_json_path, monkeypatch):
     """Test loading corrupted database file."""
     loader = constitution_rules_json.get_rule_count_loader()
@@ -176,6 +181,7 @@ def test_load_database_corrupted_file(tmp_json_path, monkeypatch):
     assert manager._initialized is False  # Will be set by _init_database
 
 
+@pytest.mark.constitution
 def test_save_database(json_manager, tmp_json_path):
     """Test saving database to file."""
     # Modify data
@@ -188,6 +194,7 @@ def test_save_database(json_manager, tmp_json_path):
     assert data["rules"]["1"]["title"] == "Updated Rule 1"
 
 
+@pytest.mark.constitution
 def test_get_rule_by_number(json_manager):
     """Test getting rule by number."""
     rule = json_manager.get_rule_by_number(1)
@@ -196,12 +203,14 @@ def test_get_rule_by_number(json_manager):
     assert rule["title"] == "Rule 1"
 
 
+@pytest.mark.constitution
 def test_get_rule_by_number_not_found(json_manager):
     """Test getting non-existent rule."""
     rule = json_manager.get_rule_by_number(999)
     assert rule is None
 
 
+@pytest.mark.constitution
 def test_get_rules_by_category(json_manager):
     """Test getting rules by category."""
     rules = json_manager.get_rules_by_category("basic_work")
@@ -209,6 +218,7 @@ def test_get_rules_by_category(json_manager):
     assert rules[0]["rule_number"] == 1
 
 
+@pytest.mark.constitution
 def test_get_rules_by_category_enabled_only(json_manager):
     """Test getting enabled rules by category."""
     rules = json_manager.get_rules_by_category("basic_work", enabled_only=True)
@@ -216,6 +226,7 @@ def test_get_rules_by_category_enabled_only(json_manager):
     assert all(r["enabled"] for r in rules)
 
 
+@pytest.mark.constitution
 def test_enable_rule(json_manager, tmp_json_path):
     """Test enabling a rule."""
     result = json_manager.enable_rule(2, {"test": "config"})
@@ -228,12 +239,14 @@ def test_enable_rule(json_manager, tmp_json_path):
     assert data["rules"]["2"]["enabled"] is True
 
 
+@pytest.mark.constitution
 def test_enable_rule_not_found(json_manager):
     """Test enabling non-existent rule."""
     result = json_manager.enable_rule(999)
     assert result is False
 
 
+@pytest.mark.constitution
 def test_disable_rule(json_manager, tmp_json_path):
     """Test disabling a rule."""
     result = json_manager.disable_rule(1, "Test reason")
@@ -246,18 +259,21 @@ def test_disable_rule(json_manager, tmp_json_path):
     assert data["rules"]["1"]["enabled"] is False
 
 
+@pytest.mark.constitution
 def test_disable_rule_not_found(json_manager):
     """Test disabling non-existent rule."""
     result = json_manager.disable_rule(999, "reason")
     assert result is False
 
 
+@pytest.mark.constitution
 def test_get_all_rules(json_manager):
     """Test getting all rules."""
     all_rules = json_manager.get_all_rules()
     assert len(all_rules) == 2
 
 
+@pytest.mark.constitution
 def test_get_all_rules_enabled_only(json_manager):
     """Test getting only enabled rules."""
     enabled_rules = json_manager.get_all_rules(enabled_only=True)
@@ -265,6 +281,7 @@ def test_get_all_rules_enabled_only(json_manager):
     assert all(r["enabled"] for r in enabled_rules)
 
 
+@pytest.mark.constitution
 def test_get_enabled_rules(json_manager):
     """Test getting enabled rules."""
     enabled = json_manager.get_enabled_rules()
@@ -272,6 +289,7 @@ def test_get_enabled_rules(json_manager):
     assert enabled[0]["rule_number"] == 1
 
 
+@pytest.mark.constitution
 def test_get_disabled_rules(json_manager):
     """Test getting disabled rules."""
     disabled = json_manager.get_disabled_rules()
@@ -279,6 +297,7 @@ def test_get_disabled_rules(json_manager):
     assert disabled[0]["rule_number"] == 2
 
 
+@pytest.mark.constitution
 def test_get_rule_statistics(json_manager):
     """Test getting rule statistics."""
     stats = json_manager.get_rule_statistics()
@@ -287,6 +306,7 @@ def test_get_rule_statistics(json_manager):
     assert stats["disabled_rules"] == 1
 
 
+@pytest.mark.constitution
 def test_search_rules(json_manager):
     """Test searching rules."""
     results = json_manager.search_rules("Rule 1")
@@ -294,6 +314,7 @@ def test_search_rules(json_manager):
     assert results[0]["rule_number"] == 1
 
 
+@pytest.mark.constitution
 def test_search_rules_enabled_only(json_manager):
     """Test searching only enabled rules."""
     results = json_manager.search_rules("Rule", enabled_only=True)
@@ -301,6 +322,7 @@ def test_search_rules_enabled_only(json_manager):
     assert results[0]["enabled"] is True
 
 
+@pytest.mark.constitution
 def test_get_categories(json_manager):
     """Test getting all categories."""
     categories = json_manager.get_categories()
@@ -308,6 +330,7 @@ def test_get_categories(json_manager):
     assert "system_design" in categories
 
 
+@pytest.mark.constitution
 def test_get_category_statistics(json_manager):
     """Test getting category statistics."""
     stats = json_manager.get_category_statistics()
@@ -315,6 +338,7 @@ def test_get_category_statistics(json_manager):
     assert stats["basic_work"]["count"] == 1
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json(json_manager):
     """Test exporting rules to JSON."""
     json_data = json_manager.export_rules_to_json()
@@ -325,6 +349,7 @@ def test_export_rules_to_json(json_manager):
     assert len(parsed) == 2
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json_enabled_only(json_manager):
     """Test exporting only enabled rules."""
     json_data = json_manager.export_rules_to_json(enabled_only=True)
@@ -332,6 +357,7 @@ def test_export_rules_to_json_enabled_only(json_manager):
     assert all(r["enabled"] for r in parsed)
 
 
+@pytest.mark.constitution
 def test_import_rules_from_json(json_manager, tmp_json_path, monkeypatch):
     """Test importing rules from JSON."""
     # Mock rule count loader to match the new count after import (3 rules)
@@ -363,12 +389,14 @@ def test_import_rules_from_json(json_manager, tmp_json_path, monkeypatch):
     assert rule["title"] == "Rule 3"
 
 
+@pytest.mark.constitution
 def test_log_usage(json_manager):
     """Test logging rule usage."""
     json_manager._log_usage(1, "enabled", "Test context")
     # Just verify it doesn't raise an exception
 
 
+@pytest.mark.constitution
 def test_update_statistics(json_manager):
     """Test updating statistics."""
     json_manager._update_statistics()
@@ -378,12 +406,14 @@ def test_update_statistics(json_manager):
     assert stats["enabled_rules"] == 1
 
 
+@pytest.mark.constitution
 def test_validate_database_structure(json_manager):
     """Test validating database structure."""
     # Should not raise for valid structure
     json_manager._validate_database_structure()
 
 
+@pytest.mark.constitution
 def test_validate_database_structure_invalid(json_manager):
     """Test validating invalid database structure."""
     json_manager.data = {"invalid": "structure"}
@@ -392,6 +422,7 @@ def test_validate_database_structure_invalid(json_manager):
         json_manager._validate_database_structure()
 
 
+@pytest.mark.constitution
 def test_repair_corrupted_database(tmp_json_path, sample_rules_data, monkeypatch):
     """Test repairing corrupted database."""
     # Mock rule count loader to match the sample data (2 rules)
@@ -410,6 +441,7 @@ def test_repair_corrupted_database(tmp_json_path, sample_rules_data, monkeypatch
     assert result is True
 
 
+@pytest.mark.constitution
 def test_repair_corrupted_database_corrupted(tmp_json_path, monkeypatch):
     """Test repairing actually corrupted database."""
     loader = constitution_rules_json.get_rule_count_loader()
@@ -430,6 +462,7 @@ def test_repair_corrupted_database_corrupted(tmp_json_path, monkeypatch):
     assert result is True  # Should recreate database
 
 
+@pytest.mark.constitution
 def test_backup_database(json_manager, tmp_path):
     """Test backing up database."""
     backup_path = tmp_path / "backup.json"
@@ -443,6 +476,7 @@ def test_backup_database(json_manager, tmp_path):
     assert "rules" in backup_data
 
 
+@pytest.mark.constitution
 def test_restore_database(json_manager, tmp_path):
     """Test restoring database from backup."""
     # Create backup
@@ -461,6 +495,7 @@ def test_restore_database(json_manager, tmp_path):
     assert json_manager.data["rules"]["1"]["title"] == "Rule 1"
 
 
+@pytest.mark.constitution
 def test_get_expected_rule_count(json_manager, monkeypatch):
     """Test getting expected rule count from loader."""
     mock_loader = Mock()
@@ -471,6 +506,7 @@ def test_get_expected_rule_count(json_manager, monkeypatch):
         assert count == 150
 
 
+@pytest.mark.constitution
 def test_get_expected_rule_count_fallback(json_manager):
     """Test fallback when loader fails."""
     # Remove rules to test fallback
@@ -481,12 +517,14 @@ def test_get_expected_rule_count_fallback(json_manager):
         assert count == 2
 
 
+@pytest.mark.constitution
 def test_validate_data_before_save(json_manager):
     """Test validating data before save."""
     # Should not raise for valid data
     json_manager._validate_data_before_save()
 
 
+@pytest.mark.constitution
 def test_validate_data_before_save_invalid(json_manager):
     """Test validating invalid data before save."""
     json_manager.data = "not a dict"
@@ -495,6 +533,7 @@ def test_validate_data_before_save_invalid(json_manager):
         json_manager._validate_data_before_save()
 
 
+@pytest.mark.constitution
 def test_validate_data_before_save_missing_keys(json_manager):
     """Test validating data with missing keys."""
     json_manager.data = {"rules": {}}
@@ -503,6 +542,7 @@ def test_validate_data_before_save_missing_keys(json_manager):
         json_manager._validate_data_before_save()
 
 
+@pytest.mark.constitution
 def test_validate_json_file(tmp_json_path):
     """Test validating JSON file."""
     tmp_json_path.write_text(json.dumps({"valid": "json"}), encoding="utf-8")
@@ -512,6 +552,7 @@ def test_validate_json_file(tmp_json_path):
     # Should not raise
 
 
+@pytest.mark.constitution
 def test_validate_json_file_invalid(tmp_json_path):
     """Test validating invalid JSON file."""
     tmp_json_path.write_text("invalid json{", encoding="utf-8")

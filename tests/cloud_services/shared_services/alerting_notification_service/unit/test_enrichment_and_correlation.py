@@ -398,6 +398,7 @@ async def test_correlate_appends_dependency_refs(session: AsyncSession, monkeypa
     assert "dep-x" in updated.dependency_refs
 
 
+@pytest.mark.unit
 def test_conditions_severity_mismatch():
     incident = Incident(
         incident_id="inc-sev",
@@ -427,6 +428,7 @@ def test_conditions_severity_mismatch():
     assert not CorrelationService._conditions_match(["severity"], alert, incident)
 
 
+@pytest.mark.unit
 def test_conditions_tenant_mismatch():
     incident = Incident(
         incident_id="inc-tenant",

@@ -47,15 +47,18 @@ for module_name, file_path in modules_to_load:
 
 from integration_adapters.main import app
 
+@pytest.mark.unit
 class TestIAMAuthMiddleware:
     """Test IAM authentication middleware."""
 
+    @pytest.mark.unit
     def test_health_endpoint_no_auth_required(self):
         """Test health endpoint doesn't require auth."""
         client = TestClient(app)
         response = client.get("/health")
         assert response.status_code == 200
 
+    @pytest.mark.unit
     def test_webhook_endpoint_no_auth_required(self):
         """Test webhook endpoint doesn't require auth."""
         client = TestClient(app)
@@ -66,6 +69,7 @@ class TestIAMAuthMiddleware:
         # Should not return 401 (auth not required for webhooks)
         assert response.status_code != 401
 
+    @pytest.mark.unit
     def test_management_endpoints_require_auth(self):
         """Test management endpoints require authentication."""
         client = TestClient(app)

@@ -17,9 +17,11 @@ from datetime import datetime
 
 from integration_adapters.services.signal_mapper import SignalMapper
 
+@pytest.mark.performance
 class TestHighWebhookVolume:
     """Test high webhook volume performance."""
 
+    @pytest.mark.performance
     def test_signal_mapping_performance(self):
         """Test signal mapping performance."""
         mapper = SignalMapper()

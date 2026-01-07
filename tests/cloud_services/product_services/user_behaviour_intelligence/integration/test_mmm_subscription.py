@@ -21,6 +21,7 @@ from user_behaviour_intelligence.models import (
 )
 
 
+@pytest.mark.integration
 class TestMMMSubscription:
     """Test MMM signal subscription."""
 

@@ -18,6 +18,7 @@ Test Design Principles (per constitution rules):
 
 import sys
 import unittest
+import pytest
 import json
 import hashlib
 from pathlib import Path
@@ -76,6 +77,7 @@ from identity_access_management.dependencies import (
 TEST_RANDOM_SEED = 42
 
 
+@pytest.mark.unit
 class TestTokenValidator(unittest.TestCase):
     """Test TokenValidator class with 100% coverage."""
 
@@ -84,6 +86,7 @@ class TestTokenValidator(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.validator = TokenValidator(self.data_plane)
 
+    @pytest.mark.unit
     def test_verify_token_valid(self):
         """Test verify_token with valid token."""
         # Mock jwt in sys.modules
@@ -114,6 +117,7 @@ class TestTokenValidator(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_verify_token_expired(self):
         """Test verify_token with expired token."""
         # Mock jwt in sys.modules
@@ -142,6 +146,7 @@ class TestTokenValidator(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_verify_token_revoked(self):
         """Test verify_token with revoked token (jti in denylist)."""
         # Mock jwt in sys.modules
@@ -175,6 +180,7 @@ class TestTokenValidator(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_verify_token_missing_claims(self):
         """Test verify_token with missing required claims."""
         # Mock jwt in sys.modules
@@ -196,6 +202,7 @@ class TestTokenValidator(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_verify_token_invalid_token(self):
         """Test verify_token with invalid token."""
         # Mock jwt in sys.modules
@@ -214,6 +221,7 @@ class TestTokenValidator(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_revoke_token(self):
         """Test revoke_token adds jti to denylist."""
         jti = "jti-to-revoke"
@@ -226,6 +234,7 @@ class TestTokenValidator(unittest.TestCase):
         self.assertIn(jti, denylist)
 
 
+@pytest.mark.unit
 class TestRBACEvaluator(unittest.TestCase):
     """Test RBACEvaluator class with 100% coverage."""
 
@@ -233,39 +242,46 @@ class TestRBACEvaluator(unittest.TestCase):
         """Set up test fixtures."""
         self.evaluator = RBACEvaluator()
 
+    @pytest.mark.unit
     def test_map_org_role_executive(self):
         """Test map_org_role maps executive to admin."""
         result = self.evaluator.map_org_role("executive")
         self.assertEqual(result, "admin")
 
+    @pytest.mark.unit
     def test_map_org_role_lead(self):
         """Test map_org_role maps lead to developer."""
         result = self.evaluator.map_org_role("lead")
         self.assertEqual(result, "developer")
 
+    @pytest.mark.unit
     def test_map_org_role_unknown(self):
         """Test map_org_role returns unknown role as-is."""
         result = self.evaluator.map_org_role("unknown_role")
         self.assertEqual(result, "unknown_role")
 
+    @pytest.mark.unit
     def test_evaluate_admin_allows_all(self):
         """Test evaluate allows all actions for admin role."""
         is_allowed, reason = self.evaluator.evaluate(["admin"], "admin", "/api/admin")
         self.assertTrue(is_allowed)
         self.assertIn("admin", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_developer_allows_write(self):
         """Test evaluate allows write for developer role."""
         is_allowed, reason = self.evaluator.evaluate(["developer"], "write", "/api/resource")
         self.assertTrue(is_allowed)
         self.assertIn("developer", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_viewer_denies_write(self):
         """Test evaluate denies write for viewer role."""
         is_allowed, reason = self.evaluator.evaluate(["viewer"], "write", "/api/resource")
         self.assertFalse(is_allowed)
         self.assertIn("permission", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_org_role_mapping(self):
         """Test evaluate maps org roles before evaluation."""
         is_allowed, reason = self.evaluator.evaluate(["executive"], "admin", "/api/admin")
@@ -273,6 +289,7 @@ class TestRBACEvaluator(unittest.TestCase):
         self.assertIn("admin", reason.lower())
 
 
+@pytest.mark.unit
 class TestABACEvaluator(unittest.TestCase):
     """Test ABACEvaluator class with 100% coverage."""
 
@@ -281,6 +298,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.trust_plane = MockM32TrustPlane()
         self.evaluator = ABACEvaluator(self.trust_plane)
 
+    @pytest.mark.unit
     def test_evaluate_no_context(self):
         """Test evaluate allows when no context provided."""
         subject = Subject(sub="user-123", roles=["developer"])
@@ -288,6 +306,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.assertTrue(is_allowed)
         self.assertIn("no constraints", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_high_risk_denies(self):
         """Test evaluate denies when risk score > 0.8."""
         context = DecisionContext(risk_score=0.9)
@@ -296,6 +315,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.assertFalse(is_allowed)
         self.assertIn("risk", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_insecure_device_denies(self):
         """Test evaluate denies when device posture is insecure."""
         context = DecisionContext(device_posture="insecure")
@@ -304,6 +324,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.assertFalse(is_allowed)
         self.assertIn("insecure", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_outside_time_window_denies(self):
         """Test evaluate denies when outside allowed time window."""
         context = DecisionContext(time=datetime(2024, 1, 1, 3, 0, 0))
@@ -312,6 +333,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.assertFalse(is_allowed)
         self.assertIn("time", reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_all_constraints_pass(self):
         """Test evaluate allows when all constraints pass."""
         context = DecisionContext(
@@ -325,6 +347,7 @@ class TestABACEvaluator(unittest.TestCase):
         self.assertIn("satisfied", reason.lower())
 
 
+@pytest.mark.unit
 class TestPolicyStore(unittest.TestCase):
     """Test PolicyStore class with 100% coverage."""
 
@@ -333,6 +356,7 @@ class TestPolicyStore(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.store = PolicyStore(self.data_plane)
 
+    @pytest.mark.unit
     def test_upsert_policy_bundle(self):
         """Test upsert_policy_bundle stores policy with snapshot_id."""
         bundle = PolicyBundle(
@@ -353,6 +377,7 @@ class TestPolicyStore(unittest.TestCase):
         self.assertIsInstance(snapshot_id, str)
         self.assertEqual(len(snapshot_id), 64)  # SHA-256 hex length
 
+    @pytest.mark.unit
     def test_get_policy(self):
         """Test get_policy retrieves stored policy."""
         bundle = PolicyBundle(
@@ -373,6 +398,7 @@ class TestPolicyStore(unittest.TestCase):
         self.assertIsNotNone(policy)
         self.assertEqual(policy["id"], "policy-1")
 
+    @pytest.mark.unit
     def test_list_policies(self):
         """Test list_policies returns all policy IDs."""
         bundle1 = PolicyBundle(
@@ -407,6 +433,7 @@ class TestPolicyStore(unittest.TestCase):
         self.assertIn("policy-2", policies)
 
 
+@pytest.mark.unit
 class TestReceiptGenerator(unittest.TestCase):
     """Test ReceiptGenerator class with 100% coverage."""
 
@@ -415,6 +442,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.evidence_ledger = MockM27EvidenceLedger()
         self.generator = ReceiptGenerator(self.evidence_ledger)
 
+    @pytest.mark.unit
     def test_generate_receipt_access_granted(self):
         """Test generate_receipt creates receipt for access_granted event."""
         subject = Subject(sub="user-123", roles=["developer"])
@@ -435,6 +463,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.assertIn("sig", receipt)
         self.assertIn("iam_context", receipt)
 
+    @pytest.mark.unit
     def test_generate_receipt_access_denied(self):
         """Test generate_receipt creates receipt for access_denied event."""
         subject = Subject(sub="user-123", roles=["viewer"])
@@ -449,6 +478,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.assertEqual(receipt["event"], "access_denied")
         self.assertEqual(receipt["decision"], "DENY")
 
+    @pytest.mark.unit
     def test_generate_receipt_stores_in_ledger(self):
         """Test generate_receipt stores receipt in evidence ledger."""
         subject = Subject(sub="user-123", roles=["developer"])
@@ -464,6 +494,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.assertEqual(stored["receipt_id"], receipt["receipt_id"])
 
 
+@pytest.mark.unit
 class TestIAMService(unittest.TestCase):
     """Test IAMService class with 100% coverage."""
 
@@ -471,6 +502,7 @@ class TestIAMService(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.unit
     def test_verify_token_success(self):
         """Test verify_token returns valid response."""
         # Mock jwt in sys.modules
@@ -498,6 +530,7 @@ class TestIAMService(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_verify_token_failure(self):
         """Test verify_token raises ValueError for invalid token."""
         # Mock jwt in sys.modules
@@ -515,6 +548,7 @@ class TestIAMService(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.unit
     def test_evaluate_decision_allow(self):
         """Test evaluate_decision returns ALLOW for authorized access."""
         request = DecisionRequest(
@@ -530,6 +564,7 @@ class TestIAMService(unittest.TestCase):
         self.assertEqual(response.decision, "ALLOW")
         self.assertIsNotNone(response.receipt_id)
 
+    @pytest.mark.unit
     def test_evaluate_decision_deny_rbac(self):
         """Test evaluate_decision returns DENY when RBAC denies."""
         request = DecisionRequest(
@@ -543,6 +578,7 @@ class TestIAMService(unittest.TestCase):
         self.assertEqual(response.decision, "DENY")
         self.assertIn("RBAC", response.reason)
 
+    @pytest.mark.unit
     def test_evaluate_decision_deny_abac(self):
         """Test evaluate_decision returns DENY when ABAC denies."""
         request = DecisionRequest(
@@ -557,6 +593,7 @@ class TestIAMService(unittest.TestCase):
         self.assertEqual(response.decision, "DENY")
         self.assertIn("ABAC", response.reason)
 
+    @pytest.mark.unit
     def test_evaluate_decision_jit_elevation_required(self):
         """Test evaluate_decision returns ELEVATION_REQUIRED for admin scope."""
         request = DecisionRequest(
@@ -571,6 +608,7 @@ class TestIAMService(unittest.TestCase):
         self.assertEqual(response.decision, "ELEVATION_REQUIRED")
         self.assertIn("dual approval", response.reason.lower())
 
+    @pytest.mark.unit
     def test_evaluate_decision_jit_elevation_granted(self):
         """Test evaluate_decision returns ELEVATION_GRANTED for non-admin scope."""
         request = DecisionRequest(
@@ -585,6 +623,7 @@ class TestIAMService(unittest.TestCase):
         self.assertEqual(response.decision, "ELEVATION_GRANTED")
         self.assertIsNotNone(response.expires_at)
 
+    @pytest.mark.unit
     def test_upsert_policies(self):
         """Test upsert_policies stores policy bundle."""
         bundle = PolicyBundle(
@@ -604,6 +643,7 @@ class TestIAMService(unittest.TestCase):
         self.assertIsNotNone(snapshot_id)
         self.assertIsInstance(snapshot_id, str)
 
+    @pytest.mark.unit
     def test_get_metrics(self):
         """Test get_metrics returns service metrics."""
         # Perform some operations to generate metrics
@@ -621,6 +661,7 @@ class TestIAMService(unittest.TestCase):
         self.assertIn("policy_count", metrics)
         self.assertIn("average_decision_latency_ms", metrics)
 
+    @pytest.mark.unit
     def test_trigger_break_glass_success(self):
         """Test trigger_break_glass grants access when policy enabled."""
         # First, create and enable break-glass policy
@@ -654,6 +695,7 @@ class TestIAMService(unittest.TestCase):
         self.assertIn("incident", response.reason.lower())
         self.assertIn("24h", response.reason.lower())
 
+    @pytest.mark.unit
     def test_trigger_break_glass_policy_not_enabled(self):
         """Test trigger_break_glass fails when policy not enabled."""
         from identity_access_management.models import BreakGlassRequest
@@ -668,6 +710,7 @@ class TestIAMService(unittest.TestCase):
 
         self.assertIn("not enabled", str(context.exception).lower())
 
+    @pytest.mark.unit
     def test_trigger_break_glass_policy_not_released(self):
         """Test trigger_break_glass fails when policy status is not released."""
         # Create break-glass policy with draft status
@@ -697,6 +740,7 @@ class TestIAMService(unittest.TestCase):
 
         self.assertIn("must be 'released'", str(context.exception))
 
+    @pytest.mark.unit
     def test_trigger_break_glass_generates_receipt_with_evidence(self):
         """Test trigger_break_glass generates receipt with break-glass evidence."""
         # Enable break-glass policy
@@ -736,6 +780,7 @@ class TestIAMService(unittest.TestCase):
         self.assertIn("justification", receipt["evidence"])
         self.assertEqual(receipt["evidence"]["justification"], "Critical production incident")
 
+    @pytest.mark.unit
     def test_trigger_break_glass_grants_4h_access(self):
         """Test trigger_break_glass grants 4h time-boxed admin access."""
         # Enable break-glass policy
@@ -774,6 +819,7 @@ class TestIAMService(unittest.TestCase):
         self.assertLess(time_diff, 1.0, f"Expected ~4h expiry, got {actual_expires - before_time}")
 
 
+@pytest.mark.unit
 class TestIAMServiceTableDriven(unittest.TestCase):
     """Table-driven tests for comprehensive coverage (per TST-010)."""
 
@@ -781,6 +827,7 @@ class TestIAMServiceTableDriven(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.unit
     def test_evaluate_decision_table_driven_roles(self):
         """Table-driven test for all role combinations."""
         test_cases = [
@@ -805,6 +852,7 @@ class TestIAMServiceTableDriven(unittest.TestCase):
 
                 self.assertEqual(response.decision, case["expected"])
 
+    @pytest.mark.unit
     def test_evaluate_decision_table_driven_risk_scores(self):
         """Table-driven test for risk score thresholds."""
         test_cases = [

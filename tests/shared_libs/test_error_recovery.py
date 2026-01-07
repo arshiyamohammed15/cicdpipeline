@@ -13,6 +13,7 @@ from src.shared_libs.error_recovery import (
 )
 
 
+@pytest.mark.unit
 def test_exponential_backoff_schedule_is_deterministic() -> None:
     policy = RetryPolicy(max_attempts=6, base_delay_ms=100, max_delay_ms=500)
 
@@ -22,6 +23,7 @@ def test_exponential_backoff_schedule_is_deterministic() -> None:
     assert schedule == exponential_backoff_schedule(policy)
 
 
+@pytest.mark.unit
 def test_error_classifier_marks_timeout_as_retryable() -> None:
     classifier = ErrorClassifier()
     request = httpx.Request("GET", "https://example.com")
@@ -32,6 +34,7 @@ def test_error_classifier_marks_timeout_as_retryable() -> None:
     assert classifier.is_retryable(error) is True
 
 
+@pytest.mark.unit
 def test_error_classifier_marks_http_status_retryable() -> None:
     classifier = ErrorClassifier()
     request = httpx.Request("GET", "https://example.com")
@@ -41,6 +44,7 @@ def test_error_classifier_marks_http_status_retryable() -> None:
     assert classifier.is_retryable(error) is True
 
 
+@pytest.mark.unit
 def test_error_classifier_marks_http_status_non_retryable() -> None:
     classifier = ErrorClassifier()
     request = httpx.Request("GET", "https://example.com")
@@ -50,6 +54,7 @@ def test_error_classifier_marks_http_status_non_retryable() -> None:
     assert classifier.is_retryable(error) is False
 
 
+@pytest.mark.unit
 def test_error_classifier_marks_http_exception_retryable() -> None:
     classifier = ErrorClassifier()
     error = HTTPException(status_code=429, detail="rate limited")
@@ -57,6 +62,7 @@ def test_error_classifier_marks_http_exception_retryable() -> None:
     assert classifier.is_retryable(error) is True
 
 
+@pytest.mark.unit
 def test_error_classifier_marks_http_exception_non_retryable() -> None:
     classifier = ErrorClassifier()
     error = HTTPException(status_code=403, detail="forbidden")
@@ -64,6 +70,7 @@ def test_error_classifier_marks_http_exception_non_retryable() -> None:
     assert classifier.is_retryable(error) is False
 
 
+@pytest.mark.unit
 def test_call_with_recovery_retries_until_success() -> None:
     attempts = []
 
@@ -86,6 +93,7 @@ def test_call_with_recovery_retries_until_success() -> None:
     assert len(attempts) == 3
 
 
+@pytest.mark.unit
 def test_call_with_recovery_does_not_retry_non_retryable() -> None:
     attempts = []
 
@@ -106,6 +114,7 @@ def test_call_with_recovery_does_not_retry_non_retryable() -> None:
     assert len(attempts) == 1
 
 
+@pytest.mark.unit
 def test_call_with_recovery_enforces_timeout() -> None:
     attempts = []
 

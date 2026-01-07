@@ -6,6 +6,7 @@ Tests the updated /health and /healthz endpoints in api_service.py
 """
 
 import sys
+import pytest
 import unittest
 from pathlib import Path
 
@@ -15,6 +16,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from validator.integrations.api_service import app
 
 
+@pytest.mark.unit
 class TestHealthEndpoints(unittest.TestCase):
     """Test health endpoints."""
 
@@ -22,6 +24,7 @@ class TestHealthEndpoints(unittest.TestCase):
         """Set up test client."""
         self.client = app.test_client()
 
+    @pytest.mark.unit
     def test_health_endpoint(self):
         """Test /health endpoint returns comprehensive status."""
         response = self.client.get('/health')
@@ -43,6 +46,7 @@ class TestHealthEndpoints(unittest.TestCase):
         self.assertIn('integrations', data)
         self.assertIn('integration_status', data)
 
+    @pytest.mark.unit
     def test_healthz_endpoint(self):
         """Test /healthz endpoint returns simple status."""
         response = self.client.get('/healthz')
@@ -55,6 +59,7 @@ class TestHealthEndpoints(unittest.TestCase):
         self.assertIn('status', data)
         self.assertIn(data['status'], ['ok', 'unhealthy', 'error'])
 
+    @pytest.mark.unit
     def test_health_endpoint_structure(self):
         """Test /health endpoint has correct structure."""
         response = self.client.get('/health')
@@ -70,6 +75,7 @@ class TestHealthEndpoints(unittest.TestCase):
         for check_name, check_result in checks.items():
             self.assertIn('healthy', check_result)
 
+    @pytest.mark.unit
     def test_health_endpoint_rule_count_consistency(self):
         """Test /health endpoint verifies rule count consistency."""
         response = self.client.get('/health')

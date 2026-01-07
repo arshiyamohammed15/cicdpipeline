@@ -4,7 +4,7 @@ from __future__ import annotations
 Integration tests for Data Governance & Privacy API routes.
 """
 
-
+import pytest
 from fastapi.testclient import TestClient
 
 from tests.privacy_imports import import_module
@@ -14,6 +14,7 @@ app = main_module.app
 client = TestClient(app)
 
 
+@pytest.mark.integration
 def test_health_endpoint() -> None:
     response = client.get("/privacy/v1/health")
     assert response.status_code == 200
@@ -21,6 +22,7 @@ def test_health_endpoint() -> None:
     assert payload["status"] == "healthy"
 
 
+@pytest.mark.integration
 def test_classification_endpoint() -> None:
     body = {
         "tenant_id": "tenant-int",
@@ -36,6 +38,7 @@ def test_classification_endpoint() -> None:
     assert "financial" in payload["sensitivity_tags"]
 
 
+@pytest.mark.integration
 def test_rights_request_endpoint() -> None:
     body = {
         "tenant_id": "tenant-int",

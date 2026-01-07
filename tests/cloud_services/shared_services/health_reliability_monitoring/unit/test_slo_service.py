@@ -11,6 +11,7 @@ from health_reliability_monitoring.services.slo_service import SLOService
 from health_reliability_monitoring.models import SLOStatus
 
 
+@pytest.mark.unit
 class TestSLOService:
     """Test SLOService."""
 
@@ -61,12 +62,14 @@ class TestSLOService:
         assert slo_status.component_id == "test-component-1"
         assert slo_status.state in ["approaching", "within_budget", "breached"]
 
+    @pytest.mark.unit
     def test_latest_slo_nonexistent(self, slo_service):
         """Test retrieving SLO for non-existent component."""
         slo = slo_service.latest_slo("nonexistent-component")
         
         assert slo is None
 
+    @pytest.mark.unit
     def test_latest_slo_existing(self, slo_service, db_session):
         """Test retrieving latest SLO for existing component."""
         try:

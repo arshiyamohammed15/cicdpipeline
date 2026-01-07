@@ -11,6 +11,7 @@ Risks: None - all tests are hermetic with mocked dependencies
 
 import sys
 import unittest
+import pytest
 import base64
 from pathlib import Path
 from unittest.mock import patch, MagicMock
@@ -137,6 +138,7 @@ spec_main.loader.exec_module(main_module)
 app = main_module.app
 
 
+@pytest.mark.integration
 class TestKeysEndpoint(unittest.TestCase):
     """Test POST /kms/v1/keys endpoint."""
 
@@ -145,6 +147,7 @@ class TestKeysEndpoint(unittest.TestCase):
         """Set up test client for all tests in this class."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_generate_key_rsa2048(self):
         """Test generate key with RSA-2048."""
         response = self.client.post(
@@ -169,6 +172,7 @@ class TestKeysEndpoint(unittest.TestCase):
         self.assertIsNotNone(data["key_id"])
         self.assertIsNotNone(data["public_key"])
 
+    @pytest.mark.integration
     def test_generate_key_ed25519(self):
         """Test generate key with Ed25519."""
         response = self.client.post(
@@ -191,6 +195,7 @@ class TestKeysEndpoint(unittest.TestCase):
         self.assertIn("key_id", data)
         self.assertIn("public_key", data)
 
+    @pytest.mark.integration
     def test_generate_key_aes256(self):
         """Test generate key with AES-256."""
         response = self.client.post(
@@ -213,6 +218,7 @@ class TestKeysEndpoint(unittest.TestCase):
         self.assertIn("key_id", data)
         self.assertIn("public_key", data)
 
+    @pytest.mark.integration
     def test_generate_key_with_alias(self):
         """Test generate key with key_alias."""
         response = self.client.post(
@@ -235,6 +241,7 @@ class TestKeysEndpoint(unittest.TestCase):
         data = response.json()
         self.assertIn("key_id", data)
 
+    @pytest.mark.integration
     def test_generate_key_invalid_environment(self):
         """Test generate key with invalid environment."""
         response = self.client.post(
@@ -251,6 +258,7 @@ class TestKeysEndpoint(unittest.TestCase):
 
         self.assertEqual(response.status_code, 422)  # Validation error
 
+    @pytest.mark.integration
     def test_generate_key_missing_required_field(self):
         """Test generate key with missing required field."""
         response = self.client.post(
@@ -268,6 +276,7 @@ class TestKeysEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
+@pytest.mark.integration
 class TestSignEndpoint(unittest.TestCase):
     """Test POST /kms/v1/sign endpoint."""
 
@@ -292,6 +301,7 @@ class TestSignEndpoint(unittest.TestCase):
         )
         cls.test_key_id = response.json()["key_id"]
 
+    @pytest.mark.integration
     def test_sign_data_success(self):
         """Test sign endpoint with valid data."""
         data_b64 = base64.b64encode(b"test data to sign").decode('utf-8')
@@ -314,6 +324,7 @@ class TestSignEndpoint(unittest.TestCase):
         self.assertEqual(data["key_id"], self.test_key_id)
         self.assertIsNotNone(data["signature"])
 
+    @pytest.mark.integration
     def test_sign_data_key_not_found(self):
         """Test sign endpoint with non-existent key."""
         data_b64 = base64.b64encode(b"test data").decode('utf-8')
@@ -334,6 +345,7 @@ class TestSignEndpoint(unittest.TestCase):
         self.assertIn("error", error_data["detail"])
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
+    @pytest.mark.integration
     def test_sign_data_invalid_base64(self):
         """Test sign endpoint with invalid base64 data."""
         response = self.client.post(
@@ -354,6 +366,7 @@ class TestSignEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "INVALID_REQUEST")
 
 
+@pytest.mark.integration
 class TestVerifyEndpoint(unittest.TestCase):
     """Test POST /kms/v1/verify endpoint."""
 
@@ -394,6 +407,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         cls.test_data = data_b64
         cls.test_signature = sign_response.json()["signature"]
 
+    @pytest.mark.integration
     def test_verify_signature_success(self):
         """Test verify endpoint with valid signature."""
         response = self.client.post(
@@ -416,6 +430,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         self.assertEqual(data["key_id"], self.test_key_id)
         # Note: Verification may fail in mock implementation, but endpoint should return 200
 
+    @pytest.mark.integration
     def test_verify_signature_invalid(self):
         """Test verify endpoint with invalid signature."""
         # Use valid base64 but invalid signature bytes
@@ -438,6 +453,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         self.assertIn("valid", data)
         # Invalid signature should return valid=False
 
+    @pytest.mark.integration
     def test_verify_signature_key_not_found(self):
         """Test verify endpoint with non-existent key."""
         response = self.client.post(
@@ -458,6 +474,7 @@ class TestVerifyEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
 
+@pytest.mark.integration
 class TestEncryptEndpoint(unittest.TestCase):
     """Test POST /kms/v1/encrypt endpoint."""
 
@@ -482,6 +499,7 @@ class TestEncryptEndpoint(unittest.TestCase):
         )
         cls.test_key_id = key_response.json()["key_id"]
 
+    @pytest.mark.integration
     def test_encrypt_data_success(self):
         """Test encrypt endpoint with valid plaintext."""
         plaintext_b64 = base64.b64encode(b"test plaintext data").decode('utf-8')
@@ -505,6 +523,7 @@ class TestEncryptEndpoint(unittest.TestCase):
         self.assertIn("iv", data)
         self.assertEqual(data["key_id"], self.test_key_id)
 
+    @pytest.mark.integration
     def test_encrypt_data_with_aad(self):
         """Test encrypt endpoint with additional authenticated data."""
         plaintext_b64 = base64.b64encode(b"test data").decode('utf-8')
@@ -526,6 +545,7 @@ class TestEncryptEndpoint(unittest.TestCase):
         data = response.json()
         self.assertIn("ciphertext", data)
 
+    @pytest.mark.integration
     def test_encrypt_data_key_not_found(self):
         """Test encrypt endpoint with non-existent key."""
         plaintext_b64 = base64.b64encode(b"test data").decode('utf-8')
@@ -546,6 +566,7 @@ class TestEncryptEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
 
+@pytest.mark.integration
 class TestDecryptEndpoint(unittest.TestCase):
     """Test POST /kms/v1/decrypt endpoint."""
 
@@ -586,6 +607,7 @@ class TestDecryptEndpoint(unittest.TestCase):
         cls.test_ciphertext = encrypt_response.json()["ciphertext"]
         cls.test_iv = encrypt_response.json()["iv"]
 
+    @pytest.mark.integration
     def test_decrypt_data_success(self):
         """Test decrypt endpoint with valid ciphertext."""
         response = self.client.post(
@@ -607,6 +629,7 @@ class TestDecryptEndpoint(unittest.TestCase):
         self.assertIn("key_id", data)
         self.assertEqual(data["key_id"], self.test_key_id)
 
+    @pytest.mark.integration
     def test_decrypt_data_key_not_found(self):
         """Test decrypt endpoint with non-existent key."""
         response = self.client.post(
@@ -627,6 +650,7 @@ class TestDecryptEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
 
+@pytest.mark.integration
 class TestRotateKeyEndpoint(unittest.TestCase):
     """Test POST /kms/v1/keys/{key_id}/rotate endpoint."""
 
@@ -650,6 +674,7 @@ class TestRotateKeyEndpoint(unittest.TestCase):
         )
         cls.test_key_id = key_response.json()["key_id"]
 
+    @pytest.mark.integration
     def test_rotate_key_success(self):
         """Test rotate key endpoint."""
         response = self.client.post(
@@ -673,6 +698,7 @@ class TestRotateKeyEndpoint(unittest.TestCase):
         self.assertEqual(data["old_key_id"], self.test_key_id)
         self.assertNotEqual(data["old_key_id"], data["new_key_id"])
 
+    @pytest.mark.integration
     def test_rotate_key_not_found(self):
         """Test rotate key endpoint with non-existent key."""
         response = self.client.post(
@@ -693,6 +719,7 @@ class TestRotateKeyEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
 
+@pytest.mark.integration
 class TestRevokeKeyEndpoint(unittest.TestCase):
     """Test POST /kms/v1/keys/{key_id}/revoke endpoint."""
 
@@ -716,6 +743,7 @@ class TestRevokeKeyEndpoint(unittest.TestCase):
         )
         cls.test_key_id = key_response.json()["key_id"]
 
+    @pytest.mark.integration
     def test_revoke_key_success(self):
         """Test revoke key endpoint."""
         response = self.client.post(
@@ -738,6 +766,7 @@ class TestRevokeKeyEndpoint(unittest.TestCase):
         self.assertIn("revoked_at", data)
         self.assertEqual(data["key_id"], self.test_key_id)
 
+    @pytest.mark.integration
     def test_revoke_key_not_found(self):
         """Test revoke key endpoint with non-existent key."""
         response = self.client.post(
@@ -759,6 +788,7 @@ class TestRevokeKeyEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "KEY_NOT_FOUND")
 
 
+@pytest.mark.integration
 class TestTrustAnchorsEndpoint(unittest.TestCase):
     """Test POST /kms/v1/trust-anchors endpoint."""
 
@@ -767,6 +797,7 @@ class TestTrustAnchorsEndpoint(unittest.TestCase):
         """Set up test client."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_ingest_trust_anchor_success(self):
         """Test ingest trust anchor endpoint."""
         certificate_b64 = base64.b64encode(b"mock-certificate-data").decode('utf-8')
@@ -791,6 +822,7 @@ class TestTrustAnchorsEndpoint(unittest.TestCase):
         self.assertIn("anchor_type", data)
         self.assertEqual(data["anchor_type"], "internal_ca")
 
+    @pytest.mark.integration
     def test_ingest_trust_anchor_invalid_base64(self):
         """Test ingest trust anchor with invalid base64."""
         response = self.client.post(
@@ -810,6 +842,7 @@ class TestTrustAnchorsEndpoint(unittest.TestCase):
         self.assertEqual(error_data["detail"]["error"]["code"], "INVALID_REQUEST")
 
 
+@pytest.mark.integration
 class TestHealthEndpoint(unittest.TestCase):
     """Test GET /kms/v1/health endpoint."""
 
@@ -818,6 +851,7 @@ class TestHealthEndpoint(unittest.TestCase):
         """Set up test client."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_health_check_success(self):
         """Test health check endpoint."""
         response = self.client.get("/kms/v1/health")
@@ -831,6 +865,7 @@ class TestHealthEndpoint(unittest.TestCase):
         self.assertGreater(len(data["checks"]), 0)
 
 
+@pytest.mark.integration
 class TestMetricsEndpoint(unittest.TestCase):
     """Test GET /kms/v1/metrics endpoint."""
 
@@ -839,6 +874,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         """Set up test client."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_metrics_endpoint_success(self):
         """Test metrics endpoint."""
         response = self.client.get("/kms/v1/metrics")
@@ -851,6 +887,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         self.assertIn("kms_operation_latency_ms", content)
 
 
+@pytest.mark.integration
 class TestConfigEndpoint(unittest.TestCase):
     """Test GET /kms/v1/config endpoint."""
 
@@ -859,6 +896,7 @@ class TestConfigEndpoint(unittest.TestCase):
         """Set up test client."""
         cls.client = create_test_client(app)
 
+    @pytest.mark.integration
     def test_config_endpoint_success(self):
         """Test config endpoint."""
         response = self.client.get("/kms/v1/config")

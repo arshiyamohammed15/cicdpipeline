@@ -3,6 +3,8 @@
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 
+import pytest
+
 from mmm_engine.main import app
 
 
@@ -20,6 +22,7 @@ def auth_headers(tenant: str = "tenant-demo") -> dict[str, str]:
     return {"Authorization": f"Bearer tenant-{tenant}"}
 
 
+@pytest.mark.unit
 def test_record_outcome_accepts_request():
     decide_resp = client.post(
         "/v1/mmm/decide",

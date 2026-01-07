@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import subprocess
 import sys
@@ -34,6 +35,8 @@ def _extract_missing_modules(inventory_text: str) -> set[str]:
     return missing
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pass1_and_pass2(tmp_path: Path) -> None:
     run_dir = tmp_path / "run"
     run_dir.mkdir()

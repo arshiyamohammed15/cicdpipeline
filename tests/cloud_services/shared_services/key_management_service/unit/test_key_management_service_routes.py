@@ -24,6 +24,7 @@ main_spec.loader.exec_module(main_module)
 app = main_module.app
 
 
+@pytest.mark.unit
 class TestKMSRoutes:
     """Test KMS API routes."""
 
@@ -32,6 +33,7 @@ class TestKMSRoutes:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.unit
     def test_health_check(self, client):
         """Test health check endpoint."""
         response = client.get("/health")
@@ -40,6 +42,7 @@ class TestKMSRoutes:
         assert "status" in data
         assert "checks" in data
 
+    @pytest.mark.unit
     def test_config_endpoint(self, client):
         """Test config endpoint."""
         response = client.get("/kms/v1/config")

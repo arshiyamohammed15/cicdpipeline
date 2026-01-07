@@ -15,9 +15,11 @@ from unittest.mock import Mock, patch
 # Note: Full OAuth flow would require mock OAuth server
 # This test verifies the concept
 
+@pytest.mark.integration
 class TestOAuthConnectionVerification:
     """Test OAuth connection verification."""
 
+    @pytest.mark.integration
     def test_oauth_verification_concept(self):
         """Test OAuth verification concept."""
         # OAuth verification would:

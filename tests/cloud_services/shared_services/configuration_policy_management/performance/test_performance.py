@@ -20,6 +20,7 @@ class TestPolicyEvaluationPerformance:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.performance
     def test_policy_evaluation_latency(self, client):
         """Test that policy evaluation meets latency requirements."""
         request = {
@@ -59,6 +60,7 @@ class TestPolicyEvaluationPerformance:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.performance
     def test_concurrent_policy_evaluations(self, client):
         """Test performance under concurrent policy evaluations."""
         import concurrent.futures
@@ -96,6 +98,7 @@ class TestConfigurationPerformance:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.performance
     def test_configuration_creation_latency(self, client):
         """Test that configuration creation meets latency requirements."""
         request = {

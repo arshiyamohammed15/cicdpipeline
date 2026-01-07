@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 from src.shared_libs.mcp_server_registry import (
     MCPClientFactory,
@@ -12,6 +13,7 @@ from src.shared_libs.mcp_server_registry import (
 from tests.shared_harness import assert_enforcement_receipt_fields
 
 
+@pytest.mark.unit
 def test_unpinned_enabled_server_is_blocked_and_receipted() -> None:
     receipts: list[dict[str, object]] = []
     registry = MCPServerRegistry(
@@ -38,6 +40,7 @@ def test_unpinned_enabled_server_is_blocked_and_receipted() -> None:
     assert_enforcement_receipt_fields(receipts[0])
 
 
+@pytest.mark.unit
 def test_pinned_server_passes_identity_match() -> None:
     receipts: list[dict[str, object]] = []
     registry = MCPServerRegistry(
@@ -65,6 +68,7 @@ def test_pinned_server_passes_identity_match() -> None:
     assert receipts == []
 
 
+@pytest.mark.unit
 def test_pin_mismatch_is_blocked_and_receipted() -> None:
     receipts: list[dict[str, object]] = []
     registry = MCPServerRegistry(

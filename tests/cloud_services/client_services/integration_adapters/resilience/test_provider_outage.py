@@ -17,9 +17,11 @@ import uuid
 
 from integration_adapters.reliability.circuit_breaker import CircuitBreaker, CircuitState
 
+@pytest.mark.integration
 class TestProviderOutage:
     """Test provider outage handling."""
 
+    @pytest.mark.integration
     def test_circuit_breaker_opens_on_repeated_failures(self):
         """Test circuit breaker opens after repeated failures."""
         breaker = CircuitBreaker(uuid.uuid4(), failure_threshold=3)
@@ -42,6 +44,7 @@ class TestProviderOutage:
             breaker.call(fail_func)
         assert breaker.state == CircuitState.OPEN
 
+    @pytest.mark.integration
     def test_circuit_breaker_rejects_when_open(self):
         """Test circuit breaker rejects calls when open."""
         breaker = CircuitBreaker(uuid.uuid4(), failure_threshold=1)
@@ -60,6 +63,7 @@ class TestProviderOutage:
         with pytest.raises(CircuitBreakerOpenError):
             breaker.call(lambda: "should not execute")
 
+    @pytest.mark.integration
     def test_circuit_breaker_recovery(self):
         """Test circuit breaker recovers after timeout."""
         breaker = CircuitBreaker(uuid.uuid4(), failure_threshold=1, timeout=0.1)

@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import Mock, patch
 import uuid
 from datetime import datetime
+import pytest
 
 # Import modules to test
 import sys
@@ -146,6 +147,7 @@ SchemaService = services_module.SchemaService
 ValidationService = services_module.ValidationService
 
 
+@pytest.mark.unit
 class TestJSONSchemaValidator(unittest.TestCase):
     """Test JSON Schema validator."""
 
@@ -153,6 +155,7 @@ class TestJSONSchemaValidator(unittest.TestCase):
         """Set up test fixtures."""
         self.validator = JSONSchemaValidator()
 
+    @pytest.mark.unit
     def test_validate_valid_data(self):
         """Test validation of valid data."""
         schema = {
@@ -169,6 +172,7 @@ class TestJSONSchemaValidator(unittest.TestCase):
         self.assertTrue(is_valid)
         self.assertEqual(len(errors), 0)
 
+    @pytest.mark.unit
     def test_validate_invalid_data(self):
         """Test validation of invalid data."""
         schema = {
@@ -186,6 +190,7 @@ class TestJSONSchemaValidator(unittest.TestCase):
         self.assertGreater(len(errors), 0)
 
 
+@pytest.mark.unit
 class TestSchemaService(unittest.TestCase):
     """Test SchemaService."""
 
@@ -194,6 +199,7 @@ class TestSchemaService(unittest.TestCase):
         self.service = SchemaService()
 
     @patch('contracts_schema_registry.services.get_session')
+    @pytest.mark.unit
     def test_register_schema(self, mock_session):
         """Test schema registration."""
         # Mock database session
@@ -230,6 +236,7 @@ class TestSchemaService(unittest.TestCase):
             self.assertIsNotNone(self.service)
 
 
+@pytest.mark.unit
 class TestCompatibilityChecker(unittest.TestCase):
     """Test compatibility checker."""
 
@@ -237,6 +244,7 @@ class TestCompatibilityChecker(unittest.TestCase):
         """Set up test fixtures."""
         self.checker = CompatibilityChecker()
 
+    @pytest.mark.unit
     def test_backward_compatible_add_optional_field(self):
         """Test backward compatibility with added optional field."""
         source = {
@@ -261,6 +269,7 @@ class TestCompatibilityChecker(unittest.TestCase):
         self.assertTrue(is_compatible)
         self.assertEqual(len(breaking), 0)
 
+    @pytest.mark.unit
     def test_breaking_remove_field(self):
         """Test breaking change with removed field."""
         source = {
@@ -286,6 +295,7 @@ class TestCompatibilityChecker(unittest.TestCase):
         self.assertGreater(len(breaking), 0)
 
 
+@pytest.mark.unit
 class TestAvroValidator(unittest.TestCase):
     """Test Avro validator."""
 
@@ -298,6 +308,7 @@ class TestAvroValidator(unittest.TestCase):
         spec_avro.loader.exec_module(avro_module)
         self.validator = avro_module.AvroValidator()
 
+    @pytest.mark.unit
     def test_validate_valid_avro_data(self):
         """Test validation of valid Avro data."""
         schema = {
@@ -316,6 +327,7 @@ class TestAvroValidator(unittest.TestCase):
         self.assertIsInstance(errors, list)
 
 
+@pytest.mark.unit
 class TestProtobufValidator(unittest.TestCase):
     """Test Protobuf validator."""
 
@@ -328,6 +340,7 @@ class TestProtobufValidator(unittest.TestCase):
         spec_proto.loader.exec_module(proto_module)
         self.validator = proto_module.ProtobufValidator()
 
+    @pytest.mark.unit
     def test_validate_protobuf_schema(self):
         """Test Protobuf schema validation."""
         schema = {
@@ -346,6 +359,7 @@ class TestProtobufValidator(unittest.TestCase):
         self.assertIsInstance(errors, list)
 
 
+@pytest.mark.unit
 class TestValidationService(unittest.TestCase):
     """Test ValidationService."""
 
@@ -353,6 +367,7 @@ class TestValidationService(unittest.TestCase):
         """Set up test fixtures."""
         self.service = ValidationService()
 
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test that service initializes correctly."""
         self.assertIsNotNone(self.service)
@@ -360,6 +375,7 @@ class TestValidationService(unittest.TestCase):
         self.assertIsNotNone(self.service.cache_manager)
 
 
+@pytest.mark.unit
 class TestTransformationService(unittest.TestCase):
     """Test TransformationService."""
 
@@ -372,6 +388,7 @@ class TestTransformationService(unittest.TestCase):
         spec_transformer.loader.exec_module(transformer_module)
         self.transformer = transformer_module.DataTransformer()
 
+    @pytest.mark.unit
     def test_transform_json_schema(self):
         """Test JSON Schema transformation."""
         source = {
@@ -398,6 +415,7 @@ class TestTransformationService(unittest.TestCase):
         self.assertIsInstance(warnings, list)
 
 
+@pytest.mark.unit
 class TestErrorHandling(unittest.TestCase):
     """Test error handling."""
 
@@ -412,6 +430,7 @@ class TestErrorHandling(unittest.TestCase):
         self.create_error_response = errors_module.create_error_response
         self.get_http_status = errors_module.get_http_status
 
+    @pytest.mark.unit
     def test_create_error_response(self):
         """Test error response creation."""
         error_response = self.create_error_response(
@@ -423,6 +442,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(error_response.error.error_code, "SCHEMA_NOT_FOUND")
         self.assertEqual(error_response.error.message, "Test error")
 
+    @pytest.mark.unit
     def test_get_http_status(self):
         """Test HTTP status code mapping."""
         status_code = self.get_http_status(self.ErrorCode.SCHEMA_NOT_FOUND)
@@ -432,6 +452,7 @@ class TestErrorHandling(unittest.TestCase):
         self.assertEqual(status_code, 400)
 
 
+@pytest.mark.unit
 class TestCacheManager(unittest.TestCase):
     """Test cache manager."""
 
@@ -445,6 +466,7 @@ class TestCacheManager(unittest.TestCase):
         self.CacheManager = cache_module.CacheManager
         self.cache = self.CacheManager()
 
+    @pytest.mark.unit
     def test_schema_cache(self):
         """Test schema caching."""
         schema_id = "test-schema-id"
@@ -456,6 +478,7 @@ class TestCacheManager(unittest.TestCase):
         self.assertIsNotNone(cached)
         self.assertEqual(cached["name"], "test")
 
+    @pytest.mark.unit
     def test_validation_cache(self):
         """Test validation caching."""
         schema_id = "test-schema-id"
@@ -468,6 +491,7 @@ class TestCacheManager(unittest.TestCase):
         self.assertIsNotNone(cached)
         self.assertTrue(cached["valid"])
 
+    @pytest.mark.unit
     def test_compatibility_cache(self):
         """Test compatibility caching."""
         source_id = "source-id"
@@ -481,6 +505,7 @@ class TestCacheManager(unittest.TestCase):
         self.assertTrue(cached["compatible"])
 
 
+@pytest.mark.unit
 class TestTemplateManager(unittest.TestCase):
     """Test template manager."""
 
@@ -494,12 +519,14 @@ class TestTemplateManager(unittest.TestCase):
         self.TemplateManager = template_module.TemplateManager
         self.manager = self.TemplateManager()
 
+    @pytest.mark.unit
     def test_list_templates(self):
         """Test template listing."""
         templates = self.manager.list_templates()
         self.assertIsInstance(templates, list)
         self.assertGreater(len(templates), 0)
 
+    @pytest.mark.unit
     def test_get_template(self):
         """Test getting a template."""
         template = self.manager.get_template("user_profile")

@@ -76,6 +76,7 @@ def sample_receipt():
 
 
 # UT-1: Schema Validation
+@pytest.mark.unit
 def test_receipt_validator_valid_receipt(db_session, sample_receipt):
     """Test valid receipt validation."""
     validator = ReceiptValidator()
@@ -83,6 +84,7 @@ def test_receipt_validator_valid_receipt(db_session, sample_receipt):
     assert True  # Placeholder
 
 
+@pytest.mark.unit
 def test_receipt_validator_missing_fields(db_session, sample_receipt):
     """Test validation with missing required fields."""
     validator = ReceiptValidator()
@@ -93,6 +95,7 @@ def test_receipt_validator_missing_fields(db_session, sample_receipt):
 
 
 # UT-2: Idempotent Ingestion
+@pytest.mark.unit
 def test_receipt_ingestion_idempotency(db_session, sample_receipt):
     """Test idempotent receipt ingestion."""
     service = ReceiptIngestionService(db_session)
@@ -101,6 +104,7 @@ def test_receipt_ingestion_idempotency(db_session, sample_receipt):
 
 
 # UT-3: Append-Only Enforcement
+@pytest.mark.unit
 def test_append_only_enforcement(db_session, sample_receipt):
     """Test append-only storage enforcement."""
     # Would test that updates are rejected
@@ -108,6 +112,7 @@ def test_append_only_enforcement(db_session, sample_receipt):
 
 
 # UT-4: Hash Chain Creation
+@pytest.mark.unit
 def test_hash_chain_creation(db_session, sample_receipt):
     """Test hash chain creation for receipts."""
     service = ReceiptIngestionService(db_session)
@@ -116,6 +121,7 @@ def test_hash_chain_creation(db_session, sample_receipt):
 
 
 # UT-5: Signature Verification
+@pytest.mark.unit
 def test_signature_verification(db_session, sample_receipt):
     """Test signature verification."""
     service = IntegrityVerificationService(db_session)
@@ -124,6 +130,7 @@ def test_signature_verification(db_session, sample_receipt):
 
 
 # UT-6: Access Control Guards
+@pytest.mark.unit
 def test_access_control_guards(db_session):
     """Test access control guards."""
     service = ReceiptQueryService(db_session)
@@ -132,6 +139,7 @@ def test_access_control_guards(db_session):
 
 
 # UT-7: Courier Batch Ingestion
+@pytest.mark.unit
 def test_courier_batch_ingestion(db_session):
     """Test courier batch ingestion."""
     service = CourierBatchService(db_session)
@@ -140,6 +148,7 @@ def test_courier_batch_ingestion(db_session):
 
 
 # UT-8: Export API
+@pytest.mark.unit
 def test_export_api(db_session):
     """Test export API."""
     service = ExportService(db_session)
@@ -148,6 +157,7 @@ def test_export_api(db_session):
 
 
 # UT-9: Receipt Chain Traversal
+@pytest.mark.unit
 def test_chain_traversal(db_session):
     """Test receipt chain traversal."""
     service = ChainTraversalService(db_session)

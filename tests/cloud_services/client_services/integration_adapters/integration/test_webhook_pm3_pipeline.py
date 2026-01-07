@@ -100,6 +100,7 @@ def integration_service(mock_kms_client):
     return StubIntegrationService()
 
 
+@pytest.mark.integration
 class TestWebhookPM3Pipeline:
     """Test webhook → PM-3 pipeline integration."""
 
@@ -116,6 +117,7 @@ class TestWebhookPM3Pipeline:
 
         return MockPM3()
 
+    @pytest.mark.integration
     def test_webhook_to_pm3_pipeline(
         self,
         integration_service,

@@ -22,12 +22,14 @@ def migration_instance(tmp_config_dir):
     return migration.ConstitutionMigration(config_dir=str(tmp_config_dir))
 
 
+@pytest.mark.constitution
 def test_migration_initialization(migration_instance, tmp_config_dir):
     """Test migration initialization."""
     assert migration_instance.config_dir == str(tmp_config_dir)
     assert migration_instance.migration_history_path == tmp_config_dir / "migration_history.json"
 
 
+@pytest.mark.constitution
 def test_load_migration_history_existing(migration_instance, tmp_config_dir):
     """Test loading existing migration history."""
     history = [{"timestamp": "2024-01-01T00:00:00", "migration_type": "test"}]
@@ -37,6 +39,7 @@ def test_load_migration_history_existing(migration_instance, tmp_config_dir):
     assert len(migration_instance._migration_history) == 1
 
 
+@pytest.mark.constitution
 def test_load_migration_history_corrupted(migration_instance, tmp_config_dir):
     """Test loading corrupted migration history."""
     migration_instance.migration_history_path.write_text("invalid json{", encoding="utf-8")
@@ -45,6 +48,7 @@ def test_load_migration_history_corrupted(migration_instance, tmp_config_dir):
     assert isinstance(migration_instance._migration_history, list)
 
 
+@pytest.mark.constitution
 def test_log_migration(migration_instance):
     """Test logging migration operation."""
     migration_instance._log_migration("test", "source", "target", True, "details")
@@ -53,6 +57,7 @@ def test_log_migration(migration_instance):
     assert migration_instance._migration_history[0]["migration_type"] == "test"
 
 
+@pytest.mark.constitution
 def test_log_migration_history_limit(migration_instance):
     """Test that migration history is limited."""
     for i in range(60):
@@ -61,6 +66,7 @@ def test_log_migration_history_limit(migration_instance):
     assert len(migration_instance._migration_history) == 50
 
 
+@pytest.mark.constitution
 def test_migrate_sqlite_to_json(migration_instance, tmp_config_dir, monkeypatch):
     """Test migrating from SQLite to JSON."""
     # Mock managers
@@ -94,6 +100,7 @@ def test_migrate_sqlite_to_json(migration_instance, tmp_config_dir, monkeypatch)
     assert "rules_migrated" in result
 
 
+@pytest.mark.constitution
 def test_migrate_json_to_sqlite(migration_instance, tmp_config_dir, monkeypatch):
     """Test migrating from JSON to SQLite."""
     # Mock managers
@@ -124,6 +131,7 @@ def test_migrate_json_to_sqlite(migration_instance, tmp_config_dir, monkeypatch)
     assert "rules_migrated" in result
 
 
+@pytest.mark.constitution
 def test_verify_migration_success(migration_instance):
     """Test verifying successful migration."""
     source_rules = [
@@ -140,6 +148,7 @@ def test_verify_migration_success(migration_instance):
     assert result["target_count"] == 1
 
 
+@pytest.mark.constitution
 def test_verify_migration_count_mismatch(migration_instance):
     """Test verifying migration with count mismatch."""
     source_rules = [
@@ -156,6 +165,7 @@ def test_verify_migration_count_mismatch(migration_instance):
     assert "error" in result
 
 
+@pytest.mark.constitution
 def test_verify_migration_different_rules(migration_instance):
     """Test verifying migration with different rule data."""
     source_rules = [
@@ -171,6 +181,7 @@ def test_verify_migration_different_rules(migration_instance):
     assert len(result["different_rules"]) > 0
 
 
+@pytest.mark.constitution
 def test_create_backup_sqlite(migration_instance, tmp_config_dir):
     """Test creating SQLite backup."""
     # Create source file
@@ -183,6 +194,7 @@ def test_create_backup_sqlite(migration_instance, tmp_config_dir):
     assert Path(backup_path).exists()
 
 
+@pytest.mark.constitution
 def test_create_backup_json(migration_instance, tmp_config_dir):
     """Test creating JSON backup."""
     # Create source file
@@ -195,6 +207,7 @@ def test_create_backup_json(migration_instance, tmp_config_dir):
     assert Path(backup_path).exists()
 
 
+@pytest.mark.constitution
 def test_create_backup_file_not_exists(migration_instance, tmp_config_dir):
     """Test creating backup when source file doesn't exist."""
     backup_path = migration_instance._create_backup("sqlite", "test")
@@ -202,6 +215,7 @@ def test_create_backup_file_not_exists(migration_instance, tmp_config_dir):
     assert backup_path is None
 
 
+@pytest.mark.constitution
 def test_restore_from_backup(migration_instance, tmp_config_dir, monkeypatch):
     """Test restoring from backup."""
     # Create backup file
@@ -221,6 +235,7 @@ def test_restore_from_backup(migration_instance, tmp_config_dir, monkeypatch):
     assert "backup_path" in result
 
 
+@pytest.mark.constitution
 def test_restore_from_backup_not_found(migration_instance, tmp_config_dir):
     """Test restoring from non-existent backup."""
     result = migration_instance.restore_from_backup("nonexistent.db", "sqlite")
@@ -229,6 +244,7 @@ def test_restore_from_backup_not_found(migration_instance, tmp_config_dir):
     assert "error" in result
 
 
+@pytest.mark.constitution
 def test_repair_sync(migration_instance, monkeypatch):
     """Test repairing sync."""
     # Mock sync manager
@@ -250,6 +266,7 @@ def test_repair_sync(migration_instance, monkeypatch):
     assert "conflicts_found" in result
 
 
+@pytest.mark.constitution
 def test_get_migration_history(migration_instance):
     """Test getting migration history."""
     migration_instance._log_migration("test1", "src", "tgt", True)
@@ -262,6 +279,7 @@ def test_get_migration_history(migration_instance):
     assert len(history_all) == 2
 
 
+@pytest.mark.constitution
 def test_clear_migration_history(migration_instance):
     """Test clearing migration history."""
     migration_instance._log_migration("test", "src", "tgt", True)
@@ -271,6 +289,7 @@ def test_clear_migration_history(migration_instance):
     assert len(migration_instance._migration_history) == 0
 
 
+@pytest.mark.constitution
 def test_global_functions(tmp_config_dir, monkeypatch):
     """Test global migration functions."""
     # Reset global instance

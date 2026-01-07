@@ -89,6 +89,7 @@ def full_setup(client, auth_token, app_schema_registry, app_routing_engine):
     return producer
 
 
+@pytest.mark.integration
 def test_complete_ingestion_pipeline(client, auth_token, full_setup, app_routing_engine):
     """Test complete ingestion pipeline from API to routing."""
     signal = {
@@ -117,6 +118,7 @@ def test_complete_ingestion_pipeline(client, auth_token, full_setup, app_routing
     assert data["summary"]["total"] == 1
 
 
+@pytest.mark.integration
 def test_mixed_signal_batch(client, auth_token, full_setup, app_routing_engine):
     """Test batch ingestion with mixed valid and invalid signals."""
     signals = [
@@ -171,6 +173,7 @@ def test_mixed_signal_batch(client, auth_token, full_setup, app_routing_engine):
     assert data["summary"]["rejected"] + data["summary"]["dlq"] >= 1  # At least 1 invalid
 
 
+@pytest.mark.integration
 def test_duplicate_detection(client, auth_token, full_setup, app_routing_engine):
     """Test duplicate signal detection."""
     signal = {
@@ -208,6 +211,7 @@ def test_duplicate_detection(client, auth_token, full_setup, app_routing_engine)
     assert data2["results"][0]["status"] == "rejected"
 
 
+@pytest.mark.integration
 def test_ordering_semantics(client, auth_token, full_setup, app_routing_engine):
     """Test ordering semantics with sequence numbers."""
     signals = [
@@ -264,6 +268,7 @@ def test_ordering_semantics(client, auth_token, full_setup, app_routing_engine):
     assert data2["results"][0]["status"] in ["accepted", "rejected"]
 
 
+@pytest.mark.integration
 def test_governance_redaction(client, auth_token, full_setup, app_data_governance, app_routing_engine):
     """Test governance redaction during ingestion."""
     # Set up redaction rules
@@ -304,6 +309,7 @@ def test_governance_redaction(client, auth_token, full_setup, app_data_governanc
         assert any("redact" in w.lower() for w in data["results"][0]["warnings"])
 
 
+@pytest.mark.integration
 def test_dlq_workflow(client, auth_token, full_setup, app_routing_engine):
     """Test complete DLQ workflow: failure → DLQ → inspection."""
     # Create signal that will fail validation
@@ -340,6 +346,7 @@ def test_dlq_workflow(client, auth_token, full_setup, app_routing_engine):
     assert data["total"] >= 0  # May have entries
 
 
+@pytest.mark.integration
 def test_throughput_basic(client, auth_token, full_setup, app_routing_engine):
     """Test basic throughput with multiple signals."""
     signals = [
@@ -375,6 +382,7 @@ def test_throughput_basic(client, auth_token, full_setup, app_routing_engine):
     assert elapsed < 5.0  # Should complete in under 5 seconds
 
 
+@pytest.mark.integration
 def test_correlation_tracking(client, auth_token, full_setup, app_routing_engine):
     """Test correlation ID tracking through pipeline."""
     correlation_id = "corr_12345"

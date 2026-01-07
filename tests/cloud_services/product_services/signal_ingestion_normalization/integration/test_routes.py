@@ -77,6 +77,7 @@ _test_client = TestClient(app)
 
 
 @pytest.fixture
+@pytest.mark.integration
 def test_client():
     return _test_client
 
@@ -116,6 +117,7 @@ class TestIngestEndpoint:
 
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_201_CREATED]
 
+    @pytest.mark.integration
     def test_ingest_signals_missing_auth(self, test_client):
         """Test signal ingestion without authorization."""
         response = test_client.post(
@@ -125,6 +127,7 @@ class TestIngestEndpoint:
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.integration
     def test_ingest_signals_invalid_payload(self, test_client):
         """Test signal ingestion with invalid payload."""
         response = test_client.post(
@@ -145,6 +148,7 @@ class TestHealthEndpoint:
         response = test_client.get("/health")
         assert response.status_code == status.HTTP_200_OK
 
+    @pytest.mark.integration
     def test_readiness_check(self, test_client):
         """Test readiness check endpoint."""
         response = test_client.get("/ready")

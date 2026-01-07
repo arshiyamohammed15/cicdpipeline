@@ -134,6 +134,7 @@ async def test_lifecycle_service_transitions(session):
         await service.snooze("missing-alert", duration_minutes=5)
 
 
+@pytest.mark.unit
 def test_quiet_hours_wraparound():
     evaluator = QuietHoursEvaluator({"Fri": "22:00-06:00"})
     late = datetime.strptime("2025-11-21 23:30", "%Y-%m-%d %H:%M")
@@ -142,6 +143,7 @@ def test_quiet_hours_wraparound():
     assert not evaluator.is_quiet(early)
 
 
+@pytest.mark.unit
 def test_quiet_hours_standard_window_and_missing_day():
     evaluator = QuietHoursEvaluator({"Mon": "09:00-17:00"})
     inside = datetime.strptime("2025-11-24 10:00", "%Y-%m-%d %H:%M")

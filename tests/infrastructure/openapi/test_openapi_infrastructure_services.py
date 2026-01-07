@@ -9,11 +9,13 @@ Tests validate:
 """
 
 import json
+import pytest
 import re
 from pathlib import Path
 from typing import Dict, List, Any, Set
 
 
+@pytest.mark.unit
 class TestPolicyServiceOpenAPI:
     """Tests for Policy Service OpenAPI specification."""
 
@@ -27,11 +29,13 @@ class TestPolicyServiceOpenAPI:
         self.spec_content = content
         self.spec_path = spec_path
 
+    @pytest.mark.unit
     def test_openapi_version(self):
         """Test: OpenAPI version is 3.1.0."""
         assert "openapi: 3.1.0" in self.spec_content or '"openapi": "3.1.0"' in self.spec_content, \
             "OpenAPI version must be 3.1.0"
 
+    @pytest.mark.unit
     def test_info_section_complete(self):
         """Test: Info section has required fields."""
         assert "title:" in self.spec_content or '"title"' in self.spec_content, \
@@ -41,6 +45,7 @@ class TestPolicyServiceOpenAPI:
         assert "Policy Service" in self.spec_content, \
             "Title should mention Policy Service"
 
+    @pytest.mark.unit
     def test_paths_defined(self):
         """Test: All required endpoints are defined."""
         required_paths = [
@@ -55,6 +60,7 @@ class TestPolicyServiceOpenAPI:
             assert path in self.spec_content, \
                 f"Required path {path} must be defined"
 
+    @pytest.mark.unit
     def test_get_current_policy_defined(self):
         """Test: GET /api/v1/policies/current endpoint is properly defined."""
         assert "/api/v1/policies/current:" in self.spec_content, \
@@ -64,6 +70,7 @@ class TestPolicyServiceOpenAPI:
         assert "getCurrentPolicy" in self.spec_content, \
             "Operation ID getCurrentPolicy must be defined"
 
+    @pytest.mark.unit
     def test_get_policy_history_defined(self):
         """Test: GET /api/v1/policies/history endpoint is properly defined."""
         assert "/api/v1/policies/history:" in self.spec_content, \
@@ -71,6 +78,7 @@ class TestPolicyServiceOpenAPI:
         assert "getPolicyHistory" in self.spec_content, \
             "Operation ID getPolicyHistory must be defined"
 
+    @pytest.mark.unit
     def test_activate_policy_defined(self):
         """Test: POST /api/v1/policies/activate endpoint is properly defined."""
         assert "/api/v1/policies/activate:" in self.spec_content, \
@@ -80,6 +88,7 @@ class TestPolicyServiceOpenAPI:
         assert "ActivatePolicyRequest" in self.spec_content, \
             "ActivatePolicyRequest schema must be defined"
 
+    @pytest.mark.unit
     def test_revoke_policy_defined(self):
         """Test: POST /api/v1/trust/crl/revoke endpoint is properly defined."""
         assert "/api/v1/trust/crl/revoke:" in self.spec_content, \
@@ -89,6 +98,7 @@ class TestPolicyServiceOpenAPI:
         assert "RevokePolicyRequest" in self.spec_content, \
             "RevokePolicyRequest schema must be defined"
 
+    @pytest.mark.unit
     def test_policy_snapshot_schema_defined(self):
         """Test: PolicySnapshotResponse schema matches TypeScript interface."""
         assert "PolicySnapshotResponse" in self.spec_content, \
@@ -109,6 +119,7 @@ class TestPolicyServiceOpenAPI:
             assert field in self.spec_content, \
                 f"PolicySnapshotResponse must include field: {field}"
 
+    @pytest.mark.unit
     def test_snapshot_hash_pattern(self):
         """Test: snapshot_hash follows SHA256 pattern."""
         assert "sha256:" in self.spec_content, \
@@ -116,6 +127,7 @@ class TestPolicyServiceOpenAPI:
         assert "pattern:" in self.spec_content or '"pattern"' in self.spec_content, \
             "snapshot_hash should have pattern validation"
 
+    @pytest.mark.unit
     def test_policy_history_response_defined(self):
         """Test: PolicyHistoryResponse schema is defined."""
         assert "PolicyHistoryResponse" in self.spec_content, \
@@ -123,6 +135,7 @@ class TestPolicyServiceOpenAPI:
         assert "snapshots" in self.spec_content, \
             "PolicyHistoryResponse must have snapshots array"
 
+    @pytest.mark.unit
     def test_error_response_schema_defined(self):
         """Test: ErrorResponse schema is defined."""
         assert "ErrorResponse" in self.spec_content, \
@@ -134,6 +147,7 @@ class TestPolicyServiceOpenAPI:
         assert "message" in self.spec_content, \
             "ErrorResponse must have message field"
 
+    @pytest.mark.unit
     def test_health_endpoint_defined(self):
         """Test: Health endpoint is defined."""
         assert "/health:" in self.spec_content, \
@@ -141,6 +155,7 @@ class TestPolicyServiceOpenAPI:
         assert "HealthResponse" in self.spec_content, \
             "HealthResponse schema must be defined"
 
+    @pytest.mark.unit
     def test_servers_defined(self):
         """Test: Server URLs are defined."""
         assert "servers:" in self.spec_content or '"servers"' in self.spec_content, \
@@ -148,6 +163,7 @@ class TestPolicyServiceOpenAPI:
         assert "localhost" in self.spec_content or "8000" in self.spec_content, \
             "Local development server should be defined"
 
+    @pytest.mark.unit
     def test_components_schemas_section(self):
         """Test: Components schemas section exists."""
         assert "components:" in self.spec_content or '"components"' in self.spec_content, \
@@ -155,6 +171,7 @@ class TestPolicyServiceOpenAPI:
         assert "schemas:" in self.spec_content or '"schemas"' in self.spec_content, \
             "Schemas section must be defined"
 
+    @pytest.mark.unit
     def test_response_codes_defined(self):
         """Test: Standard HTTP response codes are defined."""
         # Check that common response codes are referenced
@@ -164,6 +181,7 @@ class TestPolicyServiceOpenAPI:
                 f"HTTP {code} response should be defined for at least one endpoint"
 
 
+@pytest.mark.unit
 class TestEvidenceServiceOpenAPI:
     """Tests for Evidence Service OpenAPI specification."""
 
@@ -176,11 +194,13 @@ class TestEvidenceServiceOpenAPI:
         self.spec_content = content
         self.spec_path = spec_path
 
+    @pytest.mark.unit
     def test_openapi_version(self):
         """Test: OpenAPI version is 3.1.0."""
         assert "openapi: 3.1.0" in self.spec_content or '"openapi": "3.1.0"' in self.spec_content, \
             "OpenAPI version must be 3.1.0"
 
+    @pytest.mark.unit
     def test_info_section_complete(self):
         """Test: Info section has required fields."""
         assert "title:" in self.spec_content or '"title"' in self.spec_content, \
@@ -190,6 +210,7 @@ class TestEvidenceServiceOpenAPI:
         assert "Evidence Service" in self.spec_content, \
             "Title should mention Evidence Service"
 
+    @pytest.mark.unit
     def test_paths_defined(self):
         """Test: All required endpoints are defined."""
         required_paths = [
@@ -203,6 +224,7 @@ class TestEvidenceServiceOpenAPI:
             assert path in self.spec_content, \
                 f"Required path {path} must be defined"
 
+    @pytest.mark.unit
     def test_store_evidence_defined(self):
         """Test: POST /api/v1/evidence endpoint is properly defined."""
         assert "/api/v1/evidence:" in self.spec_content, \
@@ -214,6 +236,7 @@ class TestEvidenceServiceOpenAPI:
         assert "StoreEvidenceRequest" in self.spec_content, \
             "StoreEvidenceRequest schema must be defined"
 
+    @pytest.mark.unit
     def test_get_evidence_defined(self):
         """Test: GET /api/v1/evidence/{evidence_id} endpoint is properly defined."""
         assert "/api/v1/evidence/{evidence_id}:" in self.spec_content, \
@@ -223,6 +246,7 @@ class TestEvidenceServiceOpenAPI:
         assert "evidence_id" in self.spec_content, \
             "Path parameter evidence_id must be defined"
 
+    @pytest.mark.unit
     def test_delete_evidence_defined(self):
         """Test: DELETE /api/v1/evidence/{evidence_id} endpoint is properly defined."""
         assert "delete:" in self.spec_content or '"delete"' in self.spec_content, \
@@ -230,6 +254,7 @@ class TestEvidenceServiceOpenAPI:
         assert "deleteEvidence" in self.spec_content, \
             "Operation ID deleteEvidence must be defined"
 
+    @pytest.mark.unit
     def test_batch_evidence_defined(self):
         """Test: POST /api/v1/evidence/batch endpoint is properly defined."""
         assert "/api/v1/evidence/batch:" in self.spec_content, \
@@ -239,6 +264,7 @@ class TestEvidenceServiceOpenAPI:
         assert "StoreEvidenceBatchRequest" in self.spec_content, \
             "StoreEvidenceBatchRequest schema must be defined"
 
+    @pytest.mark.unit
     def test_evidence_handle_schema_matches_typescript(self):
         """Test: EvidenceHandleResponse schema matches TypeScript EvidenceHandle interface."""
         assert "EvidenceHandleResponse" in self.spec_content, \
@@ -255,11 +281,13 @@ class TestEvidenceServiceOpenAPI:
             assert field in self.spec_content, \
                 f"EvidenceHandleResponse must include field: {field}"
 
+    @pytest.mark.unit
     def test_evidence_handle_optional_fields(self):
         """Test: EvidenceHandleResponse includes optional expires_at field."""
         assert "expires_at" in self.spec_content, \
             "EvidenceHandleResponse should include optional expires_at field"
 
+    @pytest.mark.unit
     def test_evidence_response_schema_defined(self):
         """Test: EvidenceResponse schema is defined."""
         assert "EvidenceResponse" in self.spec_content, \
@@ -267,6 +295,7 @@ class TestEvidenceServiceOpenAPI:
         assert "content" in self.spec_content, \
             "EvidenceResponse must have content field"
 
+    @pytest.mark.unit
     def test_error_response_schema_defined(self):
         """Test: ErrorResponse schema is defined."""
         assert "ErrorResponse" in self.spec_content, \
@@ -274,6 +303,7 @@ class TestEvidenceServiceOpenAPI:
         assert "error" in self.spec_content, \
             "ErrorResponse must have error object"
 
+    @pytest.mark.unit
     def test_health_endpoint_defined(self):
         """Test: Health endpoint is defined."""
         assert "/health:" in self.spec_content, \
@@ -281,11 +311,13 @@ class TestEvidenceServiceOpenAPI:
         assert "HealthResponse" in self.spec_content, \
             "HealthResponse schema must be defined"
 
+    @pytest.mark.unit
     def test_servers_defined(self):
         """Test: Server URLs are defined."""
         assert "servers:" in self.spec_content or '"servers"' in self.spec_content, \
             "Servers section must be defined"
 
+    @pytest.mark.unit
     def test_response_codes_defined(self):
         """Test: Standard HTTP response codes are defined."""
         response_codes = ["200", "201", "204", "400", "404", "410", "500"]
@@ -293,6 +325,7 @@ class TestEvidenceServiceOpenAPI:
             assert f"'{code}':" in self.spec_content or f'"{code}":' in self.spec_content, \
                 f"HTTP {code} response should be defined for at least one endpoint"
 
+    @pytest.mark.unit
     def test_evidence_type_enum(self):
         """Test: Evidence type examples match expected types."""
         # Check that common evidence types are mentioned
@@ -302,9 +335,11 @@ class TestEvidenceServiceOpenAPI:
             "Evidence type examples should include common types (log, artifact, metric)"
 
 
+@pytest.mark.unit
 class TestOpenAPICrossService:
     """Cross-service tests for OpenAPI specifications."""
 
+    @pytest.mark.unit
     def test_both_specs_exist(self):
         """Test: Both OpenAPI specs exist."""
         policy_spec = Path("docs/architecture/openapi/policy-service.openapi.yaml")
@@ -315,6 +350,7 @@ class TestOpenAPICrossService:
         assert evidence_spec.exists(), \
             f"Evidence service OpenAPI spec must exist: {evidence_spec}"
 
+    @pytest.mark.unit
     def test_consistent_error_response_format(self):
         """Test: Both services use consistent error response format."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')
@@ -332,6 +368,7 @@ class TestOpenAPICrossService:
         assert "code" in evidence_content and "message" in evidence_content, \
             "Evidence service ErrorResponse must have code and message"
 
+    @pytest.mark.unit
     def test_consistent_health_response_format(self):
         """Test: Both services use consistent health response format."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')
@@ -349,6 +386,7 @@ class TestOpenAPICrossService:
         assert "status" in evidence_content, \
             "Evidence service HealthResponse must have status field"
 
+    @pytest.mark.unit
     def test_openapi_version_consistent(self):
         """Test: Both specs use same OpenAPI version."""
         policy_content = Path("docs/architecture/openapi/policy-service.openapi.yaml").read_text(encoding='utf-8')

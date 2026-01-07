@@ -3,6 +3,8 @@
 from dataclasses import dataclass
 from typing import Dict, List
 
+import pytest
+
 from mmm_engine.delivery import DeliveryOrchestrator
 from mmm_engine.integrations.downstream_clients import (
     EdgeAgentClient,
@@ -59,6 +61,7 @@ def build_decision() -> MMMDecision:
     )
 
 
+@pytest.mark.unit
 def test_delivery_orchestrator_routes_to_all_surfaces(monkeypatch):
     edge = StubClient("edge", [])
     ci = StubClient("ci", [])
@@ -73,6 +76,7 @@ def test_delivery_orchestrator_routes_to_all_surfaces(monkeypatch):
     assert results == {"ide": [True], "ci": [True], "alert": [True]}
 
 
+@pytest.mark.unit
 def test_delivery_orchestrator_handles_partial_surfaces():
     edge = StubClient("edge", [])
     ci = StubClient("ci", [])

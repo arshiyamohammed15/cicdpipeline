@@ -16,9 +16,11 @@ from datetime import datetime
 
 from integration_adapters.services.signal_mapper import SignalMapper
 
+@pytest.mark.unit
 class TestSignalMapper:
     """Test SignalEnvelope mapping."""
 
+    @pytest.mark.unit
     def test_map_github_pr_event(self):
         """Test mapping GitHub PR opened event to SignalEnvelope."""
         mapper = SignalMapper()
@@ -63,6 +65,7 @@ class TestSignalMapper:
         assert signal.payload["pr_number"] == 123
         assert signal.payload["title"] == "Test PR"
 
+    @pytest.mark.unit
     def test_map_jira_issue_event(self):
         """Test mapping Jira issue created event to SignalEnvelope."""
         mapper = SignalMapper()
@@ -92,6 +95,7 @@ class TestSignalMapper:
         assert "canonical_keys" in signal.payload
         assert signal.payload["canonical_keys"]["issue_key"] == "PROJ-123"
 
+    @pytest.mark.unit
     def test_map_slack_message_event(self):
         """Test mapping Slack message event to SignalEnvelope."""
         mapper = SignalMapper()
@@ -117,6 +121,7 @@ class TestSignalMapper:
         assert "canonical_keys" in signal.payload
         assert signal.payload["canonical_keys"]["channel_id"] == "C123456"
 
+    @pytest.mark.unit
     def test_map_event_with_missing_fields(self):
         """Test mapping event with missing optional fields."""
         mapper = SignalMapper()
@@ -139,6 +144,7 @@ class TestSignalMapper:
         assert signal.producer_id == "connection-123"
         assert "provider_metadata" in signal.payload
 
+    @pytest.mark.unit
     def test_event_type_mapping(self):
         """Test event type to canonical signal_type mapping."""
         mapper = SignalMapper()

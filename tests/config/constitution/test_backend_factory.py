@@ -36,6 +36,7 @@ class _StubMigration:
         return True
 
 
+@pytest.mark.constitution
 def test_auto_backend_prefers_env_and_fallback(tmp_path, monkeypatch):
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
 
@@ -61,6 +62,7 @@ def test_auto_backend_prefers_env_and_fallback(tmp_path, monkeypatch):
     assert manager2.healthy is True
 
 
+@pytest.mark.constitution
 def test_switch_backend_updates_config(tmp_path):
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
     assert factory.switch_backend("json") is True
@@ -69,6 +71,7 @@ def test_switch_backend_updates_config(tmp_path):
     assert cfg["backend"] == "json"
 
 
+@pytest.mark.constitution
 def test_backend_factory_initialization(tmp_path):
     """Test factory initialization with default and custom config dirs."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -77,6 +80,7 @@ def test_backend_factory_initialization(tmp_path):
     assert factory._migration is not None
 
 
+@pytest.mark.constitution
 def test_get_constitution_manager_explicit_backend(tmp_path, monkeypatch):
     """Test getting manager with explicit backend selection."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -98,6 +102,7 @@ def test_get_constitution_manager_explicit_backend(tmp_path, monkeypatch):
     assert manager.backend_type == "json"
 
 
+@pytest.mark.constitution
 def test_get_constitution_manager_unsupported_backend(tmp_path):
     """Test that unsupported backend raises ValueError."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -106,6 +111,7 @@ def test_get_constitution_manager_unsupported_backend(tmp_path):
         factory.get_constitution_manager(backend="invalid")
 
 
+@pytest.mark.constitution
 def test_get_constitution_manager_auto_fallback(tmp_path, monkeypatch):
     """Test automatic fallback when primary backend fails."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -129,6 +135,7 @@ def test_get_constitution_manager_auto_fallback(tmp_path, monkeypatch):
     assert manager == json_manager
 
 
+@pytest.mark.constitution
 def test_get_constitution_manager_all_backends_fail(tmp_path, monkeypatch):
     """Test that RuntimeError is raised when all backends fail."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -151,6 +158,7 @@ def test_get_constitution_manager_all_backends_fail(tmp_path, monkeypatch):
         factory.get_constitution_manager(backend="auto")
 
 
+@pytest.mark.constitution
 def test_determine_auto_backend_env_override(tmp_path, monkeypatch):
     """Test that environment variable overrides config."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -167,6 +175,7 @@ def test_determine_auto_backend_env_override(tmp_path, monkeypatch):
     assert backend == "json"
 
 
+@pytest.mark.constitution
 def test_determine_auto_backend_primary_backend(tmp_path):
     """Test that primary_backend setting is used."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -178,6 +187,7 @@ def test_determine_auto_backend_primary_backend(tmp_path):
     assert backend == "json"
 
 
+@pytest.mark.constitution
 def test_determine_auto_backend_legacy_backend(tmp_path):
     """Test that legacy backend setting is used for compatibility."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -188,6 +198,7 @@ def test_determine_auto_backend_legacy_backend(tmp_path):
     assert backend == "json"
 
 
+@pytest.mark.constitution
 def test_determine_auto_backend_default(tmp_path):
     """Test that default is sqlite when no config."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -198,6 +209,7 @@ def test_determine_auto_backend_default(tmp_path):
     assert backend == "sqlite"
 
 
+@pytest.mark.constitution
 def test_get_available_backends(tmp_path, monkeypatch):
     """Test getting information about available backends."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -216,6 +228,7 @@ def test_get_available_backends(tmp_path, monkeypatch):
     assert backends["json"]["available"] is True
 
 
+@pytest.mark.constitution
 def test_get_available_backends_with_errors(tmp_path, monkeypatch):
     """Test getting backend info when one backend fails."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -234,6 +247,7 @@ def test_get_available_backends_with_errors(tmp_path, monkeypatch):
     assert backends["json"]["available"] is True
 
 
+@pytest.mark.constitution
 def test_get_active_backend_config(tmp_path):
     """Test getting active backend configuration."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -250,6 +264,7 @@ def test_get_active_backend_config(tmp_path):
     assert "version" in active_config
 
 
+@pytest.mark.constitution
 def test_get_backend_status(tmp_path, monkeypatch):
     """Test getting comprehensive backend status."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -268,6 +283,7 @@ def test_get_backend_status(tmp_path, monkeypatch):
     assert "configuration_path" in status
 
 
+@pytest.mark.constitution
 def test_switch_backend_invalid_backend(tmp_path):
     """Test that switching to invalid backend raises ValueError."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -276,6 +292,7 @@ def test_switch_backend_invalid_backend(tmp_path):
         factory.switch_backend("invalid")
 
 
+@pytest.mark.constitution
 def test_switch_backend_sqlite(tmp_path):
     """Test switching to SQLite backend."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -288,6 +305,7 @@ def test_switch_backend_sqlite(tmp_path):
     assert cfg["backend"] == "sqlite"
 
 
+@pytest.mark.constitution
 def test_create_default_config(tmp_path):
     """Test default configuration creation."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -303,6 +321,7 @@ def test_create_default_config(tmp_path):
     assert config["fallback"]["fallback_backend"] == "json"
 
 
+@pytest.mark.constitution
 def test_get_configuration_with_cache(tmp_path):
     """Test configuration caching."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -314,6 +333,7 @@ def test_get_configuration_with_cache(tmp_path):
     assert config1 is config2
 
 
+@pytest.mark.constitution
 def test_get_configuration_auto_migration(tmp_path, monkeypatch):
     """Test automatic migration from v1.0 to v2.0."""
     factory = backend_factory.ConstitutionBackendFactory(config_dir=str(tmp_path))
@@ -339,6 +359,7 @@ def test_get_configuration_auto_migration(tmp_path, monkeypatch):
     assert migration.migrated is True
 
 
+@pytest.mark.constitution
 def test_global_functions(tmp_path):
     """Test global factory functions."""
     # Reset global instance

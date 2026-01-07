@@ -14,9 +14,11 @@ except ImportError:
     db_models = None  # Database module not implemented
 
 
+@pytest.mark.unit
 class TestComponentRegistryService:
     """Test ComponentRegistryService."""
 
+    @pytest.mark.unit
     def test_register_new_component(self, db_session, policy_client, edge_client):
         """Test registering a new component."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -40,6 +42,7 @@ class TestComponentRegistryService:
         assert db_component.name == "Test Component"
         assert db_component.component_type == "service"
 
+    @pytest.mark.unit
     def test_update_existing_component(self, db_session, policy_client, edge_client):
         """Test updating an existing component."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -72,6 +75,7 @@ class TestComponentRegistryService:
         assert db_component.component_type == "agent"
         assert db_component.plane == "Shared"
 
+    @pytest.mark.unit
     def test_register_component_with_dependencies(self, db_session, policy_client, edge_client):
         """Test registering component with dependencies."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -97,6 +101,7 @@ class TestComponentRegistryService:
         assert db_component.dependencies[0].dependency_id == "dep-1"
         assert db_component.dependencies[0].critical is True
 
+    @pytest.mark.unit
     def test_get_component(self, db_session, policy_client, edge_client):
         """Test retrieving a component."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -118,6 +123,7 @@ class TestComponentRegistryService:
         assert retrieved.component_id == "test-component-1"
         assert retrieved.name == "Test Component"
 
+    @pytest.mark.unit
     def test_get_nonexistent_component(self, db_session, policy_client, edge_client):
         """Test retrieving non-existent component."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -126,6 +132,7 @@ class TestComponentRegistryService:
 
         assert retrieved is None
 
+    @pytest.mark.unit
     def test_list_components(self, db_session, policy_client, edge_client):
         """Test listing all components."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -147,6 +154,7 @@ class TestComponentRegistryService:
         assert len(components) == 3
         assert all(c.component_id.startswith("test-component-") for c in components)
 
+    @pytest.mark.unit
     def test_component_with_slo_target(self, db_session, policy_client, edge_client):
         """Test registering component with SLO target."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)
@@ -168,6 +176,7 @@ class TestComponentRegistryService:
         assert db_component.slo_target == 99.5
         assert db_component.error_budget_minutes == 216
 
+    @pytest.mark.unit
     def test_component_with_metrics_profile(self, db_session, policy_client, edge_client):
         """Test registering component with metrics profile."""
         service = ComponentRegistryService(db_session, policy_client, edge_client)

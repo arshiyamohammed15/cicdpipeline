@@ -43,9 +43,11 @@ def valid_bkg_edge() -> dict:
     }
 
 
+@pytest.mark.unit
 class TestBkgEdgeSchemaStructure:
     """Test BKG edge JSON schema structure."""
 
+    @pytest.mark.unit
     def test_schema_has_required_fields(self, bkg_schema: dict) -> None:
         """Schema must define required fields."""
         assert "required" in bkg_schema
@@ -60,6 +62,7 @@ class TestBkgEdgeSchemaStructure:
         }
         assert required == expected_required
 
+    @pytest.mark.unit
     def test_schema_has_entity_type_enum(self, bkg_schema: dict) -> None:
         """Schema must define entity type enum."""
         source_prop = bkg_schema["properties"]["source_entity_type"]
@@ -72,6 +75,7 @@ class TestBkgEdgeSchemaStructure:
         assert set(source_prop["enum"]) == expected_entity_types
         assert set(target_prop["enum"]) == expected_entity_types
 
+    @pytest.mark.unit
     def test_schema_has_edge_type_enum(self, bkg_schema: dict) -> None:
         """Schema must define edge type enum."""
         edge_type_prop = bkg_schema["properties"]["edge_type"]
@@ -90,6 +94,7 @@ class TestBkgEdgeSchemaStructure:
         }
         assert set(edge_type_prop["enum"]) == expected_edge_types
 
+    @pytest.mark.unit
     def test_schema_metadata_is_optional(self, bkg_schema: dict) -> None:
         """Metadata field must be optional."""
         assert "metadata" not in bkg_schema["required"]
@@ -98,18 +103,22 @@ class TestBkgEdgeSchemaStructure:
         assert metadata_prop.get("additionalProperties") is True
 
 
+@pytest.mark.unit
 class TestBkgEdgeValidation:
     """Test BKG edge validation against schema."""
 
+    @pytest.mark.unit
     def test_valid_bkg_edge_passes(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """Valid BKG edge must pass validation."""
         jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_with_metadata_passes(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with metadata must pass validation."""
         valid_bkg_edge["metadata"] = {"weight": 0.8, "confidence": 0.95}
         jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_edge_id_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing edge_id must fail validation."""
         del valid_bkg_edge["edge_id"]
@@ -117,6 +126,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "edge_id" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_source_entity_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing source_entity_type must fail validation."""
         del valid_bkg_edge["source_entity_type"]
@@ -124,6 +134,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "source_entity_type" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_source_entity_id_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing source_entity_id must fail validation."""
         del valid_bkg_edge["source_entity_id"]
@@ -131,6 +142,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "source_entity_id" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_target_entity_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing target_entity_type must fail validation."""
         del valid_bkg_edge["target_entity_type"]
@@ -138,6 +150,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "target_entity_type" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_target_entity_id_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing target_entity_id must fail validation."""
         del valid_bkg_edge["target_entity_id"]
@@ -145,6 +158,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "target_entity_id" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_missing_edge_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge missing edge_type must fail validation."""
         del valid_bkg_edge["edge_type"]
@@ -152,6 +166,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "edge_type" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_invalid_source_entity_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with invalid source_entity_type must fail validation."""
         valid_bkg_edge["source_entity_type"] = "invalid_type"
@@ -159,6 +174,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "source_entity_type" in str(exc_info.value) or "invalid_type" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_invalid_target_entity_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with invalid target_entity_type must fail validation."""
         valid_bkg_edge["target_entity_type"] = "invalid_type"
@@ -166,6 +182,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "target_entity_type" in str(exc_info.value) or "invalid_type" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_invalid_edge_type_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with invalid edge_type must fail validation."""
         valid_bkg_edge["edge_type"] = "invalid_edge"
@@ -173,6 +190,7 @@ class TestBkgEdgeValidation:
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
         assert "edge_type" in str(exc_info.value) or "invalid_edge" in str(exc_info.value)
 
+    @pytest.mark.unit
     def test_bkg_edge_all_valid_entity_types_pass(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with all valid entity types must pass validation."""
         valid_entity_types = ["tenant", "repo", "actor", "receipt", "policy", "gate", "signal", "event"]
@@ -182,6 +200,7 @@ class TestBkgEdgeValidation:
                 valid_bkg_edge["target_entity_type"] = target_type
                 jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_all_valid_edge_types_pass(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with all valid edge types must pass validation."""
         valid_edge_types = ["owns", "contains", "triggers", "references", "depends_on", "belongs_to", "causes", "precedes"]
@@ -189,11 +208,13 @@ class TestBkgEdgeValidation:
             valid_bkg_edge["edge_type"] = edge_type
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_empty_metadata_passes(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with empty metadata object must pass validation."""
         valid_bkg_edge["metadata"] = {}
         jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_complex_metadata_passes(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with complex metadata must pass validation."""
         valid_bkg_edge["metadata"] = {
@@ -204,18 +225,21 @@ class TestBkgEdgeValidation:
         }
         jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_non_string_edge_id_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with non-string edge_id must fail validation."""
         valid_bkg_edge["edge_id"] = 123
         with pytest.raises(jsonschema.ValidationError):
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_non_string_entity_id_fails(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with non-string entity_id must fail validation."""
         valid_bkg_edge["source_entity_id"] = 123
         with pytest.raises(jsonschema.ValidationError):
             jsonschema.validate(instance=valid_bkg_edge, schema=bkg_schema)
 
+    @pytest.mark.unit
     def test_bkg_edge_empty_strings_pass(self, bkg_schema: dict, valid_bkg_edge: dict) -> None:
         """BKG edge with empty string IDs must pass (schema allows empty strings)."""
         valid_bkg_edge["edge_id"] = ""

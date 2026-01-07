@@ -12,9 +12,11 @@ from user_behaviour_intelligence.models import ActorScope, Dimension
 from datetime import datetime, timedelta
 
 
+@pytest.mark.unit
 class TestActorParity:
     """Test actor parity in feature computation."""
 
+    @pytest.mark.unit
     def test_human_and_ai_identical_features(self):
         """Test that identical event patterns produce identical features for human and AI."""
         service = FeatureComputationService()

@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import io
 import json
@@ -11,6 +12,7 @@ def _read_receipts(path):
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
 
 
+@pytest.mark.unit
 def test_mcp_add_writes_registry_and_receipt(tmp_path) -> None:
     registry_path = tmp_path / "registry.json"
     receipt_path = tmp_path / "receipts.jsonl"
@@ -45,6 +47,7 @@ def test_mcp_add_writes_registry_and_receipt(tmp_path) -> None:
     assert receipts[0]["outcome"] == "success"
 
 
+@pytest.mark.unit
 def test_mcp_add_unpinned_enabled_fails_and_receipted(tmp_path) -> None:
     registry_path = tmp_path / "registry.json"
     receipt_path = tmp_path / "receipts.jsonl"
@@ -72,6 +75,7 @@ def test_mcp_add_unpinned_enabled_fails_and_receipted(tmp_path) -> None:
     assert receipts[0]["outcome"] == "failure"
 
 
+@pytest.mark.unit
 def test_mcp_disable_updates_registry_and_receipt(tmp_path) -> None:
     registry_path = tmp_path / "registry.json"
     receipt_path = tmp_path / "receipts.jsonl"
@@ -110,6 +114,7 @@ def test_mcp_disable_updates_registry_and_receipt(tmp_path) -> None:
     assert receipts[0]["outcome"] == "success"
 
 
+@pytest.mark.unit
 def test_mcp_list_emits_receipt(tmp_path) -> None:
     registry_path = tmp_path / "registry.json"
     receipt_path = tmp_path / "receipts.jsonl"

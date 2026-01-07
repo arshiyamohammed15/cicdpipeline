@@ -24,18 +24,22 @@ PG_MIGRATION = SCHEMA_PACK_ROOT / "migrations" / "pg" / "001_core.sql"
 SQLITE_MIGRATION = SCHEMA_PACK_ROOT / "migrations" / "sqlite" / "001_core.sql"
 
 
+@pytest.mark.unit
 class TestSchemaPackApplicationFlow:
     """Test schema pack application flow (mocked)."""
 
+    @pytest.mark.unit
     def test_schema_pack_migration_files_exist(self) -> None:
         """Schema pack migration files must exist."""
         assert PG_MIGRATION.exists(), "Postgres migration file missing"
         assert SQLITE_MIGRATION.exists(), "SQLite migration file missing"
 
+    @pytest.mark.unit
     def test_schema_pack_contract_exists(self) -> None:
         """Canonical schema contract must exist."""
         assert CONTRACT_PATH.exists(), "Canonical schema contract missing"
 
+    @pytest.mark.unit
     def test_schema_pack_contract_is_valid_json(self) -> None:
         """Canonical schema contract must be valid JSON."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -45,6 +49,7 @@ class TestSchemaPackApplicationFlow:
         assert "postgres" in contract
         assert "sqlite" in contract
 
+    @pytest.mark.unit
     def test_schema_pack_migrations_are_valid_sql(self) -> None:
         """Schema pack migrations must be valid SQL (syntax check)."""
         pg_text = PG_MIGRATION.read_text(encoding="utf-8")
@@ -56,6 +61,7 @@ class TestSchemaPackApplicationFlow:
         assert "BEGIN" in pg_text or "BEGIN;" in pg_text
         assert "COMMIT" in pg_text or "COMMIT;" in pg_text
 
+    @pytest.mark.unit
     def test_schema_pack_migrations_match_contract(self) -> None:
         """Schema pack migrations must match contract table definitions."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -73,9 +79,11 @@ class TestSchemaPackApplicationFlow:
             assert f"CREATE TABLE IF NOT EXISTS {table['name']}" in sqlite_text
 
 
+@pytest.mark.unit
 class TestPhase0StubApplicationFlow:
     """Test Phase 0 stub application flow."""
 
+    @pytest.mark.unit
     def test_bkg_migrations_exist_for_all_planes(self) -> None:
         """BKG migrations must exist for all planes."""
         bkg_tenant = REPO_ROOT / "infra" / "db" / "migrations" / "tenant" / "002_bkg_phase0.sql"
@@ -88,11 +96,13 @@ class TestPhase0StubApplicationFlow:
         assert bkg_shared.exists(), "BKG shared migration missing"
         assert bkg_sqlite.exists(), "BKG SQLite migration missing"
 
+    @pytest.mark.unit
     def test_qa_cache_migration_exists(self) -> None:
         """Semantic Q&A Cache migration must exist."""
         qa_cache = REPO_ROOT / "infra" / "db" / "migrations" / "product" / "004_semantic_qa_cache_phase0.sql"
         assert qa_cache.exists(), "Semantic Q&A Cache migration missing"
 
+    @pytest.mark.unit
     def test_bkg_migrations_are_identical_across_postgres(self) -> None:
         """BKG Postgres migrations must be identical across planes."""
         bkg_tenant = REPO_ROOT / "infra" / "db" / "migrations" / "tenant" / "002_bkg_phase0.sql"
@@ -112,9 +122,11 @@ class TestPhase0StubApplicationFlow:
         assert tenant_normalized == shared_normalized, "BKG tenant and shared migrations differ"
 
 
+@pytest.mark.unit
 class TestSchemaEquivalenceVerification:
     """Test schema equivalence verification logic."""
 
+    @pytest.mark.unit
     def test_contract_defines_postgres_tables(self) -> None:
         """Contract must define Postgres tables."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -126,6 +138,7 @@ class TestSchemaEquivalenceVerification:
             assert "primary_key" in table
             assert "columns" in table
 
+    @pytest.mark.unit
     def test_contract_defines_sqlite_tables(self) -> None:
         """Contract must define SQLite tables."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -137,6 +150,7 @@ class TestSchemaEquivalenceVerification:
             assert "primary_key" in table
             assert "columns" in table
 
+    @pytest.mark.unit
     def test_contract_postgres_sqlite_table_count_matches(self) -> None:
         """Contract must have same number of tables in Postgres and SQLite."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -144,6 +158,7 @@ class TestSchemaEquivalenceVerification:
 
         assert len(contract["postgres"]["tables"]) == len(contract["sqlite"]["tables"])
 
+    @pytest.mark.unit
     def test_contract_bkg_edge_in_both_engines(self) -> None:
         """Contract must include BKG edge table in both Postgres and SQLite."""
         with open(CONTRACT_PATH, encoding="utf-8") as f:
@@ -161,15 +176,18 @@ class TestSchemaEquivalenceVerification:
         assert pg_columns == sqlite_columns
 
 
+@pytest.mark.unit
 class TestErrorScenarios:
     """Test error scenarios and edge cases."""
 
+    @pytest.mark.unit
     def test_missing_migration_file_handling(self) -> None:
         """Scripts must handle missing migration files gracefully."""
         # This is tested in PowerShell script tests
         # Python test verifies files exist (negative case would require mocking)
         assert PG_MIGRATION.exists(), "Migration file should exist for positive test"
 
+    @pytest.mark.unit
     def test_invalid_contract_json_handling(self) -> None:
         """Scripts must handle invalid contract JSON gracefully."""
         # Verify contract is valid JSON
@@ -177,6 +195,7 @@ class TestErrorScenarios:
             contract = json.load(f)
         assert isinstance(contract, dict), "Contract must be valid JSON object"
 
+    @pytest.mark.unit
     def test_empty_migration_file_handling(self) -> None:
         """Migrations must not be empty."""
         pg_text = PG_MIGRATION.read_text(encoding="utf-8")
@@ -185,6 +204,7 @@ class TestErrorScenarios:
         assert len(pg_text.strip()) > 0, "Postgres migration must not be empty"
         assert len(sqlite_text.strip()) > 0, "SQLite migration must not be empty"
 
+    @pytest.mark.unit
     def test_migration_idempotency(self) -> None:
         """Migrations must be idempotent (IF NOT EXISTS)."""
         pg_text = PG_MIGRATION.read_text(encoding="utf-8")

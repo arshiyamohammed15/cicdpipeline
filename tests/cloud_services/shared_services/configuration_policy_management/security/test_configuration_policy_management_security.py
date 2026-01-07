@@ -20,6 +20,7 @@ Security Requirements (per PRD):
 import sys
 import unittest
 import uuid
+import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
@@ -76,6 +77,7 @@ from configuration_policy_management.services import PolicyService
 from configuration_policy_management.dependencies import MockM27EvidenceLedger, MockM33KeyManagement, MockM34SchemaRegistry
 
 
+@pytest.mark.security
 class TestPolicyIntegrityValidation(unittest.TestCase):
     """Test policy integrity validation per PRD (TC-SEC-POLICY-001)."""
 
@@ -86,6 +88,7 @@ class TestPolicyIntegrityValidation(unittest.TestCase):
         self.schema_registry = MockM34SchemaRegistry()
         self.service = PolicyService(self.evidence_ledger, self.key_management, self.schema_registry)
 
+    @pytest.mark.security
     def test_policy_signature_verification(self):
         """Test policy receipt signature verification."""
         # Receipts should be signed and verifiable
@@ -113,9 +116,11 @@ class TestPolicyIntegrityValidation(unittest.TestCase):
         self.assertTrue(is_valid)
 
 
+@pytest.mark.security
 class TestTenantIsolation(unittest.TestCase):
     """Test tenant isolation per PRD (TC-SEC-TENANT-001)."""
 
+    @pytest.mark.security
     def test_tenant_data_isolation(self):
         """Test that tenants cannot access each other's data."""
         # TODO: Implement when database queries are fully implemented
@@ -123,15 +128,18 @@ class TestTenantIsolation(unittest.TestCase):
         pass
 
 
+@pytest.mark.security
 class TestInputValidation(unittest.TestCase):
     """Test input validation prevents malicious input."""
 
+    @pytest.mark.security
     def test_sql_injection_prevention(self):
         """Test SQL injection prevention."""
         # SQLAlchemy ORM should prevent SQL injection
         # This is tested implicitly through database model usage
         pass
 
+    @pytest.mark.security
     def test_xss_prevention(self):
         """Test XSS prevention in receipt rendering."""
         # Receipt data should be properly escaped in UI

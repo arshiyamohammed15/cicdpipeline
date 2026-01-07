@@ -15,6 +15,8 @@ os.environ.setdefault("USE_REAL_SERVICES", "false")
 SMOKE_LOG = "pm_smoke_receipts.jsonl"
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pm1_mmm_receipt_smoke(monkeypatch: pytest.MonkeyPatch):
     from mmm_engine.models import MMMAction, MMMContext, MMMDecision, ActionType, ActorType, Surface
     from mmm_engine.services import MMMService
@@ -71,6 +73,8 @@ def test_pm1_mmm_receipt_smoke(monkeypatch: pytest.MonkeyPatch):
     append_record(SMOKE_LOG, {"module": "PM-1", "receipt_id": receipt_id})
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pm2_cccs_receipt_smoke(monkeypatch: pytest.MonkeyPatch, tmp_path):
     from shared_libs.cccs.receipts import OfflineCourier, ReceiptConfig, ReceiptService, WALQueue
     from shared_libs.cccs.receipts import service as receipts_service
@@ -105,6 +109,8 @@ def test_pm2_cccs_receipt_smoke(monkeypatch: pytest.MonkeyPatch, tmp_path):
     append_record(SMOKE_LOG, {"module": "PM-2", "receipt_id": record.receipt_id})
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pm3_sin_receipt_smoke():
     from signal_ingestion_normalization.dependencies import MockM32Trust
     from signal_ingestion_normalization.dlq import DLQHandler
@@ -142,6 +148,8 @@ def test_pm3_sin_receipt_smoke():
     append_record(SMOKE_LOG, {"module": "PM-3", "receipt_id": receipt_id})
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pm4_detection_receipt_smoke(monkeypatch: pytest.MonkeyPatch):
     from detection_engine_core.models import DecisionRequest, EvaluationPoint
     from detection_engine_core.services import DetectionEngineService
@@ -163,6 +171,8 @@ def test_pm4_detection_receipt_smoke(monkeypatch: pytest.MonkeyPatch):
     append_record(SMOKE_LOG, {"module": "PM-4", "receipt_id": response.receipt.receipt_id})
 
 
+@pytest.mark.smoke
+@pytest.mark.unit
 def test_pm5_integration_adapters_receipt_smoke():
     from integration_adapters.adapters.base import BaseAdapter
     from integration_adapters.database.models import Base, IntegrationConnection, IntegrationProvider, NormalisedAction

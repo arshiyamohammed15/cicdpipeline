@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 """
 Unit tests for SafetyIncidentStore deduplication and alert payloads.
 """
@@ -12,6 +13,7 @@ from cloud_services.llm_gateway.models import (  # type: ignore  # pylint: disab
 )
 
 
+@pytest.mark.llm_gateway_unit
 def test_incident_deduplication_same_context() -> None:
     store = SafetyIncidentStore()
 

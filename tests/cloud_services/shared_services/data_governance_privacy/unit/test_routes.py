@@ -9,11 +9,13 @@ from data_governance_privacy.main import app  # type: ignore
 
 
 @pytest.fixture
+@pytest.mark.unit
 def test_client() -> TestClient:
     """FastAPI test client for privacy service routes."""
     return TestClient(app)
 
 
+@pytest.mark.unit
 def test_health_endpoint(test_client):
     response = test_client.get("/privacy/v1/health")
     assert response.status_code == 200
@@ -21,12 +23,14 @@ def test_health_endpoint(test_client):
     assert data.get("status") == "healthy"
 
 
+@pytest.mark.unit
 def test_versioned_api_prefix_exists(test_client):
     response = test_client.get("/privacy/v1/config")
     assert response.status_code == 200
     assert response.json()["api_endpoints"]["health"] == "/privacy/v1/health"
 
 
+@pytest.mark.unit
 def test_classification_endpoint_smoke(test_client):
     payload = {
         "tenant_id": "tenant-smoke",
@@ -39,6 +43,7 @@ def test_classification_endpoint_smoke(test_client):
     assert response.status_code in {200, 400}
 
 
+@pytest.mark.unit
 def test_retention_endpoint_smoke(test_client):
     payload = {
         "tenant_id": "tenant-smoke",
@@ -49,6 +54,7 @@ def test_retention_endpoint_smoke(test_client):
     assert response.status_code in {200, 400}
 
 
+@pytest.mark.unit
 def test_consent_check_smoke(test_client):
     payload = {
         "tenant_id": "tenant-smoke",
@@ -61,6 +67,7 @@ def test_consent_check_smoke(test_client):
     assert response.status_code in {200, 400}
 
 
+@pytest.mark.unit
 def test_privacy_enforcement_smoke(test_client):
     payload = {
         "tenant_id": "tenant-smoke",

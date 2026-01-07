@@ -18,6 +18,7 @@ class TestConfigurationPolicyManagementRoutes:
         """Create test client."""
         return TestClient(app)
 
+    @pytest.mark.unit
     def test_health_check(self, client):
         """Test health check endpoint."""
         response = client.get("/health")
@@ -25,6 +26,7 @@ class TestConfigurationPolicyManagementRoutes:
         data = response.json()
         assert data["status"] == "healthy"
 
+    @pytest.mark.unit
     def test_config_endpoint(self, client):
         """Test config endpoint."""
         response = client.get("/policy/v1/config")

@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 from src.shared_libs.mcp_server_registry import (
     MCPServerEntry,
@@ -8,6 +9,7 @@ from src.shared_libs.mcp_server_registry import (
 )
 
 
+@pytest.mark.unit
 def test_registry_save_and_load_round_trip(tmp_path) -> None:
     registry = MCPServerRegistry(
         servers=(
@@ -29,6 +31,7 @@ def test_registry_save_and_load_round_trip(tmp_path) -> None:
     assert loaded == registry
 
 
+@pytest.mark.unit
 def test_registry_parses_from_dict() -> None:
     registry = MCPServerRegistry.from_dict(
         {
@@ -49,6 +52,7 @@ def test_registry_parses_from_dict() -> None:
     assert registry.servers[0].capabilities == ("tools",)
 
 
+@pytest.mark.unit
 def test_enabled_server_requires_pin() -> None:
     registry = MCPServerRegistry(
         servers=(

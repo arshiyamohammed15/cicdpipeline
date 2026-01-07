@@ -23,6 +23,7 @@ import tempfile
 from pathlib import Path
 from unittest.mock import patch, MagicMock, mock_open
 from datetime import datetime
+import pytest
 
 # Add project root to path
 project_root = Path(__file__).resolve().parents[5]
@@ -68,6 +69,7 @@ PromptResponse = models_module.PromptResponse
 TEST_RANDOM_SEED = 42
 
 
+@pytest.mark.unit
 class TestLoadSharedServicesConfig(unittest.TestCase):
     """Test _load_shared_services_config function with 100% coverage."""
 
@@ -77,6 +79,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
         self.expected_config_path_zu_root = None
         self.expected_config_path_fallback = None
 
+    @pytest.mark.unit
     def test_load_config_with_zu_root_env_set(self):
         """Test loading config when ZU_ROOT environment variable is set."""
         test_config = {
@@ -102,6 +105,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
                 self.assertIn("timeout", result)
                 self.assertIn("api_endpoints", result)
 
+    @pytest.mark.unit
     def test_load_config_without_zu_root_fallback_to_project_root(self):
         """Test loading config when ZU_ROOT is not set, falls back to project root."""
         # This test verifies that when ZU_ROOT is not set, the function attempts
@@ -115,6 +119,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
             self.assertIsInstance(result, dict)
             self.assertEqual(result, {})
 
+    @pytest.mark.unit
     def test_load_config_file_not_exists_returns_empty_dict(self):
         """Test loading config when file does not exist returns empty dict."""
         with patch.dict('os.environ', {}, clear=True):
@@ -123,6 +128,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
                 self.assertEqual(result, {})
                 self.assertIsInstance(result, dict)
 
+    @pytest.mark.unit
     def test_load_config_invalid_json_returns_empty_dict(self):
         """Test loading config with invalid JSON returns empty dict."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -137,6 +143,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
                 self.assertEqual(result, {})
                 self.assertIsInstance(result, dict)
 
+    @pytest.mark.unit
     def test_load_config_file_read_exception_returns_empty_dict(self):
         """Test loading config when file read raises exception returns empty dict."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -151,6 +158,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
                     self.assertEqual(result, {})
                     self.assertIsInstance(result, dict)
 
+    @pytest.mark.unit
     def test_load_config_with_different_config_types(self):
         """Test loading different config types (ollama, tinyllama)."""
         test_configs = {
@@ -170,6 +178,7 @@ class TestLoadSharedServicesConfig(unittest.TestCase):
                     self.assertEqual(result, expected_config)
 
 
+@pytest.mark.unit
 class TestOllamaAIServiceInitialization(unittest.TestCase):
     """Test OllamaAIService __init__ method with 100% coverage."""
 
@@ -179,6 +188,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_base_url_parameter(self, mock_load_config):
         """Test initialization with base_url parameter overrides config."""
         mock_load_config.return_value = {}
@@ -191,6 +201,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {'OLLAMA_BASE_URL': 'http://env:11434'}, clear=False)
+    @pytest.mark.unit
     def test_init_with_environment_variable(self, mock_load_config):
         """Test initialization uses OLLAMA_BASE_URL environment variable."""
         mock_load_config.return_value = {}
@@ -202,6 +213,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_config_file_base_url(self, mock_load_config):
         """Test initialization uses base_url from config file."""
         mock_load_config.return_value = {
@@ -215,6 +227,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_default_base_url(self, mock_load_config):
         """Test initialization uses default base_url when nothing is provided."""
         mock_load_config.return_value = {}
@@ -226,6 +239,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_custom_api_endpoints(self, mock_load_config):
         """Test initialization with custom API endpoints from config."""
         mock_load_config.return_value = {
@@ -242,6 +256,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {'OLLAMA_TIMEOUT': '180'}, clear=False)
+    @pytest.mark.unit
     def test_init_with_timeout_environment_variable(self, mock_load_config):
         """Test initialization uses OLLAMA_TIMEOUT environment variable."""
         mock_load_config.return_value = {}
@@ -252,6 +267,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_timeout_from_config(self, mock_load_config):
         """Test initialization uses timeout from config file."""
         mock_load_config.return_value = {
@@ -264,6 +280,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_default_timeout(self, mock_load_config):
         """Test initialization uses default timeout when nothing is provided."""
         mock_load_config.return_value = {}
@@ -274,6 +291,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_tinyllama_config(self, mock_load_config):
         """Test initialization loads and stores tinyllama config."""
         def load_config_side_effect(config_type):
@@ -297,6 +315,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_llm_name_from_config(self, mock_load_config):
         """Test initialization sets llm_name from config."""
         mock_load_config.return_value = {
@@ -310,6 +329,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_default_llm_name(self, mock_load_config):
         """Test initialization uses default llm_name when not in config."""
         mock_load_config.return_value = {
@@ -322,6 +342,7 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_init_with_model_name_when_tinyllama_config_missing(self, mock_load_config):
         """Test initialization uses default model_name when tinyllama config is missing."""
         def load_config_side_effect(config_type):
@@ -336,12 +357,14 @@ class TestOllamaAIServiceInitialization(unittest.TestCase):
         self.assertEqual(service.model_name, "Tinyllama")
 
 
+@pytest.mark.unit
 class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
     """Test OllamaAIService check_ollama_available method with 100% coverage."""
 
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_success(self, mock_get, mock_load_config):
         """Test check_ollama_available returns True when service is available."""
         mock_load_config.return_value = {
@@ -367,6 +390,7 @@ class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_failure_non_200_status(self, mock_get, mock_load_config):
         """Test check_ollama_available returns False when status code is not 200."""
         mock_load_config.return_value = {
@@ -388,6 +412,7 @@ class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_failure_exception(self, mock_get, mock_load_config):
         """Test check_ollama_available returns False when request raises exception."""
         mock_load_config.return_value = {
@@ -407,6 +432,7 @@ class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_with_custom_tags_endpoint(self, mock_get, mock_load_config):
         """Test check_ollama_available uses custom tags endpoint from config."""
         mock_load_config.return_value = {
@@ -430,6 +456,7 @@ class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_with_default_tags_endpoint(self, mock_get, mock_load_config):
         """Test check_ollama_available uses default tags endpoint when not in config."""
         mock_load_config.return_value = {
@@ -448,6 +475,7 @@ class TestOllamaAIServiceCheckAvailable(unittest.TestCase):
         self.assertEqual(call_args[0][0], "http://test:11434/api/tags")
 
 
+@pytest.mark.unit
 class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     """Test OllamaAIService process_prompt method with 100% coverage."""
 
@@ -455,6 +483,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_success_with_model_specified(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt successfully processes request with model specified."""
         mock_load_config.return_value = {
@@ -506,6 +535,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_success_with_default_model(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt uses default model when not specified."""
         def load_config_side_effect(config_type):
@@ -570,6 +600,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_stream_true(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt with stream=True."""
         mock_load_config.return_value = {
@@ -603,6 +634,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_custom_options(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt with custom options in request."""
         mock_load_config.return_value = {
@@ -638,6 +670,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_default_options_from_config(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt uses default options from tinyllama config when request has no options."""
         def load_config_side_effect(config_type):
@@ -681,6 +714,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_empty_response_text(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt handles empty response text."""
         mock_load_config.return_value = {
@@ -710,6 +744,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_missing_metadata_fields(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt handles missing metadata fields in response."""
         mock_load_config.return_value = {
@@ -740,6 +775,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_timeout_exception(self, mock_post, mock_load_config):
         """Test process_prompt raises exception with timeout message."""
         from requests.exceptions import Timeout
@@ -765,6 +801,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_request_exception(self, mock_post, mock_load_config):
         """Test process_prompt raises exception with request error message."""
         from requests.exceptions import RequestException
@@ -787,6 +824,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_http_error_exception(self, mock_post, mock_load_config):
         """Test process_prompt raises exception when HTTP error occurs."""
         from requests.exceptions import HTTPError
@@ -810,6 +848,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_json_decode_exception(self, mock_post, mock_load_config):
         """Test process_prompt raises exception when JSON decode fails."""
         mock_load_config.return_value = {
@@ -834,6 +873,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_uses_model_from_response_when_present(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt uses model from response when present."""
         mock_load_config.return_value = {
@@ -866,6 +906,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_uses_request_model_when_response_missing_model(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt uses request model when response doesn't have model."""
         def load_config_side_effect(config_type):
@@ -902,6 +943,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_uses_default_model_when_none_provided(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt uses default model when neither request nor response has model."""
         def load_config_side_effect(config_type):
@@ -958,6 +1000,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_all_metadata_fields(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt includes all metadata fields when present."""
         mock_load_config.return_value = {
@@ -991,6 +1034,7 @@ class TestOllamaAIServiceProcessPrompt(unittest.TestCase):
         self.assertEqual(result.metadata["eval_count"], 25)
 
 
+@pytest.mark.unit
 class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     """Test edge cases and boundary conditions for OllamaAIService."""
 
@@ -998,6 +1042,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_very_long_prompt(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt handles very long prompt text."""
         mock_load_config.return_value = {
@@ -1029,6 +1074,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_special_characters_in_prompt(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt handles special characters in prompt."""
         mock_load_config.return_value = {
@@ -1060,6 +1106,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_unicode_characters(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt handles unicode characters."""
         mock_load_config.return_value = {
@@ -1090,6 +1137,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.post')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_zero_timeout(self, mock_post, mock_load_config):
         """Test process_prompt with zero timeout value."""
         mock_load_config.return_value = {
@@ -1118,6 +1166,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_with_none_options_in_request(self, mock_datetime, mock_post, mock_load_config):
         """Test process_prompt when request.options is explicitly None."""
         def load_config_side_effect(config_type):
@@ -1155,6 +1204,7 @@ class TestOllamaAIServiceEdgeCases(unittest.TestCase):
         self.assertEqual(call_args.kwargs["json"]["options"]["temperature"], 0.7)
 
 
+@pytest.mark.unit
 class TestOllamaAIServiceTableDriven(unittest.TestCase):
     """Table-driven tests for comprehensive coverage (per TST-010)."""
 
@@ -1162,6 +1212,7 @@ class TestOllamaAIServiceTableDriven(unittest.TestCase):
     @patch('ollama_ai_agent.services.requests.post')
     @patch('ollama_ai_agent.services.datetime')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_process_prompt_table_driven_stream_values(self, mock_datetime, mock_post, mock_load_config):
         """Table-driven test for stream parameter variations."""
         mock_load_config.return_value = {
@@ -1202,6 +1253,7 @@ class TestOllamaAIServiceTableDriven(unittest.TestCase):
     @patch('ollama_ai_agent.services._load_shared_services_config')
     @patch('ollama_ai_agent.services.requests.get')
     @patch.dict('os.environ', {}, clear=True)
+    @pytest.mark.unit
     def test_check_ollama_available_table_driven_status_codes(self, mock_get, mock_load_config):
         """Table-driven test for different HTTP status codes."""
         mock_load_config.return_value = {

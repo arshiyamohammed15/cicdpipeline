@@ -1,0 +1,23 @@
+================================================================================
+DRY RUN MODE - No files will be modified
+================================================================================
+
+Traceback (most recent call last):
+  File "D:\Projects\ZeroUI2.1\tools\test_registry\standardize_markers_simple.py", line 392, in <module>
+    main()
+  File "D:\Projects\ZeroUI2.1\tools\test_registry\standardize_markers_simple.py", line 374, in main
+    results = standardizer.process_all_tests(dry_run=dry_run)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Projects\ZeroUI2.1\tools\test_registry\standardize_markers_simple.py", line 276, in process_all_tests
+    test_files.extend(self.project_root.rglob(pattern))
+  File "C:\Users\pc\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 968, in rglob
+    for p in selector.select_from(self):
+  File "C:\Users\pc\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 408, in _select_from
+    for p in successor_select(starting_point, is_dir, exists, scandir):
+  File "C:\Users\pc\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 355, in _select_from
+    with scandir(parent_path) as scandir_it:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pc\AppData\Local\Programs\Python\Python311\Lib\pathlib.py", line 938, in _scandir
+    return os.scandir(self)
+           ^^^^^^^^^^^^^^^^
+OSError: [WinError 1921] The name of the file cannot be resolved by the system: 'D:\\Projects\\ZeroUI2.1\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0\\src\\edge-agent\\node_modules\\zeroui-2.0'

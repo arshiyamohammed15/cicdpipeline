@@ -12,9 +12,11 @@ from user_behaviour_intelligence.features.computation import FeatureComputationS
 from user_behaviour_intelligence.models import ActorScope, Dimension
 
 
+@pytest.mark.unit
 class TestFeatureComputation:
     """Test feature computation correctness."""
 
+    @pytest.mark.unit
     def test_focus_session_length_avg(self):
         """Test focus session length average computation."""
         service = FeatureComputationService()
@@ -42,6 +44,7 @@ class TestFeatureComputation:
         assert feature.feature_name == "focus_session_length_avg"
         assert feature.dimension == Dimension.FLOW
 
+    @pytest.mark.unit
     def test_context_switch_rate(self):
         """Test context switch rate computation."""
         service = FeatureComputationService()

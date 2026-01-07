@@ -18,9 +18,11 @@ import os
 
 from integration_adapters.config import Config
 
+@pytest.mark.unit
 class TestConfig:
     """Test Config."""
 
+    @pytest.mark.unit
     def test_config_defaults(self):
         """Test configuration default values."""
         config = Config()
@@ -31,6 +33,7 @@ class TestConfig:
         assert config.HTTP_TIMEOUT == 30.0
         assert config.HTTP_MAX_RETRIES == 3
 
+    @pytest.mark.unit
     def test_config_from_environment(self):
         """Test configuration from environment variables."""
         with patch.dict(os.environ, {
@@ -43,6 +46,7 @@ class TestConfig:
             assert config.PM3_SERVICE_URL == "http://pm3:8000"
             assert config.HTTP_TIMEOUT == 60.0
 
+    @pytest.mark.unit
     def test_config_validation(self):
         """Test configuration validation."""
         config = Config()

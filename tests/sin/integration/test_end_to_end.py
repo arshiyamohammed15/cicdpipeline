@@ -8,6 +8,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.integration
 def test_end_to_end_ingestion_pipeline(ingestion_service, registered_producer, routing_engine):
     """Test complete ingestion pipeline."""
     # Register a consumer for routing

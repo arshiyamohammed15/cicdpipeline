@@ -16,9 +16,11 @@ from uuid import uuid4
 
 from integration_adapters.adapters.jira.adapter import JiraAdapter
 
+@pytest.mark.unit
 class TestJiraAdapter:
     """Test JiraAdapter."""
 
+    @pytest.mark.unit
     def test_adapter_initialization(self):
         """Test adapter initialization."""
         adapter = JiraAdapter(
@@ -32,6 +34,7 @@ class TestJiraAdapter:
         assert adapter.api_token == "token-123"
         assert adapter.jira_url == "https://test.atlassian.net"
 
+    @pytest.mark.unit
     def test_get_capabilities(self):
         """Test getting adapter capabilities."""
         adapter = JiraAdapter("jira", uuid4(), "tenant-123")
@@ -41,6 +44,7 @@ class TestJiraAdapter:
         assert capabilities["polling_supported"] is True
         assert capabilities["outbound_actions_supported"] is True
 
+    @pytest.mark.unit
     def test_poll_events_returns_events(self):
         """Test polling events returns events list."""
         adapter = JiraAdapter("jira", uuid4(), "tenant-123", api_token="token")

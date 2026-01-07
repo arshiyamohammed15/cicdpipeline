@@ -12,9 +12,11 @@ from key_management_service.dependencies import (
 )
 
 
+@pytest.mark.unit
 class TestKMSService:
     """Test KMS service functionality."""
 
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test KMS service initialization."""
         hsm = MockHSM()
@@ -34,6 +36,7 @@ class TestKMSService:
         assert service.hsm is not None
         assert service.lifecycle_manager is not None
 
+    @pytest.mark.unit
     def test_get_metrics(self):
         """Test metrics retrieval."""
         hsm = MockHSM()

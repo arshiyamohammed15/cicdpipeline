@@ -18,6 +18,7 @@ Test Design Principles (per constitution rules):
 
 import sys
 import unittest
+import pytest
 import json
 import base64
 import hashlib
@@ -99,6 +100,7 @@ from key_management_service.hsm.mock_hsm import MockHSM
 TEST_RANDOM_SEED = 42
 
 
+@pytest.mark.unit
 class TestKeyLifecycleManager(unittest.TestCase):
     """Test KeyLifecycleManager class with 100% coverage."""
 
@@ -108,6 +110,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.lifecycle_manager = KeyLifecycleManager(self.hsm, self.data_plane)
 
+    @pytest.mark.unit
     def test_generate_key_rsa2048(self):
         """Test generate_key with RSA-2048."""
         key_id, public_key = self.lifecycle_manager.generate_key(
@@ -129,6 +132,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         self.assertEqual(metadata.tenant_id, "test-tenant")
         self.assertEqual(metadata.key_state, "active")
 
+    @pytest.mark.unit
     def test_generate_key_ed25519(self):
         """Test generate_key with Ed25519."""
         key_id, public_key = self.lifecycle_manager.generate_key(
@@ -144,6 +148,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         metadata = self.lifecycle_manager.retrieve_key_metadata(key_id)
         self.assertEqual(metadata.key_type, "Ed25519")
 
+    @pytest.mark.unit
     def test_generate_key_aes256(self):
         """Test generate_key with AES-256."""
         key_id, public_key = self.lifecycle_manager.generate_key(
@@ -159,6 +164,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         metadata = self.lifecycle_manager.retrieve_key_metadata(key_id)
         self.assertEqual(metadata.key_type, "AES-256")
 
+    @pytest.mark.unit
     def test_generate_key_with_alias(self):
         """Test generate_key with key_alias."""
         key_id, public_key = self.lifecycle_manager.generate_key(
@@ -174,6 +180,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         metadata = self.lifecycle_manager.retrieve_key_metadata(key_id)
         self.assertIsNotNone(metadata)
 
+    @pytest.mark.unit
     def test_generate_key_with_custom_policy(self):
         """Test generate_key with custom access policy."""
         custom_policy = AccessPolicy(
@@ -196,11 +203,13 @@ class TestKeyLifecycleManager(unittest.TestCase):
         self.assertTrue(metadata.access_policy.requires_approval)
         self.assertEqual(metadata.access_policy.max_usage_per_day, 500)
 
+    @pytest.mark.unit
     def test_retrieve_key_metadata_not_found(self):
         """Test retrieve_key_metadata with non-existent key."""
         metadata = self.lifecycle_manager.retrieve_key_metadata("non-existent-key")
         self.assertIsNone(metadata)
 
+    @pytest.mark.unit
     def test_rotate_key(self):
         """Test rotate_key."""
         # Generate initial key
@@ -240,6 +249,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         self.assertEqual(len(event_publisher.events), 1)
         self.assertEqual(event_publisher.events[0].event_type, "key_rotated")
 
+    @pytest.mark.unit
     def test_rotate_key_not_found(self):
         """Test rotate_key with non-existent key."""
         event_publisher = EventPublisher()
@@ -252,6 +262,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
                 event_publisher=event_publisher
             )
 
+    @pytest.mark.unit
     def test_rotate_key_tenant_mismatch(self):
         """Test rotate_key with tenant mismatch."""
         key_id, _ = self.lifecycle_manager.generate_key(
@@ -272,6 +283,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
                 event_publisher=event_publisher
             )
 
+    @pytest.mark.unit
     def test_revoke_key(self):
         """Test revoke_key."""
         key_id, _ = self.lifecycle_manager.generate_key(
@@ -302,6 +314,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
         self.assertEqual(len(event_publisher.events), 1)
         self.assertEqual(event_publisher.events[0].event_type, "key_revoked")
 
+    @pytest.mark.unit
     def test_revoke_key_not_found(self):
         """Test revoke_key with non-existent key."""
         event_publisher = EventPublisher()
@@ -315,6 +328,7 @@ class TestKeyLifecycleManager(unittest.TestCase):
                 event_publisher=event_publisher
             )
 
+    @pytest.mark.unit
     def test_archive_key(self):
         """Test archive_key."""
         key_id, _ = self.lifecycle_manager.generate_key(
@@ -331,12 +345,14 @@ class TestKeyLifecycleManager(unittest.TestCase):
         metadata = self.lifecycle_manager.retrieve_key_metadata(key_id)
         self.assertEqual(metadata.key_state, "archived")
 
+    @pytest.mark.unit
     def test_archive_key_not_found(self):
         """Test archive_key with non-existent key."""
         result = self.lifecycle_manager.archive_key("non-existent", "test-tenant")
         self.assertFalse(result)
 
 
+@pytest.mark.unit
 class TestCryptographicOperations(unittest.TestCase):
     """Test CryptographicOperations class with 100% coverage."""
 
@@ -372,6 +388,7 @@ class TestCryptographicOperations(unittest.TestCase):
             key_usage=["encrypt", "decrypt"]
         )
 
+    @pytest.mark.unit
     def test_sign_data_rsa(self):
         """Test sign_data with RSA-2048."""
         data = b"test data to sign"
@@ -386,6 +403,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertEqual(algorithm, "RS256")
         self.assertIsInstance(signature, bytes)
 
+    @pytest.mark.unit
     def test_sign_data_ed25519(self):
         """Test sign_data with Ed25519."""
         data = b"test data to sign"
@@ -400,6 +418,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertEqual(algorithm, "EdDSA")
         self.assertIsInstance(signature, bytes)
 
+    @pytest.mark.unit
     def test_sign_data_auto_algorithm(self):
         """Test sign_data with auto-detected algorithm."""
         data = b"test data"
@@ -412,6 +431,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertIsNotNone(signature)
         self.assertEqual(algorithm, "RS256")
 
+    @pytest.mark.unit
     def test_sign_data_key_not_found(self):
         """Test sign_data with non-existent key."""
         with self.assertRaises(ValueError):
@@ -421,6 +441,7 @@ class TestCryptographicOperations(unittest.TestCase):
                 tenant_id="test-tenant"
             )
 
+    @pytest.mark.unit
     def test_sign_data_key_not_active(self):
         """Test sign_data with inactive key."""
         key_id, _ = self.lifecycle_manager.generate_key(
@@ -447,6 +468,7 @@ class TestCryptographicOperations(unittest.TestCase):
                 tenant_id="test-tenant"
             )
 
+    @pytest.mark.unit
     def test_sign_data_wrong_usage(self):
         """Test sign_data with key not authorized for signing."""
         key_id, _ = self.lifecycle_manager.generate_key(
@@ -464,6 +486,7 @@ class TestCryptographicOperations(unittest.TestCase):
                 tenant_id="test-tenant"
             )
 
+    @pytest.mark.unit
     def test_verify_signature_rsa(self):
         """Test verify_signature with RSA-2048."""
         data = b"test data to sign"
@@ -483,6 +506,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertTrue(is_valid)
         self.assertEqual(algorithm, "RS256")
 
+    @pytest.mark.unit
     def test_verify_signature_ed25519(self):
         """Test verify_signature with Ed25519."""
         data = b"test data to sign"
@@ -502,6 +526,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertTrue(is_valid)
         self.assertEqual(algorithm, "EdDSA")
 
+    @pytest.mark.unit
     def test_verify_signature_invalid(self):
         """Test verify_signature with invalid signature."""
         data = b"test data"
@@ -516,6 +541,7 @@ class TestCryptographicOperations(unittest.TestCase):
 
         self.assertFalse(is_valid)
 
+    @pytest.mark.unit
     def test_encrypt_data_aes(self):
         """Test encrypt_data with AES-256-GCM."""
         plaintext = b"test plaintext data"
@@ -532,6 +558,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertIsInstance(ciphertext, bytes)
         self.assertIsInstance(iv, bytes)
 
+    @pytest.mark.unit
     def test_encrypt_data_with_aad(self):
         """Test encrypt_data with additional authenticated data."""
         plaintext = b"test data"
@@ -548,6 +575,7 @@ class TestCryptographicOperations(unittest.TestCase):
         self.assertIsNotNone(ciphertext)
         self.assertIsNotNone(iv)
 
+    @pytest.mark.unit
     def test_decrypt_data_aes(self):
         """Test decrypt_data with AES-256-GCM."""
         plaintext = b"test plaintext data"
@@ -566,6 +594,7 @@ class TestCryptographicOperations(unittest.TestCase):
 
         self.assertEqual(decrypted, plaintext)
 
+    @pytest.mark.unit
     def test_decrypt_data_with_aad(self):
         """Test decrypt_data with additional authenticated data."""
         plaintext = b"test data"
@@ -588,6 +617,7 @@ class TestCryptographicOperations(unittest.TestCase):
 
         self.assertEqual(decrypted, plaintext)
 
+    @pytest.mark.unit
     def test_decrypt_data_wrong_key(self):
         """Test decrypt_data with wrong key."""
         plaintext = b"test data"
@@ -615,6 +645,7 @@ class TestCryptographicOperations(unittest.TestCase):
             )
 
 
+@pytest.mark.unit
 class TestPolicyEnforcer(unittest.TestCase):
     """Test PolicyEnforcer class with 100% coverage."""
 
@@ -623,6 +654,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.data_plane = MockM29DataPlane()
         self.policy_enforcer = PolicyEnforcer(self.data_plane)
 
+    @pytest.mark.unit
     def test_evaluate_access_policy_allowed(self):
         """Test evaluate_access_policy with allowed module."""
         key_metadata = KeyMetadata(
@@ -654,6 +686,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertTrue(is_allowed)
         self.assertIsNone(error)
 
+    @pytest.mark.unit
     def test_evaluate_access_policy_module_not_allowed(self):
         """Test evaluate_access_policy with module not in allowed list."""
         key_metadata = KeyMetadata(
@@ -686,6 +719,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertIsNotNone(error)
         self.assertIn("not allowed", error.lower())
 
+    @pytest.mark.unit
     def test_evaluate_access_policy_usage_limit_exceeded(self):
         """Test evaluate_access_policy with usage limit exceeded."""
         key_metadata = KeyMetadata(
@@ -723,6 +757,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertIsNotNone(error)
         self.assertIn("limit exceeded", error.lower())
 
+    @pytest.mark.unit
     def test_evaluate_access_policy_key_inactive(self):
         """Test evaluate_access_policy with inactive key."""
         key_metadata = KeyMetadata(
@@ -755,6 +790,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertIsNotNone(error)
         self.assertIn("not active", error.lower())
 
+    @pytest.mark.unit
     def test_check_dual_authorization_required(self):
         """Test check_dual_authorization with required operation."""
         is_authorized, error = self.policy_enforcer.check_dual_authorization(
@@ -766,6 +802,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertIsNotNone(error)
         self.assertIn("required", error.lower())
 
+    @pytest.mark.unit
     def test_check_dual_authorization_with_token(self):
         """Test check_dual_authorization with approval token."""
         is_authorized, error = self.policy_enforcer.check_dual_authorization(
@@ -776,6 +813,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertTrue(is_authorized)
         self.assertIsNone(error)
 
+    @pytest.mark.unit
     def test_check_dual_authorization_invalid_token(self):
         """Test check_dual_authorization with invalid token."""
         is_authorized, error = self.policy_enforcer.check_dual_authorization(
@@ -786,6 +824,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertFalse(is_authorized)
         self.assertIsNotNone(error)
 
+    @pytest.mark.unit
     def test_check_dual_authorization_not_required(self):
         """Test check_dual_authorization with operation not requiring dual-auth."""
         is_authorized, error = self.policy_enforcer.check_dual_authorization(
@@ -796,6 +835,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertTrue(is_authorized)
         self.assertIsNone(error)
 
+    @pytest.mark.unit
     def test_increment_usage(self):
         """Test increment_usage."""
         self.policy_enforcer.increment_usage("test-key")
@@ -804,6 +844,7 @@ class TestPolicyEnforcer(unittest.TestCase):
         self.assertEqual(count, 1)
 
 
+@pytest.mark.unit
 class TestEventPublisher(unittest.TestCase):
     """Test EventPublisher class with 100% coverage."""
 
@@ -811,6 +852,7 @@ class TestEventPublisher(unittest.TestCase):
         """Set up test fixtures."""
         self.event_publisher = EventPublisher()
 
+    @pytest.mark.unit
     def test_publish_event_key_generated(self):
         """Test publish_event for key_generated."""
         event_id = self.event_publisher.publish_event(
@@ -828,6 +870,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertEqual(event.tenant_id, "test-tenant")
         self.assertEqual(event.source_module, "EPC-11")
 
+    @pytest.mark.unit
     def test_publish_event_key_rotated(self):
         """Test publish_event for key_rotated."""
         event_id = self.event_publisher.publish_event(
@@ -841,6 +884,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertIsNotNone(event_id)
         self.assertEqual(self.event_publisher.events[0].event_type, "key_rotated")
 
+    @pytest.mark.unit
     def test_publish_event_key_revoked(self):
         """Test publish_event for key_revoked."""
         event_id = self.event_publisher.publish_event(
@@ -854,6 +898,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertIsNotNone(event_id)
         self.assertEqual(self.event_publisher.events[0].event_type, "key_revoked")
 
+    @pytest.mark.unit
     def test_publish_event_signature_created(self):
         """Test publish_event for signature_created."""
         event_id = self.event_publisher.publish_event(
@@ -867,6 +912,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertIsNotNone(event_id)
         self.assertEqual(self.event_publisher.events[0].event_type, "signature_created")
 
+    @pytest.mark.unit
     def test_publish_event_signature_verified(self):
         """Test publish_event for signature_verified."""
         event_id = self.event_publisher.publish_event(
@@ -880,6 +926,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertIsNotNone(event_id)
         self.assertEqual(self.event_publisher.events[0].event_type, "signature_verified")
 
+    @pytest.mark.unit
     def test_publish_event_trust_anchor_updated(self):
         """Test publish_event for trust_anchor_updated."""
         event_id = self.event_publisher.publish_event(
@@ -894,6 +941,7 @@ class TestEventPublisher(unittest.TestCase):
         self.assertEqual(self.event_publisher.events[0].event_type, "trust_anchor_updated")
 
 
+@pytest.mark.unit
 class TestReceiptGenerator(unittest.TestCase):
     """Test ReceiptGenerator class with 100% coverage."""
 
@@ -902,6 +950,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.evidence_ledger = MockM27EvidenceLedger()
         self.receipt_generator = ReceiptGenerator(self.evidence_ledger)
 
+    @pytest.mark.unit
     def test_generate_receipt(self):
         """Test generate_receipt."""
         kms_context = KMSContext(
@@ -929,6 +978,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.assertEqual(receipt.requesting_module, "EPC-1")
         self.assertIsNotNone(receipt.signature)
 
+    @pytest.mark.unit
     def test_generate_receipt_with_error(self):
         """Test generate_receipt with error."""
         kms_context = KMSContext(
@@ -953,6 +1003,7 @@ class TestReceiptGenerator(unittest.TestCase):
         self.assertEqual(receipt.kms_context.error_code, "KEY_NOT_FOUND")
 
 
+@pytest.mark.unit
 class TestTrustStoreManager(unittest.TestCase):
     """Test TrustStoreManager class with 100% coverage."""
 
@@ -961,6 +1012,7 @@ class TestTrustStoreManager(unittest.TestCase):
         self.trust_plane = MockM32TrustPlane()
         self.trust_store_manager = TrustStoreManager(self.trust_plane)
 
+    @pytest.mark.unit
     def test_ingest_certificate(self):
         """Test ingest_certificate."""
         certificate = b"mock-certificate-data"
@@ -979,6 +1031,7 @@ class TestTrustStoreManager(unittest.TestCase):
         self.assertEqual(len(event_publisher.events), 1)
         self.assertEqual(event_publisher.events[0].event_type, "trust_anchor_updated")
 
+    @pytest.mark.unit
     def test_ingest_certificate_validation_fails(self):
         """Test ingest_certificate with validation failure."""
         # Make certificate validation fail
@@ -995,6 +1048,7 @@ class TestTrustStoreManager(unittest.TestCase):
                 event_publisher=event_publisher
             )
 
+    @pytest.mark.unit
     def test_validate_chain(self):
         """Test validate_chain."""
         certificate = b"test-certificate"
@@ -1008,6 +1062,7 @@ class TestTrustStoreManager(unittest.TestCase):
         # Mock implementation returns result from trust_plane
         self.assertIsInstance(is_valid, bool)
 
+    @pytest.mark.unit
     def test_check_revocation(self):
         """Test check_revocation."""
         certificate = b"test-certificate"
@@ -1015,6 +1070,7 @@ class TestTrustStoreManager(unittest.TestCase):
 
         self.assertIsInstance(is_revoked, bool)
 
+    @pytest.mark.unit
     def test_distribute_trust_anchor(self):
         """Test distribute_trust_anchor."""
         result = self.trust_store_manager.distribute_trust_anchor(
@@ -1024,6 +1080,7 @@ class TestTrustStoreManager(unittest.TestCase):
 
         self.assertTrue(result)
 
+    @pytest.mark.unit
     def test_enroll_certificate(self):
         """Test enroll_certificate."""
         csr = b"certificate-signing-request-data"
@@ -1037,6 +1094,7 @@ class TestTrustStoreManager(unittest.TestCase):
         self.assertIsInstance(certificate, bytes)
 
 
+@pytest.mark.unit
 class TestKMSService(unittest.TestCase):
     """Test KMSService orchestrator class with 100% coverage."""
 
@@ -1055,6 +1113,7 @@ class TestKMSService(unittest.TestCase):
             iam=self.iam
         )
 
+    @pytest.mark.unit
     def test_get_metrics(self):
         """Test get_metrics."""
         # Perform some operations to generate metrics
@@ -1078,6 +1137,7 @@ class TestKMSService(unittest.TestCase):
         self.assertEqual(metrics["key_generation_count"], 5)
         self.assertEqual(metrics["signing_count"], 10)
 
+    @pytest.mark.unit
     def test_increment_error_count(self):
         """Test increment_error_count."""
         self.kms_service.increment_error_count("KEY_NOT_FOUND")
@@ -1086,6 +1146,7 @@ class TestKMSService(unittest.TestCase):
         metrics = self.kms_service.get_metrics()
         self.assertEqual(metrics["request_errors"]["KEY_NOT_FOUND"], 2)
 
+    @pytest.mark.unit
     def test_service_initialization(self):
         """Test KMSService initialization."""
         self.assertIsNotNone(self.kms_service.lifecycle_manager)

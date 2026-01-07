@@ -9,6 +9,7 @@ import pytest
 from cloud_services.llm_gateway.clients import ProviderClient  # type: ignore  # pylint: disable=import-error
 
 
+@pytest.mark.llm_gateway_unit
 def test_provider_routing_is_tenant_specific(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

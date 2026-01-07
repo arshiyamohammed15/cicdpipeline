@@ -10,6 +10,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_tc_sin_010_pipeline_observability(ingestion_service, registered_producer, metrics_registry, sample_signal, routing_engine):
     """TC-SIN-010: Pipeline observability metrics and logs."""
     # Register a consumer for routing

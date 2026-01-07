@@ -17,6 +17,7 @@ from tests.sin.conftest import (
 # auth_token fixture is provided by tests/sin/integration/conftest.py
 
 
+@pytest.mark.integration
 def test_producer_registration_workflow(client, auth_token, app_schema_registry):
     """Test complete producer registration workflow."""
     # Step 1: Register contract
@@ -83,6 +84,7 @@ def test_producer_registration_workflow(client, auth_token, app_schema_registry)
     assert data["producer"]["name"] == "Updated Workflow Producer"
 
 
+@pytest.mark.integration
 def test_producer_registration_without_contract(client, auth_token):
     """Test producer registration fails without contract."""
     producer = {
@@ -103,6 +105,7 @@ def test_producer_registration_without_contract(client, auth_token):
     assert response.status_code == 400  # Bad request - contract not found
 
 
+@pytest.mark.integration
 def test_producer_registration_duplicate(client, auth_token, app_schema_registry):
     """Test duplicate producer registration."""
     # Register contract
@@ -145,6 +148,7 @@ def test_producer_registration_duplicate(client, auth_token, app_schema_registry
     assert response2.status_code == 400  # Bad request - already registered
 
 
+@pytest.mark.integration
 def test_producer_update_nonexistent(client, auth_token):
     """Test updating non-existent producer."""
     producer = {
@@ -166,6 +170,7 @@ def test_producer_update_nonexistent(client, auth_token):
     assert response.status_code == 400  # Bad request - not found
 
 
+@pytest.mark.integration
 def test_producer_get_nonexistent(client, auth_token):
     """Test getting non-existent producer."""
     response = client.get(
@@ -175,6 +180,7 @@ def test_producer_get_nonexistent(client, auth_token):
     assert response.status_code == 404  # Not found
 
 
+@pytest.mark.integration
 def test_producer_registration_multiple_contracts(client, auth_token, app_schema_registry):
     """Test producer registration with multiple contracts."""
     # Register multiple contracts

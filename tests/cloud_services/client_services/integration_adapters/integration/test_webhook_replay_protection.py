@@ -15,9 +15,11 @@ from datetime import datetime, timedelta
 # Note: Replay protection would be implemented in webhook service
 # This test verifies the concept
 
+@pytest.mark.integration
 class TestWebhookReplayProtection:
     """Test webhook replay protection."""
 
+    @pytest.mark.integration
     def test_replay_protection_concept(self):
         """Test replay protection concept."""
         # Replay protection would use:

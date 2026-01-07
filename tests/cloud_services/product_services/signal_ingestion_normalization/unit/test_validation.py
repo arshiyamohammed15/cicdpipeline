@@ -79,6 +79,7 @@ class TestValidationEngine:
         assert engine.producer_registry == producer_registry
         assert engine.governance_enforcer == governance_enforcer
 
+    @pytest.mark.unit
     def test_validate_structure_valid_signal(self):
         """Test structure validation with valid signal."""
         producer_registry = Mock(spec=ProducerRegistry)
@@ -103,6 +104,7 @@ class TestValidationEngine:
         assert is_valid is True
         assert error is None
 
+    @pytest.mark.unit
     def test_validate_structure_missing_signal_id(self):
         """Test structure validation with missing signal_id."""
         producer_registry = Mock(spec=ProducerRegistry)
@@ -128,6 +130,7 @@ class TestValidationEngine:
         assert error is not None
         assert error.error_code == ErrorCode.SCHEMA_VIOLATION
 
+    @pytest.mark.unit
     def test_validate_structure_missing_tenant_id(self):
         """Test structure validation with missing tenant_id."""
         producer_registry = Mock(spec=ProducerRegistry)
@@ -153,6 +156,7 @@ class TestValidationEngine:
         assert error is not None
         assert error.error_code == ErrorCode.SCHEMA_VIOLATION
 
+    @pytest.mark.unit
     def test_validate_producer_registered(self):
         """Test producer validation when producer is registered."""
         producer_registry = Mock(spec=ProducerRegistry)
@@ -178,6 +182,7 @@ class TestValidationEngine:
         assert is_valid is True
         assert error is None
 
+    @pytest.mark.unit
     def test_validate_producer_not_registered(self):
         """Test producer validation when producer is not registered."""
         producer_registry = Mock(spec=ProducerRegistry)

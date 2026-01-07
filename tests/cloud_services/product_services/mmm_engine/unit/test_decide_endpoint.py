@@ -26,6 +26,7 @@ def auth_headers(tenant: str = "tenant-demo") -> dict[str, str]:
     return {"Authorization": f"Bearer tenant-{tenant}"}
 
 
+@pytest.mark.unit
 def test_decide_returns_actions(client):
     response = client.post(
         "/v1/mmm/decide",

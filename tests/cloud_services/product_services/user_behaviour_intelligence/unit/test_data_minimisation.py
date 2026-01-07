@@ -12,9 +12,11 @@ from user_behaviour_intelligence.config import ConfigurationManager
 from user_behaviour_intelligence.models import BehaviouralEvent, ActorType
 
 
+@pytest.mark.unit
 class TestDataMinimisation:
     """Test data minimisation."""
 
+    @pytest.mark.unit
     def test_only_configured_fields_stored(self):
         """Test that only configured fields are stored."""
         config_manager = ConfigurationManager()

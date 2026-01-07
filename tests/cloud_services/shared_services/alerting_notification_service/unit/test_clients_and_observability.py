@@ -43,6 +43,7 @@ async def test_iam_and_eris_clients_round_trip():
     assert await eris.emit_receipt({"type": "unit", "alert_id": "a-1"}) is None
 
 
+@pytest.mark.unit
 def test_register_metrics_returns_true():
     assert register_metrics() is True
 
@@ -74,6 +75,7 @@ async def test_policy_client_uses_bundle_file(tmp_path):
     assert routing["targets"] == ["tenant-x-primary"]
 
 
+@pytest.mark.unit
 def test_policy_client_invalid_json_fallback(tmp_path):
     bundle_path = Path(tmp_path / "bad_policy.json")
     bundle_path.write_text("{not-json", encoding="utf-8")
@@ -109,6 +111,7 @@ async def test_dependency_graph_client_fetch_path(monkeypatch):
     result = await client.shared_dependencies("x", "y")
     assert result == ["xy"]
 
+@pytest.mark.unit
 def test_policy_client_missing_file_uses_defaults(tmp_path):
     missing_path = Path(tmp_path / "missing_policy.json")
     client = PolicyClient(policy_path=missing_path, cache_ttl_seconds=1)

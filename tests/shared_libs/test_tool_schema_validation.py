@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 from src.shared_libs.tool_schema_validation import (
     TOOL_SCHEMA_INVALID,
@@ -19,6 +20,7 @@ def _sample_schema() -> dict[str, object]:
     }
 
 
+@pytest.mark.unit
 def test_tool_output_validator_allows_valid_payload() -> None:
     registry = ToolSchemaRegistry()
     registry.register("tool.sample", _sample_schema(), "1.0.0")
@@ -32,6 +34,7 @@ def test_tool_output_validator_allows_valid_payload() -> None:
     assert result.schema_version == "1.0.0"
 
 
+@pytest.mark.unit
 def test_tool_output_validator_denies_missing_required_field() -> None:
     registry = ToolSchemaRegistry()
     registry.register("tool.sample", _sample_schema(), "1.0.0")

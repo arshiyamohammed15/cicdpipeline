@@ -26,6 +26,7 @@ from detection_engine_core.models import (
 client = TestClient(app)
 
 
+@pytest.mark.integration
 class TestServiceIntegration:
     """Test service integration"""
 
@@ -33,6 +34,7 @@ class TestServiceIntegration:
         """Set up test fixtures"""
         self.service = DetectionEngineService()
 
+    @pytest.mark.integration
     def test_decision_evaluation_end_to_end(self):
         """Test complete decision evaluation workflow"""
         # 1. Create request
@@ -72,6 +74,7 @@ class TestServiceIntegration:
         assert receipt.context is not None
         assert receipt.context['surface'] == 'ide'
 
+    @pytest.mark.integration
     def test_feedback_submission_end_to_end(self):
         """Test complete feedback submission workflow"""
         # 1. Create decision receipt first
@@ -103,6 +106,7 @@ class TestServiceIntegration:
         # (In production, would verify storage linkage)
         assert feedback_request.decision_receipt_id == decision_receipt_id
 
+    @pytest.mark.integration
     def test_performance_budget_tracking(self):
         """Test performance budget tracking per PRD §3.12"""
         request = DecisionRequest(
@@ -123,6 +127,7 @@ class TestServiceIntegration:
             # Should not be degraded if within budget
             assert response.receipt.degraded is False or response.receipt.degraded is True  # Can be either
 
+    @pytest.mark.integration
     def test_all_evaluation_points_workflow(self):
         """Test workflow for all evaluation points"""
         evaluation_points = [
@@ -143,6 +148,7 @@ class TestServiceIntegration:
             assert response.receipt.evaluation_point == ep
             assert response.receipt.decision is not None
 
+    @pytest.mark.integration
     def test_confidence_calculation_integration(self):
         """Test confidence calculation integration per PRD §3.3"""
         test_cases = [
@@ -165,6 +171,7 @@ class TestServiceIntegration:
             # Confidence should be reasonable (within 0.1 of expected)
             assert abs(response.confidence - expected_min_confidence) < 0.2
 
+    @pytest.mark.integration
     def test_accuracy_metrics_integration(self):
         """Test accuracy metrics integration per PRD §3.3"""
         request = DecisionRequest(
@@ -191,9 +198,11 @@ class TestServiceIntegration:
             assert 0.0 <= value <= 1.0, f"{metric_name} should be between 0 and 1"
 
 
+@pytest.mark.integration
 class TestAPIIntegration:
     """Test API integration"""
 
+    @pytest.mark.integration
     def test_api_decision_evaluation_workflow(self):
         """Test API decision evaluation workflow"""
         request_data = {
@@ -232,6 +241,7 @@ class TestAPIIntegration:
         assert receipt["evaluation_point"] == "pre-commit"
         assert receipt["decision"]["status"] in ["pass", "warn", "soft_block", "hard_block"]
 
+    @pytest.mark.integration
     def test_api_feedback_workflow(self):
         """Test API feedback submission workflow"""
         # 1. Create decision first
@@ -270,6 +280,7 @@ class TestAPIIntegration:
         assert feedback_data["status"] == "accepted"
         assert feedback_data["feedback_id"] is not None
 
+    @pytest.mark.integration
     def test_api_error_handling(self):
         """Test API error handling"""
         # Test with invalid evaluation point
@@ -288,6 +299,7 @@ class TestAPIIntegration:
         # Should return 422 (validation error) or 500 (server error)
         assert response.status_code in [400, 422, 500]
 
+    @pytest.mark.integration
     def test_api_health_checks(self):
         """Test API health check endpoints"""
         # Health check
@@ -301,9 +313,11 @@ class TestAPIIntegration:
         assert readiness_response.json()["ready"] is True
 
 
+@pytest.mark.integration
 class TestPerformanceIntegration:
     """Test performance integration per PRD §3.12"""
 
+    @pytest.mark.integration
     def test_pre_commit_performance_budget(self):
         """Test pre-commit performance budget (50ms p95)"""
         request = DecisionRequest(
@@ -330,6 +344,7 @@ class TestPerformanceIntegration:
         # Should be within reasonable range (allowing for test overhead)
         assert p95_time < 100, f"p95 latency {p95_time}ms exceeds budget (50ms) with test overhead"
 
+    @pytest.mark.integration
     def test_pre_merge_performance_budget(self):
         """Test pre-merge performance budget (100ms p95)"""
         request = DecisionRequest(

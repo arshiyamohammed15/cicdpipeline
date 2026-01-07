@@ -1,0 +1,51 @@
+================================================================================
+TEST MARKER STANDARDIZATION REPORT
+================================================================================
+
+Files Modified: 0
+Files Skipped: 40
+Errors: 0
+
+
+FILES SKIPPED (showing first 100 of 40):
+--------------------------------------------------------------------------------
+D:\Projects\ZeroUI2.1\tests\bdr\test_scheduler.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_actor_preferences.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_security.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\constitution_positive_negative\test_rule_positive_negative.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_engine.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_experiments.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_wal_durability.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\data_governance_privacy\test_harness.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_storage.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_receipts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_tenant_policy.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_policy_config_budget_override.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_health.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_dr_module.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_integration.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_policy.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_security_regression.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_models.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_identity.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_observability.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\manual\test_commit_consistency.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\features\test_dual_channel.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_catalog.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_webhook_missing_signature.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_rate_limiter.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_dr_and_verification.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\bdr\test_verification.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_adapters.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_policy_and_config.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\api_gateway_webhooks\test_webhook_accepts_with_signature.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\key_management_service\test_shim_import.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_trust_workspace_untrusted.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_runtime.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\llm_gateway\test_clients_contracts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\reliability\test_circuit_breaker_thread_safety.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_receipts.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_health.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\mmm_engine\load\test_throughput.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cccs\test_redaction.py: No clear marker pattern from path
+D:\Projects\ZeroUI2.1\tests\cloud_services\shared_services\trust_as_capability\test_trust_missing_subject.py: No clear marker pattern from path

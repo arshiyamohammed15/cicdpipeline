@@ -28,6 +28,7 @@ class FailingRestoreStorage(InMemoryBackupStorage):
         raise RuntimeError("restore_failed")
 
 
+@pytest.mark.integration
 def test_service_backup_and_restore_flow(bdr_service, iam_context, restore_request):
     bdr_service.run_backup(iam_context, "bp_policy_store")
     bdr_service.request_restore(iam_context, restore_request)
@@ -37,12 +38,14 @@ def test_service_backup_and_restore_flow(bdr_service, iam_context, restore_reque
     assert isinstance(bdr_service.logger.entries, list)
 
 
+@pytest.mark.integration
 def test_service_run_scheduled_backups(bdr_service, iam_context):
     now = datetime.now(timezone.utc) + timedelta(minutes=31)
     executed = bdr_service.run_scheduled_backups(iam_context, now=now)
     assert set(executed) == {"bp_policy_store", "bp_observability"}
 
 
+@pytest.mark.integration
 def test_service_dr_scenario_drill_and_failover(bdr_service, iam_context):
     scenario = DRScenario(
         scenario_id="sc_loss_core",
@@ -67,6 +70,7 @@ def test_service_dr_scenario_drill_and_failover(bdr_service, iam_context):
     assert isinstance(bdr_service.stale_plans(), list)
 
 
+@pytest.mark.integration
 def test_service_rejects_policy_with_duplicate_dataset(dataset_definitions, plan_definitions):
     duplicate_plans = plan_definitions + [
         plan_definitions[0] | {"plan_id": "bp_duplicate", "dataset_ids": ["ds_policy_store"]}
@@ -77,6 +81,7 @@ def test_service_rejects_policy_with_duplicate_dataset(dataset_definitions, plan
         BDRService(dataset_source=dataset_definitions, plan_source=duplicate_plans, storage=storage)
 
 
+@pytest.mark.integration
 def test_service_restore_failure_path(bdr_service, iam_context):
     request = RestoreRequest(
         dataset_ids=["unknown_ds"],
@@ -88,11 +93,13 @@ def test_service_restore_failure_path(bdr_service, iam_context):
         bdr_service.request_restore(iam_context, request)
 
 
+@pytest.mark.integration
 def test_service_unknown_plan_raises(bdr_service, iam_context):
     with pytest.raises(BDRServiceError):
         bdr_service.run_backup(iam_context, "unknown_plan")
 
 
+@pytest.mark.integration
 def test_service_require_bundle_guard(bdr_service):
     original = bdr_service._policy_bundle  # type: ignore[attr-defined]
     bdr_service._policy_bundle = None  # type: ignore[attr-defined]
@@ -101,6 +108,7 @@ def test_service_require_bundle_guard(bdr_service):
     bdr_service._policy_bundle = original  # type: ignore[attr-defined]
 
 
+@pytest.mark.integration
 def test_backup_failure_emits_failure_receipt(dataset_definitions, plan_definitions):
     storage = FailingBackupStorage()
     service = BDRService(dataset_source=dataset_definitions, plan_source=plan_definitions, storage=storage)
@@ -110,6 +118,7 @@ def test_backup_failure_emits_failure_receipt(dataset_definitions, plan_definiti
     assert receipt.result == BackupStatus.FAILURE
 
 
+@pytest.mark.integration
 def test_restore_failure_logs_and_raises(dataset_definitions, plan_definitions):
     storage = FailingRestoreStorage()
     storage.seed_dataset("ds_policy_store", "data")

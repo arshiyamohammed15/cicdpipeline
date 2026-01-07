@@ -48,6 +48,7 @@ class TestTokenValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_expired_token_rejected(self):
         """Test that expired tokens are rejected."""
         # Create an expired token (mock)
@@ -64,6 +65,7 @@ class TestTokenValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_malformed_token_rejected(self):
         """Test that malformed tokens are rejected."""
         malformed_tokens = [
@@ -84,6 +86,7 @@ class TestTokenValidation:
                 status.HTTP_422_UNPROCESSABLE_ENTITY
             ]
 
+    @pytest.mark.security
     def test_token_without_required_claims(self):
         """Test that tokens without required claims are rejected."""
         # Mock token without required claims
@@ -124,6 +127,7 @@ class TestAccessControl:
             status.HTTP_404_NOT_FOUND,
         ]
 
+    @pytest.mark.security
     def test_privilege_escalation_prevented(self):
         """Test that privilege escalation attempts are prevented."""
         # Attempt to access resource with insufficient privileges
@@ -148,6 +152,7 @@ class TestAccessControl:
                 status.HTTP_422_UNPROCESSABLE_ENTITY,
             ]
 
+    @pytest.mark.security
     def test_tenant_isolation_enforced(self):
         """Test that tenant isolation is enforced."""
         # Attempt cross-tenant access
@@ -196,6 +201,7 @@ class TestBreakGlassSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_break_glass_requires_approver(self):
         """Test that break-glass requires approver identity."""
         response = test_client.post(
@@ -215,6 +221,7 @@ class TestBreakGlassSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_break_glass_audit_logged(self):
         """Test that break-glass access is audit logged."""
         with patch('identity_access_management.services.IAMService.trigger_break_glass') as mock_break_glass:
@@ -265,6 +272,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_xss_in_subject(self):
         """Test handling of XSS attempts in subject."""
         xss_payload = "<script>alert('xss')</script>"
@@ -286,6 +294,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_oversized_payload(self):
         """Test handling of oversized payloads."""
         large_payload = {"token": "x" * 100000}  # 100KB token

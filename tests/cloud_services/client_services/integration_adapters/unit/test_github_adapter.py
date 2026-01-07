@@ -21,9 +21,11 @@ from integration_adapters.adapters.github.adapter import GitHubAdapter
 from integration_adapters.adapters.github.webhook_verifier import GitHubWebhookVerifier
 from integration_adapters.models import NormalisedActionCreate
 
+@pytest.mark.unit
 class TestGitHubWebhookVerifier:
     """Test GitHub webhook signature verification."""
 
+    @pytest.mark.unit
     def test_verify_valid_signature(self):
         """Test verifying valid signature."""
         secret = "test-secret"
@@ -42,6 +44,7 @@ class TestGitHubWebhookVerifier:
         )
         assert is_valid is True
 
+    @pytest.mark.unit
     def test_verify_invalid_signature(self):
         """Test verifying invalid signature."""
         secret = "test-secret"
@@ -53,6 +56,7 @@ class TestGitHubWebhookVerifier:
         )
         assert is_valid is False
 
+    @pytest.mark.unit
     def test_verify_missing_signature(self):
         """Test verifying missing signature."""
         secret = "test-secret"
@@ -63,6 +67,7 @@ class TestGitHubWebhookVerifier:
         )
         assert is_valid is False
 
+    @pytest.mark.unit
     def test_extract_signature_from_headers(self):
         """Test extracting signature from headers."""
         headers = {
@@ -79,9 +84,11 @@ class TestGitHubWebhookVerifier:
         signature = GitHubWebhookVerifier.extract_signature(headers_lower)
         assert signature == "sha256=def456"
 
+@pytest.mark.unit
 class TestGitHubAdapter:
     """Test GitHubAdapter."""
 
+    @pytest.mark.unit
     def test_adapter_initialization(self):
         """Test adapter initialization."""
         adapter = GitHubAdapter(
@@ -95,6 +102,7 @@ class TestGitHubAdapter:
         assert adapter.api_token == "token-123"
         assert adapter.webhook_secret == "secret-123"
 
+    @pytest.mark.unit
     def test_process_webhook_valid_signature(self):
         """Test processing webhook with valid signature."""
         secret = "test-secret"
@@ -124,6 +132,7 @@ class TestGitHubAdapter:
         assert result["event_type"] == "pull_request"
         assert result["payload"] == payload
 
+    @pytest.mark.unit
     def test_process_webhook_invalid_signature(self):
         """Test processing webhook with invalid signature."""
         payload = {"test": "data"}
@@ -142,6 +151,7 @@ class TestGitHubAdapter:
         with pytest.raises(ValueError, match="Invalid webhook signature"):
             adapter.process_webhook(payload, headers)
 
+    @pytest.mark.unit
     def test_process_webhook_missing_event_header(self):
         """Test processing webhook without event header."""
         payload = {"test": "data"}
@@ -152,6 +162,7 @@ class TestGitHubAdapter:
         with pytest.raises(ValueError, match="Missing X-GitHub-Event header"):
             adapter.process_webhook(payload, headers)
 
+    @pytest.mark.unit
     def test_get_capabilities(self):
         """Test getting adapter capabilities."""
         adapter = GitHubAdapter("github", uuid4(), "tenant-123")
@@ -161,6 +172,7 @@ class TestGitHubAdapter:
         assert capabilities["polling_supported"] is False
         assert capabilities["outbound_actions_supported"] is True
 
+    @pytest.mark.unit
     def test_get_default_capabilities(self):
         """Test getting default capabilities."""
         capabilities = GitHubAdapter.get_default_capabilities()

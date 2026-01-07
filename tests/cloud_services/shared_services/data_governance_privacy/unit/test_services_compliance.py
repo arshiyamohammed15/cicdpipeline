@@ -44,6 +44,7 @@ def _pii_payload(email: str = "alice@example.com") -> Dict[str, str]:
     }
 
 
+@pytest.mark.unit
 def test_classification_accuracy_and_latency_budget():
     data_plane = MockM29DataPlane()
     kms = MockM33KeyManagement()
@@ -68,6 +69,7 @@ def test_classification_accuracy_and_latency_budget():
     assert metrics["latency_p95_ms"] < 100
 
 
+@pytest.mark.unit
 def test_consent_lifecycle_grant_check_withdraw():
     data_plane = MockM29DataPlane()
     service = ConsentManagementService(data_plane, MockM33KeyManagement())
@@ -103,6 +105,7 @@ def test_consent_lifecycle_grant_check_withdraw():
     assert check_after_withdraw["allowed"] is False
 
 
+@pytest.mark.unit
 def test_privacy_enforcement_requires_consent_and_policy():
     policy_engine = MockM23PolicyManagement()
     policy_engine.register_policy(
@@ -144,6 +147,7 @@ def test_privacy_enforcement_requires_consent_and_policy():
     assert allowed["latency_ms"] < 50
 
 
+@pytest.mark.unit
 def test_retention_policy_enforcement_actions():
     data_plane = MockM29DataPlane()
     retention = RetentionManagementService(data_plane)
@@ -162,6 +166,7 @@ def test_retention_policy_enforcement_actions():
     assert decision["regulatory_basis"] == "GDPR"
 
 
+@pytest.mark.unit
 def test_rights_request_tenant_isolation():
     data_plane = MockM29DataPlane()
     iam = MockM21IAM()
@@ -179,6 +184,7 @@ def test_rights_request_tenant_isolation():
     assert rights.update_request_status("tenant-B", request["request_id"], "completed", "processor-2") is None
 
 
+@pytest.mark.unit
 def test_end_to_end_classification_consent_enforcement_flow():
     service = DataGovernanceService()
     policy_engine = service.policy_engine
@@ -226,6 +232,7 @@ def test_end_to_end_classification_consent_enforcement_flow():
     assert enforcement["p95_ms"] < 50
 
 
+@pytest.mark.unit
 def test_data_lineage_latency_reporting():
     data_plane = MockM29DataPlane()
     service = DataGovernanceService(data_plane=data_plane)
@@ -252,6 +259,7 @@ def test_data_lineage_latency_reporting():
         (15, "delete"),
     ],
 )
+@pytest.mark.unit
 def test_retention_matrix_with_legal_hold(last_activity, expected_action):
     data_plane = MockM29DataPlane()
     retention = RetentionManagementService(data_plane)

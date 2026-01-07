@@ -11,6 +11,7 @@ Test Design Principles (following testing rules):
 - Comprehensive: 100% coverage of all rules regardless of ID format
 """
 import json
+import pytest
 import unittest
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -93,6 +94,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
         constitution_dir = Path(__file__).parent.parent.parent.parent / 'docs' / 'constitution'
         cls.loader = MasterGenericRulesLoader(constitution_dir)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_file_exists(self):
         """Verify MASTER GENERIC RULES.json file exists."""
         file_path = self.loader._file_path
@@ -101,6 +104,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
             f"MASTER GENERIC RULES.json not found at: {file_path}"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_file_valid_json(self):
         """Verify file is valid JSON."""
         try:
@@ -109,6 +114,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
         except json.JSONDecodeError as e:
             self.fail(f"File is invalid JSON: {e}")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_has_constitution_rules_array(self):
         """Verify file has constitution_rules array."""
         data = self.loader.load_file()
@@ -123,6 +130,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
             "'constitution_rules' must be an array"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_has_metadata(self):
         """Verify file has metadata section."""
         data = self.loader.load_file()
@@ -134,6 +143,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
         metadata = data['metadata']
         self.assertIsInstance(metadata, dict, "Metadata must be an object")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_metadata_total_rules_matches_actual(self):
         """Verify metadata.total_rules matches actual rule count."""
         data = self.loader.load_file()
@@ -146,6 +157,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
             f"Metadata total_rules ({expected_count}) doesn't match actual rule count ({actual_count})"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_unique_ids(self):
         """Verify all rules have unique rule_ids."""
         rules = self.loader.get_all_rules()
@@ -158,6 +171,8 @@ class MasterGenericRulesStructureTests(unittest.TestCase):
             f"Found {len(rule_ids) - len(unique_ids)} duplicate rule_ids"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_non_empty_ids(self):
         """Verify all rules have non-empty rule_ids."""
         rules = self.loader.get_all_rules()
@@ -180,6 +195,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
         cls.loader = MasterGenericRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_required_fields(self):
         """Verify all rules have required fields (table-driven)."""
         required_fields = [
@@ -205,6 +222,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                         f"Rule {test_case['rule_id']} (index {test_case['rule_index']}) missing required field: {field}"
                     )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rule_ids_are_strings(self):
         """Verify all rule_ids are non-empty strings."""
         test_cases = [
@@ -226,6 +245,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                     f"Rule {rule_id} rule_id cannot be empty"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_titles_are_strings(self):
         """Verify all titles are non-empty strings."""
         test_cases = [
@@ -240,6 +261,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(title, str, f"Rule {test_case['rule_id']} title must be string")
                 self.assertGreater(len(title.strip()), 0, f"Rule {test_case['rule_id']} title cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_categories_are_strings(self):
         """Verify all categories are non-empty strings."""
         test_cases = [
@@ -254,6 +277,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(category, str, f"Rule {test_case['rule_id']} category must be string")
                 self.assertGreater(len(category.strip()), 0, f"Rule {test_case['rule_id']} category cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_enabled_is_boolean(self):
         """Verify enabled field is boolean for all rules."""
         test_cases = [
@@ -271,6 +296,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} enabled must be boolean, got {type(enabled)}"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_severity_levels_are_valid(self):
         """Verify severity_level values are valid."""
         valid_severities = {'Blocker', 'Critical', 'Major', 'Minor'}
@@ -290,6 +317,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} has invalid severity: {severity}"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_versions_are_strings(self):
         """Verify version fields are strings."""
         test_cases = [
@@ -304,6 +333,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(version, str, f"Rule {test_case['rule_id']} version must be string")
                 self.assertGreater(len(version), 0, f"Rule {test_case['rule_id']} version cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_effective_dates_are_valid(self):
         """Verify effective_date fields are valid date strings when present."""
         test_cases = [
@@ -318,6 +349,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                     self.assertIsInstance(effective_date, str, f"Rule {test_case['rule_id']} effective_date must be string")
                     self.assertGreaterEqual(len(effective_date), 10, f"Rule {test_case['rule_id']} effective_date must be at least YYYY-MM-DD format")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_policy_linkage_structure(self):
         """Verify policy_linkage has correct structure when present."""
         test_cases = [
@@ -339,6 +372,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                     if policy_snapshot_hash is not None:
                         self.assertIsInstance(policy_snapshot_hash, str, f"Rule {test_case['rule_id']} policy_snapshot_hash must be string")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_descriptions_are_strings(self):
         """Verify descriptions are strings when present."""
         test_cases = [
@@ -352,6 +387,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                 if description is not None:
                     self.assertIsInstance(description, str, f"Rule {test_case['rule_id']} description must be string")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_requirements_are_lists(self):
         """Verify requirements are lists when present."""
         test_cases = [
@@ -365,6 +402,8 @@ class MasterGenericRulesFieldTests(unittest.TestCase):
                 if requirements is not None:
                     self.assertIsInstance(requirements, list, f"Rule {test_case['rule_id']} requirements must be array")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_validation_fields_are_strings(self):
         """Verify validation fields are strings when present."""
         test_cases = [
@@ -389,6 +428,8 @@ class MasterGenericRulesContentTests(unittest.TestCase):
         cls.loader = MasterGenericRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_valid_structure(self):
         """Verify all rules have valid structure and content."""
         test_cases = [
@@ -423,6 +464,8 @@ class MasterGenericRulesContentTests(unittest.TestCase):
                     f"{rule_id} invalid severity_level"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_valid_content_fields(self):
         """Verify all rules have valid content field types."""
         test_cases = [
@@ -494,6 +537,8 @@ class MasterGenericRulesCategoryTests(unittest.TestCase):
         cls.loader = MasterGenericRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_categories_are_non_empty(self):
         """Verify all categories are non-empty strings."""
         test_cases = [
@@ -508,6 +553,8 @@ class MasterGenericRulesCategoryTests(unittest.TestCase):
                 self.assertIsInstance(category, str, f"Rule {test_case['rule_id']} category must be string")
                 self.assertGreater(len(category.strip()), 0, f"Rule {test_case['rule_id']} category cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_category_distribution_is_consistent(self):
         """Verify category distribution is consistent across rules."""
         category_counts = {}
@@ -535,6 +582,8 @@ class MasterGenericRulesSeverityTests(unittest.TestCase):
         cls.loader = MasterGenericRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_severity_distribution_is_consistent(self):
         """Verify severity level distribution is consistent."""
         severity_counts = {}
@@ -565,6 +614,8 @@ class MasterGenericRulesConsistencyTests(unittest.TestCase):
         cls.loader = MasterGenericRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_version(self):
         """Verify all rules have version field."""
         test_cases = [
@@ -579,6 +630,8 @@ class MasterGenericRulesConsistencyTests(unittest.TestCase):
                 self.assertIsInstance(version, str, f"Rule {test_case['rule_id']} version must be string")
                 self.assertGreater(len(version), 0, f"Rule {test_case['rule_id']} version cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_are_enabled(self):
         """Verify all rules are enabled."""
         test_cases = [
@@ -592,6 +645,8 @@ class MasterGenericRulesConsistencyTests(unittest.TestCase):
                 self.assertIsNotNone(enabled, f"Rule {test_case['rule_id']} enabled cannot be None")
                 self.assertIsInstance(enabled, bool, f"Rule {test_case['rule_id']} enabled must be boolean")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_valid_status(self):
         """Verify all rules have valid status when present."""
         test_cases = [
@@ -610,6 +665,8 @@ class MasterGenericRulesConsistencyTests(unittest.TestCase):
                         pass  # Valid status
                     # Allow other status values for flexibility
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_consistent_last_updated_by(self):
         """Verify all rules have last_updated_by when present."""
         test_cases = [
@@ -624,6 +681,8 @@ class MasterGenericRulesConsistencyTests(unittest.TestCase):
                     self.assertIsInstance(last_updated_by, str, f"Rule {test_case['rule_id']} last_updated_by must be string")
                     self.assertGreater(len(last_updated_by), 0, f"Rule {test_case['rule_id']} last_updated_by cannot be empty")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_valid_policy_hash(self):
         """Verify all rules have valid policy_snapshot_hash when present."""
         test_cases = [

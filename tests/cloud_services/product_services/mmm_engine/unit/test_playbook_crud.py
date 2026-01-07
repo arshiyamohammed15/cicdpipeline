@@ -3,6 +3,8 @@
 from unittest.mock import patch
 from fastapi.testclient import TestClient
 
+import pytest
+
 from mmm_engine.main import app
 
 # Mock IAM authentication for tests
@@ -18,6 +20,7 @@ def auth_headers(tenant: str = "tenant-demo") -> dict[str, str]:
     return {"Authorization": f"Bearer tenant-{tenant}"}
 
 
+@pytest.mark.unit
 def test_playbook_create_and_publish():
     payload = {
         "version": "1.0.0",

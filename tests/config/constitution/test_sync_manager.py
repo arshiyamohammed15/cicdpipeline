@@ -79,6 +79,7 @@ def sync_mgr(tmp_config_dir):
     return sync_manager.ConstitutionSyncManager(config_dir=str(tmp_config_dir))
 
 
+@pytest.mark.constitution
 def test_sync_manager_initialization(sync_mgr, tmp_config_dir):
     """Test sync manager initialization."""
     assert sync_mgr.config_dir == str(tmp_config_dir)
@@ -86,6 +87,7 @@ def test_sync_manager_initialization(sync_mgr, tmp_config_dir):
     assert isinstance(sync_mgr._sync_history, list)
 
 
+@pytest.mark.constitution
 def test_load_sync_history_existing(sync_mgr, tmp_config_dir):
     """Test loading existing sync history."""
     history = [
@@ -97,6 +99,7 @@ def test_load_sync_history_existing(sync_mgr, tmp_config_dir):
     assert len(sync_mgr._sync_history) == 1
 
 
+@pytest.mark.constitution
 def test_load_sync_history_corrupted(sync_mgr, tmp_config_dir):
     """Test loading corrupted sync history."""
     sync_mgr.sync_history_path.write_text("invalid json{", encoding="utf-8")
@@ -106,6 +109,7 @@ def test_load_sync_history_corrupted(sync_mgr, tmp_config_dir):
     assert isinstance(sync_mgr._sync_history, list)
 
 
+@pytest.mark.constitution
 def test_log_sync_operation(sync_mgr, tmp_config_dir):
     """Test logging sync operation."""
     sync_mgr._log_sync_operation("test_op", "source", "target", True, "details")
@@ -115,6 +119,7 @@ def test_log_sync_operation(sync_mgr, tmp_config_dir):
     assert sync_mgr._sync_history[0]["success"] is True
 
 
+@pytest.mark.constitution
 def test_log_sync_operation_history_limit(sync_mgr):
     """Test that sync history is limited to 100 entries."""
     for i in range(150):
@@ -125,6 +130,7 @@ def test_log_sync_operation_history_limit(sync_mgr):
     assert sync_mgr._sync_history[-1]["details"] == "149"
 
 
+@pytest.mark.constitution
 def test_sync_sqlite_to_json(sync_mgr, tmp_config_dir, monkeypatch):
     """Test syncing from SQLite to JSON."""
     sqlite_mgr = FakeSQLiteManager()
@@ -139,6 +145,7 @@ def test_sync_sqlite_to_json(sync_mgr, tmp_config_dir, monkeypatch):
     assert "changes_made" in result
 
 
+@pytest.mark.constitution
 def test_sync_sqlite_to_json_skipped(sync_mgr, tmp_config_dir, monkeypatch):
     """Test that sync is skipped when not needed."""
     sqlite_mgr = FakeSQLiteManager()
@@ -156,6 +163,7 @@ def test_sync_sqlite_to_json_skipped(sync_mgr, tmp_config_dir, monkeypatch):
     assert result.get("skipped") is True or result["success"] is True
 
 
+@pytest.mark.constitution
 def test_sync_json_to_sqlite(sync_mgr, tmp_config_dir, monkeypatch):
     """Test syncing from JSON to SQLite."""
     sqlite_mgr = FakeSQLiteManager()
@@ -175,6 +183,7 @@ def test_sync_json_to_sqlite(sync_mgr, tmp_config_dir, monkeypatch):
     assert "changes_made" in result
 
 
+@pytest.mark.constitution
 def test_auto_sync(sync_mgr, tmp_config_dir, monkeypatch):
     """Test automatic bidirectional sync."""
     sqlite_mgr = FakeSQLiteManager()
@@ -195,6 +204,7 @@ def test_auto_sync(sync_mgr, tmp_config_dir, monkeypatch):
     assert "syncs" in result
 
 
+@pytest.mark.constitution
 def test_detect_conflicts(sync_mgr, tmp_config_dir, monkeypatch):
     """Test conflict detection."""
     sqlite_mgr = FakeSQLiteManager([
@@ -213,6 +223,7 @@ def test_detect_conflicts(sync_mgr, tmp_config_dir, monkeypatch):
     assert conflicts[0]["type"] == "data_conflict"
 
 
+@pytest.mark.constitution
 def test_resolve_conflicts(sync_mgr, tmp_config_dir, monkeypatch):
     """Test conflict resolution."""
     conflicts = [
@@ -233,6 +244,7 @@ def test_resolve_conflicts(sync_mgr, tmp_config_dir, monkeypatch):
     assert result["total"] == 1
 
 
+@pytest.mark.constitution
 def test_verify_sync(sync_mgr, tmp_config_dir, monkeypatch):
     """Test sync verification."""
     sqlite_mgr = FakeSQLiteManager()
@@ -249,6 +261,7 @@ def test_verify_sync(sync_mgr, tmp_config_dir, monkeypatch):
     assert "json_rules" in result
 
 
+@pytest.mark.constitution
 def test_verify_sync_with_differences(sync_mgr, tmp_config_dir, monkeypatch):
     """Test sync verification with differences."""
     sqlite_mgr = FakeSQLiteManager([
@@ -267,6 +280,7 @@ def test_verify_sync_with_differences(sync_mgr, tmp_config_dir, monkeypatch):
     assert result["difference_count"] > 0
 
 
+@pytest.mark.constitution
 def test_get_sync_history(sync_mgr):
     """Test getting sync history."""
     sync_mgr._log_sync_operation("op1", "src", "tgt", True)
@@ -279,6 +293,7 @@ def test_get_sync_history(sync_mgr):
     assert len(history_all) == 2
 
 
+@pytest.mark.constitution
 def test_clear_sync_history(sync_mgr, tmp_config_dir):
     """Test clearing sync history."""
     sync_mgr._log_sync_operation("op", "src", "tgt", True)
@@ -288,6 +303,7 @@ def test_clear_sync_history(sync_mgr, tmp_config_dir):
     assert len(sync_mgr._sync_history) == 0
 
 
+@pytest.mark.constitution
 def test_verify_consistency_across_sources(sync_mgr, tmp_config_dir, monkeypatch):
     """Test verifying consistency across all sources."""
     # Mock extractor
@@ -327,6 +343,7 @@ def test_verify_consistency_across_sources(sync_mgr, tmp_config_dir, monkeypatch
     assert "differences" in result
 
 
+@pytest.mark.constitution
 def test_rules_differ(sync_mgr):
     """Test rule difference detection."""
     rule1 = {"title": "Rule 1", "category": "cat1", "priority": "high", "content": "Content", "enabled": True}
@@ -337,6 +354,7 @@ def test_rules_differ(sync_mgr):
     assert sync_mgr._rules_differ(rule1, rule3) is True
 
 
+@pytest.mark.constitution
 def test_is_sync_needed(sync_mgr):
     """Test checking if sync is needed."""
     source_mgr = Mock()
@@ -355,6 +373,7 @@ def test_is_sync_needed(sync_mgr):
     assert sync_mgr._is_sync_needed(source_mgr, target_mgr, "test") is False
 
 
+@pytest.mark.constitution
 def test_global_sync_functions(tmp_config_dir, monkeypatch):
     """Test global sync manager functions."""
     # Reset global instance

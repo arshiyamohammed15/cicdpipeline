@@ -69,9 +69,11 @@ def mock_eris_client():
     return Mock()
 
 
+@pytest.mark.integration
 class TestOutboundMentorMessage:
     """Test outbound mentor message flow."""
 
+    @pytest.mark.integration
     def test_outbound_action_to_chat(
         self,
         integration_service,

@@ -22,6 +22,7 @@ def migration(tmp_config_dir):
     return config_migration.ConfigMigration(config_dir=str(tmp_config_dir))
 
 
+@pytest.mark.constitution
 def test_migration_initialization(migration, tmp_config_dir):
     """Test migration initialization."""
     assert migration.config_dir == tmp_config_dir
@@ -29,12 +30,14 @@ def test_migration_initialization(migration, tmp_config_dir):
     assert migration.backup_dir == tmp_config_dir / "backups"
 
 
+@pytest.mark.constitution
 def test_migrate_v1_to_v2_no_file(migration):
     """Test migration when no config file exists."""
     result = migration.migrate_v1_to_v2()
     assert result is False
 
 
+@pytest.mark.constitution
 def test_migrate_v1_to_v2_already_v2(migration, tmp_config_dir):
     """Test migration when already v2.0."""
     v2_config = {"version": "2.0", "primary_backend": "sqlite"}
@@ -44,6 +47,7 @@ def test_migrate_v1_to_v2_already_v2(migration, tmp_config_dir):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_migrate_v1_to_v2_success(migration, tmp_config_dir):
     """Test successful migration from v1.0 to v2.0."""
     v1_config = {
@@ -77,6 +81,7 @@ def test_migrate_v1_to_v2_success(migration, tmp_config_dir):
     assert migrated["rules"] == v1_config["rules"]
 
 
+@pytest.mark.constitution
 def test_migrate_v1_to_v2_with_backup(migration, tmp_config_dir):
     """Test migration creates backup."""
     v1_config = {"version": "1.0", "backend": "sqlite"}
@@ -90,6 +95,7 @@ def test_migrate_v1_to_v2_with_backup(migration, tmp_config_dir):
     assert len(backups) == 1
 
 
+@pytest.mark.constitution
 def test_migrate_v1_to_v2_no_backup(migration, tmp_config_dir):
     """Test migration without backup."""
     v1_config = {"version": "1.0", "backend": "sqlite"}
@@ -103,6 +109,7 @@ def test_migrate_v1_to_v2_no_backup(migration, tmp_config_dir):
     assert len(backups) == 0
 
 
+@pytest.mark.constitution
 def test_determine_primary_backend_explicit(migration):
     """Test determining primary backend from explicit setting."""
     config = {"backend": "json"}
@@ -110,6 +117,7 @@ def test_determine_primary_backend_explicit(migration):
     assert backend == "json"
 
 
+@pytest.mark.constitution
 def test_determine_primary_backend_priority(migration):
     """Test determining primary backend from priority."""
     config = {
@@ -122,6 +130,7 @@ def test_determine_primary_backend_priority(migration):
     assert backend == "sqlite"
 
 
+@pytest.mark.constitution
 def test_determine_primary_backend_enabled(migration):
     """Test determining primary backend from enabled status."""
     config = {
@@ -134,6 +143,7 @@ def test_determine_primary_backend_enabled(migration):
     assert backend == "json"
 
 
+@pytest.mark.constitution
 def test_determine_primary_backend_default(migration):
     """Test default primary backend."""
     config = {}
@@ -141,6 +151,7 @@ def test_determine_primary_backend_default(migration):
     assert backend == "sqlite"
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_valid(migration):
     """Test validating valid v2.0 config."""
     config = {
@@ -162,6 +173,7 @@ def test_validate_v2_config_valid(migration):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_invalid_version(migration):
     """Test validating config with invalid version."""
     config = {"version": "1.0"}
@@ -169,6 +181,7 @@ def test_validate_v2_config_invalid_version(migration):
     assert result is False
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_invalid_backend(migration):
     """Test validating config with invalid backend."""
     config = {
@@ -179,6 +192,7 @@ def test_validate_v2_config_invalid_backend(migration):
     assert result is False
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_missing_backend_config(migration):
     """Test validating config with missing backend config."""
     config = {
@@ -189,6 +203,7 @@ def test_validate_v2_config_missing_backend_config(migration):
     assert result is False
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_invalid_fallback(migration):
     """Test validating config with invalid fallback."""
     config = {
@@ -206,6 +221,7 @@ def test_validate_v2_config_invalid_fallback(migration):
     assert result is False
 
 
+@pytest.mark.constitution
 def test_validate_v2_config_invalid_sync_interval(migration):
     """Test validating config with invalid sync interval."""
     config = {
@@ -223,6 +239,7 @@ def test_validate_v2_config_invalid_sync_interval(migration):
     assert result is False
 
 
+@pytest.mark.constitution
 def test_get_migration_info_no_config(migration):
     """Test getting migration info when no config exists."""
     info = migration.get_migration_info()
@@ -230,6 +247,7 @@ def test_get_migration_info_no_config(migration):
     assert info["migration_needed"] is False
 
 
+@pytest.mark.constitution
 def test_get_migration_info_v1_config(migration, tmp_config_dir):
     """Test getting migration info for v1.0 config."""
     v1_config = {"version": "1.0"}
@@ -241,6 +259,7 @@ def test_get_migration_info_v1_config(migration, tmp_config_dir):
     assert info["migration_needed"] is True
 
 
+@pytest.mark.constitution
 def test_get_migration_info_v2_config(migration, tmp_config_dir):
     """Test getting migration info for v2.0 config."""
     v2_config = {"version": "2.0"}
@@ -252,6 +271,7 @@ def test_get_migration_info_v2_config(migration, tmp_config_dir):
     assert info["migration_needed"] is False
 
 
+@pytest.mark.constitution
 def test_get_migration_info_with_backups(migration, tmp_config_dir):
     """Test getting migration info with backups."""
     # Create backup directory and files
@@ -263,6 +283,7 @@ def test_get_migration_info_with_backups(migration, tmp_config_dir):
     assert len(info["backups_available"]) == 1
 
 
+@pytest.mark.constitution
 def test_global_migrate_configuration(tmp_config_dir):
     """Test global migrate_configuration function."""
     v1_config = {"version": "1.0", "backend": "sqlite"}
@@ -273,6 +294,7 @@ def test_global_migrate_configuration(tmp_config_dir):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_global_validate_configuration(tmp_config_dir):
     """Test global validate_configuration function."""
     v2_config = {
@@ -289,12 +311,14 @@ def test_global_validate_configuration(tmp_config_dir):
     assert result is True
 
 
+@pytest.mark.constitution
 def test_global_validate_configuration_no_file(tmp_config_dir):
     """Test global validate_configuration when file doesn't exist."""
     result = config_migration.validate_configuration(config_dir=str(tmp_config_dir))
     assert result is False
 
 
+@pytest.mark.constitution
 def test_global_get_migration_info(tmp_config_dir):
     """Test global get_migration_info function."""
     info = config_migration.get_migration_info(config_dir=str(tmp_config_dir))

@@ -12,9 +12,11 @@ from user_behaviour_intelligence.config import ConfigurationManager
 from user_behaviour_intelligence.models import BehaviouralEvent, ActorType
 
 
+@pytest.mark.integration
 class TestTenantIsolation:
     """Test tenant isolation."""
 
+    @pytest.mark.integration
     def test_cross_tenant_data_isolation(self):
         """Test that events from different tenants are isolated."""
         config_manager = ConfigurationManager()

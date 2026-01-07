@@ -33,9 +33,11 @@ except ImportError:
 test_client = TestClient(app)
 
 
+@pytest.mark.integration
 class TestHealthEndpoints:
     """Test health endpoints."""
 
+    @pytest.mark.integration
     def test_healthz_endpoint(self):
         """Test /healthz endpoint."""
         response = test_client.get("/healthz")
@@ -46,6 +48,7 @@ class TestHealthEndpoints:
         assert "version" in data
         assert data["status"] == "UP"
 
+    @pytest.mark.integration
     def test_metrics_endpoint(self):
         """Test /metrics endpoint."""
         response = test_client.get("/metrics")
@@ -57,9 +60,11 @@ class TestHealthEndpoints:
         )
 
 
+@pytest.mark.integration
 class TestRegistryEndpoints:
     """Test registry endpoints."""
 
+    @pytest.mark.integration
     def test_register_component(self, db_session):
         """Test POST /v1/health/components."""
         component = ComponentDefinition(
@@ -82,6 +87,7 @@ class TestRegistryEndpoints:
             assert data["component_id"] == "test-component-1"
             assert data["enrolled"] is True
 
+    @pytest.mark.integration
     def test_get_component(self, db_session):
         """Test GET /v1/health/components/{component_id}."""
         # First register a component
@@ -105,6 +111,7 @@ class TestRegistryEndpoints:
 
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_404_NOT_FOUND]
 
+    @pytest.mark.integration
     def test_list_components(self, db_session):
         """Test GET /v1/health/components."""
         response = test_client.get(
@@ -117,9 +124,11 @@ class TestRegistryEndpoints:
             assert isinstance(response.json(), list)
 
 
+@pytest.mark.integration
 class TestHealthStatusEndpoints:
     """Test health status endpoints."""
 
+    @pytest.mark.integration
     def test_get_component_status(self, db_session):
         """Test GET /v1/health/components/{component_id}/status."""
         # Create component and snapshot
@@ -153,6 +162,7 @@ class TestHealthStatusEndpoints:
 
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_404_NOT_FOUND]
 
+    @pytest.mark.integration
     def test_get_tenant_health(self, db_session):
         """Test GET /v1/health/tenants/{tenant_id}."""
         response = test_client.get(
@@ -162,6 +172,7 @@ class TestHealthStatusEndpoints:
 
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN]
 
+    @pytest.mark.integration
     def test_get_plane_health(self, db_session):
         """Test GET /v1/health/planes/{plane}/{environment}."""
         response = test_client.get(
@@ -171,6 +182,7 @@ class TestHealthStatusEndpoints:
 
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN]
 
+    @pytest.mark.integration
     def test_get_component_slo(self, db_session):
         """Test GET /v1/health/components/{component_id}/slo."""
         response = test_client.get(
@@ -181,9 +193,11 @@ class TestHealthStatusEndpoints:
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED, status.HTTP_404_NOT_FOUND]
 
 
+@pytest.mark.integration
 class TestTelemetryEndpoints:
     """Test telemetry endpoints."""
 
+    @pytest.mark.integration
     def test_ingest_telemetry(self, db_session):
         """Test POST /v1/health/telemetry."""
         # First register component
@@ -219,9 +233,11 @@ class TestTelemetryEndpoints:
         assert response.status_code in [status.HTTP_202_ACCEPTED, status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN]
 
 
+@pytest.mark.integration
 class TestSafeToActEndpoints:
     """Test Safe-to-Act endpoints."""
 
+    @pytest.mark.integration
     def test_check_safe_to_act(self, db_session):
         """Test POST /v1/health/check_safe_to_act."""
         request = {

@@ -62,6 +62,7 @@ class TestNormalizationEngine:
         assert engine is not None
         assert engine.schema_registry is not None
 
+    @pytest.mark.unit
     def test_normalize_signal_basic(self):
         """Test basic signal normalization."""
         engine = NormalizationEngine()
@@ -84,6 +85,7 @@ class TestNormalizationEngine:
         assert normalized is not None
         assert normalized.signal_id == signal.signal_id
 
+    @pytest.mark.unit
     def test_normalize_with_field_mapping(self):
         """Test normalization with field mapping rules."""
         engine = NormalizationEngine()
@@ -108,6 +110,7 @@ class TestNormalizationEngine:
         normalized = engine.normalize(signal)
         assert normalized is not None
 
+    @pytest.mark.unit
     def test_normalize_with_unit_conversion(self):
         """Test normalization with unit conversion."""
         engine = NormalizationEngine()

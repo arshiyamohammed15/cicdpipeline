@@ -35,6 +35,7 @@ def close_event_loop():
         pass
 
 
+@pytest.mark.unit
 def test_throughput_per_tenant() -> None:
     """Smoke: decision loop completes."""
     service = MMMService()
@@ -59,6 +60,7 @@ def test_throughput_per_tenant() -> None:
     assert len(results) == 10
 
 
+@pytest.mark.unit
 def test_total_throughput() -> None:
     """Smoke: multi-tenant decision loop completes."""
     service = MMMService()
@@ -85,6 +87,7 @@ def test_total_throughput() -> None:
     assert len(results) == 20
 
 
+@pytest.mark.unit
 def test_redis_fatigue_horizontal_scaling() -> None:
     """Test horizontal scaling with Redis fatigue state."""
     from mmm_engine.fatigue import FatigueManager
@@ -113,6 +116,7 @@ def test_redis_fatigue_horizontal_scaling() -> None:
     assert isinstance(can_emit, bool)
 
 
+@pytest.mark.unit
 def test_database_connection_pooling() -> None:
     """Test database connection pooling under load.
     

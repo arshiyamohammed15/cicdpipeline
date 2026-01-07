@@ -60,6 +60,7 @@ class TestJWTTokenSecurity:
             response2 = test_client.post("/iam/v1/verify", json={"token": token})
             assert response2.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_expiration_enforced(self):
         """Test that expired tokens are rejected."""
         # Create expired token
@@ -71,6 +72,7 @@ class TestJWTTokenSecurity:
             response = test_client.post("/iam/v1/verify", json={"token": expired_token})
             assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_signature_validation(self):
         """Test that token signature validation is enforced."""
         # Token with invalid signature
@@ -82,6 +84,7 @@ class TestJWTTokenSecurity:
             response = test_client.post("/iam/v1/verify", json={"token": invalid_sig_token})
             assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_claims_validation(self):
         """Test that required claims are validated."""
         # Token missing required claims
@@ -93,6 +96,7 @@ class TestJWTTokenSecurity:
             response = test_client.post("/iam/v1/verify", json={"token": incomplete_token})
             assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_algorithm_restriction(self):
         """Test that only allowed algorithms (RS256) are accepted."""
         # Token signed with disallowed algorithm (HS256)
@@ -104,6 +108,7 @@ class TestJWTTokenSecurity:
             response = test_client.post("/iam/v1/verify", json={"token": wrong_alg_token})
             assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_issuer_validation(self):
         """Test that token issuer is validated."""
         # Token from wrong issuer
@@ -115,6 +120,7 @@ class TestJWTTokenSecurity:
             response = test_client.post("/iam/v1/verify", json={"token": wrong_issuer_token})
             assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
+    @pytest.mark.security
     def test_token_audience_validation(self):
         """Test that token audience is validated."""
         # Token with wrong audience
@@ -154,6 +160,7 @@ class TestRBACSecurity:
                 status.HTTP_422_UNPROCESSABLE_ENTITY  # Validation error
             ]
 
+    @pytest.mark.security
     def test_canonical_role_mapping(self):
         """Test that organizational roles are correctly mapped to canonical roles."""
         # Executive should map to admin
@@ -178,6 +185,7 @@ class TestRBACSecurity:
                 status.HTTP_422_UNPROCESSABLE_ENTITY  # Validation error
             ]
 
+    @pytest.mark.security
     def test_empty_roles_denied(self):
         """Test that users with no roles are denied access."""
         response = test_client.post(
@@ -199,6 +207,7 @@ class TestRBACSecurity:
                 status.HTTP_422_UNPROCESSABLE_ENTITY  # Validation error (empty roles)
             ]
 
+    @pytest.mark.security
     def test_invalid_role_rejected(self):
         """Test that invalid roles are rejected."""
         response = test_client.post(
@@ -250,6 +259,7 @@ class TestABACSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY  # Validation error
         ]
 
+    @pytest.mark.security
     def test_context_attributes_evaluated(self):
         """Test that context attributes are evaluated in ABAC."""
         from datetime import datetime
@@ -307,6 +317,7 @@ class TestTenantIsolationSecurity:
                 status.HTTP_422_UNPROCESSABLE_ENTITY  # Validation error
             ]
 
+    @pytest.mark.security
     def test_tenant_context_required(self):
         """Test that tenant context is required for access decisions."""
         response = test_client.post(
@@ -326,6 +337,7 @@ class TestTenantIsolationSecurity:
             status.HTTP_403_FORBIDDEN
         ]
 
+    @pytest.mark.security
     def test_tenant_id_injection_prevented(self):
         """Test that tenant ID injection attempts are prevented."""
         # Attempt to inject SQL in resource string
@@ -368,6 +380,7 @@ class TestRateLimitingSecurity:
         # This test verifies the endpoint handles rapid requests
         assert len(requests) == 100
 
+    @pytest.mark.security
     def test_decision_rate_limit(self):
         """Test that access decisions are rate limited."""
         # Simulate rapid decision requests
@@ -409,6 +422,7 @@ class TestInputValidationSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_xss_in_subject(self):
         """Test handling of XSS attempts in subject."""
         xss_payload = "<script>alert('xss')</script>"
@@ -431,6 +445,7 @@ class TestInputValidationSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_oversized_payload(self):
         """Test handling of oversized payloads."""
         large_payload = {"token": "x" * 100000}  # 100KB token
@@ -451,6 +466,7 @@ class TestInputValidationSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS,  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_json_injection_prevention(self):
         """Test that JSON injection attempts are prevented."""
         malicious_json = {
@@ -476,6 +492,7 @@ class TestInputValidationSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS,  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_path_traversal_prevention(self):
         """Test that path traversal attempts are prevented."""
         malicious_resource = "../../etc/passwd"  # Resource is a string
@@ -523,6 +540,7 @@ class TestBreakGlassSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_break_glass_requires_approver(self):
         """Test that break-glass requires approver identity."""
         response = test_client.post(
@@ -542,6 +560,7 @@ class TestBreakGlassSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_break_glass_audit_logged(self):
         """Test that break-glass access is audit logged."""
         # Note: Mocking at service level doesn't work with TestClient
@@ -568,6 +587,7 @@ class TestBreakGlassSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS,
         ]
 
+    @pytest.mark.security
     def test_break_glass_time_limited(self):
         """Test that break-glass access is time-limited."""
         # Break-glass should have expiration
@@ -615,6 +635,7 @@ class TestJITElevationSecurity:
             status.HTTP_429_TOO_MANY_REQUESTS  # Rate limiting
         ]
 
+    @pytest.mark.security
     def test_jit_elevation_time_limited(self):
         """Test that JIT elevation is time-limited."""
         # Note: JIT elevation uses /decision endpoint with elevation context

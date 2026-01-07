@@ -40,6 +40,7 @@ class TestAuthentication:
         response = client.get("/v1/health/components")
         assert response.status_code in [status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
+    @pytest.mark.security
     def test_invalid_token_rejected(self):
         """Test that invalid tokens are rejected."""
         app = _get_app()
@@ -50,6 +51,7 @@ class TestAuthentication:
         # May return 401 (unauthorized) or 422 (validation error) depending on token validation
         assert response.status_code in [status.HTTP_401_UNAUTHORIZED, status.HTTP_422_UNPROCESSABLE_ENTITY]
 
+    @pytest.mark.security
     def test_missing_authorization_header(self):
         """Test that missing authorization header is rejected."""
         app = _get_app()
@@ -89,6 +91,7 @@ class TestAuthorization:
             status.HTTP_201_CREATED  # If test token has write scope
         ]
 
+    @pytest.mark.security
     def test_cross_tenant_access_denied(self):
         """Test that cross-tenant access is denied."""
         app = _get_app()
@@ -142,6 +145,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_oversized_payload(self):
         """Test handling of oversized payloads."""
         app = _get_app()
@@ -169,6 +173,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_sql_injection_in_component_id(self):
         """Test handling of SQL injection attempts."""
         app = _get_app()

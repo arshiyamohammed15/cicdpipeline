@@ -10,6 +10,7 @@ import pytest
 
 
 # ST-1: AuthN/AuthZ
+@pytest.mark.security
 def test_authn_authz():
     """Test authentication and authorization."""
     # Would test unauthenticated → 401, unauthorized → 403
@@ -17,6 +18,7 @@ def test_authn_authz():
 
 
 # ST-2: Malformed Payloads
+@pytest.mark.security
 def test_malformed_payloads():
     """Test handling of malformed payloads."""
     # Would test oversized fields, unexpected types
@@ -24,6 +26,7 @@ def test_malformed_payloads():
 
 
 # ST-3: Data Leakage
+@pytest.mark.security
 def test_data_leakage():
     """Test data leakage prevention."""
     # Would test PII/secrets injection → caught by validation
@@ -31,6 +34,7 @@ def test_data_leakage():
 
 
 # RT-1: Store Node Failure
+@pytest.mark.security
 def test_store_node_failure():
     """Test resilience to store node failure."""
     # Would test no duplicate receipts, no lost receipts
@@ -38,6 +42,7 @@ def test_store_node_failure():
 
 
 # RT-2: Restart & Recovery
+@pytest.mark.security
 def test_restart_recovery():
     """Test restart and recovery."""
     # Would test chain continuity after restart

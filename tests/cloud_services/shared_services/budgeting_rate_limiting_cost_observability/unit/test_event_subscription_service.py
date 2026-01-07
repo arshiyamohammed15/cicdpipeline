@@ -20,9 +20,11 @@ def event_subscription_service():
     return EventSubscriptionService(MockM29DataPlane())
 
 
+@pytest.mark.unit
 class TestEventSubscriptionService:
     """Test suite for EventSubscriptionService."""
 
+    @pytest.mark.unit
     def test_create_subscription(self, event_subscription_service):
         """Test subscription creation."""
         tenant_id = str(uuid.uuid4())
@@ -38,6 +40,7 @@ class TestEventSubscriptionService:
         assert subscription["enabled"] is True
         assert "subscription_id" in subscription
 
+    @pytest.mark.unit
     def test_list_subscriptions(self, event_subscription_service):
         """Test subscription listing."""
         tenant_id = str(uuid.uuid4())
@@ -58,6 +61,7 @@ class TestEventSubscriptionService:
         assert total_count == 3
         assert len(subscriptions) == 3
 
+    @pytest.mark.unit
     def test_get_subscription(self, event_subscription_service):
         """Test subscription retrieval."""
         tenant_id = str(uuid.uuid4())
@@ -72,6 +76,7 @@ class TestEventSubscriptionService:
         assert retrieved is not None
         assert retrieved["subscription_id"] == subscription["subscription_id"]
 
+    @pytest.mark.unit
     def test_update_subscription(self, event_subscription_service):
         """Test subscription update."""
         tenant_id = str(uuid.uuid4())
@@ -90,6 +95,7 @@ class TestEventSubscriptionService:
         assert updated["enabled"] is False
         assert updated["filters"]["new_filter"] == "value"
 
+    @pytest.mark.unit
     def test_delete_subscription(self, event_subscription_service):
         """Test subscription deletion."""
         tenant_id = str(uuid.uuid4())

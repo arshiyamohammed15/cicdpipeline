@@ -16,9 +16,11 @@ import re
 
 from integration_adapters.observability.audit import AuditLogger
 
+@pytest.mark.security
 class TestSecretLeakage:
     """Test secret leakage prevention."""
 
+    @pytest.mark.security
     def test_audit_logger_redacts_secrets(self):
         """Test that audit logger redacts secrets."""
         logger = AuditLogger()
@@ -31,6 +33,7 @@ class TestSecretLeakage:
         assert "key456" not in redacted
         assert "***REDACTED***" in redacted
 
+    @pytest.mark.security
     def test_audit_logger_redacts_authorization(self):
         """Test that audit logger redacts authorization headers."""
         logger = AuditLogger()
@@ -41,6 +44,7 @@ class TestSecretLeakage:
         assert "token123" not in redacted
         assert "***REDACTED***" in redacted
 
+    @pytest.mark.security
     def test_audit_logger_preserves_non_secrets(self):
         """Test that audit logger preserves non-secret data."""
         logger = AuditLogger()

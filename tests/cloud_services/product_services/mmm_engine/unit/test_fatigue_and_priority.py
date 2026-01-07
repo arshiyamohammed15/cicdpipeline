@@ -2,6 +2,8 @@
 # Imports handled by conftest.py
 from datetime import datetime, timedelta
 
+import pytest
+
 from mmm_engine.services import MMMService
 from mmm_engine.models import Playbook, PlaybookStatus, MMMContext, ActorType
 
@@ -21,6 +23,7 @@ def build_context() -> MMMContext:
     )
 
 
+@pytest.mark.unit
 def test_prioritisation_orders_higher_priority_first(monkeypatch):
     service = MMMService()
     context = build_context()
@@ -52,6 +55,7 @@ def test_prioritisation_orders_higher_priority_first(monkeypatch):
     assert actions[0].payload["title"] == "high"
 
 
+@pytest.mark.unit
 def test_fatigue_blocks_when_exceeding_limits(monkeypatch):
     service = MMMService()
     context = build_context()
@@ -75,6 +79,7 @@ def test_fatigue_blocks_when_exceeding_limits(monkeypatch):
     assert actions_second[0].payload["title"] == "Mirror insight"
 
 
+@pytest.mark.unit
 def test_quiet_hours_prevents_actions(monkeypatch):
     service = MMMService()
     context = build_context()

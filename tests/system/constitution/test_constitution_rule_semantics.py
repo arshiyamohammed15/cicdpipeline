@@ -9,6 +9,7 @@ Test Design:
 - Test rule relationships and dependencies
 """
 import json
+import pytest
 import unittest
 from pathlib import Path
 from typing import Dict, List, Any
@@ -43,6 +44,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                 with open(file_path, 'r', encoding='utf-8') as f:
                     cls.files_data[filename] = json.load(f)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_vscode_extension_static_contributions(self):
         """Test rule about enforcing static package contributions."""
         rules = self.files_data.get('VSCODE EXTENSION RULES.json', {}).get('constitution_rules', [])
@@ -53,6 +56,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertIn('package.json', rule.get('description', ''))
         self.assertIn('static', rule.get('description', '').lower())
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_vscode_extension_ide_surfaces_only(self):
         """Test rule about restricting scope to IDE surfaces only."""
         rules = self.files_data.get('VSCODE EXTENSION RULES.json', {}).get('constitution_rules', [])
@@ -62,6 +67,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertEqual(rule.get('severity_level'), 'Blocker')
         self.assertIn('IDE', rule.get('description', ''))
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_logging_schema_version(self):
         """Test rule about requiring schema version in logs."""
         rules = self.files_data.get('LOGGING & TROUBLESHOOTING RULES.json', {}).get('constitution_rules', [])
@@ -72,6 +79,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertIn('log_schema_version', rule.get('description', ''))
         self.assertIn('1.0', rule.get('description', ''))
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_logging_jsonl_format(self):
         """Test rule about using JSONL format for logs."""
         rules = self.files_data.get('LOGGING & TROUBLESHOOTING RULES.json', {}).get('constitution_rules', [])
@@ -81,6 +90,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertEqual(rule.get('severity_level'), 'Blocker')
         self.assertIn('JSONL', rule.get('description', '').upper())
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_testing_determinism(self):
         """Test rule about prioritizing determinism over speed."""
         rules = self.files_data.get('TESTING RULES.json', {}).get('constitution_rules', [])
@@ -95,6 +106,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
             f"Rule description should mention reproducibility or determinism"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_testing_hermetic(self):
         """Test rule about enforcing hermetic test runs."""
         rules = self.files_data.get('TESTING RULES.json', {}).get('constitution_rules', [])
@@ -109,6 +122,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
             f"Rule description should mention hermetic, isolation, or network restrictions"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_comments_one_subfeature(self):
         """Test rule about working on one sub-feature at a time."""
         rules = self.files_data.get('COMMENTS RULES.json', {}).get('constitution_rules', [])
@@ -117,6 +132,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertEqual(rule.get('title'), 'Work on One Sub-Feature at a Time')
         self.assertEqual(rule.get('severity_level'), 'Major')
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_comments_50_loc_limit(self):
         """Test rule about enforcing 50 LOC change limit."""
         rules = self.files_data.get('COMMENTS RULES.json', {}).get('constitution_rules', [])
@@ -126,6 +143,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertEqual(rule.get('severity_level'), 'Major')
         self.assertIn('50', rule.get('description', ''))
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_comments_synchronize_comments(self):
         """Test rule about synchronizing comments with code changes."""
         rules = self.files_data.get('COMMENTS RULES.json', {}).get('constitution_rules', [])
@@ -134,6 +153,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
         self.assertEqual(rule.get('title'), 'Synchronize Comments with Code Changes')
         self.assertEqual(rule.get('severity_level'), 'Critical')
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_descriptions(self):
         """Verify all rules have non-empty descriptions."""
         files = [
@@ -155,6 +176,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                     self.assertIsNotNone(description)
                     self.assertIsInstance(description, str)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_validation_criteria(self):
         """Verify all rules have validation criteria (may be empty string)."""
         files = [
@@ -176,6 +199,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                     if validation is not None:
                         self.assertIsInstance(validation, str)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_error_conditions_format(self):
         """Verify error_condition fields follow expected format."""
         files = [
@@ -199,6 +224,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                                 f"{rule_id} error_condition should contain ERROR:"
                             )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_requirements_are_complete(self):
         """Verify requirements arrays contain meaningful content."""
         files = [
@@ -221,6 +248,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                             self.assertIsInstance(req, str)
                             self.assertGreater(len(req.strip()), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_policy_linkage_structure(self):
         """Verify policy_linkage has correct structure across all files."""
         files = [
@@ -249,6 +278,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                                 self.assertIsInstance(pid, str)
                                 self.assertGreater(len(pid), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_category_consistency(self):
         """Verify categories are consistent within each file."""
         files = [
@@ -284,6 +315,8 @@ class ConstitutionRuleSemanticsTests(unittest.TestCase):
                     self.assertIsInstance(category, str)
                     self.assertGreater(len(category.strip()), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_severity_distribution(self):
         """Verify severity levels are appropriate for rule types."""
         files = [
@@ -336,6 +369,8 @@ class ConstitutionRuleRelationshipsTests(unittest.TestCase):
                 with open(file_path, 'r', encoding='utf-8') as f:
                     cls.files_data[filename] = json.load(f)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_modules_gsmd_references(self):
         """Test MODULES AND GSMD MAPPING RULES reference each other correctly."""
         rules = self.files_data.get('MODULES AND GSMD MAPPING RULES.json', {}).get('constitution_rules', [])
@@ -349,6 +384,8 @@ class ConstitutionRuleRelationshipsTests(unittest.TestCase):
                 f"Rule {binding_rule.get('rule_id')} should mention binding concept"
             )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_testing_rules_determinism_themes(self):
         """Test that testing rules consistently emphasize determinism."""
         rules = self.files_data.get('TESTING RULES.json', {}).get('constitution_rules', [])
@@ -364,6 +401,8 @@ class ConstitutionRuleRelationshipsTests(unittest.TestCase):
         # Should have multiple rules about determinism
         self.assertGreater(len(determinism_rules), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_logging_rules_schema_consistency(self):
         """Test that logging rules consistently reference schema."""
         rules = self.files_data.get('LOGGING & TROUBLESHOOTING RULES.json', {}).get('constitution_rules', [])

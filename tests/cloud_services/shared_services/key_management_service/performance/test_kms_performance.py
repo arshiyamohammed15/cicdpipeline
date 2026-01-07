@@ -18,6 +18,7 @@ Performance Requirements (per KMS spec section "Performance Specifications"):
 
 import sys
 import unittest
+import pytest
 import time
 import base64
 from pathlib import Path
@@ -85,6 +86,7 @@ from key_management_service.dependencies import MockM27EvidenceLedger, MockM29Da
 from key_management_service.hsm.mock_hsm import MockHSM
 
 
+@pytest.mark.performance
 class TestKeyGenerationPerformance(unittest.TestCase):
     """Test key generation meets latency requirements."""
 
@@ -92,6 +94,7 @@ class TestKeyGenerationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = KMSService()
 
+    @pytest.mark.performance
     def test_key_generation_rsa2048_latency(self):
         """Test RSA-2048 key generation completes within 1000ms."""
         start_time = time.perf_counter()
@@ -111,6 +114,7 @@ class TestKeyGenerationPerformance(unittest.TestCase):
         self.assertIsNotNone(key_id)
         self.assertIsNotNone(public_key)
 
+    @pytest.mark.performance
     def test_key_generation_ed25519_latency(self):
         """Test Ed25519 key generation completes within 100ms."""
         start_time = time.perf_counter()
@@ -129,6 +133,7 @@ class TestKeyGenerationPerformance(unittest.TestCase):
         self.assertIsNotNone(key_id)
         self.assertIsNotNone(public_key)
 
+    @pytest.mark.performance
     def test_key_generation_throughput(self):
         """Test key generation can handle 500/s throughput."""
         iterations = 50  # Scaled down for test speed
@@ -151,6 +156,7 @@ class TestKeyGenerationPerformance(unittest.TestCase):
         self.assertGreater(throughput, 250, f"Key generation throughput {throughput:.2f}/s, expected >250/s")
 
 
+@pytest.mark.performance
 class TestSigningPerformance(unittest.TestCase):
     """Test signing operations meet latency and throughput requirements."""
 
@@ -167,6 +173,7 @@ class TestSigningPerformance(unittest.TestCase):
         )
         self.test_data = b"test data to sign"
 
+    @pytest.mark.performance
     def test_signing_latency(self):
         """Test signing completes within 50ms."""
         start_time = time.perf_counter()
@@ -184,6 +191,7 @@ class TestSigningPerformance(unittest.TestCase):
         self.assertIsNotNone(signature)
         self.assertEqual(algorithm, "RS256")
 
+    @pytest.mark.performance
     def test_signing_throughput(self):
         """Test signing can handle 1000/s throughput."""
         iterations = 100  # Scaled down for test speed
@@ -205,6 +213,7 @@ class TestSigningPerformance(unittest.TestCase):
         self.assertGreater(throughput, 10, f"Signing throughput {throughput:.2f}/s, expected >10/s (mock HSM, production >500/s)")
 
 
+@pytest.mark.performance
 class TestVerificationPerformance(unittest.TestCase):
     """Test verification operations meet latency and throughput requirements."""
 
@@ -226,6 +235,7 @@ class TestVerificationPerformance(unittest.TestCase):
             tenant_id="test-tenant"
         )
 
+    @pytest.mark.performance
     def test_verification_latency(self):
         """Test verification completes within 10ms."""
         start_time = time.perf_counter()
@@ -242,6 +252,7 @@ class TestVerificationPerformance(unittest.TestCase):
         self.assertLess(latency_ms, 10.0, f"Verification took {latency_ms:.2f}ms, expected <10ms")
         # Note: Verification may fail in mock, but latency should still be measured
 
+    @pytest.mark.performance
     def test_verification_throughput(self):
         """Test verification can handle 2000/s throughput."""
         iterations = 200  # Scaled down for test speed
@@ -263,6 +274,7 @@ class TestVerificationPerformance(unittest.TestCase):
         self.assertGreater(throughput, 1000, f"Verification throughput {throughput:.2f}/s, expected >1000/s")
 
 
+@pytest.mark.performance
 class TestKeyRetrievalPerformance(unittest.TestCase):
     """Test key retrieval meets latency requirements."""
 
@@ -278,6 +290,7 @@ class TestKeyRetrievalPerformance(unittest.TestCase):
             key_usage=["sign"]
         )
 
+    @pytest.mark.performance
     def test_key_retrieval_latency(self):
         """Test key retrieval completes within 20ms."""
         start_time = time.perf_counter()
@@ -291,6 +304,7 @@ class TestKeyRetrievalPerformance(unittest.TestCase):
         self.assertEqual(metadata.key_id, self.key_id)
 
 
+@pytest.mark.performance
 class TestEncryptionPerformance(unittest.TestCase):
     """Test encryption operations meet latency requirements."""
 
@@ -307,6 +321,7 @@ class TestEncryptionPerformance(unittest.TestCase):
         )
         self.test_plaintext = b"test plaintext data"
 
+    @pytest.mark.performance
     def test_encryption_latency(self):
         """Test encryption completes within reasonable time."""
         start_time = time.perf_counter()
@@ -324,6 +339,7 @@ class TestEncryptionPerformance(unittest.TestCase):
         self.assertIsNotNone(ciphertext)
         self.assertIsNotNone(iv)
 
+    @pytest.mark.performance
     def test_decryption_latency(self):
         """Test decryption completes within reasonable time."""
         # First encrypt

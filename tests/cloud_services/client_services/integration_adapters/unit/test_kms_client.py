@@ -18,15 +18,18 @@ from integration_adapters.integrations.kms_client import KMSClient
 
 pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
 
+@pytest.mark.unit
 class TestKMSClient:
     """Test KMSClient."""
 
+    @pytest.mark.unit
     def test_kms_client_initialization(self):
         """Test KMS client initialization."""
         client = KMSClient()
         assert client.base_url is not None
         client.close()
 
+    @pytest.mark.unit
     def test_get_secret_success(self):
         """Test successful secret retrieval."""
         mock_response = Mock()
@@ -45,6 +48,7 @@ class TestKMSClient:
         assert secret == "secret-123"
         client.close()
 
+    @pytest.mark.unit
     def test_get_secret_failure(self):
         """Test secret retrieval failure."""
         mock_client = Mock()
@@ -58,6 +62,7 @@ class TestKMSClient:
         assert secret is None
         client.close()
 
+    @pytest.mark.unit
     def test_refresh_token_success(self):
         """Test successful token refresh."""
         mock_response = Mock()

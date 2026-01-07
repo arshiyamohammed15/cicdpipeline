@@ -16,14 +16,17 @@ from uuid import uuid4
 
 from integration_adapters.observability.metrics import MetricsRegistry, get_metrics_registry
 
+@pytest.mark.unit
 class TestMetricsRegistry:
     """Test MetricsRegistry."""
 
+    @pytest.mark.unit
     def test_metrics_registry_initialization(self):
         """Test metrics registry initialization."""
         registry = MetricsRegistry()
         assert registry is not None
 
+    @pytest.mark.unit
     def test_increment_webhook_received(self):
         """Test incrementing webhook received counter."""
         registry = MetricsRegistry()
@@ -32,6 +35,7 @@ class TestMetricsRegistry:
         registry.increment_webhook_received("github", connection_id)
         # No exception means it worked
 
+    @pytest.mark.unit
     def test_increment_event_normalized(self):
         """Test incrementing event normalized counter."""
         registry = MetricsRegistry()
@@ -40,6 +44,7 @@ class TestMetricsRegistry:
         registry.increment_event_normalized("github", connection_id)
         # No exception means it worked
 
+    @pytest.mark.unit
     def test_increment_action_executed(self):
         """Test incrementing action executed counter."""
         registry = MetricsRegistry()
@@ -48,6 +53,7 @@ class TestMetricsRegistry:
         registry.increment_action_executed("github", connection_id, "comment_on_pr")
         # No exception means it worked
 
+    @pytest.mark.unit
     def test_increment_webhook_error(self):
         """Test incrementing webhook error counter."""
         registry = MetricsRegistry()
@@ -56,6 +62,7 @@ class TestMetricsRegistry:
         registry.increment_webhook_error("github", connection_id, "signature_invalid")
         # No exception means it worked
 
+    @pytest.mark.unit
     def test_record_webhook_latency(self):
         """Test recording webhook latency."""
         registry = MetricsRegistry()
@@ -64,6 +71,7 @@ class TestMetricsRegistry:
         registry.record_webhook_latency("github", connection_id, 0.1)
         # No exception means it worked
 
+    @pytest.mark.unit
     def test_get_global_registry(self):
         """Test getting global metrics registry."""
         registry1 = get_metrics_registry()

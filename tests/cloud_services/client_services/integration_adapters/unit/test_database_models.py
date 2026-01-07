@@ -32,9 +32,11 @@ from integration_adapters.database.models import (
     NormalisedAction,
 )
 
+@pytest.mark.unit
 class TestIntegrationProvider:
     """Test IntegrationProvider model."""
 
+    @pytest.mark.unit
     def test_create_provider(self):
         """Test creating a provider."""
         provider = IntegrationProvider(
@@ -52,6 +54,7 @@ class TestIntegrationProvider:
         assert provider.capabilities == {"webhook_supported": True}
         assert provider.api_version == "v3"
 
+    @pytest.mark.unit
     def test_provider_defaults(self):
         """Test provider default values."""
         provider = IntegrationProvider(
@@ -62,9 +65,11 @@ class TestIntegrationProvider:
         assert provider.status == "alpha"
         assert provider.capabilities == {}
 
+@pytest.mark.unit
 class TestIntegrationConnection:
     """Test IntegrationConnection model."""
 
+    @pytest.mark.unit
     def test_create_connection(self, sample_tenant_id):
         """Test creating a connection."""
         connection = IntegrationConnection(
@@ -87,6 +92,7 @@ class TestIntegrationConnection:
         assert isinstance(connection.created_at, datetime)
         assert isinstance(connection.updated_at, datetime)
 
+    @pytest.mark.unit
     def test_connection_timestamps(self, sample_tenant_id):
         """Test connection timestamp defaults."""
         connection = IntegrationConnection(
@@ -98,9 +104,11 @@ class TestIntegrationConnection:
         assert connection.created_at is not None
         assert connection.updated_at is not None
 
+@pytest.mark.unit
 class TestWebhookRegistration:
     """Test WebhookRegistration model."""
 
+    @pytest.mark.unit
     def test_create_webhook_registration(self, sample_connection_id):
         """Test creating a webhook registration."""
         registration = WebhookRegistration(
@@ -116,9 +124,11 @@ class TestWebhookRegistration:
         assert registration.status == "active"
         assert registration.registration_id is not None
 
+@pytest.mark.unit
 class TestPollingCursor:
     """Test PollingCursor model."""
 
+    @pytest.mark.unit
     def test_create_polling_cursor(self):
         """Test creating a polling cursor."""
         cursor = PollingCursor(
@@ -130,9 +140,11 @@ class TestPollingCursor:
         assert cursor.last_polled_at is not None
         assert cursor.cursor_id is not None
 
+@pytest.mark.unit
 class TestAdapterEvent:
     """Test AdapterEvent model."""
 
+    @pytest.mark.unit
     def test_create_adapter_event(self):
         """Test creating an adapter event."""
         event = AdapterEvent(
@@ -146,9 +158,11 @@ class TestAdapterEvent:
         assert event.raw_payload_ref == "storage://event-123"
         assert event.event_id is not None
 
+@pytest.mark.unit
 class TestNormalisedAction:
     """Test NormalisedAction model."""
 
+    @pytest.mark.unit
     def test_create_normalised_action(self, sample_tenant_id):
         """Test creating a normalised action."""
         action = NormalisedAction(

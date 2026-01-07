@@ -6,6 +6,7 @@ End-to-end API service test (stubbed for harness).
 import pytest
 
 
+@pytest.mark.integration
 def test_api_service():
     """Validate stubbed API behaviour without external service."""
     health = {"status": "healthy", "total_rules": 0, "enforcement": "on"}

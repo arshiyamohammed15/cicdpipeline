@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pytest
 
 import logging
 from pathlib import Path
@@ -15,6 +16,7 @@ def _cleanup_handlers():
             root.removeHandler(handler)
 
 
+@pytest.mark.unit
 def test_logger_uses_external_root(tmp_path, monkeypatch):
     log_root = tmp_path / "external-root"
     monkeypatch.setenv("ZEROU_LOG_ROOT", str(log_root))
@@ -29,6 +31,7 @@ def test_logger_uses_external_root(tmp_path, monkeypatch):
     _cleanup_handlers()
 
 
+@pytest.mark.unit
 def test_logger_skips_repo_paths(monkeypatch, tmp_path):
     repo_root = Path(__file__).resolve().parents[1]
     inside_repo = repo_root / "config" / "logs"

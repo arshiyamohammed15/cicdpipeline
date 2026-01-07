@@ -10,6 +10,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_tc_sin_007_persistent_failure_dlq(ingestion_service, registered_producer, dlq_handler):
     """TC-SIN-007: Persistent downstream failure routes to DLQ."""
     # Create signal that will fail validation permanently

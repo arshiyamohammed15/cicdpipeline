@@ -16,15 +16,18 @@ from unittest.mock import Mock, patch
 
 from integration_adapters.integrations.budget_client import BudgetClient
 
+@pytest.mark.unit
 class TestBudgetClient:
     """Test BudgetClient."""
 
+    @pytest.mark.unit
     def test_budget_client_initialization(self):
         """Test budget client initialization."""
         client = BudgetClient()
         assert client.base_url is not None
 
     @patch('integrations.budget_client.httpx.Client')
+    @pytest.mark.unit
     def test_check_budget_allowed(self, mock_client_class):
         """Test budget check allows operation."""
         mock_response = Mock()
@@ -43,6 +46,7 @@ class TestBudgetClient:
         assert allowed is True
 
     @patch('integrations.budget_client.httpx.Client')
+    @pytest.mark.unit
     def test_check_budget_denied(self, mock_client_class):
         """Test budget check denies operation."""
         mock_response = Mock()
@@ -61,6 +65,7 @@ class TestBudgetClient:
         assert allowed is False
 
     @patch('integrations.budget_client.httpx.Client')
+    @pytest.mark.unit
     def test_check_budget_fail_open(self, mock_client_class):
         """Test budget check fails open on error."""
         mock_client = Mock()
@@ -75,6 +80,7 @@ class TestBudgetClient:
         assert info is None
 
     @patch('integrations.budget_client.httpx.Client')
+    @pytest.mark.unit
     def test_check_rate_limit(self, mock_client_class):
         """Test rate limit checking."""
         mock_response = Mock()
@@ -93,6 +99,7 @@ class TestBudgetClient:
         assert allowed is True
 
     @patch('integrations.budget_client.httpx.Client')
+    @pytest.mark.unit
     def test_record_usage(self, mock_client_class):
         """Test usage recording."""
         mock_response = Mock()

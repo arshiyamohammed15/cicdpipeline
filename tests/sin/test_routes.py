@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from tests.sin.conftest import SignalEnvelope, SignalKind, Environment
 
 
+@pytest.mark.unit
 def test_tc_sin_009_webhook_normalized_signal():
     """TC-SIN-009: Webhook translates to normalized signal."""
     # This test would require the full FastAPI app

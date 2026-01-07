@@ -54,5 +54,13 @@
     "target": "json",
     "success": true,
     "details": "Updated 0 rules"
+  },
+  {
+    "timestamp": "2026-01-07T18:45:38.596349",
+    "operation": "sqlite_to_json",
+    "source": "sqlite",
+    "target": "json",
+    "success": false,
+    "details": "'ConstitutionRuleManager' object has no attribute 'db_manager'"
   }
 ]

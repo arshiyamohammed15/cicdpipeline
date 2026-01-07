@@ -95,6 +95,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_oversized_policy_definition(self):
         """Test handling of oversized policy definitions."""
         client = TestClient(app)
@@ -116,6 +117,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY
         ]
 
+    @pytest.mark.security
     def test_sql_injection_in_policy_id(self):
         """Test handling of SQL injection attempts."""
         client = TestClient(app)

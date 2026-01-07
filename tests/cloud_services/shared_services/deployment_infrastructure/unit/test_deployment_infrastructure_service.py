@@ -13,6 +13,7 @@ from deployment_infrastructure.services import (
 )
 
 
+@pytest.mark.unit
 class TestDeploymentService:
     """Test deployment service functionality."""
 
@@ -41,6 +42,7 @@ class TestDeploymentService:
         assert result["environment"] == "development"
         assert result["target"] == "local"
 
+    @pytest.mark.unit
     def test_deploy_with_service(self):
         """Test deployment with specific service."""
         service = DeploymentService()
@@ -53,6 +55,7 @@ class TestDeploymentService:
         assert result["environment"] == "staging"
         assert result["target"] == "cloud"
 
+    @pytest.mark.unit
     def test_get_deployment_status(self):
         """Test get deployment status."""
         service = DeploymentService()
@@ -65,24 +68,28 @@ class TestDeploymentService:
         assert status is not None
         assert status["deployment_id"] == deployment_id
 
+    @pytest.mark.unit
     def test_get_deployment_status_not_found(self):
         """Test get deployment status for non-existent deployment."""
         service = DeploymentService()
         status = service.get_deployment_status("non-existent-id")
         assert status is None
 
+    @pytest.mark.unit
     def test_deploy_invalid_environment(self):
         """Test deployment with invalid environment."""
         service = DeploymentService()
         with pytest.raises(ValueError, match="Invalid environment"):
             service.deploy(environment="invalid", target="local")
 
+    @pytest.mark.unit
     def test_deploy_invalid_target(self):
         """Test deployment with invalid target."""
         service = DeploymentService()
         with pytest.raises(ValueError, match="Invalid target"):
             service.deploy(environment="development", target="invalid")
 
+    @pytest.mark.unit
     def test_deploy_with_config(self):
         """Test deployment with configuration overrides."""
         service = DeploymentService()
@@ -96,6 +103,7 @@ class TestDeploymentService:
         assert result["status"] == "completed"
         assert "steps" in result
 
+    @pytest.mark.unit
     def test_deploy_steps_tracking(self):
         """Test that deployment tracks steps correctly."""
         service = DeploymentService()
@@ -107,6 +115,7 @@ class TestDeploymentService:
         assert len(result["steps"]) > 0
         assert all("step" in step and "status" in step for step in result["steps"])
 
+    @pytest.mark.unit
     def test_deploy_estimated_completion(self):
         """Test that estimated completion time is calculated correctly."""
         service = DeploymentService()
@@ -117,6 +126,7 @@ class TestDeploymentService:
         assert "estimated_completion" in result
         assert result["estimated_completion"] > result["started_at"]
 
+    @pytest.mark.unit
     def test_deploy_hybrid_target(self):
         """Test deployment to hybrid target."""
         service = DeploymentService()
@@ -129,6 +139,7 @@ class TestDeploymentService:
         assert result["status"] == "completed"
 
 
+@pytest.mark.unit
 class TestEnvironmentParityService:
     """Test environment parity service functionality."""
 
@@ -139,6 +150,7 @@ class TestEnvironmentParityService:
         service = EnvironmentParityService()
         assert service is not None
 
+    @pytest.mark.unit
     def test_verify_parity(self):
         """Test environment parity verification."""
         service = EnvironmentParityService()
@@ -153,6 +165,7 @@ class TestEnvironmentParityService:
         assert "differences" in result
         assert "checked_at" in result
 
+    @pytest.mark.unit
     def test_verify_parity_with_resources(self):
         """Test environment parity verification with specific resources."""
         service = EnvironmentParityService()
@@ -164,6 +177,7 @@ class TestEnvironmentParityService:
         assert result is not None
         assert len(result["differences"]) >= 0
 
+    @pytest.mark.unit
     def test_verify_parity_invalid_source_environment(self):
         """Test parity verification with invalid source environment."""
         service = EnvironmentParityService()
@@ -173,6 +187,7 @@ class TestEnvironmentParityService:
                 target_environment="staging"
             )
 
+    @pytest.mark.unit
     def test_verify_parity_invalid_target_environment(self):
         """Test parity verification with invalid target environment."""
         service = EnvironmentParityService()
@@ -182,6 +197,7 @@ class TestEnvironmentParityService:
                 target_environment="invalid"
             )
 
+    @pytest.mark.unit
     def test_verify_parity_same_environments(self):
         """Test parity verification with same source and target."""
         service = EnvironmentParityService()
@@ -191,6 +207,7 @@ class TestEnvironmentParityService:
                 target_environment="development"
             )
 
+    @pytest.mark.unit
     def test_verify_parity_mismatch_detection(self):
         """Test parity verification detects mismatches."""
         service = EnvironmentParityService()
@@ -203,6 +220,7 @@ class TestEnvironmentParityService:
         assert "mismatch_count" in result
         assert result["parity_status"] in ["match", "mismatch"]
 
+    @pytest.mark.unit
     def test_verify_parity_default_resources(self):
         """Test parity verification with default resources."""
         service = EnvironmentParityService()
@@ -215,6 +233,7 @@ class TestEnvironmentParityService:
         assert all("resource" in d and "match" in d for d in result["differences"])
 
 
+@pytest.mark.unit
 class TestInfrastructureStatusService:
     """Test infrastructure status service functionality."""
 
@@ -225,6 +244,7 @@ class TestInfrastructureStatusService:
         service = InfrastructureStatusService()
         assert service is not None
 
+    @pytest.mark.unit
     def test_get_status(self):
         """Test get infrastructure status."""
         service = InfrastructureStatusService()
@@ -235,6 +255,7 @@ class TestInfrastructureStatusService:
         assert "status_summary" in result
         assert "checked_at" in result
 
+    @pytest.mark.unit
     def test_get_status_with_environment(self):
         """Test get infrastructure status with specific environment."""
         service = InfrastructureStatusService()
@@ -242,6 +263,7 @@ class TestInfrastructureStatusService:
         assert result is not None
         assert result["environment"] == "production"
 
+    @pytest.mark.unit
     def test_get_status_with_resource_type(self):
         """Test get infrastructure status with specific resource type."""
         service = InfrastructureStatusService()

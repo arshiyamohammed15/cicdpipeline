@@ -6,6 +6,7 @@ Stubbed enforcement flow tests.
 import pytest
 
 
+@pytest.mark.unit
 def test_integration_bypass():
     """Ensure validation blocks insecure prompt."""
     result = {"success": False, "error": "CONSTITUTION_VIOLATION", "blocked_by": "SEC-001"}
@@ -13,6 +14,7 @@ def test_integration_bypass():
     assert result["error"] == "CONSTITUTION_VIOLATION"
 
 
+@pytest.mark.unit
 def test_integration_availability():
     """Ensure integrations appear configured."""
     available = {"openai": True, "cursor": True}

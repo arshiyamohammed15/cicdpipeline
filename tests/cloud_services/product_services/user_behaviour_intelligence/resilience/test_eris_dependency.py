@@ -14,6 +14,7 @@ from user_behaviour_intelligence.reliability.circuit_breaker import (
 )
 
 
+@pytest.mark.integration
 class TestERISDependency:
     """Test ERIS dependency handling."""
 
@@ -38,6 +39,7 @@ class TestERISDependency:
         # Should return None (queued for retry)
         assert receipt_id is None
 
+    @pytest.mark.integration
     def test_circuit_breaker_opens_on_failures(self):
         """Test that circuit breaker opens after threshold failures."""
         breaker = CircuitBreaker(

@@ -15,9 +15,11 @@ from datetime import datetime
 # Module setup handled by root conftest.py
 from integration_adapters.services.signal_mapper import SignalMapper
 
+@pytest.mark.integration
 class TestSCMEventNormalization:
     """Test SCM event normalization."""
 
+    @pytest.mark.integration
     def test_github_pr_opened_normalization(self):
         """Test GitHub PR opened event normalization."""
         mapper = SignalMapper()
@@ -52,6 +54,7 @@ class TestSCMEventNormalization:
         assert signal.payload["title"] == "Test PR"
         assert signal.payload["provider_metadata"]["provider_id"] == "github"
 
+    @pytest.mark.integration
     def test_gitlab_push_normalization(self):
         """Test GitLab push event normalization."""
         mapper = SignalMapper()

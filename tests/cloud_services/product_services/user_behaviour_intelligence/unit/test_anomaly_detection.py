@@ -11,9 +11,11 @@ from user_behaviour_intelligence.anomalies.detection import AnomalyDetectionEngi
 from user_behaviour_intelligence.models import Severity, Dimension
 
 
+@pytest.mark.unit
 class TestAnomalyDetection:
     """Test anomaly detection logic."""
 
+    @pytest.mark.unit
     def test_z_score_at_warn_threshold(self):
         """Test anomaly triggered at WARN threshold (z-score = 2.5)."""
         engine = AnomalyDetectionEngine(warn_threshold=2.5, critical_threshold=3.5)
@@ -33,6 +35,7 @@ class TestAnomalyDetection:
         assert severity == Severity.WARN
         assert abs(z_score - 2.5) < 0.1
 
+    @pytest.mark.unit
     def test_z_score_above_critical_threshold(self):
         """Test anomaly triggered at CRITICAL threshold (z-score = 3.6)."""
         engine = AnomalyDetectionEngine()

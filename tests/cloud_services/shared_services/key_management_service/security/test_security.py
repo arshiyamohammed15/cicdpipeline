@@ -57,6 +57,7 @@ class TestTenantIsolation:
             status.HTTP_401_UNAUTHORIZED
         ]
 
+    @pytest.mark.security
     def test_tenant_context_validation(self):
         """Test that tenant context is validated."""
         # Request with mismatched tenant context
@@ -107,6 +108,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_key_rotation_requires_authorization(self):
         """Test that key rotation requires authorization."""
         response = test_client.post(
@@ -126,6 +128,7 @@ class TestKeyLifecycleSecurity:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_key_revocation_requires_authorization(self):
         """Test that key revocation requires authorization."""
         response = test_client.post(
@@ -167,6 +170,7 @@ class TestCryptographicOperations:
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 
+    @pytest.mark.security
     def test_revoked_key_cannot_be_used(self):
         """Test that revoked keys cannot be used for operations."""
         # First create a key, then revoke it, then try to use it
@@ -189,6 +193,7 @@ class TestCryptographicOperations:
             status.HTTP_409_CONFLICT  # KEY_REVOKED
         ]
 
+    @pytest.mark.security
     def test_invalid_algorithm_rejected(self):
         """Test that invalid algorithms are rejected."""
         response = test_client.post(
@@ -234,6 +239,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_oversized_payload_rejected(self):
         """Test that oversized payloads are rejected."""
         large_data = "x" * 1000000  # 1MB base64 encoded
@@ -259,6 +265,7 @@ class TestInputValidation:
             status.HTTP_422_UNPROCESSABLE_ENTITY,
         ]
 
+    @pytest.mark.security
     def test_malformed_certificate_rejected(self):
         """Test that malformed certificates are rejected."""
         response = test_client.post(
@@ -305,6 +312,7 @@ class TestAccessPolicy:
             status.HTTP_404_NOT_FOUND
         ]
 
+    @pytest.mark.security
     def test_usage_limit_enforced(self):
         """Test that usage limits are enforced."""
         # Attempt to exceed daily usage limit

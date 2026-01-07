@@ -16,9 +16,11 @@ from health_reliability_monitoring.models import ComponentDefinition, TelemetryP
 test_client = TestClient(app)
 
 
+@pytest.mark.performance
 class TestTelemetryIngestionPerformance:
     """Test telemetry ingestion performance."""
 
+    @pytest.mark.performance
     def test_telemetry_ingestion_latency(self, db_session):
         """Test that telemetry ingestion meets latency budget."""
         # Register component first
@@ -58,6 +60,7 @@ class TestTelemetryIngestionPerformance:
         if response.status_code == status.HTTP_202_ACCEPTED:
             assert latency < 1.0
 
+    @pytest.mark.performance
     def test_batch_telemetry_ingestion(self, db_session):
         """Test batch telemetry ingestion performance."""
         # Register component
@@ -102,9 +105,11 @@ class TestTelemetryIngestionPerformance:
         assert avg_latency < 0.5  # 500ms per request
 
 
+@pytest.mark.performance
 class TestHealthQueryPerformance:
     """Test health query performance."""
 
+    @pytest.mark.performance
     def test_component_status_query_latency(self, db_session):
         """Test component status query latency."""
         # Create component and snapshot
@@ -147,6 +152,7 @@ class TestHealthQueryPerformance:
         # Query should be fast (< 500ms)
         assert latency < 0.5
 
+    @pytest.mark.performance
     def test_tenant_health_query_latency(self, db_session):
         """Test tenant health query latency."""
         start = time.perf_counter()
@@ -161,9 +167,11 @@ class TestHealthQueryPerformance:
         assert latency < 1.0
 
 
+@pytest.mark.performance
 class TestSafeToActPerformance:
     """Test Safe-to-Act evaluation performance."""
 
+    @pytest.mark.performance
     def test_safe_to_act_evaluation_latency(self, db_session):
         """Test Safe-to-Act evaluation latency."""
         request = {

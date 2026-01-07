@@ -24,33 +24,39 @@ from fastapi.middleware.cors import CORSMiddleware
 pytestmark = pytest.mark.filterwarnings("ignore::ResourceWarning")
 
 
+@pytest.mark.unit
 class TestCreateApp:
     """Test create_app function"""
 
+    @pytest.mark.unit
     def test_create_app_returns_fastapi_instance(self):
         """Test that create_app returns FastAPI instance"""
         application = create_app()
 
         assert isinstance(application, FastAPI)
 
+    @pytest.mark.unit
     def test_create_app_sets_title(self):
         """Test that create_app sets correct title"""
         application = create_app()
 
         assert application.title == "Detection Engine Core API"
 
+    @pytest.mark.unit
     def test_create_app_sets_description(self):
         """Test that create_app sets correct description"""
         application = create_app()
 
         assert "detection engine core" in application.description.lower()
 
+    @pytest.mark.unit
     def test_create_app_sets_version(self):
         """Test that create_app sets correct version"""
         application = create_app()
 
         assert application.version == "1.0.0"
 
+    @pytest.mark.unit
     def test_create_app_adds_cors_middleware(self):
         """Test that create_app adds CORS middleware"""
         application = create_app()
@@ -60,6 +66,7 @@ class TestCreateApp:
         middleware_classes = [m.cls.__name__ if hasattr(m, 'cls') else str(type(m)) for m in application.user_middleware]
         assert any('CORSMiddleware' in str(m) for m in middleware_classes) or len(application.user_middleware) > 0
 
+    @pytest.mark.unit
     def test_create_app_includes_router(self):
         """Test that create_app includes router"""
         application = create_app()
@@ -67,6 +74,7 @@ class TestCreateApp:
         # Check that router is included
         assert len(application.routes) > 0
 
+    @pytest.mark.unit
     def test_create_app_logs_initialization(self):
         """Test that create_app logs initialization"""
         with patch('main.logger') as mock_logger:
@@ -74,17 +82,21 @@ class TestCreateApp:
             mock_logger.info.assert_called_with("Detection Engine Core API initialized")
 
 
+@pytest.mark.unit
 class TestAppInstance:
     """Test app instance"""
 
+    @pytest.mark.unit
     def test_app_is_fastapi_instance(self):
         """Test that app is FastAPI instance"""
         assert isinstance(app, FastAPI)
 
+    @pytest.mark.unit
     def test_app_has_routes(self):
         """Test that app has routes"""
         assert len(app.routes) > 0
 
+    @pytest.mark.unit
     def test_app_has_middleware(self):
         """Test that app has middleware"""
         assert len(app.user_middleware) > 0

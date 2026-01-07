@@ -39,12 +39,14 @@ def loader(tmp_constitution_dir):
     return rule_count_loader.RuleCountLoader(constitution_dir=str(tmp_constitution_dir))
 
 
+@pytest.mark.constitution
 def test_loader_initialization(loader, tmp_constitution_dir):
     """Test loader initialization."""
     assert loader.constitution_dir == tmp_constitution_dir.resolve()
     assert loader._cache_valid is False
 
 
+@pytest.mark.constitution
 def test_load_rules_from_json_files(loader):
     """Test loading rules from JSON files."""
     total, enabled, disabled, categories = loader._load_rules_from_json_files()
@@ -58,6 +60,7 @@ def test_load_rules_from_json_files(loader):
     assert categories["system_design"] == 1
 
 
+@pytest.mark.constitution
 def test_load_rules_from_json_files_not_found(tmp_path):
     """Test loading when directory doesn't exist."""
     loader = rule_count_loader.RuleCountLoader(constitution_dir=str(tmp_path / "nonexistent"))
@@ -66,6 +69,7 @@ def test_load_rules_from_json_files_not_found(tmp_path):
         loader._load_rules_from_json_files()
 
 
+@pytest.mark.constitution
 def test_load_rules_from_json_files_no_files(tmp_path):
     """Test loading when no JSON files exist."""
     constitution_dir = tmp_path / "constitution"
@@ -77,6 +81,7 @@ def test_load_rules_from_json_files_no_files(tmp_path):
         loader._load_rules_from_json_files()
 
 
+@pytest.mark.constitution
 def test_get_counts(loader):
     """Test getting counts."""
     counts = loader.get_counts()
@@ -90,6 +95,7 @@ def test_get_counts(loader):
     assert counts["disabled_rules"] == 1
 
 
+@pytest.mark.constitution
 def test_get_counts_cached(loader):
     """Test that counts are cached."""
     counts1 = loader.get_counts()
@@ -99,6 +105,7 @@ def test_get_counts_cached(loader):
     assert counts1 is counts2
 
 
+@pytest.mark.constitution
 def test_get_counts_force_reload(loader):
     """Test forcing reload of counts."""
     counts1 = loader.get_counts()
@@ -110,24 +117,28 @@ def test_get_counts_force_reload(loader):
     assert loader._cache_valid is True
 
 
+@pytest.mark.constitution
 def test_get_total_rules(loader):
     """Test getting total rule count."""
     total = loader.get_total_rules()
     assert total == 3  # Total rules including disabled
 
 
+@pytest.mark.constitution
 def test_get_enabled_rules(loader):
     """Test getting enabled rule count."""
     enabled = loader.get_enabled_rules()
     assert enabled == 2
 
 
+@pytest.mark.constitution
 def test_get_disabled_rules(loader):
     """Test getting disabled rule count."""
     disabled = loader.get_disabled_rules()
     assert disabled == 1
 
 
+@pytest.mark.constitution
 def test_get_category_counts(loader):
     """Test getting category counts."""
     categories = loader.get_category_counts()
@@ -138,6 +149,7 @@ def test_get_category_counts(loader):
     assert categories["basic_work"] == 2
 
 
+@pytest.mark.constitution
 def test_invalidate_cache(loader):
     """Test invalidating cache."""
     loader.get_counts()  # Populate cache
@@ -147,6 +159,7 @@ def test_invalidate_cache(loader):
     assert loader._cache_valid is False
 
 
+@pytest.mark.constitution
 def test_global_get_rule_count_loader(tmp_constitution_dir):
     """Test global get_rule_count_loader function."""
     # Reset global instance
@@ -159,6 +172,7 @@ def test_global_get_rule_count_loader(tmp_constitution_dir):
     assert loader1 is loader2
 
 
+@pytest.mark.constitution
 def test_global_get_rule_counts(tmp_constitution_dir):
     """Test global get_rule_counts function."""
     counts = rule_count_loader.get_rule_counts(str(tmp_constitution_dir))
@@ -169,6 +183,7 @@ def test_global_get_rule_counts(tmp_constitution_dir):
     assert "category_counts" in counts
 
 
+@pytest.mark.constitution
 def test_load_rules_with_invalid_json(tmp_path):
     """Test loading rules with invalid JSON file."""
     constitution_dir = tmp_path / "constitution"
@@ -194,6 +209,7 @@ def test_load_rules_with_invalid_json(tmp_path):
     assert enabled == 1
 
 
+@pytest.mark.constitution
 def test_load_rules_with_missing_category(tmp_path):
     """Test loading rules with missing category."""
     constitution_dir = tmp_path / "constitution"

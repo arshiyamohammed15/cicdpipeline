@@ -12,6 +12,7 @@ Test Design Principles (following the rules themselves):
 - TST-014: Control Randomness and Time - All randomness seeded, time controlled
 """
 import json
+import pytest
 import unittest
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -91,6 +92,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
         constitution_dir = Path(__file__).parent.parent.parent / 'docs' / 'constitution'
         cls.loader = CursorTestingRulesLoader(constitution_dir)
 
+    @pytest.mark.unit
     def test_file_exists(self):
         """Verify CURSOR TESTING RULES.json file exists."""
         file_path = self.loader._file_path
@@ -99,6 +101,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
             f"CURSOR TESTING RULES.json not found at: {file_path}"
         )
 
+    @pytest.mark.unit
     def test_file_valid_json(self):
         """Verify file is valid JSON."""
         try:
@@ -107,6 +110,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
         except json.JSONDecodeError as e:
             self.fail(f"File is invalid JSON: {e}")
 
+    @pytest.mark.unit
     def test_has_constitution_rules_array(self):
         """Verify file has constitution_rules array."""
         data = self.loader.load_file()
@@ -121,6 +125,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
             "'constitution_rules' must be an array"
         )
 
+    @pytest.mark.unit
     def test_has_metadata(self):
         """Verify file has metadata section."""
         data = self.loader.load_file()
@@ -132,6 +137,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
         metadata = data['metadata']
         self.assertIsInstance(metadata, dict, "Metadata must be an object")
 
+    @pytest.mark.unit
     def test_metadata_total_rules_matches_actual(self):
         """Verify metadata.total_rules matches actual rule count."""
         data = self.loader.load_file()
@@ -144,6 +150,7 @@ class CursorTestingRulesStructureTests(unittest.TestCase):
             f"Metadata total_rules ({expected_count}) doesn't match actual rule count ({actual_count})"
         )
 
+    @pytest.mark.unit
     def test_metadata_has_constitution_name(self):
         """Verify metadata has constitution_name field."""
         data = self.loader.load_file()
@@ -170,6 +177,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_all_rules_have_required_fields(self):
         """Verify all rules have required fields (table-driven)."""
         required_fields = [
@@ -197,6 +205,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                         f"Rule {test_case['rule_id']} (index {test_case['rule_index']}) missing required field: {field}"
                     )
 
+    @pytest.mark.unit
     def test_all_rule_ids_are_strings(self):
         """Verify all rule_ids are non-empty strings."""
         test_cases = [
@@ -218,6 +227,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                     f"Rule {rule_id} rule_id cannot be empty"
                 )
 
+    @pytest.mark.unit
     def test_all_rule_ids_use_tst_prefix(self):
         """Verify all rule_ids use TST- prefix."""
         test_cases = [
@@ -233,6 +243,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                     f"Rule {rule_id} must start with 'TST-' prefix"
                 )
 
+    @pytest.mark.unit
     def test_all_rule_ids_sequential(self):
         """Verify rule IDs are sequentially numbered TST-001 to TST-022."""
         rule_ids = [rule.get('rule_id') for rule in self.rules]
@@ -259,6 +270,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
 
         self.assertEqual(len(tst_numbers), 22, "Must have exactly 22 TST rules")
 
+    @pytest.mark.unit
     def test_all_titles_are_strings(self):
         """Verify all titles are non-empty strings."""
         test_cases = [
@@ -272,6 +284,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(title, str, f"Rule {test_case['rule_id']} title must be string")
                 self.assertGreater(len(title.strip()), 0, f"Rule {test_case['rule_id']} title cannot be empty")
 
+    @pytest.mark.unit
     def test_all_categories_are_strings(self):
         """Verify all categories are non-empty strings."""
         test_cases = [
@@ -285,6 +298,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(category, str, f"Rule {test_case['rule_id']} category must be string")
                 self.assertGreater(len(category.strip()), 0, f"Rule {test_case['rule_id']} category cannot be empty")
 
+    @pytest.mark.unit
     def test_enabled_is_boolean(self):
         """Verify enabled field is boolean for all rules."""
         test_cases = [
@@ -301,6 +315,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} enabled must be boolean, got {type(enabled)}"
                 )
 
+    @pytest.mark.unit
     def test_severity_levels_are_valid(self):
         """Verify severity_level values are valid."""
         valid_severities = {'Blocker', 'Critical', 'Major', 'Minor'}
@@ -319,6 +334,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} has invalid severity: {severity}"
                 )
 
+    @pytest.mark.unit
     def test_versions_are_strings(self):
         """Verify version fields are strings."""
         test_cases = [
@@ -332,6 +348,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(version, str, f"Rule {test_case['rule_id']} version must be string")
                 self.assertGreater(len(version), 0, f"Rule {test_case['rule_id']} version cannot be empty")
 
+    @pytest.mark.unit
     def test_effective_dates_are_valid(self):
         """Verify effective_date fields are valid date strings."""
         test_cases = [
@@ -346,6 +363,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(effective_date, str, f"Rule {test_case['rule_id']} effective_date must be string")
                 self.assertGreaterEqual(len(effective_date), 10, f"Rule {test_case['rule_id']} effective_date must be at least YYYY-MM-DD format")
 
+    @pytest.mark.unit
     def test_policy_linkage_structure(self):
         """Verify policy_linkage has correct structure."""
         test_cases = [
@@ -365,6 +383,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIn('policy_snapshot_hash', policy_linkage, f"Rule {test_case['rule_id']} policy_linkage missing policy_snapshot_hash")
                 self.assertIsInstance(policy_linkage['policy_snapshot_hash'], str, f"Rule {test_case['rule_id']} policy_snapshot_hash must be string")
 
+    @pytest.mark.unit
     def test_descriptions_are_strings(self):
         """Verify descriptions are strings."""
         test_cases = [
@@ -378,6 +397,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsNotNone(description, f"Rule {test_case['rule_id']} description cannot be None")
                 self.assertIsInstance(description, str, f"Rule {test_case['rule_id']} description must be string")
 
+    @pytest.mark.unit
     def test_requirements_are_lists(self):
         """Verify requirements are lists."""
         test_cases = [
@@ -392,6 +412,7 @@ class CursorTestingRulesFieldTests(unittest.TestCase):
                 self.assertIsInstance(requirements, list, f"Rule {test_case['rule_id']} requirements must be array")
                 self.assertGreater(len(requirements), 0, f"Rule {test_case['rule_id']} requirements cannot be empty")
 
+    @pytest.mark.unit
     def test_validation_fields_are_strings(self):
         """Verify validation fields are strings."""
         test_cases = [
@@ -416,6 +437,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_rule_tst_001_prioritize_determinism(self):
         """Test TST-001: Prioritize Determinism Over Speed."""
         rule = self.loader.get_rule_by_id('TST-001')
@@ -428,6 +450,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertIn("reproducible", rule['description'].lower())
         self.assertIn("reproducible", rule['requirements'][0].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_002_eliminate_caching(self):
         """Test TST-002: Eliminate Test-Result Caching."""
         rule = self.loader.get_rule_by_id('TST-002')
@@ -439,6 +462,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("cache", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_003_hermetic_test_runs(self):
         """Test TST-003: Enforce Hermetic Test Runs."""
         rule = self.loader.get_rule_by_id('TST-003')
@@ -450,6 +474,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("network", rule['description'].lower() or "isolation" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_004_test_independence(self):
         """Test TST-004: Maintain Test Independence."""
         rule = self.loader.get_rule_by_id('TST-004')
@@ -461,6 +486,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("sequence", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_005_repository_structure(self):
         """Test TST-005: Maintain Standard Repository Structure."""
         rule = self.loader.get_rule_by_id('TST-005')
@@ -472,6 +498,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("src", rule['description'].lower() or "tests" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_006_test_naming_conventions(self):
         """Test TST-006: Use Standard Test Naming Conventions."""
         rule = self.loader.get_rule_by_id('TST-006')
@@ -483,6 +510,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("test_", rule['description'].lower() or "naming" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_007_purge_cache_directories(self):
         """Test TST-007: Purge Cache Directories Pre-Execution."""
         rule = self.loader.get_rule_by_id('TST-007')
@@ -494,6 +522,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("cache", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_008_disable_framework_caching(self):
         """Test TST-008: Disable Framework Caching."""
         rule = self.loader.get_rule_by_id('TST-008')
@@ -506,6 +535,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertIn("caching", rule['description'].lower())
         self.assertIn("framework", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_009_unit_test_purity(self):
         """Test TST-009: Maintain Unit Test Purity."""
         rule = self.loader.get_rule_by_id('TST-009')
@@ -517,6 +547,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("pure", rule['description'].lower() or "i/o" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_010_table_driven_tests(self):
         """Test TST-010: Use Table-Driven Test Structure."""
         rule = self.loader.get_rule_by_id('TST-010')
@@ -528,6 +559,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("table", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_011_in_memory_doubles(self):
         """Test TST-011: Use In-Memory Doubles for Component Tests."""
         rule = self.loader.get_rule_by_id('TST-011')
@@ -539,6 +571,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("memory", rule['description'].lower() or "double" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_012_real_adapters_integration(self):
         """Test TST-012: Use Real Adapters for Integration Tests."""
         rule = self.loader.get_rule_by_id('TST-012')
@@ -550,6 +583,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("integration", rule['description'].lower() or "adapter" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_013_prohibit_internet_access(self):
         """Test TST-013: Prohibit Internet Access in Tests."""
         rule = self.loader.get_rule_by_id('TST-013')
@@ -561,6 +595,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("internet", rule['description'].lower() or "network" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_014_control_randomness_time(self):
         """Test TST-014: Control Randomness and Time."""
         rule = self.loader.get_rule_by_id('TST-014')
@@ -572,6 +607,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("random", rule['description'].lower() or "time" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_015_prohibit_test_retries(self):
         """Test TST-015: Prohibit Test Retries."""
         rule = self.loader.get_rule_by_id('TST-015')
@@ -583,6 +619,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("retries", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_016_organize_fixtures(self):
         """Test TST-016: Organize Fixtures and Data."""
         rule = self.loader.get_rule_by_id('TST-016')
@@ -594,6 +631,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("fixture", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_017_generate_test_evidence(self):
         """Test TST-017: Generate Test Evidence."""
         rule = self.loader.get_rule_by_id('TST-017')
@@ -605,6 +643,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("junit", rule['description'].lower() or "report" in rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_018_ai_generated_tests_deterministic(self):
         """Test TST-018: Design AI-Generated Tests Deterministically."""
         rule = self.loader.get_rule_by_id('TST-018')
@@ -617,6 +656,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertIn("cache", rule['description'].lower())
         self.assertIn("seed", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_019_ai_generated_tests_organized(self):
         """Test TST-019: Organize AI-Generated Tests Properly."""
         rule = self.loader.get_rule_by_id('TST-019')
@@ -628,6 +668,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("directories", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_020_ai_generated_tests_quality(self):
         """Test TST-020: Ensure AI-Generated Test Quality."""
         rule = self.loader.get_rule_by_id('TST-020')
@@ -639,6 +680,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("complete", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_021_enforce_quality_gates(self):
         """Test TST-021: Enforce Quality Gates."""
         rule = self.loader.get_rule_by_id('TST-021')
@@ -650,6 +692,7 @@ class CursorTestingRulesContentTests(unittest.TestCase):
         self.assertTrue(rule['enabled'])
         self.assertIn("pass", rule['description'].lower())
 
+    @pytest.mark.unit
     def test_rule_tst_022_comprehensive_test_reviews(self):
         """Test TST-022: Conduct Comprehensive Test Reviews."""
         rule = self.loader.get_rule_by_id('TST-022')
@@ -672,6 +715,7 @@ class CursorTestingRulesCategoryTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_all_categories_are_valid(self):
         """Verify all categories match expected categories."""
         expected_categories = {
@@ -701,6 +745,7 @@ class CursorTestingRulesCategoryTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} has unknown category: {category}"
                 )
 
+    @pytest.mark.unit
     def test_category_distribution(self):
         """Verify category distribution matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
@@ -737,6 +782,7 @@ class CursorTestingRulesSeverityTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_severity_distribution(self):
         """Verify expected severity level distribution."""
         severity_counts = {}
@@ -776,6 +822,7 @@ class CursorTestingRulesPolicyLinkageTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_all_rules_reference_same_policy(self):
         """Verify all rules reference POL-TEST-001."""
         test_cases = [
@@ -795,6 +842,7 @@ class CursorTestingRulesPolicyLinkageTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} must reference POL-TEST-001"
                 )
 
+    @pytest.mark.unit
     def test_all_rules_have_same_hash(self):
         """Verify all rules have the same policy_snapshot_hash."""
         expected_hash = "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
@@ -827,6 +875,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
         cls.loader = CursorTestingRulesLoader(constitution_dir)
         cls.rules = cls.loader.get_all_rules()
 
+    @pytest.mark.unit
     def test_all_rules_have_same_version(self):
         """Verify all rules have version 1.0.0."""
         expected_version = "1.0.0"
@@ -844,6 +893,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} version must be {expected_version}"
                 )
 
+    @pytest.mark.unit
     def test_all_rules_have_same_effective_date(self):
         """Verify all rules have effective_date 2024-01-01."""
         expected_date = "2024-01-01"
@@ -861,6 +911,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} effective_date must be {expected_date}"
                 )
 
+    @pytest.mark.unit
     def test_all_rules_have_same_last_updated(self):
         """Verify all rules have same last_updated timestamp."""
         timestamps = [rule.get('last_updated') for rule in self.rules]
@@ -872,6 +923,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
             f"All rules must have same last_updated timestamp, found {len(unique_timestamps)} unique values: {unique_timestamps}"
         )
 
+    @pytest.mark.unit
     def test_all_rules_have_same_last_updated_by(self):
         """Verify all rules have same last_updated_by value."""
         expected_updater = "constitution@zeroui.com"
@@ -889,6 +941,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} last_updated_by must be {expected_updater}"
                 )
 
+    @pytest.mark.unit
     def test_all_rules_have_same_validation_text(self):
         """Verify all rules have same validation text."""
         expected_validation = "Automated test execution verifies compliance."
@@ -906,6 +959,7 @@ class CursorTestingRulesConsistencyTests(unittest.TestCase):
                     f"Rule {test_case['rule_id']} validation must match expected text"
                 )
 
+    @pytest.mark.unit
     def test_all_rules_are_enabled(self):
         """Verify all rules are enabled."""
         test_cases = [

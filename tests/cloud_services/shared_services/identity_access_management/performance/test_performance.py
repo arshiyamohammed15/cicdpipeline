@@ -74,6 +74,7 @@ class TestTokenValidationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_token_validation_latency(self):
         """Test token validation completes within 10ms."""
         # Mock jwt in sys.modules
@@ -105,6 +106,7 @@ class TestTokenValidationPerformance(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.performance
     def test_token_validation_throughput(self):
         """Test token validation can handle 2000/s throughput."""
         # Mock jwt in sys.modules
@@ -149,6 +151,7 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_policy_evaluation_latency(self):
         """Test policy evaluation completes within 50ms."""
         from identity_access_management.models import PolicyBundle, Policy, PolicyRule
@@ -184,6 +187,7 @@ class TestAccessDecisionPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_access_decision_latency(self):
         """Test access decision completes within 100ms."""
         request = DecisionRequest(
@@ -202,6 +206,7 @@ class TestAccessDecisionPerformance(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertIsNotNone(response.decision)
 
+    @pytest.mark.performance
     def test_access_decision_throughput(self):
         """Test access decision can handle 500/s throughput."""
         request = DecisionRequest(
@@ -233,6 +238,7 @@ class TestAuthenticationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_authentication_latency(self):
         """Test authentication completes within 200ms."""
         # Mock jwt in sys.modules
@@ -274,6 +280,7 @@ class TestTrafficMixPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_traffic_mix_simulation(self):
         """Test service handles realistic traffic mix."""
         # Mock jwt in sys.modules

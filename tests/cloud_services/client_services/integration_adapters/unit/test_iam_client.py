@@ -16,15 +16,18 @@ from unittest.mock import Mock, patch
 
 from integration_adapters.integrations.iam_client import IAMClient
 
+@pytest.mark.unit
 class TestIAMClient:
     """Test IAMClient."""
 
+    @pytest.mark.unit
     def test_iam_client_initialization(self):
         """Test IAM client initialization."""
         client = IAMClient()
         assert client.base_url is not None
 
     @patch('integrations.iam_client.httpx.Client')
+    @pytest.mark.unit
     def test_verify_token_success(self, mock_client_class):
         """Test successful token verification."""
         mock_response = Mock()
@@ -48,6 +51,7 @@ class TestIAMClient:
         assert claims["tenant_id"] == "tenant-123"
 
     @patch('integrations.iam_client.httpx.Client')
+    @pytest.mark.unit
     def test_verify_token_failure(self, mock_client_class):
         """Test token verification failure."""
         mock_client = Mock()
@@ -61,6 +65,7 @@ class TestIAMClient:
         assert claims is None
 
     @patch('integrations.iam_client.httpx.Client')
+    @pytest.mark.unit
     def test_get_tenant_id(self, mock_client_class):
         """Test extracting tenant ID from token."""
         mock_response = Mock()
@@ -79,6 +84,7 @@ class TestIAMClient:
         assert tenant_id == "tenant-123"
 
     @patch('integrations.iam_client.httpx.Client')
+    @pytest.mark.unit
     def test_check_role(self, mock_client_class):
         """Test role checking."""
         mock_response = Mock()

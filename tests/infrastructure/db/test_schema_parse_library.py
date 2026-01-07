@@ -22,9 +22,11 @@ SCHEMA_PARSE_LIB = REPO_ROOT / "scripts" / "db" / "lib" / "schema_parse.ps1"
 CONTRACT_PATH = REPO_ROOT / "infra" / "db" / "schema_pack" / "canonical_schema_contract.json"
 
 
+@pytest.mark.unit
 class TestSchemaParseLibrary:
     """Test schema_parse.ps1 library functions."""
 
+    @pytest.mark.unit
     def test_get_canonical_schema_contract_success(self) -> None:
         """Get-CanonicalSchemaContract must load valid contract."""
         ps_script = f"""
@@ -44,6 +46,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_get_canonical_schema_contract_missing_file(self) -> None:
         """Get-CanonicalSchemaContract must throw on missing file."""
         ps_script = f"""
@@ -63,6 +66,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, "Script should throw on missing file"
 
+    @pytest.mark.unit
     def test_parse_sqlite_schema_success(self) -> None:
         """Parse-SqliteSchema must parse valid SQLite schema."""
         sqlite_schema = """
@@ -98,6 +102,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_parse_sqlite_schema_empty(self) -> None:
         """Parse-SqliteSchema must handle empty schema."""
         ps_script = f"""
@@ -114,6 +119,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_assert_table_has_columns_success(self) -> None:
         """Assert-TableHasColumns must pass for valid table."""
         sqlite_schema = """
@@ -143,6 +149,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_assert_table_has_columns_missing_table(self) -> None:
         """Assert-TableHasColumns must throw on missing table."""
         ps_script = f"""
@@ -166,6 +173,7 @@ class TestSchemaParseLibrary:
         )
         assert result.returncode == 0, "Script should throw on missing table"
 
+    @pytest.mark.unit
     def test_assert_table_has_columns_missing_column(self) -> None:
         """Assert-TableHasColumns must throw on missing column."""
         sqlite_schema = """
@@ -198,9 +206,11 @@ class TestSchemaParseLibrary:
         assert result.returncode == 0, "Script should throw on missing column"
 
 
+@pytest.mark.unit
 class TestSchemaParseEdgeCases:
     """Test schema_parse.ps1 edge cases."""
 
+    @pytest.mark.unit
     def test_parse_sqlite_schema_with_foreign_keys(self) -> None:
         """Parse-SqliteSchema must ignore FOREIGN KEY constraints."""
         sqlite_schema = """
@@ -229,6 +239,7 @@ class TestSchemaParseEdgeCases:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_parse_sqlite_schema_with_quoted_names(self) -> None:
         """Parse-SqliteSchema must handle quoted column names."""
         sqlite_schema = """
@@ -255,6 +266,7 @@ class TestSchemaParseEdgeCases:
         )
         assert result.returncode == 0, f"Script failed: {result.stderr}"
 
+    @pytest.mark.unit
     def test_parse_sqlite_schema_multiple_tables(self) -> None:
         """Parse-SqliteSchema must parse multiple tables."""
         sqlite_schema = """

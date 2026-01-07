@@ -10,6 +10,7 @@ Test Design Principles:
 - Comprehensive: 100% coverage of all 395 rules
 """
 import json
+import pytest
 import unittest
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -101,6 +102,8 @@ class ConstitutionStructureTests(unittest.TestCase):
         cls.loader = ConstitutionRuleLoader(constitution_dir)
         cls.expected_files = sorted([p.name for p in constitution_dir.glob("*.json")])
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_files_exist(self):
         """Verify all constitution files exist."""
         for filename in self.expected_files:
@@ -111,6 +114,8 @@ class ConstitutionStructureTests(unittest.TestCase):
                     f"Constitution file missing: {filename}"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_files_valid_json(self):
         """Verify all files are valid JSON."""
         for filename in self.expected_files:
@@ -121,6 +126,8 @@ class ConstitutionStructureTests(unittest.TestCase):
                 except json.JSONDecodeError as e:
                     self.fail(f"{filename} is invalid JSON: {e}")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_files_have_constitution_rules(self):
         """Verify all files have constitution_rules array."""
         for filename in self.expected_files:
@@ -137,6 +144,8 @@ class ConstitutionStructureTests(unittest.TestCase):
                     f"{filename} 'constitution_rules' must be an array"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_files_have_metadata(self):
         """Verify all files have metadata section."""
         for filename in self.expected_files:
@@ -152,6 +161,8 @@ class ConstitutionStructureTests(unittest.TestCase):
                 self.assertIn('total_rules', metadata)
                 self.assertIn('version', metadata)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_metadata_rule_count_matches_actual(self):
         """Verify metadata.total_rules matches actual rule count."""
         for filename in self.expected_files:
@@ -178,6 +189,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
         cls.loader = ConstitutionRuleLoader(constitution_dir)
         cls.expected_files = sorted([p.name for p in constitution_dir.glob("*.json")])
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_all_rules_have_required_fields(self):
         """Verify all rules have required fields."""
         required_fields = ['rule_id', 'title', 'category', 'enabled', 'severity_level', 'version']
@@ -193,6 +206,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                             f"{filename} rule {rule.get('rule_id')} missing required field: {field}"
                         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_rule_ids_are_strings(self):
         """Verify all rule_ids are strings."""
         for filename in self.expected_files:
@@ -211,6 +226,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         f"{filename} rule_id cannot be empty"
                     )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_titles_are_strings(self):
         """Verify all titles are non-empty strings."""
         for filename in self.expected_files:
@@ -221,6 +238,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     self.assertIsInstance(title, str)
                     self.assertGreater(len(title.strip()), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_categories_are_strings(self):
         """Verify all categories are non-empty strings."""
         for filename in self.expected_files:
@@ -231,6 +250,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     self.assertIsInstance(category, str)
                     self.assertGreater(len(category.strip()), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_enabled_is_boolean(self):
         """Verify enabled field is boolean."""
         for filename in self.expected_files:
@@ -244,6 +265,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         f"{filename} rule {rule.get('rule_id')} enabled must be boolean"
                     )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_severity_levels_are_valid(self):
         """Verify severity_level values are valid."""
         valid_severities = ['Blocker', 'Critical', 'Major', 'Minor']
@@ -259,6 +282,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                         f"{filename} rule {rule.get('rule_id')} has invalid severity: {severity}"
                     )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_versions_are_strings(self):
         """Verify version fields are strings."""
         for filename in self.expected_files:
@@ -269,6 +294,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     self.assertIsInstance(version, str)
                     self.assertGreater(len(version), 0)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_effective_dates_are_present(self):
         """Verify effective_date fields are present and valid."""
         for filename in self.expected_files:
@@ -281,6 +308,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     # Basic date format check (YYYY-MM-DD)
                     self.assertGreaterEqual(len(effective_date), 10)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_policy_linkage_structure(self):
         """Verify policy_linkage has correct structure."""
         for filename in self.expected_files:
@@ -296,6 +325,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                                 list
                             )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_descriptions_are_strings(self):
         """Verify descriptions are strings (may be empty)."""
         for filename in self.expected_files:
@@ -307,6 +338,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     if description is not None:
                         self.assertIsInstance(description, str)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_requirements_are_lists(self):
         """Verify requirements are lists (if present)."""
         for filename in self.expected_files:
@@ -317,6 +350,8 @@ class ConstitutionRuleStructureTests(unittest.TestCase):
                     if requirements is not None:
                         self.assertIsInstance(requirements, list)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_validation_fields_are_strings(self):
         """Verify validation fields are strings (if present)."""
         for filename in self.expected_files:
@@ -337,6 +372,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         constitution_dir = Path(__file__).parent.parent.parent.parent / 'docs' / 'constitution'
         cls.loader = ConstitutionRuleLoader(constitution_dir)
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_master_generic_rules_count(self):
         """Verify MASTER GENERIC RULES count matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
@@ -350,18 +387,24 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         actual_count = len(rules)
         self.assertGreater(actual_count, 0, "MASTER GENERIC RULES must have rules")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_vscode_extension_rules_count(self):
         """Verify VSCODE EXTENSION RULES count matches single source of truth."""
         rules = self.loader.get_all_rules('VSCODE EXTENSION RULES.json')
         actual_count = len(rules)
         self.assertGreater(actual_count, 0, "VSCODE EXTENSION RULES must have rules")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_logging_rules_count(self):
         """Verify LOGGING & TROUBLESHOOTING RULES count matches single source of truth."""
         rules = self.loader.get_all_rules('LOGGING & TROUBLESHOOTING RULES.json')
         actual_count = len(rules)
         self.assertGreater(actual_count, 0, "LOGGING & TROUBLESHOOTING RULES must have rules")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_modules_gsmd_mapping_rules_count(self):
         """Verify MODULES AND GSMD MAPPING RULES count matches single source of truth."""
         rules = self.loader.get_all_rules('MODULES AND GSMD MAPPING RULES.json')
@@ -369,18 +412,24 @@ class ConstitutionRuleContentTests(unittest.TestCase):
         self.assertGreater(actual_count, 0, "MODULES AND GSMD MAPPING RULES must have rules")
 
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_testing_rules_count(self):
         """Verify TESTING RULES count matches single source of truth."""
         rules = self.loader.get_all_rules('TESTING RULES.json')
         actual_count = len(rules)
         self.assertGreater(actual_count, 0, "TESTING RULES must have rules")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_comments_rules_count(self):
         """Verify COMMENTS RULES count matches single source of truth."""
         rules = self.loader.get_all_rules('COMMENTS RULES.json')
         actual_count = len(rules)
         self.assertGreater(actual_count, 0, "COMMENTS RULES must have rules")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_total_rules_count(self):
         """Verify total rule count matches single source of truth."""
         from config.constitution.rule_count_loader import get_rule_counts
@@ -400,6 +449,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             f"Total rules across all files ({total}) must match single source of truth ({expected_total})"
         )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_no_duplicate_rule_ids_within_file(self):
         """Verify no duplicate rule IDs within each file."""
         files = sorted([p.name for p in self.loader.constitution_dir.glob("*.json")])
@@ -415,6 +466,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     f"{filename} has duplicate rule_ids: {set(duplicates)}"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_master_rules_sequential_numbering(self):
         """Verify MASTER GENERIC RULES have sequential numbering for R- prefixed rules."""
         rules = self.loader.get_all_rules('MASTER GENERIC RULES.json')
@@ -456,6 +509,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
             if missing:
                 self.fail(f"MASTER GENERIC RULES have gaps in sequence: {sorted(missing)}")
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_vscode_extension_rules_prefix(self):
         """Verify VSCODE EXTENSION RULES have correct prefixes."""
         rules = self.loader.get_all_rules('VSCODE EXTENSION RULES.json')
@@ -469,6 +524,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     f"VSCODE EXTENSION RULE {rule_id} has invalid prefix"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_logging_rules_prefix(self):
         """Verify LOGGING & TROUBLESHOOTING RULES have OBS- prefix."""
         rules = self.loader.get_all_rules('LOGGING & TROUBLESHOOTING RULES.json')
@@ -481,6 +538,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     f"LOGGING RULE {rule_id} must start with OBS-"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_testing_rules_prefix(self):
         """Verify TESTING RULES have correct prefixes."""
         rules = self.loader.get_all_rules('TESTING RULES.json')
@@ -494,6 +553,8 @@ class ConstitutionRuleContentTests(unittest.TestCase):
                     f"TESTING RULE {rule_id} has invalid prefix"
                 )
 
+    @pytest.mark.constitution
+    @pytest.mark.unit
     def test_comments_rules_prefix(self):
         """Verify COMMENTS RULES have DOC- prefix."""
         rules = self.loader.get_all_rules('COMMENTS RULES.json')

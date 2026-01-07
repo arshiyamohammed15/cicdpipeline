@@ -14,9 +14,11 @@ from user_behaviour_intelligence.processors.event_ingestion import EventIngestio
 from user_behaviour_intelligence.config import ConfigurationManager
 
 
+@pytest.mark.integration
 class TestE2EEventsToSignals:
     """Test end-to-end event processing."""
 
+    @pytest.mark.integration
     def test_event_processing_pipeline(self):
         """Test event processing from PM-3 SignalEnvelope to UBI BehaviouralEvent."""
         # Initialize components

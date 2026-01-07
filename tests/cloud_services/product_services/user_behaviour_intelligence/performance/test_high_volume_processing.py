@@ -13,9 +13,11 @@ from user_behaviour_intelligence.config import ConfigurationManager
 from user_behaviour_intelligence.models import BehaviouralEvent, ActorType
 
 
+@pytest.mark.performance
 class TestHighVolumeProcessing:
     """Test high-volume event processing."""
 
+    @pytest.mark.performance
     def test_1000_events_per_second_throughput(self):
         """Test that system can process 1000 events/second."""
         config_manager = ConfigurationManager()

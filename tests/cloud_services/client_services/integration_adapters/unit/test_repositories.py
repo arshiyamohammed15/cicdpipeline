@@ -112,9 +112,11 @@ from integration_adapters.database.models import (
     NormalisedAction,
 )
 
+@pytest.mark.unit
 class TestProviderRepository:
     """Test ProviderRepository."""
 
+    @pytest.mark.unit
     def test_create_provider(self, provider_repo):
         """Test creating a provider."""
         provider = IntegrationProvider(
@@ -128,6 +130,7 @@ class TestProviderRepository:
         assert created.provider_id == "github"
         assert created.name == "GitHub"
 
+    @pytest.mark.unit
     def test_get_provider_by_id(self, provider_repo):
         """Test getting provider by ID."""
         provider = IntegrationProvider(
@@ -142,6 +145,7 @@ class TestProviderRepository:
         assert retrieved is not None
         assert retrieved.provider_id == "github"
 
+    @pytest.mark.unit
     def test_get_all_providers(self, provider_repo):
         """Test getting all providers."""
         provider1 = IntegrationProvider(
@@ -162,6 +166,7 @@ class TestProviderRepository:
         all_providers = provider_repo.get_all()
         assert len(all_providers) == 2
 
+    @pytest.mark.unit
     def test_get_providers_by_category(self, provider_repo):
         """Test getting providers by category."""
         provider1 = IntegrationProvider(
@@ -183,6 +188,7 @@ class TestProviderRepository:
         assert len(scm_providers) == 1
         assert scm_providers[0].provider_id == "github"
 
+    @pytest.mark.unit
     def test_update_provider(self, provider_repo):
         """Test updating provider."""
         provider = IntegrationProvider(
@@ -197,6 +203,7 @@ class TestProviderRepository:
         updated = provider_repo.update(provider)
         assert updated.name == "GitHub Updated"
 
+    @pytest.mark.unit
     def test_delete_provider(self, provider_repo):
         """Test deleting provider."""
         provider = IntegrationProvider(
@@ -213,9 +220,11 @@ class TestProviderRepository:
         retrieved = provider_repo.get_by_id("github")
         assert retrieved is None
 
+@pytest.mark.unit
 class TestConnectionRepository:
     """Test ConnectionRepository with tenant isolation."""
 
+    @pytest.mark.unit
     def test_create_connection(self, connection_repo, sample_tenant_id):
         """Test creating a connection."""
         connection = IntegrationConnection(
@@ -229,6 +238,7 @@ class TestConnectionRepository:
         assert created.tenant_id == sample_tenant_id
         assert created.provider_id == "github"
 
+    @pytest.mark.unit
     def test_get_connection_with_tenant_isolation(self, connection_repo):
         """Test tenant isolation in connection retrieval."""
         tenant1 = "tenant-1"
@@ -264,6 +274,7 @@ class TestConnectionRepository:
         assert retrieved3 is not None
         assert retrieved3.connection_id == created2.connection_id
 
+    @pytest.mark.unit
     def test_list_connections_by_tenant(self, connection_repo):
         """Test listing connections by tenant."""
         tenant1 = "tenant-1"
@@ -298,6 +309,7 @@ class TestConnectionRepository:
         tenant2_connections = connection_repo.get_all_by_tenant(tenant2)
         assert len(tenant2_connections) == 1
 
+    @pytest.mark.unit
     def test_get_connections_by_status(self, connection_repo, sample_tenant_id):
         """Test getting connections by status."""
         connection1 = IntegrationConnection(
@@ -322,6 +334,7 @@ class TestConnectionRepository:
         assert len(active_connections) == 1
         assert active_connections[0].status == "active"
 
+    @pytest.mark.unit
     def test_delete_connection_with_tenant_isolation(self, connection_repo, sample_tenant_id):
         """Test deleting connection with tenant isolation."""
         connection = IntegrationConnection(
@@ -340,9 +353,11 @@ class TestConnectionRepository:
         deleted = connection_repo.delete(created.connection_id, sample_tenant_id)
         assert deleted is True
 
+@pytest.mark.unit
 class TestNormalisedActionRepository:
     """Test NormalisedActionRepository with tenant isolation."""
 
+    @pytest.mark.unit
     def test_create_action(self, action_repo, sample_tenant_id):
         """Test creating a normalised action."""
         action = NormalisedAction(
@@ -359,6 +374,7 @@ class TestNormalisedActionRepository:
         assert created.tenant_id == sample_tenant_id
         assert created.idempotency_key == "idempotency-123"
 
+    @pytest.mark.unit
     def test_get_action_by_idempotency_key(self, action_repo, sample_tenant_id):
         """Test getting action by idempotency key."""
         action = NormalisedAction(
@@ -381,6 +397,7 @@ class TestNormalisedActionRepository:
         retrieved2 = action_repo.get_by_idempotency_key("unique-key-123", "wrong-tenant")
         assert retrieved2 is None
 
+    @pytest.mark.unit
     def test_get_pending_actions(self, action_repo, sample_tenant_id):
         """Test getting pending actions."""
         action1 = NormalisedAction(

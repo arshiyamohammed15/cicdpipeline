@@ -17,6 +17,7 @@ Performance Requirements (per IAM spec section 9):
 
 import sys
 import unittest
+import pytest
 import time
 from pathlib import Path
 from unittest.mock import patch, MagicMock
@@ -59,6 +60,7 @@ from identity_access_management.models import VerifyRequest, DecisionRequest, Su
 from identity_access_management.services import IAMService
 
 
+@pytest.mark.performance
 class TestTokenValidationPerformance(unittest.TestCase):
     """Test token validation meets ≤10ms latency requirement."""
 
@@ -66,6 +68,7 @@ class TestTokenValidationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_token_validation_latency(self):
         """Test token validation completes within 10ms."""
         # Mock jwt in sys.modules
@@ -97,6 +100,7 @@ class TestTokenValidationPerformance(unittest.TestCase):
             if 'jwt' in sys.modules:
                 del sys.modules['jwt']
 
+    @pytest.mark.performance
     def test_token_validation_throughput(self):
         """Test token validation can handle 2000/s throughput."""
         # Mock jwt in sys.modules
@@ -132,6 +136,7 @@ class TestTokenValidationPerformance(unittest.TestCase):
                 del sys.modules['jwt']
 
 
+@pytest.mark.performance
 class TestPolicyEvaluationPerformance(unittest.TestCase):
     """Test policy evaluation meets ≤50ms latency requirement."""
 
@@ -139,6 +144,7 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_policy_evaluation_latency(self):
         """Test policy evaluation completes within 50ms."""
         from identity_access_management.models import PolicyBundle, Policy, PolicyRule
@@ -165,6 +171,7 @@ class TestPolicyEvaluationPerformance(unittest.TestCase):
         self.assertIsNotNone(snapshot_id)
 
 
+@pytest.mark.performance
 class TestAccessDecisionPerformance(unittest.TestCase):
     """Test access decision meets ≤100ms latency requirement."""
 
@@ -172,6 +179,7 @@ class TestAccessDecisionPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_access_decision_latency(self):
         """Test access decision completes within 100ms."""
         request = DecisionRequest(
@@ -190,6 +198,7 @@ class TestAccessDecisionPerformance(unittest.TestCase):
         self.assertIsNotNone(response)
         self.assertIsNotNone(response.decision)
 
+    @pytest.mark.performance
     def test_access_decision_throughput(self):
         """Test access decision can handle 500/s throughput."""
         request = DecisionRequest(
@@ -212,6 +221,7 @@ class TestAccessDecisionPerformance(unittest.TestCase):
         self.assertGreater(throughput, 250, f"Throughput {throughput:.2f}/s, expected >250/s")
 
 
+@pytest.mark.performance
 class TestAuthenticationPerformance(unittest.TestCase):
     """Test authentication meets ≤200ms latency requirement."""
 
@@ -219,6 +229,7 @@ class TestAuthenticationPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_authentication_latency(self):
         """Test authentication completes within 200ms."""
         # Mock jwt in sys.modules
@@ -251,6 +262,7 @@ class TestAuthenticationPerformance(unittest.TestCase):
                 del sys.modules['jwt']
 
 
+@pytest.mark.performance
 class TestTrafficMixPerformance(unittest.TestCase):
     """Test service handles traffic mix: 70% verify, 25% decision, 5% policies."""
 
@@ -258,6 +270,7 @@ class TestTrafficMixPerformance(unittest.TestCase):
         """Set up test fixtures."""
         self.service = IAMService()
 
+    @pytest.mark.performance
     def test_traffic_mix_simulation(self):
         """Test service handles realistic traffic mix."""
         # Mock jwt in sys.modules

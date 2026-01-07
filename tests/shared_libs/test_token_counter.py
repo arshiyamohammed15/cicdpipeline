@@ -14,6 +14,7 @@ from src.shared_libs.token_counter import ConservativeTokenEstimator
         ("abcde", 2),
     ],
 )
+@pytest.mark.unit
 def test_conservative_token_estimator_text_counts_are_deterministic(
     text: str, expected: int
 ) -> None:
@@ -23,6 +24,7 @@ def test_conservative_token_estimator_text_counts_are_deterministic(
     assert counter.count_input(text) == expected
 
 
+@pytest.mark.unit
 def test_conservative_token_estimator_message_counts_are_deterministic() -> None:
     counter = ConservativeTokenEstimator(chars_per_token=4)
     messages = [
@@ -39,6 +41,7 @@ def test_conservative_token_estimator_message_counts_are_deterministic() -> None
     assert counter.count_input(messages) == counter.count_input(messages_reordered)
 
 
+@pytest.mark.unit
 def test_conservative_token_estimator_estimate_output_pass_through() -> None:
     counter = ConservativeTokenEstimator()
 

@@ -38,6 +38,7 @@ def mmm_service() -> MMMService:
     return MMMService()
 
 
+@pytest.mark.integration
 def test_rf_mmm_01_llm_gateway_unavailable_mirror_only(mmm_service: MMMService) -> None:
     """
     Test RF-MMM-01: LLM Gateway unavailable → Suppress Mentor/Multiplier, allow Mirror-only.
@@ -69,6 +70,7 @@ def test_rf_mmm_01_llm_gateway_unavailable_mirror_only(mmm_service: MMMService) 
             assert action.type.value == "mirror"
 
 
+@pytest.mark.integration
 def test_rf_mmm_02_eris_unavailable_non_blocking(mmm_service: MMMService) -> None:
     """
     Test RF-MMM-02: ERIS unavailable → Receipt queuing, non-blocking.
@@ -96,6 +98,7 @@ def test_rf_mmm_02_eris_unavailable_non_blocking(mmm_service: MMMService) -> Non
         assert response.decision.decision_id is not None
 
 
+@pytest.mark.integration
 def test_rf_mmm_03_policy_unavailable_fail_closed_safety_critical(mmm_service: MMMService) -> None:
     """
     Test RF-MMM-03: Policy unavailable → Fail-closed for safety-critical tenants.
@@ -127,6 +130,7 @@ def test_rf_mmm_03_policy_unavailable_fail_closed_safety_critical(mmm_service: M
                     mmm_service.decide(request, db=None)
 
 
+@pytest.mark.integration
 def test_rf_mmm_03_policy_unavailable_cached_snapshot(mmm_service: MMMService) -> None:
     """
     Test RF-MMM-03: Policy unavailable → Cached snapshot for non-safety-critical tenants.
@@ -178,6 +182,7 @@ def test_rf_mmm_03_policy_unavailable_cached_snapshot(mmm_service: MMMService) -
         assert response.decision.degraded_mode is True
 
 
+@pytest.mark.integration
 def test_ubi_unavailable_empty_signals_continue(mmm_service: MMMService) -> None:
     """
     Test UBI unavailable → Use empty recent_signals array, continue.
@@ -204,6 +209,7 @@ def test_ubi_unavailable_empty_signals_continue(mmm_service: MMMService) -> None
         assert len(response.decision.context.recent_signals) == 0
 
 
+@pytest.mark.integration
 def test_data_governance_unavailable_default_config(mmm_service: MMMService) -> None:
     """
     Test Data Governance unavailable → Use default quiet hours, continue.
@@ -234,6 +240,7 @@ def test_data_governance_unavailable_default_config(mmm_service: MMMService) -> 
         assert response.decision.context.quiet_hours is not None
 
 
+@pytest.mark.integration
 def test_iam_unavailable_503_rejection(client: TestClient) -> None:
     """
     Test IAM unavailable → Reject with 503.

@@ -54,6 +54,7 @@ def db_session():
     session.close()
 
 
+@pytest.mark.unit
 def test_dual_channel_create_approval(db_session) -> None:
     """Test creating dual-channel approval record."""
     repo = DualChannelApprovalRepository(db_session)
@@ -71,6 +72,7 @@ def test_dual_channel_create_approval(db_session) -> None:
     assert created.actor_id == "actor-1"
 
 
+@pytest.mark.unit
 def test_dual_channel_first_approval(db_session) -> None:
     """Test recording first approval."""
     repo = DualChannelApprovalRepository(db_session)
@@ -91,6 +93,7 @@ def test_dual_channel_first_approval(db_session) -> None:
     assert updated.first_approval_at is not None
 
 
+@pytest.mark.unit
 def test_dual_channel_second_approval(db_session) -> None:
     """Test recording second approval."""
     repo = DualChannelApprovalRepository(db_session)
@@ -113,6 +116,7 @@ def test_dual_channel_second_approval(db_session) -> None:
     assert updated.approver_id == "approver-1"
 
 
+@pytest.mark.unit
 def test_dual_channel_rejection(db_session) -> None:
     """Test rejection handling."""
     repo = DualChannelApprovalRepository(db_session)
@@ -132,6 +136,7 @@ def test_dual_channel_rejection(db_session) -> None:
     assert updated.status == DualChannelApprovalStatus.REJECTED
 
 
+@pytest.mark.unit
 def test_dual_channel_api_approve(client: TestClient) -> None:
     """Test POST /v1/mmm/actions/{action_id}/approve endpoint."""
     with patch(
@@ -157,6 +162,7 @@ def test_dual_channel_api_approve(client: TestClient) -> None:
         assert data["status"] == "approved"
 
 
+@pytest.mark.unit
 def test_dual_channel_api_get_status(client: TestClient) -> None:
     """Test GET /v1/mmm/actions/{action_id}/approval-status endpoint."""
     with patch(

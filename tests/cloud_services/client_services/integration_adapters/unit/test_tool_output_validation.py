@@ -77,6 +77,7 @@ def _seed_connection(session, tenant_id: str, provider_id: str):
     return connection
 
 
+@pytest.mark.unit
 def test_invalid_tool_output_is_rejected_and_emits_receipt():
     session = _build_session()
     tenant_id = "tenant-1"
@@ -145,6 +146,7 @@ def test_invalid_tool_output_is_rejected_and_emits_receipt():
     assert "payload" not in result
 
 
+@pytest.mark.unit
 def test_valid_tool_output_proceeds():
     session = _build_session()
     tenant_id = "tenant-2"

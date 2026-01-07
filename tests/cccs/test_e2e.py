@@ -75,6 +75,7 @@ def _runtime(tmp_path: Path) -> CCCSRuntime:
     return runtime
 
 
+@pytest.mark.integration
 def test_fm_cccs_epc_deterministic_result(tmp_path):
     """Test FM → CCCS → EPC/PM/CCP → Deterministic result."""
     runtime = _runtime(tmp_path)
@@ -132,6 +133,7 @@ def test_fm_cccs_epc_deterministic_result(tmp_path):
     assert result1["policy"].rationale == result2["policy"].rationale
 
 
+@pytest.mark.integration
 def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
     """Test Edge Agent offline 48h → reconnect → zero data loss."""
     runtime = _runtime(tmp_path)
@@ -193,6 +195,7 @@ def test_edge_agent_offline_48h_reconnect_zero_data_loss(tmp_path):
     assert len(drained) >= len(receipts)
 
 
+@pytest.mark.integration
 def test_security_attestation_forged_receipt(tmp_path):
     """Test security attestation: forged receipt detection."""
     runtime = _runtime(tmp_path)
@@ -251,6 +254,7 @@ def test_security_attestation_forged_receipt(tmp_path):
                 break
 
 
+@pytest.mark.integration
 def test_security_attestation_replay_attempt(tmp_path):
     """Test security attestation: replay attempt detection."""
     runtime = _runtime(tmp_path)
@@ -296,6 +300,7 @@ def test_security_attestation_replay_attempt(tmp_path):
     assert result1["receipt"].fsync_offset < result2["receipt"].fsync_offset
 
 
+@pytest.mark.integration
 def test_security_attestation_tamper_detection(tmp_path):
     """Test security attestation: tamper detection."""
     runtime = _runtime(tmp_path)

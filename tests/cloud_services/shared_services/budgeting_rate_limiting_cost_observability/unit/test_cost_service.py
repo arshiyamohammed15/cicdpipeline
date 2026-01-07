@@ -39,6 +39,7 @@ def cost_service(db_session):
     return CostService(db_session)
 
 
+@pytest.mark.unit
 class TestCostService:
     """Test suite for CostService."""
 
@@ -61,6 +62,7 @@ class TestCostService:
         assert record.usage_quantity == Decimal("1000")
         assert str(record.tenant_id) == tenant_id
 
+    @pytest.mark.unit
     def test_query_cost_records(self, cost_service):
         """Test cost record querying."""
         tenant_id = str(uuid.uuid4())
@@ -84,6 +86,7 @@ class TestCostService:
         assert len(records) == 5
         assert aggregated["total_cost"] > 0
 
+    @pytest.mark.unit
     def test_generate_cost_report(self, cost_service):
         """Test cost report generation."""
         tenant_id = str(uuid.uuid4())
@@ -113,6 +116,7 @@ class TestCostService:
         assert report["total_cost"] > 0
         assert len(report["breakdown"]) > 0
 
+    @pytest.mark.unit
     def test_detect_anomalies(self, cost_service):
         """Test anomaly detection."""
         tenant_id = str(uuid.uuid4())
@@ -145,6 +149,7 @@ class TestCostService:
         # Should detect the spike
         assert len(anomalies) > 0
 
+    @pytest.mark.unit
     def test_record_cost_batch(self, cost_service):
         """Test batch cost recording."""
         tenant_id = str(uuid.uuid4())

@@ -22,9 +22,11 @@ from integration_adapters.reliability.circuit_breaker import (
     CircuitBreakerManager,
 )
 
+@pytest.mark.unit
 class TestCircuitBreaker:
     """Test CircuitBreaker."""
 
+    @pytest.mark.unit
     def test_circuit_breaker_initialization(self):
         """Test circuit breaker initialization."""
         connection_id = uuid4()
@@ -35,6 +37,7 @@ class TestCircuitBreaker:
         assert breaker.failure_count == 0
         assert breaker.success_count == 0
 
+    @pytest.mark.unit
     def test_circuit_breaker_success(self):
         """Test successful call keeps circuit closed."""
         import uuid
@@ -48,6 +51,7 @@ class TestCircuitBreaker:
         assert breaker.state == CircuitState.CLOSED
         assert breaker.failure_count == 0
 
+    @pytest.mark.unit
     def test_circuit_breaker_failure_counting(self):
         """Test failure counting."""
         import uuid
@@ -74,6 +78,7 @@ class TestCircuitBreaker:
         assert breaker.failure_count == 3
         assert breaker.state == CircuitState.OPEN
 
+    @pytest.mark.unit
     def test_circuit_breaker_opens_on_threshold(self):
         """Test circuit opens when failure threshold reached."""
         breaker = CircuitBreaker(uuid4(), failure_threshold=2)
@@ -92,6 +97,7 @@ class TestCircuitBreaker:
         assert breaker.state == CircuitState.OPEN
         assert breaker.opened_at is not None
 
+    @pytest.mark.unit
     def test_circuit_breaker_rejects_when_open(self):
         """Test circuit rejects calls when open."""
         breaker = CircuitBreaker(uuid4(), failure_threshold=1, timeout=60.0)
@@ -109,6 +115,7 @@ class TestCircuitBreaker:
         with pytest.raises(CircuitBreakerOpenError):
             breaker.call(lambda: "should not execute")
 
+    @pytest.mark.unit
     def test_circuit_breaker_half_open_after_timeout(self):
         """Test circuit goes to half-open after timeout."""
         breaker = CircuitBreaker(uuid4(), failure_threshold=1, timeout=0.1)
@@ -134,6 +141,7 @@ class TestCircuitBreaker:
         # Should still be half-open (needs success_threshold successes)
         assert breaker.state == CircuitState.HALF_OPEN
 
+    @pytest.mark.unit
     def test_circuit_breaker_closes_after_success_threshold(self):
         """Test circuit closes after success threshold in half-open."""
         breaker = CircuitBreaker(
@@ -163,6 +171,7 @@ class TestCircuitBreaker:
         assert breaker.success_count == 0
         assert breaker.failure_count == 0
 
+    @pytest.mark.unit
     def test_circuit_breaker_failure_in_half_open(self):
         """Test failure in half-open returns to open."""
         breaker = CircuitBreaker(uuid4(), failure_threshold=1, timeout=0.1)
@@ -183,6 +192,7 @@ class TestCircuitBreaker:
         assert breaker.state == CircuitState.OPEN
         assert breaker.success_count == 0
 
+    @pytest.mark.unit
     def test_circuit_breaker_reset(self):
         """Test circuit breaker reset."""
         import uuid
@@ -204,9 +214,11 @@ class TestCircuitBreaker:
         assert breaker.success_count == 0
         assert breaker.opened_at is None
 
+@pytest.mark.unit
 class TestCircuitBreakerManager:
     """Test CircuitBreakerManager."""
 
+    @pytest.mark.unit
     def test_get_breaker_creates_new(self):
         """Test getting breaker creates new instance."""
         manager = CircuitBreakerManager()
@@ -216,6 +228,7 @@ class TestCircuitBreakerManager:
         assert breaker.connection_id == connection_id
         assert breaker.state == CircuitState.CLOSED
 
+    @pytest.mark.unit
     def test_get_breaker_returns_existing(self):
         """Test getting breaker returns existing instance."""
         import uuid
@@ -227,6 +240,7 @@ class TestCircuitBreakerManager:
 
         assert breaker1 is breaker2
 
+    @pytest.mark.unit
     def test_remove_breaker(self):
         """Test removing breaker."""
         import uuid
@@ -240,6 +254,7 @@ class TestCircuitBreakerManager:
         removed_again = manager.remove_breaker(connection_id)
         assert removed_again is False
 
+    @pytest.mark.unit
     def test_reset_breaker(self):
         """Test resetting breaker."""
         from reliability.circuit_breaker import CircuitBreaker, CircuitBreakerManager, CircuitState

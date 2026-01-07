@@ -10,6 +10,7 @@ from tests.sin.conftest import (
 )
 
 
+@pytest.mark.unit
 def test_tc_sin_003_governance_violation(ingestion_service, registered_producer, mock_data_governance):
     """TC-SIN-003: Governance violation is detected and handled."""
     # Set disallowed field
@@ -37,6 +38,7 @@ def test_tc_sin_003_governance_violation(ingestion_service, registered_producer,
         assert result.error_code == ErrorCode.GOVERNANCE_VIOLATION
 
 
+@pytest.mark.unit
 def test_tc_sin_008_multi_tenant_isolation(ingestion_service, registered_producer):
     """TC-SIN-008: Multi-tenant isolation is enforced."""
     signal_tenant1 = SignalEnvelope(

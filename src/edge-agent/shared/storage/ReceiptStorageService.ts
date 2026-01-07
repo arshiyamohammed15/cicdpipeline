@@ -198,7 +198,7 @@ export class ReceiptStorageService {
         const piiPatterns = [
             /\b\d{3}-\d{2}-\d{4}\b/, // SSN
             /\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/, // Credit card
-            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/ // Email
+            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/ // Email (fixed: removed pipe from character class)
         ];
 
         for (const pattern of piiPatterns) {

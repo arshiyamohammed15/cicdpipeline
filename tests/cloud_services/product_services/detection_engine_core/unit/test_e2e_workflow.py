@@ -27,6 +27,8 @@ from detection_engine_core.models import (
 client = TestClient(app)
 
 
+@pytest.mark.integration
+@pytest.mark.unit
 class TestE2EWorkflows:
     """Test end-to-end workflows"""
 
@@ -34,6 +36,8 @@ class TestE2EWorkflows:
         """Set up test fixtures"""
         self.service = DetectionEngineService()
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_developer_workflow_pre_commit(self):
         """
         Test complete developer workflow: pre-commit evaluation
@@ -89,6 +93,8 @@ class TestE2EWorkflows:
         feedback_response = self.service.submit_feedback(feedback_request)
         assert feedback_response.status == 'accepted'
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_pr_review_workflow_pre_merge(self):
         """
         Test PR review workflow: pre-merge evaluation
@@ -128,6 +134,8 @@ class TestE2EWorkflows:
         # Should be soft_block or warn for risk_score 0.6
         assert response.receipt.decision['status'] in ['warn', 'soft_block']
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_deployment_workflow_pre_deploy(self):
         """
         Test deployment workflow: pre-deploy evaluation
@@ -165,6 +173,8 @@ class TestE2EWorkflows:
         # Should be hard_block for high risk with incidents
         assert response.receipt.decision['status'] == DecisionStatus.HARD_BLOCK.value
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_feedback_learning_workflow(self):
         """
         Test feedback learning workflow per PRD §3.3
@@ -211,6 +221,8 @@ class TestE2EWorkflows:
         # In production, would verify feedback is used for learning
         # (accuracy metrics improvement, confidence adjustment, etc.)
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_multi_evaluation_point_workflow(self):
         """
         Test workflow across multiple evaluation points
@@ -252,6 +264,8 @@ class TestE2EWorkflows:
         timestamps = [r.timestamp_utc for r in receipts]
         assert all(ts is not None for ts in timestamps)
 
+    @pytest.mark.integration
+    @pytest.mark.unit
     def test_error_recovery_workflow(self):
         """
         Test error recovery workflow

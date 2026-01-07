@@ -65,6 +65,7 @@ def multi_tenant_setup(client, app_iam, app_schema_registry):
     return tokens
 
 
+@pytest.mark.integration
 def test_tenant_isolation_ingestion(client, multi_tenant_setup):
     """Test that tenants can only ingest signals for their own tenant."""
     token_tenant1 = multi_tenant_setup["tenant_1"]
@@ -118,6 +119,7 @@ def test_tenant_isolation_ingestion(client, multi_tenant_setup):
         assert "TENANT_ISOLATION" in data["results"][0]["error_code"]
 
 
+@pytest.mark.integration
 def test_tenant_isolation_dlq(client, multi_tenant_setup):
     """Test that tenants can only access their own DLQ entries."""
     token_tenant1 = multi_tenant_setup["tenant_1"]
@@ -145,6 +147,7 @@ def test_tenant_isolation_dlq(client, multi_tenant_setup):
     assert response.status_code == 200
 
 
+@pytest.mark.integration
 def test_tenant_isolation_producer_registration(client, multi_tenant_setup):
     """Test that producer registration is tenant-aware."""
     token_tenant1 = multi_tenant_setup["tenant_1"]
@@ -175,6 +178,7 @@ def test_tenant_isolation_producer_registration(client, multi_tenant_setup):
     assert response.status_code == 200
 
 
+@pytest.mark.integration
 def test_concurrent_tenant_operations(client, multi_tenant_setup):
     """Test concurrent operations from multiple tenants."""
     import concurrent.futures
@@ -213,6 +217,7 @@ def test_concurrent_tenant_operations(client, multi_tenant_setup):
     assert all(results)
 
 
+@pytest.mark.integration
 def test_tenant_data_separation(client, multi_tenant_setup):
     """Test that tenant data is properly separated."""
     token_tenant1 = multi_tenant_setup["tenant_1"]

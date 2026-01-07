@@ -1,8 +1,11 @@
 from datetime import datetime, timedelta, timezone
 
+import pytest
+
 from user_behaviour_intelligence.integrations.pm3_client import PM3Client
 
 
+@pytest.mark.unit
 def test_pm3_client_out_of_order_buffering_and_in_order_processing():
     handled = []
     client = PM3Client(dedup_window_hours=1, routing_class="analytics_store")

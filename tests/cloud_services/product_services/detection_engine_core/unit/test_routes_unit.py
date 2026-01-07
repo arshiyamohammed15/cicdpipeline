@@ -31,9 +31,11 @@ sys.modules["models"] = dec_models
 from detection_engine_core.services import DetectionEngineService
 
 
+@pytest.mark.unit
 class TestGetService:
     """Test get_service dependency"""
 
+    @pytest.mark.unit
     def test_get_service_returns_service_instance(self):
         """Test that get_service returns DetectionEngineService instance"""
         # Clear global service
@@ -43,6 +45,7 @@ class TestGetService:
 
         assert isinstance(service, DetectionEngineService)
 
+    @pytest.mark.unit
     def test_get_service_caches_service_instance(self):
         """Test that get_service caches service instance"""
         routes._service = None
@@ -53,9 +56,11 @@ class TestGetService:
         assert service1 is service2
 
 
+@pytest.mark.unit
 class TestGetTenantId:
     """Test get_tenant_id dependency"""
 
+    @pytest.mark.unit
     def test_get_tenant_id_with_bearer_token(self):
         """Test get_tenant_id with Bearer token"""
         authorization = "Bearer test-token"
@@ -64,6 +69,7 @@ class TestGetTenantId:
 
         assert tenant_id == "default-tenant"
 
+    @pytest.mark.unit
     def test_get_tenant_id_without_bearer_prefix(self):
         """Test get_tenant_id without Bearer prefix"""
         authorization = "test-token"
@@ -72,6 +78,7 @@ class TestGetTenantId:
 
         assert tenant_id == "default-tenant"
 
+    @pytest.mark.unit
     def test_get_tenant_id_without_authorization(self):
         """Test get_tenant_id without authorization header"""
         with pytest.raises(HTTPException) as exc_info:
@@ -80,6 +87,7 @@ class TestGetTenantId:
         assert exc_info.value.status_code == 401
         assert "Authorization header required" in exc_info.value.detail
 
+    @pytest.mark.unit
     def test_get_tenant_id_with_invalid_token(self):
         """Test get_tenant_id with invalid token"""
         with pytest.raises(HTTPException) as exc_info:
@@ -88,6 +96,7 @@ class TestGetTenantId:
         assert exc_info.value.status_code == 401
         assert "Invalid or expired token" in exc_info.value.detail
 
+    @pytest.mark.unit
     def test_get_tenant_id_with_empty_token(self):
         """Test get_tenant_id with empty token"""
         with pytest.raises(HTTPException) as exc_info:
@@ -96,6 +105,7 @@ class TestGetTenantId:
         assert exc_info.value.status_code == 401
 
 
+@pytest.mark.unit
 class TestEvaluateDecisionRoute:
     """Test evaluate_decision route handler"""
 
@@ -160,6 +170,7 @@ class TestEvaluateDecisionRoute:
         assert response.status_code == 500
 
 
+@pytest.mark.unit
 class TestSubmitFeedbackRoute:
     """Test submit_feedback route handler"""
 
@@ -207,6 +218,7 @@ class TestSubmitFeedbackRoute:
         assert "Test error" in str(exc_info.value.detail)
 
 
+@pytest.mark.unit
 class TestHealthCheckRoute:
     """Test health_check route handler"""
 
@@ -219,6 +231,7 @@ class TestHealthCheckRoute:
         assert response.status == "healthy"
 
 
+@pytest.mark.unit
 class TestReadinessCheckRoute:
     """Test readiness_check route handler"""
 
@@ -235,13 +248,16 @@ class TestReadinessCheckRoute:
         assert response.timestamp is not None
 
 
+@pytest.mark.unit
 class TestRouterIntegration:
     """Test router integration"""
 
+    @pytest.mark.unit
     def test_router_has_correct_prefix(self):
         """Test that router has correct prefix"""
         assert router.prefix == "/v1"
 
+    @pytest.mark.unit
     def test_router_has_correct_tags(self):
         """Test that router has correct tags"""
         assert "detection-engine-core" in router.tags

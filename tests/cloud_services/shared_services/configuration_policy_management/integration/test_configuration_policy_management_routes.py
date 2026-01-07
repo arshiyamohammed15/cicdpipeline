@@ -12,6 +12,7 @@ Risks: None - all tests are hermetic with mocked dependencies
 import sys
 import unittest
 import uuid
+import pytest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 from datetime import datetime
@@ -172,6 +173,7 @@ from configuration_policy_management.main import app
 # (already defined above, but ensure it's accessible)
 
 
+@pytest.mark.integration
 class TestHealthEndpoint(unittest.TestCase):
     """Test /policy/v1/health endpoint."""
 
@@ -179,6 +181,7 @@ class TestHealthEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_health_check(self):
         """Test health check endpoint."""
         response = self.client.get("/policy/v1/health")
@@ -189,6 +192,7 @@ class TestHealthEndpoint(unittest.TestCase):
         self.assertIn("timestamp", data)
 
 
+@pytest.mark.integration
 class TestMetricsEndpoint(unittest.TestCase):
     """Test /policy/v1/metrics endpoint."""
 
@@ -196,6 +200,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_get_metrics(self):
         """Test get metrics endpoint."""
         response = self.client.get("/policy/v1/metrics")
@@ -204,6 +209,7 @@ class TestMetricsEndpoint(unittest.TestCase):
         self.assertIn("metrics", data)
 
 
+@pytest.mark.integration
 class TestConfigEndpoint(unittest.TestCase):
     """Test /policy/v1/config endpoint."""
 
@@ -211,6 +217,7 @@ class TestConfigEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_get_module_config(self):
         """Test get module config endpoint."""
         response = self.client.get("/policy/v1/config")
@@ -220,6 +227,7 @@ class TestConfigEndpoint(unittest.TestCase):
         self.assertIn("timestamp", data)
 
 
+@pytest.mark.integration
 class TestCreatePolicyEndpoint(unittest.TestCase):
     """Test POST /policy/v1/policies endpoint per PRD (lines 337-366)."""
 
@@ -270,6 +278,7 @@ class TestCreatePolicyEndpoint(unittest.TestCase):
         self.patcher2.stop()
         reset_database_state()
 
+    @pytest.mark.integration
     def test_create_policy_success(self):
         """Test create policy with valid request."""
         request_data = {
@@ -292,6 +301,7 @@ class TestCreatePolicyEndpoint(unittest.TestCase):
         self.assertIn("version", data)
         self.assertIn("status", data)
 
+    @pytest.mark.integration
     def test_create_policy_invalid_type(self):
         """Test create policy with invalid policy_type."""
         request_data = {
@@ -310,6 +320,7 @@ class TestCreatePolicyEndpoint(unittest.TestCase):
         self.assertEqual(response.status_code, 422)  # Validation error
 
 
+@pytest.mark.integration
 class TestEvaluatePolicyEndpoint(unittest.TestCase):
     """Test POST /policy/v1/policies/{policy_id}/evaluate endpoint per PRD (lines 368-400)."""
 
@@ -358,6 +369,7 @@ class TestEvaluatePolicyEndpoint(unittest.TestCase):
         self.patcher2.stop()
         reset_database_state()
 
+    @pytest.mark.integration
     def test_evaluate_policy_success(self):
         """Test evaluate policy with valid request."""
         policy_id = str(uuid.uuid4())
@@ -400,6 +412,7 @@ class TestEvaluatePolicyEndpoint(unittest.TestCase):
             self.assertIn("violations", data)
 
 
+@pytest.mark.integration
 class TestCreateConfigurationEndpoint(unittest.TestCase):
     """Test POST /policy/v1/configurations endpoint per PRD (lines 402-432)."""
 
@@ -449,6 +462,7 @@ class TestCreateConfigurationEndpoint(unittest.TestCase):
         self.patcher2.stop()
         reset_database_state()
 
+    @pytest.mark.integration
     def test_create_configuration_success(self):
         """Test create configuration with valid request."""
         request_data = {
@@ -482,6 +496,7 @@ class TestCreateConfigurationEndpoint(unittest.TestCase):
             self.assertIn("status", data)
 
 
+@pytest.mark.integration
 class TestListGoldStandardsEndpoint(unittest.TestCase):
     """Test GET /policy/v1/standards endpoint per PRD (lines 434-459)."""
 
@@ -522,6 +537,7 @@ class TestListGoldStandardsEndpoint(unittest.TestCase):
         self.patcher2.stop()
         reset_database_state()
 
+    @pytest.mark.integration
     def test_list_gold_standards(self):
         """Test list gold standards."""
         tenant_id = str(uuid.uuid4())
@@ -541,6 +557,7 @@ class TestListGoldStandardsEndpoint(unittest.TestCase):
         self.assertIn("items", data)
 
 
+@pytest.mark.integration
 class TestComplianceCheckEndpoint(unittest.TestCase):
     """Test POST /policy/v1/compliance/check endpoint per PRD (lines 460-487)."""
 
@@ -548,6 +565,7 @@ class TestComplianceCheckEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_check_compliance_success(self):
         """Test compliance check with valid request."""
         request_data = {
@@ -568,6 +586,7 @@ class TestComplianceCheckEndpoint(unittest.TestCase):
             self.assertIn(response.status_code, [200, 400, 500])
 
 
+@pytest.mark.integration
 class TestAuditEndpoint(unittest.TestCase):
     """Test GET /policy/v1/audit endpoint per PRD (lines 489-500)."""
 
@@ -575,6 +594,7 @@ class TestAuditEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_get_audit_summary(self):
         """Test get audit summary."""
         tenant_id = str(uuid.uuid4())
@@ -590,6 +610,7 @@ class TestAuditEndpoint(unittest.TestCase):
         self.assertIn("timestamp", data)
 
 
+@pytest.mark.integration
 class TestRemediationEndpoint(unittest.TestCase):
     """Test POST /policy/v1/remediation endpoint."""
 
@@ -597,6 +618,7 @@ class TestRemediationEndpoint(unittest.TestCase):
         """Set up test client."""
         self.client = TestClient(app)
 
+    @pytest.mark.integration
     def test_trigger_remediation(self):
         """Test trigger remediation."""
         request_data = {

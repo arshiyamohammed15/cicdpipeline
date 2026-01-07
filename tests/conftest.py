@@ -14,11 +14,15 @@ from pathlib import Path
 import pytest
 import asyncio
 
+# Project root - conftest.py is in tests/, so go up one level
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()
+# Add project root to sys.path before importing tools
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
 from tools.test_registry.path_normalizer import setup_path_normalization, pin_repo_config
 from data_governance_privacy.services import DataGovernanceService
 
-# Project root - conftest.py is in tests/, so go up one level
-PROJECT_ROOT = Path(__file__).parent.parent.resolve()
 setup_path_normalization(PROJECT_ROOT)
 
 import importlib

@@ -40,12 +40,14 @@ def extractor(tmp_constitution_dir):
     )
 
 
+@pytest.mark.constitution
 def test_extractor_initialization(extractor, tmp_constitution_dir):
     """Test extractor initialization."""
     assert extractor.constitution_dir == tmp_constitution_dir
     assert extractor.rules == []
 
 
+@pytest.mark.constitution
 def test_extract_all_rules_from_json(extractor):
     """Test extracting rules from JSON corpus."""
     rules = extractor.extract_all_rules()
@@ -55,6 +57,7 @@ def test_extract_all_rules_from_json(extractor):
     assert rules[0]["title"] == "Test Rule 1"
 
 
+@pytest.mark.constitution
 def test_extract_all_rules_from_markdown(tmp_path):
     """Test extracting rules from markdown file."""
     markdown_file = tmp_path / "constitution.md"
@@ -82,6 +85,7 @@ This is the content of rule 2.
     assert any(r["rule_number"] == 2 for r in rules)
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_pattern1():
     """Test extracting rule header with pattern 1."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -90,6 +94,7 @@ def test_extract_rule_header_pattern1():
     assert result == (1, "Do Exactly What's Asked")
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_pattern2():
     """Test extracting rule header with pattern 2."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -98,6 +103,7 @@ def test_extract_rule_header_pattern2():
     assert result == (76, "Roles & Scope")
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_pattern3():
     """Test extracting rule header with pattern 3."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -106,6 +112,7 @@ def test_extract_rule_header_pattern3():
     assert result == (81, "Evidence Required in PR")
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_pattern4():
     """Test extracting rule header with pattern 4."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -114,6 +121,7 @@ def test_extract_rule_header_pattern4():
     assert result == (150, "Prevent First")
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_pattern5():
     """Test extracting rule header with pattern 5."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -122,6 +130,7 @@ def test_extract_rule_header_pattern5():
     assert result == (182, "Title")
 
 
+@pytest.mark.constitution
 def test_extract_rule_header_invalid():
     """Test extracting invalid rule header."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -130,6 +139,7 @@ def test_extract_rule_header_invalid():
     assert result is None
 
 
+@pytest.mark.constitution
 def test_get_rule_category():
     """Test getting rule category."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -147,6 +157,7 @@ def test_get_rule_category():
     assert priority == "important"
 
 
+@pytest.mark.constitution
 def test_extract_rule_content(tmp_path):
     """Test extracting rule content."""
     markdown_file = tmp_path / "test.md"
@@ -169,6 +180,7 @@ Rule 2: Next Rule
     assert "It spans multiple lines" in content
 
 
+@pytest.mark.constitution
 def test_get_categories():
     """Test getting all categories."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -181,6 +193,7 @@ def test_get_categories():
     assert "problem_solving" in categories
 
 
+@pytest.mark.constitution
 def test_get_rules_by_category(extractor):
     """Test getting rules by category."""
     rules = extractor.get_rules_by_category("basic_work")
@@ -190,6 +203,7 @@ def test_get_rules_by_category(extractor):
     assert len(rules) > 0
 
 
+@pytest.mark.constitution
 def test_validate_extraction(extractor):
     """Test validating extraction."""
     validation = extractor.validate_extraction()
@@ -201,6 +215,7 @@ def test_validate_extraction(extractor):
     assert "valid" in validation
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json(extractor, tmp_path):
     """Test exporting rules to JSON."""
     output_file = tmp_path / "exported_rules.json"
@@ -215,6 +230,7 @@ def test_export_rules_to_json(extractor, tmp_path):
     assert isinstance(parsed, list)
 
 
+@pytest.mark.constitution
 def test_export_rules_to_json_no_file(extractor):
     """Test exporting rules to JSON without file."""
     json_data = extractor.export_rules_to_json()
@@ -224,6 +240,7 @@ def test_export_rules_to_json_no_file(extractor):
     assert isinstance(parsed, list)
 
 
+@pytest.mark.constitution
 def test_get_rule_summary(extractor):
     """Test getting rule summary."""
     summary = extractor.get_rule_summary()
@@ -235,6 +252,7 @@ def test_get_rule_summary(extractor):
     assert "max" in summary["rule_range"]
 
 
+@pytest.mark.constitution
 def test_derive_rule_number():
     """Test deriving rule number from JSON rule."""
     extractor = rule_extractor.ConstitutionRuleExtractor()
@@ -252,6 +270,7 @@ def test_derive_rule_number():
     assert extractor._derive_rule_number(rule3, 10) == 10
 
 
+@pytest.mark.constitution
 def test_load_from_json_corpus_not_found(tmp_path):
     """Test loading from non-existent JSON corpus."""
     extractor = rule_extractor.ConstitutionRuleExtractor(
@@ -263,6 +282,7 @@ def test_load_from_json_corpus_not_found(tmp_path):
         extractor._load_from_json_corpus()
 
 
+@pytest.mark.constitution
 def test_load_from_json_corpus_no_files(tmp_path):
     """Test loading from empty JSON corpus."""
     constitution_dir = tmp_path / "constitution"

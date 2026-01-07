@@ -7,12 +7,15 @@ and rule counts stay synchronized before adding functional modules.
 """
 
 import unittest
+import pytest
 import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import Mock, patch
 import json
 
+@pytest.mark.smoke
+@pytest.mark.unit
 class TestServiceIntegrationSmoke(unittest.TestCase):
     """Smoke test for service integration."""
 
@@ -36,6 +39,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
 
         shutil.rmtree(self.temp_dir, ignore_errors=True)
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_validator_integration_rule_counts_synchronized(self):
         """Test that validator and integrations use same rule counts."""
         from validator.integrations.api_service import hook_manager
@@ -65,6 +70,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         self.assertEqual(len(set([api_total, loader_total, shared_total])), 1,
                         "Total rule counts (including disabled) must be synchronized")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_validator_health_endpoint_parity(self):
         """Test that validator health endpoint uses shared helper."""
         from validator.health import get_health_endpoint
@@ -80,6 +87,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         self.assertEqual(health_rules, shared_rules,
                         "Health endpoint rule count must match shared helper")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_integrations_stats_endpoint_parity(self):
         """Test that integrations stats endpoint uses shared helper."""
         from validator.integrations.api_service import app
@@ -103,6 +112,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         self.assertEqual(api_total, shared_total,
                         "Stats endpoint total rules (including disabled) must match shared helper")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_storage_resolver_contract(self):
         """Test that storage operations use BaseStoragePathResolver."""
         # Skip if BaseStoragePathResolver is not available
@@ -136,6 +147,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         except ImportError:
             self.skipTest("BaseStoragePathResolver not available")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_receipt_storage_flow(self):
         """Test receipt storage flow through resolver."""
         # Skip if BaseStoragePathResolver is not available
@@ -166,6 +179,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         except ImportError:
             self.skipTest("BaseStoragePathResolver not available")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_backend_sync_status_in_health(self):
         """Test that health endpoints include backend sync status."""
         from validator.health import get_health_endpoint
@@ -186,6 +201,8 @@ class TestServiceIntegrationSmoke(unittest.TestCase):
         self.assertEqual(health_synced, backend_synced,
                         "Health endpoint backend sync status must match shared helper")
 
+    @pytest.mark.smoke
+    @pytest.mark.unit
     def test_rule_count_consistency_across_services(self):
         """Test that rule counts are consistent across all service layers."""
         from validator.integrations.api_service import hook_manager
