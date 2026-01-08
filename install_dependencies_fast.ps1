@@ -2,7 +2,11 @@
 # This avoids the hang by using pip's resolver more efficiently
 
 $ErrorActionPreference = "Stop"
-$repoRoot = (Resolve-Path (Split-Path $PSScriptRoot)).Path
+if ($PSScriptRoot) {
+    $repoRoot = $PSScriptRoot
+} else {
+    $repoRoot = Get-Location
+}
 Set-Location $repoRoot
 
 Write-Host "Installing dependencies with optimized resolver..." -ForegroundColor Cyan

@@ -45,6 +45,7 @@ tests/test_reports/*.json
 .vscode-test/
 .cache/
 artifacts/audit_runs/
+artifacts/test-results/*.txt
 
 # Logs
 *.log
