@@ -150,9 +150,11 @@ class ConstitutionBackendFactory:
             "primary_backend": "sqlite",
 
             # Backend-specific settings
+            # Note: "path" is a reference only; actual database is stored externally
+            # (resolved via resolve_constitution_db_path to ensure it's outside the repository)
             "backend_config": {
                 "sqlite": {
-                    "path": "config/constitution_rules.db",
+                    "path": None,  # None triggers default external storage location
                     "timeout": 30,
                     "wal_mode": True,
                     "connection_pool_size": 5
@@ -252,11 +254,15 @@ class ConstitutionBackendFactory:
         if not sqlite_config:
             sqlite_config = config.get("backends", {}).get("sqlite", {})
 
-        db_path = sqlite_config.get("path", "config/constitution_rules.db")
+        # Get path from config, but ConstitutionRuleManager will resolve it to external storage
+        # The path in config is just a reference; actual storage is outside repository
+        db_path = sqlite_config.get("path", None)
 
         # Remove config_dir from kwargs if present to avoid conflict
         kwargs.pop('config_dir', None)
 
+        # ConstitutionRuleManager will resolve db_path via resolve_constitution_db_path
+        # ensuring it's outside the repository
         return ConstitutionRuleManager(
             config_dir=self.config_dir,
             db_path=db_path,

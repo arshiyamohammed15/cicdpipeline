@@ -182,11 +182,23 @@ def test_verify_migration_different_rules(migration_instance):
 
 
 @pytest.mark.constitution
-def test_create_backup_sqlite(migration_instance, tmp_config_dir):
+def test_create_backup_sqlite(migration_instance, tmp_config_dir, monkeypatch):
     """Test creating SQLite backup."""
-    # Create source file
+    # Mock resolve_constitution_db_path to return a path in tmp_config_dir
+    # This ensures the test uses the temporary directory instead of external storage
     source_file = tmp_config_dir / "constitution_rules.db"
     source_file.write_bytes(b"fake db content")
+    
+    def mock_resolve_constitution_db_path(candidate):
+        return source_file
+    
+    # Patch the function in the path_utils module where it's imported from
+    from config.constitution import path_utils
+    monkeypatch.setattr(
+        path_utils,
+        "resolve_constitution_db_path",
+        mock_resolve_constitution_db_path
+    )
     
     backup_path = migration_instance._create_backup("sqlite", "test")
     
@@ -208,8 +220,23 @@ def test_create_backup_json(migration_instance, tmp_config_dir):
 
 
 @pytest.mark.constitution
-def test_create_backup_file_not_exists(migration_instance, tmp_config_dir):
+def test_create_backup_file_not_exists(migration_instance, tmp_config_dir, monkeypatch):
     """Test creating backup when source file doesn't exist."""
+    # Mock resolve_constitution_db_path to return a path in tmp_config_dir that doesn't exist
+    # This ensures the test can control whether the source file exists
+    non_existent_db_path = tmp_config_dir / "constitution_rules.db"
+    
+    def mock_resolve_constitution_db_path(candidate):
+        return non_existent_db_path
+    
+    # Patch the function in the path_utils module where it's imported from
+    from config.constitution import path_utils
+    monkeypatch.setattr(
+        path_utils,
+        "resolve_constitution_db_path",
+        mock_resolve_constitution_db_path
+    )
+    
     backup_path = migration_instance._create_backup("sqlite", "test")
     
     assert backup_path is None

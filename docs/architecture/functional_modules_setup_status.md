@@ -213,5 +213,6 @@ Once all prerequisites are met and schemas are applied:
 ---
 
 **Status**: Setup incomplete - prerequisites not met  
-**Last Updated**: 2026-01-03
+**Last Updated**: 2026-01-03  
+**Note**: This document reflects the current setup status. For actual implementation status, see module-specific documentation.
 

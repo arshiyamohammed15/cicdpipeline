@@ -116,6 +116,8 @@ addopts = [
     "--maxfail=1",
     "--strict-config",
     "--strict-markers",
+    "--cache-clear",
+    "-p", "no:cacheprovider",
 ]
 testpaths = ["tests"]
 python_files = ["test_*.py", "*_test.py"]

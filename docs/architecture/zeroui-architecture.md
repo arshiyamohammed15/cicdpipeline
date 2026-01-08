@@ -32,7 +32,7 @@ ZeroUI 2.0 implements a **three-tier hybrid architecture** with strict separatio
 - **Architecture**: Service-oriented with clear boundaries
 - **Implementation**: Python/FastAPI microservices
 - **Pattern**: Client/Product/Shared service separation
-- **Status**: ✅ Complete structure, 16 modules implemented
+- **Status**: ✅ Complete structure, 18 services implemented (4 product + 14 shared)
 
 ## Architectural Principles
 
@@ -87,7 +87,10 @@ src/vscode-extension/
 │   │   ├── providers/            # status pill, diagnostics
 │   │   ├── views/                # DecisionCard sections
 │   │   └── actions/              # Quick actions
-│   └── [m02-m20 other modules...]
+│   ├── m05-detection-engine-core/
+│   ├── m21-identity-access-management/
+│   ├── m23-configuration-policy-management/
+│   └── [m02-m04, m06-m20 other modules...]
 └── ui/                            # UI components (presentation-only)
     ├── [Core UI Components]        # 6 core UI components
     │   ├── status-bar/
@@ -135,6 +138,7 @@ src/cloud_services/
 │   └── user_behaviour_intelligence/
 ├── shared-services/                # ZeroUI-owned infrastructure modules
 │   ├── alerting-notification-service/
+│   ├── api-gateway-webhooks/
 │   ├── budgeting-rate-limiting-cost-observability/
 │   ├── configuration-policy-management/
 │   ├── contracts-schema-registry/
@@ -144,7 +148,8 @@ src/cloud_services/
 │   ├── health-reliability-monitoring/
 │   ├── identity-access-management/
 │   ├── key-management-service/
-│   └── ollama-ai-agent/
+│   ├── ollama-ai-agent/
+│   └── trust-as-capability/
 └── llm_gateway/                    # LLM Gateway service
 ```
 
@@ -879,7 +884,7 @@ The system can be understood as four planes:
 
 ---
 
-**Document Version**: v1.0  
-**Last Updated**: Current  
+**Document Version**: v2.0  
+**Last Updated**: 2026-01-03  
 **Status**: Single Source of Truth - Architecture Complete, Implementation Pending
 

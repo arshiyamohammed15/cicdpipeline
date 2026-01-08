@@ -16,7 +16,7 @@ import os
 import logging
 from pathlib import Path
 from datetime import datetime
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 
 # Configure logging
 logging.basicConfig(
@@ -124,20 +124,26 @@ def load_rules_from_json_files(constitution_dir: str = "docs/constitution") -> L
     return all_rules
 
 
-def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/constitution_rules.db"):
+def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: Optional[str] = None):
     """
     Rebuild SQLite database with rules from JSON source files.
 
     Args:
         rules: List of rule dictionaries
-        db_path: Path to SQLite database file
+        db_path: Path to SQLite database file. If None, uses default external storage location
+                 (resolved via resolve_constitution_db_path to ensure it's outside the repository).
     """
+    from config.constitution.path_utils import resolve_constitution_db_path
+    
+    # Resolve path to external storage location (outside repository)
+    resolved_db_path = resolve_constitution_db_path(db_path)
+    
     logger.info(f"\n{'='*70}")
     logger.info("REBUILDING SQLITE DATABASE")
     logger.info(f"{'='*70}")
 
     # Backup existing database
-    db_file = Path(db_path)
+    db_file = resolved_db_path
     if db_file.exists():
         backup_path = db_file.with_suffix(f'.backup.{datetime.now().strftime("%Y%m%d_%H%M%S")}.db')
         import shutil
@@ -149,8 +155,8 @@ def rebuild_sqlite_database(rules: List[Dict[str, Any]], db_path: str = "config/
         db_file.unlink()
         logger.info("Removed existing database")
 
-    # Create new database
-    db = ConstitutionRulesDB(db_path)
+    # Create new database (ConstitutionRulesDB will resolve path again, but we pass resolved path for consistency)
+    db = ConstitutionRulesDB(str(resolved_db_path))
 
     # Clear existing rules
     with db.get_connection() as conn:
@@ -335,7 +341,8 @@ def update_configuration_file(rules: List[Dict[str, Any]], config_path: str = "c
             "primary_backend": "sqlite",
             "backend_config": {
                 "sqlite": {
-                    "path": "config/constitution_rules.db",
+                    "_note": "path is a reference only; actual database is stored externally (outside repository) via resolve_constitution_db_path. Set to null to use default external storage location.",
+                    "path": None,
                     "timeout": 30,
                     "wal_mode": True,
                     "connection_pool_size": 5

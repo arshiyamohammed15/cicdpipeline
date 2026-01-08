@@ -441,12 +441,13 @@ class ConstitutionQueries:
 
 
 # Helper function to create queries instance
-def create_queries(db_path: str = "config/constitution_rules.db") -> ConstitutionQueries:
+def create_queries(db_path: Optional[str] = None) -> ConstitutionQueries:
     """
     Create a ConstitutionQueries instance.
 
     Args:
-        db_path: Path to SQLite database file
+        db_path: Path to SQLite database file. If None, uses default external storage location
+                 (resolved via resolve_constitution_db_path to ensure it's outside the repository).
 
     Returns:
         ConstitutionQueries instance

@@ -1,11 +1,12 @@
 {
   "version": "2.0",
   "description": "ZeroUI 2.0 Constitution Configuration - Test commit",
-  "last_updated": "2026-01-07T22:22:04.545891",
+  "last_updated": "2026-01-08T08:35:39.670061",
   "primary_backend": "sqlite",
   "backend_config": {
     "sqlite": {
-      "path": "config/constitution_rules.db",
+      "_note": "path is a reference only; actual database is stored externally (outside repository) via resolve_constitution_db_path. Set to null to use default external storage location.",
+      "path": null,
       "timeout": 30,
       "wal_mode": true,
       "connection_pool_size": 5

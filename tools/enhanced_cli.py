@@ -1015,8 +1015,9 @@ class EnhancedCLI:
         
         safe_print("\n[3/6] Rebuilding SQLite database...")
         try:
-            db_path = Path("config/constitution_rules.db")
-            db = ConstitutionRulesDB(str(db_path))
+            # Use None to get default external storage location (outside repository)
+            # ConstitutionRulesDB will resolve via resolve_constitution_db_path
+            db = ConstitutionRulesDB(None)
 
             # Clear all existing data
             with db.get_connection() as conn:

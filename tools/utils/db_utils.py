@@ -19,7 +19,8 @@ def get_db_connection(db_path: Optional[str] = None):
     Get a database connection context manager.
 
     Args:
-        db_path: Optional path to database file. Defaults to config/constitution_rules.db
+        db_path: Optional path to database file. If None, uses default external storage location
+                 (resolved via resolve_constitution_db_path to ensure it's outside the repository).
 
     Yields:
         Database connection object
@@ -31,9 +32,8 @@ def get_db_connection(db_path: Optional[str] = None):
     """
     from config.constitution.database import ConstitutionRulesDB
 
-    if db_path is None:
-        db_path = str(Path(__file__).parent.parent.parent / "config" / "constitution_rules.db")
-
+    # Pass None to ConstitutionRulesDB which will resolve to external storage location
+    # This ensures the database is never created in the repository
     db = ConstitutionRulesDB(db_path)
     try:
         with db.get_connection() as conn:

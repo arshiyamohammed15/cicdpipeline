@@ -400,7 +400,10 @@ class ConstitutionMigration:
             backup_dir.mkdir(parents=True, exist_ok=True)
 
             if backend == "sqlite":
-                source_path = Path(self.config_dir) / "constitution_rules.db"
+                # Note: Database is stored externally (outside repository) via resolve_constitution_db_path
+                # This backup path is for the actual external database location
+                from .path_utils import resolve_constitution_db_path
+                source_path = resolve_constitution_db_path(None)
                 backup_filename = f"constitution_rules_{timestamp}_{suffix}.db"
             elif backend == "json":
                 source_path = Path(self.config_dir) / "constitution_rules.json"
@@ -447,7 +450,10 @@ class ConstitutionMigration:
             current_backup = self._create_backup(target_backend, "pre_restore")
 
             if target_backend == "sqlite":
-                target_path = Path(self.config_dir) / "constitution_rules.db"
+                # Note: Database is stored externally (outside repository) via resolve_constitution_db_path
+                # This restore path is for the actual external database location
+                from .path_utils import resolve_constitution_db_path
+                target_path = resolve_constitution_db_path(None)
             elif target_backend == "json":
                 target_path = Path(self.config_dir) / "constitution_rules.json"
             else:

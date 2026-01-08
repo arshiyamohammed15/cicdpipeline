@@ -1,12 +1,18 @@
 # ZeroUI Database Environment Variables (Option A)
 
+**Date**: 2026-01-03  
+**Status**: Current Implementation  
+**Alignment**: DB Plane Contract Option A
+
 ## Canonical variables
 
 ### IDE Plane (SQLite)
-- `ZEROUI_IDE_SQLITE_PATH`
+- `ZEROUI_IDE_SQLITE_PATH` (file path)
   - Windows example: `C:\Users\<USER>\.zeroai\zeroui_local.db`
-- `ZEROUI_IDE_SQLITE_URL`
+  - Used by: PowerShell scripts for file-based operations
+- `ZEROUI_IDE_SQLITE_URL` (connection string)
   - Example: `sqlite:///C:/Users/<USER>/.zeroai/zeroui_local.db`
+  - Used by: Application code for database connections
 
 ### Tenant Plane (Postgres)
 - `ZEROUI_TENANT_DB_URL`
@@ -26,3 +32,10 @@ In MVP/Pilot, Tenant/Product/Shared Postgres URLs may point to the same host and
 - `zeroui_product_pg`
 - `zeroui_shared_pg`
 
+**Implementation Status**: These environment variables are used by:
+- Database connection scripts: `scripts/db/apply_schema_pack.ps1`
+- Database verification scripts: `scripts/db/verify_schema_equivalence.ps1`
+- Cloud services: All services use these variables via `database/connection.py` patterns
+- CI verification: `scripts/ci/verify_database_env_vars.ps1`
+
+**Reference**: See `docs/architecture/db_plane_contract_option_a.md` for complete plane-to-database mapping.

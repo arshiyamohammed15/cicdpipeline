@@ -1,0 +1,596 @@
+
+> zeroui-2.0@2.0.0 test:storage
+> jest --config jest.config.js --testPathPattern=storage --testPathPattern=e2e --maxWorkers=4
+
+PASS src/edge-agent/shared/storage/__tests__/ReceiptGenerator.test.ts (8.802 s)
+  ReceiptGenerator
+    Constructor
+      ÔêÜ should create generator with privateKey option (23 ms)
+      ÔêÜ should create generator with privateKeyPath option (38 ms)
+      ÔêÜ should create generator with EDGE_AGENT_SIGNING_KEY env var (10 ms)
+      ÔêÜ should create generator with EDGE_AGENT_SIGNING_KEY_PATH env var (41 ms)
+      ÔêÜ should throw error when no key provided (122 ms)
+      ÔêÜ should use default keyId when not provided (9 ms)
+    generateDecisionReceipt() - Required Fields
+      ÔêÜ should generate receipt with all required fields (30 ms)
+      ÔêÜ should generate receipt with valid signature (7 ms)
+      ÔêÜ should generate unique receipt IDs (7 ms)
+      ÔêÜ should accept all evaluation_point values (7 ms)
+      ÔêÜ should accept all decision status values (76 ms)
+      ÔêÜ should set degraded flag correctly (5 ms)
+    generateDecisionReceipt() - Optional Fields: actor.type (TR-6.2)
+      ÔêÜ should generate receipt without actor.type (6 ms)
+      ÔêÜ should generate receipt with actor.type = "human" (4 ms)
+      ÔêÜ should generate receipt with actor.type = "ai" (5 ms)
+      ÔêÜ should generate receipt with actor.type = "automated" (3 ms)
+      ÔêÜ should include machine_fingerprint when provided (4 ms)
+    generateDecisionReceipt() - Optional Fields: context (TR-1.2.3)
+      ÔêÜ should generate receipt without context (6 ms)
+      ÔêÜ should generate receipt with context.surface = "ide" (15 ms)
+      ÔêÜ should generate receipt with context.surface = "pr" (4 ms)
+      ÔêÜ should generate receipt with context.surface = "ci" (4 ms)
+      ÔêÜ should generate receipt with context.branch (5 ms)
+      ÔêÜ should generate receipt with context.commit (4 ms)
+      ÔêÜ should generate receipt with context.pr_id (4 ms)
+      ÔêÜ should generate receipt with all context fields (7 ms)
+    generateDecisionReceipt() - Optional Fields: override (TR-3.2)
+      ÔêÜ should generate receipt without override (6 ms)
+      ÔêÜ should generate receipt with override (required fields) (4 ms)
+      ÔêÜ should generate receipt with override including override_id (4 ms)
+    generateDecisionReceipt() - Optional Fields: data_category (TR-4.4)
+      ÔêÜ should generate receipt without data_category (4 ms)
+      ÔêÜ should generate receipt with data_category = "public" (4 ms)
+      ÔêÜ should generate receipt with data_category = "internal" (4 ms)
+      ÔêÜ should generate receipt with data_category = "confidential" (4 ms)
+      ÔêÜ should generate receipt with data_category = "restricted" (4 ms)
+    generateDecisionReceipt() - All Optional Fields Combined
+      ÔêÜ should generate receipt with all optional fields (9 ms)
+    generateFeedbackReceipt()
+      ÔêÜ should generate feedback receipt with all required fields (10 ms)
+      ÔêÜ should accept all pattern_id values (5 ms)
+      ÔêÜ should accept all choice values (6 ms)
+      ÔêÜ should include machine_fingerprint when provided (4 ms)
+      ÔêÜ should generate valid signature for feedback receipt (6 ms)
+      ÔêÜ should generate unique feedback IDs (6 ms)
+
+  console.error
+    Failed to parse receipt line: SyntaxError: Unexpected token 'i', "invalid json line" is not valid JSON
+
+      106 |             } catch (error) {
+      107 |                 // Invalid receipt line - log and continue (per Rule 219: invalid lines go to quarantine)
+    > 108 |                 console.error(`Failed to parse receipt line: ${error}`);
+          |                         ^
+      109 |                 // TODO: Move to quarantine directory
+      110 |             }
+      111 |         }
+
+      at ReceiptStorageReader.readReceipts (src/vscode-extension/shared/storage/ReceiptStorageReader.ts:108:25)
+      at Object.<anonymous> (src/vscode-extension/shared/storage/__tests__/ReceiptStorageReader.test.ts:134:43)
+
+  console.error
+    Failed to read receipt file: C:/Users/pc/AppData/Local/Temp/zeroui-test-1767841388370/ide/receipts/test-repo-id/2025/01/receipts.jsonl Error: EISDIR: illegal operation on a directory, read
+        at Object.readFileSync (node:fs:441:20)
+        at ReceiptStorageReader.readReceipts (D:\Projects\ZeroUI2.1\src\vscode-extension\shared\storage\ReceiptStorageReader.ts:72:26)
+        at Object.<anonymous> (D:\Projects\ZeroUI2.1\src\vscode-extension\shared\storage\__tests__\ReceiptStorageReader.test.ts:168:43)
+        at Promise.then.completed (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\utils.js:298:28)
+        at new Promise (<anonymous>)
+        at callAsyncCircusFn (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\utils.js:231:10)
+        at _callCircusTest (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:316:40)
+        at processTicksAndRejections (node:internal/process/task_queues:105:5)
+        at _runTest (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:252:3)
+        at _runTestsForDescribeBlock (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:126:9)
+        at _runTestsForDescribeBlock (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:121:9)
+        at _runTestsForDescribeBlock (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:121:9)
+        at run (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\run.js:71:3)
+        at runAndTransformResultsToJestFormat (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+        at jestAdapter (D:\Projects\ZeroUI2.1\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+        at runTestInternal (D:\Projects\ZeroUI2.1\node_modules\jest-runner\build\runTest.js:367:16)
+        at runTest (D:\Projects\ZeroUI2.1\node_modules\jest-runner\build\runTest.js:444:34)
+        at Object.worker (D:\Projects\ZeroUI2.1\node_modules\jest-runner\build\testWorker.js:106:12) {
+      errno: -4068,
+      code: 'EISDIR',
+      syscall: 'read'
+    }
+
+      72 |             content = fs.readFileSync(receiptFile, 'utf-8');
+      73 |         } catch (error) {
+    > 74 |             console.error(`Failed to read receipt file: ${receiptFile}`, error);
+         |                     ^
+      75 |             return [];
+      76 |         }
+      77 |
+
+      at ReceiptStorageReader.readReceipts (src/vscode-extension/shared/storage/ReceiptStorageReader.ts:74:21)
+      at Object.<anonymous> (src/vscode-extension/shared/storage/__tests__/ReceiptStorageReader.test.ts:168:43)
+
+PASS src/vscode-extension/shared/storage/__tests__/ReceiptStorageReader.test.ts (9.79 s)
+  ReceiptStorageReader
+    Read Receipts
+      ÔêÜ should return empty array if file does not exist (52 ms)
+      ÔêÜ should read receipts from JSONL file (76 ms)
+      ÔêÜ should handle invalid receipt lines gracefully (265 ms)
+      ÔêÜ should filter out receipts without signatures (70 ms)
+      ÔêÜ should handle file read errors gracefully (72 ms)
+    Read Receipts In Range
+      ÔêÜ should read receipts within date range (121 ms)
+      ÔêÜ should handle receipts across multiple months (98 ms)
+    Read Latest Receipts
+      ÔêÜ should return latest receipts sorted by timestamp (90 ms)
+      ÔêÜ should limit results to specified number (136 ms)
+      ÔêÜ should return empty array if no receipts exist (34 ms)
+    Signature Validation (Rule 224)
+      ÔêÜ should accept receipts with valid signature format (99 ms)
+      ÔêÜ should reject receipts without signature (64 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/PolicyStorageService.getActivePolicyInfo.test.ts (10.29 s)
+  PolicyStorageService.getActivePolicyInfo()
+    Single Policy Case
+      ÔêÜ should return policy info for single existing policy (193 ms)
+      ÔêÜ should format policy version ID correctly (policy_id-version) (91 ms)
+      ÔêÜ should return snapshot hash in correct format (sha256:hex) (51 ms)
+    Multiple Policies Case
+      ÔêÜ should return policy info for multiple existing policies (99 ms)
+      ÔêÜ should combine snapshot hashes deterministically (sorted) (123 ms)
+      ÔêÜ should produce same hash regardless of policy order (sorted hashes) (76 ms)
+      ÔêÜ should correctly combine multiple snapshot hashes using SHA-256 (95 ms)
+    Empty Policies Case
+      ÔêÜ should return empty arrays when no policies are found (6 ms)
+      ÔêÜ should return empty arrays when no current version is set (36 ms)
+      ÔêÜ should return empty arrays when policy exists but version does not match (120 ms)
+    Non-existent Policies
+      ÔêÜ should handle non-existent policy IDs gracefully (7 ms)
+      ÔêÜ should skip non-existent policies and return existing ones (51 ms)
+    Default Parameter Handling
+      ÔêÜ should use default policy ID when no policyIds provided (74 ms)
+      ÔêÜ should return empty arrays when default policy does not exist (5 ms)
+    Edge Cases
+      ÔêÜ should handle empty policyIds array (5 ms)
+      ÔêÜ should handle policy with empty snapshot hash (51 ms)
+      ÔêÜ should handle policy with very long snapshot hash (46 ms)
+      ÔêÜ should handle policy IDs with special characters (kebab-case) (86 ms)
+      ÔêÜ should handle multiple policies with same hash (should still combine) (86 ms)
+    Policy Version ID Format Validation
+      ÔêÜ should format policy version IDs correctly for all policies (151 ms)
+    Snapshot Hash Determinism
+      ÔêÜ should produce identical hash for identical policy sets (102 ms)
+      ÔêÜ should produce same hash regardless of input order (sorted internally) (309 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/ReceiptStorageService.test.ts (10.55 s)
+  ReceiptStorageService
+    Store Decision Receipt (Rule 219: JSONL)
+      ÔêÜ should store decision receipt in JSONL format (276 ms)
+      ÔêÜ should append multiple receipts (append-only) (108 ms)
+      ÔêÜ should use YYYY/MM partitioning (Rule 228) (28 ms)
+      ÔêÜ creates a new monthly file without touching previous months (261 ms)
+    Store Feedback Receipt
+      ÔêÜ should store feedback receipt in JSONL format (83 ms)
+    Signature Validation (Rule 224)
+      ÔêÜ should reject receipt without signature (163 ms)
+      ÔêÜ should reject receipt with empty signature (59 ms)
+      ÔêÜ should accept receipt with valid signature (63 ms)
+    Code/PII Detection (Rule 217)
+      ÔêÜ should reject receipt containing function code (20 ms)
+      ÔêÜ should reject receipt containing class code (32 ms)
+      ÔêÜ should reject receipt containing import statement (22 ms)
+      ÔêÜ should reject receipt containing email (PII) (33 ms)
+      ÔêÜ should reject receipt containing SSN (PII) (20 ms)
+      ÔêÜ should accept receipt without code or PII (32 ms)
+    Read Receipts
+      ÔêÜ should return empty array if file does not exist (7 ms)
+      ÔêÜ should read stored receipts (79 ms)
+      ÔêÜ should read multiple receipts (302 ms)
+    Canonical JSON Format
+      ÔêÜ should store receipt without signature field in canonical form (392 ms)
+    Directory Creation
+      ÔêÜ should create directory structure if it does not exist (172 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/PolicyStorageService.test.ts
+  PolicyStorageService
+    Cache Policy (Rule 221)
+      ÔêÜ should cache policy snapshot (137 ms)
+      ÔêÜ should reject policy without signature (Rule 221) (88 ms)
+      ÔêÜ should reject policy with missing signature (8 ms)
+      ÔêÜ should store policy with signature (186 ms)
+      ÔêÜ should create directory structure if it does not exist (21 ms)
+    Read Cached Policy
+      ÔêÜ should return null if policy does not exist (4 ms)
+      ÔêÜ should read cached policy (47 ms)
+      ÔêÜ should throw error if cached policy missing signature (92 ms)
+    Current Policy Version Management
+      ÔêÜ should return null if current version not set (4 ms)
+      ÔêÜ should set and read current policy version (39 ms)
+      ÔêÜ should update current policy version (57 ms)
+      ÔêÜ should create directory structure for current pointer (10 ms)
+      ÔêÜ should store timestamp with current version (44 ms)
+    Code/PII Detection (Rule 217)
+      ÔêÜ should reject policy containing function code (13 ms)
+      ÔêÜ should reject policy containing class code (14 ms)
+      ÔêÜ should accept policy without code (83 ms)
+
+PASS tests/vscode-extension/shared/storage/PlanExecutionAgent.infra-labels.spec.ts
+  PlanExecutionAgent Infra Labels
+    ÔêÜ should add infra labels to DecisionReceipt when BuildPlan has cost_profile (240 ms)
+    ÔêÜ should add infra labels for ai-inference cost_profile (185 ms)
+    ÔêÜ should add infra labels for batch cost_profile (161 ms)
+    ÔêÜ should extend existing labels object without overwriting (315 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/StoragePathResolver.test.ts
+  StoragePathResolver (Edge Agent)
+    Constructor
+      ÔêÜ should initialize with ZU_ROOT from environment variable (3 ms)
+      ÔêÜ should initialize with provided ZU_ROOT parameter (1 ms)
+      ÔêÜ should throw error if ZU_ROOT is not set (126 ms)
+      ÔêÜ should normalize Windows paths to forward slashes
+      ÔêÜ should normalize Unix paths correctly
+    Plane Path Resolution
+      ÔêÜ should resolve IDE plane path (2 ms)
+      ÔêÜ should resolve Tenant plane path (1 ms)
+      ÔêÜ should resolve Product plane path (1 ms)
+      ÔêÜ should resolve Shared plane path (1 ms)
+      ÔêÜ should handle paths with leading/trailing slashes (1 ms)
+    Kebab-Case Validation (Rule 216)
+      ÔêÜ should accept valid kebab-case repo-id (2 ms)
+      ÔêÜ should reject repo-id with uppercase letters (2 ms)
+      ÔêÜ should reject repo-id with underscores (3 ms)
+      ÔêÜ should reject repo-id with spaces (4 ms)
+      ÔêÜ should reject repo-id with special characters (3 ms)
+      ÔêÜ should accept repo-id with numbers (1 ms)
+      ÔêÜ should reject invalid plane names (2 ms)
+    Receipt Path Resolution (Rule 228)
+      ÔêÜ should resolve receipt path with YYYY/MM partitioning (1 ms)
+      ÔêÜ should pad month to 2 digits (1 ms)
+      ÔêÜ should handle month 12 (1 ms)
+      ÔêÜ should reject year less than 2000 (2 ms)
+      ÔêÜ should reject year greater than 9999 (3 ms)
+      ÔêÜ should accept year 2000 (4 ms)
+      ÔêÜ should accept year 9999 (1 ms)
+      ÔêÜ should reject month less than 1 (2 ms)
+      ÔêÜ should reject month greater than 12 (3 ms)
+      ÔêÜ should accept month 1
+      ÔêÜ should accept month 12 (1 ms)
+    Policy Path Resolution
+      ÔêÜ should resolve IDE policy cache path (1 ms)
+      ÔêÜ should resolve IDE policy root path (1 ms)
+      ÔêÜ should resolve Product policy registry path (1 ms)
+      ÔêÜ should resolve Product policy registry root path (2 ms)
+    Path Normalization
+      ÔêÜ should normalize multiple slashes (2 ms)
+      ÔêÜ should handle mixed separators on Windows (2 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/ReceiptGenerator.signature.test.ts
+  ReceiptGenerator Signature Implementation
+    ÔêÜ signs decision receipts with Ed25519 (8 ms)
+    ÔêÜ signs feedback receipts with Ed25519 (7 ms)
+    ÔêÜ canonical JSON sorts keys recursively (9 ms)
+    ÔêÜ tampering invalidates signatures (7 ms)
+    ÔêÜ different receipts yield different signatures (8 ms)
+    ÔêÜ signature encodes key id and base64 payload (5 ms)
+    ÔêÜ signature excludes signature field from canonical payload (5 ms)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:91:17)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:91:17)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:91:17)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:91:17)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:91:17)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:121:13)
+
+  console.warn
+    Receipt signature verification failed (non-strict mode, stored anyway)
+
+      249 |                 throw new Error('Receipt signature verification failed');
+      250 |             }
+    > 251 |             console.warn('Receipt signature verification failed (non-strict mode, stored anyway)');
+          |                     ^
+      252 |         }
+      253 |     }
+      254 |
+
+      at ReceiptStorageService.verifyReceiptSignature (src/edge-agent/shared/storage/ReceiptStorageService.ts:251:21)
+      at ReceiptStorageService.storeDecisionReceipt (src/edge-agent/shared/storage/ReceiptStorageService.ts:62:14)
+      at Object.<anonymous> (src/edge-agent/shared/storage/__tests__/integration.test.ts:122:13)
+
+  console.log
+    Registered module: security
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: cache
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: hybrid
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: inference
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: models
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: resources
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: security
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: cache
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: hybrid
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: inference
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: models
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Registered module: resources
+
+      at AgentOrchestrator.registerModule (src/edge-agent/core/AgentOrchestrator.ts:10:17)
+
+  console.log
+    Delegating task: test
+
+      at DelegationManager.delegate (src/edge-agent/core/DelegationManager.ts:29:17)
+
+  console.log
+    Hybrid Orchestrator processing task: test-task-001
+
+      at HybridOrchestrator.delegate (src/edge-agent/modules/hybrid-orchestrator/HybridOrchestrator.ts:26:21)
+
+  console.log
+    Hybrid Orchestrator completed task: test-task-001
+
+      at HybridOrchestrator.delegate (src/edge-agent/modules/hybrid-orchestrator/HybridOrchestrator.ts:53:21)
+
+  console.log
+    Validating result...
+
+      at ValidationCoordinator.validate (src/edge-agent/core/ValidationCoordinator.ts:27:17)
+
+  console.log
+    Validation result: PASSED
+
+      at ValidationCoordinator.validate (src/edge-agent/core/ValidationCoordinator.ts:77:17)
+
+PASS src/edge-agent/shared/storage/__tests__/integration.test.ts (5.041 s)
+  Storage Integration Tests
+    Receipt Flow: Generate -> Store -> Read
+      ÔêÜ should complete full receipt flow (81 ms)
+      ÔêÜ should handle multiple receipts in same month (285 ms)
+      ÔêÜ should handle receipts across different months (77 ms)
+    Edge Agent Integration
+      ÔêÜ should integrate with EdgeAgent storage services (54 ms)
+      ÔêÜ should process task and generate receipt (142 ms)
+    Cross-Tier Integration
+      ÔêÜ should store receipt in Edge Agent and read in VS Code Extension (111 ms)
+      ÔêÜ should maintain receipt integrity across tiers (68 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/PlanVerifier.test.ts
+  PlanVerifier
+    ÔêÜ returns ok=true when plan artifacts match workspace state (37 ms)
+    ÔêÜ reports hash mismatch when workspace file differs (53 ms)
+    ÔêÜ reports missing artifacts when plan files are absent (12 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/PreCommitDecisionService.test.ts
+  PreCommitDecisionService
+    ÔêÜ returns unknown when no receipts are available (8 ms)
+    ÔêÜ extracts snapshot details and diff candidate from latest receipt (8 ms)
+    ÔêÜ handles invalid status, label-based artifact id, and string mismatches (3 ms)
+    ÔêÜ returns unknown status and logs when reader throws (9 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/StoragePathResolver.test.ts
+  StoragePathResolver (VS Code Extension)
+    Constructor
+      ÔêÜ should initialize with ZU_ROOT from environment variable (4 ms)
+      ÔêÜ should initialize with provided ZU_ROOT parameter (1 ms)
+      ÔêÜ should use VS Code configuration if environment variable not set (3 ms)
+      ÔêÜ should prioritize provided parameter over environment variable
+      ÔêÜ should throw error if ZU_ROOT is not set anywhere (30 ms)
+    Receipt Path Resolution
+      ÔêÜ should resolve receipt path with YYYY/MM partitioning (2 ms)
+      ÔêÜ should validate kebab-case repo-id (12 ms)
+      ÔêÜ should validate year range (3 ms)
+      ÔêÜ should validate month range (4 ms)
+    PSCL Temporary Directory Resolution
+      ÔêÜ should create PSCL directory under the IDE plane (11 ms)
+      ÔêÜ should be idempotent across repeated calls (9 ms)
+    Path Normalization
+      ÔêÜ should normalize Windows paths (2 ms)
+      ÔêÜ should normalize multiple slashes (2 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/PSCLArtifactWriter.test.ts
+  PSCLArtifactWriter
+    ÔêÜ writes FileEnvelope and BuildPlan with deterministic hashes (116 ms)
+    ÔêÜ propagates MISSING snapshot id when reader cannot find value (26 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/receipts.feature-flag.off-noop.spec.ts
+  receipts.feature-flag.off-noop
+    ÔêÜ does not modify receipts during PSCL disable periods (47 ms)
+    ÔêÜ preserves receipt file inode and prefix across OFFÔåÆONÔåÆOFF toggles (34 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/ReceiptStorageService.test.ts
+  ReceiptStorageService WORM continuity
+    ÔêÜ maintains receipts across PSCL enabled/disabled toggles (130 ms)
+    ÔêÜ creates new monthly file without modifying previous month (74 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/ReceiptVerifier.canon.test.ts
+  ReceiptVerifier canonicalisation
+    ÔêÜ produces identical canonical buffers regardless of field ordering (4 ms)
+    ÔêÜ matches signer canonicalisation (13 ms)
+    ÔêÜ produces stable buffers and omits signature field (2 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/PlanExecutionAgent.test.ts (5.359 s)
+  PlanExecutionAgent
+    ÔêÜ produces PASS receipt when all checks succeed (2707 ms)
+    ÔêÜ produces FAIL receipt when digests mismatch (195 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/PolicySnapshotReader.test.ts
+  PolicySnapshotReader (VS Code Extension)
+    ÔêÜ returns snapshot id from cached policy (27 ms)
+    ÔêÜ returns snapshot id from pointer when present (32 ms)
+    ÔêÜ falls back to environment variable when cache missing (3 ms)
+    ÔêÜ returns MISSING when no sources available (1 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/receipts.first-use.create-if-missing.spec.ts
+  receipts.first-use.create-if-missing
+    ÔêÜ creates file on first write and appends subsequently (46 ms)
+
+PASS tests/platform/adapters/local/local-adapters.e2e.spec.ts (8.433 s)
+  Local Adapters E2E
+    LocalQueue + LocalDLQ
+      ÔêÜ should send, receive, ack, and nack messages (194 ms)
+      ÔêÜ should move to DLQ after max retries (2287 ms)
+    LocalServerless
+      ÔêÜ should invoke function from registry (59 ms)
+    LocalGpuPool
+      ÔêÜ should allocate and release GPU instances (5 ms)
+    LocalObjectStore
+      ÔêÜ should put, get, and delete objects (150 ms)
+      ÔêÜ should list objects with prefix (25 ms)
+    LocalBlockStore
+      ÔêÜ should create, attach, and delete volumes (193 ms)
+    LocalIngress
+      ÔêÜ should create, list, and delete ingress rules (15 ms)
+    LocalObservability
+      ÔêÜ should emit metrics and query them (89 ms)
+      ÔêÜ should write and query logs (35 ms)
+    LocalBackup
+      ÔêÜ should create, verify, and restore backup (60 ms)
+    LocalDRPlan
+      ÔêÜ should create and execute DR plan with backup-verify and queue-drain drills (461 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/ReceiptStorageReader.verify.integration.test.ts
+  ReceiptStorageReader signature verification integration
+    ÔêÜ returns only receipts with valid signatures (78 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/receipts.append-only.green.spec.ts
+  receipts.append-only.green
+    ÔêÜ appends lines without altering the existing prefix (50 ms)
+
+PASS src/edge-agent/shared/storage/__tests__/DataCategoryClassifier.test.ts
+  DataCategoryClassifier
+    ÔêÜ returns explicit category when valid (2 ms)
+    ÔêÜ prioritizes secrets and pii as restricted (1 ms)
+    ÔêÜ falls back to confidential when sensitive (1 ms)
+    ÔêÜ defaults to internal when no signals provided (1 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/BuildSandbox.test.ts
+  BuildSandbox
+    ÔêÜ produces deterministic digests for identical inputs (53 ms)
+    ÔêÜ placeholder SBOM digest lists files when no sbom.json present (46 ms)
+    ÔêÜ uses sbom.json content when present (24 ms)
+
+PASS src/vscode-extension/shared/storage/__tests__/ReceiptVerifier.ed25519.test.ts
+  ReceiptVerifier Ed25519 interoperability
+    ÔêÜ verifies signer output and rejects tampered receipts (7 ms)
+
+Test Suites: 25 passed, 25 total
+Tests:       219 passed, 219 total
+Snapshots:   0 total
+Time:        20.806 s
+Ran all test suites matching /storage|e2e/i.

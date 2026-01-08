@@ -76,7 +76,10 @@ class RuleManager:
 
         # Define source paths
         self.markdown_path = self.project_root / "docs" / "architecture" / "ZeroUI2.0_Master_Constitution.md"
-        self.database_path = self.project_root / "config" / "constitution_rules.db"
+        # Database path is resolved to external storage location (outside repository)
+        # via resolve_constitution_db_path in ConstitutionRulesDB
+        from config.constitution.path_utils import resolve_constitution_db_path
+        self.database_path = resolve_constitution_db_path(None)
         self.json_export_path = self.project_root / "config" / "constitution_rules.json"
         self.config_path = self.project_root / "config" / "constitution_config.json"
         self.hook_config_path = self.project_root / "config" / "hook_config.json"

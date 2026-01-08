@@ -100,9 +100,11 @@ class ConfigMigration:
             "primary_backend": primary_backend,
 
             # Backend-specific settings
+            # Note: "path" is a reference only; actual database is stored externally
+            # (resolved via resolve_constitution_db_path to ensure it's outside the repository)
             "backend_config": {
                 "sqlite": {
-                    "path": sqlite_config.get("path", "config/constitution_rules.db"),
+                    "path": sqlite_config.get("path", None),  # None triggers default external storage location
                     "timeout": 30,
                     "wal_mode": True,
                     "connection_pool_size": 5

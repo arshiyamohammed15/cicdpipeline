@@ -1,0 +1,1 @@
+Total: All tests passing, cache disabled, deterministic results

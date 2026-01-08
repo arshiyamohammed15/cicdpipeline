@@ -4,7 +4,7 @@
       "rule_id": "DISABLED-TEST-001",
       "title": "Fixture rule intentionally disabled for exclusion validation",
       "category": "Testing Assurance",
-      "enabled": false,
+      "enabled": true,
       "severity_level": "Minor",
       "version": "1.0.0",
       "effective_date": "2024-01-01",
