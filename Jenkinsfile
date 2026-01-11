@@ -24,7 +24,7 @@ pipeline {
                         . venv/bin/activate
                         pip install --upgrade pip
                         pip install ".[dev]"
-                        pip install -r requirements-api.txt
+                        pip install -r requirements.txt
                         pip install pytest-xdist>=3.0.0
                     '''
 

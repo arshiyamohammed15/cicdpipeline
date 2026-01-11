@@ -49,8 +49,8 @@ except ImportError:
                 f"  - starlette: {starlette.__version__}\n"
                 f"\nSolution: Install compatible httpx version:\n"
                 f"  pip install httpx==0.27.0\n"
-                f"\nOr update requirements-api.txt and reinstall:\n"
-                f"  pip install -r requirements-api.txt\n"
+                f"\nOr update requirements.txt and reinstall:\n"
+                f"  pip install -r requirements.txt\n"
                 f"{'='*60}\n"
             )
             raise RuntimeError(error_msg) from e

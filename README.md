@@ -99,8 +99,8 @@ The folder-business rules file remains the single source of truth; regenerate sc
 3. Install dependencies:
    ```bash
    python -m pip install --upgrade pip
-   python -m pip install ".[dev]"                  # Core validator + tooling
-   python -m pip install -r requirements-api.txt   # Automatic enforcement service
+   python -m pip install ".[dev]"                # Core validator + tooling
+   python -m pip install -r requirements.txt     # Full dependency set
    ```
    Use `python -m pip install .` if you only need the runtime (without dev extras).
 
