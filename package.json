@@ -16,9 +16,9 @@
     "test:llm-gateway:performance:windows": "tools\\k6\\k6-v0.48.0-windows-amd64\\k6.exe run tools/k6/llm_gateway_safe_flow.js",
     "test:llm-gateway:observability": "python scripts/ci/validate_llm_gateway_observability.py",
     "test:llm-gateway:observability:ci": "python scripts/ci/run_llm_gateway_telemetry_scenario.py artifacts/llm_gateway_telemetry.log && python scripts/ci/validate_llm_gateway_observability.py artifacts/llm_gateway_telemetry.log",
-    "test:storage": "jest --config jest.config.js --testPathPattern=storage",
+    "test:storage": "jest --config jest.config.js --testPathPattern=storage --no-cache",
     "test:storage:watch": "jest --config jest.config.js --testPathPattern=storage --watch",
-    "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage",
+    "test:storage:coverage": "jest --config jest.config.js --testPathPattern=storage --coverage --no-cache",
     "build:typescript": "tsc -p tsconfig.config.json && npm run verify:infra-config",
     "verify:infra-config": "powershell -ExecutionPolicy Bypass -File scripts/di_config_verify.ps1",
     "test:typescript": "npm run build:typescript && npm run test:storage",
@@ -34,7 +34,9 @@
     "test:all": "python run_all_tests_complete.py",
     "test:all:quick": "python run_all_tests_quick.py",
     "test:quick": "python test_quick.py",
-    "test:all:powershell": "powershell -ExecutionPolicy Bypass -File run_all_tests_one_click.ps1"
+    "test:all:powershell": "powershell -ExecutionPolicy Bypass -File run_all_tests_one_click.ps1",
+    "test:all:no-cache": "powershell -ExecutionPolicy Bypass -File scripts/run_all_tests_no_cache.ps1",
+    "test:all:workers-4": "powershell -ExecutionPolicy Bypass -File scripts/run_all_tests_no_cache.ps1 -Workers 4"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

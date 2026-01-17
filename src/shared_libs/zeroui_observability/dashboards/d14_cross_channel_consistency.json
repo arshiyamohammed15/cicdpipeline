@@ -1,0 +1,89 @@
+{
+  "id": "d14",
+  "title": "Cross-Channel Consistency",
+  "description": "Consistency signals across supported interfaces",
+  "refresh_interval": "5m",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d14_p1",
+      "title": "Cross-Channel Latency Comparison",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, zeroui_sli_sli_b_latency_ms_bucket)",
+          "legendFormat": "{{channel}} - p95"
+        }
+      ],
+      "yAxis": {
+        "label": "latency (ms)"
+      }
+    },
+    {
+      "id": "d14_p2",
+      "title": "Consistency Indicators",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_cross_channel_consistency_score",
+          "legendFormat": "{{channel_pair}}"
+        }
+      ],
+      "yAxis": {
+        "label": "consistency score",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d14_p3",
+      "title": "Channel-Specific Metrics",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_a_value",
+          "legendFormat": "{{channel}} - success rate"
+        }
+      ],
+      "yAxis": {
+        "label": "success rate"
+      }
+    },
+    {
+      "id": "d14_p4",
+      "title": "Consistency Trends",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "avg_over_time(zeroui_cross_channel_consistency_score[1h])",
+          "legendFormat": "{{channel_pair}}"
+        }
+      ],
+      "yAxis": {
+        "label": "consistency score"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_sli_sli_a_value, channel)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_sli_sli_a_value, component)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "Compare channels",
+      "url": "/channels/compare?channels=${__field.channels}"
+    }
+  ]
+}

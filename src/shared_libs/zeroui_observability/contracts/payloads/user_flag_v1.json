@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "user.flag.v1 payload",
+  "type": "object",
+  "required": [
+    "flag_type",
+    "severity",
+    "component",
+    "channel",
+    "ui_surface"
+  ],
+  "properties": {
+    "flag_type": {
+      "type": "string",
+      "description": "factual_incorrect | unsafe | biased | unhelpful | slow | other"
+    },
+    "severity": {
+      "type": "string",
+      "description": "low | medium | high"
+    },
+    "ui_surface": {
+      "type": "string"
+    },
+    "comment_fingerprint": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

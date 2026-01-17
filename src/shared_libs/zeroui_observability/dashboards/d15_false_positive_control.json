@@ -1,0 +1,103 @@
+{
+  "id": "d15",
+  "title": "False Positive Control Room",
+  "description": "Alert volume, dedup/rate-limit outcomes, FPR trends, confidence distribution",
+  "refresh_interval": "1m",
+  "retention_days": 90,
+  "panels": [
+    {
+      "id": "d15_p1",
+      "title": "Alert Volume",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_alerts_total[5m])",
+          "legendFormat": "{{alert_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "alerts/sec"
+      }
+    },
+    {
+      "id": "d15_p2",
+      "title": "False Positive Rate (SLI-G)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_g_value",
+          "legendFormat": "{{detector_type}}/{{alert_fingerprint}}"
+        }
+      ],
+      "yAxis": {
+        "label": "FPR",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d15_p3",
+      "title": "Dedup/Rate-Limit Outcomes",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_alerts_deduped_total[5m])",
+          "legendFormat": "deduped"
+        },
+        {
+          "expr": "rate(zeroui_alerts_rate_limited_total[5m])",
+          "legendFormat": "rate-limited"
+        },
+        {
+          "expr": "rate(zeroui_alerts_suppressed_total[5m])",
+          "legendFormat": "suppressed"
+        }
+      ],
+      "yAxis": {
+        "label": "alerts/sec"
+      }
+    },
+    {
+      "id": "d15_p4",
+      "title": "Confidence Distribution",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_alert_confidence_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_alert_confidence_bucket)",
+          "legendFormat": "p95"
+        }
+      ],
+      "yAxis": {
+        "label": "confidence",
+        "max": 1.0,
+        "min": 0.0
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "detector_type",
+      "type": "query",
+      "query": "label_values(zeroui_sli_sli_g_value, detector_type)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "alert_fingerprint",
+      "type": "query",
+      "query": "label_values(zeroui_sli_sli_g_value, alert_fingerprint)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View alert details",
+      "url": "/alerts?alert_id=${__field.alert_id}"
+    }
+  ]
+}

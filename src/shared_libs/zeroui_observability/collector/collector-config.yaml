@@ -1,0 +1,163 @@
+# ZeroUI Observability Layer - OpenTelemetry Collector Configuration
+# Phase 1: Telemetry Backbone with Schema Guard and Privacy Guard
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: ${OTLP_RECEIVER_GRPC_ENDPOINT:0.0.0.0:4317}
+      http:
+        endpoint: ${OTLP_RECEIVER_HTTP_ENDPOINT:0.0.0.0:4318}
+
+processors:
+  # Memory protection
+  memory_limiter:
+    check_interval: ${MEMORY_LIMITER_CHECK_INTERVAL:1s}
+    limit_mib: ${MEMORY_LIMITER_LIMIT_MIB:512}
+    spike_limit_mib: ${MEMORY_LIMITER_SPIKE_LIMIT_MIB:128}
+
+  # Batching for efficiency
+  batch:
+    timeout: ${BATCH_TIMEOUT:1s}
+    send_batch_size: ${BATCH_SIZE:512}
+    send_batch_max_size: ${BATCH_MAX_SIZE:1024}
+
+  # Attribute enrichment (add standard resource/tenant/version dims)
+  attributes/enrich:
+    actions:
+      - key: zeroui.plane
+        action: insert
+        value: ${ZU_PLANE:shared}
+      - key: zeroui.tenant_id
+        action: insert
+        value: ${ZU_TENANT_ID:}
+        from_attribute: tenant_id
+      - key: zeroui.org_id
+        action: insert
+        value: ${ZU_ORG_ID:}
+        from_attribute: org_id
+      - key: zeroui.region
+        action: insert
+        value: ${ZU_REGION:}
+        from_attribute: region
+      - key: zeroui.component_version
+        action: insert
+        value: ${COMPONENT_VERSION:}
+        from_attribute: service.version
+
+  # Schema Guard - validates zero_ui.obsv.event.v1 envelope + payload schemas
+  # Custom processor implemented in schema_guard_processor.py
+  schema_guard:
+    enabled: ${SCHEMA_GUARD_ENABLED:true}
+    schema_dir: ${SCHEMA_DIR:src/shared_libs/zeroui_observability/contracts}
+    reject_on_invalid: ${SCHEMA_GUARD_REJECT_ON_INVALID:true}
+    sample_invalid_events: ${SCHEMA_GUARD_SAMPLE_INVALID:false}
+    sample_rate: ${SCHEMA_GUARD_SAMPLE_RATE:0.1}
+
+  # Privacy Guard - applies allow/deny rules and verifies redaction_applied
+  # Custom processor implemented in privacy_guard_processor.py
+  privacy_guard:
+    enabled: ${PRIVACY_GUARD_ENABLED:true}
+    deny_patterns_file: ${DENY_PATTERNS_FILE:src/shared_libs/zeroui_observability/privacy/deny_patterns.json}
+    reject_on_violation: ${PRIVACY_GUARD_REJECT_ON_VIOLATION:true}
+    emit_audit_events: ${PRIVACY_GUARD_EMIT_AUDIT:true}
+    policy_version: ${REDACTION_POLICY_VERSION:v1.0}
+
+  # Filter deny-listed content (safety net after privacy guard)
+  filter/denylist:
+    error_mode: ${FILTER_ERROR_MODE:ignore}
+    # Additional deny patterns can be configured here
+
+  # Transform and sanitize fields
+  # Note: transform processor syntax is OpenTelemetry-specific
+  # For Phase 1, this is a placeholder - actual transform config would be:
+  # transform/sanitise:
+  #   log_statements:
+  #     - context: log
+  #       statements:
+  #         - delete_key(key: "raw_input")
+  #         - delete_key(key: "raw_output")
+  #         - delete_key(key: "raw_message")
+  #         - delete_key(key: "raw_code")
+  #         - delete_key(key: "api_key")
+  #         - delete_key(key: "password")
+  #         - delete_key(key: "secret")
+
+exporters:
+  # Traces backend (OTLP)
+  otlp/traces:
+    endpoint: ${TRACES_BACKEND_ENDPOINT:${OTLP_EXPORTER_ENDPOINT:http://localhost:4317}}
+    tls:
+      insecure: ${OTLP_TLS_INSECURE:false}
+    headers:
+      authorization: ${OTLP_AUTH_HEADER:}
+
+  # Metrics backend (OTLP)
+  otlp/metrics:
+    endpoint: ${METRICS_BACKEND_ENDPOINT:${OTLP_EXPORTER_ENDPOINT:http://localhost:4317}}
+    tls:
+      insecure: ${OTLP_TLS_INSECURE:false}
+    headers:
+      authorization: ${OTLP_AUTH_HEADER:}
+
+  # Events backend (OTLP Logs)
+  otlp/events:
+    endpoint: ${EVENTS_BACKEND_ENDPOINT:${OTLP_EXPORTER_ENDPOINT:http://localhost:4317}}
+    tls:
+      insecure: ${OTLP_TLS_INSECURE:false}
+    headers:
+      authorization: ${OTLP_AUTH_HEADER:}
+
+  # File exporter for local dev (optional)
+  file/telemetry:
+    path: ${TELEMETRY_FILE_PATH:${ZU_ROOT}/telemetry/telemetry.jsonl}
+    rotation: ${TELEMETRY_FILE_ROTATION:24h}
+    rotation_max_megabytes: ${TELEMETRY_FILE_MAX_MB:100}
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - batch
+        - attributes/enrich
+      exporters:
+        - otlp/traces
+        - file/telemetry  # Optional for local dev
+
+    metrics:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - batch
+        - attributes/enrich
+      exporters:
+        - otlp/metrics
+        - file/telemetry  # Optional for local dev
+
+    logs:
+      receivers: [otlp]
+      processors:
+        - memory_limiter
+        - schema_guard      # Validate event envelope + payload schemas
+        - privacy_guard     # Apply redaction policy
+        - filter/denylist   # Safety net for deny-listed content
+        # - transform/sanitise # Final sanitization (placeholder for Phase 1)
+        - batch
+        - attributes/enrich
+      exporters:
+        - otlp/events
+        - file/telemetry  # Optional for local dev
+
+  extensions:
+    - health_check
+    - pprof
+    - zpages
+
+  telemetry:
+    logs:
+      level: ${COLLECTOR_LOG_LEVEL:info}
+    metrics:
+      level: ${COLLECTOR_METRICS_LEVEL:detailed}
+      address: ${COLLECTOR_METRICS_ADDRESS:0.0.0.0:8888}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zero_ui.obsv.event.v1",
+  "type": "object",
+  "required": ["event_id", "event_time", "event_type", "severity", "source", "correlation", "payload"],
+  "properties": {
+    "event_id": {
+      "type": "string"
+    },
+    "event_time": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "event_type": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["debug", "info", "warn", "error", "critical"]
+    },
+    "source": {
+      "type": "object",
+      "required": ["component", "channel"],
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["ide", "edge_agent", "backend", "ci", "other"]
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "correlation": {
+      "type": "object",
+      "required": ["trace_id"],
+      "properties": {
+        "trace_id": {
+          "type": "string"
+        },
+        "span_id": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "session_id": {
+          "type": "string"
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "payload": {
+      "type": "object"
+    }
+  }
+}

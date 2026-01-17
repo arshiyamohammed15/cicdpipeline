@@ -1,0 +1,166 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-01-17T00:00:00Z",
+  "challenges": [
+    {
+      "challenge_id": 1,
+      "challenge_name": "LLM Error Analysis Challenges",
+      "signals": ["error.captured.v1", "trace root spans (status=error)"],
+      "dashboards": ["D2"],
+      "alerts": ["A3", "A1"],
+      "acceptance_tests": ["AT-1"]
+    },
+    {
+      "challenge_id": 2,
+      "challenge_name": "System Prompt Optimization Challenges",
+      "signals": ["prompt.validation.result.v1"],
+      "dashboards": ["D3"],
+      "alerts": [],
+      "acceptance_tests": ["AT-2"]
+    },
+    {
+      "challenge_id": 3,
+      "challenge_name": "Memory Management Challenges",
+      "signals": ["memory.access.v1", "memory.validation.v1"],
+      "dashboards": ["D4"],
+      "alerts": [],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 4,
+      "challenge_name": "Response Evaluation Challenges",
+      "signals": ["evaluation.result.v1", "user.flag.v1"],
+      "dashboards": ["D5"],
+      "alerts": ["A5"],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 5,
+      "challenge_name": "Prompt Bias Challenges",
+      "signals": ["bias.scan.result.v1"],
+      "dashboards": ["D6"],
+      "alerts": ["A6"],
+      "acceptance_tests": ["AT-7"]
+    },
+    {
+      "challenge_id": 6,
+      "challenge_name": "Prompt Response Bias Challenges",
+      "signals": ["bias.scan.result.v1", "evaluation.result.v1", "user.flag.v1"],
+      "dashboards": ["D6", "D5"],
+      "alerts": ["A6", "A5"],
+      "acceptance_tests": ["AT-7"]
+    },
+    {
+      "challenge_id": 7,
+      "challenge_name": "Emergent Interaction Effects",
+      "signals": ["trace spans for dependency/feedback indicators", "error.captured.v1 (secondary)"],
+      "dashboards": ["D7"],
+      "alerts": [],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 8,
+      "challenge_name": "Agent Evaluation Frameworks Challenges",
+      "signals": ["evaluation.result.v1", "user.flag.v1"],
+      "dashboards": ["D5"],
+      "alerts": ["A5"],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 9,
+      "challenge_name": "LLM-as-Judge Patterns Challenges",
+      "signals": ["evaluation.result.v1 (judge_type)", "user.flag.v1"],
+      "dashboards": ["D5"],
+      "alerts": ["A5"],
+      "acceptance_tests": ["AT-7"]
+    },
+    {
+      "challenge_id": 10,
+      "challenge_name": "Retrieval Evaluation Challenges",
+      "signals": ["retrieval.eval.v1"],
+      "dashboards": ["D9"],
+      "alerts": ["A4"],
+      "acceptance_tests": ["AT-3"]
+    },
+    {
+      "challenge_id": 11,
+      "challenge_name": "Failure Analysis Challenges",
+      "signals": ["failure.replay.bundle.v1", "error.captured.v1"],
+      "dashboards": ["D10", "D2"],
+      "alerts": ["A1", "A3"],
+      "acceptance_tests": ["AT-4", "AT-1"]
+    },
+    {
+      "challenge_id": 12,
+      "challenge_name": "Production-Grade Thinking Challenges",
+      "signals": ["perf.sample.v1", "alert.noise_control.v1"],
+      "dashboards": ["D11", "D12", "D15"],
+      "alerts": ["A1", "A2", "A7"],
+      "acceptance_tests": ["AT-6"]
+    },
+    {
+      "challenge_id": 13,
+      "challenge_name": "Continuous Model Adaptation and Fine-Tuning",
+      "signals": ["evaluation.result.v1 (time series by version)", "user.flag.v1"],
+      "dashboards": ["D5", "D11"],
+      "alerts": [],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 14,
+      "challenge_name": "Cross-Domain Knowledge Integration",
+      "signals": ["retrieval.eval.v1 (corpus_id)", "memory.access.v1"],
+      "dashboards": ["D9", "D4"],
+      "alerts": ["A4"],
+      "acceptance_tests": ["AT-3"]
+    },
+    {
+      "challenge_id": 15,
+      "challenge_name": "System Transparency and Explainability",
+      "signals": ["error.captured.v1 (reason codes)", "evaluation.result.v1 (judge rationale fingerprints)"],
+      "dashboards": ["D2", "D5"],
+      "alerts": [],
+      "acceptance_tests": ["AT-1"]
+    },
+    {
+      "challenge_id": 16,
+      "challenge_name": "Latency and Performance Optimization",
+      "signals": ["perf.sample.v1"],
+      "dashboards": ["D12", "D1"],
+      "alerts": ["A2"],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 17,
+      "challenge_name": "Adaptation to Multi-Agent Interactions",
+      "signals": ["trace spans for coordination/conflict indicators"],
+      "dashboards": ["D8"],
+      "alerts": [],
+      "acceptance_tests": ["AT-7"]
+    },
+    {
+      "challenge_id": 18,
+      "challenge_name": "User Privacy and Data Security",
+      "signals": ["privacy.audit.v1"],
+      "dashboards": ["D13"],
+      "alerts": [],
+      "acceptance_tests": ["AT-5"]
+    },
+    {
+      "challenge_id": 19,
+      "challenge_name": "Multi-Modal and Cross-Channel Interactions",
+      "signals": ["perf.sample.v1", "evaluation.result.v1 by channel"],
+      "dashboards": ["D14", "D12"],
+      "alerts": ["A2"],
+      "acceptance_tests": []
+    },
+    {
+      "challenge_id": 20,
+      "challenge_name": "Handling False Positives",
+      "signals": ["alert.noise_control.v1", "evaluation.result.v1 (human validation)"],
+      "dashboards": ["D15"],
+      "alerts": ["A7"],
+      "acceptance_tests": ["AT-6", "AT-7"]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "version": "1.0",
+  "description": "Deny-list patterns for telemetry redaction",
+  "patterns": {
+    "secrets": {
+      "description": "Patterns for detecting secrets and credentials",
+      "regex": [
+        "(?i)(api[_-]?key|apikey)\\s*[:=]\\s*['\"]?([a-zA-Z0-9_\\-]{20,})['\"]?",
+        "(?i)(secret|password|passwd|pwd)\\s*[:=]\\s*['\"]?([^'\"\\s]{8,})['\"]?",
+        "(?i)(token|access[_-]?token|refresh[_-]?token)\\s*[:=]\\s*['\"]?([a-zA-Z0-9_\\-]{20,})['\"]?",
+        "(?i)(private[_-]?key|privkey)\\s*[:=]\\s*['\"]?-----BEGIN[^'\"\\n]+-----END[^'\"\\n]+-----['\"]?",
+        "(?i)(aws[_-]?secret[_-]?access[_-]?key|aws_secret_key)\\s*[:=]\\s*['\"]?([a-zA-Z0-9/+=]{40,})['\"]?",
+        "(?i)(bearer)\\s+([a-zA-Z0-9_\\-]{20,})",
+        "sk_live_[a-zA-Z0-9]{10,}",
+        "sk_test_[a-zA-Z0-9]{10,}",
+        "pk_live_[a-zA-Z0-9]{10,}",
+        "pk_test_[a-zA-Z0-9]{10,}"
+      ]
+    },
+    "pii": {
+      "description": "Patterns for detecting personally identifiable information",
+      "regex": [
+        "\\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}\\b",
+        "\\b\\d{3}-\\d{2}-\\d{4}\\b",
+        "\\b\\d{3}\\s?\\d{2}\\s?\\d{4}\\b",
+        "\\b\\d{4}\\s?\\d{4}\\s?\\d{4}\\s?\\d{4}\\b",
+        "\\b\\d{13,19}\\b",
+        "\\b\\+?1?[-.]?\\s?\\(?\\d{3}\\)?[-.]?\\s?\\d{3}[-.]?\\d{4}\\b",
+        "\\b\\d{1,5}\\s+[a-zA-Z0-9\\s,]+(?:street|st|avenue|ave|road|rd|boulevard|blvd|lane|ln|drive|dr|way|circle|cir)\\b"
+      ]
+    },
+    "code_content": {
+      "description": "Patterns for detecting raw code content",
+      "regex": [
+        "(?s)(?:def|function|class|import|from|const|let|var)\\s+[a-zA-Z_][a-zA-Z0-9_]*\\s*[=:({]",
+        "(?s)<\\?php|<!DOCTYPE|package\\s+[a-zA-Z]|public\\s+class",
+        "(?s)```[a-zA-Z]*\\n.*?```",
+        "(?s)/\\*.*?\\*/",
+        "(?s)//.*?\\n"
+      ],
+      "note": "These patterns detect code snippets. Only fingerprints should be exported."
+    },
+    "environment_dumps": {
+      "description": "Patterns for detecting full environment dumps",
+      "regex": [
+        "(?i)(?:env|environment|environ)\\s*[:=]\\s*\\{",
+        "(?i)process\\.env\\s*[:=]\\s*\\{",
+        "(?i)os\\.environ\\s*[:=]\\s*\\{"
+      ]
+    }
+  },
+  "field_deny_list": {
+    "description": "Field names that must never appear in telemetry",
+    "fields": [
+      "raw_input",
+      "raw_output",
+      "raw_message",
+      "raw_error",
+      "raw_stack",
+      "raw_code",
+      "raw_content",
+      "password",
+      "passwd",
+      "pwd",
+      "secret",
+      "api_key",
+      "apikey",
+      "access_token",
+      "refresh_token",
+      "private_key",
+      "privkey",
+      "credential",
+      "credentials",
+      "ssn",
+      "social_security_number",
+      "credit_card",
+      "card_number",
+      "email_address",
+      "phone_number",
+      "full_name",
+      "address"
+    ]
+  }
+}

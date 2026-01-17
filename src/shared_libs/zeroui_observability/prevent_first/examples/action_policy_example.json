@@ -1,0 +1,23 @@
+{
+  "action_id": "prevent-first-slo-a",
+  "action_type": "create_ticket",
+  "enabled": false,
+  "confidence_gate": {
+    "enabled": true,
+    "min_confidence": 0.7
+  },
+  "permissions": {
+    "tenant_ids": [],
+    "environments": [],
+    "require_policy_approval": true
+  },
+  "escalation_path": {
+    "target": "team-oncall",
+    "channels": ["ticket"],
+    "priority": "high"
+  },
+  "action_parameters": {
+    "ticket_title_template": "Prevent-First: SLO-A Breach Forecast",
+    "ticket_description_template": "Forecast indicates potential SLO breach. Time to breach: {time_to_breach_seconds}s, Confidence: {confidence:.2f}"
+  }
+}

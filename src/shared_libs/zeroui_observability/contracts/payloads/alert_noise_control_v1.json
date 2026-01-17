@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "alert.noise_control.v1 payload",
+  "type": "object",
+  "required": [
+    "alert_id",
+    "alert_fingerprint",
+    "decision",
+    "window",
+    "component"
+  ],
+  "properties": {
+    "alert_id": {
+      "type": "string"
+    },
+    "alert_fingerprint": {
+      "type": "string"
+    },
+    "decision": {
+      "type": "string",
+      "description": "allow | suppress | dedup | rate_limited"
+    },
+    "window": {
+      "type": "string",
+      "description": "configured window name"
+    },
+    "count_in_window": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "reason_fingerprint": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    }
+  }
+}

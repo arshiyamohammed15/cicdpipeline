@@ -1,0 +1,105 @@
+{
+  "id": "d5",
+  "title": "Response Evaluation Quality",
+  "description": "Automated eval metrics + user flag trends",
+  "refresh_interval": "5m",
+  "retention_days": 90,
+  "panels": [
+    {
+      "id": "d5_p1",
+      "title": "Evaluation Score Distribution (SLI-F)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_evaluation_score_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_evaluation_score_bucket)",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, zeroui_evaluation_score_bucket)",
+          "legendFormat": "p99"
+        },
+        {
+          "expr": "avg(zeroui_evaluation_score)",
+          "legendFormat": "mean"
+        }
+      ],
+      "yAxis": {
+        "label": "score",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d5_p2",
+      "title": "User Flag Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_user_flags_total[5m]) / rate(zeroui_evaluations_total[5m])",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "flag rate"
+      }
+    },
+    {
+      "id": "d5_p3",
+      "title": "Score Trends Over Time",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "avg_over_time(zeroui_evaluation_score[1h])",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "score"
+      }
+    },
+    {
+      "id": "d5_p4",
+      "title": "Flag Breakdown by Type",
+      "type": "piechart",
+      "targets": [
+        {
+          "expr": "sum by (flag_type) (zeroui_user_flags_total)",
+          "legendFormat": "{{flag_type}}"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_evaluations_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_evaluations_total, channel)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "eval_suite_id",
+      "type": "query",
+      "query": "label_values(zeroui_evaluations_total, eval_suite_id)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View evaluation details",
+      "url": "/evaluations?eval_suite_id=${__field.eval_suite_id}"
+    }
+  ]
+}

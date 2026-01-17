@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "evaluation.result.v1 payload",
+  "type": "object",
+  "required": [
+    "evaluation_run_id",
+    "eval_suite_id",
+    "method",
+    "component",
+    "channel",
+    "metrics"
+  ],
+  "properties": {
+    "evaluation_run_id": {
+      "type": "string"
+    },
+    "eval_suite_id": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "description": "automated | manual | hybrid"
+    },
+    "judge_type": {
+      "type": "string",
+      "description": "human | llm | hybrid"
+    },
+    "metrics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "metric_name",
+          "metric_value"
+        ],
+        "properties": {
+          "metric_name": {
+            "type": "string"
+          },
+          "metric_value": {
+            "type": "number"
+          },
+          "metric_unit": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "score_fingerprint": {
+      "type": "string"
+    },
+    "user_satisfaction": {
+      "type": "number"
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

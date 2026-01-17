@@ -1,0 +1,95 @@
+{
+  "id": "d4",
+  "title": "Memory Health",
+  "description": "Memory access logs, discards/overwrites, validation failures",
+  "refresh_interval": "1m",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d4_p1",
+      "title": "Memory Access Patterns",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_memory_access_total{operation=\"read\"}[5m])",
+          "legendFormat": "read - {{memory_store_id}}"
+        },
+        {
+          "expr": "rate(zeroui_memory_access_total{operation=\"write\"}[5m])",
+          "legendFormat": "write - {{memory_store_id}}"
+        }
+      ],
+      "yAxis": {
+        "label": "operations/sec"
+      }
+    },
+    {
+      "id": "d4_p2",
+      "title": "Memory Validation Status",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_memory_validation_total{status=\"pass\"}[5m])",
+          "legendFormat": "pass - {{validation_type}}"
+        },
+        {
+          "expr": "rate(zeroui_memory_validation_total{status=\"fail\"}[5m])",
+          "legendFormat": "fail - {{validation_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "validations/sec"
+      }
+    },
+    {
+      "id": "d4_p3",
+      "title": "Discard/Overwrite Rates",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_memory_access_total{result=\"write_denied\"}[5m])",
+          "legendFormat": "discards - {{memory_store_id}}"
+        }
+      ],
+      "yAxis": {
+        "label": "rate/sec"
+      }
+    },
+    {
+      "id": "d4_p4",
+      "title": "Window Overflow Indicators",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_memory_validation_total{validation_type=\"window_overflow\"}[5m])",
+          "legendFormat": "overflow - {{memory_store_id}}"
+        }
+      ],
+      "yAxis": {
+        "label": "overflows/sec"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "memory_store_id",
+      "type": "query",
+      "query": "label_values(zeroui_memory_access_total, memory_store_id)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_memory_access_total, component)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View memory store details",
+      "url": "/memory?store_id=${__field.memory_store_id}"
+    }
+  ]
+}

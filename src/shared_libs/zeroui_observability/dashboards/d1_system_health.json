@@ -1,0 +1,111 @@
+{
+  "id": "d1",
+  "title": "System Health (Golden Signals)",
+  "description": "Latency/traffic/errors/saturation by channel/component",
+  "refresh_interval": "30s",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d1_p1",
+      "title": "Request Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_traces_total[5m])",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "requests/sec"
+      }
+    },
+    {
+      "id": "d1_p2",
+      "title": "Error Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_errors_total[5m])",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "errors/sec"
+      }
+    },
+    {
+      "id": "d1_p3",
+      "title": "Latency (p50/p95/p99)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_sli_sli_b_latency_ms_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_sli_sli_b_latency_ms_bucket)",
+          "legendFormat": "p95"
+        },
+        {
+          "expr": "histogram_quantile(0.99, zeroui_sli_sli_b_latency_ms_bucket)",
+          "legendFormat": "p99"
+        }
+      ],
+      "yAxis": {
+        "label": "latency (ms)"
+      }
+    },
+    {
+      "id": "d1_p4",
+      "title": "Success Rate (SLI-A)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_a_value",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "success rate",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d1_p5",
+      "title": "Saturation Indicators",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_perf_queue_depth",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "queue depth"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_traces_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_traces_total, channel)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "Drill-down to trace",
+      "url": "/traces?trace_id=${__field.trace_id}"
+    }
+  ]
+}

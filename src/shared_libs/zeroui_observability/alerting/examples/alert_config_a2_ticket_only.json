@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "alert_id": "A2",
+  "slo_id": "SLI-B",
+  "objective": "Latency Regression - protects end-to-end latency SLO",
+  "windows": {
+    "short": "PT5M",
+    "mid": "PT30M",
+    "long": "PT2H"
+  },
+  "burn_rate": {
+    "fast": 14.4,
+    "fast_confirm": 6.0,
+    "slow": 1.0,
+    "slow_confirm": 1.0
+  },
+  "min_traffic": {
+    "min_total_events": 50
+  },
+  "routing": {
+    "mode": "ticket",
+    "target": "zeroui-oncall-tickets"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "memory.validation.v1 payload",
+  "type": "object",
+  "required": [
+    "memory_store_id",
+    "validation_type",
+    "status",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "memory_store_id": {
+      "type": "string"
+    },
+    "validation_type": {
+      "type": "string",
+      "description": "freshness | duplication | conflict | consistency | window_overflow"
+    },
+    "status": {
+      "type": "string",
+      "description": "pass | fail"
+    },
+    "reason_fingerprint": {
+      "type": "string"
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "error_class": "architecture",
+  "error_code": "ERR_001",
+  "message_fingerprint": "a3f5e8b2c1d4f6a7e9b1c3d5f7a9b2c4d6e8f0a1b3c5d7e9f1a3b5c7d9e1f3a5",
+  "component": "edge_agent",
+  "channel": "ide",
+  "latency_ms": 150,
+  "count": 10
+}

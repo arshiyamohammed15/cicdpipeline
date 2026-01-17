@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "perf.sample.v1 payload",
+  "type": "object",
+  "required": [
+    "operation",
+    "latency_ms",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "operation": {
+      "type": "string"
+    },
+    "latency_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "cache_hit": {
+      "type": "boolean"
+    },
+    "async_path": {
+      "type": "boolean"
+    },
+    "queue_depth": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

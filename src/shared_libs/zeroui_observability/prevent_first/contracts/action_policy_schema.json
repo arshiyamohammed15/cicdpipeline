@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "zero_ui.prevent_first.action_policy.v1",
+  "title": "Prevent-first Action Policy",
+  "type": "object",
+  "required": [
+    "action_id",
+    "action_type",
+    "confidence_gate",
+    "enabled"
+  ],
+  "properties": {
+    "action_id": {
+      "type": "string",
+      "description": "Unique identifier for this action policy"
+    },
+    "action_type": {
+      "type": "string",
+      "enum": ["create_ticket", "request_human_validation", "reduce_autonomy_level", "gate_mode_change"],
+      "description": "Type of prevent-first action"
+    },
+    "confidence_gate": {
+      "type": "object",
+      "required": ["enabled", "min_confidence"],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Whether confidence gate is enabled"
+        },
+        "min_confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Minimum confidence required to execute action (0.0 to 1.0)"
+        }
+      }
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Whether this action is enabled (disabled by default)"
+    },
+    "permissions": {
+      "type": "object",
+      "properties": {
+        "tenant_ids": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of tenant IDs allowed to execute this action (empty = all tenants)"
+        },
+        "environments": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "List of environments allowed (empty = all environments)"
+        },
+        "require_policy_approval": {
+          "type": "boolean",
+          "description": "Whether policy approval via EPC-3 is required"
+        }
+      }
+    },
+    "escalation_path": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "type": "string",
+          "description": "Target for escalation (team, oncall route, etc.)"
+        },
+        "channels": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Channels for escalation (ticket, page, etc.)"
+        },
+        "priority": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Escalation priority"
+        }
+      }
+    },
+    "action_parameters": {
+      "type": "object",
+      "description": "Action-specific parameters",
+      "properties": {
+        "ticket_title_template": {
+          "type": "string",
+          "description": "Template for ticket title (for create_ticket action)"
+        },
+        "ticket_description_template": {
+          "type": "string",
+          "description": "Template for ticket description"
+        },
+        "autonomy_level": {
+          "type": "string",
+          "enum": ["full", "restricted", "manual"],
+          "description": "Target autonomy level (for reduce_autonomy_level action)"
+        },
+        "mode_gate": {
+          "type": "string",
+          "description": "Mode gate identifier (for gate_mode_change action)"
+        }
+      }
+    }
+  }
+}

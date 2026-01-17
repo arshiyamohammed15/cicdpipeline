@@ -1,0 +1,91 @@
+{
+  "id": "d8",
+  "title": "Multi-Agent Coordination",
+  "description": "Conflict rates, coordination protocol events, simulation outcomes",
+  "refresh_interval": "1m",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d8_p1",
+      "title": "Conflict Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_agent_conflicts_total[5m])",
+          "legendFormat": "{{conflict_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "conflicts/sec"
+      }
+    },
+    {
+      "id": "d8_p2",
+      "title": "Coordination Protocol Events",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_coordination_events_total[5m])",
+          "legendFormat": "{{protocol_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "events/sec"
+      }
+    },
+    {
+      "id": "d8_p3",
+      "title": "Simulation Outcomes",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_simulation_successes_total[5m])",
+          "legendFormat": "successes"
+        },
+        {
+          "expr": "rate(zeroui_simulation_failures_total[5m])",
+          "legendFormat": "failures"
+        }
+      ],
+      "yAxis": {
+        "label": "outcomes/sec"
+      }
+    },
+    {
+      "id": "d8_p4",
+      "title": "Agent Interaction Patterns",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_agent_interactions_total[5m])",
+          "legendFormat": "{{interaction_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "interactions/sec"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_agent_conflicts_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_agent_conflicts_total, channel)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View coordination details",
+      "url": "/coordination?trace_id=${__field.trace_id}"
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "id": "d9",
+  "title": "Retrieval Evaluation",
+  "description": "Relevance/timeliness compliance, with/without retrieval benchmark results",
+  "refresh_interval": "5m",
+  "retention_days": 90,
+  "panels": [
+    {
+      "id": "d9_p1",
+      "title": "Retrieval Compliance (SLI-E)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_e_value",
+          "legendFormat": "{{corpus_id}}/{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "compliance",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d9_p2",
+      "title": "Relevance Score Distribution",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_retrieval_relevance_score_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_retrieval_relevance_score_bucket)",
+          "legendFormat": "p95"
+        }
+      ],
+      "yAxis": {
+        "label": "relevance score",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d9_p3",
+      "title": "Timeliness Score Distribution",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_retrieval_timeliness_score_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_retrieval_timeliness_score_bucket)",
+          "legendFormat": "p95"
+        }
+      ],
+      "yAxis": {
+        "label": "timeliness score",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d9_p4",
+      "title": "Compliance by Corpus",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_e_value",
+          "legendFormat": "{{corpus_id}}"
+        }
+      ],
+      "yAxis": {
+        "label": "compliance"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "corpus_id",
+      "type": "query",
+      "query": "label_values(zeroui_retrieval_eval_total, corpus_id)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_retrieval_eval_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_retrieval_eval_total, channel)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View retrieval details",
+      "url": "/retrieval?corpus_id=${__field.corpus_id}&retrieval_run_id=${__field.retrieval_run_id}"
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "id": "d2",
+  "title": "Error Analysis and Debug",
+  "description": "Error clusters, classification, top traces, contextual coverage",
+  "refresh_interval": "1m",
+  "retention_days": 90,
+  "panels": [
+    {
+      "id": "d2_p1",
+      "title": "Error Rate by Error Class",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_errors_total{error_class=\"$error_class\"}[5m])",
+          "legendFormat": "{{error_class}}"
+        }
+      ],
+      "yAxis": {
+        "label": "errors/sec"
+      }
+    },
+    {
+      "id": "d2_p2",
+      "title": "Error Capture Coverage (SLI-C)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_c_value",
+          "legendFormat": "{{error_class}}/{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "coverage",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d2_p3",
+      "title": "Top Error Traces",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "topk(10, rate(zeroui_errors_total[5m]))",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": "d2_p4",
+      "title": "Error Classification Breakdown",
+      "type": "piechart",
+      "targets": [
+        {
+          "expr": "sum by (error_class) (zeroui_errors_total)",
+          "legendFormat": "{{error_class}}"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "error_class",
+      "type": "query",
+      "query": "label_values(zeroui_errors_total, error_class)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_errors_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_errors_total, channel)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "Drill-down to trace",
+      "url": "/traces?trace_id=${__field.trace_id}"
+    },
+    {
+      "title": "View error details",
+      "url": "/errors?error_id=${__field.error_id}"
+    }
+  ]
+}

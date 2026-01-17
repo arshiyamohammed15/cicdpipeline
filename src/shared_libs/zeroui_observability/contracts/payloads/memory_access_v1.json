@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "memory.access.v1 payload",
+  "type": "object",
+  "required": [
+    "memory_store_id",
+    "operation",
+    "key_fingerprint",
+    "result",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "memory_store_id": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string",
+      "description": "read | write | delete | summarize"
+    },
+    "key_fingerprint": {
+      "type": "string"
+    },
+    "result": {
+      "type": "string",
+      "description": "hit | miss | write_ok | write_denied | error"
+    },
+    "items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "bytes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "latency_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

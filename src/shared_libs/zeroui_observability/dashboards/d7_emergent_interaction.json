@@ -1,0 +1,95 @@
+{
+  "id": "d7",
+  "title": "Emergent Interaction and Fail-Safe",
+  "description": "Dependency indicators, stress test outcomes, isolation/reset activations",
+  "refresh_interval": "1m",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d7_p1",
+      "title": "Dependency Graph Indicators",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_dependency_indicators_total",
+          "legendFormat": "{{dependency_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "indicators"
+      }
+    },
+    {
+      "id": "d7_p2",
+      "title": "Stress Test Outcomes",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_stress_test_failures_total[5m])",
+          "legendFormat": "failures"
+        },
+        {
+          "expr": "rate(zeroui_stress_test_successes_total[5m])",
+          "legendFormat": "successes"
+        }
+      ],
+      "yAxis": {
+        "label": "outcomes/sec"
+      }
+    },
+    {
+      "id": "d7_p3",
+      "title": "Isolation/Reset Activations",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_isolation_activations_total[5m])",
+          "legendFormat": "isolations"
+        },
+        {
+          "expr": "rate(zeroui_reset_activations_total[5m])",
+          "legendFormat": "resets"
+        }
+      ],
+      "yAxis": {
+        "label": "activations/sec"
+      }
+    },
+    {
+      "id": "d7_p4",
+      "title": "Interaction Patterns",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_interaction_patterns_total[5m])",
+          "legendFormat": "{{pattern_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "patterns/sec"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_dependency_indicators_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_dependency_indicators_total, channel)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View dependency graph",
+      "url": "/dependencies?component=${__field.component}"
+    }
+  ]
+}

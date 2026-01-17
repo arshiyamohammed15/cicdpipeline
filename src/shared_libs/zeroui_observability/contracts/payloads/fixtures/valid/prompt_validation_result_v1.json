@@ -1,0 +1,10 @@
+{
+  "prompt_id": "prompt_001",
+  "prompt_version": "v1.2.3",
+  "test_suite_id": "suite_001",
+  "test_case_id": "case_001",
+  "status": "pass",
+  "ambiguity_detected": false,
+  "edge_case_tag": "normal",
+  "failure_reason_fingerprint": null
+}

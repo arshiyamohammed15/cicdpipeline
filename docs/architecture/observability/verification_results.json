@@ -1,0 +1,132 @@
+{
+  "OBS-00": {
+    "envelope_schema_exists": "[PASS]",
+    "required_fields": "[PASS]",
+    "severity_enum": "[PASS]",
+    "channel_enum": "[PASS]",
+    "schema_id": "[PASS]",
+    "event_types_file_exists": "[PASS]",
+    "event_type_count": "[PASS] (13 found)",
+    "versioning_rules_documented": "[PASS]"
+  },
+  "OBS-01": {
+    "schema_error_captured_v1.json": "[PASS]",
+    "schema_prompt_validation_result_v1.json": "[PASS]",
+    "schema_memory_access_v1.json": "[PASS]",
+    "schema_memory_validation_v1.json": "[PASS]",
+    "schema_evaluation_result_v1.json": "[PASS]",
+    "schema_user_flag_v1.json": "[PASS]",
+    "schema_bias_scan_result_v1.json": "[PASS]",
+    "schema_retrieval_eval_v1.json": "[PASS]",
+    "schema_failure_replay_bundle_v1.json": "[PASS]",
+    "schema_perf_sample_v1.json": "[PASS]",
+    "schema_privacy_audit_v1.json": "[PASS]",
+    "schema_alert_noise_control_v1.json": "[PASS]",
+    "all_schemas_present": "[PASS]",
+    "schema_loader_exists": "[PASS]",
+    "valid_fixtures_exist": "[PASS]",
+    "invalid_fixtures_exist": "[PASS]"
+  },
+  "OBS-02": {
+    "redaction_policy_doc": "[PASS]",
+    "deny_patterns_file": "[PASS]",
+    "redaction_enforcer_class": "[PASS]"
+  },
+  "OBS-03": {
+    "trace_propagation_spec": "[PASS]",
+    "trace_context_python": "[PASS]",
+    "trace_context_typescript": "[PASS]",
+    "trace_examples_exist": "[PASS]"
+  },
+  "OBS-04": {
+    "collector_config_exists": "[PASS]",
+    "otlp_receiver_ports": "[PASS]",
+    "deployment_notes": "[PASS]"
+  },
+  "OBS-05": {
+    "schema_guard_processor": "[PASS]"
+  },
+  "OBS-06": {
+    "privacy_guard_processor": "[PASS]"
+  },
+  "OBS-07": {
+    "python_instrumentation": "[PASS]",
+    "typescript_instrumentation": "[PASS]",
+    "feature_flags_doc": "[PASS]"
+  },
+  "OBS-08": {
+    "sli_calculator": "[PASS]",
+    "all_slis_implemented": "[PASS]",
+    "sli_formulas_doc": "[PASS]"
+  },
+  "OBS-09": {
+    "dashboard_d1_system_health.json": "[PASS]",
+    "dashboard_d2_error_analysis.json": "[PASS]",
+    "dashboard_d3_prompt_quality.json": "[PASS]",
+    "dashboard_d4_memory_health.json": "[PASS]",
+    "dashboard_d5_response_evaluation.json": "[PASS]",
+    "dashboard_d6_bias_monitoring.json": "[PASS]",
+    "dashboard_d7_emergent_interaction.json": "[PASS]",
+    "dashboard_d8_multi_agent_coordination.json": "[PASS]",
+    "dashboard_d9_retrieval_evaluation.json": "[PASS]",
+    "dashboard_d10_failure_analysis.json": "[PASS]",
+    "dashboard_d11_production_readiness.json": "[PASS]",
+    "dashboard_d12_performance_under_load.json": "[PASS]",
+    "dashboard_d13_privacy_compliance.json": "[PASS]",
+    "dashboard_d14_cross_channel_consistency.json": "[PASS]",
+    "dashboard_d15_false_positive_control.json": "[PASS]",
+    "all_dashboards_present": "[PASS]",
+    "dashboard_loader": "[PASS]",
+    "dashboard_mapping": "[PASS]"
+  },
+  "OBS-10": {
+    "alert_config_loader": "[PASS]"
+  },
+  "OBS-11": {
+    "burn_rate_engine": "[PASS]"
+  },
+  "OBS-12": {
+    "noise_control_processor": "[PASS]"
+  },
+  "OBS-13": {
+    "forecast_calculator": "[PASS]",
+    "leading_indicators": "[PASS]",
+    "forecast_service": "[PASS]",
+    "forecast_signal_schema": "[PASS]"
+  },
+  "OBS-14": {
+    "action_policy": "[PASS]",
+    "action_executor": "[PASS]"
+  },
+  "OBS-15": {
+    "replay_bundle_builder": "[PASS]",
+    "replay_storage": "[PASS]"
+  },
+  "OBS-16": {
+    "runbook_runbook_rb1_error_spike.py": "[PASS]",
+    "runbook_runbook_rb2_latency_regression.py": "[PASS]",
+    "runbook_runbook_rb3_retrieval_quality.py": "[PASS]",
+    "runbook_runbook_rb4_bias_spike.py": "[PASS]",
+    "runbook_runbook_rb5_alert_flood.py": "[PASS]",
+    "all_runbooks_present": "[PASS]",
+    "runbook_executor": "[PASS]",
+    "oncall_playbook": "[PASS]"
+  },
+  "OBS-17": {
+    "test_acceptance_test_harness.py": "[PASS]",
+    "test_test_at1_contextual_error_logging.py": "[PASS]",
+    "test_test_at2_prompt_validation_telemetry.py": "[PASS]",
+    "test_test_at3_retrieval_threshold_telemetry.py": "[PASS]",
+    "test_test_at4_failure_replay_bundle.py": "[PASS]",
+    "test_test_at5_privacy_audit_event.py": "[PASS]",
+    "test_test_at6_alert_rate_limiting.py": "[PASS]",
+    "test_test_at7_confidence_gated_human_review.py": "[PASS]",
+    "all_acceptance_tests_present": "[PASS]"
+  },
+  "OBS-18": {
+    "traceability_matrix": "[PASS]",
+    "matrix_validator": "[PASS]",
+    "ci_validator": "[PASS]",
+    "challenge_count": "[PASS]"
+  }
+}

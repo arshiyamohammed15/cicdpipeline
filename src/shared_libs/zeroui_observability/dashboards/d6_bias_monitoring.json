@@ -1,0 +1,91 @@
+{
+  "id": "d6",
+  "title": "Bias Monitoring",
+  "description": "Bias detector results, counterfactual/adversarial outcomes, audit queue",
+  "refresh_interval": "5m",
+  "retention_days": 180,
+  "panels": [
+    {
+      "id": "d6_p1",
+      "title": "Bias Detection Results",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_bias_scans_total{status=\"fail\"}[5m])",
+          "legendFormat": "bias detected - {{bias_category}}"
+        },
+        {
+          "expr": "rate(zeroui_bias_scans_total{status=\"pass\"}[5m])",
+          "legendFormat": "no bias - {{bias_category}}"
+        }
+      ],
+      "yAxis": {
+        "label": "scans/sec"
+      }
+    },
+    {
+      "id": "d6_p2",
+      "title": "Bias Category Breakdown",
+      "type": "piechart",
+      "targets": [
+        {
+          "expr": "sum by (bias_category) (zeroui_bias_scans_total{status=\"fail\"})",
+          "legendFormat": "{{bias_category}}"
+        }
+      ]
+    },
+    {
+      "id": "d6_p3",
+      "title": "Confidence Distribution",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_bias_confidence_bucket)",
+          "legendFormat": "p50"
+        },
+        {
+          "expr": "histogram_quantile(0.95, zeroui_bias_confidence_bucket)",
+          "legendFormat": "p95"
+        }
+      ],
+      "yAxis": {
+        "label": "confidence",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d6_p4",
+      "title": "Audit Queue Status",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "zeroui_bias_audit_queue_size",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "bias_category",
+      "type": "query",
+      "query": "label_values(zeroui_bias_scans_total, bias_category)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_bias_scans_total, component)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View bias scan details",
+      "url": "/bias?scan_run_id=${__field.scan_run_id}"
+    }
+  ]
+}

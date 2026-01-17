@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "privacy.audit.v1 payload",
+  "type": "object",
+  "required": [
+    "audit_id",
+    "operation",
+    "component",
+    "channel",
+    "encryption_in_transit",
+    "encryption_at_rest",
+    "access_control_enforced"
+  ],
+  "properties": {
+    "audit_id": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string"
+    },
+    "data_class": {
+      "type": "string",
+      "description": "classification category"
+    },
+    "encryption_in_transit": {
+      "type": "boolean"
+    },
+    "encryption_at_rest": {
+      "type": "boolean"
+    },
+    "access_control_enforced": {
+      "type": "boolean"
+    },
+    "differential_privacy_applied": {
+      "type": "boolean"
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

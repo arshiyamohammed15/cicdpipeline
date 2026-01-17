@@ -1,0 +1,100 @@
+{
+  "id": "d12",
+  "title": "Performance Under Load",
+  "description": "Cache indicators, async indicators, RAG latency breakdown",
+  "refresh_interval": "30s",
+  "retention_days": 30,
+  "panels": [
+    {
+      "id": "d12_p1",
+      "title": "Cache Hit Rate",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_cache_hits_total[5m]) / rate(zeroui_cache_requests_total[5m])",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "hit rate",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d12_p2",
+      "title": "Async Path Indicators",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_async_operations_total[5m])",
+          "legendFormat": "{{operation}}"
+        }
+      ],
+      "yAxis": {
+        "label": "operations/sec"
+      }
+    },
+    {
+      "id": "d12_p3",
+      "title": "RAG Latency Breakdown",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, zeroui_rag_latency_ms_bucket{operation=\"retrieval\"})",
+          "legendFormat": "retrieval p50"
+        },
+        {
+          "expr": "histogram_quantile(0.50, zeroui_rag_latency_ms_bucket{operation=\"generation\"})",
+          "legendFormat": "generation p50"
+        }
+      ],
+      "yAxis": {
+        "label": "latency (ms)"
+      }
+    },
+    {
+      "id": "d12_p4",
+      "title": "Queue Depth",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_perf_queue_depth",
+          "legendFormat": "{{component}}/{{channel}}"
+        }
+      ],
+      "yAxis": {
+        "label": "queue depth"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_perf_queue_depth, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_perf_queue_depth, channel)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "operation",
+      "type": "query",
+      "query": "label_values(zeroui_rag_latency_ms_bucket, operation)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View performance details",
+      "url": "/performance?operation=${__field.operation}"
+    }
+  ]
+}

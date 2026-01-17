@@ -1,0 +1,85 @@
+{
+  "id": "d10",
+  "title": "Failure Analysis and Replay",
+  "description": "Root cause tags, replay bundle explorer, post-failure analytics",
+  "refresh_interval": "1m",
+  "retention_days": 180,
+  "panels": [
+    {
+      "id": "d10_p1",
+      "title": "Failure Replay Bundles",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "zeroui_failure_replay_bundles_total",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": "d10_p2",
+      "title": "Root Cause Analysis",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum by (root_cause_tag) (zeroui_failures_total)",
+          "legendFormat": "{{root_cause_tag}}"
+        }
+      ],
+      "yAxis": {
+        "label": "failures"
+      }
+    },
+    {
+      "id": "d10_p3",
+      "title": "Post-Failure Analytics",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_post_failure_events_total[5m])",
+          "legendFormat": "{{event_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "events/sec"
+      }
+    },
+    {
+      "id": "d10_p4",
+      "title": "Replay Bundle Explorer",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "zeroui_failure_replay_bundles_total",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "error_class",
+      "type": "query",
+      "query": "label_values(zeroui_failures_total, error_class)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_failures_total, component)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View replay bundle",
+      "url": "/replay?replay_id=${__field.replay_id}"
+    },
+    {
+      "title": "Drill-down to trace",
+      "url": "/traces?trace_id=${__field.trace_id}"
+    }
+  ]
+}

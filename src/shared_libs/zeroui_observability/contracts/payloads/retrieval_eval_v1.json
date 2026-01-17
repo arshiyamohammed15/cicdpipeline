@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "retrieval.eval.v1 payload",
+  "type": "object",
+  "required": [
+    "retrieval_run_id",
+    "corpus_id",
+    "query_fingerprint",
+    "top_k",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "retrieval_run_id": {
+      "type": "string"
+    },
+    "corpus_id": {
+      "type": "string"
+    },
+    "query_fingerprint": {
+      "type": "string"
+    },
+    "top_k": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "retrieval_time_ms": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "relevance_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "timeliness_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "relevance_compliant": {
+      "type": "boolean"
+    },
+    "timeliness_compliant": {
+      "type": "boolean"
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}

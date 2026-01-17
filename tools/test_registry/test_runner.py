@@ -95,7 +95,11 @@ def build_pytest_command(args: argparse.Namespace, nodeids: list[str] | None = N
     if args.marker:
         cmd.extend(["-m", args.marker])
     if args.parallel:
-        cmd.extend(["-n", "auto"])
+        # Use explicit workers count if provided, otherwise use auto
+        if args.workers:
+            cmd.extend(["-n", str(args.workers)])
+        else:
+            cmd.extend(["-n", "auto"])
     if args.verbose:
         cmd.append("-v")
     if args.extra:
@@ -117,6 +121,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--file", help="Substring or filename to filter tests/files")
     parser.add_argument("--test", help="Substring of test nodeid to filter")
     parser.add_argument("--parallel", action="store_true", help="Run tests in parallel with xdist (-n auto)")
+    parser.add_argument("--workers", type=int, help="Number of parallel workers (requires --parallel). Default: auto")
     parser.add_argument("--verbose", action="store_true", help="Enable pytest verbose output")
     parser.add_argument("--manifest", type=Path, default=DEFAULT_OUTPUT, help="Path to manifest JSON")
     parser.add_argument("--regenerate-manifest", action="store_true", help="Regenerate manifest before running")

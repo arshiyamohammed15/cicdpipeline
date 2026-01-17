@@ -1,0 +1,96 @@
+{
+  "id": "d11",
+  "title": "Production Readiness and Rollout Safety",
+  "description": "Versioning/rollback signals, incremental rollout status",
+  "refresh_interval": "5m",
+  "retention_days": 90,
+  "panels": [
+    {
+      "id": "d11_p1",
+      "title": "Version Rollout Status",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_version_rollout_percentage",
+          "legendFormat": "{{version}}"
+        }
+      ],
+      "yAxis": {
+        "label": "rollout %",
+        "max": 100,
+        "min": 0
+      }
+    },
+    {
+      "id": "d11_p2",
+      "title": "Rollback Signals",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_rollback_signals_total[5m])",
+          "legendFormat": "{{signal_type}}"
+        }
+      ],
+      "yAxis": {
+        "label": "signals/sec"
+      }
+    },
+    {
+      "id": "d11_p3",
+      "title": "Incremental Rollout Progress",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_rollout_progress",
+          "legendFormat": "{{version}}"
+        }
+      ],
+      "yAxis": {
+        "label": "progress %"
+      }
+    },
+    {
+      "id": "d11_p4",
+      "title": "Version Comparison",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_a_value",
+          "legendFormat": "v{{version}} - success rate"
+        }
+      ],
+      "yAxis": {
+        "label": "success rate"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_version_rollout_percentage, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_version_rollout_percentage, channel)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "version",
+      "type": "query",
+      "query": "label_values(zeroui_version_rollout_percentage, version)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View version details",
+      "url": "/versions?version=${__field.version}"
+    }
+  ]
+}

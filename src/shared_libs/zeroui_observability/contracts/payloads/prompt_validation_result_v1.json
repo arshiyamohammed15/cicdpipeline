@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "prompt.validation.result.v1 payload",
+  "type": "object",
+  "required": [
+    "prompt_id",
+    "prompt_version",
+    "test_suite_id",
+    "test_case_id",
+    "status"
+  ],
+  "properties": {
+    "prompt_id": {
+      "type": "string"
+    },
+    "prompt_version": {
+      "type": "string"
+    },
+    "test_suite_id": {
+      "type": "string"
+    },
+    "test_case_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "description": "pass | fail"
+    },
+    "ambiguity_detected": {
+      "type": "boolean"
+    },
+    "edge_case_tag": {
+      "type": "string"
+    },
+    "failure_reason_fingerprint": {
+      "type": "string"
+    }
+  }
+}

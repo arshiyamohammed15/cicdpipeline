@@ -1,0 +1,99 @@
+{
+  "id": "d13",
+  "title": "Privacy and Compliance Audit",
+  "description": "Audit events for data handling, encryption/access control signals",
+  "refresh_interval": "5m",
+  "retention_days": 365,
+  "panels": [
+    {
+      "id": "d13_p1",
+      "title": "Privacy Audit Events",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "rate(zeroui_privacy_audit_events_total[5m])",
+          "legendFormat": "{{operation}}"
+        }
+      ],
+      "yAxis": {
+        "label": "events/sec"
+      }
+    },
+    {
+      "id": "d13_p2",
+      "title": "Encryption Status",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(zeroui_privacy_encryption_in_transit) / sum(zeroui_privacy_audit_events_total)",
+          "legendFormat": "in-transit"
+        },
+        {
+          "expr": "sum(zeroui_privacy_encryption_at_rest) / sum(zeroui_privacy_audit_events_total)",
+          "legendFormat": "at-rest"
+        }
+      ],
+      "yAxis": {
+        "label": "coverage",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d13_p3",
+      "title": "Access Control Enforcement",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "sum(zeroui_privacy_access_control_enforced) / sum(zeroui_privacy_audit_events_total)",
+          "legendFormat": "enforced"
+        }
+      ],
+      "yAxis": {
+        "label": "coverage",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d13_p4",
+      "title": "Compliance Status",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "zeroui_privacy_compliance_status",
+          "format": "table"
+        }
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "component",
+      "type": "query",
+      "query": "label_values(zeroui_privacy_audit_events_total, component)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "channel",
+      "type": "query",
+      "query": "label_values(zeroui_privacy_audit_events_total, channel)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "operation",
+      "type": "query",
+      "query": "label_values(zeroui_privacy_audit_events_total, operation)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View audit details",
+      "url": "/privacy/audit?audit_id=${__field.audit_id}"
+    }
+  ]
+}

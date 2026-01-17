@@ -1,0 +1,18 @@
+{
+  "error_class": "architecture",
+  "error_code": "ERR_001",
+  "stage": "retrieval",
+  "message_fingerprint": "a3f5e8b2c1d4f6a7e9b1c3d5f7a9b2c4d6e8f0a1b3c5d7e9f1a3b5c7d9e1f3a5",
+  "input_fingerprint": "b4g6f9c2d5e7a8f0b2c4d6e8f0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6",
+  "output_fingerprint": "c5h7g0d3e6f8b9g1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5",
+  "internal_state_fingerprint": "d6i8h1e4f7g9c0h2d4e6f8g0a2b4c6d8e0f2a4b6c8d0e2f4a6b8c0d2e4f6a8",
+  "component": "edge_agent",
+  "channel": "ide",
+  "stack_fingerprint": "e7j9i2f5g8h0d1i3e5f7g9h1a3b5c7d9e1f3a5b7c9d1e3f5a7b9c1d3e5f7a9",
+  "tool_names": ["retrieval_tool", "validation_tool"],
+  "env_allowlisted": {
+    "ENVIRONMENT": "development",
+    "VERSION": "1.0.0"
+  },
+  "severity": "error"
+}

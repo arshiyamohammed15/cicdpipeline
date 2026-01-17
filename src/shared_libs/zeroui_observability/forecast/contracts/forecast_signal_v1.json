@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "forecast.signal.v1",
+  "title": "forecast.signal.v1 payload",
+  "type": "object",
+  "required": [
+    "forecast_id",
+    "slo_id",
+    "sli_id",
+    "time_to_breach_seconds",
+    "horizon_seconds",
+    "confidence",
+    "burn_rate_trend"
+  ],
+  "properties": {
+    "forecast_id": {
+      "type": "string",
+      "description": "Unique identifier for this forecast"
+    },
+    "slo_id": {
+      "type": "string",
+      "description": "SLO identifier this forecast relates to"
+    },
+    "sli_id": {
+      "type": "string",
+      "description": "SLI identifier (SLI-A through SLI-G)"
+    },
+    "time_to_breach_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Estimated time until SLO breach in seconds. null if breach is not predicted within horizon"
+    },
+    "horizon_seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Forecast horizon in seconds (maximum time window for prediction)"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Confidence score for this forecast (0.0 to 1.0)"
+    },
+    "leading_indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["indicator_type", "severity", "trend"],
+        "properties": {
+          "indicator_type": {
+            "type": "string",
+            "enum": ["latency_p95_increase", "error_coverage_gap", "bias_signal_spike", "user_flag_rate_increase"],
+            "description": "Type of leading indicator"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "description": "Severity of the indicator"
+          },
+          "trend": {
+            "type": "string",
+            "enum": ["increasing", "decreasing", "stable"],
+            "description": "Trend direction"
+          },
+          "value": {
+            "type": "number",
+            "description": "Current value of the indicator"
+          },
+          "threshold": {
+            "type": "number",
+            "description": "Threshold value for this indicator"
+          }
+        }
+      },
+      "description": "Leading indicators detected (latency p95, error coverage gaps, bias signals, user flags)"
+    },
+    "burn_rate_trend": {
+      "type": "object",
+      "required": ["current_burn_rate", "trend_direction"],
+      "properties": {
+        "current_burn_rate": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Current burn rate (error_rate / allowed_error_rate)"
+        },
+        "trend_direction": {
+          "type": "string",
+          "enum": ["increasing", "decreasing", "stable"],
+          "description": "Direction of burn rate trend"
+        },
+        "trend_slope": {
+          "type": "number",
+          "description": "Slope of burn rate trend (positive = increasing, negative = decreasing)"
+        },
+        "window_used": {
+          "type": "string",
+          "description": "Time window used for trend computation (e.g., PT30M)"
+        }
+      },
+      "description": "Burn rate trend information"
+    },
+    "component": {
+      "type": "string",
+      "description": "Component name"
+    },
+    "channel": {
+      "type": "string",
+      "description": "Channel name (ide, edge_agent, backend, ci, other)"
+    }
+  }
+}

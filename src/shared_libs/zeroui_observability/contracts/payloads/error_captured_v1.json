@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "error.captured.v1 payload",
+  "type": "object",
+  "required": [
+    "error_class",
+    "error_code",
+    "stage",
+    "message_fingerprint",
+    "input_fingerprint",
+    "output_fingerprint",
+    "internal_state_fingerprint",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "error_class": {
+      "type": "string",
+      "description": "data | architecture | prompt | retrieval | memory | tool | orchestration | security | unknown"
+    },
+    "error_code": {
+      "type": "string"
+    },
+    "stage": {
+      "type": "string",
+      "description": "where the error occurred (e.g., retrieval, tool_call, response_build)"
+    },
+    "component": {
+      "type": "string",
+      "description": "producer component (e.g., edge_agent, vscode_extension, core_service)"
+    },
+    "channel": {
+      "type": "string",
+      "description": "surface/channel (e.g., ide, ci, api)"
+    },
+    "message_fingerprint": {
+      "type": "string",
+      "description": "hash/fingerprint of error message after redaction"
+    },
+    "input_fingerprint": {
+      "type": "string",
+      "description": "hash/fingerprint of inputs after redaction"
+    },
+    "output_fingerprint": {
+      "type": "string",
+      "description": "hash/fingerprint of outputs after redaction"
+    },
+    "internal_state_fingerprint": {
+      "type": "string",
+      "description": "hash/fingerprint of internal state snapshot after redaction"
+    },
+    "stack_fingerprint": {
+      "type": "string"
+    },
+    "tool_names": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "env_allowlisted": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "severity": {
+      "type": "string",
+      "description": "info | warn | error | fatal"
+    }
+  }
+}

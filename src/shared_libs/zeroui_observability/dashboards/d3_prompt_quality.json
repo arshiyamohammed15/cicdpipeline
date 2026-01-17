@@ -1,0 +1,86 @@
+{
+  "id": "d3",
+  "title": "Prompt Quality and Regression",
+  "description": "Prompt validation pass rate, edge-case failures, version comparisons",
+  "refresh_interval": "5m",
+  "retention_days": 180,
+  "panels": [
+    {
+      "id": "d3_p1",
+      "title": "Prompt Validation Pass Rate (SLI-D)",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_d_value",
+          "legendFormat": "{{prompt_id}}/{{prompt_version}}"
+        }
+      ],
+      "yAxis": {
+        "label": "pass rate",
+        "max": 1.0,
+        "min": 0.0
+      }
+    },
+    {
+      "id": "d3_p2",
+      "title": "Pass Rate by Prompt Version",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_d_value",
+          "legendFormat": "v{{prompt_version}}"
+        }
+      ],
+      "yAxis": {
+        "label": "pass rate"
+      }
+    },
+    {
+      "id": "d3_p3",
+      "title": "Edge Case Failures",
+      "type": "table",
+      "targets": [
+        {
+          "expr": "sum by (edge_case_tag) (zeroui_prompt_validation_failures{edge_case_tag!=\"\"})",
+          "format": "table"
+        }
+      ]
+    },
+    {
+      "id": "d3_p4",
+      "title": "Version Comparison",
+      "type": "graph",
+      "targets": [
+        {
+          "expr": "zeroui_sli_sli_d_value",
+          "legendFormat": "{{prompt_id}} v{{prompt_version}}"
+        }
+      ],
+      "yAxis": {
+        "label": "pass rate"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "name": "prompt_id",
+      "type": "query",
+      "query": "label_values(zeroui_prompt_validation_total, prompt_id)",
+      "multi": true,
+      "includeAll": true
+    },
+    {
+      "name": "prompt_version",
+      "type": "query",
+      "query": "label_values(zeroui_prompt_validation_total, prompt_version)",
+      "multi": true,
+      "includeAll": true
+    }
+  ],
+  "links": [
+    {
+      "title": "View prompt details",
+      "url": "/prompts?prompt_id=${__field.prompt_id}&version=${__field.prompt_version}"
+    }
+  ]
+}

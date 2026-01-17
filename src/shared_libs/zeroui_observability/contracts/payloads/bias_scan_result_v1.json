@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "bias.scan.result.v1 payload",
+  "type": "object",
+  "required": [
+    "scan_run_id",
+    "method",
+    "status",
+    "component",
+    "channel"
+  ],
+  "properties": {
+    "scan_run_id": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "description": "counterfactual | adversarial | detector"
+    },
+    "status": {
+      "type": "string",
+      "description": "pass | fail"
+    },
+    "bias_category": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "signals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "component": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string"
+    }
+  }
+}
