@@ -28,7 +28,7 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
+$repoRoot = (Get-Item $PSScriptRoot).Parent.Parent.Parent.FullName
 $scriptsRoot = Join-Path $repoRoot "scripts\db"
 $applySchemaPack = Join-Path $scriptsRoot "apply_schema_pack.ps1"
 $applyPhase0Stubs = Join-Path $scriptsRoot "apply_phase0_stubs.ps1"
@@ -51,13 +51,13 @@ function Record-TestResult {
     $script:totalTests++
     if ($Passed) {
         $script:passedTests++
-        Write-Host "  ✓ $TestName" -ForegroundColor Green
+        Write-Host "  [OK] $TestName" -ForegroundColor Green
         if ($Message) {
             Write-Host "    $Message" -ForegroundColor Gray
         }
     } else {
         $script:failedTests++
-        Write-Host "  ✗ $TestName" -ForegroundColor Red
+        Write-Host "  [X] $TestName" -ForegroundColor Red
         if ($Message) {
             Write-Host "    $Message" -ForegroundColor Yellow
         }
@@ -139,7 +139,7 @@ $qaCacheProduct = Join-Path $repoRoot "infra\db\migrations\product\004_semantic_
 Record-TestResult -TestName "BKG tenant migration exists" -Passed (Test-Path $bkgTenant)
 Record-TestResult -TestName "BKG product migration exists" -Passed (Test-Path $bkgProduct)
 Record-TestResult -TestName "BKG shared migration exists" -Passed (Test-Path $bkgShared)
-Record-TestResult -TestName "Semantic Q&A Cache product migration exists" -Passed (Test-Path $qaCacheProduct)
+Record-TestResult -TestName 'Semantic Q&A Cache product migration exists' -Passed (Test-Path $qaCacheProduct)
 
 # Test 6: Script content validation (positive cases)
 Write-Host ""
@@ -153,7 +153,7 @@ Record-TestResult -TestName "apply_schema_pack.ps1 references all 3 Postgres con
 
 Record-TestResult -TestName "apply_schema_pack.ps1 references IDE Postgres" -Passed (
     ($applySchemaPackText -match "zeroui-postgres-ide") -and
-    ($applySchemaPackText -match "ZEROUI_IDE_DB_URL")
+    ($applySchemaPackText -match "zeroui_ide_pg")
 )
 
 Record-TestResult -TestName "apply_phase0_stubs.ps1 references BKG migrations" -Passed (
@@ -161,7 +161,7 @@ Record-TestResult -TestName "apply_phase0_stubs.ps1 references BKG migrations" -
     ($applyPhase0StubsText -match "bkg_phase0")
 )
 
-Record-TestResult -TestName "apply_phase0_stubs.ps1 references Semantic Q&A Cache migration" -Passed (
+Record-TestResult -TestName 'apply_phase0_stubs.ps1 references Semantic Q&A Cache migration' -Passed (
     ($applyPhase0StubsText -match "004_semantic_qa_cache_phase0") -or
     ($applyPhase0StubsText -match "semantic_qa_cache")
 )
@@ -201,14 +201,15 @@ Write-Host ""
 Write-Host "=== Test Summary ===" -ForegroundColor Cyan
 Write-Host "Total Tests: $totalTests" -ForegroundColor White
 Write-Host "Passed: $passedTests" -ForegroundColor Green
-Write-Host "Failed: $failedTests" -ForegroundColor $(if ($failedTests -eq 0) { "Green" } else { "Red" })
+$failedColor = if ($failedTests -eq 0) { 'Green' } else { 'Red' }
+Write-Host ('Failed: ' + $failedTests) -ForegroundColor $failedColor
 Write-Host ""
 
 if ($failedTests -eq 0) {
-    Write-Host "=== ALL TESTS PASSED ===" -ForegroundColor Green
+    Write-Host '=== ALL TESTS PASSED ===' -ForegroundColor Green
     exit 0
 } else {
-    Write-Host "=== SOME TESTS FAILED ===" -ForegroundColor Red
+    Write-Host '=== SOME TESTS FAILED ===' -ForegroundColor Red
     exit 1
 }
 

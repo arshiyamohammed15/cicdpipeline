@@ -60,6 +60,9 @@ function Resolve-PythonExe {
 Invoke-Step "Clear all test caches" {
     & (Resolve-PythonExe) tools/test_registry/clear_cache.py
 }
+# Belt-and-suspenders: ensure .pytest_cache and Jest cache are gone (pytest: -p no:cacheprovider, Jest: cache:false + --no-cache)
+Remove-Item -Recurse -Force .pytest_cache -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force (Join-Path $repoRoot 'node_modules\.cache\jest') -ErrorAction SilentlyContinue
 
 # Phase 2: Build prerequisites
 Invoke-Step "Install root JS deps" {
@@ -111,6 +114,10 @@ Invoke-Step "Run Python marker-only tests (constitution, llm, dgp, alerting, bud
     & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 tests/ -m "constitution or llm_gateway_unit or llm_gateway_integration or dgp_regression or dgp_security or dgp_performance or dgp_compliance or alerting_regression or alerting_security or alerting_performance or alerting_integration or budgeting_regression or budgeting_security or budgeting_performance or deployment_regression or deployment_security or deployment_integration"
 }
 
+Invoke-Step "Run Python validator/rules/tests" -ContinueOnError {
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 validator/rules/tests
+}
+
 # 3.2 TypeScript/Jest Tests (all: storage, edge-agent, e2e, platform, infra_config, vscode-extension __tests__)
 Invoke-Step "Run TypeScript/Jest tests" -ContinueOnError {
     npx jest --config jest.config.js --maxWorkers=$Workers --no-cache
@@ -133,6 +140,15 @@ Invoke-Step "Run VS Code extension tests" -ContinueOnError {
     With-Location (Join-Path $repoRoot 'src\vscode-extension') {
         npm test
     }
+}
+
+# 3.4 Optional: PowerShell test suites (ContinueOnError when Docker/ZuRoot not available)
+Invoke-Step "Run infrastructure db test_db_scripts.ps1" -ContinueOnError {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repoRoot 'tests\infrastructure\db\test_db_scripts.ps1') -SkipDocker
+}
+
+Invoke-Step "Run storage-scripts test-folder-structure.ps1" -ContinueOnError {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $repoRoot 'storage-scripts\tests\test-folder-structure.ps1')
 }
 
 # Phase 4: Summary

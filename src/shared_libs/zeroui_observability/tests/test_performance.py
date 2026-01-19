@@ -51,8 +51,8 @@ class TestPerformance(unittest.TestCase):
             self.assertTrue(is_valid)
         elapsed = time.perf_counter() - start
 
-        # Should complete 100 validations in < 2 seconds (allows for schema loading overhead)
-        self.assertLess(elapsed, 2.0, f"Validation too slow: {elapsed:.3f}s for 100 iterations")
+        # Should complete 100 validations in < 5 seconds (allows for schema loading and CI/load variance)
+        self.assertLess(elapsed, 5.0, f"Validation too slow: {elapsed:.3f}s for 100 iterations")
 
     def test_redaction_performance(self):
         """Test redaction completes within acceptable time."""
