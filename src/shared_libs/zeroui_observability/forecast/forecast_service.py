@@ -8,12 +8,12 @@ import logging
 import uuid
 from typing import Any, Dict, List, Optional
 
-from ...contracts.event_types import EventType
-from ...correlation.trace_context import TraceContext, get_or_create_trace_context
-from ...instrumentation.python.instrumentation import EventEmitter
-from ...sli.sli_calculator import SLICalculator
-from ...alerting.alert_config import AlertConfig
-from ...alerting.burn_rate_engine import BurnRateAlertEngine
+from ..contracts.event_types import EventType
+from ..correlation.trace_context import TraceContext, get_or_create_trace_context
+from ..instrumentation.python.instrumentation import EventEmitter
+from ..sli.sli_calculator import SLICalculator
+from ..alerting.alert_config import AlertConfig
+from ..alerting.burn_rate_engine import BurnRateAlertEngine
 
 from .forecast_calculator import ForecastCalculator
 from .leading_indicators import LeadingIndicatorDetector

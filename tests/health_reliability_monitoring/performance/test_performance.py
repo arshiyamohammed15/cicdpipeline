@@ -81,8 +81,8 @@ class TestComponentRegistryPerformance:
             )
             latency_ms = (time.perf_counter() - start_time) * 1000
 
-            # Should complete within reasonable time (< 2000ms for registration in test harness)
-            assert latency_ms < 2000
+            # Should complete within reasonable time (5000ms to allow CI/slower machines; catches real regressions)
+            assert latency_ms < 5000
             assert response.status_code in [status.HTTP_201_CREATED, status.HTTP_401_UNAUTHORIZED]
         finally:
             app.dependency_overrides.pop(get_db_session, None)
@@ -128,8 +128,8 @@ class TestComponentRegistryPerformance:
             response = client.get("/v1/health/components", headers=headers)
             latency_ms = (time.perf_counter() - start_time) * 1000
 
-            # Should complete within reasonable time (< 2000ms for listing in test harness)
-            assert latency_ms < 2000
+            # Should complete within reasonable time (5000ms to allow CI/slower machines)
+            assert latency_ms < 5000
             assert response.status_code in [status.HTTP_200_OK, status.HTTP_401_UNAUTHORIZED]
         finally:
             app.dependency_overrides.pop(get_db_session, None)

@@ -71,11 +71,11 @@ class TestBurnRateAlertEngine(unittest.TestCase):
         self.assertFalse(result.breach)
 
     def test_evaluate_alert_min_traffic_not_met(self):
-        """Test alert evaluation with min traffic not met."""
+        """Test alert evaluation with min traffic not met (total 90 < 100)."""
         window_data = {
-            "short": {"error_count": 5, "total_count": 50},
-            "mid": {"error_count": 5, "total_count": 50},
-            "long": {"error_count": 5, "total_count": 50},
+            "short": {"error_count": 3, "total_count": 30},
+            "mid": {"error_count": 3, "total_count": 30},
+            "long": {"error_count": 3, "total_count": 30},
         }
 
         result = self.engine.evaluate_alert(

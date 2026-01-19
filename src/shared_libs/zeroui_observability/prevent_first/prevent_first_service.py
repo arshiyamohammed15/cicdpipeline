@@ -9,7 +9,7 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from ...correlation.trace_context import TraceContext, get_or_create_trace_context
+from ..correlation.trace_context import TraceContext, get_or_create_trace_context
 
 from .action_executor import ActionExecutor
 from .action_policy import ActionPolicy, ActionPolicyConfig

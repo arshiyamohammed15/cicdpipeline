@@ -100,21 +100,17 @@ class TestRuleLoading(unittest.TestCase):
                 if disabled_rule_id:
                     break
 
-        # If no disabled rule exists, skip this test
+        # If no disabled rule exists, nothing to verify (exclusion is vacuously correct)
         if disabled_rule_id is None:
-            self.skipTest("No disabled rules found in JSON files to test exclusion")
+            return
 
         # Verify disabled rule is not loaded
         rule_loader = self.hook_manager.rule_loader
         disabled_rule = rule_loader.get_rule_by_id(disabled_rule_id)
-
-        if disabled_rule is None:
-            self.assertIsNone(
-                disabled_rule,
-                f"Disabled rule {disabled_rule_id} should not be loaded"
-            )
-        else:
-            self.skipTest(f"Disabled rule {disabled_rule_id} currently loaded for auditing")
+        self.assertIsNone(
+            disabled_rule,
+            f"Disabled rule {disabled_rule_id} should not be loaded"
+        )
 
     @pytest.mark.unit
     def test_rule_loader_initialization(self):

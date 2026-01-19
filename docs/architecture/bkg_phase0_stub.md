@@ -48,6 +48,14 @@ BKG (Background Knowledge Graph) connects entities (tenant, repo, actor, receipt
 
 **Evidence**: Uses same migration as Tenant plane (`infra/db/migrations/tenant/002_bkg_phase0.sql`)
 
+### SQLite (IDE/local)
+
+**Table**: `core__bkg_edge` (flattened schema; dot notation replaced with double underscore for SQLite).
+
+**Columns**: Same as Postgres (`edge_id`, `source_entity_type`, `source_entity_id`, `target_entity_type`, `target_entity_id`, `edge_type`, `metadata`, `created_at`). `metadata` is stored as TEXT (JSON).
+
+**Evidence**: `infra/db/schema_pack/migrations/sqlite/001_core.sql` when present; `infra/db/migrations/sqlite/002_bkg_phase0.sql` for plane-specific BKG stubs.
+
 ---
 
 ## Contracts

@@ -194,11 +194,12 @@ export class ReceiptStorageService {
             }
         }
 
-        // Check for PII patterns (email, SSN, credit card, etc.)
+        // Check for PII patterns (email, SSN, credit card with separators)
+        // Credit card: require at least one separator to avoid false positives on receipt_ids and hashes
         const piiPatterns = [
             /\b\d{3}-\d{2}-\d{4}\b/, // SSN
-            /\b\d{4}[\s-]?\d{4}[\s-]?\d{4}[\s-]?\d{4}\b/, // Credit card
-            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/ // Email (fixed: removed pipe from character class)
+            /\b\d{4}[\s-]\d{4}[\s-]\d{4}[\s-]\d{4}\b/, // Credit card (separators required)
+            /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/ // Email
         ];
 
         for (const pattern of piiPatterns) {

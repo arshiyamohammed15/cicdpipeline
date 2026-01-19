@@ -8,7 +8,7 @@ import logging
 import uuid
 from typing import Any, Dict, Optional
 
-from ...correlation.trace_context import TraceContext
+from ..correlation.trace_context import TraceContext
 
 logger = logging.getLogger(__name__)
 
@@ -211,13 +211,15 @@ class ActionExecutor:
         time_to_breach = forecast_data.get("time_to_breach_seconds")
         confidence = forecast_data.get("confidence", 0.0)
 
+        format_args = {**forecast_data, **context}
         title = title_template
-        description = description_template.format(
-            time_to_breach_seconds=time_to_breach,
-            confidence=confidence,
-            **forecast_data,
-            **context,
-        )
+        try:
+            description = description_template.format(**format_args)
+        except KeyError:
+            description = description_template.format(
+                time_to_breach_seconds=time_to_breach,
+                confidence=confidence,
+            )
 
         # Determine severity from forecast
         severity = "WARN"

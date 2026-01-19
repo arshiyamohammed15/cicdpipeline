@@ -2,6 +2,7 @@
 Tests for OBS-12: Noise Control (Dedup, Rate-limit, Suppression) + FPR SLI.
 """
 
+import asyncio
 import unittest
 from datetime import datetime, timedelta
 
@@ -106,7 +107,7 @@ class TestNoiseControlProcessor(unittest.TestCase):
             "channel": "backend",
         }
 
-        decision, noise_control_event = self.processor.process_alert(alert_event)
+        decision, noise_control_event = asyncio.run(self.processor.process_alert(alert_event))
 
         self.assertEqual(decision, "allow")
         self.assertEqual(noise_control_event["decision"], "allow")
@@ -121,11 +122,11 @@ class TestNoiseControlProcessor(unittest.TestCase):
         }
 
         # First alert
-        decision1, _ = self.processor.process_alert(alert_event)
+        decision1, _ = asyncio.run(self.processor.process_alert(alert_event))
         self.assertEqual(decision1, "allow")
 
         # Duplicate alert
-        decision2, noise_control_event = self.processor.process_alert(alert_event)
+        decision2, noise_control_event = asyncio.run(self.processor.process_alert(alert_event))
         self.assertEqual(decision2, "dedup")
         self.assertEqual(noise_control_event["decision"], "dedup")
 

@@ -14,18 +14,13 @@ class TestForecastCalculator:
     def test_compute_burn_rate_trend_increasing(self):
         """Test burn rate trend computation with increasing trend."""
         calculator = ForecastCalculator()
-        
-        # Create increasing burn rate history
-        import time
-        current_time = time.time()
+        # Use fixed timestamps (deterministic) and spread so slope > 0.01
         history = [
-            {"timestamp": current_time - 600, "burn_rate": 0.5},
-            {"timestamp": current_time - 300, "burn_rate": 0.7},
-            {"timestamp": current_time, "burn_rate": 0.9},
+            {"timestamp": 1000.0, "burn_rate": 0.5},
+            {"timestamp": 1001.0, "burn_rate": 0.7},
+            {"timestamp": 1002.0, "burn_rate": 0.9},
         ]
-        
         trend = calculator.compute_burn_rate_trend(history, "PT30M")
-        
         assert trend.current_burn_rate == 0.9
         assert trend.trend_direction == "increasing"
         assert trend.trend_slope > 0
@@ -33,15 +28,11 @@ class TestForecastCalculator:
     def test_compute_burn_rate_trend_decreasing(self):
         """Test burn rate trend computation with decreasing trend."""
         calculator = ForecastCalculator()
-        
-        import time
-        current_time = time.time()
         history = [
-            {"timestamp": current_time - 600, "burn_rate": 0.9},
-            {"timestamp": current_time - 300, "burn_rate": 0.7},
-            {"timestamp": current_time, "burn_rate": 0.5},
+            {"timestamp": 1000.0, "burn_rate": 0.9},
+            {"timestamp": 1001.0, "burn_rate": 0.7},
+            {"timestamp": 1002.0, "burn_rate": 0.5},
         ]
-        
         trend = calculator.compute_burn_rate_trend(history, "PT30M")
         
         assert trend.current_burn_rate == 0.5
@@ -51,15 +42,11 @@ class TestForecastCalculator:
     def test_compute_burn_rate_trend_stable(self):
         """Test burn rate trend computation with stable trend."""
         calculator = ForecastCalculator()
-        
-        import time
-        current_time = time.time()
         history = [
-            {"timestamp": current_time - 600, "burn_rate": 0.7},
-            {"timestamp": current_time - 300, "burn_rate": 0.7},
-            {"timestamp": current_time, "burn_rate": 0.7},
+            {"timestamp": 1000.0, "burn_rate": 0.7},
+            {"timestamp": 1001.0, "burn_rate": 0.7},
+            {"timestamp": 1002.0, "burn_rate": 0.7},
         ]
-        
         trend = calculator.compute_burn_rate_trend(history, "PT30M")
         
         assert trend.current_burn_rate == 0.7
@@ -148,14 +135,11 @@ class TestForecastCalculator:
         """Test full forecast computation."""
         calculator = ForecastCalculator(horizon_seconds=3600.0)
         
-        import time
-        current_time = time.time()
         history = [
-            {"timestamp": current_time - 600, "burn_rate": 0.5},
-            {"timestamp": current_time - 300, "burn_rate": 0.7},
-            {"timestamp": current_time, "burn_rate": 0.9},
+            {"timestamp": 1000.0, "burn_rate": 0.5},
+            {"timestamp": 1001.0, "burn_rate": 0.7},
+            {"timestamp": 1002.0, "burn_rate": 0.9},
         ]
-        
         result = calculator.forecast(
             forecast_id="test-forecast",
             slo_id="SLO-A",

@@ -7,14 +7,14 @@ Integrates Phase 3 (Forecast & Prevent-First) with Phase 0, Phase 1, and Phase 2
 import logging
 from typing import Any, Dict, List, Optional
 
-from ...correlation.trace_context import TraceContext, get_or_create_trace_context
-from ...instrumentation.python.instrumentation import EventEmitter, get_event_emitter
-from ...sli.sli_calculator import SLICalculator
-from ...alerting.alert_config import AlertConfigLoader, AlertConfig
-from ...forecast.forecast_service import ForecastService
-from ...prevent_first.prevent_first_service import PreventFirstService
-from ...prevent_first.action_executor import ActionExecutor
-from ...prevent_first.action_policy import ActionPolicy
+from ..correlation.trace_context import TraceContext, get_or_create_trace_context
+from ..instrumentation.python.instrumentation import EventEmitter, get_event_emitter
+from ..sli.sli_calculator import SLICalculator
+from ..alerting.alert_config import AlertConfigLoader, AlertConfig
+from ..forecast.forecast_service import ForecastService
+from ..prevent_first.prevent_first_service import PreventFirstService
+from ..prevent_first.action_executor import ActionExecutor
+from ..prevent_first.action_policy import ActionPolicy
 
 logger = logging.getLogger(__name__)
 

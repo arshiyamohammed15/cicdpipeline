@@ -6,6 +6,7 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
 Set-Location $repoRoot
+$env:TEST_RANDOM_SEED = "42"
 
 $testFailures = @()
 $exitCode = 0
@@ -74,45 +75,45 @@ Invoke-Step "Build TypeScript" {
 # 3.1 Python Tests
 # Note: --cache-clear and -p no:cacheprovider are already in pyproject.toml
 Invoke-Step "Run Python unit tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers -m unit tests/
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 -m unit tests/
 }
 
 Invoke-Step "Run Python integration tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers -m integration tests/
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 -m integration tests/
 }
 
 Invoke-Step "Run Python E2E tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers tests/ -k "e2e"
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 tests/ -k "e2e"
 }
 
 Invoke-Step "Run Python security tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers -m security tests/
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 -m security tests/
 }
 
 Invoke-Step "Run Python performance tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers -m performance tests/
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 -m performance tests/
 }
 
 Invoke-Step "Run Python resilience tests" -ContinueOnError {
-    & (Resolve-PythonExe) -m pytest -n $Workers tests/ -k "resilience"
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 tests/ -k "resilience"
 }
 
 Invoke-Step "Run Python database tests" -ContinueOnError {
     # Database tests are typically integration tests, but run separately to ensure isolation
-    & (Resolve-PythonExe) -m pytest -n $Workers tests/ -k "database or db"
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 tests/ -k "database or db"
 }
 
-# 3.2 TypeScript/Jest Tests
-Invoke-Step "Run TypeScript/Jest tests (storage)" -ContinueOnError {
-    npx jest --config jest.config.js --maxWorkers=$Workers --no-cache --testPathPattern=storage
+Invoke-Step "Run Python zeroui_observability tests" -ContinueOnError {
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 src/shared_libs/zeroui_observability
 }
 
-Invoke-Step "Run TypeScript/Jest tests (edge-agent)" -ContinueOnError {
-    npx jest --config jest.config.js --maxWorkers=$Workers --no-cache --testPathPattern=edge-agent
+Invoke-Step "Run Python marker-only tests (constitution, llm, dgp, alerting, budgeting, deployment)" -ContinueOnError {
+    & (Resolve-PythonExe) -m pytest -n $Workers -o maxfail=0 tests/ -m "constitution or llm_gateway_unit or llm_gateway_integration or dgp_regression or dgp_security or dgp_performance or dgp_compliance or alerting_regression or alerting_security or alerting_performance or alerting_integration or budgeting_regression or budgeting_security or budgeting_performance or deployment_regression or deployment_security or deployment_integration"
 }
 
-Invoke-Step "Run TypeScript/Jest E2E tests" -ContinueOnError {
-    npx jest --config jest.config.js --maxWorkers=$Workers --no-cache --testPathPattern=e2e
+# 3.2 TypeScript/Jest Tests (all: storage, edge-agent, e2e, platform, infra_config, vscode-extension __tests__)
+Invoke-Step "Run TypeScript/Jest tests" -ContinueOnError {
+    npx jest --config jest.config.js --maxWorkers=$Workers --no-cache
 }
 
 # 3.3 VS Code Extension Tests

@@ -12,7 +12,7 @@ import logging
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional
 
-from ...contracts.event_types import EventType
+from ..contracts.event_types import EventType
 
 logger = logging.getLogger(__name__)
 
@@ -165,7 +165,8 @@ class LeadingIndicatorDetector:
         # Compute trend
         if len(coverage_values) >= 2:
             recent_avg = sum(coverage_values[-3:]) / len(coverage_values[-3:]) if len(coverage_values) >= 3 else coverage_values[-1]
-            older_avg = sum(coverage_values[:-3]) / len(coverage_values[:-3]) if len(coverage_values) >= 3 else coverage_values[0]
+            older_vals = coverage_values[:-3]
+            older_avg = sum(older_vals) / len(older_vals) if len(older_vals) > 0 else coverage_values[0]
 
             if recent_avg < older_avg * 0.9:  # 10% decrease
                 trend = "decreasing"  # Coverage is decreasing (bad)
