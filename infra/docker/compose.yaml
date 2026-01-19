@@ -1,4 +1,26 @@
 services:
+  postgres_ide:
+    image: pgvector/pgvector:pg16
+    container_name: zeroui-postgres-ide
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${ZEROUI_IDE_DB_USER:-zeroui_ide_user}
+      POSTGRES_PASSWORD: ${ZEROUI_IDE_DB_PASSWORD:-change_me_ide}
+      POSTGRES_DB: ${ZEROUI_IDE_DB_NAME:-zeroui_ide_pg}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "${ZEROUI_IDE_DB_PORT:-5436}:5432"
+    volumes:
+      - zeroui_ide_pg_data:/var/lib/postgresql/data
+      - ./postgres/initdb/ide-init.sh:/docker-entrypoint-initdb.d/10-ide-init.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ZEROUI_IDE_DB_USER:-zeroui_ide_user} -d ${ZEROUI_IDE_DB_NAME:-zeroui_ide_pg}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - zeroui-runtime
+
   postgres_tenant:
     image: pgvector/pgvector:pg16
     container_name: zeroui-postgres-tenant
@@ -83,6 +105,7 @@ services:
       - zeroui-runtime
 
 volumes:
+  zeroui_ide_pg_data:
   zeroui_tenant_pg_data:
   zeroui_product_pg_data:
   zeroui_shared_pg_data:

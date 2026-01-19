@@ -23,7 +23,7 @@
 ## DB Plane Routing (Option A)
 
 ZeroUI uses a strict plane → database contract:
-- IDE Plane: SQLite only (`ZEROUI_IDE_SQLITE_URL`)
+- IDE Plane: Postgres only (`ZEROUI_IDE_DB_URL`)
 - Tenant Plane: Postgres only (`ZEROUI_TENANT_DB_URL`)
 - Product Plane: Postgres only (`ZEROUI_PRODUCT_DB_URL`)
 - Shared Plane: Postgres only (`ZEROUI_SHARED_DB_URL`)

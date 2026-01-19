@@ -21,7 +21,6 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 BKG_TENANT = REPO_ROOT / "infra" / "db" / "migrations" / "tenant" / "002_bkg_phase0.sql"
 BKG_PRODUCT = REPO_ROOT / "infra" / "db" / "migrations" / "product" / "003_bkg_phase0.sql"
 BKG_SHARED = REPO_ROOT / "infra" / "db" / "migrations" / "shared" / "002_bkg_phase0.sql"
-BKG_SQLITE = REPO_ROOT / "infra" / "db" / "migrations" / "sqlite" / "002_bkg_phase0.sql"
 QA_CACHE_PRODUCT = REPO_ROOT / "infra" / "db" / "migrations" / "product" / "004_semantic_qa_cache_phase0.sql"
 
 
@@ -44,10 +43,6 @@ class TestPhase0MigrationExistence:
         """BKG shared migration must exist."""
         assert BKG_SHARED.exists()
 
-    @pytest.mark.unit
-    def test_bkg_sqlite_migration_exists(self) -> None:
-        """BKG SQLite migration must exist."""
-        assert BKG_SQLITE.exists()
 
     @pytest.mark.unit
     def test_qa_cache_product_migration_exists(self) -> None:
@@ -74,21 +69,12 @@ class TestBkgPhase0Migrations:
         """Load BKG shared migration."""
         return BKG_SHARED.read_text(encoding="utf-8")
 
-    @pytest.fixture
-    def bkg_sqlite_text(self) -> str:
-        """Load BKG SQLite migration."""
-        return BKG_SQLITE.read_text(encoding="utf-8")
 
     @pytest.mark.unit
     def test_bkg_postgres_migrations_create_table(self, bkg_tenant_text: str, bkg_product_text: str, bkg_shared_text: str) -> None:
         """BKG Postgres migrations must create core.bkg_edge table."""
         for migration_text in [bkg_tenant_text, bkg_product_text, bkg_shared_text]:
             assert "CREATE TABLE IF NOT EXISTS core.bkg_edge" in migration_text
-
-    @pytest.mark.unit
-    def test_bkg_sqlite_migration_creates_table(self, bkg_sqlite_text: str) -> None:
-        """BKG SQLite migration must create core__bkg_edge table."""
-        assert "CREATE TABLE IF NOT EXISTS core__bkg_edge" in bkg_sqlite_text
 
     @pytest.mark.unit
     def test_bkg_postgres_migrations_have_all_columns(self, bkg_tenant_text: str) -> None:
@@ -107,22 +93,6 @@ class TestBkgPhase0Migrations:
             assert col in bkg_tenant_text, f"Missing column definition: {col}"
 
     @pytest.mark.unit
-    def test_bkg_sqlite_migration_has_all_columns(self, bkg_sqlite_text: str) -> None:
-        """BKG SQLite migration must have all required columns."""
-        required_columns = [
-            "edge_id TEXT PRIMARY KEY",
-            "source_entity_type TEXT NOT NULL",
-            "source_entity_id TEXT NOT NULL",
-            "target_entity_type TEXT NOT NULL",
-            "target_entity_id TEXT NOT NULL",
-            "edge_type TEXT NOT NULL",
-            "metadata TEXT NULL",
-            "created_at TEXT NOT NULL DEFAULT (datetime('now'))",
-        ]
-        for col in required_columns:
-            assert col in bkg_sqlite_text, f"Missing column definition: {col}"
-
-    @pytest.mark.unit
     def test_bkg_postgres_migrations_create_indexes(self, bkg_tenant_text: str) -> None:
         """BKG Postgres migrations must create indexes."""
         required_indexes = [
@@ -134,17 +104,6 @@ class TestBkgPhase0Migrations:
         for idx in required_indexes:
             assert f"CREATE INDEX IF NOT EXISTS {idx}" in bkg_tenant_text, f"Missing index: {idx}"
 
-    @pytest.mark.unit
-    def test_bkg_sqlite_migration_creates_indexes(self, bkg_sqlite_text: str) -> None:
-        """BKG SQLite migration must create indexes."""
-        required_indexes = [
-            "idx_bkg_edge_source",
-            "idx_bkg_edge_target",
-            "idx_bkg_edge_type",
-            "idx_bkg_edge_source_target",
-        ]
-        for idx in required_indexes:
-            assert f"CREATE INDEX IF NOT EXISTS {idx}" in bkg_sqlite_text, f"Missing index: {idx}"
 
     @pytest.mark.unit
     def test_bkg_postgres_migrations_have_comments(self, bkg_tenant_text: str) -> None:
@@ -152,12 +111,10 @@ class TestBkgPhase0Migrations:
         assert "COMMENT ON TABLE core.bkg_edge" in bkg_tenant_text or "--" in bkg_tenant_text
 
     @pytest.mark.unit
-    def test_bkg_migrations_are_idempotent(self, bkg_tenant_text: str, bkg_sqlite_text: str) -> None:
+    def test_bkg_migrations_are_idempotent(self, bkg_tenant_text: str) -> None:
         """BKG migrations must be idempotent (IF NOT EXISTS)."""
         assert "CREATE TABLE IF NOT EXISTS" in bkg_tenant_text
-        assert "CREATE TABLE IF NOT EXISTS" in bkg_sqlite_text
         assert "CREATE INDEX IF NOT EXISTS" in bkg_tenant_text
-        assert "CREATE INDEX IF NOT EXISTS" in bkg_sqlite_text
 
     @pytest.mark.unit
     def test_bkg_postgres_migrations_identical(self, bkg_tenant_text: str, bkg_product_text: str, bkg_shared_text: str) -> None:

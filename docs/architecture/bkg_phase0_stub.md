@@ -40,13 +40,13 @@ BKG (Background Knowledge Graph) connects entities (tenant, repo, actor, receipt
 
 **Evidence**: `infra/db/migrations/tenant/002_bkg_phase0.sql`, `infra/db/migrations/product/003_bkg_phase0.sql`, `infra/db/migrations/shared/002_bkg_phase0.sql`
 
-### SQLite (IDE Plane)
+### IDE Plane (Postgres)
 
-**Table**: `core__bkg_edge` (using `__` prefix for schema emulation)
+**Table**: `core.bkg_edge`
 
-**Columns**: Same as Postgres, but `metadata` is TEXT (JSON stored as TEXT in SQLite) and `created_at` is TEXT (datetime('now'))
+**Columns**: Same as other Postgres planes (metadata is JSONB, created_at is TIMESTAMPTZ)
 
-**Evidence**: `infra/db/migrations/sqlite/002_bkg_phase0.sql`
+**Evidence**: Uses same migration as Tenant plane (`infra/db/migrations/tenant/002_bkg_phase0.sql`)
 
 ---
 
@@ -75,8 +75,8 @@ BKG (Background Knowledge Graph) connects entities (tenant, repo, actor, receipt
 ## Storage Locations
 
 ### IDE Plane
-- **Database**: SQLite (`ZEROUI_IDE_SQLITE_URL`)
-- **Table**: `core__bkg_edge`
+- **Database**: Postgres (`zeroui_ide_pg`)
+- **Table**: `core.bkg_edge`
 - **Access**: Edge Agent
 - **Governance**: Local-only, ephemeral (can be cleared on restart)
 
@@ -202,10 +202,9 @@ BKG (Background Knowledge Graph) connects entities (tenant, repo, actor, receipt
 - **Memory Model**: `docs/architecture/memory_model.md`
 - **BKG Edge Schema**: `contracts/bkg/schemas/bkg_edge.schema.json`
 - **Migrations**: 
-  - `infra/db/migrations/tenant/002_bkg_phase0.sql`
+  - `infra/db/migrations/tenant/002_bkg_phase0.sql` (used for IDE, Tenant planes)
   - `infra/db/migrations/product/003_bkg_phase0.sql`
   - `infra/db/migrations/shared/002_bkg_phase0.sql`
-  - `infra/db/migrations/sqlite/002_bkg_phase0.sql`
 
 ---
 

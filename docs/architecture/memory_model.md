@@ -17,8 +17,8 @@ This document maps all memory types required for ZeroUI's AI agent/RAG system to
 **Definition**: Runtime state for agent execution context, including tenant/repo/actor identities and current session state.
 
 **Store Mapping**:
-- **IDE Plane**: SQLite (`core__tenant`, `core__repo`, `core__actor` tables)
-  - **Path**: `ZEROUI_IDE_SQLITE_URL` (local file)
+- **IDE Plane**: Postgres (`core.tenant`, `core.repo`, `core.actor` tables)
+  - **Path**: `zeroui_ide_pg` database, `core` schema
   - **Access**: Edge Agent runtime
   - **Governance**: Local-only, no cloud sync, ephemeral (can be cleared on restart)
 - **Tenant Plane**: Postgres (`core.tenant`, `core.repo`, `core.actor` tables)
@@ -36,7 +36,7 @@ This document maps all memory types required for ZeroUI's AI agent/RAG system to
 
 **Note**: "Graph Runtime" refers to the core schema tables that maintain tenant/repo/actor relationships. No separate graph database is required; the relational schema serves as the graph structure.
 
-**Evidence**: `infra/db/schema_pack/migrations/pg/001_core.sql`, `infra/db/schema_pack/migrations/sqlite/001_core.sql`
+**Evidence**: `infra/db/schema_pack/migrations/pg/001_core.sql`
 
 ---
 
@@ -47,8 +47,8 @@ This document maps all memory types required for ZeroUI's AI agent/RAG system to
 **Store Mapping**:
 - **IDE Plane**: 
   - **Receipts**: JSONL files (`ZU_ROOT/ide/receipts/{repo-id}/{yyyy}/{mm}/`)
-  - **Receipt Index**: SQLite (`core__receipt_index` table)
-  - **BKG Edges**: SQLite (`core__bkg_edge` table - Phase 0 stub)
+  - **Receipt Index**: Postgres (`core.receipt_index` table)
+  - **BKG Edges**: Postgres (`core.bkg_edge` table - Phase 0 stub)
   - **Access**: Edge Agent, VS Code Extension
   - **Governance**: Append-only receipts, signed, local-only
 - **Tenant Plane**:
@@ -100,9 +100,9 @@ This document maps all memory types required for ZeroUI's AI agent/RAG system to
 **Definition**: Structured relational data including core entities, receipt indexes, policy bundles, and BKG tables (when implemented).
 
 **Store Mapping**:
-- **IDE Plane**: SQLite
-  - **Tables**: `meta__schema_version`, `core__tenant`, `core__repo`, `core__actor`, `core__receipt_index`, `core__bkg_edge` (Phase 0 stub)
-  - **Path**: `ZEROUI_IDE_SQLITE_URL`
+- **IDE Plane**: Postgres
+  - **Tables**: `meta.schema_version`, `core.tenant`, `core.repo`, `core.actor`, `core.receipt_index`, `core.bkg_edge` (Phase 0 stub)
+  - **Path**: `zeroui_ide_pg` database
   - **Access**: Edge Agent
   - **Governance**: Local-only, no cloud sync
 - **Tenant Plane**: Postgres
@@ -204,10 +204,10 @@ This document maps all memory types required for ZeroUI's AI agent/RAG system to
 
 | Memory Type | IDE Plane | Tenant Plane | Product Plane | Shared Plane | Status |
 |-------------|-----------|--------------|---------------|--------------|--------|
-| **Working Memory** | SQLite (core tables) | Postgres (core tables) | Postgres (core tables) | Postgres (core tables) | ✅ Implemented |
-| **Episodic Memory** | JSONL + SQLite index + BKG stub | JSONL + Postgres index + BKG stub | Postgres index + BKG stub | Postgres index + BKG stub | ⚠️ Partial (BKG Phase 0 stub) |
+| **Working Memory** | Postgres (core tables) | Postgres (core tables) | Postgres (core tables) | Postgres (core tables) | ✅ Implemented |
+| **Episodic Memory** | JSONL + Postgres index + BKG stub | JSONL + Postgres index + BKG stub | Postgres index + BKG stub | Postgres index + BKG stub | ⚠️ Partial (BKG Phase 0 stub) |
 | **Vector DB Memory** | N/A | N/A | Postgres (pgvector) | N/A | ✅ Implemented |
-| **SQL DB Memory** | SQLite (core + BKG stub) | Postgres (core + app + BKG stub) | Postgres (core + app + BKG stub) | Postgres (core + app + BKG stub) | ⚠️ Partial (BKG Phase 0 stub) |
+| **SQL DB Memory** | Postgres (core + BKG stub) | Postgres (core + app + BKG stub) | Postgres (core + app + BKG stub) | Postgres (core + app + BKG stub) | ⚠️ Partial (BKG Phase 0 stub) |
 | **File Store** | `ZU_ROOT/ide/` | `ZU_ROOT/tenant/` | `ZU_ROOT/product/` | `ZU_ROOT/shared/` | ✅ Implemented |
 | **Semantic Q&A Cache** | N/A | N/A | Postgres (Phase 0 stub) | N/A | ⚠️ Partial (Phase 0 stub) |
 

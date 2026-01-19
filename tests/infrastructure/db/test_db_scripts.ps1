@@ -108,11 +108,9 @@ Write-Host "Test Group: Function Definitions" -ForegroundColor Yellow
 
 $applySchemaPackText = Get-Content $applySchemaPack -Raw
 Record-TestResult -TestName "apply_schema_pack.ps1 has Apply-Pg function" -Passed ($applySchemaPackText -match "function\s+Apply-Pg")
-Record-TestResult -TestName "apply_schema_pack.ps1 has Apply-Sqlite function" -Passed ($applySchemaPackText -match "function\s+Apply-Sqlite")
 
 $applyPhase0StubsText = Get-Content $applyPhase0Stubs -Raw
 Record-TestResult -TestName "apply_phase0_stubs.ps1 has Apply-PgPhase0Stub function" -Passed ($applyPhase0StubsText -match "function\s+Apply-PgPhase0Stub")
-Record-TestResult -TestName "apply_phase0_stubs.ps1 has Apply-SqlitePhase0Stub function" -Passed ($applyPhase0StubsText -match "function\s+Apply-SqlitePhase0Stub")
 
 $verifySchemaEquivalenceText = Get-Content $verifySchemaEquivalence -Raw
 Record-TestResult -TestName "verify_schema_equivalence.ps1 has Normalize-PgDump function" -Passed ($verifySchemaEquivalenceText -match "function\s+Normalize-PgDump")
@@ -124,11 +122,9 @@ Write-Host "Test Group: Required File References" -ForegroundColor Yellow
 
 $schemaPackRoot = Join-Path $repoRoot "infra\db\schema_pack"
 $pgMigration = Join-Path $schemaPackRoot "migrations\pg\001_core.sql"
-$sqliteMigration = Join-Path $schemaPackRoot "migrations\sqlite\001_core.sql"
 $contract = Join-Path $schemaPackRoot "canonical_schema_contract.json"
 
 Record-TestResult -TestName "Postgres migration file exists" -Passed (Test-Path $pgMigration)
-Record-TestResult -TestName "SQLite migration file exists" -Passed (Test-Path $sqliteMigration)
 Record-TestResult -TestName "Canonical schema contract exists" -Passed (Test-Path $contract)
 
 # Test 5: Phase 0 stub migration files
@@ -138,13 +134,11 @@ Write-Host "Test Group: Phase 0 Stub Migration Files" -ForegroundColor Yellow
 $bkgTenant = Join-Path $repoRoot "infra\db\migrations\tenant\002_bkg_phase0.sql"
 $bkgProduct = Join-Path $repoRoot "infra\db\migrations\product\003_bkg_phase0.sql"
 $bkgShared = Join-Path $repoRoot "infra\db\migrations\shared\002_bkg_phase0.sql"
-$bkgSqlite = Join-Path $repoRoot "infra\db\migrations\sqlite\002_bkg_phase0.sql"
 $qaCacheProduct = Join-Path $repoRoot "infra\db\migrations\product\004_semantic_qa_cache_phase0.sql"
 
 Record-TestResult -TestName "BKG tenant migration exists" -Passed (Test-Path $bkgTenant)
 Record-TestResult -TestName "BKG product migration exists" -Passed (Test-Path $bkgProduct)
 Record-TestResult -TestName "BKG shared migration exists" -Passed (Test-Path $bkgShared)
-Record-TestResult -TestName "BKG SQLite migration exists" -Passed (Test-Path $bkgSqlite)
 Record-TestResult -TestName "Semantic Q&A Cache product migration exists" -Passed (Test-Path $qaCacheProduct)
 
 # Test 6: Script content validation (positive cases)
@@ -157,9 +151,9 @@ Record-TestResult -TestName "apply_schema_pack.ps1 references all 3 Postgres con
     ($applySchemaPackText -match "zeroui-postgres-shared")
 )
 
-Record-TestResult -TestName "apply_schema_pack.ps1 references SQLite env var" -Passed (
-    ($applySchemaPackText -match "ZEROUI_IDE_SQLITE_PATH") -or
-    ($applySchemaPackText -match "ZEROUI_IDE_SQLITE_URL")
+Record-TestResult -TestName "apply_schema_pack.ps1 references IDE Postgres" -Passed (
+    ($applySchemaPackText -match "zeroui-postgres-ide") -and
+    ($applySchemaPackText -match "ZEROUI_IDE_DB_URL")
 )
 
 Record-TestResult -TestName "apply_phase0_stubs.ps1 references BKG migrations" -Passed (
@@ -201,10 +195,6 @@ Record-TestResult -TestName "apply_phase0_stubs.ps1 checks for missing files" -P
     ($applyPhase0StubsText -match "Test-Path")
 )
 
-Record-TestResult -TestName "verify_schema_equivalence.ps1 handles missing SQLite gracefully" -Passed (
-    ($verifySchemaEquivalenceText -match "SKIP") -or
-    ($verifySchemaEquivalenceText -match "IsNullOrWhiteSpace")
-)
 
 # Summary
 Write-Host ""

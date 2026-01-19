@@ -11,7 +11,7 @@ Set-StrictMode -Version Latest
 
 # Canonical env vars per DB Plane Contract Option A
 $canonicalEnvVars = @{
-    "IDE" = "ZEROUI_IDE_SQLITE_URL"
+    "IDE" = "ZEROUI_IDE_DB_URL"
     "TENANT" = "ZEROUI_TENANT_DB_URL"
     "PRODUCT" = "ZEROUI_PRODUCT_DB_URL"
     "SHARED" = "ZEROUI_SHARED_DB_URL"
@@ -133,7 +133,7 @@ if ($violations.Count -gt 0) {
     Write-Host ("=" * 80) -ForegroundColor Red
     Write-Host ""
     Write-Host "Per DB Plane Contract Option A, all services must use:" -ForegroundColor Yellow
-    Write-Host "  - IDE Plane: ZEROUI_IDE_SQLITE_URL" -ForegroundColor Yellow
+    Write-Host "  - IDE Plane: ZEROUI_IDE_DB_URL" -ForegroundColor Yellow
     Write-Host "  - Tenant Plane: ZEROUI_TENANT_DB_URL" -ForegroundColor Yellow
     Write-Host "  - Product Plane: ZEROUI_PRODUCT_DB_URL" -ForegroundColor Yellow
     Write-Host "  - Shared Plane: ZEROUI_SHARED_DB_URL" -ForegroundColor Yellow

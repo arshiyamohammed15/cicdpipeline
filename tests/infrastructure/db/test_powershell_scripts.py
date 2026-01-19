@@ -150,11 +150,6 @@ class TestPowerShellScriptStructure:
         script_text = APPLY_SCHEMA_PACK.read_text(encoding="utf-8")
         assert "function Apply-Pg" in script_text or "function Apply-Postgres" in script_text
 
-    @pytest.mark.unit
-    def test_apply_schema_pack_has_apply_sqlite_function(self) -> None:
-        """apply_schema_pack.ps1 must define Apply-Sqlite function."""
-        script_text = APPLY_SCHEMA_PACK.read_text(encoding="utf-8")
-        assert "function Apply-Sqlite" in script_text
 
     @pytest.mark.unit
     def test_apply_phase0_stubs_has_apply_pg_function(self) -> None:
@@ -162,11 +157,6 @@ class TestPowerShellScriptStructure:
         script_text = APPLY_PHASE0_STUBS.read_text(encoding="utf-8")
         assert "function Apply-PgPhase0Stub" in script_text or "Apply-Pg" in script_text
 
-    @pytest.mark.unit
-    def test_apply_phase0_stubs_has_apply_sqlite_function(self) -> None:
-        """apply_phase0_stubs.ps1 must define Apply-SqlitePhase0Stub function."""
-        script_text = APPLY_PHASE0_STUBS.read_text(encoding="utf-8")
-        assert "function Apply-SqlitePhase0Stub" in script_text or "Apply-Sqlite" in script_text
 
     @pytest.mark.unit
     def test_verify_schema_equivalence_has_normalize_function(self) -> None:
@@ -185,12 +175,6 @@ class TestPowerShellScriptStructure:
         """schema_parse.ps1 must define Get-CanonicalSchemaContract function."""
         script_text = SCHEMA_PARSE_LIB.read_text(encoding="utf-8")
         assert "function Get-CanonicalSchemaContract" in script_text
-
-    @pytest.mark.unit
-    def test_schema_parse_lib_has_parse_sqlite_schema_function(self) -> None:
-        """schema_parse.ps1 must define Parse-SqliteSchema function."""
-        script_text = SCHEMA_PARSE_LIB.read_text(encoding="utf-8")
-        assert "function Parse-SqliteSchema" in script_text
 
     @pytest.mark.unit
     def test_schema_parse_lib_has_assert_table_has_columns_function(self) -> None:
@@ -224,11 +208,6 @@ class TestPowerShellScriptErrorHandling:
         assert "Test-Path" in script_text
         assert "002_bkg_phase0.sql" in script_text or "bkg_phase0" in script_text.lower()
 
-    @pytest.mark.unit
-    def test_verify_schema_equivalence_handles_missing_sqlite(self) -> None:
-        """verify_schema_equivalence.ps1 must handle missing SQLite gracefully."""
-        script_text = VERIFY_SCHEMA_EQUIVALENCE.read_text(encoding="utf-8")
-        assert "SKIP" in script_text or "if ([string]::IsNullOrWhiteSpace" in script_text
 
 
 @pytest.mark.unit
@@ -244,11 +223,11 @@ class TestPowerShellScriptContent:
         assert "zeroui-postgres-shared" in script_text
 
     @pytest.mark.unit
-    def test_apply_schema_pack_applies_to_sqlite(self) -> None:
-        """apply_schema_pack.ps1 must apply to SQLite."""
+    def test_apply_schema_pack_applies_to_ide_postgres(self) -> None:
+        """apply_schema_pack.ps1 must apply to IDE Postgres."""
         script_text = APPLY_SCHEMA_PACK.read_text(encoding="utf-8")
-        assert "ZEROUI_IDE_SQLITE_PATH" in script_text or "ZEROUI_IDE_SQLITE_URL" in script_text
-        assert "sqlite3" in script_text.lower()
+        assert "zeroui-postgres-ide" in script_text
+        assert "zeroui_ide_pg" in script_text
 
     @pytest.mark.unit
     def test_apply_phase0_stubs_applies_bkg_to_all_planes(self) -> None:

@@ -6,12 +6,9 @@
 
 ## Canonical variables
 
-### IDE Plane (SQLite)
-- `ZEROUI_IDE_SQLITE_PATH` (file path)
-  - Windows example: `C:\Users\<USER>\.zeroai\zeroui_local.db`
-  - Used by: PowerShell scripts for file-based operations
-- `ZEROUI_IDE_SQLITE_URL` (connection string)
-  - Example: `sqlite:///C:/Users/<USER>/.zeroai/zeroui_local.db`
+### IDE Plane (Postgres)
+- `ZEROUI_IDE_DB_URL` (connection string)
+  - Example: `postgresql://zeroui_ide_user:password@localhost:5436/zeroui_ide_pg`
   - Used by: Application code for database connections
 
 ### Tenant Plane (Postgres)
@@ -27,7 +24,8 @@
   - Example: `postgresql://zeroui_shared_user:password@localhost:5432/zeroui_shared_pg`
 
 ## Pilot note
-In MVP/Pilot, Tenant/Product/Shared Postgres URLs may point to the same host and port, but MUST use different database names:
+In MVP/Pilot, IDE/Tenant/Product/Shared Postgres URLs may point to the same host and port, but MUST use different database names:
+- `zeroui_ide_pg`
 - `zeroui_tenant_pg`
 - `zeroui_product_pg`
 - `zeroui_shared_pg`

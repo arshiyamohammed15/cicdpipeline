@@ -8,7 +8,7 @@
 
 This document describes the MVP database runtime infrastructure for ZeroUI, aligned to the "7 Layers × 4 Planes" architecture. The runtime provides:
 
-- **IDE Plane**: Append-only JSONL receipts + optional SQLite local caches (NO Postgres)
+- **IDE Plane**: PostgreSQL (same as other planes)
 - **Tenant/Product/Shared Planes**: PostgreSQL as primary database
 - **Vector Search**: pgvector extension on Product Plane PostgreSQL
 - **Event Bus**: Redis Streams
@@ -21,7 +21,7 @@ All services run on a single on-prem workstation using Docker Compose, with nami
 
 | Plane | Storage Type | Location | Purpose |
 |-------|-------------|----------|---------|
-| **IDE Plane (Laptop)** | JSONL receipts + SQLite | `ZU_ROOT/ide/` | Append-only receipts, local policy cache, edge runtime state |
+| **IDE Plane (Laptop)** | PostgreSQL | `zeroui_ide_pg` | Append-only receipts, local policy cache, edge runtime state |
 | **Tenant Plane** | PostgreSQL | `zeroui_tenant_pg` | Tenant-scoped truth: receipts/evidence ledger, integration state, context exports |
 | **Product Plane** | PostgreSQL + pgvector | `zeroui_product_pg` | Product control-plane: policy bundles, orchestration state, vector embeddings |
 | **Shared Plane** | PostgreSQL | `zeroui_shared_pg` | Cross-tenant shared: provider registry, eval harness, SBOM, observability |
@@ -31,31 +31,36 @@ All services run on a single on-prem workstation using Docker Compose, with nami
 - **PostgreSQL (Primary DB)**: Industry-standard ACID database for tenant/product/shared planes. Supports complex queries, transactions, and future scaling.
 - **pgvector (Vector Search)**: Enables similarity search for Context Service embeddings. Runs on Product Plane where context snapshots are indexed.
 - **Redis Streams (Event Bus)**: Lightweight, high-performance event streaming for inter-service communication. Replaces heavier message brokers in MVP.
-- **JSONL + SQLite (IDE Plane)**: Local-first, offline-capable storage for edge agent. JSONL is source of truth; SQLite provides local indexing/caching.
+- **PostgreSQL (IDE Plane)**: PostgreSQL database for IDE Plane, consistent with other planes. JSONL receipts remain source of truth; PostgreSQL provides indexing/caching.
 
 ## Docker Runtime
 
 ### Services
 
-The MVP runtime consists of 4 Docker services:
+The MVP runtime consists of 5 Docker services:
 
-1. **postgres_tenant** (Port 5433)
+1. **postgres_ide** (Port 5436)
+   - Database: `zeroui_ide_pg`
+   - User: `zeroui_ide_user`
+   - Schema: `core` (core schema tables)
+
+2. **postgres_tenant** (Port 5433)
    - Database: `zeroui_tenant_pg`
    - User: `zeroui_tenant_user`
    - Schema: `app` (application tables)
 
-2. **postgres_product** (Port 5434)
+3. **postgres_product** (Port 5434)
    - Database: `zeroui_product_pg`
    - User: `zeroui_product_user`
    - Schema: `app` (application tables)
    - Extension: `pgvector` (enabled on init)
 
-3. **postgres_shared** (Port 5435)
+4. **postgres_shared** (Port 5435)
    - Database: `zeroui_shared_pg`
    - User: `zeroui_shared_user`
    - Schema: `app` (application tables)
 
-4. **redis** (Port 6379)
+5. **redis** (Port 6379)
    - Redis Streams for event bus
    - AOF persistence enabled
 
@@ -92,6 +97,9 @@ docker compose -f compose.yaml up -d
 Set these in `.env` (copy from `.env.example`):
 
 ```powershell
+# IDE Plane
+ZEROUI_IDE_DB_URL=postgresql://zeroui_ide_user:change_me_ide@localhost:5436/zeroui_ide_pg
+
 # Tenant Plane
 ZEROUI_TENANT_DB_URL=postgresql://zeroui_tenant_user:change_me_tenant@localhost:5433/zeroui_tenant_pg
 
@@ -117,8 +125,8 @@ postgresql://{user}:{password}@{host}:{port}/{database}
 
 For Docker runtime:
 - Host: `localhost` (from host machine) or service name (from within Docker network)
-- Ports: 5433 (tenant), 5434 (product), 5435 (shared)
-- Database names: `zeroui_tenant_pg`, `zeroui_product_pg`, `zeroui_shared_pg`
+- Ports: 5436 (ide), 5433 (tenant), 5434 (product), 5435 (shared)
+- Database names: `zeroui_ide_pg`, `zeroui_tenant_pg`, `zeroui_product_pg`, `zeroui_shared_pg`
 
 ## Schema Bootstrap
 
@@ -188,7 +196,7 @@ docker exec zeroui-redis redis-cli XREAD STREAMS zeroui:events 0
 
 The database runtime complements the Four Plane storage fabric (`ZU_ROOT` paths):
 
-- **IDE Plane**: JSONL receipts in `ZU_ROOT/ide/receipts/` are source of truth. SQLite (`ZEROUI_IDE_SQLITE_URL`) provides local indexing/caching only.
+- **IDE Plane**: JSONL receipts in `ZU_ROOT/ide/receipts/` are source of truth. PostgreSQL (`ZEROUI_IDE_DB_URL`) provides local indexing/caching only.
 - **Tenant Plane**: PostgreSQL stores receipt/evidence metadata and indexes. Raw receipts remain in `ZU_ROOT/tenant/{tenant-id}/{region}/evidence/data/` (JSONL).
 - **Product Plane**: PostgreSQL stores policy bundle metadata and vector embeddings. Policy snapshots remain in `ZU_ROOT/product/{region}/policy/registry/`.
 - **Shared Plane**: PostgreSQL stores shared metadata. Artifacts (SBOM, eval results) remain in `ZU_ROOT/shared/{org-id}/{region}/`.

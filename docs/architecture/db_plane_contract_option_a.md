@@ -2,7 +2,7 @@
 
 ## Purpose
 This document locks the database deployment contract for the ZeroUI MVP/Pilot:
-- IDE Plane (Laptop): local SQLite
+- IDE Plane (Laptop): Postgres (IDE database)
 - Tenant Plane: Postgres (tenant database)
 - Product Plane: Postgres (product database)
 - Shared Plane: Postgres (shared database)
@@ -13,14 +13,14 @@ This is a **logical plane boundary contract**. In pilot, Tenant/Product/Shared d
 
 | Plane | Runtime Location (Pilot) | Database Engine | Database Name | Canonical Env Var |
 |---|---|---|---|---|
-| IDE Plane (Laptop) | Developer laptop | SQLite | zeroui_local.db (file) | ZEROUI_IDE_SQLITE_URL |
+| IDE Plane (Laptop) | Developer laptop | Postgres | zeroui_ide_pg | ZEROUI_IDE_DB_URL |
 | Tenant Plane | On-prem workstation (pilot) | Postgres | zeroui_tenant_pg | ZEROUI_TENANT_DB_URL |
 | Product Plane | On-prem workstation (pilot) | Postgres | zeroui_product_pg | ZEROUI_PRODUCT_DB_URL |
 | Shared Plane | On-prem workstation (pilot) | Postgres | zeroui_shared_pg | ZEROUI_SHARED_DB_URL |
 
 ## Data Ownership Rules (What lives where)
 
-### IDE Plane (SQLite)
+### IDE Plane (Postgres: zeroui_ide_pg)
 Stores only **edge runtime state** required for local, offline-first operation:
 - local receipt cache/buffer (last-N)
 - local policy cache (current snapshot + verification metadata)
@@ -74,7 +74,8 @@ If a new feature's storage plane is unclear, STOP and explicitly classify the pl
 
 ## Pilot Workstation Topology
 - One Postgres cluster runs on an on-prem workstation.
-- The cluster hosts three separate databases:
+- The cluster hosts four separate databases:
+  - zeroui_ide_pg
   - zeroui_tenant_pg
   - zeroui_product_pg
   - zeroui_shared_pg
@@ -87,6 +88,7 @@ If a new feature's storage plane is unclear, STOP and explicitly classify the pl
 When moving from pilot workstation to real clouds:
 - **Schemas and table designs do not change**
 - Only the connection strings change:
+  - ZEROUI_IDE_DB_URL points to IDE cloud/on-prem DB
   - ZEROUI_TENANT_DB_URL points to tenant cloud/on-prem DB
   - ZEROUI_PRODUCT_DB_URL points to ZeroUI product cloud DB
   - ZEROUI_SHARED_DB_URL points to shared cloud DB

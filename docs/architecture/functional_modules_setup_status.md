@@ -17,8 +17,7 @@
 |--------------|--------|---------|
 | **Docker** | ❌ NOT AVAILABLE | Docker command not found in PATH |
 | **Docker Containers** | ❌ NOT RUNNING | Cannot check container status (Docker unavailable) |
-| **SQLite CLI** | ❌ NOT AVAILABLE | `sqlite3` command not found in PATH |
-| **Environment Variables** | ❌ NOT SET | `ZEROUI_IDE_SQLITE_PATH`, `ZEROUI_TENANT_DB_URL`, `ZEROUI_PRODUCT_DB_URL`, `ZEROUI_SHARED_DB_URL` not set |
+| **Environment Variables** | ❌ NOT SET | `ZEROUI_IDE_DB_URL`, `ZEROUI_TENANT_DB_URL`, `ZEROUI_PRODUCT_DB_URL`, `ZEROUI_SHARED_DB_URL` not set |
 
 ---
 
@@ -31,10 +30,6 @@
 2. Ensure Docker is running and accessible from PowerShell
 3. Verify: `docker --version`
 
-#### SQLite CLI
-1. Download SQLite CLI: https://www.sqlite.org/download.html
-2. Extract `sqlite3.exe` to a directory in PATH (e.g., `C:\Program Files\SQLite\`)
-3. Verify: `sqlite3 --version`
 
 ### Step 2: Start Docker Containers
 
@@ -50,6 +45,7 @@ docker ps --filter "name=zeroui-postgres" --filter "name=zeroui-redis"
 ```
 
 **Expected Containers**:
+- `zeroui-postgres-ide` (port 5436)
 - `zeroui-postgres-tenant` (port 5433)
 - `zeroui-postgres-product` (port 5434)
 - `zeroui-postgres-shared` (port 5435)
@@ -64,7 +60,7 @@ Create a `.env` file in the repo root (copy from `.env.example`):
 Copy-Item .env.example .env
 
 # Edit .env and set actual values:
-# - ZEROUI_IDE_SQLITE_PATH=C:\Users\<USER>\.zeroai\zeroui_local.db
+# - ZEROUI_IDE_DB_URL=postgresql://zeroui_ide_user:change_me_ide@localhost:5436/zeroui_ide_pg
 # - ZEROUI_TENANT_DB_URL=postgresql://zeroui_tenant_user:change_me_tenant@localhost:5433/zeroui_tenant_pg
 # - ZEROUI_PRODUCT_DB_URL=postgresql://zeroui_product_user:change_me_product@localhost:5434/zeroui_product_pg
 # - ZEROUI_SHARED_DB_URL=postgresql://zeroui_shared_user:change_me_shared@localhost:5435/zeroui_shared_pg
@@ -72,7 +68,7 @@ Copy-Item .env.example .env
 
 **Or set in PowerShell session**:
 ```powershell
-$env:ZEROUI_IDE_SQLITE_PATH = "C:\Users\$env:USERNAME\.zeroai\zeroui_local.db"
+$env:ZEROUI_IDE_DB_URL = "postgresql://zeroui_ide_user:change_me_ide@localhost:5436/zeroui_ide_pg"
 $env:ZEROUI_TENANT_DB_URL = "postgresql://zeroui_tenant_user:change_me_tenant@localhost:5433/zeroui_tenant_pg"
 $env:ZEROUI_PRODUCT_DB_URL = "postgresql://zeroui_product_user:change_me_product@localhost:5434/zeroui_product_pg"
 $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@localhost:5435/zeroui_shared_pg"
@@ -86,14 +82,14 @@ $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@lo
 ```
 
 **Expected Output**:
+- ✅ IDE Postgres: Schema pack applied
 - ✅ TENANT Postgres: Schema pack applied
 - ✅ PRODUCT Postgres: Schema pack applied
 - ✅ SHARED Postgres: Schema pack applied
-- ✅ IDE SQLite: Schema pack applied
 
 **What It Does**:
 - Creates `meta.schema_version` table in all databases
-- Creates `core` schema (Postgres) or `core__` prefixed tables (SQLite)
+- Creates `core` schema in all Postgres databases
 - Creates core tables: `tenant`, `repo`, `actor`, `receipt_index`, `bkg_edge`
 - Records schema version "001" in `meta.schema_version`
 
@@ -105,10 +101,10 @@ $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@lo
 ```
 
 **Expected Output**:
+- ✅ IDE Postgres: Phase 0 stub applied (BKG edges)
 - ✅ TENANT Postgres: Phase 0 stub applied (BKG edges)
 - ✅ PRODUCT Postgres: Phase 0 stub applied (BKG edges + Semantic Q&A Cache)
 - ✅ SHARED Postgres: Phase 0 stub applied (BKG edges)
-- ✅ IDE SQLite: Phase 0 stub applied (BKG edges)
 
 **What It Does**:
 - Applies BKG edge schema migrations (if not already in schema pack)
@@ -125,7 +121,6 @@ $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@lo
 
 **Expected Output**:
 - ✅ Postgres schema equivalence: OK
-- ✅ SQLite contract check: OK
 - ✅ meta.schema_version: OK
 - ✅ ALL SCHEMA IDENTITY CHECKS PASSED
 
@@ -148,7 +143,7 @@ $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@lo
 - **File**: `docs/architecture/bkg_phase0_stub.md`
 - **Purpose**: Documents BKG Phase 0 stub (schema placeholders, contracts, ownership rules)
 - **Key Sections**:
-  - Schema Placeholders (Postgres and SQLite)
+  - Schema Placeholders (Postgres)
   - Contracts (JSON Schema)
   - Storage Locations (all planes)
   - Ownership Rules (what goes to Tenant/Product/Shared)
@@ -166,9 +161,6 @@ $env:ZEROUI_SHARED_DB_URL = "postgresql://zeroui_shared_user:change_me_shared@lo
 - **Error**: `Container 'zeroui-postgres-tenant' not found`
 - **Fix**: Start Docker containers: `cd infra/docker && docker compose -f compose.yaml up -d`
 
-### SQLite Not Found
-- **Error**: `sqlite3 not found in PATH`
-- **Fix**: Install SQLite CLI and add to PATH, or use full path to `sqlite3.exe`
 
 ### Environment Variables Not Set
 - **Error**: `Missing env var for TENANT DB URL`
@@ -187,21 +179,19 @@ Once all prerequisites are met and schemas are applied:
 1. **Verify Database Schemas**:
    ```powershell
    # Check Postgres schemas
+   docker exec -it zeroui-postgres-ide psql -U zeroui_ide_user -d zeroui_ide_pg -c "\dt core.*"
    docker exec -it zeroui-postgres-tenant psql -U zeroui_tenant_user -d zeroui_tenant_pg -c "\dt core.*"
    docker exec -it zeroui-postgres-product psql -U zeroui_product_user -d zeroui_product_pg -c "\dt core.*"
    docker exec -it zeroui-postgres-shared psql -U zeroui_shared_user -d zeroui_shared_pg -c "\dt core.*"
-   
-   # Check SQLite schema
-   sqlite3 $env:ZEROUI_IDE_SQLITE_PATH ".tables"
    ```
 
 2. **Verify Schema Version**:
    ```powershell
-   # Postgres
+   # Postgres (all planes)
+   docker exec -it zeroui-postgres-ide psql -U zeroui_ide_user -d zeroui_ide_pg -c "SELECT * FROM meta.schema_version;"
    docker exec -it zeroui-postgres-tenant psql -U zeroui_tenant_user -d zeroui_tenant_pg -c "SELECT * FROM meta.schema_version;"
-   
-   # SQLite
-   sqlite3 $env:ZEROUI_IDE_SQLITE_PATH "SELECT * FROM meta__schema_version;"
+   docker exec -it zeroui-postgres-product psql -U zeroui_product_user -d zeroui_product_pg -c "SELECT * FROM meta.schema_version;"
+   docker exec -it zeroui-postgres-shared psql -U zeroui_shared_user -d zeroui_shared_pg -c "SELECT * FROM meta.schema_version;"
    ```
 
 3. **Begin Functional Modules Implementation**:

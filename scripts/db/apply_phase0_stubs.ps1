@@ -23,29 +23,6 @@ function Apply-PgPhase0Stub {
   Write-Host "  ✓ $Label Postgres: Phase 0 stub applied" -ForegroundColor Green
 }
 
-function Apply-SqlitePhase0Stub {
-  param([string]$Path, [string]$MigrationFile)
-
-  if ([string]::IsNullOrWhiteSpace($Path)) { 
-    Write-Host "  SKIP: ZEROUI_IDE_SQLITE_PATH not set" -ForegroundColor Gray
-    return
-  }
-
-  $sqlite = Get-Command sqlite3 -ErrorAction SilentlyContinue
-  if ($null -eq $sqlite) { 
-    Write-Host "  SKIP: sqlite3 not found in PATH" -ForegroundColor Gray
-    return
-  }
-
-  Write-Host "Applying Phase 0 stub to IDE SQLite at $Path..." -ForegroundColor Yellow
-  $sqlText = Get-Content $MigrationFile -Raw
-  $sqlText | & sqlite3 $Path
-  if ($LASTEXITCODE -ne 0) {
-    throw "Failed to apply Phase 0 stub to SQLite (exit code: $LASTEXITCODE)"
-  }
-  Write-Host "  ✓ IDE SQLite: Phase 0 stub applied" -ForegroundColor Green
-}
-
 Write-Host "=== ZeroUI Phase 0 Stubs Application ===" -ForegroundColor Cyan
 Write-Host ""
 
@@ -53,9 +30,9 @@ Write-Host ""
 $bkgTenant = Join-Path $repoRoot "infra\db\migrations\tenant\002_bkg_phase0.sql"
 $bkgProduct = Join-Path $repoRoot "infra\db\migrations\product\003_bkg_phase0.sql"
 $bkgShared = Join-Path $repoRoot "infra\db\migrations\shared\002_bkg_phase0.sql"
-$bkgSqlite = Join-Path $repoRoot "infra\db\migrations\sqlite\002_bkg_phase0.sql"
 
 if (Test-Path $bkgTenant) {
+  Apply-PgPhase0Stub -ContainerName "zeroui-postgres-ide" -DbUser "zeroui_ide_user" -DbName "zeroui_ide_pg" -Label "IDE" -MigrationFile $bkgTenant
   Apply-PgPhase0Stub -ContainerName "zeroui-postgres-tenant" -DbUser "zeroui_tenant_user" -DbName "zeroui_tenant_pg" -Label "TENANT" -MigrationFile $bkgTenant
 }
 if (Test-Path $bkgProduct) {
@@ -63,16 +40,6 @@ if (Test-Path $bkgProduct) {
 }
 if (Test-Path $bkgShared) {
   Apply-PgPhase0Stub -ContainerName "zeroui-postgres-shared" -DbUser "zeroui_shared_user" -DbName "zeroui_shared_pg" -Label "SHARED" -MigrationFile $bkgShared
-}
-if (Test-Path $bkgSqlite) {
-  $sqlitePath = $env:ZEROUI_IDE_SQLITE_PATH
-  if ([string]::IsNullOrWhiteSpace($sqlitePath)) {
-    $sqlitePath = $env:ZEROUI_IDE_SQLITE_URL
-    if ($sqlitePath -match '^sqlite:///(.+)') {
-      $sqlitePath = $Matches[1]
-    }
-  }
-  Apply-SqlitePhase0Stub -Path $sqlitePath -MigrationFile $bkgSqlite
 }
 
 # Apply Semantic Q&A Cache Phase 0 stub (Product plane only)
